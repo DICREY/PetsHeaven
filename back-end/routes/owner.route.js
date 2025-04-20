@@ -11,7 +11,7 @@ const owner = new Owner()
 const Route = Router()
 
 // Middleware 
-Route.use(authenticateJWT)
+// Route.use(authenticateJWT)
 
 // Routes
 Route.get('/all', ValidatorRol("veterinario"), async (req,res) => {

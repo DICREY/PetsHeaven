@@ -51,6 +51,7 @@ export function GesMascota({ URL = "" }) {
             Propietario: 'nom_usu',
             Estado: 'estado',
           })
+          
           setLoading(false)
           setPetsData(pets)
           setPetsAlmac(pets)

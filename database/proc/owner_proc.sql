@@ -2,6 +2,7 @@
 CREATE PROCEDURE pets_heaven.SearchOwners()
 BEGIN
     SELECT
+        u.id_usu,
         u.nom_usu,
         u.ape_usu,
         u.fec_nac_usu,
@@ -13,32 +14,42 @@ BEGIN
         u.email_usu,
         u.cont_usu,
         u.fec_cre_usu,
-        (
-            SELECT GROUP_CONCAT(
-                CONCAT_WS(',',
-                    m.nom_mas,
-                    m.esp_mas,
-                    m.col_mas,
-                    m.raz_mas,
-                    m.ali_mas,
-                    m.fec_nac_mas,
-                    m.pes_mas,
-                    m.gen_mas,
-                    m.est_rep_mas,
-                    m.fot_mas,
-                    m.fec_cre_mas
-                ) 
-                SEPARATOR '; '
+        GROUP_CONCAT(
+            CONCAT_WS(',',
+                m.nom_mas,
+                m.esp_mas,
+                m.col_mas,
+                m.raz_mas,
+                m.ali_mas,
+                m.fec_nac_mas,
+                m.pes_mas,
+                m.gen_mas,
+                m.est_rep_mas,
+                m.fot_mas,
+                m.fec_cre_mas
             ) 
-            FROM mascotas m 
-            WHERE 
-                m.id_pro_mas = u.id_usu
-                AND m.estado = 1
+            SEPARATOR '; '
         ) AS mascotas
     FROM 
         usuarios u
+    JOIN 
+        mascotas m ON m.id_pro_mas = u.id_usu
     WHERE
         u.estado = 1
+        AND m.estado = 1
+    GROUP BY
+        u.id_usu,
+        u.nom_usu,
+        u.ape_usu,
+        u.fec_nac_usu,
+        u.tip_doc_usu,
+        u.doc_usu,
+        u.dir_usu,
+        u.cel_usu,
+        u.cel2_usu,
+        u.email_usu,
+        u.cont_usu,
+        u.fec_cre_usu
     ORDER BY
         u.id_usu
     LIMIT 50;
@@ -94,6 +105,19 @@ BEGIN
             OR u.cel_usu LIKE CONCAT('%',p_by)
             OR u.tip_doc_usu LIKE CONCAT('%',p_by)
         )
+    GROUP BY
+        u.id_usu,
+        u.nom_usu,
+        u.ape_usu,
+        u.fec_nac_usu,
+        u.tip_doc_usu,
+        u.doc_usu,
+        u.dir_usu,
+        u.cel_usu,
+        u.cel2_usu,
+        u.email_usu,
+        u.cont_usu,
+        u.fec_cre_usu
     ORDER BY
         u.id_usu DESC
     LIMIT 50;
@@ -147,6 +171,19 @@ BEGIN
         )
     WHERE
         u.estado = 1
+    GROUP BY
+        u.id_usu,
+        u.nom_usu,
+        u.ape_usu,
+        u.fec_nac_usu,
+        u.tip_doc_usu,
+        u.doc_usu,
+        u.dir_usu,
+        u.cel_usu,
+        u.cel2_usu,
+        u.email_usu,
+        u.cont_usu,
+        u.fec_cre_usu
     ORDER BY
         u.id_usu DESC
     LIMIT 50;

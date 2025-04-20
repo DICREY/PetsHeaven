@@ -10,7 +10,7 @@ import { Loader } from '../Errores/Loader'
 import { GlobalTable } from './GlobalTable'
 
 export function GesUsuario({ URL = "" }) {
-  const mainUrl = `${URL}/user/all/all`
+  const mainUrl = `${URL}/user/all`
   const [users,setUsers] = useState([])
   const [usersAlmac,setUsersAlmac] = useState([])
   const [loading,setLoading] = useState(true)
