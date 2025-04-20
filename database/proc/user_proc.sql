@@ -1,4 +1,4 @@
--- Active: 1744760357807@@127.0.0.1@3306@pets_heaven
+-- Active: 1744997534709@@127.0.0.1@3306@pets_heaven
 DELIMITER //
 CREATE PROCEDURE pets_heaven.RegistPeoples(
     IN p_nom_usu VARCHAR(100),

@@ -92,10 +92,10 @@ export function GesUsuario({ URL = "" }) {
                     <h2 className="subtitulovegesusuario">Usuarios vinculados a la veterinaria: Petsheaven</h2>
                   </div>
                   <div className="accionesgesusuario">
-                    <button className="botonregistrargesusuario">
-                      <Plus size={16} className="iconoplusgesusuario" />
-                      Registrar usuario
-                    </button>
+                  <a href="/usuario/registro" className="botonregistrargesusuario">
+                    <Plus size={16} className="iconoplusgesusuario"/>
+                    Registrar usuario
+                  </a>
                   </div>
                 </div>
 

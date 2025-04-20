@@ -1,10 +1,23 @@
+.contenedorgesusuario {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.principalgesusuario {
+  flex: 1;
+  padding: 1.5rem;
+  transition: padding 0.3s ease;
+}
+
+/* Contenedor principal que se alinea con la estructura de GesUsuario */
 .contenedor-regusuario {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-  max-width: 1200px;
-  margin: 0 auto;
-  background-color: #fff;
-  border-radius: 8px;
+  width: 100%;
+  background-color: white;
+  border-radius: 0.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
 .cabecera-regusuario {
@@ -22,15 +35,17 @@
 }
 
 .titulo-regusuario h1 {
-  font-size: 18px;
+  font-size: 1.25rem;
   font-weight: 600;
   margin: 0;
-  color: #111827;
+  color: #00bcd4;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .creacion-regusuario {
-  font-size: 14px;
-  color: #6b7280;
+  font-size: 0.875rem;
+  color: #64748b;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .acciones-regusuario {
@@ -49,6 +64,7 @@
   font-size: 14px;
   cursor: pointer;
   color: #374151;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .guardar-regusuario {
@@ -60,6 +76,7 @@
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .tabs-regusuario {
@@ -79,6 +96,7 @@
   cursor: pointer;
   border-bottom: 2px solid transparent;
   white-space: nowrap;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .tab-regusuario.activo-regusuario {
@@ -91,7 +109,7 @@
 }
 
 .contenido-regusuario {
-  padding: 24px;
+  padding: 1.5rem;
 }
 
 .form-regusuario {
@@ -104,6 +122,7 @@
   color: #374151;
   margin-top: 0;
   margin-bottom: 24px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .grid-regusuario {
@@ -122,6 +141,7 @@
 .etiqueta-regusuario {
   font-size: 14px;
   color: #374151;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .campo-regusuario {
@@ -132,6 +152,7 @@
   width: 100%;
   outline: none;
   transition: border-color 0.2s;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .campo-regusuario:focus {
@@ -223,23 +244,23 @@
   display: none;
 }
 
-/* Aseguramos que el diseño no se deforme en pantallas grandes */
-@media (min-width: 1200px) {
-  .contenedor-regusuario {
-    width: 1200px;
-  }
-}
+/* ==================== MEDIA QUERIES ==================== */
 
-/* Tablets y pantallas medianas */
-@media (max-width: 900px) {
+/* Móviles pequeños y tablets (hasta 991px) */
+@media (max-width: 991px) {
+  .principalgesusuario {
+    padding: 0.75rem;
+  }
+
+  .contenido-regusuario {
+    padding: 1rem;
+  }
+
   .grid-regusuario {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-}
 
-/* Tablets pequeñas y móviles grandes */
-@media (max-width: 768px) {
   .cabecera-regusuario {
     flex-direction: column;
     align-items: flex-start;
@@ -255,7 +276,7 @@
 /* Móviles */
 @media (max-width: 480px) {
   .contenido-regusuario {
-    padding: 16px;
+    padding: 0.75rem;
   }
 
   .texto-tab-regusuario {
@@ -278,5 +299,69 @@
 
   .atras-regusuario {
     padding: 8px;
+  }
+}
+
+/* Laptops y computadores (992px en adelante) */
+@media (min-width: 992px) {
+  .contenedor-regusuario {
+    max-width: 100%;
+  }
+}
+
+/* Laptops (1200px - 1439px) */
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .contenedor-regusuario {
+    max-width: 1140px;
+    margin: 0 auto;
+  }
+
+  .principalgesusuario {
+    padding: 1.75rem;
+  }
+}
+
+/* Computadores de escritorio con pantallas pequeñas (1440px - 1919px) */
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .contenedor-regusuario {
+    max-width: 1320px;
+    margin: 0 auto;
+  }
+
+  .principalgesusuario {
+    padding: 2rem;
+  }
+
+  .contenido-regusuario {
+    padding: 1.75rem;
+  }
+}
+
+/* Computadores de escritorio con pantallas grandes (1920px y más) */
+@media (min-width: 1920px) {
+  .contenedor-regusuario {
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+
+  .principalgesusuario {
+    padding: 2.5rem;
+  }
+
+  .contenido-regusuario {
+    padding: 2rem;
+  }
+}
+
+/* Ajustes para la barra de navegación en pantallas grandes */
+@media (min-width: 1200px) {
+  .barranavadmin {
+    position: sticky;
+    transform: none;
+    width: 280px;
+  }
+
+  .botonmovilnavadmin {
+    display: none;
   }
 }

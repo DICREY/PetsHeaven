@@ -1,5 +1,6 @@
+import React from "react"
 import { useState, useRef } from "react"
-import { Pencil } from "lucide-react"
+import { ImageOff, Import, Pencil } from "lucide-react"
 import "../../../../public/styles/InterfazAdmin/FormuariosAdmin/InformacionProfesional.css"
 
 const InformacionProfesional = () => {

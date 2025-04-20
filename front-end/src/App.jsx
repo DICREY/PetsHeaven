@@ -15,6 +15,8 @@ import { NotFound } from "./Componentes/Errores/NotFound"
 import { ErrorInternalServer } from "./Componentes/Errores/ErrorInternalServer"
 import { getRoles } from './Componentes/Varios/Util'
 import VeterinariaPage from "./Componentes/VeterinariaPage"
+import { ConfiguracionUsuario } from "./Componentes/InterfazAdmin/FormulariosAdmin/RegistroUsu"
+
 
 // Main Component
 export default function App () {
@@ -68,9 +70,10 @@ export default function App () {
         <Route path="gestion/usuarios" element={
           <AdminRoute children={<GesUsuario URL={URL} />} />} >
         </Route>
-        {/* <Route path="usuario/registro" element={
-          <AdminRoute children={<RegistroUsu/>} />} >
-          </Route> */}
+        <Route path="usuario/registro" element={
+          <AdminRoute children={<ConfiguracionUsuario/>} />} >
+        </Route>
+
 
         {/* Vet routes */}
         <Route path="gestion/propietarios" element={

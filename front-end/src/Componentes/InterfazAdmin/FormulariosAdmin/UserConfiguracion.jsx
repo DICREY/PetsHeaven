@@ -1,3 +1,4 @@
+import React from "react"
 import { useState, useEffect } from "react"
 import "../../../../public/styles/InterfazAdmin/FormuariosAdmin/UserConfiguration.css"
 import { Pencil, ChevronLeft } from "lucide-react"

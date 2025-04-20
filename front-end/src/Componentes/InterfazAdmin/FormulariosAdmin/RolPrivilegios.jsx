@@ -1,3 +1,4 @@
+import React from "react"
 import { useState } from "react"
 import { InfoIcon } from "lucide-react"
 import "../../../../public/styles/InterfazAdmin/FormuariosAdmin/RolPrivilegios.css"
@@ -39,4 +40,4 @@ const RolPrivilegios = () => {
   )
 }
 
-export default RolPrivilegios
+export default RolPrivilegios;
