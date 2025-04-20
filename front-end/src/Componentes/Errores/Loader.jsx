@@ -38,7 +38,7 @@ export const Loader = () => {
             <div className="brillito17"></div>
             <div className="brillito18"></div>
             <div className="brillito19"></div>
-            <h1 className="carga">CARGANDO...</h1>
+            <h1 className="carga" autoFocus>CARGANDO...</h1>
           </div>
         </div>
       </div>
