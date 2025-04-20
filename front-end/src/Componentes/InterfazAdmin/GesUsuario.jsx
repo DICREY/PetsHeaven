@@ -1,6 +1,6 @@
 // Librarys 
 import React, { useEffect, useState } from "react"
-import { Key, Plus} from "lucide-react"
+import { Plus} from "lucide-react"
 
 // Imports 
 import '../../../public/styles/InterfazAdmin/GesUsuario.css'
@@ -69,79 +69,33 @@ export function GesUsuario({ URL = "" }) {
 
 
   return (
-    <>
-      {
-        loading ? (
-          <Loader />
-        ) : (
-          <div className="contenedorgesusuario">
-          <NavBarAdmin />
+    <main className="contenedorgesusuario">
+      <NavBarAdmin />
 
-          <div className="principalgesusuario">
-            <div className="tarjetagesusuario">
-              <div className="contenidogesusuario">
-                <div className="encabezadogesusuario">
-                  <div className="titulogesusuario">
-                    <h1 className="textogesusuario">Gestión de usuarios</h1>
-                    <span className="subtitulogesusuario">/ Administración</span>
-                  </div>
-                </div>
-
-                <div className="subencabezadogesusuario">
-                  <div className="veterinariagesusuario">
-                    <h2 className="subtitulovegesusuario">Usuarios vinculados a la veterinaria: Petsheaven</h2>
-                  </div>
-                  <div className="accionesgesusuario">
-                  <a href="/usuario/registro" className="botonregistrargesusuario">
-                    <Plus size={16} className="iconoplusgesusuario"/>
-                    Registrar usuario
-                  </a>
-                  </div>
-                </div>
-
-                <div className="controlestablagesusuario">
-                  <div className="mostrargesusuario">
-                    <span>Mostrar</span>
-                    <select className="selectgesusuario">
-                      <option value="10">10</option>
-                      <option value="25">25</option>
-                      <option value="50">50</option>
-                      <option value="100">100</option>
-                    </select>
-                    <span>registros</span>
-                  </div>
-                  <div className="buscargesusuario">
-                    <span>Buscar:</span>
-                    <input
-                      type="text"
-                      className="inputbuscargesusuario"
-                      placeholder=""
-                      onChange={(e) => handleSearch(e.target.value)}
-                    />
-                  </div>
-                </div>
-
-                {/* Table  */}
-                <GlobalTable 
-                  data={users}
-                  headers={headers} 
-                /> 
-
-                <div className="paginaciongesusuario">
-                  <div className="infopaginaciongesusuario">
-                    <span>Mostrando registros del 1 al 2 de un total de 2 registros.</span>
-                  </div>
-                  <div className="controlesgesusuario">
-                    <button className="botonpaginaciongesusuario">Anterior</button>
-                    <button className="botonpaginaciongesusuario activogesusuario">1</button>
-                    <button className="botonpaginaciongesusuario">Siguiente</button>
-                  </div>
-                </div>
+      <section className="principalgesusuario">
+        <section className="tarjetagesusuario">
+          <div className="contenidogesusuario">
+            <header className="encabezadogesusuario">
+              <div className="titulogesusuario">
+                <h1 className="textogesusuario">Gestión de usuarios</h1>
+                <span className="subtitulogesusuario">/ Administración</span>
               </div>
-            </div>
+              <button className="botongesmascota">
+                <Plus size={16} className="iconoplusadminhome" />
+                Registrar Usuario
+              </button>
+            </header>
+
+            {/* Table  */}
+            <GlobalTable 
+              subtitle={'Usuarios vinculados a la veterinaria: Petsheaven'}
+              data={users}
+              headers={headers}
+            /> 
+
           </div>
-        </div>
-      )}
-    </>
+        </section>
+      </section>
+    </main>
   )
 }

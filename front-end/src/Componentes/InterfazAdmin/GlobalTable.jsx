@@ -1,6 +1,6 @@
 // Librarys 
 import React, { Component } from "react"
-import { Edit, MoreHorizontal } from "lucide-react"
+import { Key, Plus,Edit, MoreHorizontal } from "lucide-react"
 
 // Imports
 import { formatDate } from '../Varios/Util'
@@ -19,13 +19,15 @@ export class GlobalTable extends Component {
         this.void = () => console.log("ver")
         this.onMore = this.props.watch || this.void
         this.onEdit = this.props.edit || this.void
+        this.handleSearch = this.props.handleSearch || this.void
     }
 
     handleClick = (pet) => {
       const { clickCount } = this.state
-      this.setState( prev => ({
-        clickCount: prev + 1
+      this.setState( () => ({
+        clickCount: clickCount + 1
       }))
+
       
       setTimeout(() => {
         if (clickCount === 1) {
@@ -52,10 +54,29 @@ export class GlobalTable extends Component {
     }
 
     render () {
-        const { headers, data } = this.props
+        const { headers, data, subtitle } = this.props
         const headersKeys = Object.keys(headers)
         const headersValues = Object.values(headers)
         return (
+          <main>
+            <h2 className="subtitle-panel-gestion">{subtitle}</h2>
+            <nav className="controles-gestion">
+              <div className="btns-gestion">
+                <span>Mostrar</span>
+                <select className="select-gestion">
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+                <span>registros</span>
+              </div>
+
+              <div className="buscar-gestion">
+                <span>Buscar:</span>
+                <input type="text" className="input-gestion" onChange={e => this.handleSearch(e.target.value)}/>
+              </div>
+            </nav>
             <section className={`global-table-container`}>
               <table className="global-table">
                 <thead>
@@ -72,7 +93,7 @@ export class GlobalTable extends Component {
                 </thead>
                 <tbody>
                   {data?.map((item,index) => (
-                    <tr key={index}>
+                    <tr key={index} onClick={() => this.handleClick(item)}>
                       {headersValues.map((header) => (
                         <td>
                           {this.renderCell(item, header)}
@@ -91,6 +112,17 @@ export class GlobalTable extends Component {
                 </tbody>
               </table>
             </section>
+            <footer className="paginacion-gestion">
+              <div className="info-paginacion">Mostrando registros del 1 al 3 de un total de 3 registros.</div>
+              <div className="btns-container-paginacion">
+                <button type="button" className="btn-paginacion" disabled>
+                  Anterior
+                </button>
+                <button type="button" className="btn-paginacion btn-active">1</button>
+                <button type="button" className="btn-paginacion">Siguiente</button>
+              </div>
+            </footer>
+          </main>
         )
     }
 }

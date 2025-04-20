@@ -81,7 +81,7 @@ const propietariosEjemplo = [
 
 export function HomeAdmin() {
   return (
-    <div className="contenedoradminhome">
+    <main className="contenedoradminhome">
       <NavBarAdmin/>
 
       <div className="principaladminhome">
@@ -222,6 +222,6 @@ export function HomeAdmin() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   )
 }
