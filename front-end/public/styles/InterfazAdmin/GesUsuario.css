@@ -92,6 +92,7 @@ font-weight: 500;
 cursor: pointer;
 transition: all 0.2s ease;
 font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+text-decoration: none;
 }
 
 .botonregistrargesusuario:hover {

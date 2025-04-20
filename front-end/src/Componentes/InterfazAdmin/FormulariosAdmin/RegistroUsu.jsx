@@ -48,10 +48,10 @@ export const ConfiguracionUsuario = () => {
               <span className="creacion-regusuario">Creación</span>
             </div>
             <div className="acciones-regusuario">
-              <button className="atras-regusuario">
+              <a href="/gestion/usuarios"><button className="atras-regusuario">
                 <ChevronLeft size={16} />
                 <span className="texto-btn-regusuario">Atrás</span>
-              </button>
+              </button></a>
               <button className="guardar-regusuario">Guardar</button>
             </div>
           </div>
