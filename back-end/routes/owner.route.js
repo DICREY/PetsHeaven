@@ -14,7 +14,7 @@ const Route = Router()
 Route.use(authenticateJWT)
 
 // Routes
-Route.get('/all', ValidatorRol("administrador"), async (req,res) => {
+Route.get('/all', ValidatorRol("veterinario"), async (req,res) => {
     const search = await user.findAll()
 
     // Verifiy if exists
@@ -28,7 +28,8 @@ Route.get('/all', ValidatorRol("administrador"), async (req,res) => {
     }
 })
 
-Route.get('/all:by', ValidatorRol("administrador"), async (req,res) => {
+
+Route.get('/all:by', ValidatorRol("veterinario"), async (req,res) => {
     // Vars 
     const by = req.params.by
     const search = await user.findAllBy(by)
@@ -44,7 +45,7 @@ Route.get('/all:by', ValidatorRol("administrador"), async (req,res) => {
     }
 })
 
-Route.get('/by:by', ValidatorRol("administrador"), async (req,res) => {
+Route.get('/by:by', ValidatorRol("veterinario"), async (req,res) => {
     // Vars 
     const by = req.params.by
     const search = await user.findBy(by)
@@ -78,7 +79,7 @@ Route.post('/register', async (req,res) => {
     }
 })
 
-Route.put('/modify', ValidatorRol("administrador"), async (req,res) => {
+Route.put('/modify', ValidatorRol("veterinario"), async (req,res) => {
     // Vars 
     const { body } = req
     const saltRounds = 15
@@ -95,6 +96,7 @@ Route.put('/modify', ValidatorRol("administrador"), async (req,res) => {
         res.status(500).json({ message: err })
     }
 })
+
 
 // Route.get('/all/time:by', async (req,res) => {
 //     // Vars 

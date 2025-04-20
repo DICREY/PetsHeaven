@@ -1,4 +1,4 @@
--- Active: 1744997534709@@127.0.0.1@3306@pets_heaven
+-- Active: 1743971322762@@127.0.0.1@3306@pets_heaven
 DELIMITER //
 CREATE PROCEDURE pets_heaven.RegistPeoples(
     IN p_nom_usu VARCHAR(100),
@@ -127,31 +127,6 @@ BEGIN
             u.doc_usu = p_by
             OR u.email_usu LIKE p_by
         )
-    ORDER BY
-        u.id_usu
-    LIMIT 50;
-END //
-CREATE PROCEDURE pets_heaven.SearchPeoplesOwner()
-BEGIN
-    SELECT
-        u.nom_usu,
-        u.ape_usu,
-        u.fec_nac_usu,
-        u.tip_doc_usu,
-        u.doc_usu,
-        u.dir_usu,
-        u.cel_usu,
-        u.cel2_usu,
-        u.email_usu,
-        u.cont_usu,
-        u.fec_cre_usu
-    FROM 
-        usuarios u
-    JOIN
-        mascotas m
-    WHERE
-        u.estado = 1
-        AND u.id_usu = m.id_pro_mas
     ORDER BY
         u.id_usu
     LIMIT 50;
