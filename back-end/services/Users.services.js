@@ -31,6 +31,34 @@ class User{
             database.conection.end()
         })
     }
+    // function to find all
+    async findAllUsers() {
+        return new Promise((res,rej) => {
+            // vars
+            const proc = "CALL SearchAllPeoples();"
+
+            // conect to database
+            let database = new DataBase()
+            database.conect()
+
+            if (database) database.conection.query(proc,(err,result) => {
+                if(err) rej({ message: err })
+                if(!result[0][0]) rej({
+                    message: "Not found",
+                    status: 404
+                })
+                setTimeout(() => {
+                    res({
+                        message: "Users found",
+                        result: result
+                    })
+                },2000)
+            })
+
+            // close conection 
+            database.conection.end()
+        })
+    }
 
     // function to find all by
     async findAllBy(data) {

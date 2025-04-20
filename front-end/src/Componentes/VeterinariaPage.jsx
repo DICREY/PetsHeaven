@@ -53,9 +53,9 @@ const itemVariants = {
   }
 };
 
-export default function VeterinariaPage() {
+export default function VeterinariaPage({ URL = "" }) {
   // Estados para los diferentes componentes
-  const URL = "http://localhost:3000/global/services"
+  const mainUrl = `${URL}/global/services`
   const [diaActual, setDiaActual] = useState(0)
   const [testActual, setTestActual] = useState(0)
   const [mostrarBoton,setMostrarBoton] = useState(false)
@@ -82,7 +82,7 @@ export default function VeterinariaPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const services = await GetDataGlobal(URL)
+        const services = await GetDataGlobal(mainUrl)
         setSerData(services)
         setLoading(false)
       } catch (error) {

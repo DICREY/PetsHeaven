@@ -72,6 +72,31 @@ BEGIN
         u.id_usu
     LIMIT 100;
 END //
+CREATE PROCEDURE pets_heaven.SearchAllPeoples()
+BEGIN
+    SELECT
+        u.nom_usu,
+        u.ape_usu,
+        u.fec_nac_usu,
+        u.tip_doc_usu,
+        u.doc_usu,
+        u.dir_usu,
+        u.cel_usu,
+        u.cel2_usu,
+        u.email_usu,
+        u.cont_usu,
+        u.fec_cre_usu,
+        GROUP_CONCAT(r.nom_rol SEPARATOR ', ') AS roles
+    FROM 
+        usuarios u
+    JOIN
+        otorgar_roles otr ON otr.id_usu = u.id_usu
+    JOIN
+        roles r ON otr.id_rol = r.id_rol
+    GROUP BY 
+        u.id_usu
+    LIMIT 100;
+END //
 
 CREATE PROCEDURE pets_heaven.SearchPeopleBy(
     IN p_by VARCHAR(100)
@@ -103,7 +128,7 @@ BEGIN
             OR u.email_usu LIKE p_by
         )
     ORDER BY
-        u.nom_usu
+        u.id_usu
     LIMIT 50;
 END //
 CREATE PROCEDURE pets_heaven.SearchPeoplesOwner()
@@ -128,7 +153,7 @@ BEGIN
         u.estado = 1
         AND u.id_usu = m.id_pro_mas
     ORDER BY
-        u.nom_usu
+        u.id_usu
     LIMIT 50;
 END //
 
@@ -168,6 +193,6 @@ BEGIN
             OR u.tip_doc_usu LIKE CONCAT('%',p_by,'%')
         )
     GROUP BY 
-        u.nom_usu
+        u.id_usu
     LIMIT 100;
 END //

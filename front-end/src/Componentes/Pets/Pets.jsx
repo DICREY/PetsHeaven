@@ -1,21 +1,21 @@
 // Imports
 import { GetData } from '../Varios/Requests'
+import { decodeJWT, errorStatusHandler, getRoles } from '../Varios/Util'
 import { Loader } from '../Errores/Loader'
 import { SubNotFound } from '../Errores/NotFound'
 import { EditPetButton } from './EditPet'
 import { PetDetails } from './PetDetails'
-import { getName,getRoles } from '../Varios/Util'
 
 // Import Styles 
-import '../../../public/styles/InterfazUsuario/pets.css'
+import '../../../public/styles/Pets/pets.css'
 
 // Librarys 
 import React, { useState, useEffect } from "react"
 
 // Main component
-export const Pets = () => {
+export const Pets = ({URL = ""}) => {
     // Declare Vars
-    const mainURL = "http://localhost:3000/pet/all"
+    const mainURL = `${URL}/pet`
     const [petsData, setPetsData] = useState([])
     const [loading, setLoading] = useState(true)
     const [selectedPet, setSelectedPet] = useState(null)
@@ -33,9 +33,13 @@ export const Pets = () => {
             const pets = await GetData(url,token)
             setLoading(false)
             setPetsData(pets)
+            setfound(true)
             if(pets[0]) setfound(true)
-        } catch (err) {             
-            console.log(err)
+        } catch (err) {
+            setLoading(false)
+            if (err.status){
+                errorStatusHandler(err.status)
+            }
         }
     }
 
@@ -51,14 +55,14 @@ export const Pets = () => {
         const token = localStorage.getItem("token")
         if(token) {
             // Vars
-            const by = getName(token)
+            const by = decodeJWT(token).names.toLowerCase()
             const roles =  getRoles(token)
 
-            const admin = roles.some(role => role.toLowerCase() === "veterinario")
+            const admin = roles.some(role => role.toLowerCase() === "administrador")
 
             admin?setIsAdmin(true):setIsAdmin(false)
 
-            const newUrl = admin? mainURL: `${mainURL}:${by}`
+            const newUrl = admin? `${mainURL}/all`: `${mainURL}/all:${by}`
 
             fetchData(newUrl,token)
         } else window.location.href = "/user/login"
@@ -73,7 +77,7 @@ export const Pets = () => {
                     <nav className='nav-search-container'>
                         <span className='search-container'>
                             <input className='search-input input' type="search" placeholder='Buscar' onChange={e => setSearchBy(e.target.value)}/>
-                            <button className='boton-enviar' type='button' onClick={() => fetchData(mainURL + "all:" + searchBy)} >Buscar</button>
+                            <button className='boton-enviar' type='button' onClick={() => fetchData(`${mainURL}/all:${searchBy}`)} >Buscar</button>
                         </span>
                         <picture className='img-container'>
                             

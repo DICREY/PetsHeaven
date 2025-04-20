@@ -154,43 +154,46 @@ export const NavBarAdmin = () => {
                 </li>
               </ul>
             </li>
-            
-            <li className="itemnavadmin">
-              <button className="botonnavadmin" onClick={toggleServicios}>
-                <div className="contenidobotonnavadmin">
-                  <Headset className="icononavadmin" />
-                  <span>Servicios</span>
-                </div>
-                <ChevronDown className={`flechanavadmin ${serviciosAbierto ? "girarnavadmin" : ""}`} />
-              </button>
+            {
+              isAdmin && (
+                <li className="itemnavadmin">
+                  <button className="botonnavadmin" onClick={toggleServicios}>
+                    <div className="contenidobotonnavadmin">
+                      <Headset className="icononavadmin" />
+                      <span>Servicios</span>
+                    </div>
+                    <ChevronDown className={`flechanavadmin ${serviciosAbierto ? "girarnavadmin" : ""}`} />
+                  </button>
 
-              <ul className={`submenunavadmin ${serviciosAbierto ? "abiertonavadmin" : "cerradonavadmin"}`}>
-                <li>
-                  <a href="/servicios/vacunas" className="subenlacenavadmin">
-                    <Syringe className="iconosubnavadmin" />
-                    <span>Vacunas</span>
-                  </a>
+                  <ul className={`submenunavadmin ${serviciosAbierto ? "abiertonavadmin" : "cerradonavadmin"}`}>
+                    <li>
+                      <a href="/servicios/vacunas" className="subenlacenavadmin">
+                        <Syringe className="iconosubnavadmin" />
+                        <span>Vacunas</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/servicios/cirugia" className="subenlacenavadmin">
+                        <Scissors className="iconosubnavadmin" />
+                        <span>Cirugía</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/servicios/laboratorio" className="subenlacenavadmin">
+                        <Flask className="iconosubnavadmin" />
+                        <span>Pruebas Laboratorio</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/servicios/spa" className="subenlacenavadmin">
+                        <Bath className="iconosubnavadmin" />
+                        <span>Spa</span>
+                      </a>
+                    </li>
+                  </ul>
                 </li>
-                <li>
-                  <a href="/servicios/cirugia" className="subenlacenavadmin">
-                    <Scissors className="iconosubnavadmin" />
-                    <span>Cirugía</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="/servicios/laboratorio" className="subenlacenavadmin">
-                    <Flask className="iconosubnavadmin" />
-                    <span>Pruebas Laboratorio</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="/servicios/spa" className="subenlacenavadmin">
-                    <Bath className="iconosubnavadmin" />
-                    <span>Spa</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
+              )
+            }
           </ul>
         </nav>
 

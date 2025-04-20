@@ -8,8 +8,8 @@ import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GetData } from '../Varios/Requests'
 
 // Main component 
-export function GesPropietario() {
-  const URL = "http://localhost:3000/user/owner/all"
+export function GesPropietario({ URL = "" }) {
+  const mainUrl = `${URL}/user/owner/all`
   const [users,setUsers] = useState([])
   const [usersAlmac,setUsersAlmac] = useState([])
   const [loading,setLoading] = useState(true)
@@ -49,10 +49,10 @@ export function GesPropietario() {
     let intervalId
 
     // Execute the request
-    GetUsers(URL)
+    GetUsers(mainUrl)
 
     // Configure interval
-    intervalId = setInterval(() => GetUsers(URL), REFRESH_INTERVAL)
+    intervalId = setInterval(() => GetUsers(mainUrl), REFRESH_INTERVAL)
 
     // Clean
     return () => clearInterval(intervalId)

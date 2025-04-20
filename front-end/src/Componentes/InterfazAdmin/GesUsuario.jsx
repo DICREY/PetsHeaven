@@ -1,28 +1,38 @@
 // Librarys 
 import React, { useEffect, useState } from "react"
-import { ChevronUp, ChevronDown, Plus, Edit, MoreHorizontal } from "lucide-react"
+import { Key, Plus} from "lucide-react"
 
 // Imports 
 import '../../../public/styles/InterfazAdmin/GesUsuario.css'
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GetData } from '../Varios/Requests'
 import { Loader } from '../Errores/Loader'
+import { GlobalTable } from './GlobalTable'
 
-
-export function GesUsuario() {
-  const URL = "http://localhost:3000/user/all"
+export function GesUsuario({ URL = "" }) {
+  const mainUrl = `${URL}/user/all/all`
   const [users,setUsers] = useState([])
   const [usersAlmac,setUsersAlmac] = useState([])
   const [loading,setLoading] = useState(true)
+  const [headers,setHeaders] = useState([])
 
   const GetUsers = async () => {
     const token = localStorage.getItem("token")
     try {
       if (token){
-        const data = await GetData(URL,token)
+        const data = await GetData(mainUrl,token)
         setUsers(data)
         setUsersAlmac(data)
         setLoading(false)
+        setHeaders({
+          'Nombres': 'nom_usu',
+          'Apellidos': 'ape_usu',
+          'T. Doc': 'tip_doc_usu',
+          'Documento': 'doc_usu',
+          'Direccion': 'dir_usu',
+          'Celular': 'cel_usu',
+          'Correo': 'email_usu'
+        })
       } else window.location.href = "/34"
     } catch (err) {
       console.log(err)
@@ -56,6 +66,7 @@ export function GesUsuario() {
     // Clean
     return () => clearInterval(intervalId)
   }, [])
+
 
   return (
     <>
@@ -110,85 +121,11 @@ export function GesUsuario() {
                   </div>
                 </div>
 
-                <div className="tablagesusuario">
-                  <table className="tablausuariosgesusuario">
-                    <thead>
-                      <tr className="encabezadotablagesusuario">
-                        <th className="celdaencabezadogesusuario">
-                          <div className="contenidoencabezadogesusuario">
-                            Nombre
-                            <div className="ordenargesusuario">
-                              <ChevronUp size={14} className="iconoordengesusuario" />
-                              <ChevronDown size={14} className="iconoordengesusuario" />
-                            </div>
-                          </div>
-                        </th>
-                        <th className="celdaencabezadogesusuario">
-                          <div className="contenidoencabezadogesusuario">
-                            Correo
-                            <div className="ordenargesusuario">
-                              <ChevronUp size={14} className="iconoordengesusuario" />
-                              <ChevronDown size={14} className="iconoordengesusuario" />
-                            </div>
-                          </div>
-                        </th>
-                        <th className="celdaencabezadogesusuario">
-                          <div className="contenidoencabezadogesusuario">
-                            Rol
-                            <div className="ordenargesusuario">
-                              <ChevronUp size={14} className="iconoordengesusuario" />
-                              <ChevronDown size={14} className="iconoordengesusuario" />
-                            </div>
-                          </div>
-                        </th>
-                        <th className="celdaencabezadogesusuario">
-                          <div className="contenidoencabezadogesusuario">
-                            Creación
-                            <div className="ordenargesusuario">
-                              <ChevronUp size={14} className="iconoordengesusuario" />
-                              <ChevronDown size={14} className="iconoordengesusuario" />
-                            </div>
-                          </div>
-                        </th>
-                        <th className="celdaencabezadogesusuario opciones">
-                          <div className="contenidoencabezadogesusuario">Opciones</div>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {
-                      users &&
-                      users.map((usuario) => (
-                        <tr key={usuario.doc_usu} className="filagesusuario">
-                          <td className="celdagesusuario" data-label="Nombre">
-                            <div className="usuarioinfogeneralgesusuario">
-                              <span>{usuario.nom_usu}</span>
-                            </div>
-                          </td>
-                          <td className="celdagesusuario" data-label="Correo">
-                            {usuario.email_usu}
-                          </td>
-                          <td className="celdagesusuario" data-label="Rol">
-                            <span className={`rolgesusuario ${usuario.roles}`}>{usuario.roles}</span>
-                          </td>
-                          <td className="celdagesusuario" data-label="Creación">
-                            {new Date(usuario.fec_cre_usu).toLocaleDateString('to-ca')}
-                          </td>
-                          <td className="celdagesusuario" data-label="Opciones">
-                            <div className="accionesusuariogesusuario">
-                              <button className="botonacciongesusuario">
-                                <Edit size={16} className="iconoacciongesusuario" />
-                              </button>
-                              <button className="botonacciongesusuario">
-                                <MoreHorizontal size={16} className="iconoacciongesusuario" />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                {/* Table  */}
+                <GlobalTable 
+                  data={users}
+                  headers={headers} 
+                /> 
 
                 <div className="paginaciongesusuario">
                   <div className="infopaginaciongesusuario">

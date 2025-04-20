@@ -1,0 +1,183 @@
+/* Contenedor principal de la tabla */
+.global-table-container {
+    overflow-x: auto;
+    border-radius: 0.375rem;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 1rem;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Estilos base de la tabla */
+  .global-table {
+    width: 100%;
+    font-size: 0.875rem;
+    border-collapse: collapse;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* Encabezado de la tabla */
+  .global-table thead tr {
+    background-color: #b2ebf2;
+    color: #475569;
+  }
+  
+  /* Celdas del encabezado */
+  .global-table th {
+    text-align: left;
+    padding: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* Celda especial para opciones */
+  .global-table th.actions-header {
+    width: 100px;
+  }
+  
+  /* Contenido del encabezado */
+  .global-table .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  /* Contenedor de íconos de ordenamiento */
+  .global-table .sort-icons {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5rem;
+  }
+  
+  /* Íconos de ordenamiento */
+  .global-table .sort-icons svg {
+    width: 14px;
+    height: 14px;
+    color: #94a3b8;
+    cursor: pointer;
+  }
+  
+  .global-table .sort-icons svg:hover {
+    color: #00bcd4;
+  }
+  
+  /* Filas de la tabla */
+  .global-table tbody tr {
+    border-top: 1px solid #e2e8f0;
+  }
+  
+  .global-table tbody tr:hover {
+    background-color: #f8fafc;
+  }
+  
+  /* Celdas del cuerpo */
+  .global-table td {
+    padding: 0.75rem;
+    vertical-align: middle;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* Contenedor de acciones */
+  .global-table .actions-cell {
+    display: flex;
+    gap: 0.25rem;
+  }
+  
+  /* Botones de acción */
+  .global-table .actions-cell button {
+    background: transparent;
+    border: none;
+    color: #00BCD4;
+    width: 28px;
+    height: 28px;
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .global-table .actions-cell button:hover {
+    background-color: #f1f5f9;
+    color: #0097A7;
+  }
+  
+  /* Íconos de acciones */
+  .global-table .actions-cell button svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  /* Estilos para los badges */
+  .global-table .badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* Variantes de badges (puedes agregar más según necesites) */
+  .global-table .badge.active {
+    background-color: #dcfce7;
+    color: #16a34a;
+  }
+  
+  .global-table .badge.inactive {
+    background-color: #fee2e2;
+    color: #dc2626;
+  }
+  
+  .global-table .badge.pending {
+    background-color: #fef3c7;
+    color: #d97706;
+  }
+  
+  /* ==================== MEDIA QUERIES ==================== */
+  
+  /* Móviles pequeños y tablets (hasta 991px) */
+  @media (max-width: 991px) {
+    .global-table-container {
+      border-radius: 0.25rem;
+    }
+  
+    /* Tabla responsiva para móviles */
+    .global-table thead {
+      display: none;
+    }
+  
+    .global-table tbody tr {
+      display: block;
+      margin-bottom: 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.375rem;
+    }
+  
+    .global-table tbody td {
+      display: block;
+      text-align: right;
+      position: relative;
+      padding: 0.75rem;
+      border-bottom: 1px solid #f1f5f9;
+    }
+  
+    .global-table tbody td:last-child {
+      border-bottom: none;
+    }
+  
+    .global-table tbody td:before {
+      content: attr(data-label);
+      position: absolute;
+      left: 0.75rem;
+      width: 45%;
+      text-align: left;
+      font-weight: 600;
+      color: #64748b;
+    }
+  
+    .global-table .actions-cell {
+      justify-content: flex-end;
+    }
+  }

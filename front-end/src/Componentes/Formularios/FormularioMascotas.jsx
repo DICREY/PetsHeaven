@@ -12,7 +12,7 @@ import { loadingAlert } from '../Varios/Util'
 import "../../../public/styles/Formularios/FormularioMascotas.css"
 
 // Main component
-export const FormularioRegMascota = ({ onRegist, open = true }) => {
+export const FormularioRegMascota = ({ onRegist, open = true, URL = "" }) => {
   // Estados
   const [imagen, setImagen] = useState(null)
   const [previewUrl, setPreviewUrl] = useState(null)
@@ -74,7 +74,7 @@ export const FormularioRegMascota = ({ onRegist, open = true }) => {
   const sendData = async (data) => {
     // Vars 
     const token = localStorage.getItem("token")
-    const mainURL = "http://localhost:3000/pet/register"
+    const mainURL = `${URL}/register`
 
     try {
       if (token) {

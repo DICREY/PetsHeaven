@@ -375,38 +375,6 @@ border-color: #00bcd4;
 }
 
 /* Tabla responsiva para móviles y tablets */
-.tablausuariosgesusuario thead {
-  display: none;
-}
-
-.tablausuariosgesusuario tbody tr {
-  display: block;
-  margin-bottom: 1rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.375rem;
-}
-
-.tablausuariosgesusuario tbody td {
-  display: block;
-  text-align: right;
-  position: relative;
-  padding: 0.75rem;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.tablausuariosgesusuario tbody td:last-child {
-  border-bottom: none;
-}
-
-.tablausuariosgesusuario tbody td:before {
-  content: attr(data-label);
-  position: absolute;
-  left: 0.75rem;
-  width: 45%;
-  text-align: left;
-  font-weight: 600;
-  color: #64748b;
-}
 
 .accionesusuariogesusuario {
   justify-content: flex-end;

@@ -1,17 +1,17 @@
 // Librarys
-import React, { useState, useEffect, useRef } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState, useEffect, useRef } from "react"
+import { useForm } from "react-hook-form"
 // import emailjs from "@emailjs/browser"
 import { Link } from "react-router"
 
 // Imports 
 import { PostData } from '../Varios/Requests'
-import "../../../public/styles/Formularios/Registro.css";
+import "../../../public/styles/Formularios/Registro.css"
 
 
-const Registro = () => {
-  const imagenFondo = "https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Fondos/fondo.png";
-  const logoUrl = "https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/5.png";
+const Registro = ({ URL = "" }) => {
+  const imagenFondo = "https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Fondos/fondo.png"
+  const logoUrl = "https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/5.png"
 
   // Datos que entran del formulario de registro
   const [formData, setFormData] = useState({
@@ -34,20 +34,20 @@ const Registro = () => {
     // Verificación
     codigoVerificacion: "",
     codigoIngresado: ["", "", "", "", "", ""]
-  });
+  })
   
   // Estados de UI
-  const [paso, setPaso] = useState(1);
-  const [verPassword, setVerPassword] = useState(false);
-  const [verConfirmarPassword, setVerConfirmarPassword] = useState(false);
-  const [mostrarRequisitosPassword, setMostrarRequisitosPassword] = useState(false);
-  const [mostrarRequisitosFecha, setMostrarRequisitosFecha] = useState(false);
-  const [errorCodigo, setErrorCodigo] = useState(false);
-  const [tiempoRestante, setTiempoRestante] = useState(300);
-  const [timerActivo, setTimerActivo] = useState(false);
-  const [status, setStatus] = useState("");
+  const [paso, setPaso] = useState(1)
+  const [verPassword, setVerPassword] = useState(false)
+  const [verConfirmarPassword, setVerConfirmarPassword] = useState(false)
+  const [mostrarRequisitosPassword, setMostrarRequisitosPassword] = useState(false)
+  const [mostrarRequisitosFecha, setMostrarRequisitosFecha] = useState(false)
+  const [errorCodigo, setErrorCodigo] = useState(false)
+  const [tiempoRestante, setTiempoRestante] = useState(300)
+  const [timerActivo, setTimerActivo] = useState(false)
+  const [status, setStatus] = useState("")
   const [loading, setLoading] = useState()
-  const emailInputRef = useRef(null);
+  const emailInputRef = useRef(null)
 
   
   // Configuración de react-hook-form
@@ -61,8 +61,8 @@ const Registro = () => {
       getValues
     } = useForm({ mode: "onChange",
         defaultValues: formData
-     });
-    const password = watch("password");
+     })
+    const password = watch("password")
 
   // Efectos
   useEffect(() => {
@@ -72,23 +72,23 @@ const Registro = () => {
         ...values,
         codigoVerificacion: prev.codigoVerificacion,
         codigoIngresado: prev.codigoIngresado
-      }));
-    });
-    return () => subscription.unsubscribe();
-  }, [watch]);
+      }))
+    })
+    return () => subscription.unsubscribe()
+  }, [watch])
 
   useEffect(() => {
-    let intervalo = null;
+    let intervalo = null
     if (timerActivo && tiempoRestante > 0) {
       intervalo = setInterval(() => {
-        setTiempoRestante((prev) => prev - 1);
-      }, 1000);
+        setTiempoRestante((prev) => prev - 1)
+      }, 1000)
     } else if (tiempoRestante === 0) {
-      setTimerActivo(false);
-      if (paso === 3) generarCodigoVerificacion();
+      setTimerActivo(false)
+      if (paso === 3) generarCodigoVerificacion()
     }
-    return () => clearInterval(intervalo);
-  }, [timerActivo, tiempoRestante, paso]);
+    return () => clearInterval(intervalo)
+  }, [timerActivo, tiempoRestante, paso])
 
   // Funciones principales
   const onSubmit = async (data) => {
@@ -102,14 +102,14 @@ const Registro = () => {
         "genero",
         "celular",
         "direccion"
-      ]);
+      ])
       
       if (isValid) {
-        setPaso(2);
+        setPaso(2)
         // Enfoca el email después del renderizado
         setTimeout(() => {
-          emailInputRef.current?.focus();
-        }, 0);
+          emailInputRef.current?.focus()
+        }, 0)
       }
     } 
     else if (paso === 2) {
@@ -119,32 +119,32 @@ const Registro = () => {
         "password",
         "confirmPassword",
         "terminos"
-      ]);
+      ])
   
       if (isValid) {
-        const codigo = generarCodigoVerificacion();
-        enviarEmail(codigo);
-        setPaso(3);
-        setTiempoRestante(300);
-        setTimerActivo(true);
+        const codigo = generarCodigoVerificacion()
+        enviarEmail(codigo)
+        setPaso(3)
+        setTiempoRestante(300)
+        setTimerActivo(true)
       }
     }
-  };
+  }
 
   const generarCodigoVerificacion = () => {
-    const codigo = Math.floor(100000 + Math.random() * 900000).toString();
+    const codigo = Math.floor(100000 + Math.random() * 900000).toString()
     setFormData(prev => ({
       ...prev,
       codigoVerificacion: codigo,
       codigoIngresado: ["", "", "", "", "", ""]
-    }));
+    }))
 
-    setValue("codigoVerificacion", codigo);
-    setValue("codigoIngresado", ["", "", "", "", "", ""]);
+    setValue("codigoVerificacion", codigo)
+    setValue("codigoIngresado", ["", "", "", "", "", ""])
 
-    setErrorCodigo(false);
-    return(codigo);
-  };
+    setErrorCodigo(false)
+    return(codigo)
+  }
 
   const enviarEmail = (codigo) => {
     console.log(formData)
@@ -152,8 +152,8 @@ const Registro = () => {
       name: formData.nombres,
       email: formData.confirmEmail,
       codigoVerificacion: codigo
-    };
-    console.log("Datos a enviar:", Params);
+    }
+    console.log("Datos a enviar:", Params)
 
     // emailjs.send(
     //   "service_uxyihs4",
@@ -162,50 +162,50 @@ const Registro = () => {
     //   "c_HuA2dqs1UP1L1J0"
     // ).then(
     //   (result) => {
-    //     setStatus("Mensaje enviado con éxito!");
-    //     console.log("Email enviado correctamente");
+    //     setStatus("Mensaje enviado con éxito!")
+    //     console.log("Email enviado correctamente")
     //   },
     //   (error) => {
-    //     setStatus("Hubo un error. Intenta de nuevo.");
-    //     console.error("Error al enviar email:", error);
+    //     setStatus("Hubo un error. Intenta de nuevo.")
+    //     console.error("Error al enviar email:", error)
     //   }
-    // );
-  };
+    // )
+  }
 
   // Funciones auxiliares
   const manejarCambioCodigo = (indice, valor) => {
-    if (!/^\d*$/.test(valor)) return;
+    if (!/^\d*$/.test(valor)) return
     
-    const nuevoCodigo = [...formData.codigoIngresado];
-    nuevoCodigo[indice] = valor;
+    const nuevoCodigo = [...formData.codigoIngresado]
+    nuevoCodigo[indice] = valor
     
-    setFormData(prev => ({ ...prev, codigoIngresado: nuevoCodigo }));
-    setValue("codigoIngresado", nuevoCodigo);
+    setFormData(prev => ({ ...prev, codigoIngresado: nuevoCodigo }))
+    setValue("codigoIngresado", nuevoCodigo)
     
     if (valor !== "" && indice < 5) {
-      const siguienteInput = document.getElementById(`codigo-input-${indice + 1}`);
-      if (siguienteInput) siguienteInput.focus();
+      const siguienteInput = document.getElementById(`codigo-input-${indice + 1}`)
+      if (siguienteInput) siguienteInput.focus()
     }
-  };
+  }
 
   const manejarPegadoCodigo = (e) => {
-    e.preventDefault();
-    const datoPegado = e.clipboardData.getData("text");
+    e.preventDefault()
+    const datoPegado = e.clipboardData.getData("text")
     if (/^\d{6}$/.test(datoPegado)) {
-      setFormData(prev => ({ ...prev, codigoIngresado: datoPegado.split("") }));
-      document.getElementById("codigo-input-5")?.focus();
+      setFormData(prev => ({ ...prev, codigoIngresado: datoPegado.split("") }))
+      document.getElementById("codigo-input-5")?.focus()
     }
-  };
+  }
 
   const verificarCodigo = () => {
-    const codigoInput = formData.codigoIngresado.join("");
+    const codigoInput = formData.codigoIngresado.join("")
     if (codigoInput === formData.codigoVerificacion) {
-      alert("¡Verificación exitosa!");
+      alert("¡Verificación exitosa!")
       console.log("Datos del usuario a guardar:", {
         ...formData,
         codigoVerificacion: undefined,
         codigoIngresado: undefined
-      });
+      })
       // fetch para guardar los datos aqui proximamente solo en cines tambien en 3d
       const newUser = {
         nombres: formData.nombres,
@@ -221,27 +221,27 @@ const Registro = () => {
         genero: formData.genero
       }
       SendData(newUser)
-      setPaso(1);
+      setPaso(1)
     } else {
-      setErrorCodigo(true);
+      setErrorCodigo(true)
     }
-  };
+  }
 
   
   const reenviarCodigo = () => {
-    generarCodigoVerificacion();
-    setTiempoRestante(300);
-    setTimerActivo(true);
-    alert(`Nuevo código enviado a ${formData.email}`);
-  };
+    generarCodigoVerificacion()
+    setTiempoRestante(300)
+    setTimerActivo(true)
+    alert(`Nuevo código enviado a ${formData.email}`)
+  }
   
   const SendData = async (data) => {
     // Vars
-    const URL = "http://localhost:3000/user/register"
+    const mainUrl = `${URL}/user/register`
     setLoading(true)
     console.log(data)
     try {
-      await PostData(URL,data)
+      await PostData(mainUrl,data)
       setLoading(false)
       alert("Registro exitoso")
     } catch (error) {
@@ -250,38 +250,36 @@ const Registro = () => {
 
   }
 
-  const retrocederPaso = () => setPaso(paso === 3 ? 2 : 1);
+  const retrocederPaso = () => setPaso(paso === 3 ? 2 : 1)
 
   // Funciones de UI
-  const cambiarVisibilidadPassword = () => setVerPassword(!verPassword);
-  const cambiarVisibilidadConfirmarPassword = () => setVerConfirmarPassword(!verConfirmarPassword);
+  const cambiarVisibilidadPassword = () => setVerPassword(!verPassword)
+  const cambiarVisibilidadConfirmarPassword = () => setVerConfirmarPassword(!verConfirmarPassword)
 
   // Funciones de validación
   const permitirSoloNumeros = (e) => {
-    const charCode = e.which || e.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) e.preventDefault();
-  };
+    const charCode = e.which || e.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) e.preventDefault()
+  }
 
   const permitirSoloLetras = (e) => {
-    const charCode = e.which || e.keyCode;
+    const charCode = e.which || e.keyCode
     if (!(charCode >= 65 && charCode <= 90) &&
         !(charCode >= 97 && charCode <= 122) &&
         !(charCode === 32) &&
         !(charCode >= 192 && charCode <= 255)) {
-      e.preventDefault();
+      e.preventDefault()
     }
-  };
+  }
 
-  const evitarPegado = (e) => e.preventDefault();
+  const evitarPegado = (e) => e.preventDefault()
 
   // Formatear el tiempo restante
   const formatearTiempo = (segundos) => {
-    const minutos = Math.floor(segundos / 60);
-    const segs = segundos % 60;
-    return `${minutos}:${segs < 10 ? "0" : ""}${segs}`;
-  };
-
-  
+    const minutos = Math.floor(segundos / 60)
+    const segs = segundos % 60
+    return `${minutos}:${segs < 10 ? "0" : ""}${segs}`
+  }
 
   return (
   <div className="registro-container">
@@ -481,18 +479,18 @@ const Registro = () => {
                       required: "La fecha de nacimiento es obligatoria",
                       validate: {
                           mayorDeEdad: (value) => {
-                          if (!value) return true;
+                          if (!value) return true
                           
-                          const fechaNac = new Date(value);
-                          const hoy = new Date();
-                          let edad = hoy.getFullYear() - fechaNac.getFullYear();
-                          const m = hoy.getMonth() - fechaNac.getMonth();
+                          const fechaNac = new Date(value)
+                          const hoy = new Date()
+                          let edad = hoy.getFullYear() - fechaNac.getFullYear()
+                          const m = hoy.getMonth() - fechaNac.getMonth()
                           
                           if (m < 0 || (m === 0 && hoy.getDate() < fechaNac.getDate())) {
-                              edad--;
+                              edad--
                           }
                           
-                          return edad >= 18 || "Debes ser mayor de 18 años";
+                          return edad >= 18 || "Debes ser mayor de 18 años"
                           }
                       }
                       })}
@@ -613,10 +611,10 @@ const Registro = () => {
                       "genero",
                       "telefono",
                       "direccion"
-                  ]);
+                  ])
                   
                   if (isValid) {
-                      setPaso(2);
+                      setPaso(2)
                   }
                   }}
               >
@@ -964,7 +962,7 @@ const Registro = () => {
       </div>
     </div>
   </div>
-  );
-};
+  )
+}
 
-export default Registro;
+export default Registro

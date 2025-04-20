@@ -24,6 +24,7 @@ BEGIN
     SELECT
         u.nom_usu,
         u.ape_usu,
+        u.doc_usu,
         u.cont_usu,
         GROUP_CONCAT(r.nom_rol SEPARATOR ', ') AS roles
     FROM

@@ -7,7 +7,7 @@ import React, { Component } from 'react'
 import swal from 'sweetalert'
 
 // Import Styles
-import '../../../public/styles/InterfazUsuario/editPets.css'
+import '../../../public/styles/Pets/editPets.css'
 
 // Main component 
 export class EditPetButton extends Component {
@@ -20,7 +20,7 @@ export class EditPetButton extends Component {
         }
         
         // Configuración
-        this.URL = `${this.props.url}modify`
+        this.URL = `${this.props.url}/modify`
         this.token = localStorage.getItem("token")
         this.onSave = this.props.onSave
     }

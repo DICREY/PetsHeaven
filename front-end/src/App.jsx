@@ -18,6 +18,7 @@ import VeterinariaPage from "./Componentes/VeterinariaPage"
 
 // Main Component
 export default function App () {
+  const URL = "http://localhost:3000"
   
   // Route types
   const PrivateRoute = ({ children }) => {
@@ -25,6 +26,17 @@ export default function App () {
     return token? children : <Navigate to="/user/login" />
   }
   
+  const VetRoute = ({ children }) => {
+    // Vars
+    const token = localStorage.getItem('token');
+    if (token) {
+      const roles = getRoles(token)
+      return roles.includes('Veterinario')? children :<Navigate to="/user/login" />
+    }
+
+    return <Navigate to="/user/login" />
+  }
+
   const AdminRoute = ({ children }) => {
     // Vars
     const token = localStorage.getItem('token');
@@ -46,32 +58,34 @@ export default function App () {
       <Routes>
         {/* Private routes */}
         <Route path="user/pets" element={
-          <PrivateRoute children={<Pets />}/>}>
+          <PrivateRoute children={<Pets URL={URL}/>}/>}>
         </Route>
 
         {/* Admin routes  */}
         <Route path="consultorio" element={
-          <AdminRoute children={<HomeAdmin />} />}>  
+          <AdminRoute children={<HomeAdmin URL={URL}/>} />}>  
         </Route>
         <Route path="gestion/usuarios" element={
-          <AdminRoute children={<GesUsuario/>} />} >
-        </Route>
-        <Route path="gestion/propietarios" element={
-          <AdminRoute children={<GesPropietario/>} />} >
-        </Route>
-        <Route path="gestion/mascotas" element={
-          <AdminRoute children={<GesMascota/>} />} >
+          <AdminRoute children={<GesUsuario URL={URL} />} />} >
         </Route>
         {/* <Route path="usuario/registro" element={
           <AdminRoute children={<RegistroUsu/>} />} >
-        </Route> */}
+          </Route> */}
+
+        {/* Vet routes */}
+        <Route path="gestion/propietarios" element={
+          <VetRoute children={<GesPropietario URL={URL}/>} />} >
+        </Route>
+        <Route path="gestion/mascotas" element={
+          <VetRoute children={<GesMascota URL={URL}/>} />} >
+        </Route>
 
 
         {/* Routes */}
         <Route path="/" element={<MainRoute />} />
-        <Route path="main" element={<VeterinariaPage />} />
-        <Route path="user/login" element={<LoginForm />} />
-        <Route path="user/register" element={<Registro />} />
+        <Route path="main" element={<VeterinariaPage URL={URL}/>} />
+        <Route path="user/login" element={<LoginForm URL={URL}/>} />
+        <Route path="user/register" element={<Registro URL={URL}/>} />
         <Route path="user/recuperar" element={<ForgotPassword />} />
         <Route path="internal" element={<ErrorInternalServer />} />
         <Route path="*" element={<NotFound />} />

@@ -10,7 +10,7 @@ import { login } from '../Varios/Requests'
 import { getRoles, errorStatusHandler } from '../Varios/Util'
 
 // Main component 
-export const LoginForm = () => {
+export const LoginForm = ({ URL = "" }) => {
   // Vars 
   const [verPassword, setVerPassword] =  useState(false)
   const imagenFondo = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Fondos/fondo.png' 
@@ -25,10 +25,27 @@ export const LoginForm = () => {
     mode: 'onChange',
   })
 
+  const useRoleRedirect = (roles = []) => {
+    const roleRoutes = {
+      'Administrador': '/gestion/usuarios',
+      'Veterinario': '/gestion/mascotas',
+      'default': '/user/pets'
+    }
+    
+    // Determinar la ruta basada en jerarquía de roles
+    const path = roles.includes('Administrador') 
+    ? roleRoutes['Administrador']
+    : roles.includes('Veterinario') 
+    ? roleRoutes['Veterinario']
+    : roleRoutes['default']
+
+    return path
+  }
+
   // Manejador de envío del formulario
   const onSubmit = async (datas) => {
     // Vars
-    const url = 'http://localhost:3000/global/login'
+    const url = `${URL}/global/login`
     const firstData = datas.docEmail
     const secondData = datas.password
 
@@ -44,17 +61,8 @@ export const LoginForm = () => {
       if (log) {
         const token = localStorage.getItem("token")
         const roles = getRoles(token)
-        console.log(roles)
-        let redirect
-        if(roles.includes("Administrador")){
-          redirect = () => window.location.href = "/gestion/usuarios"
-        }
-        if (!roles.includes("Administrador") && roles.includes("Veterinario")) {
-          redirect = () => window.location.href = "/gestion/mascotas"
-        }
-        if (!roles.includes("Administrador") || !roles.includes("Veterinario")) {
-          redirect = () => window.location.href = "/user/pets"
-        }
+        const pathRedirect = useRoleRedirect(roles)
+        
         if(token){ 
           swal({
             title: 'Bienvenido',
@@ -63,7 +71,7 @@ export const LoginForm = () => {
             buttons: false
           })
           setTimeout(() => {
-            redirect() 
+            window.location.href = pathRedirect
           },2000)
         } 
       } else console.log(log)
@@ -74,7 +82,7 @@ export const LoginForm = () => {
         const message = errorStatusHandler(err.status)
         swal({
           title: 'Error',
-          text: `${message}. Intentalo de nueva mas tarde`,
+          text: `${message}`,
           icon: 'warning',
         })
       } else console.log(err)

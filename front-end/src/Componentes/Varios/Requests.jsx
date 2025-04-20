@@ -41,7 +41,7 @@ export async function GetData(URL = "",token = "") {
         })
 
         if (!response.ok) {
-            throw await response.json()
+            throw response
         }
 
         const data = await response.json()

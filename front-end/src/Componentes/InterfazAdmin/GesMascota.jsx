@@ -11,14 +11,15 @@ import { getRoles } from '../Varios/Util'
 import { EditPetButton } from '../Pets/EditPet'
 import { PetDetails } from '../Pets/PetDetails'
 import { FormularioRegMascota } from '../Formularios/FormularioMascotas'
+import { GlobalTable } from '../InterfazAdmin/GlobalTable'
 
 // Import Styles 
 import "../../../public/styles/InterfazAdmin/GesMascota.css"
 
 // Main component 
-export function GesMascota() {
+export function GesMascota({ URL = "" }) {
   // Declare Vars
-  const mainURL = "http://localhost:3000/pet/all"
+  const mainURL = `${URL}/pet`
   const [petsData, setPetsData] = useState([])
   const [petsAlmac,setPetsAlmac] = useState([])
   const [loading, setLoading] = useState(false)
@@ -27,34 +28,32 @@ export function GesMascota() {
   const [editMode,setEditMode] = useState(false)
   const [register,setRegister] = useState(false)
   const [isAdmin,setIsAdmin] = useState(false)
+  const [headers,setHeaders] = useState([])
   const [clickCount, setClickCount] = useState(0)
 
   // Functions
-  const handleClick = (pet) => {
-    setClickCount(prev => prev + 1)
-    
-    setTimeout(() => {
-        if (clickCount === 1) {
-          openModal(pet)
-        }
-        setClickCount(0)
-    }, 300)
-}
-
   // fetch para traer datos
   const fetchData = async () => {
     const token = localStorage.getItem("token")
       try {
         if(token) {
-          const pets = await GetData(mainURL,token)
+          const pets = await GetData(`${mainURL}/all`,token)
           const roles = getRoles(token)
 
-          const admin = roles.some(role => role.toLowerCase() === "veterinario")
+          const admin = roles.some(role => role.toLowerCase() === "administrador")
           admin?setIsAdmin(true):setIsAdmin(false)
 
           setLoading(false)
           setPetsData(pets)
           setPetsAlmac(pets)
+          setHeaders({
+            Nombre: 'nom_mas',
+            Especie: 'esp_mas',
+            Raza: 'raz_mas',
+            Edad: 'fec_nac_mas',
+            Propietario: 'nom_usu',
+            Estado: 'estado',
+          })
         } else window.location.href = "/34"
       } catch (err) {
         err.message? swal({
@@ -152,45 +151,12 @@ export function GesMascota() {
                   </div>
                 </div>
 
-                <div className="tablacontgesmascota">
-                  <table className="tablagesmascota">
-                    <thead>
-                      <tr>
-                        
-                        <th>Nombre</th>
-                        <th>Especie</th>
-                        <th>Raza</th>
-                        <th>Edad</th>
-                        <th>Propietario</th>
-                        <th>Estado</th>
-                        <th>Opciones</th>
-                      </tr>
-                    </thead>
-                    <tbody> 
-                      {
-                        petsData.map((i,index) => (
-                          <tr key={index} onClick={() => handleClick(i)}>
-                            <td className="nombrecontainergesmascota" data-label="Nombre">
-                                  <div className="infogesmascota">
-                                    <span className="nombregesmascota">{i.nom_mas}</span>
-                                    <span className="fechagesmascota">Registrado el 
-                                      {new Date(i.fec_cre_mas).toLocaleDateString('to-ca')}</span>
-                                  </div>
-                            </td>
-                            <td data-label="Especie">{i.esp_mas}</td>
-                            <td data-label="Raza">{i.raz_mas}</td>
-                            <td data-label="Edad">{new Date().getFullYear() - new Date(i.fec_nac_mas).getFullYear()} Años</td>
-                            <td data-label="Propietario">{i.nom_usu}</td>
-                            <td data-label="Estado">{i.estado?"Activo":"Inactivo"}</td>
-                            <td data-label="Opciones" className="opcionesgesmascota">
-                              <Eye className="iconogesmascota" size={16} onClick={() => openModal(i)}/>
-                            </td>
-                          </tr>
-                        ))
-                      }
-                    </tbody>
-                  </table>
-                </div>
+                <GlobalTable 
+                  data={petsData}
+                  headers={headers}
+                  edit={() => setEditMode(true)}
+                  watch={openModal}
+                />
 
                 <div className="paginaciongesmascota">
                   <div className="infogesmascota">Mostrando registros del 1 al 3 de un total de 3 registros.</div>
@@ -218,7 +184,7 @@ export function GesMascota() {
         )}
         {editMode && (
             <EditPetButton 
-                url={mainURL}
+                URL={mainURL}
                 petData={selectedPet}
                 open={editMode}
                 onSave={(state) => setEditMode(state)}
@@ -228,6 +194,7 @@ export function GesMascota() {
         {register && (
             <FormularioRegMascota 
               open={register}
+              URL={mainURL}
               onRegist={state => setRegister(state)}
             />
           )
