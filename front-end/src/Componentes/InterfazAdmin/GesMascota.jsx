@@ -7,7 +7,7 @@ import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { Loader } from '../Errores/Loader'
 import { SubNotFound } from '../Errores/NotFound'
 import { GetData } from '../Varios/Requests'
-import { getRoles } from '../Varios/Util'
+import { getRoles, divideList } from '../Varios/Util'
 import { EditPetButton } from '../Pets/EditPet'
 import { PetDetails } from '../Pets/PetDetails'
 import { FormularioRegMascota } from '../Formularios/FormularioMascotas'
@@ -53,7 +53,7 @@ export function GesMascota({ URL = "" }) {
           })
           
           setLoading(false)
-          setPetsData(pets)
+          setPetsData(divideList(pets,4))
           setPetsAlmac(pets)
         } else window.location.href = "/34"
       } catch (err) {
@@ -91,7 +91,7 @@ export function GesMascota({ URL = "" }) {
       )
     })
 
-    if (find) setPetsData(find)
+    if (find) setPetsData(divideList(find,4))
   }
 
   // Ejecutar el fetch para traer datos

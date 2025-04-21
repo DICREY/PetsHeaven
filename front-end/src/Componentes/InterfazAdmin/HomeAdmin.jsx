@@ -6,7 +6,7 @@ import swal from 'sweetalert'
 // Imports 
 import {NavBarAdmin} from '../BarrasNavegacion/NavBarAdmi';
 import { GetData } from '../Varios/Requests'
-import { errorStatusHandler, formatDate } from '../Varios/Util'
+import { errorStatusHandler, formatDate, divideList } from '../Varios/Util'
 
 // Import styles 
 import '../../../public/styles/InterfazAdmin/HomeAdmin.css'
@@ -14,8 +14,9 @@ import '../../../public/styles/InterfazAdmin/HomeAdmin.css'
 // Main component
 export function HomeAdmin({ URL = "" }) {
   // Vars 
-  const [datas,setDatas] = useState([])
   const mainUrl = `${URL}/owner`
+  const [datas,setDatas] = useState([])
+  const [page,setPage] = useState(1)
 
   const GetDataOwners = async () => {
     const token = localStorage.getItem("token")
@@ -82,9 +83,13 @@ export function HomeAdmin({ URL = "" }) {
 
     // Execute the request
     GetDataOwners()
+    setDatas(divideList(datas,4))
 
     // Configure interval
-    intervalId = setInterval(GetDataOwners(), REFRESH_INTERVAL)
+    intervalId = setInterval(() => {
+      GetDataOwners()
+      setDatas(divideList(datas,4))
+    }, REFRESH_INTERVAL)
 
     // Clean
     return () => clearInterval(intervalId)
@@ -221,7 +226,7 @@ export function HomeAdmin({ URL = "" }) {
                 <span className="contadoradminhome">10</span>
                 <ChevronUp size={14} className="flechaadminhome" />
                 <span className="textocontadoradminhome">
-                  Visualizando 1 - x de x resultados
+                  Visualizando {page} - {datas.length || 1} de {datas.length} resultados
                 </span>
               </div>
               <div className="huellasadminhome">

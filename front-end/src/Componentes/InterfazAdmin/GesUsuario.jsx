@@ -6,6 +6,7 @@ import { Plus} from "lucide-react"
 import '../../../public/styles/InterfazAdmin/GesUsuario.css'
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GetData } from '../Varios/Requests'
+import { divideList } from '../Varios/Util'
 import { Loader } from '../Errores/Loader'
 import { GlobalTable } from './GlobalTable'
 
@@ -21,9 +22,6 @@ export function GesUsuario({ URL = "" }) {
     try {
       if (token){
         const data = await GetData(mainUrl,token)
-        setUsers(data)
-        setUsersAlmac(data)
-        setLoading(false)
         setHeaders({
           'Nombres': 'nom_usu',
           'Apellidos': 'ape_usu',
@@ -33,11 +31,15 @@ export function GesUsuario({ URL = "" }) {
           'Celular': 'cel_usu',
           'Correo': 'email_usu'
         })
+        setUsers(divideList(data,4))
+        setUsersAlmac(data)
+        setLoading(false)
       } else window.location.href = "/34"
     } catch (err) {
       console.log(err)
     }
   }
+
   const handleSearch = term => {
     const termLower = term.toLowerCase()
   
@@ -49,7 +51,7 @@ export function GesUsuario({ URL = "" }) {
       )
     })
 
-    if (find) setUsers(find)
+    if (find) setUsers(divideList(find,4))
   }
 
   useEffect(() => {
@@ -80,11 +82,12 @@ export function GesUsuario({ URL = "" }) {
                 <h1 className="textogesusuario">Gestión de usuarios</h1>
                 <span className="subtitulogesusuario">/ Administración</span>
               </div>
-              <button className="botongesmascota">
+              <a href="/usuario/registro" className="botongesmascota">
                 <Plus size={16} className="iconoplusadminhome" />
                 Registrar Usuario
-              </button>
+              </a>
             </header>
+            
 
             {/* Table  */}
             <GlobalTable 

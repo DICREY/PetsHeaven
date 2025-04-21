@@ -6,11 +6,12 @@ import { Users, Eye, Plus } from "lucide-react"
 import "../../../public/styles/InterfazAdmin/GesPropietario.css"
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GetData } from '../Varios/Requests'
+import { divideList } from '../Varios/Util'
 import { GlobalTable } from './GlobalTable'
 
 // Main component 
 export function GesPropietario({ URL = "" }) {
-  const mainUrl = `${URL}/user/owner/all`
+  const mainUrl = `${URL}/owner/all`
   const [users,setUsers] = useState([])
   const [headers,setHeaders] = useState([])
   const [usersAlmac,setUsersAlmac] = useState([])
@@ -31,7 +32,7 @@ export function GesPropietario({ URL = "" }) {
           'Correo': 'email_usu'
         })
         const data = await GetData(url,token)
-        setUsers(data)
+        setUsers(divideList(data,4))
         setUsersAlmac(data)
         setLoading(false)
       } else window.location.href = "/34"
@@ -51,7 +52,7 @@ export function GesPropietario({ URL = "" }) {
       )
     })
 
-    if(find) setUsers(find)
+    if(find) setUsers(divideList(find,4))
   }
   
   useEffect(() => {
