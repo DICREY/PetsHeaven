@@ -73,10 +73,10 @@ export default function App () {
           <AdminRoute children={<GesUsuario URL={URL} />} />} >
         </Route>
         <Route path="usuario/registro" element={
-          <AdminRoute children={<ConfiguracionUsuario/>} />} >
+          <AdminRoute children={<ConfiguracionUsuario URL={URL} />} />} >
         </Route>
         <Route path="mascota/registro" element={
-          <AdminRoute children={<FormularioRegMascota/>} />} >
+          <AdminRoute children={<FormularioRegMascota URL={URL} />} />} >
         </Route>
 
 
