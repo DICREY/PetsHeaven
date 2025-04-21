@@ -3,6 +3,8 @@
   display: flex;
   min-height: 100vh;
   font-family: "Arial", sans-serif;
+  /* Por defecto, en dispositivos pequeños y medianos, el contenedor será en columna */
+  flex-direction: column;
 }
 
 /* Sección izquierda - Formulario de login */
@@ -10,14 +12,17 @@
   flex: 1;
   background-color: #f5f5f5;
   background-image: url("https://www.toptal.com/designers/subtlepatterns/uploads/leaves-pattern.png");
+  background-repeat: repeat;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 1rem;
+  /* Por defecto, en dispositivos pequeños y medianos, el formulario estará abajo */
+  order: 2;
 }
 
-/* Logo externo-login al formulario */
+/* Logo externo al formulario */
 .contenedor-logo-externo-login {
   text-align: center;
   margin-bottom: 1.5rem;
@@ -188,6 +193,9 @@ input:focus {
   display: flex;
   align-items: flex-end;
   overflow: hidden;
+  /* Por defecto, en dispositivos pequeños y medianos, la imagen estará arriba */
+  order: 1;
+  min-height: 200px;
 }
 
 .imagen-fondo-contenedor-login {
@@ -220,17 +228,19 @@ input:focus {
   position: relative;
   z-index: 2;
   padding: 2rem;
-  margin-bottom: 15rem;
+  margin-bottom: 2rem;
   text-align: center;
-  margin-left: 5rem;
+  margin-left: 0;
+  width: 100%;
 }
 
 .texto-cita-login {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: bold;
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #fff;
 }
 
 .subtexto-cita-login {
@@ -239,173 +249,170 @@ input:focus {
 
 /* ===== RESPONSIVE: MÓVIL PEQUEÑO (< 480px) ===== */
 @media (max-width: 479px) {
-.login-container{
-  flex-direction: column;
-}
-.login-imagen-container{
-  order: 1;
-  min-height: 100px;
-  max-height: 160px;
-}
-.login-formulario-container{
-  order: 2;
-}
-.contenedor-cita-login{
-  max-height: 50px;
-  min-height: 50px;
-  margin-left: 0;
-  padding: 1rem;
-  margin-bottom: 9vh;
-  width: 100%;
-  text-align: center;
-}
-.texto-cita-login{
-  font-size: 1rem;
-  margin-top: 0;
-  max-width: 100%;
-  justify-content: center;
-}
-.subtexto-cita-login {
-  font-size: 0.75rem;
-}
-.formulario-card-login {
-  padding: 1.5rem;
-}
-.logo-veterinaria-login {
-  max-width: 150px;
-}
+  .login-imagen-container {
+    min-height: 100px;
+    max-height: 160px;
+  }
+  .contenedor-cita-login {
+    max-height: 50px;
+    min-height: 50px;
+    padding: 1rem;
+    margin-bottom: 9vh;
+  }
+  .texto-cita-login {
+    font-size: 1rem;
+    margin-top: 0;
+    max-width: 100%;
+  }
+  .subtexto-cita-login {
+    font-size: 0.75rem;
+  }
+  .formulario-card-login {
+    padding: 1.5rem;
+  }
+  .logo-veterinaria-login {
+    max-width: 150px;
+  }
 }
 
 /* ===== RESPONSIVE: MÓVIL (480px - 767px) ===== */
 @media (min-width: 480px) and (max-width: 767px) {
-.login-container{
-  flex-direction: column;
-}
-.login-imagen-container{
-  order: 1;
-  min-height: 150px;
-  max-height: 200px;
-}
-.login-formulario-container{
-  order: 2;
-}
-.contenedor-cita-login{
-  margin-left: 0;
-  padding: 1.5rem;
-  margin-bottom: 0;
-  width: 100%;
-  text-align: center;
-}
-.texto-cita-login{
-  font-size: 1.2rem;
-  justify-content: center;
-  max-width: 100%;
-}
-.subtexto-cita-login {
-  font-size: 0.8rem;
-}
+  .login-imagen-container {
+    min-height: 150px;
+    max-height: 200px;
+  }
+  .contenedor-cita-login {
+    padding: 1.5rem;
+    margin-bottom: 0;
+  }
+  .texto-cita-login {
+    font-size: 1.2rem;
+  }
+  .subtexto-cita-login {
+    font-size: 0.8rem;
+  }
 }
 
 /* ===== RESPONSIVE: TABLET (768px - 1023px) ===== */
 @media (min-width: 768px) and (max-width: 1023px) {
-.login-container{
-  flex-direction: column;
-}
-.login-imagen-container{
-  order: 1;
-  min-height: 250px;
-}
-.login-formulario-container{
-  order: 2;
-  padding: 2rem;
-}
-.contenedor-cita-login{
-  margin-left: 0;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  width: 100%;
-  text-align: center;
-  margin-bottom: 10vh;
-}
-.texto-cita-login{
-  font-size: 1.5rem;
-  justify-content: center;
-}
-.formulario-card-login {
-  max-width: 400px;
-}
+  .login-imagen-container {
+    min-height: 250px;
+    max-height: 300px;
+  }
+  .login-formulario-container {
+    padding: 2rem;
+  }
+  .contenedor-cita-login {
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+  .texto-cita-login {
+    font-size: 1.5rem;
+  }
+  .formulario-card-login {
+    max-width: 500px;
+  }
 }
 
-/* ===== RESPONSIVE: ESCRITORIO PEQUEÑO (1024px - 1279px) ===== */
-@media (min-width: 1024px) {
-.login-container {
-  flex-direction: row;
+/* ===== RESPONSIVE: IPAD PRO Y TABLETS GRANDES (1024px - 1199px) ===== */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  /* Mantenemos el diseño en columna para iPad Pro */
+  .login-container {
+    flex-direction: column;
+  }
+  .login-imagen-container {
+    order: 1;
+    min-height: 350px;
+    max-height: 400px;
+  }
+  .login-formulario-container {
+    order: 2;
+    padding: 2.5rem;
+  }
+  .contenedor-cita-login {
+    padding: 2.5rem;
+    margin-bottom: 3rem;
+  }
+  .texto-cita-login {
+    font-size: 1.75rem;
+  }
+  .formulario-card-login {
+    max-width: 600px;
+  }
 }
-.login-imagen-container {
-  order: 2;
+
+/* ===== RESPONSIVE: ESCRITORIO Y SUPERIOR (>= 1200px) ===== */
+@media (min-width: 1200px) {
+  /* Solo en escritorio cambiamos a diseño en fila */
+  .login-container {
+    flex-direction: row;
+  }
+  .login-imagen-container {
+    order: 2;
+    min-height: auto;
+    max-height: none;
+  }
+  .login-formulario-container {
+    order: 1;
+  }
+  .contenedor-cita-login {
+    margin-left: 3rem;
+    margin-bottom: 10rem;
+    text-align: left;
+    width: auto;
+  }
+  .texto-cita-login {
+    font-size: 1.5rem;
+    justify-content: flex-start;
+  }
 }
-.login-formulario-container {
-  order: 1;
-}
-.contenedor-cita-login {
-  margin-left: 3rem;
-  margin-bottom: 10rem;
-}
-.texto-cita-login {
-  font-size: 1.5rem;
-}
+
+/* ===== RESPONSIVE: ESCRITORIO MEDIANO (1280px - 1535px) ===== */
+@media (min-width: 1280px) and (max-width: 1535px) {
+  .contenedor-cita-login {
+    margin-left: 5rem;
+    margin-bottom: 12rem;
+  }
+  .texto-cita-login {
+    font-size: 1.75rem;
+  }
 }
 
 /* ===== RESPONSIVE: ESCRITORIO GRANDE (>= 1536px) ===== */
 @media (min-width: 1536px) {
-.formulario-card-login {
-  max-width: 550px;
-  padding: 2.5rem;
-}
-.contenedor-cita-login {
-  margin-left: 8rem;
-  margin-bottom: 20rem;
-  padding: 3rem;
-}
-.texto-cita-login {
-  font-size: 2rem;
-}
-.subtexto-cita-login {
-  font-size: 1rem;
-}
-.titulo-formulario-login {
-  font-size: 1.75rem;
-}
-.subtitulo-formulario-login {
-  font-size: 1rem;
-}
+  .formulario-card-login {
+    max-width: 550px;
+    padding: 2.5rem;
+  }
+  .contenedor-cita-login {
+    margin-left: 8rem;
+    margin-bottom: 20rem;
+    padding: 3rem;
+  }
+  .texto-cita-login {
+    font-size: 2rem;
+  }
+  .subtexto-cita-login {
+    font-size: 1rem;
+  }
+  .titulo-formulario-login {
+    font-size: 1.75rem;
+  }
+  .subtitulo-formulario-login {
+    font-size: 1rem;
+  }
 }
 
 /* ===== MONITORES PEQUEÑOS ===== */
-@media (min-width: 1024px) and (max-width: 1200px) {
-.contenedor-cita-login {
-  margin-left: 2rem;
-  margin-bottom: 8rem;
-}
-.texto-cita-login {
-  font-size: 1.4rem;
-}
-.formulario-card-login {
-  padding: 1.75rem;
-}
-}
-
-/* ===== MONITORES MUY PEQUEÑOS ===== */
-@media (min-width: 1024px) and (max-width: 1100px) {
-.contenedor-cita-login {
-  margin-left: 1rem;
-  margin-bottom: 6rem;
-  padding: 1.5rem;
-}
-.texto-cita-login {
-  font-size: 1.3rem;
-}
-.subtexto-cita-login {
-  font-size: 0.8rem;
-}
+@media (min-width: 1200px) and (max-width: 1279px) {
+  .contenedor-cita-login {
+    margin-left: 2rem;
+    margin-bottom: 8rem;
+  }
+  .texto-cita-login {
+    font-size: 1.4rem;
+  }
+  .formulario-card-login {
+    padding: 1.75rem;
+  }
 }

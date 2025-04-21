@@ -1,222 +1,203 @@
-/* Estilos generales */
-main.login-container-m {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-image: url("https://www.toptal.com/designers/subtlepatterns/uploads/leaves-pattern.png");
-    font-family: 'Arial', sans-serif;
-    padding: 20px;
+/* Imports  */
+@import url("../vars.css");
+@import url("../global.css");
+
+/* Estilos base del formulario */
+section.formContMascota {
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  width: 100%;
+  gap: 1.1rem;
+  max-width: 55vw;
+  max-height: 90vh;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 }
 
-section.login-formulario-container-m {
-    padding: 30px;
-    border-radius: 10px;
-    background-color: white;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 600px; /* Aumenté el ancho máximo para 2 columnas */
+/* Encabezado del formulario */
+header.formHeadMascota {
+  text-align: left;
+  margin-bottom: 20px;
 }
 
-/* Logo */
-figure.contenedor-logo-externo-m {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 25px;
+.formTituloMascota {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #00bcd4;
+  margin-bottom: 3px;
 }
 
-.logo-veterinaria-m {
-    width: 120px;
-    height: auto;
-    object-fit: contain;
+.formSubtituloMascota {
+  font-size: 10px;
+  color: #757575;
+  margin-top: 0;
 }
 
-/* Encabezado */
-header.encabezado-formulario-m {
-    text-align: center;
-    margin-bottom: 25px;
+/* Contenedor superior para imagen y botones */
+.supContBotonesMascota {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
 }
 
-.titulo-formulario-m {
-    font-size: 24px;
-    font-weight: 700;
-    color: #00bcd4;
-    margin-bottom: 5px;
+.imgPrevContMascota {
+  height: 8rem;
+  width: 8rem;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  border: 0.3rem solid var(--primary-light);
+  cursor: pointer; /* Indica que es clickeable */
+  background-size: cover;
+  background-position: center;
 }
 
-.subtitulo-formulario-m {
-    font-size: 14px;
-    color: #7f8c8d;
-    margin-top: 0;
+/* Icono de carga dentro del círculo si no hay imagen */
+.iconoCargaMascota {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  opacity: 0.7;
+}
+
+/* Contenedor de botones */
+.botonesMascota {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 1rem;
+}
+
+.btn-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 1rem;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn-container.secundary {
+  background-color: var(--white);
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+.btn-container.secundary:hover {
+  background-color: var(--primary-light);
+}
+
+.btn-container.primary {
+  background-color: var(--primary); /* Usando el color primario del pet-header */
+  color: var(--white);
+}
+
+.btn-container.primary:hover {
+  background-color: var(--azulturquesa); /* Usando un color similar al hover del pet-header */
+}
+
+.btn-container.primary:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 /* Grid para campos del formulario */
-fieldset.contenido-paso-m {
-    border: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+fieldset.contPasoMascota {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
 }
 
 /* Ajustes para campos específicos */
-.grupo-campo-m {
-    margin-bottom: 0; /* Eliminamos el margin-bottom porque gap lo maneja */
+.grupoCampoMascota {
+  margin-bottom: 15px;
 }
 
-/* Campos que deben ocupar 2 columnas */
-.grupo-campo-completo {
-    grid-column: span 2;
-}
-
-label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #34495e;
-    font-size: 14px;
+.grupoCampoMascota label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #555;
+  font-size: 0.9rem;
 }
 
 .obligatorio-m {
-    color: #e74c3c;
+  color: #d32f2f;
 }
 
-input, select {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 14px;
-    transition: border-color 0.3s;
-    box-sizing: border-box;
+.grupoCampoMascota input,
+.grupoCampoMascota select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease-in-out;
+  box-sizing: border-box;
 }
 
-input:focus, select:focus {
-    outline: none;
-    border-color: #3498db;
-}
-
-input[type="file"] {
-    padding: 8px;
-    grid-column: span 2;
+.grupoCampoMascota input:focus,
+.grupoCampoMascota select:focus {
+  outline: none;
+  border-color: var(--primary); /* Usando el color primario del pet-header */
 }
 
 /* Errores */
-.campo-error-m {
-    border-color: #e74c3c !important;
+.campoErrorMascota {
+  border-color: #d32f2f !important;
 }
 
-.mensaje-error-m {
-    color: #e74c3c;
-    font-size: 12px;
-    margin-top: 5px;
-    display: block;
-    grid-column: span 2;
-}
-
-/* Vista previa de imagen */
-figure.imagen-preview-m {
-    margin-top: 10px;
-    padding: 10px;
-    background-color: #f8f9fa;
-    border-radius: 6px;
-    font-size: 13px;
-    grid-column: span 2;
-}
-
-.btn-eliminar-imagen-m {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 13px;
-    margin-top: 8px;
-    transition: background-color 0.3s;
-}
-
-.btn-eliminar-imagen-m:hover {
-    background-color: #c0392b;
-}
-
-/* Botón de envío */
-.boton-login-m {
-    grid-column: span 2;
-    width: 100%;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    background-color: #00bcd4;
-    color: white;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-}
-
-.boton-login-m:hover {
-    background-color: #00acc1;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 188, 212, 0.2);
-}
-
-.boton-login-m:disabled {
-    background-color: #95a5a6;
-    cursor: not-allowed;
-}
-
-/* Spinner */
-.spinner {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 3px solid #00bcd4;
-    border-radius: 50%;
-    border-top-color: white;
-    animation: spin 1s ease-in-out infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
+.msjErrorMascota {
+  color: #d32f2f;
+  font-size: 0.8rem;
+  margin-top: 3px;
+  display: block;
 }
 
 /* Fieldset y legend */
 legend.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-    fieldset.contenido-paso-m {
-        grid-template-columns: 1fr;
-    }
-    
-    .grupo-campo-completo,
-    input[type="file"],
-    .imagen-preview-m,
-    .boton-login-m,
-    .mensaje-error-m {
-        grid-column: span 1;
-    }
-}
+  section.formContMascota {
+    max-width: 90vw;
+    padding: 16px;
+  }
 
-@media (max-width: 480px) {
-    section.login-formulario-container-m {
-        padding: 20px;
-    }
-    
-    .titulo-formulario-m {
-        font-size: 20px;
-    }
+  fieldset.contPasoMascota {
+    grid-template-columns: 1fr;
+  }
+
+  .supContBotonesMascota {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .botonesMascota {
+    width: 100%;
+  }
 }

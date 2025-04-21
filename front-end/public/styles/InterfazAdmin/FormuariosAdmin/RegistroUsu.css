@@ -1,0 +1,368 @@
+.contenedorgesusuario {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.principalgesusuario {
+  flex: 1;
+  padding: 1.5rem;
+  transition: padding 0.3s ease;
+}
+
+/* Contenedor principal que se alinea con la estructura de GesUsuario */
+.contenedor-regusuario {
+  width: 100%;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.cabecera-regusuario {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.titulo-regusuario {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.titulo-regusuario h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  color: #00bcd4;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.creacion-regusuario {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.acciones-regusuario {
+  display: flex;
+  gap: 12px;
+}
+
+.atras-regusuario {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  background-color: #fff;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #374151;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  text-decoration: none;
+}
+
+.guardar-regusuario {
+  padding: 8px 16px;
+  background-color: #00bcd4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.tabs-regusuario {
+  display: flex;
+  border-bottom: 1px solid #e5e7eb;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tab-regusuario {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #6b7280;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.tab-regusuario.activo-regusuario {
+  color: #00bcd4;
+  border-bottom: 2px solid #00bcd4;
+}
+
+.icono-regusuario {
+  flex-shrink: 0;
+}
+
+.contenido-regusuario {
+  padding: 1.5rem;
+}
+
+.form-regusuario {
+  max-width: 900px;
+}
+
+.form-regusuario h2 {
+  font-size: 16px;
+  font-weight: 500;
+  color: #374151;
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.grid-regusuario {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.grupo-regusuario {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.etiqueta-regusuario {
+  font-size: 14px;
+  color: #374151;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.campo-regusuario {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.campo-regusuario:focus {
+  border-color: #00bcd4;
+}
+
+.perfil-regusuario {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+}
+
+.imagen-regusuario {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 1px dashed #d1d5db;
+  background-color: #f3f4f6;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+}
+
+.placeholder-imagen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: #9ca3af;
+}
+
+.imagen-regusuario img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.editar-regusuario {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 24px;
+  height: 24px;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #4b5563;
+}
+
+.firma-regusuario {
+  position: relative;
+  width: 200px;
+  height: 80px;
+}
+
+.caja-firma-regusuario {
+  width: 100%;
+  height: 100%;
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  font-size: 14px;
+  overflow: hidden;
+}
+
+.firma-imagen {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.firma-grupo {
+  margin-top: 20px;
+}
+
+.input-file-hidden {
+  display: none;
+}
+
+/* ==================== MEDIA QUERIES ==================== */
+
+/* Móviles pequeños y tablets (hasta 991px) */
+@media (max-width: 991px) {
+  .principalgesusuario {
+    padding: 0.75rem;
+  }
+
+  .contenido-regusuario {
+    padding: 1rem;
+  }
+
+  .grid-regusuario {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .cabecera-regusuario {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .acciones-regusuario {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* Móviles */
+@media (max-width: 480px) {
+  .contenido-regusuario {
+    padding: 0.75rem;
+  }
+
+  .texto-tab-regusuario {
+    display: none;
+  }
+
+  .tab-regusuario {
+    flex: 1;
+    justify-content: center;
+    padding: 12px 8px;
+  }
+
+  .icono-regusuario {
+    margin: 0 auto;
+  }
+
+  .texto-btn-regusuario {
+    display: none;
+  }
+
+  .atras-regusuario {
+    padding: 8px;
+  }
+}
+
+/* Laptops y computadores (992px en adelante) */
+@media (min-width: 992px) {
+  .contenedor-regusuario {
+    max-width: 100%;
+  }
+}
+
+/* Laptops (1200px - 1439px) */
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .contenedor-regusuario {
+    max-width: 1140px;
+    margin: 0 auto;
+  }
+
+  .principalgesusuario {
+    padding: 1.75rem;
+  }
+}
+
+/* Computadores de escritorio con pantallas pequeñas (1440px - 1919px) */
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .contenedor-regusuario {
+    max-width: 1320px;
+    margin: 0 auto;
+  }
+
+  .principalgesusuario {
+    padding: 2rem;
+  }
+
+  .contenido-regusuario {
+    padding: 1.75rem;
+  }
+}
+
+/* Computadores de escritorio con pantallas grandes (1920px y más) */
+@media (min-width: 1920px) {
+  .contenedor-regusuario {
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+
+  .principalgesusuario {
+    padding: 2.5rem;
+  }
+
+  .contenido-regusuario {
+    padding: 2rem;
+  }
+}
+
+/* Ajustes para la barra de navegación en pantallas grandes */
+@media (min-width: 1200px) {
+  .barranavadmin {
+    position: sticky;
+    transform: none;
+    width: 280px;
+  }
+
+  .botonmovilnavadmin {
+    display: none;
+  }
+}

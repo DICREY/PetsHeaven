@@ -1,15 +1,11 @@
-<<<<<<< HEAD
--- Active: 1743091557662@@127.0.0.1@3306@pets_heaven
-=======
--- Active: 1743681932025@@127.0.0.1@3306
--- Active: 1741175022404@@127.0.0.1@3306@pets_heaven
->>>>>>> f8c4990965e53bfb3a8647e0a570dd21c8fa75be
+-- Active: 1743971322762@@127.0.0.1@3306@pets_heaven
 DROP DATABASE IF EXISTS pets_heaven;
 CREATE DATABASE IF NOT EXISTS pets_heaven;
 
 CREATE TABLE pets_heaven.roles(
     id_rol INT AUTO_INCREMENT PRIMARY KEY,
-    nom_rol VARCHAR(100) NOT NULL
+    nom_rol VARCHAR(100) NOT NULL,
+    fot_rol TEXT DEFAULT("https://imgs.search.brave.com/rL6dnhwCDXLvz02lsRs2QjVj1F8o-8D0o4pTYhmHah8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy90/aHVtYi9jL2M4L01h/cmllX0N1cmllX2Mu/XzE5MjBzLmpwZy81/MTJweC1NYXJpZV9D/dXJpZV9jLl8xOTIw/cy5qcGc")
 );
 
 CREATE TABLE pets_heaven.permisos(
@@ -30,7 +26,8 @@ CREATE TABLE pets_heaven.usuarios(
     email_usu VARCHAR(100) UNIQUE NOT NULL,INDEX(email_usu),
     cont_usu VARCHAR(255) NOT NULL,
     gen_usu VARCHAR(100) NOT NULL,
-    estado BOOLEAN DEFAULT(1)
+    estado BOOLEAN DEFAULT(1) NOT NULL,
+    fec_cre_usu DATE DEFAULT(NOW()) NOT NULL
 );
 
 CREATE TABLE pets_heaven.otorgar_roles(
@@ -80,12 +77,13 @@ CREATE TABLE pets_heaven.mascotas(
     raz_mas VARCHAR(100) NOT NULL,
     ali_mas VARCHAR(100) NOT NULL,
     fec_nac_mas DATE NOT NULL,
-    pes_mas FLOAT(12,10) UNSIGNED NOT NULL,
-    gen_mas ENUM('F','M') NOT NULL,
+    pes_mas FLOAT(12,2) UNSIGNED NOT NULL,
+    gen_mas VARCHAR(20) NOT NULL,
     id_pro_mas INT NOT NULL,INDEX(id_pro_mas),FOREIGN KEY (id_pro_mas) REFERENCES usuarios(id_usu) ON DELETE CASCADE ON UPDATE CASCADE,
     est_rep_mas VARCHAR(100) NOT NULL,
     estado BOOLEAN DEFAULT(1),
-    fot_mas TEXT NOT NULL
+    fot_mas TEXT NOT NULL,
+    fec_cre_mas DATE DEFAULT(NOW())
 );
 
 CREATE TABLE pets_heaven.historiales_medicos(
@@ -124,5 +122,3 @@ CREATE TABLE pets_heaven.citas(
     estado ENUM("PENDIENTE","EN-ESPERA","CANCELADO","RECHAZADO","REALIZADO") NOT NULL,
     PRIMARY KEY (id_cit,mas_cit)
 );
-
-

@@ -1,0 +1,551 @@
+.contenedoradminhome {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.principaladminhome {
+  flex: 1;
+  padding: 1.5rem;
+  transition: padding 0.3s ease;
+}
+
+.tarjetaadminhome {
+  width: 100%;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.contenidoadminhome {
+  padding: 1.5rem;
+}
+
+.encabezadoadminhome {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.75rem;
+}
+
+.tituloadminhome {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  position: relative;
+}
+
+.iconoadminhome {
+  width: 1.75rem;
+  height: 1.75rem;
+  color: #00bcd4;
+  flex-shrink: 0;
+}
+
+.textoadminhome {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #00bcd4;
+  margin: 0;
+  white-space: nowrap;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.decoracionadminhome {
+  position: absolute;
+  right: -30px;
+  top: -5px;
+  opacity: 0.5;
+}
+
+.huellaadminhome {
+  width: 1rem;
+  height: 1rem;
+  color: #e0edff;
+}
+
+.botonadminhome {
+  background-color: #e0edff;
+  color: #00bcd4;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  transition: all 0.2s ease;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.botonadminhome:hover {
+  background-color: #cce3ff;
+}
+
+.iconoplusadminhome {
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
+.busquedaadminhome {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.seccionadminhome {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.etiquetaadminhome {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #64748b;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.inputcontenedoradminhome {
+  position: relative;
+}
+
+.inputiconoadminhome {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  color: #94a3b8;
+  z-index: 10;
+}
+
+.campoadminhome {
+  padding-left: 2.5rem;
+  width: 100%;
+  height: 2.5rem;
+  border-radius: 0.375rem;
+  border: 1px solid #e2e8f0;
+  background-color: white;
+  font-size: 0.875rem;
+  color: #1e293b;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.campoadminhome:focus {
+  border-color: #00bcd4;
+  box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.2);
+}
+
+.campoadminhome::placeholder {
+  color: #94a3b8;
+}
+
+.centradoadminhome {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.botonbuscaradminhome {
+  background-color: #00bcd4;
+  color: white;
+  transition: background-color 0.2s;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.botonbuscaradminhome:hover {
+  background-color: #00acc1;
+}
+
+.iconobuscaradminhome {
+  margin-right: 0.5rem;
+}
+
+.tablacontenedoradminhome {
+  overflow-x: auto;
+  border-radius: 0.375rem;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 1rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tablaadminhome {
+  width: 100%;
+  font-size: 0.875rem;
+  border-collapse: collapse;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.encabezadotablaadminhome {
+  background-color: #b2ebf2;
+  color: #475569;
+}
+
+.celdaencabezadoadminhome {
+  text-align: left;
+  padding: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.mascotasencabezadoadminhome {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.gestionencabezadoadminhome {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.iconoordenadminhome {
+  color: #00bcd4;
+  flex-shrink: 0;
+}
+
+.filaadminhome {
+  border-top: 1px solid #e2e8f0;
+}
+
+.filaadminhome:hover {
+  background-color: #f8fafc;
+}
+
+.celdaadminhome {
+  padding: 0.75rem;
+  vertical-align: middle;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.infoadminhome {
+  display: flex;
+  flex-direction: column;
+}
+
+.nombreadminhome {
+  font-weight: 500;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.fechaadminhome {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.mascotasadminhome {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.mascotaitemadminhome {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.citaadminhome {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.fechacitaadminhome {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-weight: 500;
+  color: #00bcd4;
+  white-space: nowrap;
+}
+
+.puntoadminhome {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background-color: #00bcd4;
+  flex-shrink: 0;
+}
+
+.tipocitaadminhome {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.accionadminhome {
+  color: #00bcd4;
+  background: transparent;
+  border: none;
+  border-radius: 0.375rem;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.accionadminhome:hover {
+  background-color: #f0f9ff;
+  color: #0097A7;
+}
+
+.paginacionadminhome {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  color: #64748b;
+  gap: 0.5rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.resultadosadminhome {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.contadoradminhome {
+  height: 1.5rem;
+  padding: 0 0.5rem;
+  font-weight: 500;
+  flex-shrink: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.flechaadminhome {
+  transform: rotate(180deg);
+  flex-shrink: 0;
+}
+
+.textocontadoradminhome {
+  margin-left: 0.5rem;
+  white-space: nowrap;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.huellasadminhome {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.huella1adminhome {
+  width: 1rem;
+  height: 1rem;
+  color: #e0edff;
+}
+
+.huella2adminhome {
+  width: 0.75rem;
+  height: 0.75rem;
+  color: #e0edff;
+}
+
+/* ==================== MEDIA QUERIES ==================== */
+
+/* Móviles pequeños y tablets (hasta 991px) */
+@media (max-width: 991px) {
+  .principaladminhome {
+    padding: 0.75rem;
+  }
+
+  .contenidoadminhome {
+    padding: 1rem;
+  }
+
+  .textoadminhome {
+    font-size: 1.125rem;
+  }
+
+  .iconoadminhome {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .decoracionadminhome {
+    display: none;
+  }
+
+  .tablacontenedoradminhome {
+    border-radius: 0.25rem;
+  }
+
+  /* Tabla responsiva para móviles y tablets */
+  .tablaadminhome thead {
+    display: none;
+  }
+
+  .tablaadminhome tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.375rem;
+  }
+
+  .tablaadminhome tbody td {
+    display: block;
+    text-align: right;
+    position: relative;
+    padding: 0.75rem;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .tablaadminhome tbody td:last-child {
+    border-bottom: none;
+  }
+
+  .tablaadminhome tbody td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0.75rem;
+    width: 45%;
+    text-align: left;
+    font-weight: 600;
+    color: #64748b;
+  }
+
+  .textocontadoradminhome {
+    display: none;
+  }
+}
+
+/* Laptops y computadores (992px en adelante) */
+@media (min-width: 992px) {
+  .busquedaadminhome {
+    grid-template-columns: 1fr 1fr;
+  }
+  .encabezadoadminhome {
+    flex-direction: row;
+    align-items: center;
+  }
+  .botonadminhome {
+    width: auto;
+  }
+  .paginacionadminhome {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+/* Laptops (1200px - 1439px) */
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .tarjetaadminhome {
+    max-width: 1140px;
+    margin: 0 auto;
+  }
+
+  .principaladminhome {
+    padding: 1.75rem;
+  }
+}
+
+/* Computadores de escritorio con pantallas pequeñas (1440px - 1919px) */
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .tarjetaadminhome {
+    max-width: 1320px;
+    margin: 0 auto;
+  }
+
+  .principaladminhome {
+    padding: 2rem;
+  }
+
+  .contenidoadminhome {
+    padding: 1.75rem;
+  }
+
+  .textoadminhome {
+    font-size: 1.375rem;
+  }
+
+  .iconoadminhome {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .celdaencabezadoadminhome,
+  .celdaadminhome {
+    padding: 1rem;
+  }
+}
+
+/* Computadores de escritorio con pantallas grandes (1920px y más) */
+@media (min-width: 1920px) {
+  .tarjetaadminhome {
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+
+  .principaladminhome {
+    padding: 2.5rem;
+  }
+
+  .contenidoadminhome {
+    padding: 2rem;
+  }
+
+  .textoadminhome {
+    font-size: 1.5rem;
+  }
+
+  .iconoadminhome {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .tablaadminhome {
+    font-size: 1rem;
+  }
+
+  .celdaencabezadoadminhome,
+  .celdaadminhome {
+    padding: 1.25rem;
+  }
+
+  .nombreadminhome {
+    font-size: 1.05rem;
+  }
+
+  .fechaadminhome {
+    font-size: 0.875rem;
+  }
+}

@@ -14,9 +14,40 @@ class User{
             database.conect()
 
             if (database) database.conection.query(proc,(err,result) => {
-                if(err) {
-                    rej({ message: err })
-                } else setTimeout(() => {
+                if(err) rej({ message: err })
+                if(!result[0][0]) rej({
+                    message: "Not found",
+                    status: 404
+                })
+                setTimeout(() => {
+                    res({
+                        message: "Users found",
+                        result: result
+                    })
+                },2000)
+            })
+
+            // close conection 
+            database.conection.end()
+        })
+    }
+    // function to find all
+    async findAllUsers() {
+        return new Promise((res,rej) => {
+            // vars
+            const proc = "CALL SearchAllPeoples();"
+
+            // conect to database
+            let database = new DataBase()
+            database.conect()
+
+            if (database) database.conection.query(proc,(err,result) => {
+                if(err) rej({ message: err })
+                if(!result[0][0]) rej({
+                    message: "Not found",
+                    status: 404
+                })
+                setTimeout(() => {
                     res({
                         message: "Users found",
                         result: result
@@ -33,7 +64,7 @@ class User{
     async findAllBy(data) {
         return new Promise((res,rej) => {
             // vars
-            const by = data.slice(1,data.length)
+            const by = data.replace(":","").replace(" ","")
             const proc = "CALL SearchPeoplesBy(?);"
 
             // conect to database
@@ -41,9 +72,12 @@ class User{
             database.conect()
 
             if (database) database.conection.query(proc,by,(err,result) => {
-                if(err) {
-                    rej({ message: err })
-                } else setTimeout(() => {
+                if(err) rej({ message: err })
+                if(!result[0][0]) rej({
+                    message: "Not found",
+                    status: 404
+                })
+                setTimeout(() => {
                     res({
                         message: "Users found",
                         result: result
@@ -60,7 +94,7 @@ class User{
     async findBy(data) {
         return new Promise((res,rej) => {
             // vars
-            const by = data.slice(1,data.length)
+            const by = data.replace(":","").replace(" ","")
             const proc = "CALL SearchPeopleBy(?);"
 
             // conect to database
@@ -68,9 +102,12 @@ class User{
             database.conect()
 
             if (database) database.conection.query(proc,by,(err,result) => {
-                if(err) {
-                    rej({ message: err })
-                } else setTimeout(() => {
+                if(err) rej({ message: err })
+                if(!result[0][0]) rej({
+                    message: "Not found",
+                    status: 404
+                })
+                setTimeout(() => {
                     res({
                         message: "User found",
                         result: result
@@ -97,10 +134,9 @@ class User{
                 data.celular,
                 data.celular2,
                 data.email,
-                data.password,
+                data.hash_pass,
                 data.genero
             ]
-            console.log(newUser)
             let procedure = "CALL RegistPeoples(?,?,?,?,?,?,?,?,?,?,?);"
 
             // conect to database
@@ -109,9 +145,8 @@ class User{
             
             // call procedure
             if (database) database.conection.query(procedure,newUser,err => { 
-                if(err) {
-                    rej(err) 
-                } else setTimeout(() => res({
+                if(err) rej(err) 
+                setTimeout(() => res({
                     message: "User Created",
                     ...data
                 }),2000)
@@ -121,6 +156,7 @@ class User{
             database.conection.end()
         })
     }
+
     // function to modify
     async modify(data) {
         return new Promise((res,rej) => {
@@ -146,9 +182,12 @@ class User{
 
             // call procedure
             if (conection) conection.query(procedure,newUser,err => { 
-                if(err) {
-                    rej(err) 
-                } else setTimeout(() => res({
+                if(err) rej(err) 
+                if(!result[0][0]) rej({
+                    message: "Not found",
+                    status: 404
+                })
+                setTimeout(() => res({
                     message: "User Modify",
                     ...data
                 }),2000)
@@ -158,6 +197,35 @@ class User{
             conection.end()
         })
     }
+
+    // async findAllTimeBy(data) {
+    //     return new Promise((res,rej) => {
+    //         // vars
+    //         const by = data.replace(":","").replace(" ","")
+    //         const proc = "CALL SearchPeoplesBy(?);"
+
+    //         // conect to database
+    //         let database = new DataBase()
+    //         database.conect()
+
+    //         if (database) database.conection.query(proc,by,(err,result) => {
+            //    rej({ message: err })
+        //     if(!result[0][0]) rej({
+        //             message: "Not found",
+        //             status: 404
+        //         })
+                // setTimeout(() => {
+    //                 res({
+    //                     message: "Users found",
+    //                     result: result
+    //                 })
+    //             },100)
+    //         })
+
+    //         // close conection 
+    //         database.conection.end()
+    //     })
+    // }
 }
 
 // Export

@@ -1,0 +1,153 @@
+.contenedorgesusuario {
+display: flex;
+min-height: 100vh;
+background-color: #f8fafc;
+font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.principalgesusuario {
+flex: 1;
+padding: 1.5rem;
+transition: padding 0.3s ease;
+}
+
+.tarjetagesusuario {
+width: 100%;
+background-color: white;
+border-radius: 0.5rem;
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+transition: all 0.3s ease;
+}
+
+.contenidogesusuario {
+  padding: 1.5rem;
+}
+
+.encabezadogesusuario {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1rem;
+border-bottom: 1px solid #e2e8f0;
+padding-bottom: 0.75rem;
+}
+
+.titulogesusuario {
+display: flex;
+align-items: baseline;
+gap: 0.75rem;
+}
+ 
+.textogesusuario {
+font-size: 1.25rem;
+font-weight: 600;
+color: #00BCD4;
+margin: 0;
+font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+
+.rolgesusuario {
+display: inline-block;
+padding: 0.25rem 0.5rem;
+border-radius: 0.25rem;
+font-size: 0.75rem;
+font-weight: 500;
+font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.rolgesusuario.veterinario {
+background-color: #e0f2fe;
+color: #0284c7;
+}
+
+.rolgesusuario.administrador {
+background-color: #fef3c7;
+color: #d97706;
+}
+
+.rolgesusuario.recepcionista {
+background-color: #dcfce7;
+color: #16a34a;
+}
+
+.rolgesusuario.asistente {
+background-color: #f3e8ff;
+color: #9333ea;
+}
+
+/* ==================== MEDIA QUERIES ==================== */
+
+/* Móviles pequeños y tablets (hasta 991px) */
+@media (max-width: 991px) {
+.principalgesusuario {
+  padding: 0.75rem;
+}
+
+.contenidogesusuario {
+  padding: 1rem;
+}
+
+.textogesusuario {
+  font-size: 1.125rem;
+}
+
+/* Tabla responsiva para móviles y tablets */
+
+.rolgesusuario {
+  display: inline-block;
+}
+}
+
+/* Laptops (1200px - 1439px) */
+@media (min-width: 1200px) and (max-width: 1439px) {
+.tarjetagesusuario {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.principalgesusuario {
+  padding: 1.75rem;
+}
+}
+
+/* Computadores de escritorio con pantallas pequeñas (1440px - 1919px) */
+@media (min-width: 1440px) and (max-width: 1919px) {
+.tarjetagesusuario {
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.principalgesusuario {
+  padding: 2rem;
+}
+
+.contenidogesusuario {
+  padding: 1.75rem;
+}
+
+.textogesusuario {
+  font-size: 1.375rem;
+}
+}
+
+/* Computadores de escritorio con pantallas grandes (1920px y más) */
+@media (min-width: 1920px) {
+.tarjetagesusuario {
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.principalgesusuario {
+  padding: 2.5rem;
+}
+
+.contenidogesusuario {
+  padding: 2rem;
+}
+
+.textogesusuario {
+  font-size: 1.5rem;
+}
+}

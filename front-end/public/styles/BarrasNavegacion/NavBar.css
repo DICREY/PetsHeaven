@@ -41,7 +41,7 @@
 
 /* ===== NAVEGACIÓN ESCRITORIO ===== */
 .nav-escritorio {
-  display: none; /* Oculto por defecto en móviles */
+  display: none;
 }
 
 .enlace-nav {
@@ -89,7 +89,7 @@
 
 /* ===== BOTONES ESCRITORIO ===== */
 .botones-escritorio {
-  display: none; /* Oculto por defecto en móviles */
+  display: none;
 }
 
 /* Estilos base para botones */
@@ -106,7 +106,7 @@
   cursor: pointer;
   text-decoration: none;
   white-space: nowrap;
-  min-width: 110px; /* Tamaño mínimo para botones */
+  min-width: 110px;
   font-size: 1rem;
   line-height: 1.5;
 }
@@ -202,57 +202,6 @@
   color: var(--verde-aguamarina);
 }
 
-/* ===== ESTILOS ESPECÍFICOS PARA IPAD PRO ===== */
-.ipad-pro .contenedor-header {
-  padding: 1rem 2rem;
-}
-
-.ipad-pro .logo-container {
-  width: auto;
-  max-width: 180px;
-}
-
-.ipad-pro .logo-img {
-  max-height: 60px;
-}
-
-.oculto-ipad {
-  display: none !important;
-}
-
-.visible-ipad {
-  display: flex !important;
-}
-
-.ipad-pro-menu {
-  width: 100%;
-}
-
-.ipad-pro-menu .nav-movil {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 1rem 2rem;
-}
-
-.ipad-pro-menu .enlace-nav-movil {
-  font-size: 1.2rem;
-  padding: 1rem 0;
-}
-
-.ipad-pro-menu .botones-movil {
-  flex-direction: row;
-  gap: 1.5rem;
-  margin-top: 1.5rem;
-}
-
-.ipad-pro-menu .boton-login-movil-nav,
-.ipad-pro-menu .boton-registro-movil-nav {
-  width: 50%;
-  padding: 0.9rem;
-  font-size: 1.1rem;
-  min-width: 140px;
-}
-
 /* ===== RESPONSIVE: MÓVIL PEQUEÑO (< 480px) ===== */
 @media (max-width: 479px) {
   .contenedor-header {
@@ -344,7 +293,7 @@
   }
 }
 
-/* ===== RESPONSIVE: ESCRITORIO PEQUEÑO (1024px - 1279px) ===== */
+/* ===== RESPONSIVE: ESCRITORIO (>= 1024px) ===== */
 @media (min-width: 1024px) {
   .contenedor-header {
     padding: 0.75rem 2rem;
@@ -372,6 +321,10 @@
 
   .contenedor-boton-menu {
     display: none;
+  }
+
+  .menu-movil {
+    display: none !important;
   }
 
   .botones-escritorio {
@@ -431,55 +384,23 @@
   }
 }
 
-/* ===== MEDIA QUERIES ESPECÍFICOS PARA IPAD PRO ===== */
-/* iPad Pro 11" */
-@media only screen and (min-device-width: 834px) and (max-device-width: 834px) and (orientation: portrait),
-  only screen and (min-device-width: 1194px) and (max-device-width: 1194px) and (orientation: landscape) {
+/* ===== MEDIA QUERIES PARA TABLETS CON PANTALLA TÁCTIL ===== */
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (hover: none) {
   .nav-escritorio,
   .botones-escritorio {
-    display: none !important;
+    display: none;
   }
 
   .contenedor-boton-menu {
-    display: flex !important;
+    display: flex;
   }
 
-  .ipad-pro-menu .botones-movil {
-    flex-direction: row;
-  }
-}
-
-/* iPad Pro 12.9" */
-@media only screen and (min-device-width: 1024px) and (max-device-width: 1024px) and (orientation: portrait),
-  only screen and (min-device-width: 1366px) and (max-device-width: 1366px) and (orientation: landscape) {
-  .nav-escritorio,
-  .botones-escritorio {
-    display: none !important;
-  }
-
-  .contenedor-boton-menu {
-    display: flex !important;
-  }
-
-  .ipad-pro-menu .botones-movil {
-    flex-direction: row;
+  .menu-movil.activo {
+    display: block;
   }
 }
 
-/* Meta viewport para asegurar escala correcta en iPad */
-@media screen and (device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2),
-  screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) {
-  .nav-escritorio,
-  .botones-escritorio {
-    display: none !important;
-  }
-
-  .contenedor-boton-menu {
-    display: flex !important;
-  }
-}
-
-/* ===== MONITORES PEQUEÑOS ===== */
+/* ===== MONITORES PEQUEÑOS (1024px - 1200px) ===== */
 @media (min-width: 1024px) and (max-width: 1200px) {
   .botones-escritorio {
     gap: 0.75rem;
@@ -502,7 +423,7 @@
   }
 }
 
-/* ===== MONITORES MUY PEQUEÑOS ===== */
+/* ===== MONITORES MUY PEQUEÑOS (1024px - 1100px) ===== */
 @media (min-width: 1024px) and (max-width: 1100px) {
   .botones-escritorio {
     gap: 0.5rem;

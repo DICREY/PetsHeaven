@@ -1,31 +1,28 @@
 // librarys
 const express = require('express')
 const cors = require('cors')
+require('dotenv').config()
 
 // Imports 
-const globalRoute = require('./routes/global.route')
-const userRoute = require('./routes/user.route')
-const petRoute = require('./routes/pets.route')
+const { validatorHeaders } = require('./middleware/validator.handler')
+const { routerApi } = require('./server/router')
+const { corsOptions, limiter } = require('./middleware/varios.handler')
 
 // vars
 const app = express()
-const port = process.env.PORT ||3000
+const port = process.env.PORT || 3000
 
 // desativar header extra 
 app.disable('x-powered-by')
 
-// middleware
+// middlewares
 app.use(express.json())
-
-app.use(cors())
-
-app.get('/',(req,res) => {
-    res.status(200).send("<a href='/register'>register</a>")
-})
+app.use(cors(corsOptions))
+app.use(validatorHeaders)
+app.use(limiter)
 
 // Routes
-app.use('/global',globalRoute)
-app.use('/user',userRoute)
-app.use('/pet',petRoute)
+routerApi(app)
 
-app.listen(port,() => console.log("Host is: http://localhost:" + port))
+
+app.listen(port,() => console.log('Host is: http://localhost:' + port))

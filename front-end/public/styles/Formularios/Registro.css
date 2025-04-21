@@ -6,12 +6,16 @@
   display: none !important;
 }
 
+/* Contenedor principal */
 .registro-container {
   display: flex;
   min-height: 100vh;
   font-family: "Arial", sans-serif;
+  /* Por defecto, en dispositivos pequeños y medianos, el contenedor será en columna */
+  flex-direction: column;
 }
 
+/* Sección derecha - Imagen y cita */
 .registro-imagen-container {
   flex: 1;
   position: relative;
@@ -19,6 +23,9 @@
   display: flex;
   align-items: flex-end;
   overflow: hidden;
+  /* Por defecto, en dispositivos pequeños y medianos, la imagen estará arriba */
+  order: 1;
+  min-height: 200px;
 }
 
 .imagen-fondo-contenedor {
@@ -51,34 +58,40 @@
   position: relative;
   z-index: 2;
   padding: 2rem;
-  margin-bottom: 15rem;
+  margin-bottom: 2rem;
   text-align: center;
-  margin-left: 5rem;
+  margin-left: 0;
+  width: 100%;
 }
 
 .texto-cita {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1rem;
   line-height: 1.2;
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #fff;
 }
 
 .subtexto-cita {
   font-size: 0.875rem;
 }
 
+/* Sección izquierda - Formulario de registro */
 .registro-formulario-container {
   flex: 1;
   background-color: #f5f5f5;
   background-image: url("https://www.toptal.com/designers/subtlepatterns/uploads/leaves-pattern.png");
+  background-repeat: repeat;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
+  padding: 1rem;
+  /* Por defecto, en dispositivos pequeños y medianos, el formulario estará abajo */
+  order: 2;
 }
 
 /* Logo externo al formulario */
@@ -411,196 +424,249 @@ select:focus {
   margin-top: 0.5rem; /* Añadido para dar más espacio desde los botones */
 }
 
-/* ===== RESPONSIVE: MÓVIL PEQUEÑO (< 480px) ===== */
+.campo-ancho-completo{
+  display: grid;
+  grid-template-columns: 20% 80%;
 
-@media (max-width: 992px) {
-  .formulario-card {
-    padding: 1.5rem;
-  }
-
-  .texto-cita {
-    font-size: 1.5rem;
-  }
-
-  .contenedor-cita {
-    margin-bottom: 10rem;
-  }
-
-  .logo-veterinaria {
-    max-width: 180px;
-  }
 }
 
-/* Tablets pequeñas y dispositivos móviles grandes */
-@media (max-width: 768px) {
-  .registro-container {
-    flex-direction: column;
-  }
-
+/* ===== RESPONSIVE: MÓVIL PEQUEÑO (< 480px) ===== */
+@media (max-width: 479px) {
   .registro-imagen-container {
-    min-height: 250px;
-    max-height: 300px;
+    min-height: 100px;
+    max-height: 160px;
   }
-
-  .imagen-fondo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
   .contenedor-cita {
-    margin-bottom: 2rem;
-    max-width: 90%;
+    max-height: 50px;
+    min-height: 50px;
+    padding: 1rem;
+    margin-bottom: 9vh;
+  }
+  .texto-cita {
+    font-size: 1rem;
+    margin-top: 0;
+    max-width: 100%;
+  }
+  .subtexto-cita {
+    font-size: 0.75rem;
+  }
+  .formulario-card {
     padding: 1rem;
   }
-
-  .texto-cita {
+  .logo-veterinaria {
+    max-width: 150px;
+  }
+  .titulo-formulario {
     font-size: 1.25rem;
   }
-
+  .paso {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+  .linea {
+    width: 1.5rem;
+  }
   .grid-campos {
     grid-template-columns: 1fr;
   }
-
   .campo-ancho-completo {
     grid-column: span 1;
   }
-
   .navegacion-botones,
   .botones-verificacion {
     flex-direction: column;
     gap: 0.5rem;
   }
-
   .botones-verificacion {
-    margin-bottom: 1.5rem; /* Ajustado para móviles */
+    margin-bottom: 1.5rem;
   }
-
   .boton-anterior,
   .boton-reenviar {
     order: 2;
   }
-
   .boton-siguiente,
   .boton-enviar,
   .boton-verificar {
     order: 1;
   }
-
-  .formulario-card {
-    padding: 1.25rem;
-  }
-}
-
-/* Dispositivos móviles pequeños */
-@media (max-width: 480px) {
-  .registro-formulario-container {
-    padding: 1rem;
-  }
-
-  .formulario-card {
-    padding: 1rem;
-  }
-
-  .contenedor-logo-externo {
-    margin-bottom: 1rem;
-  }
-
-  .logo-veterinaria {
-    max-width: 150px;
-  }
-
-  .titulo-formulario {
-    font-size: 1.25rem;
-  }
-
-  .paso {
-    width: 1.75rem;
-    height: 1.75rem;
-  }
-
-  .linea {
-    width: 1.5rem;
-  }
-
   .contenedor-codigo {
     flex-wrap: wrap;
     justify-content: center;
     gap: 0.35rem;
   }
-
   .input-codigo {
     width: 2.5rem;
     height: 2.5rem;
     font-size: 1rem;
   }
-
-  .registro-imagen-container {
-    min-height: 200px;
-  }
-
-  .contenedor-cita {
-    margin-bottom: 1rem;
-  }
-
-  .texto-cita {
-    font-size: 1.1rem;
-  }
 }
 
-/* Para pantallas muy pequeñas */
-@media (max-width: 360px) {
-  .formulario-card {
-    padding: 0.75rem;
+/* ===== RESPONSIVE: MÓVIL (480px - 767px) ===== */
+@media (min-width: 480px) and (max-width: 767px) {
+  .registro-imagen-container {
+    min-height: 150px;
+    max-height: 200px;
   }
-
-  .input-codigo {
-    width: 2.25rem;
-    height: 2.25rem;
+  .contenedor-cita {
+    padding: 1.5rem;
+    margin-bottom: 0;
   }
-
-  .paso {
-    width: 1.5rem;
-    height: 1.5rem;
+  .texto-cita {
+    font-size: 1.2rem;
+  }
+  .subtexto-cita {
     font-size: 0.8rem;
   }
-
-  .linea {
-    width: 1rem;
+  .grid-campos {
+    grid-template-columns: 1fr;
+  }
+  /* .campo-ancho-completo {
+    grid-column: span 1;
+  } */
+  .navegacion-botones,
+  .botones-verificacion {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .boton-anterior,
+  .boton-reenviar {
+    order: 2;
+  }
+  .boton-siguiente,
+  .boton-enviar,
+  .boton-verificar {
+    order: 1;
+  }
+  .formulario-card {
+    padding: 1.25rem;
   }
 }
 
-/* DISEÑO RESPONSIVO MEJORADO */
-
-/* Monitores de escritorio grandes (1440px y superiores) */
-@media (min-width: 1440px) {
+/* ===== RESPONSIVE: TABLET (768px - 1023px) ===== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Mantenemos el diseño en columna para tablets */
   .registro-container {
-    max-width: 1920px;
-    margin: 0 auto;
+    flex-direction: column;
   }
+  .registro-imagen-container {
+    order: 1;
+    min-height: 250px;
+    max-height: 300px;
+  }
+  .registro-formulario-container {
+    order: 2;
+    padding: 2rem;
+  }
+  .contenedor-cita {
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+  .texto-cita {
+    font-size: 1.5rem;
+  }
+  .formulario-card {
+    max-width: 600px;
+  }
+  /* Mantiene dos columnas para los campos del formulario en tablets */
+  .grid-campos {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  .campo-ancho-completo {
+    grid-column: span 2;
+  }
+  .navegacion-botones {
+    flex-direction: row;
+  }
+}
 
+/* ===== RESPONSIVE: IPAD PRO Y TABLETS GRANDES (1024px - 1199px) ===== */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  /* Mantenemos el diseño en columna para iPad Pro */
+  .registro-container {
+    flex-direction: column;
+  }
+  .registro-imagen-container {
+    order: 1;
+    min-height: 350px;
+    max-height: 400px;
+  }
+  .registro-formulario-container {
+    order: 2;
+    padding: 2.5rem;
+  }
+  .contenedor-cita {
+    padding: 2.5rem;
+    margin-bottom: 3rem;
+  }
+  .texto-cita {
+    font-size: 1.75rem;
+  }
+  .formulario-card {
+    max-width: 700px;
+  }
+}
+
+/* ===== RESPONSIVE: ESCRITORIO Y SUPERIOR (>= 1200px) ===== */
+@media (min-width: 1200px) {
+  /* Solo en escritorio cambiamos a diseño en fila */
+  .registro-container {
+    flex-direction: row;
+  }
+  .registro-imagen-container {
+    order: 2;
+    min-height: auto;
+    max-height: none;
+  }
+  .registro-formulario-container {
+    order: 1;
+  }
+  .contenedor-cita {
+    margin-left: 3rem;
+    margin-bottom: 10rem;
+    text-align: left;
+    width: auto;
+  }
+  .texto-cita {
+    font-size: 1.5rem;
+    justify-content: flex-start;
+  }
+}
+
+/* ===== RESPONSIVE: ESCRITORIO MEDIANO (1280px - 1535px) ===== */
+@media (min-width: 1280px) and (max-width: 1535px) {
+  .contenedor-cita {
+    margin-left: 5rem;
+    margin-bottom: 12rem;
+  }
+  .texto-cita {
+    font-size: 1.75rem;
+  }
+}
+
+/* ===== RESPONSIVE: ESCRITORIO GRANDE (>= 1536px) ===== */
+@media (min-width: 1536px) {
   .formulario-card {
     max-width: 650px;
     padding: 2.5rem;
   }
-
+  .contenedor-cita {
+    margin-left: 8rem;
+    margin-bottom: 20rem;
+    padding: 3rem;
+  }
   .texto-cita {
     font-size: 2rem;
   }
-
-  .contenedor-cita {
-    margin-bottom: 18rem;
-    max-width: 80%;
+  .subtexto-cita {
+    font-size: 1rem;
   }
-
-  .logo-veterinaria {
-    max-width: 220px;
-  }
-
   .titulo-formulario {
     font-size: 1.75rem;
   }
-
+  .subtitulo-formulario {
+    font-size: 1rem;
+  }
   input,
   select {
     padding: 0.85rem;
@@ -608,240 +674,49 @@ select:focus {
   }
 }
 
-/* Escritorio estándar (1200px - 1439px) */
-@media (min-width: 1200px) and (max-width: 1439px) {
-  .formulario-card {
-    max-width: 600px;
-  }
-
+/* ===== MONITORES PEQUEÑOS ===== */
+@media (min-width: 1200px) and (max-width: 1279px) {
   .contenedor-cita {
-    margin-bottom: 16rem;
+    margin-left: 2rem;
+    margin-bottom: 8rem;
   }
-}
-
-/* Escritorio pequeño / Laptop grande (992px - 1199px) */
-@media (min-width: 992px) and (max-width: 1199px) {
-  .formulario-card {
-    max-width: 550px;
-    padding: 2rem;
-  }
-
-  .contenedor-cita {
-    margin-bottom: 14rem;
-  }
-
-  .texto-cita {
-    font-size: 1.6rem;
-  }
-}
-
-/* Tablets y dispositivos medianos (768px - 991px) */
-@media (min-width: 768px) and (max-width: 991px) {
-  .registro-container {
-    flex-direction: column; /* Mantiene el diseño de dos columnas en tablets más grandes */
-  }
-
-  .formulario-card {
-    padding: 1.5rem;
-    max-width: 580px;
-  }
-
   .texto-cita {
     font-size: 1.4rem;
   }
-
-  .contenedor-cita {
-    margin-bottom: 8rem;
-    padding: 1.5rem;
-    margin-left: 5vh;
-  }
-
-  .logo-veterinaria {
-    max-width: 160px;
-  }
-
-  .grid-campos {
-    gap: 0.75rem;
-  }
-
-  .navegacion-botones {
-    gap: 0.75rem;
-  }
-}
-
-/* Tablets pequeñas (600px - 767px) */
-@media (min-width: 600px) and (max-width: 767px) {
-  .registro-container {
-    flex-direction: column;
-  }
-
-  .registro-imagen-container {
-    min-height: 280px;
-    max-height: 320px;
-  }
-
-  .contenedor-cita {
-    margin-bottom: 2.5rem;
-    max-width: 90%;
-    padding: 1.25rem;
-  }
-
-  .texto-cita {
-    font-size: 1.3rem;
-  }
-
   .formulario-card {
-    max-width: 500px;
-    padding: 1.5rem;
-  }
-
-  /* Mantiene dos columnas para los campos del formulario en tablets pequeñas */
-  .grid-campos {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
-  }
-
-  .campo-ancho-completo {
-    grid-column: span 2;
-  }
-
-  .navegacion-botones {
-    flex-direction: row;
+    padding: 1.75rem;
   }
 }
 
-/* Dispositivos móviles grandes (480px - 599px) */
-@media (min-width: 480px) and (max-width: 599px) {
-  .registro-container {
-    flex-direction: column;
-  }
-
-  .registro-imagen-container {
-    min-height: 250px;
-    max-height: 300px;
-  }
-
-  .contenedor-cita {
-    margin-bottom: 2rem;
-    padding: 1rem;
-  }
-
-  .texto-cita {
-    font-size: 1.2rem;
-  }
-
-  .formulario-card {
-    padding: 1.25rem;
-  }
-
-  .grid-campos {
-    grid-template-columns: 1fr;
-  }
-
-  .campo-ancho-completo {
-    grid-column: span 1;
-  }
-
-  .navegacion-botones,
-  .botones-verificacion {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-}
-
-/* Dispositivos móviles medianos (360px - 479px) */
-@media (min-width: 360px) and (max-width: 479px) {
-  .registro-formulario-container {
-    padding: 1rem;
-  }
-
-  .formulario-card {
-    padding: 1rem;
-  }
-
-  .logo-veterinaria {
-    max-width: 140px;
-  }
-
-  .titulo-formulario {
-    font-size: 1.2rem;
-  }
-
-  .paso {
-    width: 1.6rem;
-    height: 1.6rem;
-    font-size: 0.85rem;
-  }
-
-  .linea {
-    width: 1.25rem;
-  }
-
-  .input-codigo {
-    width: 2.4rem;
-    height: 2.4rem;
-  }
-
-  .registro-imagen-container {
-    min-height: 200px;
-  }
-
-  .contenedor-cita {
-    margin-bottom: 3rem;
-    margin-left: 2vh;
-  }
-
-  .texto-cita {
-    font-size: 1.1rem;
-  }
-
-  /* Mejora el espaciado de los botones */
-  .boton-siguiente,
-  .boton-enviar,
-  .boton-anterior,
-  .boton-verificar,
-  .boton-reenviar {
-    padding: 0.7rem 1.25rem;
-  }
-}
-
-/* Dispositivos móviles pequeños (320px - 359px) */
-@media (min-width: 320px) and (max-width: 359px) {
+/* ===== DISPOSITIVOS MUY PEQUEÑOS (< 360px) ===== */
+@media (max-width: 359px) {
   .formulario-card {
     padding: 0.75rem;
   }
-
   .registro-formulario-container {
     padding: 0.75rem;
   }
-
   .logo-veterinaria {
     max-width: 130px;
   }
-
   .titulo-formulario {
     font-size: 1.1rem;
   }
-
   .paso {
     width: 1.5rem;
     height: 1.5rem;
     font-size: 0.8rem;
   }
-
   .linea {
     width: 1rem;
   }
-
   .input-codigo {
     width: 2.25rem;
     height: 2.25rem;
   }
-
   .contenedor-codigo {
     gap: 0.3rem;
   }
-
   .boton-siguiente,
   .boton-enviar,
   .boton-anterior,
@@ -852,82 +727,17 @@ select:focus {
   }
 }
 
-/* Dispositivos móviles muy pequeños (menos de 320px) */
-@media (max-width: 319px) {
-  .formulario-card {
-    padding: 0.6rem;
-  }
-
-  .registro-formulario-container {
-    padding: 0.6rem;
-  }
-
-  .logo-veterinaria {
-    max-width: 120px;
-  }
-
-  .titulo-formulario {
-    font-size: 1rem;
-  }
-
-  .subtitulo-formulario {
-    font-size: 0.8rem;
-  }
-
-  .paso {
-    width: 1.4rem;
-    height: 1.4rem;
-    font-size: 0.75rem;
-  }
-
-  .linea {
-    width: 0.8rem;
-  }
-
-  .input-codigo {
-    width: 2rem;
-    height: 2rem;
-    font-size: 0.9rem;
-  }
-
-  .contenedor-codigo {
-    gap: 0.25rem;
-  }
-
-  label {
-    font-size: 0.8rem;
-  }
-
-  input,
-  select {
-    padding: 0.65rem;
-    font-size: 0.8rem;
-  }
-
-  .boton-siguiente,
-  .boton-enviar,
-  .boton-anterior,
-  .boton-verificar,
-  .boton-reenviar {
-    padding: 0.6rem 0.9rem;
-    font-size: 0.75rem;
-  }
-}
-
 /* Ajustes específicos para orientación horizontal */
 @media (max-height: 600px) and (orientation: landscape) {
   .registro-container {
     flex-direction: row;
   }
-
   .registro-imagen-container {
     min-height: 100vh;
   }
-
   .contenedor-cita {
     margin-bottom: 2rem;
   }
-
   /* Formulario compacto para orientación horizontal */
   .formulario-card {
     max-height: 90vh;
@@ -947,16 +757,13 @@ select:focus {
   .registro-container {
     display: block;
   }
-
   .registro-imagen-container {
     display: none;
   }
-
   .registro-formulario-container {
     background: none;
     padding: 0;
   }
-
   .formulario-card {
     box-shadow: none;
     max-width: 100%;

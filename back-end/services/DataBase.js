@@ -1,20 +1,20 @@
 // Librarys 
 const mysql = require('mysql')
+require('dotenv').config();
 
 class DataBase {
     constructor() {
-        this.conection = null
-        this.createConnection()
+        this.conection = this.createConnection()
     }
     
     // Create conection function
     createConnection() {
-        return this.conection = mysql.createConnection({
-            host: "127.0.0.1",
-            database: "pets_heaven",
-            user: "root",
-            password: "",
-            port: 3306
+        return mysql.createConnection({
+            host: process.env.HOST_DB || "localhost",
+            database: process.env.NAME_DB || "pets_heaven",
+            user: process.env.USER_DB || "root",
+            password:process.env.PASSWORD_DB || "",
+            port: process.env.PORT_DB || 3306
         })
     }
 

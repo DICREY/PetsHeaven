@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router';
-import '../../../public/styles/Errores/notfound.css';
+import React from 'react'
+import { Link } from 'react-router'
+import '../../../public/styles/Errores/notfound.css'
 
 export const ErrorInternalServer = () => {
   return (
@@ -23,5 +23,5 @@ export const ErrorInternalServer = () => {
         </Link>
       </div>
     </section>
-  );
-};
+  )
+}

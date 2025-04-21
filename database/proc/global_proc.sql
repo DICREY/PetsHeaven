@@ -1,8 +1,4 @@
-<<<<<<< HEAD
--- Active: 1743091557662@@127.0.0.1@3306@pets_heaven
-=======
-
->>>>>>> f8c4990965e53bfb3a8647e0a570dd21c8fa75be
+-- Active: 1743971322762@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchServices()
 BEGIN
     SELECT
@@ -21,33 +17,28 @@ BEGIN
     LIMIT 40;
 END //
 
-CREATE PROCEDURE pets_heaven.SearchRoles(
-    IN p_attribue VARCHAR(100)
+CREATE PROCEDURE pets_heaven.Login(
+    IN p_firstData VARCHAR(100)
 )
 BEGIN
     SELECT
         u.nom_usu,
         u.ape_usu,
-        u.fec_nac_usu,
-        u.tip_doc_usu,
         u.doc_usu,
-        u.dir_usu,
-        u.cel_usu,
-        u.cel2_usu,
-        u.email_usu,
         u.cont_usu,
-        r.nom_rol
+        GROUP_CONCAT(r.nom_rol SEPARATOR ', ') AS roles
     FROM
         usuarios u
     JOIN
-        otorgar_roles oro ON oro.id_rol = u.id_usu
+        otorgar_roles otr ON otr.id_usu = u.id_usu
     JOIN
-        roles r ON oro.id_rol = r.id_rol
+        roles r ON otr.id_rol = r.id_rol
     WHERE
         u.estado = 1
         AND (
-            u.doc_usu = p_attribue OR 
-            u.email_usu LIKE p_attribue
+            u.doc_usu = p_firstData OR 
+            u.email_usu = p_firstData
         )
+    GROUP BY u.nom_usu
     LIMIT 40;
 END //

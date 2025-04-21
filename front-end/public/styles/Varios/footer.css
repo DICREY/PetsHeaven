@@ -2,6 +2,8 @@
 .footer {
   background-color: white;
   width: 100%;
+  border-top: 1px solid #e5e7eb;
+  padding: 1rem 0;
 }
 
 .contenedor-footer {
@@ -11,60 +13,206 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1rem;
 }
 
 /* Logo y derechos */
 .logo-derechos {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 1rem;
+  text-align: center;
+  gap: 0.5rem;
 }
 
 .logo-footer {
-  width: 30px;
-  height: 30px;
-  margin-right: 0.5rem;
+  width: 40px;
+  height: 40px;
 }
 
 .texto-footer {
   color: #6b7280;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
 }
 
 /* Enlaces legales */
 .enlaces-legales {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .enlace-footer {
   color: #4b5563;
   text-decoration: none;
   font-size: 0.875rem;
-  transition: color 0.3s ease;
+  transition: color 0.2s;
 }
 
 .enlace-footer:hover {
-  color: #06b6d4;
+  color: #00bcd4;
 }
 
+/* ===== RESPONSIVE: MÓVIL PEQUEÑO (< 480px) ===== */
+@media (max-width: 479px) {
+  .contenedor-footer {
+    padding: 0.75rem;
+  }
 
-/* Responsive */
-@media (min-width: 768px) {
+  .logo-footer {
+    width: 35px;
+    height: 35px;
+  }
+
+  .texto-footer {
+    font-size: 0.7rem;
+  }
+
+  .enlace-footer {
+    font-size: 0.8rem;
+  }
+}
+
+/* ===== RESPONSIVE: MÓVIL (480px - 767px) ===== */
+@media (min-width: 480px) and (max-width: 767px) {
+  .logo-footer {
+    width: 38px;
+    height: 38px;
+  }
+
+  .texto-footer {
+    font-size: 0.75rem;
+  }
+}
+
+/* ===== RESPONSIVE: TABLET (768px - 1023px) ===== */
+@media (min-width: 768px) and (max-width: 1023px) {
   .contenedor-footer {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    padding: 1rem 2rem;
   }
 
-  .logo-derechos,
-  .redes {
-    margin-bottom: 0;
+  .logo-derechos {
+    flex-direction: row;
+    text-align: left;
+    gap: 0.75rem;
   }
 
   .enlaces-legales {
     flex-direction: row;
     gap: 1.5rem;
+  }
+}
+
+/* ===== RESPONSIVE: IPAD PRO Y TABLETS GRANDES (1024px - 1199px) ===== */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .contenedor-footer {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 3rem;
+  }
+
+  .logo-derechos {
+    flex-direction: row;
+    text-align: left;
+    gap: 1rem;
+  }
+
+  .enlaces-legales {
+    flex-direction: row;
+    gap: 2rem;
+  }
+
+  .logo-footer {
+    width: 42px;
+    height: 42px;
+  }
+
+  .texto-footer {
+    font-size: 0.875rem;
+  }
+
+  .enlace-footer {
+    font-size: 0.9rem;
+  }
+}
+
+/* ===== RESPONSIVE: ESCRITORIO Y SUPERIOR (>= 1200px) ===== */
+@media (min-width: 1200px) {
+  .contenedor-footer {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 2rem;
+  }
+
+  .logo-derechos {
+    flex-direction: row;
+    text-align: left;
+    gap: 1rem;
+  }
+
+  .enlaces-legales {
+    flex-direction: row;
+    gap: 2.5rem;
+  }
+
+  .logo-footer {
+    width: 45px;
+    height: 45px;
+  }
+
+  .texto-footer {
+    font-size: 0.875rem;
+  }
+
+  .enlace-footer {
+    font-size: 0.9rem;
+  }
+}
+
+/* ===== RESPONSIVE: ESCRITORIO GRANDE (>= 1536px) ===== */
+@media (min-width: 1536px) {
+  .contenedor-footer {
+    max-width: 1400px;
+    padding: 1.5rem 2rem;
+  }
+
+  .logo-footer {
+    width: 48px;
+    height: 48px;
+  }
+
+  .texto-footer {
+    font-size: 0.9rem;
+  }
+
+  .enlace-footer {
+    font-size: 0.95rem;
+  }
+}
+
+/* Estilos para impresión */
+@media print {
+  .footer {
+    border-top: 1px solid #ddd;
+    background: none;
+  }
+
+  .contenedor-footer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .logo-derechos {
+    margin-bottom: 0.5rem;
+  }
+
+  .enlaces-legales {
+    display: none; /* Ocultar enlaces en impresión */
   }
 }

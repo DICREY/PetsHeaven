@@ -1,0 +1,344 @@
+/* Imports  */
+@import url("../vars.css");
+@import url("../global.css");
+
+*{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Estructura principal */
+.pet-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+.pet-modal-content {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    width: 100%;
+    gap: 1.1rem;
+    max-width: 80vw;
+    max-height: 90vh;
+    position: relative;
+    box-shadow: var(--shadow-lg);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.pet-modal-close {
+    cursor: pointer;
+    position: fixed;
+    display: flex;
+    top: 6vh;
+    right: 11vw;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border: none;
+    border-radius: 50%;
+    color: var(--gray-600);
+    background-color: #dbdbdb28;
+    transition: all 0.2s;
+}
+
+.pet-modal-close:hover {
+    background-color: var(--gray-100);
+    color: var(--azulturquesa);
+}
+
+/* Header */
+.pet-header {
+    display: flex;
+    gap: -1rem;
+    align-items: center;
+}
+
+.pet-avatar-container {
+    position: relative;
+    padding: 1rem;
+    flex-shrink: 0;
+}
+
+.pet-avatar {
+    height: 8rem;
+    width: 8rem;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    border: 0.3rem solid var(--primary-light);
+}
+
+.pet-status {
+    position: absolute;
+    bottom: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.2rem;
+}
+
+.status-badge, .weight-badge {
+    padding: 0.3rem 0.7rem;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.status-badge {
+    background-color: var(--gray-200);
+    color: var(--gray-700);
+    font-size: calc(var(--font-size) - 0.14rem);
+    font-weight: 520;
+} 
+
+.status-active {
+    background-color: var(--primary-light);
+    color: var(--azulturquesa);
+}
+
+.weight-badge {
+    background-color: var(--primary);
+    color: var(--white);
+    font-weight: bold;
+    font-size: calc(var(--font-size) - 0.14rem);
+}
+
+.pet-main-info {
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: -0.7rem;
+    flex: 1;
+    gap: 0.6rem;
+}
+
+.pet-main-info h1 {
+    font-size: calc(var(--font-size) + 0.5rem);
+    font-weight: 600;
+    color: var(--azulturquesa);
+}
+
+.pet-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    gap: 0.6rem;
+}
+
+.pet-meta span {
+    padding: 0.1rem 0.5rem;
+    background-color: var(--gray-100);
+    border-radius: 0.2rem;
+    font-size: calc(var(--font-size) - 0.2rem);
+    color: var(--gray-700);
+}
+
+/* .species {
+    background-color: var(--primary-light) !important;
+    color: var(--azulturquesa) !important;
+} */
+
+.pet-age {
+    padding: 0.2rem 0.5rem;
+    color: var(--gray-700);
+    font-size: calc(var(--font-size) - 0.2rem);
+    font-weight: 400;
+    border-radius: 4px;
+    background-color: var(--gray-100);
+}
+
+/* Pestañas */
+.pet-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--gray-200);
+    margin: 0 -24px;
+    padding: 0 24px;
+}
+
+.tab-active {
+    padding: 12px 16px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--gray-500);
+    transition: all 0.2s;
+    font-size: var(--font-size);
+}
+
+.link-active {
+    color: var(--azulturquesa);
+    border-bottom-color: var(--primary);
+}
+
+/* Contenido */
+.pet-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.info-card {
+    background-color: var(--gray-50);   
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    border: 1px solid var(--gray-200);
+}
+
+.info-card h2 {
+    margin: 0 0 1rem 0;
+    font-size: var(--font-size);
+    font-weight: 600;
+    color: var(--azulturquesa);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.info-label {
+    font-size: var(--font-size);
+    color: var(--gray-600);
+    font-weight: bold;
+}
+
+.info-value {
+    font-size: var(--font-size);
+    color: var(--gray-600);
+    text-align: right;
+}
+
+/* Tarjeta de propietario */
+.owner-card {
+    grid-column: span 2;
+}
+
+.owner-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.owner-main {
+    flex: 1;
+}
+
+.owner-name {
+    display: block;
+    padding: 0.2rem;
+    font-size: var(--font-size);
+    font-weight: bold;
+    color: var(--gray-600);
+    margin-bottom: 4px;
+}
+
+.owner-type {
+    display: inline-block;
+    font-size: var(--font-size);
+    font-weight: 544;
+    background-color: var(--primary-light);
+    color: var(--azulturquesa);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.owner-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--font-size);
+    color: var(--gray-700);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.contact-item:hover {
+    color: var(--azulturquesa);
+}
+
+/* Acciones rápidas */
+.quick-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 1rem;
+}
+
+.action-btn {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.7rem;
+    gap: 0.5rem;
+    font-size: calc(var(--font-size) - 0.5px);
+    font-weight: bold;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    border-radius: var(--border-radius);
+    background-color: var(--white);
+    transition: all 0.2s;
+}
+
+.action-btn:hover {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+/* Dynamic class  */
+.inactive {
+    display: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .pet-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .pet-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .owner-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .quick-actions {
+        flex-direction: row;
+    }
+}
