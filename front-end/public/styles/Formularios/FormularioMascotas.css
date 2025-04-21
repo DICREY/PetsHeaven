@@ -2,20 +2,7 @@
 @import url("../vars.css");
 @import url("../global.css");
 
-/* Estilos base del modal */
-main.loginContMascota {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
+/* Estilos base del formulario */
 section.formContMascota {
   background-color: var(--white);
   border-radius: var(--border-radius);
@@ -40,7 +27,7 @@ header.formHeadMascota {
 .formTituloMascota {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #00BCD4;
+  color: #00bcd4;
   margin-bottom: 3px;
 }
 
@@ -55,9 +42,8 @@ header.formHeadMascota {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  
+  margin-bottom: 30px;
 }
-
 
 .imgPrevContMascota {
   height: 8rem;
@@ -67,6 +53,8 @@ header.formHeadMascota {
   object-position: center;
   border: 0.3rem solid var(--primary-light);
   cursor: pointer; /* Indica que es clickeable */
+  background-size: cover;
+  background-position: center;
 }
 
 /* Icono de carga dentro del círculo si no hay imagen */
@@ -81,32 +69,32 @@ header.formHeadMascota {
 
 /* Contenedor de botones */
 .botonesMascota {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 1rem;
 }
 
 .btn-container {
   display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 1rem;
-    border-radius: var(--border-radius);
-    font-size: var(--font-size);
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s;
-    border: none;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 1rem;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
 }
 
-.btn-container.secundary{
+.btn-container.secundary {
   background-color: var(--white);
   color: var(--primary);
   border: 1px solid var(--primary);
 }
 
-.btn-container.secundary:hover{
+.btn-container.secundary:hover {
   background-color: var(--primary-light);
 }
 
@@ -124,35 +112,6 @@ header.formHeadMascota {
   cursor: not-allowed;
 }
 
-/* Opciones de imagen (botón cambiar y nombre) */
-.opcionesImgMascota {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  margin-top: 8px;
-}
-
-.btnEliminarImgMascota {
-  background-color: transparent;
-  color: #777;
-  border: none;
-  padding: 4px 8px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.8em;
-  transition: color 0.2s ease-in-out;
-}
-
-.btnEliminarImgMascota:hover {
-  color: #333;
-}
-
-.nomArchivoMascota {
-  font-size: 0.75em;
-  color: #999;
-}
-
 /* Grid para campos del formulario */
 fieldset.contPasoMascota {
   border: none;
@@ -161,7 +120,6 @@ fieldset.contPasoMascota {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 15px;
-  margin-top: 20px;
 }
 
 /* Ajustes para campos específicos */
@@ -169,7 +127,7 @@ fieldset.contPasoMascota {
   margin-bottom: 15px;
 }
 
-label {
+.grupoCampoMascota label {
   display: block;
   margin-bottom: 5px;
   font-weight: 500;
@@ -181,8 +139,8 @@ label {
   color: #d32f2f;
 }
 
-input,
-select {
+.grupoCampoMascota input,
+.grupoCampoMascota select {
   width: 100%;
   padding: 10px 12px;
   border: 1px solid #ddd;
@@ -192,8 +150,8 @@ select {
   box-sizing: border-box;
 }
 
-input:focus,
-select:focus {
+.grupoCampoMascota input:focus,
+.grupoCampoMascota select:focus {
   outline: none;
   border-color: var(--primary); /* Usando el color primario del pet-header */
 }
@@ -210,23 +168,6 @@ select:focus {
   display: block;
 }
 
-/* Spinner */
-.spinner {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 2px solid var(--primary); /* Usando el color primario del pet-header */
-  border-radius: 50%;
-  border-top-color: white;
-  animation: spin 1s ease-in-out infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 /* Fieldset y legend */
 legend.sr-only {
   position: absolute;
@@ -238,4 +179,25 @@ legend.sr-only {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  section.formContMascota {
+    max-width: 90vw;
+    padding: 16px;
+  }
+
+  fieldset.contPasoMascota {
+    grid-template-columns: 1fr;
+  }
+
+  .supContBotonesMascota {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .botonesMascota {
+    width: 100%;
+  }
 }

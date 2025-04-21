@@ -10,7 +10,6 @@ import { GetData } from '../Varios/Requests'
 import { getRoles } from '../Varios/Util'
 import { EditPetButton } from '../Pets/EditPet'
 import { PetDetails } from '../Pets/PetDetails'
-import { FormularioRegMascota } from '../Formularios/FormularioMascotas'
 import { GlobalTable } from '../InterfazAdmin/GlobalTable'
 
 // Import Styles 
@@ -125,10 +124,10 @@ export function GesMascota({ URL = "" }) {
                     <Dog className="iconotitulogesmascota" size={20} />
                     Gestión de mascotas
                   </h1>
-                  <button className="botongesmascota" onClick={() => setRegister(true)}>
+                  <a href="mascota/registro"><button className="botongesmascota" onClick={() => setRegister(true)}>
                     <Plus size={16} className="iconoplusadminhome" />
                     Registrar mascota
-                  </button>
+                  </button></a>
                 </div>
 
                 <h2 className="subtitulopanelgesmascota">Mascotas registradas</h2>
@@ -188,14 +187,6 @@ export function GesMascota({ URL = "" }) {
                 petData={selectedPet}
                 open={editMode}
                 onSave={(state) => setEditMode(state)}
-            />
-          )
-        }
-        {register && (
-            <FormularioRegMascota 
-              open={register}
-              URL={mainURL}
-              onRegist={state => setRegister(state)}
             />
           )
         }
