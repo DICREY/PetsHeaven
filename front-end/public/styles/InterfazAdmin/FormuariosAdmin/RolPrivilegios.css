@@ -6,7 +6,7 @@
   .rol-privilegios-container h2 {
     font-size: 16px;
     font-weight: 500;
-    color: #374151;
+    color: #64748b;
     margin-top: 0;
     margin-bottom: 12px;
   }
@@ -33,10 +33,10 @@
     align-items: flex-start;
     margin-bottom: 8px;
   }
-  
+   
   .etiqueta-rol {
     font-size: 14px;
-    color: #374151;
+    color: #64748b;
     width: 150px;
     text-align: right;
     padding-right: 16px;

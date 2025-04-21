@@ -8,7 +8,6 @@ import Registro from "./Componentes/Formularios/Registro"
 import ForgotPassword from "./Componentes/Formularios/ForgotPassword"
 import { HomeAdmin } from "./Componentes/InterfazAdmin/HomeAdmin"
 import { GesUsuario } from "./Componentes/InterfazAdmin/GesUsuario"
-import { GesPropietario } from "./Componentes/InterfazAdmin/GesPropietario"
 import { GesMascota } from "./Componentes/InterfazAdmin/GesMascota"
 import { Pets } from "./Componentes/Pets/Pets"
 import { NotFound } from "./Componentes/Errores/NotFound"
@@ -16,7 +15,9 @@ import { ErrorInternalServer } from "./Componentes/Errores/ErrorInternalServer"
 import { getRoles } from './Componentes/Varios/Util'
 import VeterinariaPage from "./Componentes/VeterinariaPage"
 import { ConfiguracionUsuario } from "./Componentes/InterfazAdmin/FormulariosAdmin/RegistroUsu"
-import { FormularioRegMascota } from "./Componentes/Formularios/FormularioMascotas"
+import { FormularioRegMascotas } from "./Componentes/Formularios/FormularioMascotas"
+import { RegistroPro } from "./Componentes/InterfazAdmin/FormulariosAdmin/RegistroPro"
+
 
 
 
@@ -75,17 +76,17 @@ export default function App () {
         <Route path="usuario/registro" element={
           <AdminRoute children={<ConfiguracionUsuario URL={URL} />} />} >
         </Route>
-        <Route path="mascota/registro" element={
-          <AdminRoute children={<FormularioRegMascota URL={URL} />} />} >
+        <Route path="propietario/registro" element={
+          <AdminRoute children={<RegistroPro URL={URL} />} />} >
         </Route>
 
 
         {/* Vet routes */}
-        <Route path="gestion/propietarios" element={
-          <VetRoute children={<GesPropietario URL={URL}/>} />} >
-        </Route>
         <Route path="gestion/mascotas" element={
           <VetRoute children={<GesMascota URL={URL}/>} />} >
+        </Route>
+        <Route path="mascota/registro" element={
+          <AdminRoute children={<FormularioRegMascotas URL={URL} />} />} >
         </Route>
 
 

@@ -9,7 +9,6 @@
     margin-left: 0;
 }
 
-/* Media queries para ajustar el margen izquierdo según el tamaño de pantalla */
 @media (min-width: 1200px) {
     .contenedorgesmascota {
         width: calc(100% - 280px);
@@ -18,14 +17,12 @@
 
 @media (min-width: 1440px) {
     .contenedorgesmascota {
-        margin-left: 300px;
         width: calc(100% - 300px);
     }
 }
 
 @media (min-width: 1920px) {
     .contenedorgesmascota {
-        margin-left: 320px;
         width: calc(100% - 320px);
     }
 }

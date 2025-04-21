@@ -117,13 +117,6 @@ export const NavBarAdmin = () => {
             }
 
             <li className="itemnavadmin">
-              <a href="/gestion/propietarios" className="enlacenavadmin">
-                <User className="icononavadmin" />
-                <span>Propietarios</span>
-              </a>
-            </li>
-
-            <li className="itemnavadmin">
               <a href="/gestion/mascotas" className="enlacenavadmin">
                 <Cat className="icononavadmin" />
                 <span>Mascotas</span>

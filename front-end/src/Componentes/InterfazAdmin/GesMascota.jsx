@@ -14,6 +14,7 @@ import { GlobalTable } from '../InterfazAdmin/GlobalTable'
 
 // Import Styles 
 import "../../../public/styles/InterfazAdmin/GesMascota.css"
+import { href } from "react-router"
 
 // Main component 
 export function GesMascota({ URL = "" }) {
@@ -121,7 +122,7 @@ export function GesMascota({ URL = "" }) {
                   <Dog className="iconotitulogesmascota" size={20} />
                   Gestión de mascotas
                 </h1>
-                <button className="botongesmascota" onClick={() => setRegister(true)}>
+                <button className="botongesmascota" onClick={() => window.location.href = "/mascota/registro"}>
                   <Plus size={16} className="iconoplusadminhome" />
                   Registrar mascota
                 </button>
@@ -155,14 +156,6 @@ export function GesMascota({ URL = "" }) {
               petData={selectedPet}
               open={editMode}
               onSave={(state) => setEditMode(state)}
-          />
-        )
-      }
-      {register && (
-          <FormularioRegMascota 
-            open={register}
-            URL={mainURL}
-            onRegist={state => setRegister(state)}
           />
         )
       }

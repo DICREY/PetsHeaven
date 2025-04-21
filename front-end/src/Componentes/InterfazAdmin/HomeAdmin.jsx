@@ -111,7 +111,7 @@ export function HomeAdmin({ URL = "" }) {
                 </div>
               </div>
 
-              <button className="botonadminhome">
+              <button className="botonadminhome" onClick={() =>  window.location.href = "/propietario/registro"} >
                 <Plus size={16} className="iconoplusadminhome" />
                 Registrar propietario
               </button>

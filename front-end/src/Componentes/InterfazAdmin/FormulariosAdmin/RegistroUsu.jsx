@@ -48,10 +48,10 @@ export const ConfiguracionUsuario = () => {
               <span className="creacion-regusuario">Creación</span>
             </div>
             <div className="acciones-regusuario">
-              <a href="/gestion/usuarios"><button className="atras-regusuario">
+              <button className="atras-regusuario" onClick={() => window.location.href = "/gestion/usuarios"}>
                 <ChevronLeft size={16} />
                 <span className="texto-btn-regusuario">Atrás</span>
-              </button></a>
+              </button>
               <button className="guardar-regusuario">Guardar</button>
             </div>
           </div>
@@ -121,7 +121,7 @@ export const ConfiguracionUsuario = () => {
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Tipo de documento</label>
                     <select className="campo-regusuario">
-                      <option value="">Seleccione tipo</option>
+                      <option disabled selected>Seleccione tipo</option>
                       <option value="cc">Cédula de Ciudadanía</option>
                       <option value="ce">Cédula de Extranjería</option>
                       <option value="pasaporte">Pasaporte</option>
@@ -161,29 +161,6 @@ export const ConfiguracionUsuario = () => {
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Confirmación Correo</label>
                     <input type="email" placeholder="Confirme su correo" className="campo-regusuario" />
-                  </div>
-                </div>
-
-                <div className="grupo-regusuario firma-grupo">
-                  <label className="etiqueta-regusuario">Firma</label>
-                  <div className="firma-regusuario">
-                    <div className="caja-firma-regusuario">
-                      {signatureImage ? (
-                        <img src={signatureImage || "/placeholder.svg"} alt="Firma" className="firma-imagen" />
-                      ) : (
-                        "Firma N/D"
-                      )}
-                    </div>
-                    <button className="editar-regusuario" onClick={() => signatureInputRef.current.click()}>
-                      <Pencil size={16} />
-                    </button>
-                    <input
-                      type="file"
-                      ref={signatureInputRef}
-                      onChange={handleSignatureImageChange}
-                      accept="image/*"
-                      className="input-file-hidden"
-                    />
                   </div>
                 </div>
               </div>
