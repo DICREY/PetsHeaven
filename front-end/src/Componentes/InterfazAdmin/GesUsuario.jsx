@@ -1,16 +1,17 @@
 // Librarys 
 import React, { useEffect, useState } from "react"
-import { Key, Plus} from "lucide-react"
+import { Plus} from "lucide-react"
 
 // Imports 
 import '../../../public/styles/InterfazAdmin/GesUsuario.css'
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GetData } from '../Varios/Requests'
+import { divideList } from '../Varios/Util'
 import { Loader } from '../Errores/Loader'
 import { GlobalTable } from './GlobalTable'
 
 export function GesUsuario({ URL = "" }) {
-  const mainUrl = `${URL}/user/all/all`
+  const mainUrl = `${URL}/user/all`
   const [users,setUsers] = useState([])
   const [usersAlmac,setUsersAlmac] = useState([])
   const [loading,setLoading] = useState(true)
@@ -21,9 +22,6 @@ export function GesUsuario({ URL = "" }) {
     try {
       if (token){
         const data = await GetData(mainUrl,token)
-        setUsers(data)
-        setUsersAlmac(data)
-        setLoading(false)
         setHeaders({
           'Nombres': 'nom_usu',
           'Apellidos': 'ape_usu',
@@ -33,11 +31,15 @@ export function GesUsuario({ URL = "" }) {
           'Celular': 'cel_usu',
           'Correo': 'email_usu'
         })
+        setUsers(divideList(data,4))
+        setUsersAlmac(data)
+        setLoading(false)
       } else window.location.href = "/34"
     } catch (err) {
       console.log(err)
     }
   }
+
   const handleSearch = term => {
     const termLower = term.toLowerCase()
   
@@ -49,7 +51,7 @@ export function GesUsuario({ URL = "" }) {
       )
     })
 
-    if (find) setUsers(find)
+    if (find) setUsers(divideList(find,4))
   }
 
   useEffect(() => {
@@ -69,79 +71,34 @@ export function GesUsuario({ URL = "" }) {
 
 
   return (
-    <>
-      {
-        loading ? (
-          <Loader />
-        ) : (
-          <div className="contenedorgesusuario">
-          <NavBarAdmin />
+    <main className="contenedorgesusuario">
+      <NavBarAdmin />
 
-          <div className="principalgesusuario">
-            <div className="tarjetagesusuario">
-              <div className="contenidogesusuario">
-                <div className="encabezadogesusuario">
-                  <div className="titulogesusuario">
-                    <h1 className="textogesusuario">Gestión de usuarios</h1>
-                    <span className="subtitulogesusuario">/ Administración</span>
-                  </div>
-                </div>
-
-                <div className="subencabezadogesusuario">
-                  <div className="veterinariagesusuario">
-                    <h2 className="subtitulovegesusuario">Usuarios vinculados a la veterinaria: Petsheaven</h2>
-                  </div>
-                  <div className="accionesgesusuario">
-                  <a href="/usuario/registro" className="botonregistrargesusuario">
-                    <Plus size={16} className="iconoplusgesusuario"/>
-                    Registrar usuario
-                  </a>
-                  </div>
-                </div>
-
-                <div className="controlestablagesusuario">
-                  <div className="mostrargesusuario">
-                    <span>Mostrar</span>
-                    <select className="selectgesusuario">
-                      <option value="10">10</option>
-                      <option value="25">25</option>
-                      <option value="50">50</option>
-                      <option value="100">100</option>
-                    </select>
-                    <span>registros</span>
-                  </div>
-                  <div className="buscargesusuario">
-                    <span>Buscar:</span>
-                    <input
-                      type="text"
-                      className="inputbuscargesusuario"
-                      placeholder=""
-                      onChange={(e) => handleSearch(e.target.value)}
-                    />
-                  </div>
-                </div>
-
-                {/* Table  */}
-                <GlobalTable 
-                  data={users}
-                  headers={headers} 
-                /> 
-
-                <div className="paginaciongesusuario">
-                  <div className="infopaginaciongesusuario">
-                    <span>Mostrando registros del 1 al 2 de un total de 2 registros.</span>
-                  </div>
-                  <div className="controlesgesusuario">
-                    <button className="botonpaginaciongesusuario">Anterior</button>
-                    <button className="botonpaginaciongesusuario activogesusuario">1</button>
-                    <button className="botonpaginaciongesusuario">Siguiente</button>
-                  </div>
-                </div>
+      <section className="principalgesusuario">
+        <section className="tarjetagesusuario">
+          <div className="contenidogesusuario">
+            <header className="encabezadogesusuario">
+              <div className="titulogesusuario">
+                <h1 className="textogesusuario">Gestión de usuarios</h1>
+                <span className="subtitulogesusuario">/ Administración</span>
               </div>
-            </div>
+              <a href="/usuario/registro" className="botongesmascota">
+                <Plus size={16} className="iconoplusadminhome" />
+                Registrar Usuario
+              </a>
+            </header>
+            
+
+            {/* Table  */}
+            <GlobalTable 
+              subtitle={'Usuarios vinculados a la veterinaria: Petsheaven'}
+              data={users}
+              headers={headers}
+            /> 
+
           </div>
-        </div>
-      )}
-    </>
+        </section>
+      </section>
+    </main>
   )
 }

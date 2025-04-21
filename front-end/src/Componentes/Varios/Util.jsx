@@ -12,6 +12,15 @@ export const Logout = () => {
   }
 }
 
+// Dividir lista en partes 
+export const divideList = (array = [], size = 0) => {
+  const result = []
+  for (let i = 0; i < array.length; i += size) {
+    result.push(array.slice(i, i + size))
+  }
+  return result
+}
+
 // decodificar token
 export const decodeJWT = (token = "") => {
   try {

@@ -3,19 +3,19 @@ const { Router } = require('express')
 const { hash } = require('bcrypt')
 
 // Imports
-const User = require('../services/Users.services')
+const Owner = require('../services/Owner.services')
 const { authenticateJWT, ValidatorRol } = require('../middleware/validator.handler')
 
 // vars
-const user = new User()
+const owner = new Owner()
 const Route = Router()
 
 // Middleware 
-Route.use(authenticateJWT)
+// Route.use(authenticateJWT)
 
 // Routes
-Route.get('/all', ValidatorRol("administrador"), async (req,res) => {
-    const search = await user.findAll()
+Route.get('/all', ValidatorRol("veterinario"), async (req,res) => {
+    const search = await owner.findAll()
 
     // Verifiy if exists
     if (!search.result) res.status(404).json({ message: "Usuarios no encontrado"})
@@ -28,10 +28,11 @@ Route.get('/all', ValidatorRol("administrador"), async (req,res) => {
     }
 })
 
-Route.get('/all:by', ValidatorRol("administrador"), async (req,res) => {
+
+Route.get('/all:by', ValidatorRol("veterinario"), async (req,res) => {
     // Vars 
     const by = req.params.by
-    const search = await user.findAllBy(by)
+    const search = await owner.findAllBy(by)
 
     // Verifiy if exists
     if (!search.result) res.status(404).json({ message: "Usuarios no encontrados"})
@@ -44,10 +45,10 @@ Route.get('/all:by', ValidatorRol("administrador"), async (req,res) => {
     }
 })
 
-Route.get('/by:by', ValidatorRol("administrador"), async (req,res) => {
+Route.get('/pet:by', ValidatorRol("veterinario"), async (req,res) => {
     // Vars 
     const by = req.params.by
-    const search = await user.findBy(by)
+    const search = await owner.findAllByPet(by)
 
     // Verifiy if exist
     if (!search.result) res.status(404).json({ message: "Usuario no encontrado" })
@@ -60,36 +61,17 @@ Route.get('/by:by', ValidatorRol("administrador"), async (req,res) => {
     }
 })
 
-Route.post('/register', async (req,res) => {
+Route.delete('/delete', ValidatorRol("veterinario"), async (req,res) => {
     // Vars 
-    const saltRounds = 15
-    const body = req.body
-    
-    // Verifiy if exist
-    const find = await user.findBy(toString(body.numeroDocumento))
-    if (find.result[0][0].nom_usu) res.status(302).json({ message: "Usuario ya existe" })
-        
-    try {
-        const create = await user.create({hash_pass: await hash(body.password,saltRounds), ...body})
-        res.status(201).json(create)
-    } catch(err) {
-        if(err.status) return res.status(err.status).json(err.message)
-        res.status(500).json({ message: err })
-    }
-})
+    const by = req.body.by
+    const search = await owner.findAllBy(by)
 
-Route.put('/modify', ValidatorRol("administrador"), async (req,res) => {
-    // Vars 
-    const { body } = req
-    const saltRounds = 15
-        
     // Verifiy if exist
-    const find = await user.findBy(toString(body.numeroDocumento))
-    if (!find.result) res.status(404).json({ message: "Usuario no encontrado" })
+    if (!search.result[0][0]) res.status(404).json({ message: "Usuario no encontrado" })
 
     try {
-        const modified = await user.modify({hash_pass: await hash(body.password,saltRounds), ...body})
-        res.status(200).json(modified)
+        const deleted = await owner.deleteOwner(by)
+        if (deleted.deleted) return res.status(200).json(deleted.message)
     } catch (err) {
         if(err.status) return res.status(err.status).json(err.message)
         res.status(500).json({ message: err })
@@ -99,7 +81,7 @@ Route.put('/modify', ValidatorRol("administrador"), async (req,res) => {
 // Route.get('/all/time:by', async (req,res) => {
 //     // Vars 
 //     const by = req.params.by
-//     const search = await user.findAllTimeBy(by)
+//     const search = await owner.findAllTimeBy(by)
 
 //     // Verifiy if exists
 //     if (!search.result) res.status(404).json({ message: "Usuarios no encontrados"})

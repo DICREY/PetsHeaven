@@ -119,34 +119,6 @@ class User{
             database.conection.end()
         })
     }
-    // function to find owner
-    async findOwner() {
-        return new Promise((res,rej) => {
-            // vars
-            const proc = "CALL SearchPeoplesOwner();"
-
-            // conect to database
-            let database = new DataBase()
-            database.conect()
-
-            if (database) database.conection.query(proc,(err,result) => {
-                if(err) rej({ message: err })
-                if(!result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() => {
-                    res({
-                        message: "Owner founds",
-                        result: result
-                    })
-                },2000)
-            })
-
-            // close conection 
-            database.conection.end()
-        })
-    }
     
     // function to register
     async create(data) {
@@ -184,6 +156,7 @@ class User{
             database.conection.end()
         })
     }
+
     // function to modify
     async modify(data) {
         return new Promise((res,rej) => {

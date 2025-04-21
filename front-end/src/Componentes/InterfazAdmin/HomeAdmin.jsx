@@ -1,87 +1,102 @@
-import React from "react"
+// Librarys 
+import React, { useState, useEffect } from "react"
 import { Search, ChevronUp, Plus, FileText, User, PawPrint } from "lucide-react"
+import swal from 'sweetalert'
+
+// Imports 
 import {NavBarAdmin} from '../BarrasNavegacion/NavBarAdmi';
+import { GetData } from '../Varios/Requests'
+import { errorStatusHandler, formatDate, divideList } from '../Varios/Util'
+
+// Import styles 
 import '../../../public/styles/InterfazAdmin/HomeAdmin.css'
 
-// dartos ejemplo uwu 
-const propietariosEjemplo = [
-  {
-    id: 1,
-    nombre: "Ana García",
-    identificador: "1234567890",
-    telefono: "555-123-4567",
-    fechaCreacion: "15/04/2023",
-    mascotas: [
-      {
-        id: 101,
-        nombre: "Luna",
-        tipo: "Hembra",
-      },
-      {
-        id: 102,
-        nombre: "Max",
-        tipo: "Macho",
-      },
-    ],
-    ultimaCita: {
-      fecha: "10/04/2023",
-      hora: "09:30am",
-      tipo: "Consulta",
-    },
-  },
-  {
-    id: 2,
-    nombre: "Carlos Rodríguez",
-    identificador: "0987654321",
-    telefono: "555-987-6543",
-    fechaCreacion: "20/03/2023",
-    mascotas: [
-      {
-        id: 103,
-        nombre: "Rocky",
-        tipo: "Macho",
-      },
-    ],
-    ultimaCita: {
-      fecha: "05/04/2023",
-      hora: "11:00am",
-      tipo: "Vacunación",
-    },
-  },
-  {
-    id: 3,
-    nombre: "María López",
-    identificador: "5678901234",
-    telefono: "555-567-8901",
-    fechaCreacion: "10/02/2023",
-    mascotas: [
-      {
-        id: 104,
-        nombre: "Bella",
-        tipo: "Hembra",
-      },
-      {
-        id: 105,
-        nombre: "Toby",
-        tipo: "Macho",
-      },
-      {
-        id: 106,
-        nombre: "Nina",
-        tipo: "Hembra",
-      },
-    ],
-    ultimaCita: {
-      fecha: "12/04/2023",
-      hora: "16:15pm",
-      tipo: "Control",
-    },
-  },
-]
+// Main component
+export function HomeAdmin({ URL = "" }) {
+  // Vars 
+  const mainUrl = `${URL}/owner`
+  const [datas,setDatas] = useState([])
+  const [page,setPage] = useState(1)
 
-export function HomeAdmin() {
+  const GetDataOwners = async () => {
+    const token = localStorage.getItem("token")
+    try {
+      if (token){
+        const data = await GetData(`${mainUrl}/all`,token)
+        if (data) formatDatas(data)
+      }
+    } catch (err) {
+      if(err.status) {
+        const message = errorStatusHandler(err.status)
+        swal({
+          icon: "error",
+          title: "Error",
+          text: message
+        })
+      } else if (err.message){
+        swal({
+          icon: "error",
+          title: "Error",
+          text: err.message
+        })
+      } else console.log(err)
+    }
+  }
+
+  const formatDatas = (data) => {
+    const formattedData = data.map((item) => {
+      // Check if mascotas exists and is a string
+      if (!item.mascotas || typeof item.mascotas !== 'string') {
+        return { ...item, mascotas: [] }
+      }
+  
+      // Process pet data with error handling
+      const petList = item.mascotas.split(';').filter(Boolean)
+        .map(petString => {
+          const petData = petString.split(',')
+          return {
+            nom_mas: petData[0] || '',
+            esp_mas: petData[1] || '',
+            col_mas: petData[2] || '',
+            raz_mas: petData[3] || '',
+            ali_mas: petData[4] || '',
+            fec_nac_mas: petData[5] || '',
+            pes_mas: petData[6] || '',
+            gen_mas: petData[7] || '',
+            est_rep_mas: petData[8] || '',
+            fot_mas: petData[9] || '',
+            fec_cre_mas: petData[11] || ''
+          }
+        })
+  
+      return { ...item, mascotas: petList }
+    })
+  
+    setDatas(formattedData)
+  }
+
+  // Ejecutar el fetch para traer datos
+  useEffect(() => {
+    // Vars 
+    const REFRESH_INTERVAL = 2 * 60 * 1000 // 2 minutos
+    let intervalId
+
+    // Execute the request
+    GetDataOwners()
+    setDatas(divideList(datas,4))
+
+    // Configure interval
+    intervalId = setInterval(() => {
+      GetDataOwners()
+      setDatas(divideList(datas,4))
+    }, REFRESH_INTERVAL)
+
+    // Clean
+    return () => clearInterval(intervalId)
+  }, [])
+
   return (
-    <div className="contenedoradminhome">
+    <main className="contenedoradminhome">
       <NavBarAdmin/>
 
       <div className="principaladminhome">
@@ -141,7 +156,7 @@ export function HomeAdmin() {
                   <tr className="encabezadotablaadminhome">
                     <th className="celdaencabezadoadminhome">Nombre</th>
                     <th className="celdaencabezadoadminhome">Identificador</th>
-                    <th className="celdaencabezadoadminhome">Teléfono</th>
+                    <th className="celdaencabezadoadminhome">Celular</th>
                     <th className="celdaencabezadoadminhome">
                       <div className="mascotasencabezadoadminhome">Mascotas</div>
                     </th>
@@ -155,32 +170,32 @@ export function HomeAdmin() {
                   </tr>
                 </thead>
                 <tbody>
-                  {propietariosEjemplo.map((propietario) => (
-                    <tr key={propietario.id} className="filaadminhome">
+                  {datas.map((propietario) => (
+                    <tr key={propietario.doc_usu} className="filaadminhome">
                       <td className="celdaadminhome" data-label="Nombre">
                         <div className="infoadminhome">
-                          <span className="nombreadminhome">{propietario.nombre}</span>
-                          <span className="fechaadminhome">Creado el {propietario.fechaCreacion}</span>
+                          <span className="nombreadminhome">{propietario.nom_usu}</span>
+                          <span className="fechaadminhome">Creado el {formatDate(propietario.fec_cre_usu)}</span>
                         </div>
                       </td>
                       <td className="celdaadminhome" data-label="Identificador">
-                        {propietario.identificador}
+                        {propietario.doc_usu}
                       </td>
                       <td className="celdaadminhome" data-label="Teléfono">
-                        {propietario.telefono}
+                        {propietario.cel_usu}
                       </td>
                       <td className="celdaadminhome" data-label="Mascotas">
                         {propietario.mascotas && propietario.mascotas.length > 0 ? (
                           <div className="mascotasadminhome">
-                            {propietario.mascotas.map((mascota) => (
-                              <div key={mascota.id} className="mascotaitemadminhome">
+                            {propietario.mascotas.map((mascota, index) => (
+                              <div key={index} className="mascotaitemadminhome">
                                 <span>
-                                  {mascota.nombre} - {mascota.tipo}
+                                  {mascota.nom_mas} - {mascota.esp_mas}
                                 </span>
                               </div>
                             ))}
                           </div>
-                        ) : null}
+                        ) : "-- Empty --"}
                       </td>
                       <td className="celdaadminhome" data-label="Última gestión">
                         {propietario.ultimaCita ? (
@@ -190,10 +205,10 @@ export function HomeAdmin() {
                               {propietario.ultimaCita.fecha} - {propietario.ultimaCita.hora}
                             </div>
                             <div className="tipocitaadminhome">
-                              {propietario.nombre} - {propietario.ultimaCita.tipo}
+                              {propietario.nom_usu} - {propietario.ultimaCita.tipo}
                             </div>
                           </div>
-                        ) : null}
+                        ) : "-- Empty --"}
                       </td>
                       <td className="celdaadminhome" data-label="Acciones">
                         <button className="accionadminhome">
@@ -203,7 +218,7 @@ export function HomeAdmin() {
                     </tr>
                   ))}
                 </tbody>
-              </table>
+              </table> 
             </div>
 
             <div className="paginacionadminhome">
@@ -211,7 +226,7 @@ export function HomeAdmin() {
                 <span className="contadoradminhome">10</span>
                 <ChevronUp size={14} className="flechaadminhome" />
                 <span className="textocontadoradminhome">
-                  Visualizando 1 - {propietariosEjemplo.length} de {propietariosEjemplo.length} resultados
+                  Visualizando {page} - {datas.length || 1} de {datas.length} resultados
                 </span>
               </div>
               <div className="huellasadminhome">
@@ -222,6 +237,6 @@ export function HomeAdmin() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   )
 }

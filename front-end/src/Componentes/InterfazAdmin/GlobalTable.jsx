@@ -13,19 +13,22 @@ export class GlobalTable extends Component {
         super(props)
 
         this.state = {
-          clickCount: 0
+          clickCount: 0,
+          page: 1
         }
         // Declare params
         this.void = () => console.log("ver")
         this.onMore = this.props.watch || this.void
         this.onEdit = this.props.edit || this.void
+        this.handleSearch = this.props.handleSearch || this.void
     }
 
     handleClick = (pet) => {
       const { clickCount } = this.state
-      this.setState( prev => ({
-        clickCount: prev + 1
+      this.setState( () => ({
+        clickCount: clickCount + 1
       }))
+
       
       setTimeout(() => {
         if (clickCount === 1) {
@@ -37,9 +40,26 @@ export class GlobalTable extends Component {
       }, 300)
     }
 
+    prevPage = () => {
+      const { page } = this.state
+      if (page != 1) this.setState( () => ({
+          page: page - 1
+        }))
+    }
+
+    nextPage = () => {
+      const { data } = this.props
+      const { page } = this.state
+      if (page < data.length) this.setState( () => ({
+          page: page + 1
+        }))
+    }
+    
     renderCell = (item, header) => {
         // Lógica para tipos de datos comunes
-        switch (header.dataType) {
+        if (header.includes("fec")) return formatDate(item[header])
+          
+        switch (item[header]) {
           case "date":
             return formatDate(item[header]);
           case "array":
@@ -52,10 +72,30 @@ export class GlobalTable extends Component {
     }
 
     render () {
-        const { headers, data } = this.props
+        const { headers, data, subtitle } = this.props
+        const { page } = this.state
         const headersKeys = Object.keys(headers)
         const headersValues = Object.values(headers)
         return (
+          <main>
+            <h2 className="subtitle-panel-gestion">{subtitle}</h2>
+            <nav className="controles-gestion">
+              <div className="btns-gestion">
+                <span>Mostrar</span>
+                <select className="select-gestion">
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+                <span>registros</span>
+              </div>
+
+              <div className="buscar-gestion">
+                <span>Buscar:</span>
+                <input type="text" className="input-gestion" onChange={e => this.handleSearch(e.target.value)}/>
+              </div>
+            </nav>
             <section className={`global-table-container`}>
               <table className="global-table">
                 <thead>
@@ -71,8 +111,8 @@ export class GlobalTable extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {data?.map((item,index) => (
-                    <tr key={index}>
+                  {data[page-1]?.map((item,index) => (
+                    <tr key={index} onClick={() => this.handleClick(item)}>
                       {headersValues.map((header) => (
                         <td>
                           {this.renderCell(item, header)}
@@ -91,6 +131,28 @@ export class GlobalTable extends Component {
                 </tbody>
               </table>
             </section>
+            <footer className="paginacion-gestion">
+              <div className="info-paginacion">Mostrando registros del 1 al {data.length} de un total de {data.length} registros.</div>
+              <div className="btns-container-paginacion">
+                <button 
+                  type="button" 
+                  className="btn-paginacion" 
+                  onClick={this.prevPage}                  
+                  >
+                  Anterior
+                </button>
+                <button 
+                  type="button" 
+                  className="btn-paginacion btn-active"
+                  >{page}</button>
+                <button 
+                  type="button" 
+                  className="btn-paginacion"
+                  onClick={this.nextPage}
+                >Siguiente</button>
+              </div>
+            </footer>
+          </main>
         )
     }
 }

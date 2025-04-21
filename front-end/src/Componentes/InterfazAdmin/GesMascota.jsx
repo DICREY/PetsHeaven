@@ -7,7 +7,7 @@ import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { Loader } from '../Errores/Loader'
 import { SubNotFound } from '../Errores/NotFound'
 import { GetData } from '../Varios/Requests'
-import { getRoles } from '../Varios/Util'
+import { getRoles, divideList } from '../Varios/Util'
 import { EditPetButton } from '../Pets/EditPet'
 import { PetDetails } from '../Pets/PetDetails'
 import { GlobalTable } from '../InterfazAdmin/GlobalTable'
@@ -42,9 +42,6 @@ export function GesMascota({ URL = "" }) {
           const admin = roles.some(role => role.toLowerCase() === "administrador")
           admin?setIsAdmin(true):setIsAdmin(false)
 
-          setLoading(false)
-          setPetsData(pets)
-          setPetsAlmac(pets)
           setHeaders({
             Nombre: 'nom_mas',
             Especie: 'esp_mas',
@@ -53,6 +50,10 @@ export function GesMascota({ URL = "" }) {
             Propietario: 'nom_usu',
             Estado: 'estado',
           })
+          
+          setLoading(false)
+          setPetsData(divideList(pets,4))
+          setPetsAlmac(pets)
         } else window.location.href = "/34"
       } catch (err) {
         err.message? swal({
@@ -89,7 +90,7 @@ export function GesMascota({ URL = "" }) {
       )
     })
 
-    if (find) setPetsData(find)
+    if (find) setPetsData(divideList(find,4))
   }
 
   // Ejecutar el fetch para traer datos
@@ -109,89 +110,62 @@ export function GesMascota({ URL = "" }) {
     }, [])
 
   return (
-    <>
-    {loading?(
-      <Loader />
-    ):(
-      <main className="appgesmascota">
-        <NavBarAdmin />
-        {
-          petsData?(
-            <section className="contenedorgesmascota">
-              <div className="panelgesmascota">
-                <div className="cabeceragesmascota">
-                  <h1 className="titulogesmascota">
-                    <Dog className="iconotitulogesmascota" size={20} />
-                    Gestión de mascotas
-                  </h1>
-                  <a href="mascota/registro"><button className="botongesmascota" onClick={() => setRegister(true)}>
-                    <Plus size={16} className="iconoplusadminhome" />
-                    Registrar mascota
-                  </button></a>
-                </div>
-
-                <h2 className="subtitulopanelgesmascota">Mascotas registradas</h2>
-
-                <div className="controlesgesmascota">
-                  <div className="mostrargesmascota">
-                    <span>Mostrar</span>
-                    <select className="selectgesmascota">
-                      <option value="10">10</option>
-                      <option value="25">25</option>
-                      <option value="50">50</option>
-                      <option value="100">100</option>
-                    </select>
-                    <span>registros</span>
-                  </div>
-
-                  <div className="buscargesmascota">
-                    <span>Buscar:</span>
-                    <input type="text" className="inputgesmascota" onChange={e => handleSearch(e.target.value)}/>
-                  </div>
-                </div>
-
-                <GlobalTable 
-                  data={petsData}
-                  headers={headers}
-                  edit={() => setEditMode(true)}
-                  watch={openModal}
-                />
-
-                <div className="paginaciongesmascota">
-                  <div className="infogesmascota">Mostrando registros del 1 al 3 de un total de 3 registros.</div>
-                  <div className="botonesgesmascota">
-                    <button className="btngesmascota" disabled>
-                      Anterior
-                    </button>
-                    <button className="btngesmascota btnactivogesmascota">1</button>
-                    <button className="btngesmascota">Siguiente</button>
-                  </div>
-                </div>
+    <main className="appgesmascota">
+      <NavBarAdmin />
+      {
+        petsData?(
+          <section className="contenedorgesmascota">
+            <div className="panelgesmascota">
+              <div className="cabeceragesmascota">
+                <h1 className="titulogesmascota">
+                  <Dog className="iconotitulogesmascota" size={20} />
+                  Gestión de mascotas
+                </h1>
+                <button className="botongesmascota" onClick={() => setRegister(true)}>
+                  <Plus size={16} className="iconoplusadminhome" />
+                  Registrar mascota
+                </button>
               </div>
-            </section>
-          ):(
-            <SubNotFound />
-          )
-        }
-        {showModal && selectedPet && (
-            <PetDetails 
-                datas={selectedPet} 
-                open={showModal} 
-                admin={isAdmin}
-                ready={(state) => setShowModal(state)}
-                editMode={() => setEditMode(true)} />
-        )}
-        {editMode && (
-            <EditPetButton 
-                URL={mainURL}
-                petData={selectedPet}
-                open={editMode}
-                onSave={(state) => setEditMode(state)}
-            />
-          )
-        }
-      </main>
-    )}
-    </>
+
+              <GlobalTable 
+                subtitle={'Mascotas Registradas'}
+                data={petsData}
+                headers={headers}
+                handleSearch={handleSearch}
+                edit={() => setEditMode(true)}
+                watch={openModal}
+              />
+            </div>
+          </section>
+        ):(
+          <SubNotFound />
+        )
+      }
+      {showModal && selectedPet && (
+          <PetDetails 
+              datas={selectedPet} 
+              open={showModal} 
+              admin={isAdmin}
+              ready={(state) => setShowModal(state)}
+              editMode={() => setEditMode(true)} />
+      )}
+      {editMode && (
+          <EditPetButton 
+              URL={mainURL}
+              petData={selectedPet}
+              open={editMode}
+              onSave={(state) => setEditMode(state)}
+          />
+        )
+      }
+      {register && (
+          <FormularioRegMascota 
+            open={register}
+            URL={mainURL}
+            onRegist={state => setRegister(state)}
+          />
+        )
+      }
+    </main>
   )
 }
