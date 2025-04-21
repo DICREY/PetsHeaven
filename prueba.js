@@ -61,7 +61,7 @@ const codePass = async (pass = "") => {
     console.log(codHash)
 }
 // const decodePass = async (pass = "") => {
-    
+
 //     console.log(codHash)
 // }
 

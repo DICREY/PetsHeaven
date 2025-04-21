@@ -34,6 +34,8 @@ export function GesUsuario({ URL = "" }) {
         setUsers(divideList(data,4))
         setUsersAlmac(data)
         setLoading(false)
+        console.log(data)
+        console.log(usersAlmac)
       } else window.location.href = "/34"
     } catch (err) {
       console.log(err)
@@ -41,17 +43,21 @@ export function GesUsuario({ URL = "" }) {
   }
 
   const handleSearch = term => {
+    console.log(usersAlmac)
     const termLower = term.toLowerCase()
-  
+    console.log(usersAlmac)
     const find = usersAlmac.filter(user => {
       // Campos específicos donde buscar
       const searchFields = ['nom_usu', 'email_usu', 'cel_usu', 'ape_usu']
-      return searchFields.some(field => 
+      return searchFields.some(field => {
+        
         user[field]?.toLowerCase().includes(termLower)
-      )
+        console.log(user[field])
+      })
     })
+    console.log(find)
 
-    if (find) setUsers(divideList(find,4))
+    if (find) setUsers(find)
   }
 
   useEffect(() => {
@@ -93,6 +99,7 @@ export function GesUsuario({ URL = "" }) {
             <GlobalTable 
               subtitle={'Usuarios vinculados a la veterinaria: Petsheaven'}
               data={users}
+              handleSearch={handleSearch}
               headers={headers}
             /> 
 

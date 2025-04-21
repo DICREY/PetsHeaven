@@ -15,9 +15,8 @@ import { ErrorInternalServer } from "./Componentes/Errores/ErrorInternalServer"
 import { getRoles } from './Componentes/Varios/Util'
 import VeterinariaPage from "./Componentes/VeterinariaPage"
 import { ConfiguracionUsuario } from "./Componentes/InterfazAdmin/FormulariosAdmin/RegistroUsu"
-import { FormularioRegMascotas } from "./Componentes/Formularios/FormularioMascotas"
-import { RegistroPro } from "./Componentes/InterfazAdmin/FormulariosAdmin/RegistroPro"
-
+import { FormularioRegMascota } from "./Componentes/Formularios/FormularioMascotas"
+import { GesAgendaGeneral } from "./Componentes/InterfazAdmin/GesAgendaGeneral"
 
 
 
@@ -76,8 +75,11 @@ export default function App () {
         <Route path="usuario/registro" element={
           <AdminRoute children={<ConfiguracionUsuario URL={URL} />} />} >
         </Route>
-        <Route path="propietario/registro" element={
-          <AdminRoute children={<RegistroPro URL={URL} />} />} >
+        <Route path="mascota/registro" element={
+          <AdminRoute children={<FormularioRegMascota URL={URL} />} />} >
+        </Route>
+        <Route path="calendario/general" element={
+          <AdminRoute children={<GesAgendaGeneral URL={URL} />} />} >
         </Route>
 
 
@@ -97,6 +99,7 @@ export default function App () {
         <Route path="user/register" element={<Registro URL={URL}/>} />
         <Route path="user/recuperar" element={<ForgotPassword />} />
         <Route path="internal" element={<ErrorInternalServer />} />
+        <Route path="prueba/calendario" element={<GesAgendaGeneral />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

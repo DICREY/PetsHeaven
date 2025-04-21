@@ -10,3 +10,4 @@ vite
 npm i react react-dom react-hook-form boxicons react-router lucide-react @supabase/supabase-js @emailjs/browser sweetalert sweetalert2 framer-motion
 npm i -D vite 
 npm i -D sass-embedded
+npm install  @fullcalendar/core @fullcalendar/react @fullcalendar/daygrid @fullcalendar/interaction @fullcalendar/timegrid @fullcalendar/list
