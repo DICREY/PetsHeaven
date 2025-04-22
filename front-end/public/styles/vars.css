@@ -45,7 +45,7 @@
     --font-general: "Zain", sans-serif;
 }
 html {
-    font-size: 6px;
+    font-size: 16px;
 }
 @media (700px < width) {
     html {

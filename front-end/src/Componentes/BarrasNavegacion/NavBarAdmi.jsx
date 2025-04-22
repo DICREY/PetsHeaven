@@ -134,7 +134,7 @@ export const NavBarAdmin = () => {
 
               <ul className={`submenunavadmin ${agendaAbierta ? "abiertonavadmin" : "cerradonavadmin"}`}>
                 <li>
-                  <a href="/agenda/general" className="subenlacenavadmin">
+                  <a href="/calendario/general" className="subenlacenavadmin">
                     <CalendarRange className="iconosubnavadmin" />
                     <span>Agenda General</span>
                   </a>
