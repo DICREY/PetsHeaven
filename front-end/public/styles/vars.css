@@ -21,7 +21,7 @@
     --red: #c20300;
     --border-input: #c4c4c4;
     --border-focus-input:#4a90e233;
-    --black-box: #00000025;
+    --black-box: #00000025; 
     --primary: #00BCD4;
     --primary-light: #E0F7FA;
     --secondary: #607D8B;
@@ -45,12 +45,7 @@
     --font-general: "Zain", sans-serif;
 }
 html {
-    font-size: 6px;
-}
-@media (700px < width) {
-    html {
-        font-size: 12px;
-    }
+    font-size: 16px;
 }
 @media (1000px < width) {
     html {
@@ -59,7 +54,7 @@ html {
 }
 @media (2500px < width) {
     html {
-        font-size: 24px;
+        font-size: 28px;
     }
 }
 @media (3500px < width) {

@@ -1,4 +1,4 @@
--- Active: 1740764800080@@127.0.0.1@3306@pets_heaven
+-- Active: 1743681932025@@127.0.0.1@3306@pets_heaven
 DROP DATABASE IF EXISTS pets_heaven;
 CREATE DATABASE IF NOT EXISTS pets_heaven;
 
@@ -27,20 +27,20 @@ CREATE TABLE pets_heaven.usuarios(
     cont_usu VARCHAR(255) NOT NULL,
     gen_usu VARCHAR(100) NOT NULL,
     estado BOOLEAN DEFAULT(1) NOT NULL,
-    fec_cre_usu DATE DEFAULT(NOW()) NOT NULL
+    fec_cre_usu DATE DEFAULT(NOW())
 );
 
 CREATE TABLE pets_heaven.otorgar_roles(
     id_rol INT NOT NULL,INDEX(id_rol),FOREIGN KEY(id_rol) REFERENCES roles(id_rol) ON DELETE CASCADE ON UPDATE CASCADE,
     id_usu INT NOT NULL,INDEX(id_usu),FOREIGN KEY(id_usu) REFERENCES usuarios(id_usu) ON DELETE CASCADE ON UPDATE CASCADE,
-    fec_oto DATE DEFAULT(NOW()) NOT NULL,
+    fec_oto DATE DEFAULT(NOW()),
     PRIMARY KEY(id_rol,id_usu)
 );
 
 CREATE TABLE pets_heaven.otorgar_permisos(
     id_per INT NOT NULL,INDEX(id_per),FOREIGN KEY(id_per) REFERENCES permisos(id_per) ON DELETE CASCADE ON UPDATE CASCADE,
     id_usu INT NOT NULL,INDEX(id_usu),FOREIGN KEY(id_usu) REFERENCES usuarios(id_usu) ON DELETE CASCADE ON UPDATE CASCADE,
-    fec_oto DATE DEFAULT(NOW()) NOT NULL,
+    fec_oto DATE DEFAULT(NOW()),
     PRIMARY KEY(id_per,id_usu)
 );
 
@@ -53,8 +53,10 @@ CREATE TABLE pets_heaven.veterinarios(
     id_vet INT PRIMARY KEY,INDEX(id_vet),FOREIGN KEY(id_vet)  REFERENCES usuarios(id_usu) ON DELETE CASCADE ON UPDATE CASCADE,
     especialidad VARCHAR(100) NOT NULL,
     horarios VARCHAR(100) NOT NULL,
+    num_tar_vet VARCHAR(100) NOT NULL,
     cat_vet INT NOT NULL,INDEX(cat_vet), FOREIGN KEY(cat_vet) REFERENCES categorias_veterinario(id_cat) ON DELETE CASCADE ON UPDATE CASCADE,
-    fot_vet TEXT DEFAULT("https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg") NOT NULL
+    fot_tar_vet TEXT DEFAULT("no-registrado"),
+    fot_vet TEXT DEFAULT("https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg")
 );
 CREATE TABLE pets_heaven.propietarios(
     id_pro INT PRIMARY KEY NOT NULL,INDEX(id_pro),FOREIGN KEY (id_pro) REFERENCES usuarios(id_usu) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -108,7 +110,7 @@ CREATE TABLE pets_heaven.servicios(
     des_ser TEXT NOT NULL,
     tec_des_ser TEXT NOT NULL,
     img_ser TEXT NOT NULL,
-    estado BOOLEAN DEFAULT(1) NOT NULL
+    estado BOOLEAN DEFAULT(1)
 );
 
 CREATE TABLE pets_heaven.citas(

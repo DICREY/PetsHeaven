@@ -2,7 +2,7 @@
 import { GetData } from '../Varios/Requests'
 import { decodeJWT, errorStatusHandler, getRoles } from '../Varios/Util'
 import { Loader } from '../Errores/Loader'
-import { SubNotFound } from '../Errores/NotFound'
+import { NotFound } from '../Errores/NotFound'
 import { EditPetButton } from './EditPet'
 import { PetDetails } from './PetDetails'
 
@@ -116,7 +116,7 @@ export const Pets = ({URL = ""}) => {
                             ))}
                         </section>
                         ):(
-                            <SubNotFound />
+                            <NotFound />
                         )
                     }
 

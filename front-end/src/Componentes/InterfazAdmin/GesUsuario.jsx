@@ -1,5 +1,6 @@
 // Librarys 
 import React, { useEffect, useState } from "react"
+import { Outlet } from "react-router-dom"
 import { Plus} from "lucide-react"
 
 // Imports 
@@ -68,7 +69,7 @@ export function GesUsuario({ URL = "" }) {
                 <h1 className="textogesusuario">Gestión de personal</h1>
                 <span className="subtitulogesusuario">/ Administración</span>
               </div>
-              <button className="botongesmascota" onClick={() => window.location.href = "/usuario/registro"}>
+              <button className="botongesmascota" onClick={() => window.location.href = "/admin/usuario/registro"}>
                 <Plus size={16} className="iconoplusadminhome" />
                 Registrar personal
               </button>
@@ -87,6 +88,7 @@ export function GesUsuario({ URL = "" }) {
           </div>
         </section>
       </section>
+      <Outlet />
     </main>
   )
 }

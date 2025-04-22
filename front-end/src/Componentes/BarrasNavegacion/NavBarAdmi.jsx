@@ -90,7 +90,7 @@ export const NavBarAdmin = () => {
             {
               isAdmin && (
                 <li className="itemnavadmin">
-                  <a href="/administracion" className="enlacenavadmin">
+                  <a href="/admin/administracion" className="enlacenavadmin">
                     <Settings className="icononavadmin" />
                     <span>Administración</span>
                   </a>
@@ -99,7 +99,7 @@ export const NavBarAdmin = () => {
             }
 
             <li className="itemnavadmin">
-              <a href="/consultorio" className="enlacenavadmin">
+              <a href="/admin/consultorio" className="enlacenavadmin">
                 <Stethoscope className="icononavadmin" />
                 <span>Consultorio</span>
               </a>
@@ -108,7 +108,7 @@ export const NavBarAdmin = () => {
             {
               isAdmin && (
                 <li className="itemnavadmin">
-                  <a href="/gestion/usuarios" className="enlacenavadmin">
+                  <a href="/admin/gestion/usuarios" className="enlacenavadmin">
                     <Users className="icononavadmin" />
                     <span>Personal</span>
                   </a>
@@ -134,7 +134,7 @@ export const NavBarAdmin = () => {
 
               <ul className={`submenunavadmin ${agendaAbierta ? "abiertonavadmin" : "cerradonavadmin"}`}>
                 <li>
-                  <a href="/agenda/general" className="subenlacenavadmin">
+                  <a href="/calendario/general" className="subenlacenavadmin">
                     <CalendarRange className="iconosubnavadmin" />
                     <span>Agenda General</span>
                   </a>
