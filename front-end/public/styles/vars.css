@@ -47,11 +47,6 @@
 html {
     font-size: 16px;
 }
-@media (700px < width) {
-    html {
-        font-size: 12px;
-    }
-}
 @media (1000px < width) {
     html {
         font-size: 16px;
@@ -59,7 +54,7 @@ html {
 }
 @media (2500px < width) {
     html {
-        font-size: 24px;
+        font-size: 28px;
     }
 }
 @media (3500px < width) {
