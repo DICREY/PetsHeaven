@@ -65,19 +65,19 @@ export function GesUsuario({ URL = "" }) {
           <div className="contenidogesusuario">
             <header className="encabezadogesusuario">
               <div className="titulogesusuario">
-                <h1 className="textogesusuario">Gestión de usuarios</h1>
+                <h1 className="textogesusuario">Gestión de personal</h1>
                 <span className="subtitulogesusuario">/ Administración</span>
               </div>
               <button className="botongesmascota" onClick={() => window.location.href = "/usuario/registro"}>
                 <Plus size={16} className="iconoplusadminhome" />
-                Registrar Usuario
+                Registrar personal
               </button>
             </header>
             
 
             {/* Table  */}
             <GlobalTable 
-              subtitle={'Usuarios vinculados a la veterinaria: Petsheaven'}
+              subtitle={'Personal vinculado a la veterinaria: Petsheaven'}
               data={users}
               fullData={usersAlmac}
               headersSearch={['nom_usu', 'email_usu', 'cel_usu', 'ape_usu']}

@@ -158,6 +158,7 @@
 }
 
 /* ========== SERVICES SECTION ========== */
+
 .seccion-servicios {
   padding: 2rem 0;
   background-color: var(--azul-claro);
@@ -803,11 +804,12 @@
     max-width: 1200px;
     margin: 0 auto;
   }
-
+ 
   /* 5 columnas para servicios con más espacio */
   .grid-servicios {
     grid-template-columns: repeat(5, 1fr);
     gap: 2rem;
+    
   }
 }
 

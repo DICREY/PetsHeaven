@@ -9,7 +9,7 @@ const RolPrivilegios = () => {
 
   return (
     <div className="rol-privilegios-container">
-      <h2>Perfil del usuario</h2>
+      <h2>Perfil del personal</h2>
       <div className="nota-admin">
         <InfoIcon size={16} className="info-icon" />
         <span>Esta configuración solo es editable por un rol administrador.</span>

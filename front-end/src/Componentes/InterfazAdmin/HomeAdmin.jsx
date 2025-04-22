@@ -120,7 +120,7 @@ export function HomeAdmin({ URL = "" }) {
             <div className="encabezadoadminhome">
               <div className="tituloadminhome">
                 <FileText className="iconoadminhome" />
-                <h1 className="textoadminhome">Lista de propietarios y mascotas</h1>
+                <h1 className="textoadminhome">Lista de usuarios y mascotas</h1>
                 <div className="decoracionadminhome">
                   <PawPrint className="huellaadminhome" />
                 </div>
@@ -128,13 +128,13 @@ export function HomeAdmin({ URL = "" }) {
 
               <button className="botonadminhome" onClick={() =>  window.location.href = "/propietario/registro"} >
                 <Plus size={16} className="iconoplusadminhome" />
-                Registrar propietario
+                Registrar usuario
               </button>
             </div>
 
             <div className="busquedaadminhome">
               <div className="seccionadminhome">
-                <label className="etiquetaadminhome">Propietario</label>
+                <label className="etiquetaadminhome">Usuario</label>
                 <div className="inputcontenedoradminhome">
                   <User className="inputiconoadminhome" />
                   <input
