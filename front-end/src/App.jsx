@@ -106,7 +106,6 @@ export default function App () {
         <Route path="user/register" element={<Registro URL={URL}/>} />
         <Route path="user/recuperar" element={<ForgotPassword />} />
         <Route path="internal" element={<ErrorInternalServer />} />
-        <Route path="prueba/calendario" element={<GesAgendaGeneral />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
