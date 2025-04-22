@@ -88,10 +88,10 @@ export function GesUsuario({ URL = "" }) {
                 <h1 className="textogesusuario">Gestión de usuarios</h1>
                 <span className="subtitulogesusuario">/ Administración</span>
               </div>
-              <a href="/usuario/registro" className="botongesmascota">
+              <button className="botongesmascota" onClick={() => window.location.href = "/usuario/registro"}>
                 <Plus size={16} className="iconoplusadminhome" />
                 Registrar Usuario
-              </a>
+              </button>
             </header>
             
 

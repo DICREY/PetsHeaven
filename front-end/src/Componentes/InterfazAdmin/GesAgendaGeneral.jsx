@@ -4,7 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
-import "./prueba.css";
+// import "./prueba.css";
 
 export const GesAgendaGeneral = () => {
     const [events, setEvents] = useState([
