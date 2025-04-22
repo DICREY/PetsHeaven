@@ -1,5 +1,6 @@
 // Librarys 
 import React, { useEffect, useState } from "react"
+import { Outlet } from "react-router-dom"
 import { Plus} from "lucide-react"
 
 // Imports 
@@ -87,6 +88,7 @@ export function GesUsuario({ URL = "" }) {
           </div>
         </section>
       </section>
+      <Outlet />
     </main>
   )
 }
