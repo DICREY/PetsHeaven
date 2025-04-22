@@ -1,6 +1,7 @@
 // Librarys 
 import React, {useEffect, useState} from "react"
-import { Dog, Eye, Plus } from "lucide-react"
+import { useNavigate } from "react-router-dom"
+import { Dog, Plus } from "lucide-react"
  
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
@@ -14,7 +15,6 @@ import { GlobalTable } from '../InterfazAdmin/GlobalTable'
 
 // Import Styles 
 import "../../../public/styles/InterfazAdmin/GesMascota.css"
-import { href } from "react-router"
 
 // Main component 
 export function GesMascota({ URL = "" }) {
@@ -26,10 +26,9 @@ export function GesMascota({ URL = "" }) {
   const [selectedPet, setSelectedPet] = useState(null)
   const [showModal, setShowModal] = useState(false)
   const [editMode,setEditMode] = useState(false)
-  const [register,setRegister] = useState(false)
   const [isAdmin,setIsAdmin] = useState(false)
   const [headers,setHeaders] = useState([])
-  const [clickCount, setClickCount] = useState(0)
+  const navigate = useNavigate()
 
   // Functions
   // fetch para traer datos
@@ -51,11 +50,11 @@ export function GesMascota({ URL = "" }) {
             Propietario: 'nom_usu',
             Estado: 'estado',
           })
-          
           setLoading(false)
-          setPetsData(divideList(pets,4))
           setPetsAlmac(pets)
-        } else window.location.href = "/34"
+          const shortPets = divideList(pets,4)
+          setPetsData(shortPets)
+        } else navigate("/34")
       } catch (err) {
         err.message? swal({
             icon: "error",
@@ -71,27 +70,6 @@ export function GesMascota({ URL = "" }) {
     setEditMode(false)
     setShowModal(true)
     document.body.style.overflow = 'hidden' // Deshabilita el scroll del body
-  }
-
-  // Cerrar sección de detalles
-  const closeModal = () => {
-    setShowModal(false)
-    document.body.style.overflow = 'auto' // Habilita el scroll del body
-  }
-
-  // Manejar busqueda 
-  const handleSearch = term => {
-    const termLower = term.toLowerCase()
-  
-    const find = petsAlmac.filter(pet => {
-      // Campos específicos donde buscar
-      const searchFields = ['nom_mas', 'raz_mas', 'esp_mas', 'est_rep_mas']
-      return searchFields.some(field => 
-        pet[field]?.toLowerCase().includes(termLower)
-      )
-    })
-
-    if (find) setPetsData(divideList(find,4))
   }
 
   // Ejecutar el fetch para traer datos
@@ -122,7 +100,7 @@ export function GesMascota({ URL = "" }) {
                   <Dog className="iconotitulogesmascota" size={20} />
                   Gestión de mascotas
                 </h1>
-                <button className="botongesmascota" onClick={() => window.location.href = "/mascota/registro"}>
+                <button className="botongesmascota" onClick={() => navigate("/mascota/registro")}>
                   <Plus size={16} className="iconoplusadminhome" />
                   Registrar mascota
                 </button>
@@ -131,8 +109,9 @@ export function GesMascota({ URL = "" }) {
               <GlobalTable 
                 subtitle={'Mascotas Registradas'}
                 data={petsData}
+                headersSearch={['nom_mas', 'raz_mas', 'esp_mas', 'est_rep_mas']}
+                fullData={petsAlmac}
                 headers={headers}
-                handleSearch={handleSearch}
                 edit={() => setEditMode(true)}
                 watch={openModal}
               />

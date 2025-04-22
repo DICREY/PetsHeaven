@@ -3,25 +3,42 @@ import React, { Component } from "react"
 import { Edit, MoreHorizontal } from "lucide-react"
 
 // Imports
-import { formatDate } from '../Varios/Util'
+import { formatDate, divideList } from '../Varios/Util'
 
 // Import Styles 
 import '../../../public/styles/InterfazAdmin/GlobalTable.css'
 
 export class GlobalTable extends Component {
     constructor (props) {
-        super(props)
+      super(props)
 
-        this.state = {
-          clickCount: 0,
-          page: 1
-        }
-        // Declare params
-        this.void = () => console.log("ver")
-        this.onMore = this.props.watch || this.void
-        this.onEdit = this.props.edit || this.void
-        this.handleSearch = this.props.handleSearch || this.void
+      this.state = {
+        clickCount: 0,
+        page: 1,
+        datas: this.props.data
+      }
+
+      // Declare params
+      this.void = () => console.log("ver")
+      this.onMore = this.props.watch || this.void
+      this.onEdit = this.props.edit || this.void
+      this.headersSearch = this.props.headersSearch || this.void
     }
+
+    handleSearch = (term = "", data = [] ) => {
+      const termLower = term.toLowerCase()
+      
+      const find = data.filter(pet => {
+        return this.headersSearch.some(field => 
+          pet[field]?.toLowerCase().includes(termLower)
+        )
+      })
+    
+      if (find) this.setState(() => ({
+          datas: divideList(find,4)
+        }))
+    }
+    
 
     handleClick = (pet) => {
       const { clickCount } = this.state
@@ -72,10 +89,11 @@ export class GlobalTable extends Component {
     }
 
     render () {
-        const { headers, data, subtitle } = this.props
-        const { page } = this.state
+        const { headers ,subtitle, fullData, data } = this.props
+        const { page, datas } = this.state
         const headersKeys = Object.keys(headers)
         const headersValues = Object.values(headers)
+        const info = datas[0]?datas:data
         return (
           <main>
             <h2 className="subtitle-panel-gestion">{subtitle}</h2>
@@ -93,7 +111,10 @@ export class GlobalTable extends Component {
 
               <div className="buscar-gestion">
                 <span>Buscar:</span>
-                <input type="text" className="input-gestion" onChange={e => this.handleSearch(e.target.value)}/>
+                <input
+                  type="text" 
+                  className="input-gestion" 
+                  onChange={e => this.handleSearch(e.target.value, fullData)}/>
               </div>
             </nav>
             <section className={`global-table-container`}>
@@ -111,7 +132,7 @@ export class GlobalTable extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {data[page-1]?.map((item,index) => (
+                  {info[page-1]?.map((item,index) => (
                     <tr key={index} onClick={() => this.handleClick(item)}>
                       {headersValues.map((header) => (
                         <td>
@@ -132,7 +153,7 @@ export class GlobalTable extends Component {
               </table>
             </section>
             <footer className="paginacion-gestion">
-              <div className="info-paginacion">Mostrando registros del 1 al {data.length} de un total de {data.length} registros.</div>
+              <div className="info-paginacion">Mostrando registros del 1 al {info.length} de un total de {fullData.length} registros.</div>
               <div className="btns-container-paginacion">
                 <button 
                   type="button" 

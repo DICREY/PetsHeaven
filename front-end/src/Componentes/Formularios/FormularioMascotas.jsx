@@ -4,7 +4,7 @@ import { useState, useRef } from 'react';
 import { Pencil, ChevronLeft, User, Shield, FileText, Lock } from "lucide-react"
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 
-export const FormularioRegMascotas = () => {
+export const FormularioRegMascotas = ({ URL = ""}) => {
   const [activeTab, setActiveTab] = useState("personal")
   const [profileImage, setProfileImage] = useState(null)
   const [signatureImage, setSignatureImage] = useState(null)
