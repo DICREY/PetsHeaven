@@ -16,6 +16,7 @@ import { getRoles } from './Componentes/Varios/Util'
 import VeterinariaPage from "./Componentes/VeterinariaPage"
 import { ConfiguracionUsuario } from "./Componentes/InterfazAdmin/FormulariosAdmin/RegistroUsu"
 import { FormularioRegMascotas } from "./Componentes/Formularios/FormularioMascotas"
+import { FormularioRegMascotas } from "./Componentes/Formularios/FormularioMascotas"
 import { GesAgendaGeneral } from "./Componentes/InterfazAdmin/GesAgendaGeneral"
 
 
@@ -88,7 +89,7 @@ export default function App () {
           <VetRoute children={<GesMascota URL={URL}/>} />} >
         </Route>
         <Route path="mascota/registro" element={
-          <AdminRoute children={<FormularioRegMascotas URL={URL} />} />} >
+          <VetRoute children={<FormularioRegMascotas URL={URL} />} />} >
         </Route>
 
 

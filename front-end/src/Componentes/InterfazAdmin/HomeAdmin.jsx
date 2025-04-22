@@ -16,7 +16,10 @@ export function HomeAdmin({ URL = "" }) {
   // Vars 
   const mainUrl = `${URL}/owner`
   const [datas,setDatas] = useState([])
+  const [datasAlmac,setDatasAlmac] = useState([])
   const [page,setPage] = useState(1)
+  const headersSearchUser = ['nom_usu', 'email_usu', 'cel_usu', 'ape_usu']
+  const headersSearchPet = ['nom_mas']
 
   const GetDataOwners = async () => {
     const token = localStorage.getItem("token")
@@ -71,8 +74,20 @@ export function HomeAdmin({ URL = "" }) {
   
       return { ...item, mascotas: petList }
     })
-  
+    setDatasAlmac(formattedData)
     setDatas(formattedData)
+  }
+
+  const handleSearch = (term = "", data = [], headers = [] ) => {
+    const termLower = term.toLowerCase()
+
+    const find = data.filter(pet => {
+      return headers.some(field => 
+        pet[field]?.toLowerCase().includes(termLower)
+      )
+    })
+  
+    if (find) setDatas(find)
   }
 
   // Ejecutar el fetch para traer datos
@@ -83,12 +98,12 @@ export function HomeAdmin({ URL = "" }) {
 
     // Execute the request
     GetDataOwners()
-    setDatas(divideList(datas,4))
+    // setDatas(divideList(datas,4))
 
     // Configure interval
     intervalId = setInterval(() => {
       GetDataOwners()
-      setDatas(divideList(datas,4))
+      // setDatas(divideList(datas,4))
     }, REFRESH_INTERVAL)
 
     // Clean
@@ -124,8 +139,9 @@ export function HomeAdmin({ URL = "" }) {
                   <User className="inputiconoadminhome" />
                   <input
                     className="campoadminhome"
-                    placeholder="Buscar por identificación, teléfono o nombre del propietario"
+                    placeholder="Buscar por identificación, teléfono o nombre del pAropietario"
                     type="text"
+                    onChange={e => handleSearch(e.target.value,datasAlmac, headersSearchUser)}
                   />
                 </div>
               </div>
@@ -138,6 +154,7 @@ export function HomeAdmin({ URL = "" }) {
                     className="campoadminhome"
                     placeholder="Buscar por nombre o identificador de la mascota"
                     type="text"
+                    onChange={e => handleSearch(e.target.value,datasAlmac, headersSearchPet)}
                   />
                 </div>
               </div>
