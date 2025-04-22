@@ -1,4 +1,6 @@
+// Librarys 
 import React, { useState, useRef } from 'react';
+import { Outlet } from 'react-router';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -199,6 +201,9 @@ export const GesAgendaGeneral = () => {
                     </div>
                 </div>
             )}
+
+            <Outlet />
+            
         </div>
     );
 };
