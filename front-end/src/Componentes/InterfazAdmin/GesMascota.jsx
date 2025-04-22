@@ -6,7 +6,7 @@ import { Dog, Plus } from "lucide-react"
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { Loader } from '../Errores/Loader'
-import { SubNotFound } from '../Errores/NotFound'
+import { NotFound} from '../Errores/NotFound'
 import { GetData } from '../Varios/Requests'
 import { getRoles, divideList } from '../Varios/Util'
 import { EditPetButton } from '../Pets/EditPet'
@@ -118,7 +118,7 @@ export function GesMascota({ URL = "" }) {
             </div>
           </section>
         ):(
-          <SubNotFound />
+          <NotFound/>
         )
       }
       {showModal && selectedPet && (

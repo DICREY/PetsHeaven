@@ -1,4 +1,63 @@
-@import url('../vars.css');
+.body{
+  display: flex;
+  justify-content: center ;
+  background-color: #b2ebf2;
+}
+.parent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 8px;
+}
+  
+.imagen {
+  background-image: url('https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Fondos/404.jpg');
+  background-position: center;
+  background-size: cover;
+  height: 60vh;
+  width: 30%;
+  min-height: 500px;
+  min-width: 400px;
+  grid-column: span 2 / span 2;
+  grid-row: span 3 / span 3;
+}
+
+.pet-home-button {
+  background: white;
+  color: #00BCD4;
+  border: none;
+  padding: 15px 35px;
+  font-size: 1.1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  box-shadow: 0 5px 15px rgba(58, 134, 255, 0.4);
+}
+
+.pet-home-button:hover {
+  background: var(--verdeaguamarina);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(107, 139, 255, 0.4);
+  color: white;
+}
+
+.pet-home-button i {
+  margin-right: 10px;
+}
+      
+
+
+
+
+
+
+
+
+/* @import url('../vars.css');
 
 .notfound-container {
   display: flex;
@@ -9,89 +68,32 @@
   overflow: hidden;
   position: relative;
   background-color: #b2ebf2;
+  padding: 2rem;
+  box-sizing: border-box;
 }
 
 .pet-glitch-container {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; 
+  align-items: center;
   z-index: 2;
   height: 60%;
-  width: 30%;
+  width: 100%;
+  max-width: 600px;
+  min-height: 300px; 
   text-align: center;
-  padding: 2rem;
+  padding: 2rem 1rem 2.5rem 1rem; 
   background-image: url('https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Fondos/404.jpg');
   background-position: center;
-  background-size: cover;
+  background-size: cover; 
   background-repeat: no-repeat;
+  border-radius: 20px;
+  
 }
 
-.pet-glitch-container p{
-  font-family: var(--font-general);
-  font-size: 1.5rem;
-  color: #555;
-  max-width: 500px;
-  margin-bottom: 2rem;
-  line-height: 1.6;
-}
 
-/* Glitch veterinario */
-.title-num {
-  font-size: 12rem;
-  font-weight: 900;
-  color: var(--verdeaguamarina);
-  position: relative;
-  margin: 0;
-  line-height: 1;
-  text-shadow: 5px 5px 0 #4ecdc4, -5px -5px 0 #66bdff;
-  animation: glitch 3s infinite alternate;
-}
-
-/* Texto temático */
-.sub-title {
-  font-family: var(--font-general);
-  font-size: 3rem;
-  color: var(--azulturquesa);
-  margin: 1rem 0;
-  font-weight: 600;
-}
-
-/* Elementos de mascotas */
-.pet-elements {
-  margin: 2rem 0;
-}
-
-.paw-icon {
-  font-size: 3rem;
-  display: inline-block;
-  animation: bounce 2s infinite;
-}
-
-/* Modificado: perro mira al centro */
-.pet-icond {
-  font-size: 2.5rem;
-  margin: 0 15px;
-  opacity: 0;
-  animation: fadeIn 1s forwards;
-  transform: scaleX(-1); 
-  display: inline-block;
-}
-
-.pet-iconc {
-  font-size: 2.5rem;
-  margin: 0 15px;
-  opacity: 0;
-  animation: fadeIn 1s forwards;
-}
-
-.pet-icon:nth-child(1) { animation-delay: 0.5s; }
-.pet-icon:nth-child(2) { animation-delay: 1s; }
-
-@keyframes fadeIn {
-  to { opacity: 1; }
-}
-
-/* Botón veterinario */
 .pet-home-button {
-  display: inline-block;
   background: white;
   color: #00BCD4;
   border: none;
@@ -100,10 +102,8 @@
   border-radius: 50px;
   cursor: pointer;
   transition: all 0.3s ease;
-  text-decoration: none;
   font-weight: 600;
   box-shadow: 0 5px 15px rgba(58, 134, 255, 0.4);
-  margin-top: 35rem;
 }
 
 .pet-home-button:hover {
@@ -117,13 +117,26 @@
   margin-right: 10px;
 }
 
-/* Huellas de fondo */
-.notfound-container::before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-size: 100px;
-  opacity: 0.1;
-  z-index: 1;
+@media (max-width: 768px) {
+  .pet-glitch-container {
+    padding: 2rem;
+    width: 90%;
+  }
+
+  .pet-home-button {
+    width: 100%;
+    font-size: 1rem;
+    padding: 12px 0;
+  }
 }
+
+@media (max-width: 480px) {
+  .pet-glitch-container {
+    padding: 1.5rem;
+  }
+
+  .pet-home-button {
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+} */
