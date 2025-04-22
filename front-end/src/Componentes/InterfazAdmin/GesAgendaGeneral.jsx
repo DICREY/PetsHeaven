@@ -1,6 +1,6 @@
 // Librarys 
 import React, { useState, useRef } from 'react';
-import { Outlet } from 'react-router';
+import { Outlet } from 'react-router-dom';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -10,6 +10,8 @@ import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi';
 import "./prueba.css";
 
 export const GesAgendaGeneral = () => {
+
+    //Eventos solo de prueba
     const [events, setEvents] = useState([
         {
             id: '1',
@@ -24,10 +26,16 @@ export const GesAgendaGeneral = () => {
         }
     ]);
 
+
+    //Vista Actual del usuario
     const [currentView, setCurrentView] = useState('dayGridMonth');
+    //Mostrar la descripcion en un pop up de la cita
     const [showEventModal, setShowEventModal] = useState(false);
+    //Mostrar el pop up de creacion de Cita
     const [showCreateModal, setShowCreateModal] = useState(false);
+    //Evento seleccionado
     const [selectedEvent, setSelectedEvent] = useState(null);
+    //Nuevo evento
     const [newEvent, setNewEvent] = useState({
         title: '',
         start: '',
@@ -38,6 +46,7 @@ export const GesAgendaGeneral = () => {
         propietario: '',
         telefono: ''
     });
+    //Fecha
     const [selectedDate, setSelectedDate] = useState('');
     const calendarRef = useRef(null);
 
@@ -151,7 +160,7 @@ export const GesAgendaGeneral = () => {
                 eventClick={handleEventClick}
                 editable={true}
                 dayMaxEvents={3}
-                moreLinkText={`+{num} más`}
+                moreLinkText={`Ver mas`}
                 height="calc(100vh - 120px)"
                 nowIndicator={true}
                 slotMinTime="08:00:00"
@@ -389,7 +398,7 @@ export const GesAgendaGeneral = () => {
             )}
 
             <Outlet />
-            
+
         </div>
 
         </div>            

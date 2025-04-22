@@ -1,5 +1,6 @@
 // Librarys 
 import React, { useState, useEffect } from "react"
+import { Outlet } from "react-router-dom"
 import { Search, ChevronUp, Plus, FileText, User, PawPrint } from "lucide-react"
 import swal from 'sweetalert'
 
@@ -254,6 +255,8 @@ export function HomeAdmin({ URL = "" }) {
           </div>
         </div>
       </div>
+
+      <Outlet />
     </main>
   )
 }

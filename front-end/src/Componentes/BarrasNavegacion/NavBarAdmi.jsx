@@ -90,7 +90,7 @@ export const NavBarAdmin = () => {
             {
               isAdmin && (
                 <li className="itemnavadmin">
-                  <a href="/administracion" className="enlacenavadmin">
+                  <a href="/admin/administracion" className="enlacenavadmin">
                     <Settings className="icononavadmin" />
                     <span>Administración</span>
                   </a>
@@ -99,7 +99,7 @@ export const NavBarAdmin = () => {
             }
 
             <li className="itemnavadmin">
-              <a href="/consultorio" className="enlacenavadmin">
+              <a href="/admin/consultorio" className="enlacenavadmin">
                 <Stethoscope className="icononavadmin" />
                 <span>Consultorio</span>
               </a>
@@ -108,7 +108,7 @@ export const NavBarAdmin = () => {
             {
               isAdmin && (
                 <li className="itemnavadmin">
-                  <a href="/gestion/usuarios" className="enlacenavadmin">
+                  <a href="/admin/gestion/usuarios" className="enlacenavadmin">
                     <Users className="icononavadmin" />
                     <span>Usuarios</span>
                   </a>
