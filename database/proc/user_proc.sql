@@ -1,4 +1,4 @@
--- Active: 1740764800080@@127.0.0.1@3306@pets_heaven
+-- Active: 1741175022404@@127.0.0.1@3306@pets_heaven
 DELIMITER //
 CREATE PROCEDURE pets_heaven.RegistPeoples(
     IN p_nom_usu VARCHAR(100),
@@ -37,6 +37,107 @@ BEGIN
     SET p_id_usuario = LAST_INSERT_ID();
 
     SELECT id_rol INTO p_id_rol FROM roles WHERE nom_rol = 'Usuario';
+
+    INSERT INTO otorgar_roles(id_usu,id_rol,fec_oto)
+    VALUES (p_id_usuario,p_id_rol,NOW());
+
+    COMMIT;
+    SET autocommit = 1;
+END //
+
+CREATE PROCEDURE pets_heaven.RegistVet(
+    IN p_nom_usu VARCHAR(100),
+    IN p_ape_usu VARCHAR(100),
+    IN p_fec_nac_usu DATE,
+    IN p_tip_doc_usu VARCHAR(10),
+    IN p_doc_usu VARCHAR(20),
+    IN p_dir_usu VARCHAR(100),
+    IN p_cel_usu VARCHAR(20),
+    IN p_cel2_usu VARCHAR(20),
+    IN p_email_usu VARCHAR(100),
+    IN p_cont_usu VARCHAR(255),
+    IN p_gen_usu VARCHAR(20),
+    IN P_rol_usu VARCHAR(100),
+    IN P_esp_vet VARCHAR(100),
+    IN P_num_tar_vet VARCHAR(100),
+    IN P_fot_tar_vet VARCHAR(100),
+    IN P_fot_vet VARCHAR(100)
+)
+BEGIN
+    DECLARE p_id_usuario INT;
+    DECLARE p_id_rol INT;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+     BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    SET autocommit = 0;
+
+    START TRANSACTION;
+
+    INSERT INTO usuarios (
+        nom_usu,ape_usu,fec_nac_usu,tip_doc_usu,doc_usu,dir_usu,cel_usu,cel2_usu,email_usu,cont_usu,gen_usu
+    )
+    VALUES (
+        p_nom_usu,p_ape_usu,p_fec_nac_usu,p_tip_doc_usu,p_doc_usu,p_dir_usu,p_cel_usu,p_cel2_usu,p_email_usu,p_cont_usu,p_gen_usu
+    );
+
+    SET p_id_usuario = LAST_INSERT_ID();
+
+    SELECT id_rol INTO p_id_rol FROM roles WHERE nom_rol = 'Veterinario';
+
+    INSERT INTO otorgar_roles(id_usu,id_rol,fec_oto)
+    VALUES (p_id_usuario,p_id_rol,NOW());
+
+    COMMIT;
+    SET autocommit = 1;
+END //
+CREATE PROCEDURE pets_heaven.RegistAdmin(
+    IN p_nom_usu VARCHAR(100),
+    IN p_ape_usu VARCHAR(100),
+    IN p_fec_nac_usu DATE,
+    IN p_tip_doc_usu VARCHAR(10),
+    IN p_doc_usu VARCHAR(20),
+    IN p_dir_usu VARCHAR(100),
+    IN p_cel_usu VARCHAR(20),
+    IN p_cel2_usu VARCHAR(20),
+    IN p_email_usu VARCHAR(100),
+    IN p_cont_usu VARCHAR(255),
+    IN p_gen_usu VARCHAR(20),
+    }
+    
+    IN P_rol_usu VARCHAR(100),
+    IN P_esp_vet VARCHAR(100),
+    IN P_num_tar_vet VARCHAR(100),
+    IN P_fot_tar_vet VARCHAR(100),
+    IN P_fot_vet VARCHAR(100)
+)
+BEGIN
+    DECLARE p_id_usuario INT;
+    DECLARE p_id_rol INT;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+     BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    SET autocommit = 0;
+
+    START TRANSACTION;
+
+    INSERT INTO usuarios (
+        nom_usu,ape_usu,fec_nac_usu,tip_doc_usu,doc_usu,dir_usu,cel_usu,cel2_usu,email_usu,cont_usu,gen_usu
+    )
+    VALUES (
+        p_nom_usu,p_ape_usu,p_fec_nac_usu,p_tip_doc_usu,p_doc_usu,p_dir_usu,p_cel_usu,p_cel2_usu,p_email_usu,p_cont_usu,p_gen_usu
+    );
+
+    SET p_id_usuario = LAST_INSERT_ID();
+
+    SELECT id_rol INTO p_id_rol FROM roles WHERE nom_rol = 'Administrador';
 
     INSERT INTO otorgar_roles(id_usu,id_rol,fec_oto)
     VALUES (p_id_usuario,p_id_rol,NOW());
