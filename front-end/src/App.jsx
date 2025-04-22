@@ -68,20 +68,22 @@ export default function App () {
         </Route>
 
         {/* Admin routes  */}
-        <Route path="consultorio" element={
-          <AdminRoute children={<HomeAdmin URL={URL}/>} />}>  
-        </Route>
-        <Route path="gestion/usuarios" element={
-          <AdminRoute children={<GesUsuario URL={URL} />} />} >
-        </Route>
-        <Route path="usuario/registro" element={
-          <AdminRoute children={<ConfiguracionUsuario URL={URL} />} />} >
-        </Route>
-        <Route path="calendario/general" element={
-          <AdminRoute children={<GesAgendaGeneral URL={URL} />} />} >
-        </Route>
-        <Route path="propietario/datos" element={
-          <AdminRoute children={<PerfilPropietario URL={URL} />} />} >
+        <Route path="/admin">
+          <Route path="consultorio" element={
+            <AdminRoute children={<HomeAdmin URL={URL}/>} />}>  
+          </Route>
+          <Route path="gestion/usuarios" element={
+            <AdminRoute children={<GesUsuario URL={URL} />} />} >
+          </Route>
+          <Route path="usuario/registro" element={
+            <AdminRoute children={<ConfiguracionUsuario URL={URL} />} />} >
+          </Route>
+          <Route path="calendario/general" element={
+            <AdminRoute children={<GesAgendaGeneral URL={URL} />} />} >
+          </Route>
+          <Route path="propietario/datos" element={
+            <AdminRoute children={<PerfilPropietario URL={URL} />} />} >
+          </Route>
         </Route>
 
 
