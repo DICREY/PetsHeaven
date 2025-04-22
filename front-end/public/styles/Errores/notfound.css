@@ -2,24 +2,26 @@
 
 .notfound-container {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
   width: 100%;
-  background: linear-gradient(135deg, #f0f9ff 0%, #cbebff 100%);
   overflow: hidden;
   position: relative;
+  background-color: #00BCD4;
 }
 
 .pet-glitch-container {
   position: relative;
   z-index: 2;
+  height: 60%;
+  width: 30%;
   text-align: center;
   padding: 2rem;
-  background-color: rgba(255, 255, 255, 0.8);
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 91, 150, 0.1);
+  background-image: url('https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Fondos/404.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .pet-glitch-container p{
@@ -90,8 +92,8 @@
 /* Botón veterinario */
 .pet-home-button {
   display: inline-block;
-  background: #8097bcb4;
-  color: white;
+  background: white;
+  color: #00BCD4;
   border: none;
   padding: 15px 35px;
   font-size: 1.1rem;
@@ -101,13 +103,14 @@
   text-decoration: none;
   font-weight: 600;
   box-shadow: 0 5px 15px rgba(58, 134, 255, 0.4);
-  margin-top: 1rem;
+  margin-top: 35rem;
 }
 
 .pet-home-button:hover {
   background: var(--verdeaguamarina);
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(107, 139, 255, 0.4);
+  color: white;
 }
 
 .pet-home-button i {
@@ -120,7 +123,6 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23cbebff"><path d="M12 2C8 2 4 6 4 10c0 4 4 8 8 8 4 0 8-4 8-8 0-4-4-8-8-8zm0 12c-2 0-4-2-4-4 0-2 2-4 4-4 2 0 4 2 4 4 0 2-2 4-4 4z"/></svg>');
   background-size: 100px;
   opacity: 0.1;
   z-index: 1;

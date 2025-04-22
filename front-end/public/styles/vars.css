@@ -44,9 +44,9 @@
     --icon-size: 2.5rem;
     --font-general: "Zain", sans-serif;
 }
-html {
+/* html {
     font-size: 6px;
-}
+} */
 @media (700px < width) {
     html {
         font-size: 12px;
