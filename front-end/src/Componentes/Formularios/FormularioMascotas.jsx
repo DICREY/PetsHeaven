@@ -1,13 +1,22 @@
+// Librarys 
 import React from "react"
-import "../../../public/styles/Formularios/FormularioMascotas.css"
 import { useState, useRef } from 'react';
-import { Pencil, ChevronLeft, User, Shield, FileText, Lock } from "lucide-react"
-import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
+import { Pencil, ChevronLeft, User } from "lucide-react"
+import swal from 'sweetalert'
 
-export const FormularioRegMascotas = () => {
+// Imports
+import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
+import { formatDate, errorStatusHandler, loadingAlert } from '../Varios/Util'
+import { PostData } from '../Varios/Requests'
+
+// Import styles
+import "../../../public/styles/Formularios/FormularioMascotas.css"
+
+export const FormularioRegMascotas = ({ URL = ""}) => {
   const [activeTab, setActiveTab] = useState("personal")
   const [profileImage, setProfileImage] = useState(null)
   const [signatureImage, setSignatureImage] = useState(null)
+  const [formData, setFormData] = useState({})
 
   const profileInputRef = useRef(null)
   const signatureInputRef = useRef(null)
@@ -23,14 +32,35 @@ export const FormularioRegMascotas = () => {
     }
   }
 
-  const handleSignatureImageChange = (e) => {
-    const file = e.target.files[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        setSignatureImage(e.target.result)
+  const handleChange = (e) => {
+    let { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+    console.log(formData)
+  }
+
+  const sendData = async () => {
+    try {
+      const token = localStorage.getItem("token")
+      if (profileImage)
+      if (token) {
+        loadingAlert("Validando...",)
+        formData.fec_nac_mas = formatDate(formData.fec_nac_mas)
+        const created = await PostData(URL, token, formData)
+        created.ok && swal({
+            icon: 'success',
+            title: 'Modificado',
+            text: 'Los datos de la mascota han sido modificados',
+        })
       }
-      reader.readAsDataURL(file)
+    } catch (err) {
+      if(err.status) {
+        const message = errorStatusHandler(err.status)
+        swal({
+          title: 'Error',
+          text: `${message}`,
+          icon: 'warning',
+        })
+      } else console.log(err)
     }
   }
 
@@ -98,8 +128,10 @@ export const FormularioRegMascotas = () => {
                   <div className="grupo-regusuario">
                   <label className="etiqueta-regusuario">Nombre de la mascota</label>
                     <input 
+                      onChange={handleChange}
                       type="text" 
-                      placeholder="Ej: Mia" 
+                      name="nom_mas"
+                      placeholder="Nombre" 
                       className="campo-regusuario"
                       maxLength={50}
                       minLength={3}
@@ -111,89 +143,108 @@ export const FormularioRegMascotas = () => {
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Especie</label>
                     <input 
-                    type="text" 
-                    placeholder="Ej: Felino" 
-                    className="campo-regusuario"
-                    maxLength={50}
-                    minLength={3}
-                    pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" 
-                    required 
+                      name="esp_mas"
+                      onChange={handleChange}
+                      type="text" 
+                      placeholder="Ej: Felino" 
+                      className="campo-regusuario"
+                      maxLength={50}
+                      minLength={3}
+                      pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" 
+                      required 
                     />
                   </div>
 
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Raza</label>
                     <input 
-                    type="text" 
-                    placeholder="Ej: Siames" 
-                    className="campo-regusuario"
-                    maxLength={50}
-                    minLength={3}
-                    pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" 
-                    required 
+                      onChange={handleChange}
+                      name="raz_mas"
+                      type="text" 
+                      placeholder="Ej: Siames" 
+                      className="campo-regusuario"
+                      maxLength={50}
+                      minLength={3}
+                      pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" 
+                      required 
                      />
                   </div>
 
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Color</label>
                     <input 
-                    type="text" 
-                    placeholder="Ej: Negro con blanco" 
-                    className="campo-regusuario"
-                    maxLength={50}
-                    minLength={3}
-                    pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" 
-                    required 
+                      onChange={handleChange}
+                      name="col_mas"
+                      type="text" 
+                      placeholder="Ej: Negro con blanco" 
+                      className="campo-regusuario"
+                      maxLength={50}
+                      minLength={3}
+                      pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" 
+                      required 
                     />
                   </div>
 
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Alimento</label>
                     <input
-                    type="text" 
-                    placeholder="Ej: Royal Cannin" 
-                    className="campo-regusuario"
-                    maxLength={50}
-                    minLength={3}
-                    pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" 
-                    required  
+                      onChange={handleChange}
+                      name="ali_mas"
+                      type="text" 
+                      placeholder="Ej: Royal Cannin" 
+                      className="campo-regusuario"
+                      maxLength={50}
+                      minLength={3}
+                      pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" 
+                      required  
                     />
                   </div>
 
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Fecha de nacimiento</label>
                     <input 
-                    type="date"  
-                    className="campo-regusuario"
-                    required  
+                      name="fec_nac_mas"
+                      onChange={handleChange}
+                      type="date"  
+                      className="campo-regusuario"
+                      required  
                     />
                   </div>
 
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Peso (kg)</label>
                     <input type="text" 
-                    placeholder="Peso (en kg)" 
-                    className="campo-regusuario" 
-                    maxLength={3}
-                    minLength={1}
-                    pattern="^[0-9]+$"
-                    required
+                      name="pes_mas"
+                      onChange={handleChange}
+                      placeholder="Peso (en kg)" 
+                      className="campo-regusuario" 
+                      maxLength={3}
+                      minLength={1}
+                      pattern="^[0-9]+$"
+                      required
                     />
                   </div>
         
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Sexo de la mascota</label>
-                    <select className="campo-regusuario">
+                    <select 
+                      name="gen_mas"
+                      className="campo-regusuario"
+                      onChange={handleChange}
+                      >
                     <option disabled selected>Seleccione tipo</option>
-                    <option value="cc">Hembra</option>
-                    <option value="cc">Macho</option>
+                    <option value="Femenino">Hembra</option>
+                    <option value="Masculino">Macho</option>
                     </select>
                   </div>
                 
                 
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Estado reproductivo</label>
-                    <select className="campo-regusuario">
+                    <select className="campo-regusuario"
+                      name="est_rep_mas"
+                      onChange={handleChange}
+                      >
                     <option disabled selected>Seleccione tipo</option>
                     <option value="">Esterilizado</option>
                     <option value="">No esterilizado</option>

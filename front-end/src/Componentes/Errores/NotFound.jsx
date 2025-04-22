@@ -17,9 +17,9 @@ export const NotFound = () => {
         </p>
         
         <div className="pet-elements">
+          <span className="pet-icond">🐕</span>
           <span className="paw-icon">🐾</span>
-          <span className="pet-icon">🐕</span>
-          <span className="pet-icon">🐈</span>
+          <span className="pet-iconc">🐈</span>
         </div>
         
         <Link to="/main" className="pet-home-button">

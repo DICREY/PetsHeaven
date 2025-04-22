@@ -21,6 +21,7 @@ export const divideList = (array = [], size = 0) => {
   return result
 }
 
+
 // decodificar token
 export const decodeJWT = (token = "") => {
   try {

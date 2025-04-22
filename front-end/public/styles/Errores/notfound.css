@@ -1,6 +1,5 @@
 @import url('../vars.css');
 
-
 .notfound-container {
   display: flex;
   flex-direction: column;
@@ -9,7 +8,6 @@
   height: 100vh;
   width: 100%;
   background: linear-gradient(135deg, #f0f9ff 0%, #cbebff 100%);
-  /* background-image: url("https://www.toptal.com/designers/subtlepatterns/uploads/leaves-pattern.png"); */
   overflow: hidden;
   position: relative;
 }
@@ -45,20 +43,10 @@
   animation: glitch 3s infinite alternate;
 }
 
-@keyframes glitch {
-  0% { transform: translate(0); }
-  20% { transform: translate(-5px, 5px); }
-  40% { transform: translate(-5px, -5px); }
-  60% { transform: translate(5px, 5px); }
-  80% { transform: translate(5px, -5px); }
-  100% { transform: translate(0); }
-}
-
 /* Texto temático */
 .sub-title {
   font-family: var(--font-general);
   font-size: 3rem;
-  /* color: #3a86ff; */
   color: var(--azulturquesa);
   margin: 1rem 0;
   font-weight: 600;
@@ -75,7 +63,17 @@
   animation: bounce 2s infinite;
 }
 
-.pet-icon {
+/* Modificado: perro mira al centro */
+.pet-icond {
+  font-size: 2.5rem;
+  margin: 0 15px;
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+  transform: scaleX(-1); 
+  display: inline-block;
+}
+
+.pet-iconc {
   font-size: 2.5rem;
   margin: 0 15px;
   opacity: 0;
@@ -84,11 +82,6 @@
 
 .pet-icon:nth-child(1) { animation-delay: 0.5s; }
 .pet-icon:nth-child(2) { animation-delay: 1s; }
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
-}
 
 @keyframes fadeIn {
   to { opacity: 1; }
