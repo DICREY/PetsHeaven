@@ -1,6 +1,6 @@
 // Librarys 
 import React, {useEffect, useState} from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Outlet } from "react-router-dom"
 import { Dog, Plus } from "lucide-react"
  
 // Imports 
@@ -138,6 +138,8 @@ export function GesMascota({ URL = "" }) {
           />
         )
       }
+
+      <Outlet />
     </main>
   )
 }
