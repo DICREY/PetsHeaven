@@ -15,7 +15,7 @@ import { ErrorInternalServer } from "./Componentes/Errores/ErrorInternalServer"
 import { getRoles } from './Componentes/Varios/Util'
 import VeterinariaPage from "./Componentes/VeterinariaPage"
 import { ConfiguracionUsuario } from "./Componentes/InterfazAdmin/FormulariosAdmin/RegistroUsu"
-import { FormularioRegMascota } from "./Componentes/Formularios/FormularioMascotas"
+import { FormularioRegMascotas } from "./Componentes/Formularios/FormularioMascotas"
 import { GesAgendaGeneral } from "./Componentes/InterfazAdmin/GesAgendaGeneral"
 
 
@@ -76,7 +76,7 @@ export default function App () {
           <AdminRoute children={<ConfiguracionUsuario URL={URL} />} />} >
         </Route>
         <Route path="mascota/registro" element={
-          <AdminRoute children={<FormularioRegMascota URL={URL} />} />} >
+          <AdminRoute children={<FormularioRegMascotas URL={URL} />} />} >
         </Route>
         <Route path="calendario/general" element={
           <AdminRoute children={<GesAgendaGeneral URL={URL} />} />} >
