@@ -1,11 +1,11 @@
-// Librarys 
-import React,{ useState, useRef } from "react"
+// Librarys
+import React, { useState, useRef } from "react"
 import { Pencil } from "lucide-react"
 
-// Import styles 
+// Import styles
 import "../../../../public/styles/InterfazAdmin/FormuariosAdmin/InformacionProfesional.css"
 
-const InformacionProfesional = ({ handleValue }) => {
+const InformacionProfesional = ({ register, errors }) => {
   const [cardImage, setCardImage] = useState(null)
   const cardInputRef = useRef(null)
 
@@ -27,10 +27,10 @@ const InformacionProfesional = ({ handleValue }) => {
       <div className="grupo-profesional">
         <label className="etiqueta-profesional">Especialidades</label>
         <div className="selector-profesional">
-          <select 
+          <select
             name="especialidad"
-            className="campo-selector-profesional"
-            onChange={handleValue}
+            className={`campo-selector-profesional ${errors.especialidad ? 'campo-error' : ''}`}
+            {...register("especialidad", { required: "Seleccione al menos una especialidad." })}
             defaultValue='--'
           >
             <option disabled value="--">Si aplica, seleccione una o varias</option>
@@ -39,16 +39,25 @@ const InformacionProfesional = ({ handleValue }) => {
             <option value="cardiologia">Cardiología</option>
           </select>
         </div>
+        {errors.especialidad && <p className="mensaje-error">{errors.especialidad.message}</p>}
       </div>
 
       <div className="grupo-profesional">
-        <label className="etiqueta-profesional">Nº Tarjeta profesional</label>
-        <input 
+        <label className="etiqueta-profesional">Nº Tarjeta profesional<spam className='obligatorio'>*</spam></label>
+        <input
           name="numTargPro"
-          type="text" 
-          placeholder="Número de tarjeta profesional" 
-          onChange={handleValue}
-          className="campo-profesional" />
+          type="text"
+          placeholder="Número de tarjeta profesional"
+          className={`campo-profesional ${errors.numTargPro ? 'campo-error' : ''}`}
+          {...register("numTargPro", {
+            required: "El número de tarjeta profecional es requerido.",
+            pattern: {
+              value: /^[0-9]+$/,
+              message: "El número de tarjeta profecional debe contener solo números.",
+            },
+          })}
+        />
+        {errors.numTargPro && <p className="mensaje-error">{errors.numTargPro.message}</p>}
       </div>
 
       <div className="grupo-profesional">
@@ -70,8 +79,10 @@ const InformacionProfesional = ({ handleValue }) => {
             onChange={handleCardImageChange}
             accept="image/*"
             className="input-file-hidden"
+            {...register("tarjetaProfesional")}
           />
         </div>
+        {errors.tarjetaProfesional && <p className="mensaje-error">{errors.tarjetaProfesional.message}</p>}
       </div>
     </div>
   )

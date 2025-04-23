@@ -1,25 +1,33 @@
-// Librarys 
+// Librarys
 import React from "react"
 import { useState, useRef } from "react"
 import { Pencil, ChevronLeft, User, Lock } from "lucide-react"
+import { useForm } from "react-hook-form"
 
-// Imports 
-// import RolPrivilegios from "./RolPrivilegios"
-// import InformacionProfesional from "./InformacionProfesional"
+// Imports
 import Contrasena from "./Contrasena"
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
+import { formatDate, errorStatusHandler, loadingAlert } from '../../Varios/Util'
+import { PostData } from '../../Varios/Requests'
 
 // Import styles
 import "../../../../public/styles/InterfazAdmin/FormuariosAdmin/RegistroUsu.css"
 
 export const RegistroPro = () => {
-  // Vars 
+  // Vars
   const [activeTab, setActiveTab] = useState("personal")
   const [profileImage, setProfileImage] = useState(null)
-  const [formData, setFormData] = useState({})
   const profileInputRef = useRef(null)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm({ mode: "onChange" })
+  const [formData, setFormData] = useState({})
+  const mainUrl = `${URL}/user`; // Asegúrate de que URL esté definida o se pase como prop
 
-  // Functions 
+  // Functions
   const handleProfileImageChange = (e) => {
     const file = e.target.files[0]
     if (file) {
@@ -31,53 +39,48 @@ export const RegistroPro = () => {
     }
   }
 
-  const handleChange = (e) => {
-    let { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
-  }
-
-  const sendData = async () => {
-      const datas = {
-        nombres: formData.nombres,
-        apellidos: formData.apellidos,
-        fec_nac_usu: formData.fec_nac,
-        tipDoc: formData.tipoDocumento,
-        doc: formData.numeroDocumento,
-        direccion: formData.direccion,
-        cel: formData.celular,
-        cel2: formData.cel2,
-        email: formData.email,
-        cont: formData.password,
-        genero: formData.genero,
-        rol: formData.rol,
-        esp: formData.especialidad,
-        numTargPro: formData.numTargPro,
-        fot_tar_vet: "no-registrado",
-        fot_vet: "no-registrado",
-        
+  const onSubmit = async (data) => {
+    const finalData = { ...data, ...formData };
+    const datas = {
+      nombres: finalData.nombres,
+      apellidos: finalData.apellidos,
+      fec_nac_usu: finalData.fecNac, // Corregido el nombre del campo
+      tipDoc: finalData.tipDoc,
+      doc: finalData.doc,
+      direccion: finalData.direccion,
+      cel: finalData.cel,
+      cel2: finalData.cel2, // Este campo no está en el formulario
+      email: finalData.email,
+      cont: finalData.password, // Asumiendo que Contrasena maneja esto
+      genero: finalData.genero,
+      rol: finalData.rol, // Estos campos no están en el formulario actual
+      esp: finalData.esp, // Estos campos no están en el formulario actual
+      numTargPro: finalData.numTargPro, // Estos campos no están en el formulario actual
+      fot_tar_vet: "no-registrado",
+      fot_vet: "no-registrado",
+    };
+    try {
+      const token = localStorage.getItem('token')
+      if (token) {
+        loadingAlert('Validando...')
+        const created = await PostData(`${mainUrl}/register`, token, datas)
+        created.ok && swal({
+          icon: 'success',
+          title: 'Registrado',
+          text: 'Ha sido registrado correctamente',
+        })
       }
-      try {
-        const token = localStorage.getItem('token')
-        if (token) {
-          loadingAlert('Validando...',)
-          const created = await PostData(`${mainUrl}/register`, token, datas)
-          created.ok && swal({
-              icon: 'success',
-              title: 'Registrado',
-              text: 'Ha sido registrado correctamente',
-          })
-        }
-      } catch (err) {
-        if(err.status) {
-          const message = errorStatusHandler(err.status)
-          swal({
-            title: 'Error',
-            text: `${message}`,
-            icon: 'warning',
-          })
-        } else console.log(err)
-      }
+    } catch (err) {
+      if (err.status) {
+        const message = errorStatusHandler(err.status)
+        swal({
+          title: 'Error',
+          text: `${message}`,
+          icon: 'warning',
+        })
+      } else console.log(err)
     }
+  }
 
   return (
     <div className="contenedorgesusuario">
@@ -89,12 +92,12 @@ export const RegistroPro = () => {
               <h1>Registro usuario</h1>
               <span className="creacion-regusuario">| Creación</span>
             </div>
-            <div className="acciones-regusuario" onClick={() => window.location.href = "/consultorio" }>
+            <div className="acciones-regusuario" onClick={() => window.location.href = "/consultorio"}>
               <button className="atras-regusuario">
                 <ChevronLeft size={16} />
                 <span className="texto-btn-regusuario">Atrás</span>
               </button>
-              <button className="guardar-regusuario">Guardar</button>
+              <button className="guardar-regusuario" onClick={handleSubmit(onSubmit)}>Guardar</button>
             </div>
           </div>
 
@@ -106,7 +109,7 @@ export const RegistroPro = () => {
               <User className="icono-regusuario" size={18} />
               <span className="texto-tab-regusuario">Información personal</span>
             </div>
-        
+
             <div
               className={`tab-regusuario ${activeTab === "password" ? "activo-regusuario" : ""}`}
               onClick={() => setActiveTab("password")}
@@ -118,11 +121,11 @@ export const RegistroPro = () => {
 
           <div className="contenido-regusuario">
             {activeTab === "personal" && (
-              <div className="form-regusuario">
+              <form className="form-regusuario" onSubmit={handleSubmit(onSubmit)}>
                 <h2>Información personal:</h2>
 
                 <div className="grupo-regusuario">
-                  <label className="etiqueta-regusuario">Imagen de perfil</label>
+                  <label className="etiqueta-regusuario">Imagen de perfil <span className="obligatorio">*</span></label>
                   <div className="perfil-regusuario">
                     <div className="imagen-regusuario">
                       {profileImage ? (
@@ -149,107 +152,157 @@ export const RegistroPro = () => {
 
                 <div className="grid-regusuario">
                   <div className="grupo-regusuario">
-                    <label className="etiqueta-regusuario">Tipo de documento</label>
-                    <select 
+                    <label className="etiqueta-regusuario">Tipo de documento <span className="obligatorio">*</span></label>
+                    <select
                       name="tipDoc"
-                      className="campo-regusuario"
+                      className={`campo-regusuario ${errors.tipDoc ? 'campo-error' : ''}`}
                       defaultValue='--'
-                      onChange={handleChange}
+                      {...register("tipDoc", { required: "El tipo de documento es requerido." })}
                     >
                       <option disabled value='--'>Seleccione tipo</option>
                       <option value="cc">Cédula de Ciudadanía (CC)</option>
                       <option value="ce">Cédula de Extranjería (CE)</option>
                       <option value="pasaporte">Pasaporte</option>
                     </select>
+                    {errors.tipDoc && <p className="mensaje-error">{errors.tipDoc.message}</p>}
                   </div>
 
                   <div className="grupo-regusuario">
-                    <label className="etiqueta-regusuario">Número de documento</label>
+                    <label className="etiqueta-regusuario">Número de documento <span className="obligatorio">*</span></label>
                     <input
-                      onChange={handleChange}
-                      type="text" 
+                      type="text"
                       name="doc"
-                      placeholder="Número de identificación" className="campo-regusuario" />
-                  </div>
-
-                  <div className="grupo-regusuario">
-                    <label className="etiqueta-regusuario">Nombres</label>
-                    <input
-                      onChange={handleChange}
-                      type="text" 
-                      name="nombres"
-                      placeholder="Nombres" className="campo-regusuario" />
-                  </div>
-
-                  <div className="grupo-regusuario">
-                    <label className="etiqueta-regusuario">Apellidos</label>
-                    <input
-                      onChange={handleChange}
-                      type="text" 
-                      name="apellidos"
-                      placeholder="Apellidos" className="campo-regusuario" />
-                  </div>
-
-                  <div className="grupo-regusuario">
-                    <label className="etiqueta-regusuario">Fecha de nacimiento</label>
-                    <input
-                      onChange={handleChange}
-                      type="date" 
-                      name="fecNac"
-                      className="campo-regusuario"
-                      required  
+                      placeholder="Número de identificación"
+                      className={`campo-regusuario ${errors.doc ? 'campo-error' : ''}`}
+                      {...register("doc", {
+                        required: "El número de documento es requerido.",
+                        pattern: {
+                          value: /^[0-9]+$/,
+                          message: "El número de documento debe contener solo números.",
+                        },
+                      })}
                     />
+                    {errors.doc && <p className="mensaje-error">{errors.doc.message}</p>}
+                  </div>
+
+                  <div className="grupo-regusuario">
+                    <label className="etiqueta-regusuario">Nombres <span className="obligatorio">*</span></label>
+                    <input
+                      type="text"
+                      name="nombres"
+                      placeholder="Nombres"
+                      className={`campo-regusuario ${errors.nombres ? 'campo-error' : ''}`}
+                      {...register("nombres", { required: "Los nombres son requeridos." })}
+                    />
+                    {errors.nombres && <p className="mensaje-error">{errors.nombres.message}</p>}
+                  </div>
+
+                  <div className="grupo-regusuario">
+                    <label className="etiqueta-regusuario">Apellidos <span className="obligatorio">*</span></label>
+                    <input
+                      type="text"
+                      name="apellidos"
+                      placeholder="Apellidos"
+                      className={`campo-regusuario ${errors.apellidos ? 'campo-error' : ''}`}
+                      {...register("apellidos", { required: "Los apellidos son requeridos." })}
+                    />
+                    {errors.apellidos && <p className="mensaje-error">{errors.apellidos.message}</p>}
+                  </div>
+
+                  <div className="grupo-regusuario">
+                    <label className="etiqueta-regusuario">Fecha de nacimiento <span className="obligatorio">*</span></label>
+                    <input
+                      type="date"
+                      name="fecNac"
+                      className={`campo-regusuario ${errors.fecNac ? 'campo-error' : ''}`}
+                      {...register("fecNac", { required: "La fecha de nacimiento es requerida." })}
+                    />
+                    {errors.fecNac && <p className="mensaje-error">{errors.fecNac.message}</p>}
                   </div>
                   <div className="grupo-regusuario">
-                    <label className="etiqueta-regusuario">Genero</label>
-                    <select className="campo-regusuario"
+                    <label className="etiqueta-regusuario">Genero <span className="obligatorio">*</span></label>
+                    <select
+                      className={`campo-regusuario ${errors.genero ? 'campo-error' : ''}`}
                       defaultValue='--'
                       name="genero"
-                      onChange={handleChange}
+                      {...register("genero", { required: "El género es requerido." })}
                     >
                       <option disabled value='--'>Seleccione</option>
-                      <option value="">Femenino</option>
-                      <option value="">Masculino</option>
-                      <option value="">otro</option>
+                      <option value="Femenino">Femenino</option>
+                      <option value="Masculino">Masculino</option>
+                      <option value="Otro">Otro</option>
                     </select>
+                    {errors.genero && <p className="mensaje-error">{errors.genero.message}</p>}
                   </div>
                   <div className="grupo-regusuario">
-                    <label className="etiqueta-regusuario">Celular</label>
+                    <label className="etiqueta-regusuario">Celular <span className="obligatorio">*</span></label>
                     <input
-                      onChange={handleChange}
-                      type="tel" 
+                      type="text"
                       name="cel"
-                      placeholder="Número de celular" className="campo-regusuario" />
+                      placeholder="Número de celular"
+                      className={`campo-regusuario ${errors.cel ? 'campo-error' : ''}`}
+                      {...register("cel", {
+                        required: "El número de celular es requerido.",
+                        pattern: {
+                          value: /^[0-9]+$/,
+                          message: "El número de celular debe contener solo números.",
+                        },
+                        minLength: {
+                          value: 7,
+                          message: "El número de celular debe tener al menos 7 dígitos.",
+                        },
+                      })}
+                    />
+                    {errors.cel && <p className="mensaje-error">{errors.cel.message}</p>}
                   </div>
 
                   <div className="grupo-regusuario">
-                    <label className="etiqueta-regusuario">Dirección</label>
+                    <label className="etiqueta-regusuario">Dirección <span className="obligatorio">*</span></label>
                     <input
-                      onChange={handleChange}
-                      type="text" 
+                      type="text"
                       name="direccion"
-                      placeholder="Dirección" className="campo-regusuario" />
+                      placeholder="Dirección"
+                      className={`campo-regusuario ${errors.direccion ? 'campo-error' : ''}`}
+                      {...register("direccion", { required: "La dirección es requerida." })}
+                    />
+                    {errors.direccion && <p className="mensaje-error">{errors.direccion.message}</p>}
                   </div>
 
                   <div className="grupo-regusuario">
-                    <label className="etiqueta-regusuario">Correo</label>
+                    <label className="etiqueta-regusuario">Correo <span className="obligatorio">*</span></label>
                     <input
-                      onChange={handleChange}
-                      type="email" 
+                      type="email"
                       name="email"
-                      placeholder="Email" className="campo-regusuario" />
+                      placeholder="Email"
+                      className={`campo-regusuario ${errors.email ? 'campo-error' : ''}`}
+                      {...register("email", {
+                        required: "El correo electrónico es requerido.",
+                        pattern: {
+                          value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                          message: "Ingrese un correo electrónico válido.",
+                        },
+                      })}
+                    />
+                    {errors.email && <p className="mensaje-error">{errors.email.message}</p>}
                   </div>
 
                   <div className="grupo-regusuario">
-                    <label className="etiqueta-regusuario">Confirmación Correo</label>
+                    <label className="etiqueta-regusuario">Confirmación Correo <span className="obligatorio">*</span></label>
                     <input
-                      onChange={handleChange}
-                      type="email" 
+                      type="email"
                       name="verifyEmail"
-                      placeholder="Confirme su correo" className="campo-regusuario" />
+                      placeholder="Confirme su correo"
+                      className={`campo-regusuario ${errors.verifyEmail ? 'campo-error' : ''}`}
+                      {...register("verifyEmail", {
+                        required: "La confirmación del correo es requerida.",
+                        validate: (value) =>
+                          value === watch('email') || "Los correos electrónicos no coinciden.",
+                      })}
+                    />
+                    {errors.verifyEmail && <p className="mensaje-error">{errors.verifyEmail.message}</p>}
                   </div>
                 </div>
-              </div>
+              </form>
             )}
             {activeTab === "password" && <Contrasena />}
           </div>

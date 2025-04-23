@@ -3,7 +3,7 @@ import { useState } from "react"
 import { InfoIcon } from "lucide-react"
 import "../../../../public/styles/InterfazAdmin/FormuariosAdmin/RolPrivilegios.css"
 
-const RolPrivilegios = ({ handleValue }) => {
+const RolPrivilegios = ({ register, errors }) => {
   const [agendaAdmin, setAgendaAdmin] = useState(false)
   const [agendaPersonal, setAgendaPersonal] = useState(true)
 
@@ -17,12 +17,12 @@ const RolPrivilegios = ({ handleValue }) => {
 
       <div className="seccion-rol">
         <div className="grupo-rol">
-          <label className="etiqueta-rol">Rol</label>
+          <label className="etiqueta-rol">Rol <span className="obligatorio">*</span></label>
           <div className="selector-rol">
-            <select 
+            <select
               name="rol"
-              className="campo-selector"
-              onChange={handleValue}
+              className={`campo-selector ${errors.rol ? 'campo-error' : ''}`}
+              {...register("rol", { required: "El rol es requerido." })}
               defaultValue='--'
             >
               <option value="--" disabled>Seleccione una opción</option>
@@ -30,6 +30,7 @@ const RolPrivilegios = ({ handleValue }) => {
               <option value="Veterinario">Veterinario</option>
             </select>
           </div>
+          {errors.rol && <p className="mensaje-error">{errors.rol.message}</p>}
         </div>
         <p className="descripcion-rol">El rol determina los privilegios generales que tendrá el usuario.</p>
       </div>

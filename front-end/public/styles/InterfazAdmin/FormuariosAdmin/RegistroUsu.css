@@ -246,6 +246,9 @@
 .input-file-hidden {
   display: none;
 }
+.obligatorio{
+  color: #dc2626;
+}
 
 /* ==================== MEDIA QUERIES ==================== */
 
