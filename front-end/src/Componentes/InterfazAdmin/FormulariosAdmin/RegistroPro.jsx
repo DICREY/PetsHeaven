@@ -87,7 +87,7 @@ export const RegistroPro = () => {
           <div className="cabecera-regusuario">
             <div className="titulo-regusuario">
               <h1>Registro usuario</h1>
-              <span className="creacion-regusuario">Creación</span>
+              <span className="creacion-regusuario">| Creación</span>
             </div>
             <div className="acciones-regusuario" onClick={() => window.location.href = "/consultorio" }>
               <button className="atras-regusuario">

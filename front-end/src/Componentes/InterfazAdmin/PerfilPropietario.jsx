@@ -95,7 +95,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
         
         <div className="cabeceraProps">
           <h1 className="tituloProps">
-            Configuración de usuario <span className="subtituloProps">Creación</span>
+            Configuración de usuario <span className="subtituloProps"> | Creación</span>
           </h1>
           <div className="botonesAccionProps">
             <button className="botonAtrasProps" onClick={() => window.location.href = '/admin/consultorio'}>
