@@ -3,7 +3,7 @@ import { useState } from "react"
 import { InfoIcon } from "lucide-react"
 import "../../../../public/styles/InterfazAdmin/FormuariosAdmin/RolPrivilegios.css"
 
-const RolPrivilegios = () => {
+const RolPrivilegios = ({ handleValue }) => {
   const [agendaAdmin, setAgendaAdmin] = useState(false)
   const [agendaPersonal, setAgendaPersonal] = useState(true)
 
@@ -19,11 +19,15 @@ const RolPrivilegios = () => {
         <div className="grupo-rol">
           <label className="etiqueta-rol">Rol</label>
           <div className="selector-rol">
-            <select className="campo-selector">
-              <option value="">Seleccione una opción</option>
-              <option value="admin">Administrador</option>
-              <option value="user">Usuario</option>
-              <option value="guest">Invitado</option>
+            <select 
+              name="rol"
+              className="campo-selector"
+              onChange={handleValue}
+              defaultValue='--'
+            >
+              <option value="--" disabled>Seleccione una opción</option>
+              <option value="Administrador">Administrador</option>
+              <option value="Veterinario">Veterinario</option>
             </select>
           </div>
         </div>

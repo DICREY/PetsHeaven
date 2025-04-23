@@ -1,20 +1,25 @@
+// Librarys 
 import React from "react"
 import { useState, useRef } from "react"
-import "../../../../public/styles/InterfazAdmin/FormuariosAdmin/RegistroUsu.css"
-import { Pencil, ChevronLeft, User, Shield, FileText, Lock } from "lucide-react"
-import RolPrivilegios from "./RolPrivilegios"
-import InformacionProfesional from "./InformacionProfesional"
+import { Pencil, ChevronLeft, User, Lock } from "lucide-react"
+
+// Imports 
+// import RolPrivilegios from "./RolPrivilegios"
+// import InformacionProfesional from "./InformacionProfesional"
 import Contrasena from "./Contrasena"
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
 
+// Import styles
+import "../../../../public/styles/InterfazAdmin/FormuariosAdmin/RegistroUsu.css"
+
 export const RegistroPro = () => {
+  // Vars 
   const [activeTab, setActiveTab] = useState("personal")
   const [profileImage, setProfileImage] = useState(null)
-  const [signatureImage, setSignatureImage] = useState(null)
-
+  const [formData, setFormData] = useState({})
   const profileInputRef = useRef(null)
-  const signatureInputRef = useRef(null)
 
+  // Functions 
   const handleProfileImageChange = (e) => {
     const file = e.target.files[0]
     if (file) {
@@ -26,16 +31,53 @@ export const RegistroPro = () => {
     }
   }
 
-  const handleSignatureImageChange = (e) => {
-    const file = e.target.files[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        setSignatureImage(e.target.result)
-      }
-      reader.readAsDataURL(file)
-    }
+  const handleChange = (e) => {
+    let { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
   }
+
+  const sendData = async () => {
+      const datas = {
+        nombres: formData.nombres,
+        apellidos: formData.apellidos,
+        fec_nac_usu: formData.fec_nac,
+        tipDoc: formData.tipoDocumento,
+        doc: formData.numeroDocumento,
+        direccion: formData.direccion,
+        cel: formData.celular,
+        cel2: formData.cel2,
+        email: formData.email,
+        cont: formData.password,
+        genero: formData.genero,
+        rol: formData.rol,
+        esp: formData.especialidad,
+        numTargPro: formData.numTargPro,
+        fot_tar_vet: "no-registrado",
+        fot_vet: "no-registrado",
+        
+      }
+      try {
+        const token = localStorage.getItem('token')
+        if (token) {
+          loadingAlert('Validando...',)
+          const created = await PostData(`${mainUrl}/register`, token, datas)
+          created.ok && swal({
+              icon: 'success',
+              title: 'Registrado',
+              text: 'Ha sido registrado correctamente',
+          })
+        }
+      } catch (err) {
+        if(err.status) {
+          const message = errorStatusHandler(err.status)
+          swal({
+            title: 'Error',
+            text: `${message}`,
+            icon: 'warning',
+          })
+        } else console.log(err)
+      }
+    }
 
   return (
     <div className="contenedorgesusuario">
@@ -96,6 +138,7 @@ export const RegistroPro = () => {
                     </button>
                     <input
                       type="file"
+                      name="profileInputRef"
                       ref={profileInputRef}
                       onChange={handleProfileImageChange}
                       accept="image/*"
@@ -107,8 +150,13 @@ export const RegistroPro = () => {
                 <div className="grid-regusuario">
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Tipo de documento</label>
-                    <select className="campo-regusuario">
-                      <option disabled selected>Seleccione tipo</option>
+                    <select 
+                      name="tipDoc"
+                      className="campo-regusuario"
+                      defaultValue='--'
+                      onChange={handleChange}
+                    >
+                      <option disabled value='--'>Seleccione tipo</option>
                       <option value="cc">Cédula de Ciudadanía (CC)</option>
                       <option value="ce">Cédula de Extranjería (CE)</option>
                       <option value="pasaporte">Pasaporte</option>
@@ -117,31 +165,49 @@ export const RegistroPro = () => {
 
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Número de documento</label>
-                    <input type="text" placeholder="Número de identificación" className="campo-regusuario" />
+                    <input
+                      onChange={handleChange}
+                      type="text" 
+                      name="doc"
+                      placeholder="Número de identificación" className="campo-regusuario" />
                   </div>
 
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Nombres</label>
-                    <input type="text" placeholder="Nombres" className="campo-regusuario" />
+                    <input
+                      onChange={handleChange}
+                      type="text" 
+                      name="nombres"
+                      placeholder="Nombres" className="campo-regusuario" />
                   </div>
 
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Apellidos</label>
-                    <input type="text" placeholder="Apellidos" className="campo-regusuario" />
+                    <input
+                      onChange={handleChange}
+                      type="text" 
+                      name="apellidos"
+                      placeholder="Apellidos" className="campo-regusuario" />
                   </div>
 
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Fecha de nacimiento</label>
-                    <input 
-                    type="date"  
-                    className="campo-regusuario"
-                    required  
+                    <input
+                      onChange={handleChange}
+                      type="date" 
+                      name="fecNac"
+                      className="campo-regusuario"
+                      required  
                     />
                   </div>
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Genero</label>
-                    <select className="campo-regusuario">
-                      <option disabled selected>Seleccione</option>
+                    <select className="campo-regusuario"
+                      defaultValue='--'
+                      name="genero"
+                      onChange={handleChange}
+                    >
+                      <option disabled value='--'>Seleccione</option>
                       <option value="">Femenino</option>
                       <option value="">Masculino</option>
                       <option value="">otro</option>
@@ -149,22 +215,38 @@ export const RegistroPro = () => {
                   </div>
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Celular</label>
-                    <input type="tel" placeholder="Número de teléfono" className="campo-regusuario" />
+                    <input
+                      onChange={handleChange}
+                      type="tel" 
+                      name="cel"
+                      placeholder="Número de celular" className="campo-regusuario" />
                   </div>
 
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Dirección</label>
-                    <input type="text" placeholder="Dirección" className="campo-regusuario" />
+                    <input
+                      onChange={handleChange}
+                      type="text" 
+                      name="direccion"
+                      placeholder="Dirección" className="campo-regusuario" />
                   </div>
 
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Correo</label>
-                    <input type="email" placeholder="correo@ejemplo.com" className="campo-regusuario" />
+                    <input
+                      onChange={handleChange}
+                      type="email" 
+                      name="email"
+                      placeholder="Email" className="campo-regusuario" />
                   </div>
 
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Confirmación Correo</label>
-                    <input type="email" placeholder="Confirme su correo" className="campo-regusuario" />
+                    <input
+                      onChange={handleChange}
+                      type="email" 
+                      name="verifyEmail"
+                      placeholder="Confirme su correo" className="campo-regusuario" />
                   </div>
                 </div>
               </div>

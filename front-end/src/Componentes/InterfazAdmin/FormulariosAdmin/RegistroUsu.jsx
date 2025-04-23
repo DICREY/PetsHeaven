@@ -19,6 +19,7 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
   // Vars 
   const [activeTab, setActiveTab] = useState('personal')
   const [profileImage, setProfileImage] = useState(null)
+  const [targetImage, setTargetImage] = useState(null)
   const [formData,setFormData] = useState({})
   const mainUrl = `${URL}/user`
   const profileInputRef = useRef(null)
@@ -39,24 +40,37 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
   const handleChange = (e) => {
     let { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
-    console.log(formData)
   }
 
   const sendData = async () => {
+    const datas = {
+      nombres: formData.nombres,
+      apellidos: formData.apellidos,
+      fec_nac_usu: formData.fec_nac,
+      tipDoc: formData.tipoDocumento,
+      doc: formData.numeroDocumento,
+      direccion: formData.direccion,
+      cel: formData.celular,
+      cel2: formData.cel2,
+      email: formData.email,
+      cont: formData.password,
+      genero: formData.genero,
+      rol: formData.rol,
+      esp: formData.especialidad,
+      numTargPro: formData.numTargPro,
+      fot_tar_vet: "no-registrado",
+      fot_vet: "no-registrado",
+      
+    }
     try {
       const token = localStorage.getItem('token')
       if (token) {
         loadingAlert('Validando...',)
-        formData.fec_nac_mas = formatDate(formData.fec_nac_mas)
-        const datas = {
-          fot_mas: profileImage,
-          ...formData
-        }
-        const created = await PostData(`${mainUrl}/register`, token, datas)
+        const created = await PostData(`${mainUrl}/register/personal`, token, datas)
         created.ok && swal({
-            icon: 'success',
-            title: 'Modificado',
-            text: 'Los datos de la mascota han sido modificados',
+          icon: 'success',
+          title: 'Registrado',
+          text: 'Ha sido registrado correctamente',
         })
       }
     } catch (err) {
@@ -211,6 +225,23 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
                   </div>
 
                   <div className='grupo-regusuario'>
+                    <label className='etiqueta-regusuario'>Genero</label>
+                    <input
+                      name='genero'
+                      onChange={handleChange}
+                      type='text' placeholder='Genero' className='campo-regusuario' />
+                  </div>
+
+                  <div className='grupo-regusuario'>
+                    <label className='etiqueta-regusuario'>Fecha de nacimiento</label>
+                    <input
+                      name='fec_nac'
+                      type='date'
+                      onChange={handleChange}
+                      className='campo-regusuario' />
+                  </div>
+
+                  <div className='grupo-regusuario'>
                     <label className='etiqueta-regusuario'>Correo</label>
                     <input
                       name='email'
@@ -233,8 +264,8 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
               </div>
             )}
 
-            {activeTab === 'roles' && <RolPrivilegios />}
-            {activeTab === 'profesional' && <InformacionProfesional />}
+            {activeTab === 'roles' && <RolPrivilegios handleValue={handleChange}/>}
+            {activeTab === 'profesional' && <InformacionProfesional handleValue={handleChange} />}
             {activeTab === 'password' && <Contrasena handleValue={handleChange} />}
           </div>
         </div>

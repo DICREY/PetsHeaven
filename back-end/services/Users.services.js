@@ -2,7 +2,7 @@
 const DataBase = require('./DataBase')
 
 // Main class
-class User{
+class User {
     // function to find all
     async findAll() {
         return new Promise((res,rej) => {
@@ -24,7 +24,7 @@ class User{
                         message: "Users found",
                         result: result
                     })
-                },2000)
+                },1000)
             })
 
             // close conection 
@@ -52,7 +52,7 @@ class User{
                         message: "Users found",
                         result: result
                     })
-                },2000)
+                },1000)
             })
 
             // close conection 
@@ -82,7 +82,7 @@ class User{
                         message: "Users found",
                         result: result
                     })
-                },2000)
+                },1000)
             })
 
             // close conection 
@@ -112,7 +112,7 @@ class User{
                         message: "User found",
                         result: result
                     })
-                },2000)
+                },1000)
             })
 
             // close conection 
@@ -149,7 +149,52 @@ class User{
                 setTimeout(() => res({
                     message: "User Created",
                     ...data
-                }),2000)
+                }),1000)
+            })
+            
+            // close conection 
+            database.conection.end()
+        })
+    }
+
+    // function to register
+    async createPersonal(data) {
+        return new Promise((res,rej) => {
+            // data 
+            const newUser = [
+                data.nombres,
+                data.apellidos,
+                data.fec_nac_usu,
+                data.tipDoc,
+                data.doc,
+                data.direccion,
+                data.cel,
+                data.cel2 || "no-registrado",
+                data.email,
+                data.hash_pass,
+                data.genero,
+                data.rol,
+                data.esp,
+                data.numTargPro,
+                data.fot_tar_vet || "no-registrado",
+                data.fot_vet || "no-registrado"
+            ]
+
+            console.log(newUser)
+            
+            let procedure = "CALL RegistPersonal(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"
+
+            // conect to database
+            let database = new DataBase()
+            database.conect()
+            
+            // call procedure
+            if (database) database.conection.query(procedure,newUser,err=> {
+                if(err) rej(err) 
+                setTimeout(() => res({
+                    message: "User Created",
+                    state: 1
+                }),1000)
             })
             
             // close conection 
@@ -190,7 +235,7 @@ class User{
                 setTimeout(() => res({
                     message: "User Modify",
                     ...data
-                }),2000)
+                }),1000)
             })
 
             // close conection 
@@ -219,7 +264,7 @@ class User{
     //                     message: "Users found",
     //                     result: result
     //                 })
-    //             },100)
+    //             },1000)
     //         })
 
     //         // close conection 

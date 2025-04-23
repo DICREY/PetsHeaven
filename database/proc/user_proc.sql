@@ -1,4 +1,4 @@
--- Active: 1743681932025@@127.0.0.1@3306@pets_heaven
+-- Active: 1743971322762@@127.0.0.1@3306@pets_heaven
 DELIMITER //
 CREATE PROCEDURE pets_heaven.RegistPeoples(
     IN p_nom_usu VARCHAR(100),
@@ -45,7 +45,7 @@ BEGIN
     SET autocommit = 1;
 END //
 
-CREATE PROCEDURE pets_heaven.RegistVet(
+CREATE PROCEDURE pets_heaven.RegistPersonal(
     IN p_nom_usu VARCHAR(100),
     IN p_ape_usu VARCHAR(100),
     IN p_fec_nac_usu DATE,
@@ -57,11 +57,11 @@ CREATE PROCEDURE pets_heaven.RegistVet(
     IN p_email_usu VARCHAR(100),
     IN p_cont_usu VARCHAR(255),
     IN p_gen_usu VARCHAR(20),
-    IN P_rol_usu VARCHAR(100),
-    IN P_esp_vet VARCHAR(100),
-    IN P_num_tar_vet VARCHAR(100),
-    IN P_fot_tar_vet VARCHAR(100),
-    IN P_fot_vet VARCHAR(100)
+    IN p_rol_usu VARCHAR(100),
+    IN p_esp_vet VARCHAR(100),
+    IN p_num_tar_vet VARCHAR(100),
+    IN p_fot_tar_vet VARCHAR(100),
+    IN p_fot_vet VARCHAR(100)
 )
 BEGIN
     DECLARE p_id_usuario INT;

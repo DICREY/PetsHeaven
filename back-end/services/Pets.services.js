@@ -34,7 +34,7 @@ class Pet {
                 setTimeout(() => res({
                     message: "Pet Created",
                     create: true
-                }),2000)
+                }),1000)
             })
 
             // close conection 
@@ -62,7 +62,7 @@ class Pet {
                         message: "Pets found",
                         result: result
                     })
-                },2000)
+                },1000)
             })
 
             // close conection 
@@ -93,7 +93,7 @@ class Pet {
                         message: "Pets found",
                         result: result
                     })
-                },2000)
+                },1000)
             })
 
             // close conection 
@@ -122,7 +122,7 @@ class Pet {
                         message: "Pets found",
                         result: result
                     })
-                },2000)
+                },1000)
             })
 
             // close conection 
@@ -159,7 +159,7 @@ class Pet {
                 if(err) rej(err)
                 setTimeout(() => res({
                     message: "Pet Modify"
-                }),2000)
+                }),1000)
             })
             
             // close conection 
@@ -184,7 +184,7 @@ class Pet {
                         message: "Pets deleted",
                         deleted: true
                     })
-                },2000)
+                },1000)
             })
 
             // close conection 
@@ -213,7 +213,7 @@ class Pet {
                         message: "History found",
                         result: result
                     })
-                },2000)
+                },1000)
             })
 
             // close conection 
