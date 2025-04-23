@@ -122,20 +122,21 @@ export function GesMascota({ URL = "" }) {
         )
       }
       {showModal && selectedPet && (
-          <PetDetails 
-              datas={selectedPet} 
-              open={showModal} 
-              admin={isAdmin}
-              ready={(state) => setShowModal(state)}
-              editMode={() => setEditMode(true)} />
+        <PetDetails 
+          URL={mainURL}
+          datas={selectedPet} 
+          open={showModal} 
+          admin={isAdmin}
+          ready={(state) => setShowModal(state)}
+          editMode={() => setEditMode(true)} />
       )}
       {editMode && (
-          <EditPetButton 
-              URL={mainURL}
-              petData={selectedPet}
-              open={editMode}
-              onSave={(state) => setEditMode(state)}
-          />
+        <EditPetButton 
+          URL={mainURL}
+          petData={selectedPet}
+          open={editMode}
+          onSave={(state) => setEditMode(state)}
+        />
         )
       }
 

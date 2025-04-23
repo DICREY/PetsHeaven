@@ -123,6 +123,7 @@ export const Pets = ({URL = ""}) => {
                     {/* Modal para mostrar detalles completos */}
                     {showModal && selectedPet && (
                         <PetDetails 
+                            URL={mainURL}
                             datas={selectedPet} 
                             open={showModal} 
                             admin={isAdmin}
@@ -132,7 +133,7 @@ export const Pets = ({URL = ""}) => {
 
                     {editMode && (
                         <EditPetButton
-                            url={mainURL}
+                            URL={mainURL}
                             petData={selectedPet}
                             open={editMode}
                             onSave={(state) => setEditMode(state)}

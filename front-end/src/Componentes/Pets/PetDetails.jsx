@@ -49,22 +49,20 @@ export const PetDetails = ({ datas, ready, editMode, open = false, admin = false
                 const roles =  getRoles(token)
                 const admin = roles.some(role => role.toLowerCase() === "administrador")
                 if (admin) {
-                loadingAlert("Validando...",)
-        
-                const deleted = await DeleteData(mainURL,token,{
-                    nom_mas: datas.nom_mas,
-                    doc_usu: datas.doc_usu
-                })
-                console.log(deleted)
-        
-                deleted.deleted && swal({
-                    icon: 'success',
-                    title: 'Eliminada',
-                    text: 'La mascota han sido eliminada correctamente.',
-                })
-            }
-    
-          } else window.location.href = "/34"
+                    loadingAlert("Validando...")
+            
+                    const deleted = await DeleteData(mainURL,token,{
+                        nom_mas: datas.nom_mas,
+                        doc_usu: datas.doc_usu
+                    })
+            
+                    deleted.deleted && swal({
+                        icon: 'success',
+                        title: 'Desactivada',
+                        text: 'La mascota han sido desactivada correctamente.',
+                    })
+                }
+            } else window.location.href = "/34"
         } catch (err) {
             err.message? swal({
                 icon: "error",
