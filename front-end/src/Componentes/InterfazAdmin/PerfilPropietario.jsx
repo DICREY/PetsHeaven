@@ -34,6 +34,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
   const handleSaveEdit = () => {
     setPropietario(formData)
     setIsEditing(false)
+    const token = localStorage.getItem("token")
   }
 
   const handleChange = (e) => {
