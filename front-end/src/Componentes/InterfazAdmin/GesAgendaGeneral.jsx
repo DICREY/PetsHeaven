@@ -1,11 +1,12 @@
 // Librarys 
-import React, { useState, useRef } from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
+import { Outlet } from 'react-router';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
+import esLocale from "@fullcalendar/core/locales/es"
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi';
 import "./prueba.css";
 
@@ -26,7 +27,13 @@ export const GesAgendaGeneral = () => {
         }
     ]);
 
-
+    //Mes actual
+    const [mesActual, setMesActual] = useState('');
+    useEffect(() => {
+        const calendarApi = calendarRef.current.getApi();
+        const mes = calendarApi.view.title.split(' ')[0];
+        setMesActual(mes);
+      }, []);  
     //Vista Actual del usuario
     const [currentView, setCurrentView] = useState('dayGridMonth');
     //Mostrar la descripcion en un pop up de la cita
@@ -49,6 +56,25 @@ export const GesAgendaGeneral = () => {
     //Fecha
     const [selectedDate, setSelectedDate] = useState('');
     const calendarRef = useRef(null);
+
+
+    //Funcion para cambiar entre meses
+    const navigate = (action) => {
+        const calendarApi = calendarRef.current.getApi();
+        switch(action) {
+            case 'prev':
+                calendarApi.prev();
+                break;
+            case 'next':
+                calendarApi.next();
+                break;
+            case 'today':
+                calendarApi.today();
+                break;
+            default:
+                break;
+        }
+    };
 
     // Cambiar vista del calendario
     const changeView = (view) => {
@@ -132,19 +158,39 @@ export const GesAgendaGeneral = () => {
             <NavBarAdmin />
             <div className='calendar-container' id='main-container-calendar'>
                 
-            <div className="view-buttons">
-                <button onClick={() => changeView('dayGridMonth')} className={currentView === 'dayGridMonth' ? 'active' : ''}>
-                    Mes
-                </button>
-                <button onClick={() => changeView('timeGridWeek')} className={currentView === 'timeGridWeek' ? 'active' : ''}>
-                    Semana
-                </button>
-                <button onClick={() => changeView('timeGridDay')} className={currentView === 'timeGridDay' ? 'active' : ''}>
-                    Día
-                </button>
-                <button onClick={() => changeView('listDay')} className={currentView === 'listDay' ? 'active' : ''}>
-                    Lista Diaria
-                </button>
+            <div className="calendar-controls">
+                <div className="navigation-buttons">
+                    <button onClick={() => navigate('today')}>Hoy</button>
+                    <button onClick={() => navigate('prev')}>&lt;</button>
+                    <button onClick={() => navigate('next')}>&gt;</button>
+                </div>
+                <h2>{mesActual}</h2>
+                <div className="view-buttons">
+                    <button 
+                        onClick={() => changeView('dayGridMonth')}
+                        className={currentView === 'dayGridMonth' ? 'active' : ''}
+                    >
+                        Mes
+                    </button>
+                    <button 
+                        onClick={() => changeView('timeGridWeek')}
+                        className={currentView === 'timeGridWeek' ? 'active' : ''}
+                    >
+                        Semana
+                    </button>
+                    <button 
+                        onClick={() => changeView('timeGridDay')}
+                        className={currentView === 'timeGridDay' ? 'active' : ''}
+                    >
+                        Día
+                    </button>
+                    <button 
+                        onClick={() => changeView('listDay')}
+                        className={currentView === 'listDay' ? 'active' : ''}
+                    >
+                        Lista
+                    </button>
+                </div>
             </div>
 
             <FullCalendar
@@ -166,6 +212,8 @@ export const GesAgendaGeneral = () => {
                 slotMinTime="08:00:00"
                 slotMaxTime="20:00:00"
                 slotDuration="00:30:00"
+                locales={[esLocale]}
+                locale="es"
                 eventTimeFormat={{
                     hour: '2-digit',
                     minute: '2-digit',
@@ -398,7 +446,7 @@ export const GesAgendaGeneral = () => {
             )}
 
             <Outlet />
-
+            
         </div>
 
         </div>            
