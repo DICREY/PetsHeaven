@@ -443,12 +443,8 @@ export const GesAgendaGeneral = () => {
                         </div>
                     </div>
                 </div>
-            )}
-
-            <Outlet />
-            
+            )}            
         </div>
-
         </div>            
     );
 };
