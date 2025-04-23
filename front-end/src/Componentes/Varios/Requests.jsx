@@ -122,7 +122,7 @@ export async function DeleteData(URL = "", token = "", datas = {}) {
         })
 
         if (!response.ok) {
-            throw await response.json()
+            throw response
         }
 
         // Parsear la respuesta como JSON

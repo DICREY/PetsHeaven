@@ -1,61 +1,21 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import { User, PawPrint, ArrowLeft, Trash2, Edit, Save, X, Calendar } from "lucide-react"
-import "../../../public/styles/InterfazAdmin/PerfilPropietario.css";
-import {NavBarAdmin} from '../BarrasNavegacion/NavBarAdmi'; // Asegúrate que la ruta sea correcta
 
-// Datos de ejemplo gay el que lo lea
-const propietarioData = {
-  foto: "/placeholder.svg?height=200&width=200",
-  tipoDocumento: "Cédula de Ciudadanía",
-  numeroDocumento: "45645645",
-  nombres: "Critian",
-  apellidos: "Gómez Pérez",
-  fechaNacimiento: "1985-06-15",
-  genero: "Masculino",
-  celular: "+573012270041, 55554545, 5656565",
-  direccion: "dfgdfgdfgdf, Soacha",
-  correo: "critian@ejemplo.com",
-  contacto: "Pipip",
-};
+// Imports 
+import {NavBarAdmin} from '../BarrasNavegacion/NavBarAdmi'
+import { loadingAlert, getRoles, formatDate } from '../Varios/Util'
+import { DeleteData } from '../Varios/Requests'
+import "../../../public/styles/InterfazAdmin/PerfilPropietario.css"
 
-const mascotasData = [
-  {
-    id: 1,
-    nombre: "Firulais",
-    especie: "Canino",
-    raza: "Golden",
-    genero: "Macho",
-    reproductivo: "No esterilizado",
-    edad: "3 años",
-    foto: "/placeholder.svg?height=120&width=120",
-  },
-  {
-    id: 2,
-    nombre: "Michi",
-    especie: "Felino",
-    raza: "Siamés",
-    genero: "Hembra",
-    reproductivo: "Esterilizada",
-    edad: "2 años",
-    foto: "/placeholder.svg?height=120&width=120",
-  },
-  {
-    id: 3,
-    nombre: "Rocky",
-    especie: "Canino",
-    raza: "Criollo(a)",
-    genero: "Macho",
-    reproductivo: "No esterilizado",
-    edad: "5 años",
-    foto: "/placeholder.svg?height=120&width=120",
-  },
-]
-
-export default function PerfilPropietario() {
+// Component 
+export const PerfilPropietario = ({ userSelect, URL = "" }) => {
+  // Vars 
   const [activeTab, setActiveTab] = useState("propietario")
   const [isEditing, setIsEditing] = useState(false)
-  const [propietario, setPropietario] = useState(propietarioData)
-  const [formData, setFormData] = useState(propietarioData)
+  const [formData, setFormData] = useState(userSelect)
+  const [petsData,setPetsData] = useState([])
+  const [userData,setUserData] = useState(userSelect)
+  const mainUrl = `${URL}/owner`
 
   const verHistorial = (id) => {
     // Aquí se implementaría la lógica para mostrar el historial
@@ -63,7 +23,7 @@ export default function PerfilPropietario() {
   }
 
   const handleEditClick = () => {
-    setFormData(propietario)
+    setFormData(userData)
     setIsEditing(true)
   }
 
@@ -84,10 +44,34 @@ export default function PerfilPropietario() {
     }))
   }
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = async () => {
     if (window.confirm("¿Está seguro que desea eliminar este propietario?")) {
-      alert("Propietario eliminado")
-      // Aquí iría la lógica para eliminar el propietario
+      // Vars
+      const token = localStorage.getItem("token")
+      try {
+        if(token) {
+          const roles =  getRoles(token)
+          const admin = roles.some(role => role.toLowerCase() === "administrador")
+          if (admin) {
+            loadingAlert("Validando...")
+            const deleted = await DeleteData(`${mainUrl}/delete`,token,{
+              doc: userData.doc_usu
+            })
+    
+            deleted.deleted && swal({
+              icon: 'success',
+              title: 'Desactivada',
+              text: 'La mascota han sido desactivada correctamente.',
+            })
+          }
+        } else window.location.href = "/34"
+      } catch (err) {
+        err.message? swal({
+            icon: "error",
+            title: "Error",
+            text: err.message
+        }): console.log(err)
+      }
     }
   }
 
@@ -183,7 +167,7 @@ export default function PerfilPropietario() {
                         <select
                           className="inputEditProps"
                           name="tipoDocumento"
-                          value={formData.tipoDocumento}
+                          value={formData.tip_doc_usu}
                           onChange={handleChange}
                           
                         >
@@ -194,7 +178,7 @@ export default function PerfilPropietario() {
                           <option value="Cédula de Extranjería">Cédula de Extranjería</option>
                         </select>
                       ) : (
-                        <div className="propietarioValorProps">{propietario.tipoDocumento}</div>
+                        <div className="propietarioValorProps">{userData.tip_doc_usu}</div>
                       )}
                     </div>
 
@@ -206,12 +190,12 @@ export default function PerfilPropietario() {
                           type="text"
                           className="inputEditProps"
                           name="numeroDocumento"
-                          value={formData.numeroDocumento}
+                          value={formData.doc_usu}
                           onChange={handleChange}
                           disabled
                         />
                       ) : (
-                        <div className="propietarioValorProps">{propietario.numeroDocumento}</div>
+                        <div className="propietarioValorProps">{userData.doc_usu}</div>
                       )}
                     </div>
 
@@ -223,11 +207,11 @@ export default function PerfilPropietario() {
                           type="text"
                           className="inputEditProps"
                           name="nombres"
-                          value={formData.nombres}
+                          value={formData.nom_usu}
                           onChange={handleChange}
                         />
                       ) : (
-                        <div className="propietarioValorProps">{propietario.nombres}</div>
+                        <div className="propietarioValorProps">{userData.nom_usu}</div>
                       )}
                     </div>
 
@@ -239,11 +223,11 @@ export default function PerfilPropietario() {
                           type="text"
                           className="inputEditProps"
                           name="apellidos"
-                          value={formData.apellidos}
+                          value={formData.ape_usu}
                           onChange={handleChange}
                         />
                       ) : (
-                        <div className="propietarioValorProps">{propietario.apellidos}</div>
+                        <div className="propietarioValorProps">{userData.ape_usu}</div>
                       )}
                     </div>
 
@@ -255,12 +239,12 @@ export default function PerfilPropietario() {
                           type="date"
                           className="inputEditProps"
                           name="fechaNacimiento"
-                          value={formData.fechaNacimiento}
+                          value={formData.fec_nac_usu}
                           onChange={handleChange}
                           disabled
                         />
                       ) : (
-                        <div className="propietarioValorProps">{propietario.fechaNacimiento}</div>
+                        <div className="propietarioValorProps">{userData.fec_nac_usu}</div>
                       )}
                     </div>
 
@@ -268,13 +252,13 @@ export default function PerfilPropietario() {
                     <div className="propietarioCampoProps">
                       <div className="propietarioEtiquetaProps">Género</div>
                       {isEditing ? (
-                        <select className="inputEditProps" name="genero" value={formData.genero} onChange={handleChange}>
+                        <select className="inputEditProps" name="genero" value={formData.gen_usu} onChange={handleChange}>
                           <option value="Masculino">Masculino</option>
                           <option value="Femenino">Femenino</option>
                           <option value="Otro">Otro</option>
                         </select>
                       ) : (
-                        <div className="propietarioValorProps">{propietario.genero}</div>
+                        <div className="propietarioValorProps">{userData.gen_usu || "no-registrado"}</div>
                       )}
                     </div>
 
@@ -286,11 +270,11 @@ export default function PerfilPropietario() {
                           type="text"
                           className="inputEditProps"
                           name="celular"
-                          value={formData.celular}
+                          value={formData.cel_usu}
                           onChange={handleChange}
                         />
                       ) : (
-                        <div className="propietarioValorProps">{propietario.celular}</div>
+                        <div className="propietarioValorProps">{userData.cel_usu}</div>
                       )}
                     </div>
 
@@ -302,11 +286,11 @@ export default function PerfilPropietario() {
                           type="text"
                           className="inputEditProps"
                           name="direccion"
-                          value={formData.direccion}
+                          value={formData.dir_usu}
                           onChange={handleChange}
                         />
                       ) : (
-                        <div className="propietarioValorProps">{propietario.direccion}</div>
+                        <div className="propietarioValorProps">{userData.dir_usu}</div>
                       )}
                     </div>
 
@@ -318,11 +302,11 @@ export default function PerfilPropietario() {
                           type="email"
                           className="inputEditProps"
                           name="correo"
-                          value={formData.correo}
+                          value={formData.email_usu}
                           onChange={handleChange}
                         />
                       ) : (
-                        <div className="propietarioValorProps">{propietario.correo}</div>
+                        <div className="propietarioValorProps">{userData.email_usu}</div>
                       )}
                     </div>
                   </div>
@@ -334,7 +318,7 @@ export default function PerfilPropietario() {
           {activeTab === "mascotas" && (
             <div className="mascotasContenedorProps">
               <div className="mascotasGrillaProps">
-                {mascotasData.map((mascota) => (
+                {petsData.map((mascota) => (
                   <div key={mascota.id} className="mascotaTarjetaProps">
                     <div className="mascotaImagenProps">
                       <img src={mascota.foto || "/placeholder.svg"} alt={mascota.nombre} />
@@ -366,7 +350,7 @@ export default function PerfilPropietario() {
                 ))}
               </div>
 
-              {mascotasData.length === 0 && <div className="sinResultadosProps">No hay mascotas vinculadas</div>}
+              {petsData.length === 0 && <div className="sinResultadosProps">No hay mascotas vinculadas</div>}
             </div>
           )}
         </div>

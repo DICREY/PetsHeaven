@@ -1,5 +1,5 @@
 // Librarys
-import React from "react"
+import React, { useState } from "react"
 import { BrowserRouter, Routes, Route,Navigate } from "react-router"
 
 // Imports
@@ -18,12 +18,11 @@ import { ConfiguracionUsuario } from "./Componentes/InterfazAdmin/FormulariosAdm
 import { FormularioRegMascotas } from "./Componentes/Formularios/FormularioMascotas"
 import { GesAgendaGeneral } from "./Componentes/InterfazAdmin/GesAgendaGeneral"
 import { RegistroPro } from "./Componentes/InterfazAdmin/FormulariosAdmin/RegistroPro"
-import PerfilPropietario from "./Componentes/InterfazAdmin/PerfilPropietario"
-
-
+import { PerfilPropietario } from "./Componentes/InterfazAdmin/PerfilPropietario"
 
 // Main Component
 export default function App () {
+  const [userSelect,setUserSelect] = useState()
   const URL = "http://localhost:3000"
   
   // Route types
@@ -70,7 +69,7 @@ export default function App () {
         {/* Admin routes  */}
         <Route path="/admin">
           <Route path="consultorio" element={
-            <AdminRoute children={<HomeAdmin URL={URL}/>} />}>  
+            <AdminRoute children={<HomeAdmin setUserSelect={setUserSelect} URL={URL}/>} />}>  
           </Route>
           <Route path="gestion/usuarios" element={
             <AdminRoute children={<GesUsuario URL={URL} />} />} >
@@ -82,7 +81,7 @@ export default function App () {
             <AdminRoute children={<GesAgendaGeneral URL={URL} />} />} >
           </Route>
           <Route path="propietario/datos" element={
-            <AdminRoute children={<PerfilPropietario URL={URL} />} />} >
+            <AdminRoute children={<PerfilPropietario userSelect={userSelect} URL={URL} />} />} >
           </Route>
         </Route>
 
