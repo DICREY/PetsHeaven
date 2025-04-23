@@ -18,7 +18,7 @@ import { ConfiguracionUsuario } from "./Componentes/InterfazAdmin/FormulariosAdm
 import { FormularioRegMascotas } from "./Componentes/Formularios/FormularioMascotas"
 import { GesAgendaGeneral } from "./Componentes/InterfazAdmin/GesAgendaGeneral"
 import { RegistroPro } from "./Componentes/InterfazAdmin/FormulariosAdmin/RegistroPro"
-import {PerfilPropietario} from "./Componentes/InterfazAdmin/PerfilPropietario"
+import PerfilPropietario from "./Componentes/InterfazAdmin/PerfilPropietario"
 
 
 

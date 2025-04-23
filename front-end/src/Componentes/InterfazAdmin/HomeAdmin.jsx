@@ -229,7 +229,7 @@ export function HomeAdmin({ URL = "" }) {
                         ) : "-- Empty --"}
                       </td>
                       <td className="celdaadminhome" data-label="Acciones">
-                        <button className="accionadminhome" onClick={() => window.location.href = "/propietario/datos"}>
+                        <button className="accionadminhome" onClick={() => window.location.href = "/admin/propietario/datos"}>
                           <FileText size={18} />
                         </button>
                       </td>
