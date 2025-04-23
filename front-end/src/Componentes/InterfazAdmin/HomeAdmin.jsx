@@ -1,19 +1,19 @@
 // Librarys 
 import React, { useState, useEffect } from "react"
-import { Outlet } from "react-router-dom"
+import { Outlet, useNavigate } from "react-router-dom"
 import { Search, ChevronUp, Plus, FileText, User, PawPrint } from "lucide-react"
 import swal from 'sweetalert'
 
 // Imports 
 import {NavBarAdmin} from '../BarrasNavegacion/NavBarAdmi';
 import { GetData } from '../Varios/Requests'
-import { errorStatusHandler, formatDate, divideList } from '../Varios/Util'
+import { errorStatusHandler, formatDate } from '../Varios/Util'
 
 // Import styles 
 import '../../../public/styles/InterfazAdmin/HomeAdmin.css'
 
 // Main component
-export function HomeAdmin({ URL = "" }) {
+export function HomeAdmin({ URL = "", setUserSelect }) {
   // Vars 
   const mainUrl = `${URL}/owner`
   const [datas,setDatas] = useState([])
@@ -21,6 +21,7 @@ export function HomeAdmin({ URL = "" }) {
   const [page,setPage] = useState(1)
   const headersSearchUser = ['nom_usu', 'email_usu', 'cel_usu', 'ape_usu']
   const headersSearchPet = ['nom_mas']
+  const navigate = useNavigate()
 
   const GetDataOwners = async () => {
     const token = localStorage.getItem("token")
@@ -121,21 +122,21 @@ export function HomeAdmin({ URL = "" }) {
             <div className="encabezadoadminhome">
               <div className="tituloadminhome">
                 <FileText className="iconoadminhome" />
-                <h1 className="textoadminhome">Lista de propietarios y mascotas</h1>
+                <h1 className="textoadminhome">Lista de usuarios y mascotas</h1>
                 <div className="decoracionadminhome">
                   <PawPrint className="huellaadminhome" />
                 </div>
               </div>
 
-              <button className="botonadminhome" onClick={() =>  window.location.href = "/propietario/registro"} >
+              <button className="botonadminhome" onClick={() => navigate("/propietario/registro")} >
                 <Plus size={16} className="iconoplusadminhome" />
-                Registrar propietario
+                Registrar usuario
               </button>
             </div>
 
             <div className="busquedaadminhome">
               <div className="seccionadminhome">
-                <label className="etiquetaadminhome">Propietario</label>
+                <label className="etiquetaadminhome">Usuario</label>
                 <div className="inputcontenedoradminhome">
                   <User className="inputiconoadminhome" />
                   <input
@@ -229,7 +230,10 @@ export function HomeAdmin({ URL = "" }) {
                         ) : "-- Empty --"}
                       </td>
                       <td className="celdaadminhome" data-label="Acciones">
-                        <button className="accionadminhome" onClick={() => window.location.href = "/propietario/datos"}>
+                        <button className="accionadminhome" onClick={() => {
+                          setUserSelect(propietario)
+                          navigate("/admin/propietario/datos")
+                          }}>
                           <FileText size={18} />
                         </button>
                       </td>

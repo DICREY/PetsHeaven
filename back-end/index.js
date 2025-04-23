@@ -1,6 +1,7 @@
 // librarys
 const express = require('express')
 const cors = require('cors')
+const bodyParser = require('body-parser');
 require('dotenv').config()
 
 // Imports 
@@ -16,6 +17,7 @@ const port = process.env.PORT || 3000
 app.disable('x-powered-by')
 
 // middlewares
+app.use(bodyParser.json({ limit: '1mb' }));
 app.use(express.json())
 app.use(cors(corsOptions))
 app.use(validatorHeaders)

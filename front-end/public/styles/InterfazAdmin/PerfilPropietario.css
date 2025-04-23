@@ -1,292 +1,367 @@
-.containerpropsmain{
-    display: flex;
-    min-height: 100vh;
-    background-color: #f8fafc;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+/* Estilos generales */
+.contenedorpageProps{
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 .contenedorProps {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0 auto;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  }
-  
-  /* Cabecera */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  position: relative;
+  min-height: 35rem;
+}
+.principalpageProp{
+  flex: 1;
+  padding: 1.5rem;
+  transition: padding 0.3s ease;
+}
+/* Cabecera */
+.cabeceraProps {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.tituloProps {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  color: #00bcd4;
+}
+
+.subtituloProps {
+  font-size: 16px;
+  font-weight: normal;
+  color: #666;
+  margin-left: 10px;
+}
+
+.botonesAccionProps {
+  display: flex;
+  gap: 10px;
+}
+
+.botonAtrasProps {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #666;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.botonEliminarProps {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 16px;
+  border: 1px solid #e74c3c;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #e74c3c;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.botonEliminarProps:hover {
+  background-color: #fef5f5;
+}
+
+.botonEditarProps {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #666;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.botonEditarProps:hover {
+  background-color: #f5f5f5;
+}
+
+.botonCancelarProps {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #666;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.botonCancelarProps:hover {
+  background-color: #f5f5f5;
+}
+
+.botonGuardarProps {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #00bcd4;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.botonGuardarProps:hover {
+  background-color: #00a5bc;
+}
+
+/* Pestañas */
+.pestanasProps {
+  display: flex;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.pestanaProps {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 24px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  color: #666;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.pestanaProps:hover {
+  color: #00bcd4;
+}
+
+.pestanaProps.activaProps {
+  color: #00bcd4;
+  border-bottom: 3px solid #00bcd4;
+}
+
+/* Contenido */
+.contenidoProps {
+  padding: 24px;
+}
+
+/* Propietario */
+.propietarioSeccionProps {
+  max-width: 900px;
+}
+
+.seccionTituloProps {
+  font-size: 16px;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+/* Estructura de la información */
+.propietarioInfoProps {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Foto y datos */
+.propietarioFotoInfoProps {
+  display: flex;
+  gap: 30px;
+}
+
+.propietarioFotoProps {
+  width: 200px;
+  height: 200px;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #eaeaea;
+  color: #aaa;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.propietarioDatosProps {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+/* Campos individuales */
+.propietarioCampoProps {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.propietarioEtiquetaProps {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.propietarioValorProps {
+  color: #555;
+}
+
+/* Campos de edición */
+.inputEditProps {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.inputEditProps:focus {
+  outline: none;
+  border-color: #00bcd4;
+  box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.1);
+}
+
+/* Mascotas */
+.mascotasContenedorProps {
+  width: 100%;
+}
+
+.mascotasGrillaProps {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.mascotaTarjetaProps {
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.mascotaTarjetaProps:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.mascotaImagenProps {
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mascotaImagenProps img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mascotaInfoProps {
+  padding: 15px;
+}
+
+.mascotaNombreProps {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.mascotaDetallesProps {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.mascotaDetalleProps {
+  font-size: 14px;
+  color: #555;
+}
+
+.mascotaEtiquetaProps {
+  font-weight: 600;
+  color: #333;
+}
+
+.mascotaAccionesProps {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.botonHistorialProps {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 16px;
+  background-color: #00bcd4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.botonHistorialProps:hover {
+  background-color: #00a5bc;
+}
+
+.sinResultadosProps {
+  text-align: center;
+  padding: 30px;
+  color: #666;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
   .cabeceraProps {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 24px;
-    border-bottom: 1px solid #eaeaea;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
   }
-  
-  .tituloProps {
-    margin: 0;
-    font-size: 20px;
-    font-weight: 500;
-    color: #00bcd4;
-  }
-  
-  .subtituloProps {
-    font-size: 16px;
-    font-weight: normal;
-    color: #666;
-    margin-left: 10px;
-  }
-  
+
   .botonesAccionProps {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .botonAtrasProps {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 8px 16px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #fff;
-    color: #666;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  
-  .botonEliminarProps {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 8px 16px;
-    border: 1px solid #e74c3c;
-    border-radius: 4px;
-    background-color: #fff;
-    color: #e74c3c;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  
-  .botonEliminarProps:hover {
-    background-color: #fef5f5;
-  }
-  
-  .botonEditarProps {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 8px 16px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #fff;
-    color: #666;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  
-  .botonEditarProps:hover {
-    background-color: #f5f5f5;
-  }
-  
-  /* Pestañas */
-  .pestanasProps {
-    display: flex;
-    border-bottom: 1px solid #eaeaea;
-  }
-  
-  .pestanaProps {
-    display: flex;
-    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
     gap: 8px;
-    padding: 16px 24px;
-    background: none;
-    border: none;
-    border-bottom: 3px solid transparent;
-    cursor: pointer;
-    color: #666;
-    font-size: 14px;
-    transition: all 0.2s;
   }
-  
-  .pestanaProps:hover {
-    color: #00bcd4;
-  }
-  
-  .pestanaProps.activaProps {
-    color: #00bcd4;
-    border-bottom: 3px solid #00bcd4;
-  }
-  
-  /* Contenido */
-  .contenidoProps {
-    padding: 24px;
-  }
-  
-  /* Propietario */
-  .propietarioSeccionProps {
-    max-width: 900px;
-  }
-  
-  .seccionTituloProps {
-    font-size: 16px;
-    font-weight: 500;
-    color: #555;
-    margin-bottom: 20px;
-  }
-  
-  /* Estructura de la información */
-  .propietarioInfoProps {
-    display: flex;
+
+  .propietarioFotoInfoProps {
     flex-direction: column;
-    gap: 30px;
-  }
-  
-  /* Primera fila: foto y datos básicos */
-  .propietarioFilaFotoProps {
-    display: flex;
-    gap: 30px;
-  }
-  
-  .propietarioColumnaFotoProps {
-    width: 200px;
-  }
-  
-  .propietarioFotoProps {
-    width: 200px;
-    height: 200px;
-    border-radius: 8px;
-    background-color: #f5f5f5;
-    display: flex;
     align-items: center;
-    justify-content: center;
-    border: 1px solid #eaeaea;
-    color: #aaa;
-    overflow: hidden;
   }
-  
-  .propietarioColumnaDatosBasicosProps {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    justify-content: center;
-  }
-  
-  /* Segunda fila: detalles en dos columnas */
-  .propietarioFilaDetallesProps {
-    display: flex;
-    gap: 30px;
-  }
-  
-  .propietarioColumnaProps {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  /* Campos individuales */
-  .propietarioCampoProps {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-  
-  .propietarioEtiquetaProps {
-    font-weight: 600;
-    color: #333;
-    font-size: 14px;
-  }
-  
-  .propietarioValorProps {
-    color: #555;
-  }
-  
-  /* Mascotas */
-  .mascotasContenedorProps {
+
+  .propietarioDatosProps {
+    grid-template-columns: 1fr;
     width: 100%;
   }
-  
-  /* Tabla */
-  .tablaContenedorProps {
-    overflow-x: auto;
+
+  .mascotasGrillaProps {
+    grid-template-columns: 1fr;
   }
-  
-  .tablaProps {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .tablaProps th {
-    background-color: #f5f5f5;
-    padding: 12px 16px;
-    text-align: left;
-    font-weight: 500;
-    color: #555;
-    border-bottom: 2px solid #eaeaea;
-  }
-  
-  .tablaProps td {
-    padding: 12px 16px;
-    border-bottom: 1px solid #eaeaea;
-  }
-  
-  .filaTablaProps:hover {
-    background-color: #f9f9f9;
-  }
-  
-  .botonHistorialProps {
-    padding: 6px 12px;
-    background-color: #00bcd4;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 13px;
-  }
-  
-  .botonHistorialProps:hover {
-    background-color: #00a5bc;
-  }
-  
-  .sinResultadosProps {
-    text-align: center;
-    padding: 30px;
-    color: #666;
-    font-style: italic;
-  }
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    .cabeceraProps {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 15px;
-    }
-  
-    .botonesAccionProps {
-      width: 100%;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-  
-    .propietarioFilaFotoProps {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .propietarioColumnaFotoProps {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-    }
-  
-    .propietarioColumnaDatosBasicosProps {
-      width: 100%;
-    }
-  
-    .propietarioFilaDetallesProps {
-      flex-direction: column;
-      gap: 15px;
-    }
-  }
-  
+}

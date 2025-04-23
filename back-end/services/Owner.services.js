@@ -24,7 +24,7 @@ class Owner{
                         message: "Owners found",
                         result: result
                     })
-                },2000)
+                },1000)
             })
 
             // close conection 
@@ -54,7 +54,7 @@ class Owner{
                         message: "Owners found",
                         result: result
                     })
-                },2000)
+                },1000)
             })
 
             // close conection 
@@ -84,7 +84,7 @@ class Owner{
                         message: "Owner found",
                         result: result
                     })
-                },2000)
+                },1000)
             })
 
             // close conection 
@@ -108,7 +108,7 @@ class Owner{
                 setTimeout(() => res({
                     message: "Owner Deleted",
                     deleted: true
-                }),2000)
+                }),1000)
             })
 
             // close conection 
@@ -149,7 +149,7 @@ class Owner{
     //             setTimeout(() => res({
     //                 message: "Owner Modify",
     //                 ...data
-    //             }),2000)
+    //             }),1000)
     //         })
 
     //         // close conection 

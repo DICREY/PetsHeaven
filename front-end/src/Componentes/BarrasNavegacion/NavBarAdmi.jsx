@@ -110,7 +110,7 @@ export const NavBarAdmin = () => {
                 <li className="itemnavadmin">
                   <a href="/admin/gestion/usuarios" className="enlacenavadmin">
                     <Users className="icononavadmin" />
-                    <span>Usuarios</span>
+                    <span>Personal</span>
                   </a>
                 </li>
               )

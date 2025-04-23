@@ -23,7 +23,7 @@ Route.get('/all', ValidatorRol("administrador"), async (req,res) => {
     try {
         res.status(200).json(search)
     } catch (err) {
-        if(err.status) return res.status(err.status).json(err.message)
+        if(err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: err })
     }
 })
@@ -39,7 +39,7 @@ Route.get('/all:by', ValidatorRol("administrador"), async (req,res) => {
     try {
         res.status(200).json(search)
     } catch (err) {
-        if(err.status) return res.status(err.status).json(err.message)
+        if(err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: err })
     }
 })
@@ -55,7 +55,7 @@ Route.get('/by:by', ValidatorRol("administrador"), async (req,res) => {
     try {
         res.status(200).json(search)
     } catch (err) {
-        if(err.status) return res.status(err.status).json(err.message)
+        if(err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: err })
     }
 })
@@ -73,8 +73,28 @@ Route.post('/register', async (req,res) => {
         const create = await user.create({hash_pass: await hash(body.password,saltRounds), ...body})
         res.status(201).json(create)
     } catch(err) {
-        if(err.status) return res.status(err.status).json(err.message)
+        if(err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: err })
+    }
+})
+
+Route.post('/register/personal', ValidatorRol("administrador"), async (req,res) => {
+    // Vars 
+    const saltRounds = 15
+    const body = req.body
+    console.log(body)
+    
+    // Verifiy if exist
+    const find = await user.findBy(toString(body.doc))
+    if (find.result[0][0].nom_usu) res.status(302).json({ message: "Persona ya registrada" })
+        
+    try {
+        const create = await user.createPersonal({hash_pass: await hash(body.cont,saltRounds), ...body})
+        if(create.state) res.status(201).json(create)
+        console.log(create)
+    } catch(err) {
+        if(err.status) return res.status(err.status).json({message: err.message})
+        res.status(500).json({ message: "Error interno", error: err })
     }
 })
 
@@ -91,7 +111,7 @@ Route.put('/modify', ValidatorRol("administrador"), async (req,res) => {
         const modified = await user.modify({hash_pass: await hash(body.password,saltRounds), ...body})
         res.status(200).json(modified)
     } catch (err) {
-        if(err.status) return res.status(err.status).json(err.message)
+        if(err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: err })
     }
 })
@@ -107,7 +127,7 @@ Route.put('/modify', ValidatorRol("administrador"), async (req,res) => {
 //     try {
 //         res.status(200).json(search)
 //     } catch (err) {
-// if(err.status) return res.status(err.status).json(err.message)
+// if(err.status) return res.status(err.status).json({message: err.message})
 //.status(500)         res.json({ message: err })
 //     }
 // })

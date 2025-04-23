@@ -1,9 +1,11 @@
-import React from "react"
-import { useState, useRef } from "react"
-import { ImageOff, Import, Pencil } from "lucide-react"
+// Librarys 
+import React,{ useState, useRef } from "react"
+import { Pencil } from "lucide-react"
+
+// Import styles 
 import "../../../../public/styles/InterfazAdmin/FormuariosAdmin/InformacionProfesional.css"
 
-const InformacionProfesional = () => {
+const InformacionProfesional = ({ handleValue }) => {
   const [cardImage, setCardImage] = useState(null)
   const cardInputRef = useRef(null)
 
@@ -25,8 +27,13 @@ const InformacionProfesional = () => {
       <div className="grupo-profesional">
         <label className="etiqueta-profesional">Especialidades</label>
         <div className="selector-profesional">
-          <select className="campo-selector-profesional">
-            <option value="">Si aplica, seleccione una o varias</option>
+          <select 
+            name="especialidad"
+            className="campo-selector-profesional"
+            onChange={handleValue}
+            defaultValue='--'
+          >
+            <option disabled value="--">Si aplica, seleccione una o varias</option>
             <option value="medicina">Medicina General</option>
             <option value="pediatria">Pediatría</option>
             <option value="cardiologia">Cardiología</option>
@@ -36,7 +43,12 @@ const InformacionProfesional = () => {
 
       <div className="grupo-profesional">
         <label className="etiqueta-profesional">Nº Tarjeta profesional</label>
-        <input type="text" placeholder="Número de tarjeta profesional" className="campo-profesional" />
+        <input 
+          name="numTargPro"
+          type="text" 
+          placeholder="Número de tarjeta profesional" 
+          onChange={handleValue}
+          className="campo-profesional" />
       </div>
 
       <div className="grupo-profesional">

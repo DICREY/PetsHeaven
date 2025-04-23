@@ -28,7 +28,7 @@ const UserConfiguration = () => {
     <div className="user-config-container">
       <div className="user-config-header">
         <div className="header-title">
-          <h1>Configuración de usuario</h1>
+          <h1>Configuración personal</h1>
           <span className="creation-label">Creación</span>
         </div>
         <div className="header-actions">

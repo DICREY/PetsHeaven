@@ -2,7 +2,7 @@
 import { GetData } from '../Varios/Requests'
 import { decodeJWT, errorStatusHandler, getRoles } from '../Varios/Util'
 import { Loader } from '../Errores/Loader'
-import { SubNotFound } from '../Errores/NotFound'
+import { NotFound } from '../Errores/NotFound'
 import { EditPetButton } from './EditPet'
 import { PetDetails } from './PetDetails'
 
@@ -116,13 +116,14 @@ export const Pets = ({URL = ""}) => {
                             ))}
                         </section>
                         ):(
-                            <SubNotFound />
+                            <NotFound />
                         )
                     }
 
                     {/* Modal para mostrar detalles completos */}
                     {showModal && selectedPet && (
                         <PetDetails 
+                            URL={mainURL}
                             datas={selectedPet} 
                             open={showModal} 
                             admin={isAdmin}
@@ -132,7 +133,7 @@ export const Pets = ({URL = ""}) => {
 
                     {editMode && (
                         <EditPetButton
-                            url={mainURL}
+                            URL={mainURL}
                             petData={selectedPet}
                             open={editMode}
                             onSave={(state) => setEditMode(state)}

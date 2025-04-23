@@ -20,7 +20,7 @@ export class EditPetButton extends Component {
         }
         
         // Configuración
-        this.URL = `${this.props.url}/modify`
+        this.URL = `${this.props.URL}/modify`
         this.token = localStorage.getItem("token")
         this.onSave = this.props.onSave
     }
@@ -59,7 +59,7 @@ export class EditPetButton extends Component {
                 this.message = errorStatusHandler(err.status)
                 swal({
                   title: 'Error',
-                  text: `${message}`,
+                  text: `${this.message}`,
                   icon: 'warning',
                 })
             } else console.log(err)
