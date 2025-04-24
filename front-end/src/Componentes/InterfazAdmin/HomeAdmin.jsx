@@ -141,7 +141,7 @@ export function HomeAdmin({ URL = "", setUserSelect }) {
                   <User className="inputiconoadminhome" />
                   <input
                     className="campoadminhome"
-                    placeholder="Buscar por identificación, teléfono o nombre del pAropietario"
+                    placeholder="Buscar por identificación o nombre de usuario "
                     type="text"
                     onChange={e => handleSearch(e.target.value,datasAlmac, headersSearchUser)}
                   />
