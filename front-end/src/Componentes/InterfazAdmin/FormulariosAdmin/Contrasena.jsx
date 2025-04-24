@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import "../../../../public/styles/InterfazAdmin/FormuariosAdmin/Contrasena.css";
 
-const Contrasena = ({ /* handleValue */ }) => { // Elimina handleValue de las props
+const Contrasena = () => {
   const {
     register,
     handleSubmit,
@@ -18,21 +18,23 @@ const Contrasena = ({ /* handleValue */ }) => { // Elimina handleValue de las pr
   const cambiarVisibilidadConfirmarPassword = () => setVerConfirmarPassword(!verConfirmarPassword);
 
   const onSubmit = (data) => {
-    // Aquí puedes manejar la lógica cuando el formulario es válido
     console.log("Contraseñas válidas:", data);
-    // Si necesitas pasar los valores al componente padre,
-    // deberías usar otra forma, como una función de callback específica.
   };
 
   return (
-    <div className="contrasena-container">
-      <h2>Crea una contraseña</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid-contrasena">
+    <section className="contrasena-container" aria-labelledby="titulo-contrasena">
+      <h2 id="titulo-contrasena">Crea una contraseña</h2>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <fieldset className="grid-contrasena" border >
+          <legend className="sr-only">Formulario de creación de contraseña</legend>
+          
           <div className="grupo-contrasena">
-            <label className="etiqueta-contrasena">Contraseña<spam className='obligatorio'>*</spam></label>
+            <label htmlFor="password" className="etiqueta-contrasena">
+              Contraseña<span className="obligatorio" aria-hidden="true">*</span>
+            </label>
             <div className="contenedor-input-password">
               <input
+                id="password"
                 name="password"
                 type={verPassword ? "text" : "password"}
                 placeholder="Nueva contraseña"
@@ -50,13 +52,13 @@ const Contrasena = ({ /* handleValue */ }) => { // Elimina handleValue de las pr
                 })}
                 aria-invalid={errors.password ? "true" : "false"}
                 aria-describedby={errors.password ? "error-password" : undefined}
-                // Elimina onChange={handleValue}
               />
               <button
                 type="button"
                 className="boton-toggle-password"
                 onClick={cambiarVisibilidadPassword}
                 aria-label={verPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                aria-expanded={verPassword}
                 aria-controls="password"
               >
                 {verPassword ? (
@@ -71,6 +73,7 @@ const Contrasena = ({ /* handleValue */ }) => { // Elimina handleValue de las pr
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     className="icono-ojo"
+                    aria-hidden="true"
                   >
                     <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
                     <line x1="1" y1="1" x2="23" y2="23"></line>
@@ -87,6 +90,7 @@ const Contrasena = ({ /* handleValue */ }) => { // Elimina handleValue de las pr
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     className="icono-ojo"
+                    aria-hidden="true"
                   >
                     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                     <circle cx="12" cy="12" r="3"></circle>
@@ -102,9 +106,12 @@ const Contrasena = ({ /* handleValue */ }) => { // Elimina handleValue de las pr
           </div>
 
           <div className="grupo-contrasena">
-            <label className="etiqueta-contrasena">Confirme la contraseña<spam className='obligatorio'>*</spam></label>
+            <label htmlFor="verifyPassword" className="etiqueta-contrasena">
+              Confirme la contraseña<span className="obligatorio" aria-hidden="true">*</span>
+            </label>
             <div className="contenedor-input-password">
               <input
+                id="verifyPassword"
                 name="verifyPassword"
                 type={verConfirmarPassword ? "text" : "password"}
                 placeholder="Confirme la contraseña"
@@ -116,13 +123,13 @@ const Contrasena = ({ /* handleValue */ }) => { // Elimina handleValue de las pr
                 })}
                 aria-invalid={errors.verifyPassword ? "true" : "false"}
                 aria-describedby={errors.verifyPassword ? "error-verifyPassword" : undefined}
-                // Elimina onChange={handleValue}
               />
               <button
                 type="button"
                 className="boton-toggle-password"
                 onClick={cambiarVisibilidadConfirmarPassword}
-                aria-label={verConfirmarPassword ? "Ocultar confirmar contraseña" : "Mostrar confirmar contraseña"}
+                aria-label={verConfirmarPassword ? "Ocultar confirmación de contraseña" : "Mostrar confirmación de contraseña"}
+                aria-expanded={verConfirmarPassword}
                 aria-controls="verifyPassword"
               >
                 {verConfirmarPassword ? (
@@ -137,6 +144,7 @@ const Contrasena = ({ /* handleValue */ }) => { // Elimina handleValue de las pr
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     className="icono-ojo"
+                    aria-hidden="true"
                   >
                     <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
                     <line x1="1" y1="1" x2="23" y2="23"></line>
@@ -153,6 +161,7 @@ const Contrasena = ({ /* handleValue */ }) => { // Elimina handleValue de las pr
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     className="icono-ojo"
+                    aria-hidden="true"
                   >
                     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                     <circle cx="12" cy="12" r="3"></circle>
@@ -166,9 +175,9 @@ const Contrasena = ({ /* handleValue */ }) => { // Elimina handleValue de las pr
               </p>
             )}
           </div>
-        </div>
+        </fieldset>
       </form>
-    </div>
+    </section>
   );
 };
 

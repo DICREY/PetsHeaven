@@ -23,6 +23,12 @@ import { GesAgendaGeneral } from "./Componentes/InterfazAdmin/GesAgendaGeneral"
 import { PerfilPropietario } from "./Componentes/InterfazAdmin/PerfilPropietario"
 import { MainAdmin } from './Componentes/InterfazAdmin/MainAdmin'
 
+
+//import Crud personal
+
+
+
+
 // Main Component
 export default function App () {
   const [userSelect,setUserSelect] = useState()
@@ -86,7 +92,12 @@ export default function App () {
           <Route path="propietario/datos" element={
             <AdminRoute children={<PerfilPropietario userSelect={userSelect} URL={URL} />} />} >
           </Route>
+
+          <Route path="actualizar/datos personal" element={
+            <AdminRoute children={<PerfilPropietario userSelect={userSelect} URL={URL} />} />} >
+          </Route>
         </Route>
+        
 
 
         {/* Vet routes */}

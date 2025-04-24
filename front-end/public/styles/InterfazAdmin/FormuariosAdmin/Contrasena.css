@@ -1,52 +1,92 @@
+/* Estilos para contenido accesible oculto visualmente */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 .contrasena-container {
-    max-width: 900px;
-    padding: 0;
-  }
-  
-  .contrasena-container h2 {
-    font-size: 16px;
-    font-weight: 500;
-    color: #00BCD4;
-    margin-top: 0;
-    margin-bottom: 24px;
-  }
-  
+  max-width: 56.25rem; 
+  padding: 0;
+}
+
+.contrasena-container h2 {
+  font-size: 1rem; 
+  font-weight: 500;
+  color: #00BCD4;
+  margin-top: 0;
+  margin-bottom: 1.5rem; 
+}
+
+.grid-contrasena {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem; 
+  border: none; 
+  padding: 0;
+  margin: 0; 
+}
+
+.grupo-contrasena {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; 
+}
+
+.etiqueta-contrasena {
+  font-size: 0.875rem; 
+  color: #00BCD4;
+}
+
+.campo-contrasena {
+  padding: 0.625rem 0.75rem; 
+  border: 1px solid #d1d5db;
+  border-radius: 0.25rem; 
+  font-size: 0.875rem; 
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.campo-contrasena:focus {
+  border-color: #00bcd4;
+}
+
+.campo-error {
+  border-color: #ff0000;
+}
+
+.mensaje-error {
+  color: #ff0000;
+  font-size: 0.75rem; 
+  margin-top: 0.25rem; 
+}
+
+.contenedor-input-password {
+  position: relative;
+}
+
+.boton-toggle-password {
+  position: absolute;
+  right: 0.75rem; 
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+/* Responsive */
+@media (max-width: 56.25rem) { 
   .grid-contrasena {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    grid-template-columns: 1fr;
+    gap: 1rem; 
   }
-  
-  .grupo-contrasena {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  
-  .etiqueta-contrasena {
-    font-size: 14px;
-    color: #00BCD4;
-  }
-  
-  .campo-contrasena {
-    padding: 10px 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 4px;
-    font-size: 14px;
-    width: 100%;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  
-  .campo-contrasena:focus {
-    border-color: #00bcd4;
-  }
-  
-  /* Responsive */
-  @media (max-width: 900px) {
-    .grid-contrasena {
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-  }
-  
+}
