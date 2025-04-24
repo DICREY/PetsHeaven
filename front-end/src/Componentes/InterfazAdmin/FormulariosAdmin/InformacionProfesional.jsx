@@ -46,7 +46,9 @@ const InformacionProfesional = ({ register, errors }) => {
         <label className="etiqueta-profesional">Nº Tarjeta profesional<spam className='obligatorio'>*</spam></label>
         <input
           name="numTargPro"
-          type="text"
+          type='number'
+          max='100'
+          aria-valuemax='100'
           placeholder="Número de tarjeta profesional"
           className={`campo-profesional ${errors.numTargPro ? 'campo-error' : ''}`}
           {...register("numTargPro", {

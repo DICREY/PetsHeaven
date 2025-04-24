@@ -6,9 +6,9 @@ import { BrowserRouter, Routes, Route,Navigate } from "react-router"
 import { LoginForm } from "./Componentes/Formularios/LoginForm"
 import Registro from "./Componentes/Formularios/Registro"
 import ForgotPassword from "./Componentes/Formularios/ForgotPassword"
-import { ConfiguracionUsuario } from "./Componentes/InterfazAdmin/FormulariosAdmin/RegistroUsu"
+import { ConfiguracionUsuario } from "./Componentes/InterfazAdmin/FormulariosAdmin/RegistroPersonal"
 import { FormularioRegMascotas } from "./Componentes/Formularios/FormularioMascotas"
-import { RegistroPro } from "./Componentes/InterfazAdmin/FormulariosAdmin/RegistroPro"
+import { RegistroPro } from "./Componentes/InterfazAdmin/FormulariosAdmin/RegistroUsu"
 
 // Imports
 import { HomeAdmin } from "./Componentes/InterfazAdmin/HomeAdmin"

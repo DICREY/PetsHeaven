@@ -1,36 +1,33 @@
 // Librarys
-import React from 'react'
-import { useState, useRef } from 'react'
-import { Pencil, ChevronLeft, User, Shield, FileText, Lock } from 'lucide-react'
-import { useForm } from 'react-hook-form' // Importa useForm
+import React, { useState, useEffect, useRef } from "react"
+import { Pencil, ChevronLeft, User, Lock } from "lucide-react"
+import { useForm } from "react-hook-form"
 
 // Imports
-import RolPrivilegios from './RolPrivilegios'
-import InformacionProfesional from './InformacionProfesional'
-import Contrasena from './Contrasena'
+import Contrasena from "./Contrasena"
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
 import { formatDate, errorStatusHandler, loadingAlert } from '../../Varios/Util'
 import { PostData } from '../../Varios/Requests'
 
 // Import styles
-import '../../../../public/styles/InterfazAdmin/FormuariosAdmin/RegistroUsu.css'
+import "../../../../public/styles/InterfazAdmin/FormuariosAdmin/RegistroUsu.css"
 
-// Component
-export const ConfiguracionUsuario = ({ URL = '' }) => {
+export const RegistroPro = () => {
   // Vars
-  const [activeTab, setActiveTab] = useState('personal')
+  const [activeTab, setActiveTab] = useState("personal")
   const [profileImage, setProfileImage] = useState(null)
   const profileInputRef = useRef(null)
+  const doc = useRef(null)
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
-    setValue, // Si necesitas setear valores programáticamente
-  } = useForm({ mode: 'onChange' })
-  const mainUrl = `${URL}/user`
+  } = useForm({ mode: "onChange" })
+  const [formData, setFormData] = useState({})
+  const mainUrl = `${URL}/user` // Asegúrate de que URL esté definida o se pase como prop
 
-  // Manejo de la imagen
+  // Functions
   const handleProfileImageChange = (e) => {
     const file = e.target.files[0]
     if (file) {
@@ -39,35 +36,43 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
         setProfileImage(e.target.result)
       }
       reader.readAsDataURL(file)
-
     }
   }
 
   const onSubmit = async (data) => {
+    preventDefault()
+
+    const finalData = { ...data, ...formData }
+    console.log(data)
+    console.log(finalData)
     const datas = {
-      nombres: data.nombres,
-      apellidos: data.apellidos,
-      fec_nac_usu: data.fec_nac,
-      tipDoc: data.tipoDocumento,
-      doc: data.numeroDocumento,
-      direccion: data.direccion,
-      cel: data.celular,
-      cel2: data.cel2, // Asumo que este campo estará en el formulario si es necesario
-      email: data.email,
-      cont: data.password, // Asumo que Contrasena gestionará esto
-      genero: data.genero,
-      rol: data.rol, // Asumo que RolPrivilegios pasará este valor
-      esp: data.especialidad, // Asumo que InformacionProfesional pasará este valor
-      numTargPro: data.numTargPro, // Asumo que InformacionProfesional pasará este valor
+      nombres: finalData.nombres,
+      apellidos: finalData.apellidos,
+      fec_nac_usu: finalData.fecNac,
+      tipDoc: finalData.tipDoc,
+      doc: finalData.doc,
+      direccion: finalData.direccion,
+      cel: finalData.cel,
+      cel2: finalData.cel2,
+      email: finalData.email,
+      cont: finalData.password,
+      genero: finalData.genero,
+      rol: finalData.rol,
+      esp: finalData.esp,
+      numTargPro: finalData.numTargPro,
       fot_tar_vet: "no-registrado",
       fot_vet: "no-registrado",
-      // Puedes incluir la imagen aquí si la guardaste en un estado o si la manejas con FormData
     }
+
+    setTimeout(() => {
+      doc.current?.focus()
+    },0)
+
     try {
       const token = localStorage.getItem('token')
       if (token) {
         loadingAlert('Validando...')
-        const created = await PostData(`${mainUrl}/register/personal`, token, datas)
+        const created = await PostData(`${mainUrl}/register`, token, datas)
         created.ok && swal({
           icon: 'success',
           title: 'Registrado',
@@ -86,77 +91,67 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
     }
   }
 
+  useEffect(() => {
+    setTimeout(() => {
+      doc.current?.focus()
+    },0)
+  },[])
+
   return (
-    <div className='contenedorgesusuario'>
+    <div className="contenedorgesusuario">
       <NavBarAdmin />
       <main className="principalgesusuario">
         <div className="contenedor-regusuario">
           <div className="cabecera-regusuario">
             <div className="titulo-regusuario">
-              <h1>Configuración del personal </h1>
+              <h1>Registro usuario</h1>
               <span className="creacion-regusuario">| Creación</span>
             </div>
-            <div className='acciones-regusuario'>
-              <button className='atras-regusuario' onClick={() => window.location.href = '/admin/gestion/usuarios'}>
+            <div className="acciones-regusuario" onClick={() => window.location.href = "/consultorio"}>
+              <button className="atras-regusuario">
                 <ChevronLeft size={16} />
-                <span className='texto-btn-regusuario'>Atrás</span>
+                <span className="texto-btn-regusuario">Atrás</span>
               </button>
-              <button
-                className='guardar-regusuario'
-                onClick={handleSubmit(onSubmit)} // Usa handleSubmit de react-hook-form
-              >Guardar</button>
+              <button className="guardar-regusuario" onClick={handleSubmit(onSubmit)}>Guardar</button>
             </div>
           </div>
 
-          <div className='tabs-regusuario'>
+          <div className="tabs-regusuario">
             <div
-              className={`tab-regusuario ${activeTab === 'personal' ? 'activo-regusuario' : ''}`}
-              onClick={() => setActiveTab('personal')}
+              className={`tab-regusuario ${activeTab === "personal" ? "activo-regusuario" : ""}`}
+              onClick={() => setActiveTab("personal")}
             >
-              <User className='icono-regusuario' size={18} />
-              <span className='texto-tab-regusuario'>Información personal</span>
+              <User className="icono-regusuario" size={18} />
+              <span className="texto-tab-regusuario">Información personal</span>
             </div>
+
             <div
-              className={`tab-regusuario ${activeTab === 'roles' ? 'activo-regusuario' : ''}`}
-              onClick={() => setActiveTab('roles')}
+              className={`tab-regusuario ${activeTab === "password" ? "activo-regusuario" : ""}`}
+              onClick={() => setActiveTab("password")}
             >
-              <Shield className='icono-regusuario' size={18} />
-              <span className='texto-tab-regusuario'>Rol y privilegios</span>
-            </div>
-            <div
-              className={`tab-regusuario ${activeTab === 'profesional' ? 'activo-regusuario' : ''}`}
-              onClick={() => setActiveTab('profesional')}
-            >
-              <FileText className='icono-regusuario' size={18} />
-              <span className='texto-tab-regusuario'>Información profesional</span>
-            </div>
-            <div
-              className={`tab-regusuario ${activeTab === 'password' ? 'activo-regusuario' : ''}`}
-              onClick={() => setActiveTab('password')}
-            >
-              <Lock className='icono-regusuario' size={18} />
-              <span className='texto-tab-regusuario'>Contraseña</span>
+              <Lock className="icono-regusuario" size={18} />
+              <span className="texto-tab-regusuario">Contraseña</span>
             </div>
           </div>
 
-          <div className='contenido-regusuario'>
-            {activeTab === 'personal' && (
-              <div className='form-regusuario'>
+          <div className="contenido-regusuario">
+            {activeTab === "personal" && (
+              <form className="form-regusuario" onSubmit={handleSubmit(onSubmit)}>
                 <h2>Información personal:</h2>
 
-                <div className='grupo-regusuario'>
-                  <label className='etiqueta-regusuario'>Imagen de perfil <span className="obligatorio">*</span></label>
-                  <div className='perfil-regusuario'>
-                    <div className='imagen-regusuario'>
+                <div className="grupo-regusuario">
+                  <label className="etiqueta-regusuario">Imagen de perfil <span className="obligatorio">*</span></label>
+                  <div className="perfil-regusuario">
+                    <div className="imagen-regusuario">
                       {profileImage ? (
-                        <img src={profileImage || '/placeholder.svg'} alt='Perfil' />
+                        <img src={profileImage || "/placeholder.svg"} alt="Perfil" />
                       ) : (
-                        <div className='placeholder-imagen'>
+                        <div className="placeholder-imagen">
                           <User size={40} strokeWidth={1} />
                         </div>
                       )}
                     </div>
-                    <button className='editar-regusuario' onClick={() => profileInputRef.current.click()}>
+                    <button className="editar-regusuario" onClick={() => profileInputRef.current.click()}>
                       <Pencil size={16} />
                     </button>
                     <input
@@ -170,27 +165,31 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
                   </div>
                 </div>
 
-                <div className='grid-regusuario'>
-                  <div className='grupo-regusuario'>
-                    <label className='etiqueta-regusuario'>Tipo de documento <span className="obligatorio">*</span></label>
+                <div className="grid-regusuario">
+                  <div className="grupo-regusuario">
+                    <label className="etiqueta-regusuario">Tipo de documento <span className="obligatorio">*</span></label>
                     <select
-                      className={`campo-regusuario ${errors.tipoDocumento ? 'campo-error' : ''}`}
-                      {...register('tipoDocumento', { required: 'Seleccione un tipo de documento' })}
-                      defaultValue='Seleccione tipo'
+                      name="tipDoc"
+                      className={`campo-regusuario ${errors.tipDoc ? 'campo-error' : ''}`}
+                      defaultValue='--'
+                      {...register("tipDoc", { required: "El tipo de documento es requerido." })}
                     >
-                      <option disabled>Seleccione tipo</option>
-                      <option value='CC'>Cédula de Ciudadanía</option>
-                      <option value='CE'>Cédula de Extranjería</option>
-                      <option value='pasaporte'>Pasaporte</option>
+                      <option disabled value='--'>Seleccione tipo</option>
+                      <option value="cc">Cédula de Ciudadanía (CC)</option>
+                      <option value="ce">Cédula de Extranjería (CE)</option>
+                      <option value="pasaporte">Pasaporte</option>
                     </select>
-                    {errors.tipoDocumento && <p className='mensaje-error'>{errors.tipoDocumento.message}</p>}
+                    {errors.tipDoc && <p className="mensaje-error">{errors.tipDoc.message}</p>}
                   </div>
 
-                  <div className='grupo-regusuario'>
-                    <label className='etiqueta-regusuario'>N° Documento<span className="obligatorio">*</span></label>
+                  <div className="grupo-regusuario">
+                    <label className="etiqueta-regusuario">Número de documento <span className="obligatorio">*</span></label>
                     <input
-                      type="text"
+                      type='number'
                       name="doc"
+                      max='100'
+                      ref={doc}
+                      aria-required
                       placeholder="Número de identificación"
                       className={`campo-regusuario ${errors.doc ? 'campo-error' : ''}`}
                       {...register("doc", {
@@ -209,28 +208,65 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
                     <input
                       type="text"
                       name="nombres"
+                      aria-required
+                      max='100'
                       placeholder="Nombres"
                       className={`campo-regusuario ${errors.nombres ? 'campo-error' : ''}`}
                       {...register("nombres", { required: "Los nombres son requeridos." })}
                     />
                     {errors.nombres && <p className="mensaje-error">{errors.nombres.message}</p>}
                   </div>
+
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Apellidos <span className="obligatorio">*</span></label>
                     <input
                       type="text"
                       name="apellidos"
+                      aria-required
+                      max='100'
+                      aria-valuemax='100'
                       placeholder="Apellidos"
                       className={`campo-regusuario ${errors.apellidos ? 'campo-error' : ''}`}
                       {...register("apellidos", { required: "Los apellidos son requeridos." })}
                     />
                     {errors.apellidos && <p className="mensaje-error">{errors.apellidos.message}</p>}
                   </div>
+
+                  <div className="grupo-regusuario">
+                    <label className="etiqueta-regusuario">Fecha de nacimiento <span className="obligatorio">*</span></label>
+                    <input
+                      type="date"
+                      name="fecNac"
+                      className={`campo-regusuario ${errors.fecNac ? 'campo-error' : ''}`}
+                      {...register("fecNac", { required: "La fecha de nacimiento es requerida." })}
+                    />
+                    {errors.fecNac && <p className="mensaje-error">{errors.fecNac.message}</p>}
+                  </div>
+                  <div className="grupo-regusuario">
+                    <label className="etiqueta-regusuario">Genero <span className="obligatorio">*</span></label>
+                    <select
+                      className={`campo-regusuario ${errors.genero ? 'campo-error' : ''}`}
+                      defaultValue='--'
+                      name="genero"
+                      {...register("genero", { required: "El género es requerido." })}
+                    >
+                      <option disabled value='--'>Seleccione</option>
+                      <option value="Femenino">Femenino</option>
+                      <option value="Masculino">Masculino</option>
+                      <option value="Otro">Otro</option>
+                    </select>
+                    {errors.genero && <p className="mensaje-error">{errors.genero.message}</p>}
+                  </div>
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Celular <span className="obligatorio">*</span></label>
                     <input
-                      type="tetx"
+                      type="tel"
                       name="cel"
+                      min='7'
+                      aria-valuemin='7'
+                      max='20'
+                      aria-valuemax='20'
+                      aria-required
                       placeholder="Número de celular"
                       className={`campo-regusuario ${errors.cel ? 'campo-error' : ''}`}
                       {...register("cel", {
@@ -248,43 +284,19 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
                     {errors.cel && <p className="mensaje-error">{errors.cel.message}</p>}
                   </div>
 
-
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Dirección <span className="obligatorio">*</span></label>
                     <input
                       type="text"
                       name="direccion"
+                      max='100'
+                      aria-valuemax='100'
+                      aria-required
                       placeholder="Dirección"
                       className={`campo-regusuario ${errors.direccion ? 'campo-error' : ''}`}
                       {...register("direccion", { required: "La dirección es requerida." })}
                     />
                     {errors.direccion && <p className="mensaje-error">{errors.direccion.message}</p>}
-                  </div>
-                  <div className="grupo-regusuario">
-                    <label className="etiqueta-regusuario">Genero <span className="obligatorio">*</span></label>
-                    <select
-                      className={`campo-regusuario ${errors.genero ? 'campo-error' : ''}`}
-                      defaultValue='--'
-                      name="genero"
-                      {...register("genero", { required: "El género es requerido." })}
-                    >
-                      <option disabled value='--'>Seleccione</option>
-                      <option value="Femenino">Femenino</option>
-                      <option value="Masculino">Masculino</option>
-                      <option value="Otro">Otro</option>
-                    </select>
-                    {errors.genero && <p className="mensaje-error">{errors.genero.message}</p>}
-                  </div>
-
-                  <div className="grupo-regusuario">
-                    <label className="etiqueta-regusuario">Fecha de nacimiento <span className="obligatorio">*</span></label>
-                    <input
-                      type="date"
-                      name="fecNac"
-                      className={`campo-regusuario ${errors.fecNac ? 'campo-error' : ''}`}
-                      {...register("fecNac", { required: "La fecha de nacimiento es requerida." })}
-                    />
-                    {errors.fecNac && <p className="mensaje-error">{errors.fecNac.message}</p>}
                   </div>
 
                   <div className="grupo-regusuario">
@@ -292,6 +304,9 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
                     <input
                       type="email"
                       name="email"
+                      max='100'
+                      aria-valuemax='100'
+                      aria-required
                       placeholder="Email"
                       className={`campo-regusuario ${errors.email ? 'campo-error' : ''}`}
                       {...register("email", {
@@ -305,28 +320,28 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
                     {errors.email && <p className="mensaje-error">{errors.email.message}</p>}
                   </div>
 
-                  <div className='grupo-regusuario'>
-                    <label className='etiqueta-regusuario'>Confirmación Correo<span className="obligatorio">*</span></label>
+                  <div className="grupo-regusuario">
+                    <label className="etiqueta-regusuario">Confirmación Correo <span className="obligatorio">*</span></label>
                     <input
-                      name='verifyEmail'
-                      type='email'
-                      placeholder='Confirme su correo'
+                      type="email"
+                      name="verifyEmail"
+                      max='100'
+                      aria-valuemax='100'
+                      aria-required
+                      placeholder="Confirme su correo"
                       className={`campo-regusuario ${errors.verifyEmail ? 'campo-error' : ''}`}
-                      {...register('verifyEmail', {
-                        required: 'La confirmación del correo es requerida',
-                        validate: value =>
-                          value === watch('email') || 'Los correos electrónicos no coinciden',
+                      {...register("verifyEmail", {
+                        required: "La confirmación del correo es requerida.",
+                        validate: (value) =>
+                          value === watch('email') || "Los correos electrónicos no coinciden.",
                       })}
                     />
-                    {errors.verifyEmail && <p className='mensaje-error'>{errors.verifyEmail.message}</p>}
+                    {errors.verifyEmail && <p className="mensaje-error">{errors.verifyEmail.message}</p>}
                   </div>
                 </div>
-              </div>
+              </form>
             )}
-
-            {activeTab === 'roles' && <RolPrivilegios register={register} errors={errors} />}
-            {activeTab === 'profesional' && <InformacionProfesional register={register} errors={errors} />}
-            {activeTab === 'password' && <Contrasena register={register} errors={errors} />}
+            {activeTab === "password" && <Contrasena register={register} onSubmit={onSubmit} errors={errors} />}
           </div>
         </div>
       </main>

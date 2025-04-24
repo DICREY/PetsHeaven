@@ -635,7 +635,7 @@ const Registro = ({ URL = "" }) => {
                       ref={emailInputRef}
                       type="email"
                       placeholder="Ej: juan.lopez@example.com"
-                      maxLength={320}
+                      maxLength={100}
                       className={errors.email ? "campo-error" : ""}
                       onPaste={evitarPegado}
                       {...register("email", {
@@ -644,7 +644,7 @@ const Registro = ({ URL = "" }) => {
                           value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                           message: "El correo electrónico es inválido",
                         },
-                        maxLength: 320,
+                        maxLength: 100,
                       })}
                       aria-describedby={errors.email ? "error-email": undefined}
                     />
@@ -666,7 +666,7 @@ const Registro = ({ URL = "" }) => {
                     <input
                       type="email"
                       placeholder="Confirmar correo electrónico"
-                      maxLength={320}
+                      maxLength={100}
                       className={errors.confirmEmail ? "campo-error" : ""}
                       onPaste={evitarPegado}
                       {...register("confirmEmail", {
@@ -675,7 +675,7 @@ const Registro = ({ URL = "" }) => {
                           const emailValue = watch("email")
                           return value === emailValue || "Los correos electrónicos no coinciden"
                         },
-                        maxLength: 320,
+                        maxLength: 100,
                       })}
                       aria-describedby={errors.confirmEmail ? "error-email": undefined}
                     />

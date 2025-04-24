@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import "../../../../public/styles/InterfazAdmin/FormuariosAdmin/Contrasena.css";
 
-const Contrasena = ({ /* handleValue */ }) => { // Elimina handleValue de las props
+const Contrasena = ({ onSubmit }) => {
   const {
     register,
     handleSubmit,
@@ -17,23 +17,19 @@ const Contrasena = ({ /* handleValue */ }) => { // Elimina handleValue de las pr
   const cambiarVisibilidadPassword = () => setVerPassword(!verPassword);
   const cambiarVisibilidadConfirmarPassword = () => setVerConfirmarPassword(!verConfirmarPassword);
 
-  const onSubmit = (data) => {
-    // Aquí puedes manejar la lógica cuando el formulario es válido
-    console.log("Contraseñas válidas:", data);
-    // Si necesitas pasar los valores al componente padre,
-    // deberías usar otra forma, como una función de callback específica.
-  };
-
   return (
-    <div className="contrasena-container">
+    <main className="contrasena-container">
       <h2>Crea una contraseña</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid-contrasena">
           <div className="grupo-contrasena">
-            <label className="etiqueta-contrasena">Contraseña<spam className='obligatorio'>*</spam></label>
+            <label className="etiqueta-contrasena">Contraseña<span className='obligatorio'>*</span></label>
             <div className="contenedor-input-password">
               <input
                 name="password"
+                max='100'
+                aria-valuemax='100'
+                aria-required
                 type={verPassword ? "text" : "password"}
                 placeholder="Nueva contraseña"
                 className={`campo-contrasena ${errors.password ? "campo-error" : ""}`}
@@ -50,7 +46,6 @@ const Contrasena = ({ /* handleValue */ }) => { // Elimina handleValue de las pr
                 })}
                 aria-invalid={errors.password ? "true" : "false"}
                 aria-describedby={errors.password ? "error-password" : undefined}
-                // Elimina onChange={handleValue}
               />
               <button
                 type="button"
@@ -102,10 +97,13 @@ const Contrasena = ({ /* handleValue */ }) => { // Elimina handleValue de las pr
           </div>
 
           <div className="grupo-contrasena">
-            <label className="etiqueta-contrasena">Confirme la contraseña<spam className='obligatorio'>*</spam></label>
+            <label className="etiqueta-contrasena">Confirme la contraseña<span className='obligatorio'>*</span></label>
             <div className="contenedor-input-password">
               <input
                 name="verifyPassword"
+                max='100'
+                aria-valuemax='100'
+                aria-required
                 type={verConfirmarPassword ? "text" : "password"}
                 placeholder="Confirme la contraseña"
                 className={`campo-contrasena ${errors.verifyPassword ? "campo-error" : ""}`}
@@ -168,7 +166,7 @@ const Contrasena = ({ /* handleValue */ }) => { // Elimina handleValue de las pr
           </div>
         </div>
       </form>
-    </div>
+    </main>
   );
 };
 
