@@ -29,11 +29,6 @@ export const GesAgendaGeneral = () => {
 
     //Mes actual
     const [mesActual, setMesActual] = useState('');
-    useEffect(() => {
-        const calendarApi = calendarRef.current.getApi();
-        const mes = calendarApi.view.title.split(' ')[0];
-        setMesActual(mes);
-      }, []);  
     //Vista Actual del usuario
     const [currentView, setCurrentView] = useState('dayGridMonth');
     //Mostrar la descripcion en un pop up de la cita
@@ -61,7 +56,7 @@ export const GesAgendaGeneral = () => {
     //Funcion para cambiar entre meses
     const navigate = (action) => {
         const calendarApi = calendarRef.current.getApi();
-        switch(action) {
+        switch (action) {
             case 'prev':
                 calendarApi.prev();
                 break;
@@ -74,6 +69,9 @@ export const GesAgendaGeneral = () => {
             default:
                 break;
         }
+        // Actualizar el mes actual después de navegar
+        const mes = calendarApi.view.title.split(' ')[0];
+        setMesActual(mes);
     };
 
     // Cambiar vista del calendario

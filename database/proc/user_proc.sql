@@ -1,4 +1,4 @@
--- Active: 1743971322762@@127.0.0.1@3306@pets_heaven
+-- Active: 1740114802630@@127.0.0.1@3306@pets_heaven
 DELIMITER //
 CREATE PROCEDURE pets_heaven.RegistPeoples(
     IN p_nom_usu VARCHAR(100),
@@ -93,6 +93,7 @@ BEGIN
 
     COMMIT;
     SET autocommit = 1;
+
 END //
 CREATE PROCEDURE pets_heaven.RegistAdmin(
     IN p_nom_usu VARCHAR(100),
@@ -106,7 +107,7 @@ CREATE PROCEDURE pets_heaven.RegistAdmin(
     IN p_email_usu VARCHAR(100),
     IN p_cont_usu VARCHAR(255),
     IN p_gen_usu VARCHAR(20),
-    }
+    
     
     IN P_rol_usu VARCHAR(100),
     IN P_esp_vet VARCHAR(100),
