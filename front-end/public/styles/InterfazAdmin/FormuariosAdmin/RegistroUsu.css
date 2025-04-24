@@ -115,13 +115,12 @@
 
 .form-regusuario {
   max-width: 900px;
-  margin-left: 3vw;
 }
 
 .form-regusuario h2 {
   font-size: 16px;
   font-weight: 500;
-  color: #64748b;
+  color: #00BCD4;
   margin-top: 0;
   margin-bottom: 24px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -143,7 +142,7 @@
 
 .etiqueta-regusuario {
   font-size: 14px;
-  color: #64748b;
+  color: #00BCD4;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
