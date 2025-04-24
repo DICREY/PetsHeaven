@@ -15,16 +15,13 @@ const Route = Router()
 
 // Routes
 Route.get('/all', ValidatorRol("veterinario"), async (req,res) => {
-    const search = await owner.findAll()
-
-    // Verifiy if exists
-    if (!search.result) res.status(404).json({ message: "Usuarios no encontrado"})
-
     try {
+        const search = await owner.findAll()
+        if (!search.result) return res.status(404).json({ message: "Usuarios no encontrado"})
         res.status(200).json(search)
     } catch (err) {
         if(err.status) return res.status(err.status).json(err.message)
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: "Error interno", err: err })
     }
 })
 
@@ -32,49 +29,50 @@ Route.get('/all', ValidatorRol("veterinario"), async (req,res) => {
 Route.get('/all:by', ValidatorRol("veterinario"), async (req,res) => {
     // Vars 
     const by = req.params.by
-    const search = await owner.findAllBy(by)
-
-    // Verifiy if exists
-    if (!search.result) res.status(404).json({ message: "Usuarios no encontrados"})
-
+    
     try {
+        const search = await owner.findAllBy(by)
+        if (!search.result) return res.status(404).json({ message: "Usuarios no encontrados"})
         res.status(200).json(search)
     } catch (err) {
         if(err.status) return res.status(err.status).json(err.message)
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: "Error interno", err: err })
     }
 })
 
 Route.get('/pet:by', ValidatorRol("veterinario"), async (req,res) => {
     // Vars 
     const by = req.params.by
-    const search = await owner.findAllByPet(by)
-
-    // Verifiy if exist
-    if (!search.result) res.status(404).json({ message: "Usuario no encontrado" })
 
     try {
+        const search = await owner.findAllByPet(by)
+        if (!search.result) return res.status(404).json({ message: "Usuario no encontrado" })
         res.status(200).json(search)
     } catch (err) {
         if(err.status) return res.status(err.status).json(err.message)
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: "Error interno", err: err })
     }
 })
 
 Route.delete('/delete', ValidatorRol("veterinario"), async (req,res) => {
     // Vars 
-    const by = req.body.by
-    const search = await owner.findAllBy(by)
-
-    // Verifiy if exist
-    if (!search.result[0][0]) res.status(404).json({ message: "Usuario no encontrado" })
-
+    const by = req.body
+    
     try {
-        const deleted = await owner.deleteOwner(by)
-        if (deleted.deleted) return res.status(200).json(deleted.message)
+        // Verifiy if exist
+        const search = await owner.findBy(by.doc)
+
+        if (!search.result[0][0]) return res.status(404).json({ message: "Usuario no encontrado" })
+
+        const deleted = await owner.deleteOwner(by.doc)
+        
+        if (deleted.deleted) return res.status(200).json(deleted)
+
+        return res.status(500).json({ message: "Error interno" })
     } catch (err) {
+        console.log(err)
         if(err.status) return res.status(err.status).json(err.message)
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: "Error interno", err: err })
     }
 })
 
@@ -84,7 +82,7 @@ Route.delete('/delete', ValidatorRol("veterinario"), async (req,res) => {
 //     const search = await owner.findAllTimeBy(by)
 
 //     // Verifiy if exists
-//     if (!search.result) res.status(404).json({ message: "Usuarios no encontrados"})
+//     if (!search.result) return res.status(404).json({ message: "Usuarios no encontrados"})
 
 //     try {
 //         res.status(200).json(search)
