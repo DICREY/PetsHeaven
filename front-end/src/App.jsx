@@ -2,10 +2,15 @@
 import React, { useState } from "react"
 import { BrowserRouter, Routes, Route,Navigate } from "react-router"
 
-// Imports
+// Imports Forms
 import { LoginForm } from "./Componentes/Formularios/LoginForm"
 import Registro from "./Componentes/Formularios/Registro"
 import ForgotPassword from "./Componentes/Formularios/ForgotPassword"
+import { ConfiguracionUsuario } from "./Componentes/InterfazAdmin/FormulariosAdmin/RegistroUsu"
+import { FormularioRegMascotas } from "./Componentes/Formularios/FormularioMascotas"
+import { RegistroPro } from "./Componentes/InterfazAdmin/FormulariosAdmin/RegistroPro"
+
+// Imports
 import { HomeAdmin } from "./Componentes/InterfazAdmin/HomeAdmin"
 import { GesUsuario } from "./Componentes/InterfazAdmin/GesUsuario"
 import { GesMascota } from "./Componentes/InterfazAdmin/GesMascota"
@@ -14,11 +19,9 @@ import { NotFound } from "./Componentes/Errores/NotFound"
 import { ErrorInternalServer } from "./Componentes/Errores/ErrorInternalServer"
 import { getRoles } from './Componentes/Varios/Util'
 import VeterinariaPage from "./Componentes/VeterinariaPage"
-import { ConfiguracionUsuario } from "./Componentes/InterfazAdmin/FormulariosAdmin/RegistroUsu"
-import { FormularioRegMascotas } from "./Componentes/Formularios/FormularioMascotas"
 import { GesAgendaGeneral } from "./Componentes/InterfazAdmin/GesAgendaGeneral"
-import { RegistroPro } from "./Componentes/InterfazAdmin/FormulariosAdmin/RegistroPro"
 import { PerfilPropietario } from "./Componentes/InterfazAdmin/PerfilPropietario"
+import { MainAdmin } from './Componentes/InterfazAdmin/MainAdmin'
 
 // Main Component
 export default function App () {
@@ -67,7 +70,7 @@ export default function App () {
         </Route>
 
         {/* Admin routes  */}
-        <Route path="/admin">
+        <Route path="/admin" element={<MainAdmin />} >
           <Route path="consultorio" element={
             <AdminRoute children={<HomeAdmin setUserSelect={setUserSelect} URL={URL}/>} />}>  
           </Route>

@@ -109,7 +109,26 @@ Route.put('/modify', ValidatorRol("administrador"), async (req,res) => {
 
     try {
         const modified = await user.modify({hash_pass: await hash(body.password,saltRounds), ...body})
-        res.status(200).json(modified)
+        if(modified.modified) return res.status(200).json(modified)
+    } catch (err) {
+        if(err.status) return res.status(err.status).json({ message: err.message })
+        res.status(500).json({ message: err })
+    }
+})
+Route.delete('/delete', ValidatorRol("administrador"), async (req,res) => {
+    // Vars 
+    const { body } = req
+        
+    // Verifiy if exist
+    const find = await user.findBy(toString(body.doc))
+    if (!find.result) res.status(404).json({ message: "Usuario no encontrado" })
+
+    try {
+        const userDeleted = await user.delete(body.doc)
+        if (userDeleted.deleted){
+            return res.status(200).json(userDeleted)
+        }
+        return res.status(500).json({ message: "Error interno" })
     } catch (err) {
         if(err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: err })

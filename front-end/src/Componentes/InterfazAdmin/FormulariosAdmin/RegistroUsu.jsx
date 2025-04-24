@@ -60,7 +60,6 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
       numTargPro: formData.numTargPro,
       fot_tar_vet: "no-registrado",
       fot_vet: "no-registrado",
-      
     }
     try {
       const token = localStorage.getItem('token')

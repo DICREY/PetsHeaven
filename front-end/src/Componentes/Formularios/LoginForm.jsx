@@ -1,7 +1,7 @@
 // Librarys 
 import React,{ useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import swal from 'sweetalert'
 
 // Imports 
@@ -15,6 +15,7 @@ export const LoginForm = ({ URL = "" }) => {
   const [verPassword, setVerPassword] =  useState(false)
   const imagenFondo = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Fondos/fondo.png' 
   const logoUrl = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/5.png'
+  const navigate = useNavigate()
 
   // Configuración del formulario
   const {
@@ -27,7 +28,7 @@ export const LoginForm = ({ URL = "" }) => {
 
   const useRoleRedirect = (roles = []) => {
     const roleRoutes = {
-      'Administrador': '/gestion/usuarios',
+      'Administrador': '/admin/gestion/usuarios',
       'Veterinario': '/gestion/mascotas',
       'default': '/user/pets'
     }
@@ -71,7 +72,7 @@ export const LoginForm = ({ URL = "" }) => {
             buttons: false
           })
           setTimeout(() => {
-            window.location.href = pathRedirect
+            navigate(pathRedirect)
           },2000)
         } 
       } else console.log(log)
