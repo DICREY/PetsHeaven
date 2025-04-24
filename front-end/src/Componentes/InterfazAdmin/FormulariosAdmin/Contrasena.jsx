@@ -1,14 +1,7 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
 import "../../../../public/styles/InterfazAdmin/FormuariosAdmin/Contrasena.css";
 
-const Contrasena = ({ onSubmit }) => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm({ mode: "onChange" });
+const Contrasena = ({ register, errors, handleSubmit, onSubmit, watch }) => {
 
   const password = watch("password");
   const [verPassword, setVerPassword] = useState(false);

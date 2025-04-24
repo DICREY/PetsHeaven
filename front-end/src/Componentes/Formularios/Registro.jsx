@@ -40,16 +40,13 @@ const Registro = ({ URL = "" }) => {
   const [paso, setPaso] = useState(1)
   const [verPassword, setVerPassword] = useState(false)
   const [verConfirmarPassword, setVerConfirmarPassword] = useState(false)
-  const [mostrarRequisitosPassword, setMostrarRequisitosPassword] = useState(false)
   const [mostrarRequisitosFecha, setMostrarRequisitosFecha] = useState(false)
   const [errorCodigo, setErrorCodigo] = useState(false)
   const [tiempoRestante, setTiempoRestante] = useState(300)
   const [timerActivo, setTimerActivo] = useState(false)
-  const [status, setStatus] = useState("")
   const [loading, setLoading] = useState()
   const emailInputRef = useRef(null)
 
-  
   // Configuración de react-hook-form
   const {
       register,

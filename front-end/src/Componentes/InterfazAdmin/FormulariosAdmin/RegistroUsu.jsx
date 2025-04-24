@@ -12,7 +12,7 @@ import { PostData } from '../../Varios/Requests'
 // Import styles
 import "../../../../public/styles/InterfazAdmin/FormuariosAdmin/RegistroUsu.css"
 
-export const RegistroPro = () => {
+export const RegistroPro = ({ URL = "" }) => {
   // Vars
   const [activeTab, setActiveTab] = useState("personal")
   const [profileImage, setProfileImage] = useState(null)
@@ -24,8 +24,7 @@ export const RegistroPro = () => {
     formState: { errors },
     watch,
   } = useForm({ mode: "onChange" })
-  const [formData, setFormData] = useState({})
-  const mainUrl = `${URL}/user` // Asegúrate de que URL esté definida o se pase como prop
+  const mainUrl = `${URL}/user`
 
   // Functions
   const handleProfileImageChange = (e) => {
@@ -40,33 +39,21 @@ export const RegistroPro = () => {
   }
 
   const onSubmit = async (data) => {
-    preventDefault()
-
-    const finalData = { ...data, ...formData }
-    console.log(data)
-    console.log(finalData)
+    const finalData = { ...data}
     const datas = {
       nombres: finalData.nombres,
       apellidos: finalData.apellidos,
-      fec_nac_usu: finalData.fecNac,
-      tipDoc: finalData.tipDoc,
-      doc: finalData.doc,
+      fechaNacimiento: finalData.fecNac,
+      tipoDocumento: finalData.tipDoc,
+      numeroDocumento: finalData.doc,
       direccion: finalData.direccion,
-      cel: finalData.cel,
-      cel2: finalData.cel2,
+      celular: finalData.cel,
+      celular2: finalData.cel2,
       email: finalData.email,
-      cont: finalData.password,
-      genero: finalData.genero,
-      rol: finalData.rol,
-      esp: finalData.esp,
-      numTargPro: finalData.numTargPro,
-      fot_tar_vet: "no-registrado",
-      fot_vet: "no-registrado",
+      password: finalData.password,
+      genero: finalData.genero
     }
-
-    setTimeout(() => {
-      doc.current?.focus()
-    },0)
+    console.log(datas)
 
     try {
       const token = localStorage.getItem('token')
@@ -107,7 +94,7 @@ export const RegistroPro = () => {
               <h1>Registro usuario</h1>
               <span className="creacion-regusuario">| Creación</span>
             </div>
-            <div className="acciones-regusuario" onClick={() => window.location.href = "/consultorio"}>
+            <div className="acciones-regusuario">
               <button className="atras-regusuario">
                 <ChevronLeft size={16} />
                 <span className="texto-btn-regusuario">Atrás</span>
@@ -175,9 +162,9 @@ export const RegistroPro = () => {
                       {...register("tipDoc", { required: "El tipo de documento es requerido." })}
                     >
                       <option disabled value='--'>Seleccione tipo</option>
-                      <option value="cc">Cédula de Ciudadanía (CC)</option>
-                      <option value="ce">Cédula de Extranjería (CE)</option>
-                      <option value="pasaporte">Pasaporte</option>
+                      <option value="CC">Cédula de Ciudadanía (CC)</option>
+                      <option value="CE">Cédula de Extranjería (CE)</option>
+                      <option value="Pasaporte">Pasaporte</option>
                     </select>
                     {errors.tipDoc && <p className="mensaje-error">{errors.tipDoc.message}</p>}
                   </div>
@@ -341,7 +328,15 @@ export const RegistroPro = () => {
                 </div>
               </form>
             )}
-            {activeTab === "password" && <Contrasena register={register} onSubmit={onSubmit} errors={errors} />}
+            {
+              activeTab === "password" && 
+              <Contrasena 
+                watch={watch} 
+                register={register} 
+                handleSubmit={handleSubmit} 
+                onSubmit={onSubmit} 
+                errors={errors}
+              />}
           </div>
         </div>
       </main>
