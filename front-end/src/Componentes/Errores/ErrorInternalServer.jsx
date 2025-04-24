@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 import '../../../public/styles/Errores/notfound.css'
-
+  
 export const ErrorInternalServer = () => {
   return (
     <section className="notfound-container">

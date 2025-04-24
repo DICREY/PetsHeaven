@@ -56,7 +56,9 @@ const InformacionProfesional = ({ register, errors }) => {
         <input
           id="numTargPro"
           name="numTargPro"
-          type="text"
+          type='number'
+          max='100'
+          aria-valuemax='100'
           placeholder="Número de tarjeta profesional"
           className={`campo-profesional ${errors.numTargPro ? 'campo-error' : ''}`}
           {...register("numTargPro", {

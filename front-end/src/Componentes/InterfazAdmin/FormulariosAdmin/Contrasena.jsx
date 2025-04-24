@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
 import "../../../../public/styles/InterfazAdmin/FormuariosAdmin/Contrasena.css";
 
 const Contrasena = () => {
@@ -36,6 +35,9 @@ const Contrasena = () => {
               <input
                 id="password"
                 name="password"
+                max='100'
+                aria-valuemax='100'
+                aria-required
                 type={verPassword ? "text" : "password"}
                 placeholder="Nueva contraseña"
                 className={`campo-contrasena ${errors.password ? "campo-error" : ""}`}
@@ -113,6 +115,9 @@ const Contrasena = () => {
               <input
                 id="verifyPassword"
                 name="verifyPassword"
+                max='100'
+                aria-valuemax='100'
+                aria-required
                 type={verConfirmarPassword ? "text" : "password"}
                 placeholder="Confirme la contraseña"
                 className={`campo-contrasena ${errors.verifyPassword ? "campo-error" : ""}`}

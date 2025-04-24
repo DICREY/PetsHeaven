@@ -10,22 +10,19 @@ export const NotFound = () => {
   const navigate = useNavigate() // Obtenemos la función de navegación
 
   return (
-    <body className='body'>
-        <div className="parent">
-            <div className="imagen"></div>
-            <div className="contenedor-button">
-            <button 
-                  onClick={() => navigate(-1)} 
-                  className="pet-home-button"
-                >
-                  <i className="fas fa-bone"></i> Volver al hogar
-                </button>
-            </div>
+    <main className='body'>
+      <section className="parent">
+        <picture className="imagen"></picture>
+        <div className="contenedor-button">
+          <button 
+            onClick={() => navigate(-1)} 
+            className="pet-home-button"
+          >
+            <i className="fas fa-bone"></i> Volver al hogar
+          </button>
         </div>
-    </body>
-
-    
-
+      </section>
+    </main>
   )
 }
 

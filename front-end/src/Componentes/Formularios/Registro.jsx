@@ -16,12 +16,12 @@ const Registro = ({ URL = "" }) => {
   // Datos que entran del formulario de registro
   const [formData, setFormData] = useState({
     // Paso 1
-    tipoDocumento: "",
+    tipoDocumento: "Null",
     numeroDocumento: "",
     nombres: "",
     apellidos: "",
     fechaNacimiento: "",
-    genero: "",
+    genero: "Null",
     celular: "",
     celular2: "",
     direccion: "",
@@ -40,16 +40,13 @@ const Registro = ({ URL = "" }) => {
   const [paso, setPaso] = useState(1)
   const [verPassword, setVerPassword] = useState(false)
   const [verConfirmarPassword, setVerConfirmarPassword] = useState(false)
-  const [mostrarRequisitosPassword, setMostrarRequisitosPassword] = useState(false)
   const [mostrarRequisitosFecha, setMostrarRequisitosFecha] = useState(false)
   const [errorCodigo, setErrorCodigo] = useState(false)
   const [tiempoRestante, setTiempoRestante] = useState(300)
   const [timerActivo, setTimerActivo] = useState(false)
-  const [status, setStatus] = useState("")
   const [loading, setLoading] = useState()
   const emailInputRef = useRef(null)
 
-  
   // Configuración de react-hook-form
   const {
       register,
@@ -635,7 +632,7 @@ const Registro = ({ URL = "" }) => {
                       ref={emailInputRef}
                       type="email"
                       placeholder="Ej: juan.lopez@example.com"
-                      maxLength={320}
+                      maxLength={100}
                       className={errors.email ? "campo-error" : ""}
                       onPaste={evitarPegado}
                       {...register("email", {
@@ -644,7 +641,7 @@ const Registro = ({ URL = "" }) => {
                           value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                           message: "El correo electrónico es inválido",
                         },
-                        maxLength: 320,
+                        maxLength: 100,
                       })}
                       aria-describedby={errors.email ? "error-email": undefined}
                     />
@@ -666,7 +663,7 @@ const Registro = ({ URL = "" }) => {
                     <input
                       type="email"
                       placeholder="Confirmar correo electrónico"
-                      maxLength={320}
+                      maxLength={100}
                       className={errors.confirmEmail ? "campo-error" : ""}
                       onPaste={evitarPegado}
                       {...register("confirmEmail", {
@@ -675,7 +672,7 @@ const Registro = ({ URL = "" }) => {
                           const emailValue = watch("email")
                           return value === emailValue || "Los correos electrónicos no coinciden"
                         },
-                        maxLength: 320,
+                        maxLength: 100,
                       })}
                       aria-describedby={errors.confirmEmail ? "error-email": undefined}
                     />

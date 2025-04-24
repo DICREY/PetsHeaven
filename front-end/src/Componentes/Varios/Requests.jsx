@@ -66,11 +66,7 @@ export async function PostData(URL = "", token = "", datas = {}) {
   
       // Manejar diferentes códigos de estado
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}))
-        const error = new Error(errorData.message || `HTTP error! status: ${response.status}`)
-        error.status = response.status
-        error.data = errorData
-        throw error
+        throw response
       }
   
       // Parsear la respuesta como JSON

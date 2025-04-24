@@ -52,7 +52,7 @@ Route.post('/login',limiterLog, async (req,res) => {
                 roles: user.roles
             },
             secret,
-            { expiresIn: '2h' }
+            { expiresIn: '8h' }
         )
         res.status(200).json({ token: token })
 
