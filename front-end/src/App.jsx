@@ -23,9 +23,8 @@ import { GesAgendaGeneral } from "./Componentes/InterfazAdmin/GesAgendaGeneral"
 import { PerfilPropietario } from "./Componentes/InterfazAdmin/PerfilPropietario"
 import { MainAdmin } from './Componentes/InterfazAdmin/MainAdmin'
 
-
 //import Crud personal
-
+import { ConfiguracionUsuarioCrud } from "./Componentes/InterfazAdmin/CrudPersonal/ConfiguracionUsuarioCrud"
 
 
 
@@ -94,7 +93,7 @@ export default function App () {
           </Route>
 
           <Route path="actualizar/datos personal" element={
-            <AdminRoute children={<PerfilPropietario userSelect={userSelect} URL={URL} />} />} >
+            <AdminRoute children={<ConfiguracionUsuarioCrud userSelect={userSelect} URL={URL} />} />} >
           </Route>
         </Route>
         

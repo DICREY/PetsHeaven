@@ -140,7 +140,7 @@ export class GlobalTable extends Component {
                         </td>
                       ))}
                       <td className="actions-cell">
-                        <button onClick={this.onEdit}>
+                        <button onClick={this.onEdit} >
                           <Edit size={16} />
                         </button>
                         <button onClick={() => this.onMore(item)}>
