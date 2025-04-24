@@ -128,7 +128,6 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
       genero: userData.gen_usu,
     })
     setPetsData(userData.mascotas)
-    console.log(modPro)
   },[petsData])
 
   return (
@@ -212,15 +211,15 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                         <select
                           className="inputEditProps"
                           name="tipoDocumento"
-                          value={formData.tip_doc_usu}
+                          defaultValue={formData.tip_doc_usu}
                           onChange={handleChange}
                           
                         >
                           <option disabled>Seleccione tipo</option>
-                          <option value="Cédula de Ciudadanía">Cédula de Ciudadanía</option>
-                          <option value="Tarjeta de Identidad">Tarjeta de Identidad</option>
+                          <option value="CC">Cédula de Ciudadanía</option>
+                          <option value="TI">Tarjeta de Identidad</option>
                           <option value="Pasaporte">Pasaporte</option>
-                          <option value="Cédula de Extranjería">Cédula de Extranjería</option>
+                          <option value="CE">Cédula de Extranjería</option>
                         </select>
                       ) : (
                         <div className="propietarioValorProps">{userData.tip_doc_usu}</div>
@@ -235,7 +234,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           type="text"
                           className="inputEditProps"
                           name="numeroDocumento"
-                          value={formData.doc_usu}
+                          defaultValue={formData.doc_usu}
                           onChange={handleChange}
                           disabled
                         />
@@ -252,7 +251,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           type="text"
                           className="inputEditProps"
                           name="nombres"
-                          value={formData.nom_usu}
+                          defaultValue={formData.nom_usu}
                           onChange={handleChange}
                         />
                       ) : (
@@ -268,7 +267,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           type="text"
                           className="inputEditProps"
                           name="apellidos"
-                          value={formData.ape_usu}
+                          defaultValue={formData.ape_usu}
                           onChange={handleChange}
                         />
                       ) : (
@@ -284,7 +283,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           type="date"
                           className="inputEditProps"
                           name="fechaNacimiento"
-                          value={formatDate(formData.fec_nac_usu)}
+                          defaultValue={formatDate(formData.fec_nac_usu)}
                           onChange={handleChange}
                           disabled
                         />
@@ -297,7 +296,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                     <div className="propietarioCampoProps">
                       <div className="propietarioEtiquetaProps">Género</div>
                       {isEditing ? (
-                        <select className="inputEditProps" name="genero" value={formData.gen_usu} onChange={handleChange}>
+                        <select className="inputEditProps" name="genero" defaultValue={formData.gen_usu} onChange={handleChange}>
                           <option value="Masculino">Masculino</option>
                           <option value="Femenino">Femenino</option>
                           <option value="Otro">Otro</option>
@@ -315,7 +314,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           type="text"
                           className="inputEditProps"
                           name="celular"
-                          value={formData.cel_usu}
+                          defaultValue={formData.cel_usu}
                           onChange={handleChange}
                         />
                       ) : (
@@ -331,7 +330,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           type="text"
                           className="inputEditProps"
                           name="direccion"
-                          value={formData.dir_usu}
+                          defaultValue={formData.dir_usu}
                           onChange={handleChange}
                         />
                       ) : (
@@ -347,7 +346,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           type="email"
                           className="inputEditProps"
                           name="correo"
-                          value={formData.email_usu}
+                          defaultValue={formData.email_usu}
                           onChange={handleChange}
                         />
                       ) : (
