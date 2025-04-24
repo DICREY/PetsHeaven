@@ -24,10 +24,10 @@ export const Loader = () => {
             <div className="hamster__tail"></div>
           </div>
         </div>
-        <div className="spoke"></div> 
-        
+        <div className="spoke"></div>
+
       </div>
-     <div class="loader"></div>
+      <div class="loader"></div>
     </main>
   );
 };
