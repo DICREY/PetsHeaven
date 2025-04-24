@@ -216,25 +216,44 @@ class User {
                 data.celular,
                 data.celular2,
                 data.email,
-                data.password,
+                data.hash_pass,
                 data.genero
             ]
-            console.log(newUser)
-            let procedure = "CALL ModifyPeople(?,?,?,?,?,?,?,?,?,?,?);"
+            const procedure = "CALL ModifyPeople(?,?,?,?,?,?,?,?,?,?,?);"
 
             // conect to database
-            let conection = conect()
+            const database = new DataBase()
+            database.conect()
 
             // call procedure
-            if (conection) conection.query(procedure,newUser,err => { 
+            if (database) database.conection.query(procedure,newUser,err => { 
                 if(err) rej(err) 
-                if(!result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
                 setTimeout(() => res({
                     message: "User Modify",
-                    ...data
+                    modified: 1,
+                }),1000)
+            })
+
+            // close conection 
+            database.conection.end()
+        })
+    }
+
+    // function to delete
+    async delete(data) {
+        return new Promise((res,rej) => {
+            // data 
+            const procedure = "CALL DeletePeople(?);"
+
+            // conect to database
+            const conection = conect()
+
+            // call procedure
+            if (conection) conection.query(procedure,data,err => { 
+                if(err) rej(err) 
+                setTimeout(() => res({
+                    message: "User Deleted",
+                    deleted: 1
                 }),1000)
             })
 

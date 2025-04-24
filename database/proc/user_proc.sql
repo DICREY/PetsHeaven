@@ -107,8 +107,6 @@ CREATE PROCEDURE pets_heaven.RegistAdmin(
     IN p_email_usu VARCHAR(100),
     IN p_cont_usu VARCHAR(255),
     IN p_gen_usu VARCHAR(20),
-    
-    
     IN P_rol_usu VARCHAR(100),
     IN P_esp_vet VARCHAR(100),
     IN P_num_tar_vet VARCHAR(100),
@@ -146,7 +144,49 @@ BEGIN
     COMMIT;
     SET autocommit = 1;
 END //
+CREATE PROCEDURE pets_heaven.ModifyPeople(
+    IN p_nom_usu VARCHAR(100),
+    IN p_ape_usu VARCHAR(100),
+    IN p_fec_nac_usu DATE,
+    IN p_tip_doc_usu VARCHAR(10),
+    IN p_doc_usu VARCHAR(20),
+    IN p_dir_usu VARCHAR(100),
+    IN p_cel_usu VARCHAR(20),
+    IN p_cel2_usu VARCHAR(20),
+    IN p_email_usu VARCHAR(100),
+    IN p_cont_usu VARCHAR(255),
+    IN p_gen_usu VARCHAR(20)
+)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
 
+    SET autocommit = 0;
+
+    START TRANSACTION;
+
+    UPDATE 
+        usuarios u
+    SET
+        u.nom_usu = p_nom_usu,
+        u.ape_usu = p_ape_usu,
+        u.fec_nac_usu = p_fec_nac_usu,
+        u.tip_doc_usu = p_tip_doc_usu,
+        u.dir_usu = p_dir_usu,
+        u.cel_usu = p_cel_usu,
+        u.cel2_usu = p_cel2_usu,
+        u.email_usu = p_email_usu,
+        u.cont_usu = p_cont_usu,
+        u.gen_usu = p_gen_usu
+    WHERE
+        u.doc_usu = p_doc_usu;
+
+    COMMIT;
+    SET autocommit = 1;
+END //
 CREATE PROCEDURE pets_heaven.SearchPeoples()
 BEGIN
     SELECT
@@ -272,4 +312,34 @@ BEGIN
     GROUP BY 
         u.id_usu
     LIMIT 100;
+END //
+
+CREATE PROCEDURE pets_heaven.DeletePeople(
+    IN p_by VARCHAR(100)
+)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+     BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    SET autocommit = 0;
+
+    START TRANSACTION;
+
+    UPDATE
+        usuarios u
+    SET 
+        u.estado = 0
+    WHERE
+        u.estado = 1
+        AND (
+            u.doc_usu LIKE p_by
+            OR u.email_usu LIKE p_by
+        );
+
+    COMMIT;
+
+    SET autocommit = 1;
 END //

@@ -8,7 +8,6 @@ export const Logout = () => {
   if (token){
     window.location.href = "/main"
     localStorage.setItem('token','')
-    console.log("logout")
   }
 }
 
@@ -91,6 +90,22 @@ export const formatDate = (dateString = "") => {
     return date.toLocaleDateString('en-CA')
   }
   return false
+}
+
+export const getAge = (fec = "") => {
+  const calcAge = (fechaNac) => {
+    const hoy = new Date()
+    const fechaNacDate = new Date(fechaNac)
+    
+    let edad = hoy.getFullYear() - fechaNacDate.getFullYear()
+    const mes = hoy.getMonth() - fechaNacDate.getMonth()
+    
+    if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacDate.getDate())) edad--
+    
+    return edad
+  }
+
+  return calcAge(fec) 
 }
 
 export const errorStatusHandler = (errStatus) => {

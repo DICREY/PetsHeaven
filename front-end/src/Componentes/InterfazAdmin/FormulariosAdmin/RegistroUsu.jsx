@@ -97,7 +97,7 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
               <span className="creacion-regusuario">| Creación</span>
             </div>
             <div className='acciones-regusuario'>
-              <button className='atras-regusuario' onClick={() => window.location.href = '/gestion/usuarios'}>
+              <button className='atras-regusuario' onClick={() => window.location.href = '/admin/gestion/usuarios'}>
                 <ChevronLeft size={16} />
                 <span className='texto-btn-regusuario'>Atrás</span>
               </button>

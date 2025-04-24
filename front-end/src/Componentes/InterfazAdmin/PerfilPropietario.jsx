@@ -1,22 +1,29 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
+import { useNavigate } from "react-router"
 import { User, PawPrint, ArrowLeft, Trash2, Edit, Save, X, Calendar } from "lucide-react"
 
 // Imports 
 import {NavBarAdmin} from '../BarrasNavegacion/NavBarAdmi'
-import { loadingAlert, getRoles, formatDate } from '../Varios/Util'
-import { DeleteData } from '../Varios/Requests'
+import { loadingAlert, getRoles, formatDate, getAge, errorStatusHandler } from '../Varios/Util'
+import { DeleteData, ModifyData } from '../Varios/Requests'
 import "../../../public/styles/InterfazAdmin/PerfilPropietario.css"
 
 // Component 
 export const PerfilPropietario = ({ userSelect, URL = "" }) => {
-  // Vars 
+  // Vars dynamic
   const [activeTab, setActiveTab] = useState("propietario")
   const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState(userSelect)
   const [petsData,setPetsData] = useState([])
   const [userData,setUserData] = useState(userSelect)
-  const mainUrl = `${URL}/owner`
+  const [modPro,setModPro] = useState({})
 
+  // Vars
+  const mainUrl = `${URL}/owner`
+  const secondUrl = `${URL}/user`
+  const navigate = useNavigate()
+
+  // Functions 
   const verHistorial = (id) => {
     // Aquí se implementaría la lógica para mostrar el historial
     alert(`Mostrando historial de la mascota con ID: ${id}`)
@@ -31,15 +38,34 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
     setIsEditing(false)
   }
 
-  const handleSaveEdit = () => {
-    setPropietario(formData)
+  const handleSaveEdit = async () => {
     setIsEditing(false)
     const token = localStorage.getItem("token")
+    try {
+      if (token) {
+        loadingAlert("Validando...",)
+        const mod = await ModifyData(`${secondUrl}/modify`, token, modPro)
+        mod.ok && swal({
+          icon: 'success',
+          title: 'Modificado',
+          text: 'Los datos de la mascota han sido modificados',
+        })
+      }
+    } catch (err) {
+      if(err.status) {
+        const message = errorStatusHandler(err.status)
+        swal({
+          title: 'Error',
+          text: `${message}`,
+          icon: 'warning',
+        })
+      } else console.log(err)
+    }
   }
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData((prev) => ({
+    setModPro((prev) => ({
       ...prev,
       [name]: value,
     }))
@@ -51,7 +77,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
       const token = localStorage.getItem("token")
       try {
         if(token) {
-          const roles =  getRoles(token)
+          const roles = getRoles(token)
           const admin = roles.some(role => role.toLowerCase() === "administrador")
           if (admin) {
             loadingAlert("Validando...")
@@ -65,7 +91,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
               text: 'La mascota han sido desactivada correctamente.',
             })
           }
-        } else window.location.href = "/34"
+        } else navigate("/34")
       } catch (err) {
         err.message? swal({
             icon: "error",
@@ -87,6 +113,23 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
     }
   }
 
+  useEffect(() => {
+    setModPro({
+      nombres: userData.nom_usu,
+      apellidos: userData.ape_usu,
+      fechaNacimiento: formatDate(userData.fec_nac_usu),
+      tipoDocumento: userData.tip_doc_usu,
+      numeroDocumento: userData.doc_usu,
+      direccion: userData.dir_usu,
+      celular: userData.cel_usu,
+      celular2: userData.cel2_usu,
+      email: userData.email_usu,
+      password: userData.cont_usu,
+      genero: userData.gen_usu,
+    })
+    setPetsData(userData.mascotas)
+  },[petsData])
+
   return (
     <main className="contenedorpageProps">
       <NavBarAdmin />
@@ -98,7 +141,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
             Configuración de usuario <span className="subtituloProps"> | Creación</span>
           </h1>
           <div className="botonesAccionProps">
-            <button className="botonAtrasProps" onClick={() => window.location.href = '/admin/consultorio'}>
+            <button className="botonAtrasProps" onClick={() => navigate('/admin/consultorio')}>
               <ArrowLeft size={18} />
               <span>Atrás</span>
             </button>
@@ -168,15 +211,15 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                         <select
                           className="inputEditProps"
                           name="tipoDocumento"
-                          value={formData.tip_doc_usu}
+                          defaultValue={formData.tip_doc_usu}
                           onChange={handleChange}
                           
                         >
                           <option disabled>Seleccione tipo</option>
-                          <option value="Cédula de Ciudadanía">Cédula de Ciudadanía</option>
-                          <option value="Tarjeta de Identidad">Tarjeta de Identidad</option>
+                          <option value="CC">Cédula de Ciudadanía</option>
+                          <option value="TI">Tarjeta de Identidad</option>
                           <option value="Pasaporte">Pasaporte</option>
-                          <option value="Cédula de Extranjería">Cédula de Extranjería</option>
+                          <option value="CE">Cédula de Extranjería</option>
                         </select>
                       ) : (
                         <div className="propietarioValorProps">{userData.tip_doc_usu}</div>
@@ -191,7 +234,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           type="text"
                           className="inputEditProps"
                           name="numeroDocumento"
-                          value={formData.doc_usu}
+                          defaultValue={formData.doc_usu}
                           onChange={handleChange}
                           disabled
                         />
@@ -208,7 +251,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           type="text"
                           className="inputEditProps"
                           name="nombres"
-                          value={formData.nom_usu}
+                          defaultValue={formData.nom_usu}
                           onChange={handleChange}
                         />
                       ) : (
@@ -224,7 +267,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           type="text"
                           className="inputEditProps"
                           name="apellidos"
-                          value={formData.ape_usu}
+                          defaultValue={formData.ape_usu}
                           onChange={handleChange}
                         />
                       ) : (
@@ -240,12 +283,12 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           type="date"
                           className="inputEditProps"
                           name="fechaNacimiento"
-                          value={formData.fec_nac_usu}
+                          defaultValue={formatDate(formData.fec_nac_usu)}
                           onChange={handleChange}
                           disabled
                         />
                       ) : (
-                        <div className="propietarioValorProps">{userData.fec_nac_usu}</div>
+                        <div className="propietarioValorProps">{formatDate(userData.fec_nac_usu)}</div>
                       )}
                     </div>
 
@@ -253,7 +296,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                     <div className="propietarioCampoProps">
                       <div className="propietarioEtiquetaProps">Género</div>
                       {isEditing ? (
-                        <select className="inputEditProps" name="genero" value={formData.gen_usu} onChange={handleChange}>
+                        <select className="inputEditProps" name="genero" defaultValue={formData.gen_usu} onChange={handleChange}>
                           <option value="Masculino">Masculino</option>
                           <option value="Femenino">Femenino</option>
                           <option value="Otro">Otro</option>
@@ -271,7 +314,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           type="text"
                           className="inputEditProps"
                           name="celular"
-                          value={formData.cel_usu}
+                          defaultValue={formData.cel_usu}
                           onChange={handleChange}
                         />
                       ) : (
@@ -287,7 +330,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           type="text"
                           className="inputEditProps"
                           name="direccion"
-                          value={formData.dir_usu}
+                          defaultValue={formData.dir_usu}
                           onChange={handleChange}
                         />
                       ) : (
@@ -303,7 +346,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           type="email"
                           className="inputEditProps"
                           name="correo"
-                          value={formData.email_usu}
+                          defaultValue={formData.email_usu}
                           onChange={handleChange}
                         />
                       ) : (
@@ -320,28 +363,29 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
             <div className="mascotasContenedorProps">
               <div className="mascotasGrillaProps">
                 {petsData.map((mascota) => (
-                  <div key={mascota.id} className="mascotaTarjetaProps">
+                  <div key={mascota.doc_usu} className="mascotaTarjetaProps">
                     <div className="mascotaImagenProps">
-                      <img src={mascota.foto || "/placeholder.svg"} alt={mascota.nombre} />
+                      <img src={mascota.fot_mas || "/placeholder.svg"} alt={mascota.nom_mas} />
                     </div>
                     <div className="mascotaInfoProps">
-                      <h3 className="mascotaNombreProps">{mascota.nombre}</h3>
+                      <h3 className="mascotaNombreProps">{mascota.nom_mas}</h3>
                       <div className="mascotaDetallesProps">
                         <div className="mascotaDetalleProps">
-                          <span className="mascotaEtiquetaProps">Especie:</span> {mascota.especie}
+                          <span className="mascotaEtiquetaProps">Especie:</span> {mascota.esp_mas}
                         </div>
                         <div className="mascotaDetalleProps">
-                          <span className="mascotaEtiquetaProps">Raza:</span> {mascota.raza}
+                          <span className="mascotaEtiquetaProps">Raza:</span> {mascota.raz_mas}
                         </div>
                         <div className="mascotaDetalleProps">
-                          <span className="mascotaEtiquetaProps">Edad:</span> {mascota.edad}
+                          <span className="mascotaEtiquetaProps">Edad:</span> {getAge(mascota.fec_nac_mas)}
+                           {" Años"}
                         </div>
                         <div className="mascotaDetalleProps">
-                          <span className="mascotaEtiquetaProps">Género:</span> {mascota.genero}
+                          <span className="mascotaEtiquetaProps">Género:</span> {mascota.gen_mas}
                         </div>
                       </div>
                       <div className="mascotaAccionesProps">
-                        <button className="botonHistorialProps" onClick={() => verHistorial(mascota.id)}>
+                        <button className="botonHistorialProps" onClick={() => verHistorial(mascota.doc_usu)}>
                           <Calendar size={16} />
                           <span>Ver historial</span>
                         </button>
