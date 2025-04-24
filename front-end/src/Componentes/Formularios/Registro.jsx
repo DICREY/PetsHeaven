@@ -16,12 +16,12 @@ const Registro = ({ URL = "" }) => {
   // Datos que entran del formulario de registro
   const [formData, setFormData] = useState({
     // Paso 1
-    tipoDocumento: "",
+    tipoDocumento: "Null",
     numeroDocumento: "",
     nombres: "",
     apellidos: "",
     fechaNacimiento: "",
-    genero: "",
+    genero: "Null",
     celular: "",
     celular2: "",
     direccion: "",
