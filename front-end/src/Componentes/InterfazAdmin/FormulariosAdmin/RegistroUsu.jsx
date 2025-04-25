@@ -158,7 +158,10 @@ export const RegistroPro = ({ URL = "" }) => {
                     <select
                       name="tipDoc"
                       className={`campo-regusuario ${errors.tipDoc ? 'campo-error' : ''}`}
+                      autoFocus
+                      onFocus={(e) => e.target.focus()} // Refuerza el enfoque
                       defaultValue='--'
+                      aria-describedby={errors.tipDoc}
                       {...register("tipDoc", { required: "El tipo de documento es requerido." })}
                     >
                       <option disabled value='--'>Seleccione tipo</option>
@@ -177,6 +180,7 @@ export const RegistroPro = ({ URL = "" }) => {
                       max='100'
                       ref={doc}
                       aria-required
+                      aria-describedby={errors.doc ? "Error": undefined}
                       placeholder="Número de identificación"
                       className={`campo-regusuario ${errors.doc ? 'campo-error' : ''}`}
                       {...register("doc", {
@@ -193,6 +197,7 @@ export const RegistroPro = ({ URL = "" }) => {
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Nombres <span className="obligatorio">*</span></label>
                     <input
+                      aria-describedby={errors.nombres ? "Error": undefined}
                       type="text"
                       name="nombres"
                       aria-required
@@ -207,6 +212,7 @@ export const RegistroPro = ({ URL = "" }) => {
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Apellidos <span className="obligatorio">*</span></label>
                     <input
+                      aria-describedby={errors.apellidos ? "Error": undefined}
                       type="text"
                       name="apellidos"
                       aria-required
@@ -222,6 +228,7 @@ export const RegistroPro = ({ URL = "" }) => {
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Fecha de nacimiento <span className="obligatorio">*</span></label>
                     <input
+                      aria-describedby={errors.fecNac ? "Error": undefined}
                       type="date"
                       name="fecNac"
                       className={`campo-regusuario ${errors.fecNac ? 'campo-error' : ''}`}
@@ -234,6 +241,7 @@ export const RegistroPro = ({ URL = "" }) => {
                     <select
                       className={`campo-regusuario ${errors.genero ? 'campo-error' : ''}`}
                       defaultValue='--'
+                      aria-describedby={errors.genero ? "Error": undefined}
                       name="genero"
                       {...register("genero", { required: "El género es requerido." })}
                     >
@@ -247,6 +255,7 @@ export const RegistroPro = ({ URL = "" }) => {
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Celular <span className="obligatorio">*</span></label>
                     <input
+                      aria-describedby={errors.cel ? "Error": undefined}
                       type="tel"
                       name="cel"
                       min='7'
@@ -274,6 +283,7 @@ export const RegistroPro = ({ URL = "" }) => {
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Dirección <span className="obligatorio">*</span></label>
                     <input
+                      aria-describedby={errors.direccion ? "Error": undefined}
                       type="text"
                       name="direccion"
                       max='100'
@@ -289,6 +299,7 @@ export const RegistroPro = ({ URL = "" }) => {
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Correo <span className="obligatorio">*</span></label>
                     <input
+                      aria-describedby={errors.email ? "Error": undefined}
                       type="email"
                       name="email"
                       max='100'
@@ -310,6 +321,7 @@ export const RegistroPro = ({ URL = "" }) => {
                   <div className="grupo-regusuario">
                     <label className="etiqueta-regusuario">Confirmación Correo <span className="obligatorio">*</span></label>
                     <input
+                      aria-describedby={errors.verifyEmail ? "Error": undefined}
                       type="email"
                       name="verifyEmail"
                       max='100'

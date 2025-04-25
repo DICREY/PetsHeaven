@@ -1,6 +1,10 @@
+// Librarys 
 import React, { useState } from "react";
+
+// Import styles 
 import "../../../../public/styles/InterfazAdmin/FormuariosAdmin/Contrasena.css";
 
+// Component 
 const Contrasena = () => {
   const {
     register,
@@ -8,11 +12,12 @@ const Contrasena = () => {
     watch,
     formState: { errors },
   } = useForm({ mode: "onChange" });
-
+  // Vars 
   const password = watch("password");
   const [verPassword, setVerPassword] = useState(false);
   const [verConfirmarPassword, setVerConfirmarPassword] = useState(false);
 
+  // Functions 
   const cambiarVisibilidadPassword = () => setVerPassword(!verPassword);
   const cambiarVisibilidadConfirmarPassword = () => setVerConfirmarPassword(!verConfirmarPassword);
 
