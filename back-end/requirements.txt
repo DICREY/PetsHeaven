@@ -6,3 +6,5 @@ jsonwebtoken == 9.0.2
 bcrypt == 5.1.1
 
 npm i cors express mysql express-rate-limit jsonwebtoken bcrypt dotenv
+
+yarn add cors express mysql express-rate-limit jsonwebtoken bcrypt dotenv
