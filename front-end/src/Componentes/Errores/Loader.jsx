@@ -27,7 +27,7 @@ export const Loader = () => {
         <div className="spoke"></div>
 
       </div>
-      <div class="loader"></div>
+      <div className="loader"></div>
     </main>
   );
 };
