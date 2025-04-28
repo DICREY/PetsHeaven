@@ -1,7 +1,6 @@
--- Active: 1743971322762@@127.0.0.1@3306@pets_heaven
+-- Active: 1745808709557@@127.0.0.1@3306
 DROP DATABASE IF EXISTS pets_heaven;
 CREATE DATABASE IF NOT EXISTS pets_heaven;
-
 CREATE TABLE pets_heaven.roles(
     id_rol INT AUTO_INCREMENT PRIMARY KEY,
     nom_rol VARCHAR(100) NOT NULL,
@@ -53,7 +52,7 @@ CREATE TABLE pets_heaven.veterinarios(
     id_vet INT PRIMARY KEY,INDEX(id_vet),FOREIGN KEY(id_vet)  REFERENCES usuarios(id_usu) ON DELETE CASCADE ON UPDATE CASCADE,
     especialidad VARCHAR(100) NOT NULL,
     horarios VARCHAR(100) NOT NULL,
-    num_tar_vet VARCHAR(100) NOT NULL,
+    num_tar_vet VARCHAR(100) DEFAULT("no-registrado"),
     cat_vet INT NOT NULL,INDEX(cat_vet), FOREIGN KEY(cat_vet) REFERENCES categorias_veterinario(id_cat) ON DELETE CASCADE ON UPDATE CASCADE,
     fot_tar_vet TEXT DEFAULT("no-registrado"),
     fot_vet TEXT DEFAULT("https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg")

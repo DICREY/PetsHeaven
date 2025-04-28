@@ -2,7 +2,7 @@
 const jwt = require('jsonwebtoken')
 
 // Env vars
-const secret = process.env.JWT_SECRET || "pets_heaven_vite"
+const secret = process.env.JWT_SECRET
 
 // Handle Validations middlewares
 function validatorHeaders (req,res,next) {
