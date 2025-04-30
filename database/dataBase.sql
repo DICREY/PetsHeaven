@@ -124,3 +124,11 @@ CREATE TABLE pets_heaven.citas(
     estado ENUM("PENDIENTE","EN-ESPERA","CANCELADO","RECHAZADO","REALIZADO") NOT NULL,
     PRIMARY KEY (id_cit,mas_cit)
 );
+
+CREATE TABLE pets_heaven.vacunas(
+    id_vac INT AUTO_INCREMENT PRIMARY KEY,
+    nom_vac VARCHAR(255) NOT NULL,
+    des_vac TEXT NOT NULL,
+    des_tec_vac TEXT NOT NULL,
+    lote VARCHAR(255) NOT NULL
+)
