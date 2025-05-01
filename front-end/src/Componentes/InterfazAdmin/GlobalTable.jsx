@@ -3,7 +3,7 @@ import React, { Component } from "react"
 import { Edit, MoreHorizontal } from "lucide-react"
 
 // Imports
-import { formatDate, divideList } from '../Varios/Util'
+import { formatDate, divideList,getAge } from '../Varios/Util'
 
 // Import Styles 
 import '../../../public/styles/InterfazAdmin/GlobalTable.css'
@@ -74,6 +74,7 @@ export class GlobalTable extends Component {
     
     renderCell = (item, header) => {
         // Lógica para tipos de datos comunes
+        if (header.includes("fec_nac")) return `${getAge(item[header])} Años`
         if (header.includes("fec")) return formatDate(item[header])
           
         switch (item[header]) {
@@ -140,7 +141,7 @@ export class GlobalTable extends Component {
                         </td>
                       ))}
                       <td className="actions-cell">
-                        <button onClick={this.onEdit} >
+                        <button onClick={() => this.onEdit(item)} >
                           <Edit size={16} />
                         </button>
                         <button onClick={() => this.onMore(item)}>
@@ -177,8 +178,3 @@ export class GlobalTable extends Component {
         )
     }
 }
-
-// GlobalTable.PropTypes = {
-//     headers: propTypes.arrayOf().isRequired,
-//     data: PropTypes.arrayOf(PropTypes.object).isRequired,
-// }

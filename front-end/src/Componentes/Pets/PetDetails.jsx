@@ -46,14 +46,14 @@ export const PetDetails = ({ datas, ready, editMode, open = false, admin = false
         const token = localStorage.getItem("token")
         try {
             if(token) {
-                const roles =  getRoles(token)
+                const roles = getRoles(token)
                 const admin = roles.some(role => role.toLowerCase() === "administrador")
                 if (admin) {
                     loadingAlert("Validando...")
             
                     const deleted = await DeleteData(mainURL,token,{
                         nom_mas: datas.nom_mas,
-                        doc_usu: datas.doc_usu
+                        doc_usu: datas.doc_per
                     })
             
                     deleted.deleted && swal({

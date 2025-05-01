@@ -20,8 +20,6 @@ export function GesUsuario({ URL = "" }) {
 
   const GetUsers = async () => {
     const token = localStorage.getItem("token")
-    console.log(getName(token))
-    console.log(getName(token))
     try {
       if (token){
         const data = await GetData(mainUrl,token)

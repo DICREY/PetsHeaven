@@ -64,6 +64,13 @@ export function GesMascota({ URL = "" }) {
       }
   }
 
+  // edit mode
+  const changeEditMode = (pet) => {
+    setSelectedPet(pet)
+    setEditMode(true)
+    document.body.style.overflow = 'hidden' // Deshabilita el scroll del body
+  }
+
   // Abrir sección de detalles
   const openModal = (pet) => {
     setSelectedPet(pet)
@@ -112,7 +119,7 @@ export function GesMascota({ URL = "" }) {
                 headersSearch={['nom_mas', 'raz_mas', 'esp_mas', 'est_rep_mas']}
                 fullData={petsAlmac}
                 headers={headers}
-                edit={() => setEditMode(true)}
+                edit={changeEditMode}
                 watch={openModal}
               />
             </div>

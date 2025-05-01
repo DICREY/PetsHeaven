@@ -13,9 +13,9 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
   // Vars dynamic
   const [activeTab, setActiveTab] = useState("propietario")
   const [isEditing, setIsEditing] = useState(false)
-  const [formData, setFormData] = useState(userSelect)
+  const [formData, setFormData] = useState({})
   const [petsData,setPetsData] = useState([])
-  const [userData,setUserData] = useState(userSelect)
+  const [userData,setUserData] = useState({})
   const [modPro,setModPro] = useState({})
 
   // Vars
@@ -72,33 +72,31 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
   }
 
   const handleDeleteClick = async () => {
-    if (window.confirm("¿Está seguro que desea eliminar este propietario?")) {
-      // Vars
-      const token = localStorage.getItem("token")
-      try {
-        if(token) {
-          const roles = getRoles(token)
-          const admin = roles.some(role => role.toLowerCase() === "administrador")
-          if (admin) {
-            loadingAlert("Validando...")
-            const deleted = await DeleteData(`${mainUrl}/delete`,token,{
-              doc: userData.doc_per
-            })
-    
-            deleted.deleted && swal({
-              icon: 'success',
-              title: 'Desactivada',
-              text: 'La mascota han sido desactivada correctamente.',
-            })
-          }
-        } else navigate("/34")
-      } catch (err) {
-        err.message? swal({
-            icon: "error",
-            title: "Error",
-            text: err.message
-        }): console.log(err)
-      }
+    // Vars
+    const token = localStorage.getItem("token")
+    try {
+      if(token) {
+        const roles = getRoles(token)
+        const admin = roles.some(role => role.toLowerCase() === "administrador")
+        if (admin) {
+          loadingAlert("Validando...")
+          const deleted = await DeleteData(`${mainUrl}/delete`,token,{
+            doc: userData.doc_per
+          })
+  
+          deleted.deleted && swal({
+            icon: 'success',
+            title: 'Desactivada',
+            text: 'La mascota han sido desactivada correctamente.',
+          })
+        }
+      } else navigate("/34")
+    } catch (err) {
+      err.message? swal({
+          icon: "error",
+          title: "Error",
+          text: err.message
+      }): console.log(err)
     }
   }
 
@@ -112,6 +110,13 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
       setActiveTab(tab)
     }
   }
+
+  useEffect(() => {
+    if (userSelect) {
+      setUserData(userSelect)
+      setFormData(userSelect)
+    } else navigate("/admin/consultorio")
+  },[])
 
   useEffect(() => {
     setModPro({
@@ -345,7 +350,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                         <input
                           type="email"
                           className="inputEditProps"
-                          name="correo"
+                          name="email"
                           defaultValue={formData.email_per}
                           onChange={handleChange}
                         />
