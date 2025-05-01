@@ -4,14 +4,14 @@ INSERT INTO pets_heaven.roles (nom_rol,fot_rol) VALUES
 ('Veterinario','https://imgs.search.brave.com/rL6dnhwCDXLvz02lsRs2QjVj1F8o-8D0o4pTYhmHah8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy90/aHVtYi9jL2M4L01h/cmllX0N1cmllX2Mu/XzE5MjBzLmpwZy81/MTJweC1NYXJpZV9D/dXJpZV9jLl8xOTIw/cy5qcGc'),
 ('Usuario','https://imgs.search.brave.com/kWZPq0vRV5Hl9y9RS9CtH5o-SRhsHFZfA8twL1VUavI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9oaXBz/LmhlYXJzdGFwcHMu/Y29tL2htZy1wcm9k/L2ltYWdlcy9nZXR0/eWltYWdlcy02MTUz/MTI2MzQuanBnP2Ny/b3A9MXh3OjEuMHho/O2NlbnRlcix0b3Am/cmVzaXplPTY0MDoq');
 
-INSERT INTO pets_heaven.permisos (nom_per) VALUES
-('Gestionar usuarios'),
+INSERT INTO pets_heaven.permisos (nom_pem) VALUES
+('Gestionar personas'),
 ('Gestionar mascotas'),
 ('Gestionar citas'),
 ('Ver reportes'),
 ('Facturación');
 
-INSERT INTO pets_heaven.usuarios (nom_usu, ape_usu, fec_nac_usu, tip_doc_usu, doc_usu, dir_usu, cel_usu, cel2_usu, email_usu, cont_usu,gen_usu) VALUES
+INSERT INTO pets_heaven.personas (nom_per, ape_per, fec_nac_per, tip_doc_per, doc_per, dir_per, cel_per, cel2_per, email_per, cont_per,gen_per) VALUES
 ('Juan', 'Pérez',NOW(), 'CC', '12345678', 'Calle 123 #45-67', '3001234567', NULL, 'juan.perez@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi','Masculino'),
 ('María', 'Gómez',NOW(), 'CC', '87654321', 'Av. Principal #12-34', '3102345678', '3203456789', 'maria.gomez@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi','Femenino'),
 ('Carlos', 'Rodríguez',NOW(), 'CE', 'AB123456', 'Carrera 56 #78-90', '3154567890', NULL, 'carlos.rod@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi','Masculino'),
@@ -21,7 +21,7 @@ INSERT INTO pets_heaven.usuarios (nom_usu, ape_usu, fec_nac_usu, tip_doc_usu, do
 ('Marie', 'Curie',NOW(), 'CC', '658790781', 'calle 12 #34-56', '3121141801', '', 'vet@gmail.com', '$2b$15$TDXtAUTWojmNW0MtBmCCQO4Y.6R9OzUAmg9QItKhQVqNUlOD/CTVe','Femenino'),
 ('Thomas', 'Edison',NOW(), 'CC', '908990781', 'calle 34 #56', '3121141801', '', 'user@gmail.com', '$2b$15$qxcK9ianAu/jeuG1jBFGReW2iF6E7sfSyPho9ERGAtiJvqwb1MnNm','Masculino');
 
-INSERT INTO pets_heaven.otorgar_roles (id_rol, id_usu) VALUES
+INSERT INTO pets_heaven.otorgar_roles (id_rol, id_per) VALUES
 (1,1),
 (2,1),
 (3,1),
@@ -42,7 +42,7 @@ INSERT INTO pets_heaven.otorgar_roles (id_rol, id_usu) VALUES
 (3,7),
 (3,8);
 
-INSERT INTO pets_heaven.otorgar_permisos (id_per, id_usu) VALUES
+INSERT INTO pets_heaven.otorgar_permisos (id_pem, id_per) VALUES
 (1,1),
 (2,2),
 (3,3),
@@ -84,7 +84,7 @@ VALUES
 ('Cardiología'),
 ('Odontología');
 
-INSERT INTO pets_heaven.usuarios (nom_usu, ape_usu, fec_nac_usu, tip_doc_usu, doc_usu, dir_usu, cel_usu, email_usu, cont_usu, gen_usu)
+INSERT INTO pets_heaven.personas (nom_per, ape_per, fec_nac_per, tip_doc_per, doc_per, dir_per, cel_per, email_per, cont_per, gen_per)
 VALUES
 ('Juan', 'Pérez', '1980-04-25', 'DNI', '12345222678', 'Calle Ficticia 123', '555-1234', 'juan.peresdfsfz@email.com', 'contraseña123', 'Masculino'),
 ('María', 'Gómez', '1990-08-15', 'DNI', '876333954321', 'Avenida Real 456', '555-5678', 'maria.gsdfsfomez@email.com', 'contraseña456', 'Femenino'),
@@ -95,12 +95,3 @@ VALUES
 (1, 'Veterinario Generalista', 'Lunes a Viernes 9:00 - 18:00', 1, 'https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg'),
 (2, 'Cirujano Veterinario', 'Lunes a Viernes 10:00 - 16:00', 2, 'https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg'),
 (3, 'Especialista en Dermatología', 'Martes a Jueves 9:00 - 14:00', 3, 'https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg');
-
-INSERT INTO pets_heaven.historiales_medicos (id_his, fec_his, tra_his, des_his, id_vet_his, id_mas_his)
-VALUES
-(1, '2025-03-15', 'Consulta de rutina', 'El paciente se encuentra en buen estado general, se le realizaron análisis de sangre y vacunas', 1, 3),
-(2, '2025-03-20', 'Cirugía de esterilización', 'Cirugía exitosa, se programó seguimiento en 7 días', 1, 4),
-(3, '2025-03-25', 'Revisión post-operatoria', 'El paciente está recuperándose bien de la cirugía, no hay complicaciones', 2, 5),
-(4, '2025-04-01', 'Atención de emergencia', 'El paciente llegó con fractura en la pierna, se estabilizó y se programó cirugía para el día siguiente', 3, 6),
-(5, '2025-04-05', 'Consulta de dermatología', 'Se detectaron signos de alergia, se prescribió un tratamiento con medicamentos antihistamínicos', 1, 7),
-(6, '2025-04-05', 'Consulta de dermatología', 'Se detectaron signos de alergia, se prescribió un tratamiento con medicamentos antihistamínicos', 1, 4);

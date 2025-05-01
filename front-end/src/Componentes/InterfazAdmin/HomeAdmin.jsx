@@ -16,7 +16,7 @@ export function HomeAdmin({ URL = "", setUserSelect }) {
   const [datas, setDatas] = useState([])
   const [datasAlmac, setDatasAlmac] = useState([])
   const [page, setPage] = useState(1)
-  const headersSearchUser = ['nom_usu', 'email_usu', 'cel_usu', 'ape_usu']
+  const headersSearchUser = ['nom_per', 'email_per', 'cel_per', 'ape_per']
   const headersSearchPet = ['nom_mas']
   const navigate = useNavigate()
 
@@ -188,18 +188,18 @@ export function HomeAdmin({ URL = "", setUserSelect }) {
                 </thead>
                 <tbody>
                   {datas.map((propietario) => (
-                    <tr key={propietario.doc_usu} className="filaadminhome">
+                    <tr key={propietario.doc_per} className="filaadminhome">
                       <td className="celdaadminhome" data-label="Nombre">
                         <div className="infoadminhome">
-                          <span className="nombreadminhome">{propietario.nom_usu}</span>
-                          <span className="fechaadminhome">Creado el {formatDate(propietario.fec_cre_usu)}</span>
+                          <span className="nombreadminhome">{propietario.nom_per}</span>
+                          <span className="fechaadminhome">Creado el {formatDate(propietario.fec_cre_per)}</span>
                         </div>
                       </td>
                       <td className="celdaadminhome" data-label="Identificador">
-                        {propietario.doc_usu}
+                        {propietario.doc_per}
                       </td>
                       <td className="celdaadminhome" data-label="Teléfono">
-                        {propietario.cel_usu}
+                        {propietario.cel_per}
                       </td>
                       <td className="celdaadminhome" data-label="Mascotas">
                         {propietario.mascotas && propietario.mascotas.length > 0 ? (
@@ -222,7 +222,7 @@ export function HomeAdmin({ URL = "", setUserSelect }) {
                               {propietario.ultimaCita.fecha} - {propietario.ultimaCita.hora}
                             </div>
                             <div className="tipocitaadminhome">
-                              {propietario.nom_usu} - {propietario.ultimaCita.tipo}
+                              {propietario.nom_per} - {propietario.ultimaCita.tipo}
                             </div>
                           </div>
                         ) : "-- Empty --"}
@@ -234,7 +234,7 @@ export function HomeAdmin({ URL = "", setUserSelect }) {
                             setUserSelect(propietario)
                             navigate("/admin/propietario/datos")
                           }}
-                          aria-label={`Ver detalles de ${propietario.nom_usu}`}
+                          aria-label={`Ver detalles de ${propietario.nom_per}`}
                         >
                           <FileText size={18} aria-hidden="true" />
                         </button>

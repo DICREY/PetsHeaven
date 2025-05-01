@@ -7,7 +7,7 @@ import { Plus} from "lucide-react"
 import '../../../public/styles/InterfazAdmin/GesUsuario.css'
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GetData } from '../Varios/Requests'
-import { divideList } from '../Varios/Util'
+import { divideList,errorStatusHandler, getName } from '../Varios/Util'
 import { Loader } from '../Errores/Loader'
 import { GlobalTable } from './GlobalTable'
 
@@ -20,24 +20,34 @@ export function GesUsuario({ URL = "" }) {
 
   const GetUsers = async () => {
     const token = localStorage.getItem("token")
+    console.log(getName(token))
+    console.log(getName(token))
     try {
       if (token){
         const data = await GetData(mainUrl,token)
         setHeaders({
-          'Nombres': 'nom_usu',
-          'Apellidos': 'ape_usu',
-          'T. Doc': 'tip_doc_usu',
-          'Documento': 'doc_usu',
-          'Direccion': 'dir_usu',
-          'Celular': 'cel_usu',
-          'Correo': 'email_usu'
+          'Nombres': 'nom_per',
+          'Apellidos': 'ape_per',
+          'T. Doc': 'tip_doc_per',
+          'Documento': 'doc_per',
+          'Direccion': 'dir_per',
+          'Celular': 'cel_per',
+          'Correo': 'email_per'
         })
         setUsersAlmac(data)
         setUsers(divideList(data,4))
         setLoading(false)
       } else window.location.href = "/34"
     } catch (err) {
-      console.log(err)
+      if (err.status) {
+        const message = errorStatusHandler(err.status)
+        swal({
+          title: "Error",
+          text: message,
+          icon: "error",
+          button: "Aceptar"
+        })
+      } else console.log(err)
     }
   }
 
@@ -81,7 +91,7 @@ export function GesUsuario({ URL = "" }) {
               subtitle={'Personal vinculado a la veterinaria: Petsheaven'}
               data={users}
               fullData={usersAlmac}
-              headersSearch={['nom_usu', 'email_usu', 'cel_usu', 'ape_usu']}
+              headersSearch={['nom_per', 'email_per', 'cel_per', 'ape_per']}
               headers={headers}
             /> 
 

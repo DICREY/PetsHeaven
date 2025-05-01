@@ -8,7 +8,7 @@ const Global = require('../services/Global.services')
 const { limiterLog } = require('../middleware/varios.handler')
 
 // Env vars
-const secret = process.env.JWT_SECRET || "pets_heaven_vite"
+const secret = process.env.JWT_SECRET
 
 // vars
 const global = new Global()
@@ -40,15 +40,15 @@ Route.post('/login',limiterLog, async (req,res) => {
 
         if(!user) return res.status(404).json({ message: 'Usuario no encontrado' })
         // Verify
-        const coincide = await compare(secondData, user.cont_usu)
+        const coincide = await compare(secondData, user.cont_per)
 
         if (!coincide) {
             return res.status(401).json({ message: 'Credenciales inválidas' })
         }
         const token = jwt.sign(
             { 
-                names: user.nom_usu,
-                lastNames: user.ape_usu,
+                names: user.nom_per,
+                lastNames: user.ape_per,
                 roles: user.roles
             },
             secret,

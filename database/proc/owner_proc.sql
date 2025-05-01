@@ -2,19 +2,19 @@
 CREATE PROCEDURE pets_heaven.SearchOwners()
 BEGIN
     SELECT
-        u.id_usu,
-        u.nom_usu,
-        u.ape_usu,
-        u.fec_nac_usu,
-        u.tip_doc_usu,
-        u.doc_usu,
-        u.dir_usu,
-        u.cel_usu,
-        u.cel2_usu,
-        u.email_usu,
-        u.cont_usu,
-        u.fec_cre_usu,
-        u.gen_usu,
+        u.id_per,
+        u.nom_per,
+        u.ape_per,
+        u.fec_nac_per,
+        u.tip_doc_per,
+        u.doc_per,
+        u.dir_per,
+        u.cel_per,
+        u.cel2_per,
+        u.email_per,
+        u.cont_per,
+        u.fec_cre_per,
+        u.gen_per,
         GROUP_CONCAT(
             CONCAT_WS(',',
                 m.nom_mas,
@@ -32,27 +32,27 @@ BEGIN
             SEPARATOR '; '
         ) AS mascotas
     FROM 
-        usuarios u
+        personas u
     JOIN 
-        mascotas m ON m.id_pro_mas = u.id_usu
+        mascotas m ON m.id_pro_mas = u.id_per
     WHERE
         u.estado = 1
         AND m.estado = 1
     GROUP BY
-        u.id_usu,
-        u.nom_usu,
-        u.ape_usu,
-        u.fec_nac_usu,
-        u.tip_doc_usu,
-        u.doc_usu,
-        u.dir_usu,
-        u.cel_usu,
-        u.cel2_usu,
-        u.email_usu,
-        u.cont_usu,
-        u.fec_cre_usu
+        u.id_per,
+        u.nom_per,
+        u.ape_per,
+        u.fec_nac_per,
+        u.tip_doc_per,
+        u.doc_per,
+        u.dir_per,
+        u.cel_per,
+        u.cel2_per,
+        u.email_per,
+        u.cont_per,
+        u.fec_cre_per
     ORDER BY
-        u.id_usu
+        u.id_per
     LIMIT 50;
 END //
 CREATE PROCEDURE pets_heaven.SearchOwnersBy(
@@ -60,18 +60,18 @@ CREATE PROCEDURE pets_heaven.SearchOwnersBy(
 )
 BEGIN
     SELECT
-        u.nom_usu,
-        u.ape_usu,
-        u.fec_nac_usu,
-        u.tip_doc_usu,
-        u.doc_usu,
-        u.dir_usu,
-        u.cel_usu,
-        u.cel2_usu,
-        u.email_usu,
-        u.cont_usu,
-        u.fec_cre_usu,
-        u.gen_usu,
+        u.nom_per,
+        u.ape_per,
+        u.fec_nac_per,
+        u.tip_doc_per,
+        u.doc_per,
+        u.dir_per,
+        u.cel_per,
+        u.cel2_per,
+        u.email_per,
+        u.cont_per,
+        u.fec_cre_per,
+        u.gen_per,
         (
             SELECT GROUP_CONCAT(
                 CONCAT_WS(',',
@@ -91,37 +91,37 @@ BEGIN
             ) 
             FROM mascotas m 
             WHERE 
-                m.id_pro_mas = u.id_usu
+                m.id_pro_mas = u.id_per
                 AND m.estado = 1
         ) AS mascotas
     FROM 
-        usuarios u
+        personas u
     WHERE
         u.estado = 1
         AND ( 
-            u.nom_usu LIKE CONCAT('%',p_by)
-            OR u.ape_usu LIKE CONCAT('%',p_by)
-            OR u.doc_usu LIKE CONCAT('%',p_by)
-            OR u.email_usu LIKE CONCAT('%',p_by)
-            OR u.gen_usu LIKE CONCAT('%',p_by)
-            OR u.cel_usu LIKE CONCAT('%',p_by)
-            OR u.tip_doc_usu LIKE CONCAT('%',p_by)
+            u.nom_per LIKE CONCAT('%',p_by)
+            OR u.ape_per LIKE CONCAT('%',p_by)
+            OR u.doc_per LIKE CONCAT('%',p_by)
+            OR u.email_per LIKE CONCAT('%',p_by)
+            OR u.gen_per LIKE CONCAT('%',p_by)
+            OR u.cel_per LIKE CONCAT('%',p_by)
+            OR u.tip_doc_per LIKE CONCAT('%',p_by)
         )
     GROUP BY
-        u.id_usu,
-        u.nom_usu,
-        u.ape_usu,
-        u.fec_nac_usu,
-        u.tip_doc_usu,
-        u.doc_usu,
-        u.dir_usu,
-        u.cel_usu,
-        u.cel2_usu,
-        u.email_usu,
-        u.cont_usu,
-        u.fec_cre_usu
+        u.id_per,
+        u.nom_per,
+        u.ape_per,
+        u.fec_nac_per,
+        u.tip_doc_per,
+        u.doc_per,
+        u.dir_per,
+        u.cel_per,
+        u.cel2_per,
+        u.email_per,
+        u.cont_per,
+        u.fec_cre_per
     ORDER BY
-        u.id_usu DESC
+        u.id_per DESC
     LIMIT 50;
 END //
 CREATE PROCEDURE pets_heaven.SearchOwnerBy(
@@ -129,18 +129,18 @@ CREATE PROCEDURE pets_heaven.SearchOwnerBy(
 )
 BEGIN
     SELECT
-        u.nom_usu,
-        u.ape_usu,
-        u.fec_nac_usu,
-        u.tip_doc_usu,
-        u.doc_usu,
-        u.dir_usu,
-        u.cel_usu,
-        u.cel2_usu,
-        u.email_usu,
-        u.cont_usu,
-        u.fec_cre_usu,
-        u.gen_usu,
+        u.nom_per,
+        u.ape_per,
+        u.fec_nac_per,
+        u.tip_doc_per,
+        u.doc_per,
+        u.dir_per,
+        u.cel_per,
+        u.cel2_per,
+        u.email_per,
+        u.cont_per,
+        u.fec_cre_per,
+        u.gen_per,
         (
             SELECT GROUP_CONCAT(
                 CONCAT_WS(',',
@@ -160,32 +160,32 @@ BEGIN
             ) 
             FROM mascotas m 
             WHERE 
-                m.id_pro_mas = u.id_usu
+                m.id_pro_mas = u.id_per
                 AND m.estado = 1
         ) AS mascotas
     FROM 
-        usuarios u
+        personas u
     WHERE
         u.estado = 1
         AND ( 
-            u.doc_usu LIKE p_by
-            OR u.email_usu LIKE p_by
+            u.doc_per LIKE p_by
+            OR u.email_per LIKE p_by
         )
     GROUP BY
-        u.id_usu,
-        u.nom_usu,
-        u.ape_usu,
-        u.fec_nac_usu,
-        u.tip_doc_usu,
-        u.doc_usu,
-        u.dir_usu,
-        u.cel_usu,
-        u.cel2_usu,
-        u.email_usu,
-        u.cont_usu,
-        u.fec_cre_usu
+        u.id_per,
+        u.nom_per,
+        u.ape_per,
+        u.fec_nac_per,
+        u.tip_doc_per,
+        u.doc_per,
+        u.dir_per,
+        u.cel_per,
+        u.cel2_per,
+        u.email_per,
+        u.cont_per,
+        u.fec_cre_per
     ORDER BY
-        u.id_usu DESC
+        u.id_per DESC
     LIMIT 50;
 END //
 CREATE PROCEDURE pets_heaven.SearchOwnersByPet(
@@ -193,18 +193,18 @@ CREATE PROCEDURE pets_heaven.SearchOwnersByPet(
 )
 BEGIN
     SELECT
-        u.nom_usu,
-        u.ape_usu,
-        u.fec_nac_usu,
-        u.tip_doc_usu,
-        u.doc_usu,
-        u.dir_usu,
-        u.cel_usu,
-        u.cel2_usu,
-        u.email_usu,
-        u.cont_usu,
-        u.fec_cre_usu,
-        u.gen_usu,
+        u.nom_per,
+        u.ape_per,
+        u.fec_nac_per,
+        u.tip_doc_per,
+        u.doc_per,
+        u.dir_per,
+        u.cel_per,
+        u.cel2_per,
+        u.email_per,
+        u.cont_per,
+        u.fec_cre_per,
+        u.gen_per,
         (
             GROUP_CONCAT(
                 CONCAT_WS(',',
@@ -224,9 +224,9 @@ BEGIN
             ) 
         ) AS mascotas
     FROM 
-        usuarios u
+        personas u
     LEFT JOIN mascotas m ON
-        m.id_pro_mas = u.id_usu
+        m.id_pro_mas = u.id_per
         AND m.estado = 1
         AND (
             m.nom_mas LIKE CONCAT('%',p_by)
@@ -239,20 +239,20 @@ BEGIN
     WHERE
         u.estado = 1
     GROUP BY
-        u.id_usu,
-        u.nom_usu,
-        u.ape_usu,
-        u.fec_nac_usu,
-        u.tip_doc_usu,
-        u.doc_usu,
-        u.dir_usu,
-        u.cel_usu,
-        u.cel2_usu,
-        u.email_usu,
-        u.cont_usu,
-        u.fec_cre_usu
+        u.id_per,
+        u.nom_per,
+        u.ape_per,
+        u.fec_nac_per,
+        u.tip_doc_per,
+        u.doc_per,
+        u.dir_per,
+        u.cel_per,
+        u.cel2_per,
+        u.email_per,
+        u.cont_per,
+        u.fec_cre_per
     ORDER BY
-        u.id_usu DESC
+        u.id_per DESC
     LIMIT 50;
 END //
 
@@ -271,17 +271,17 @@ BEGIN
     START TRANSACTION;
 
     UPDATE 
-        usuarios u
+        personas u
     JOIN 
-        mascotas m ON u.id_usu = m.id_pro_mas 
+        mascotas m ON u.id_per = m.id_pro_mas 
     SET
         u.estado = 0,
         m.estado = 0
     WHERE
         u.estado = 1
         AND (
-            u.doc_usu LIKE p_by
-            OR u.email_usu LIKE p_by
+            u.doc_per LIKE p_by
+            OR u.email_per LIKE p_by
         );
 
     COMMIT;

@@ -82,7 +82,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
           if (admin) {
             loadingAlert("Validando...")
             const deleted = await DeleteData(`${mainUrl}/delete`,token,{
-              doc: userData.doc_usu
+              doc: userData.doc_per
             })
     
             deleted.deleted && swal({
@@ -115,17 +115,17 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
 
   useEffect(() => {
     setModPro({
-      nombres: userData.nom_usu,
-      apellidos: userData.ape_usu,
-      fechaNacimiento: formatDate(userData.fec_nac_usu),
-      tipoDocumento: userData.tip_doc_usu,
-      numeroDocumento: userData.doc_usu,
-      direccion: userData.dir_usu,
-      celular: userData.cel_usu,
-      celular2: userData.cel2_usu,
-      email: userData.email_usu,
-      password: userData.cont_usu,
-      genero: userData.gen_usu,
+      nombres: userData.nom_per,
+      apellidos: userData.ape_per,
+      fechaNacimiento: formatDate(userData.fec_nac_per),
+      tipoDocumento: userData.tip_doc_per,
+      numeroDocumento: userData.doc_per,
+      direccion: userData.dir_per,
+      celular: userData.cel_per,
+      celular2: userData.cel2_per,
+      email: userData.email_per,
+      password: userData.cont_per,
+      genero: userData.gen_per,
     })
     setPetsData(userData.mascotas)
   },[petsData])
@@ -211,7 +211,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                         <select
                           className="inputEditProps"
                           name="tipoDocumento"
-                          defaultValue={formData.tip_doc_usu}
+                          defaultValue={formData.tip_doc_per}
                           onChange={handleChange}
                           
                         >
@@ -222,7 +222,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           <option value="CE">Cédula de Extranjería</option>
                         </select>
                       ) : (
-                        <div className="propietarioValorProps">{userData.tip_doc_usu}</div>
+                        <div className="propietarioValorProps">{userData.tip_doc_per}</div>
                       )}
                     </div>
 
@@ -234,12 +234,12 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           type="text"
                           className="inputEditProps"
                           name="numeroDocumento"
-                          defaultValue={formData.doc_usu}
+                          defaultValue={formData.doc_per}
                           onChange={handleChange}
                           disabled
                         />
                       ) : (
-                        <div className="propietarioValorProps">{userData.doc_usu}</div>
+                        <div className="propietarioValorProps">{userData.doc_per}</div>
                       )}
                     </div>
 
@@ -251,11 +251,11 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           type="text"
                           className="inputEditProps"
                           name="nombres"
-                          defaultValue={formData.nom_usu}
+                          defaultValue={formData.nom_per}
                           onChange={handleChange}
                         />
                       ) : (
-                        <div className="propietarioValorProps">{userData.nom_usu}</div>
+                        <div className="propietarioValorProps">{userData.nom_per}</div>
                       )}
                     </div>
 
@@ -267,11 +267,11 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           type="text"
                           className="inputEditProps"
                           name="apellidos"
-                          defaultValue={formData.ape_usu}
+                          defaultValue={formData.ape_per}
                           onChange={handleChange}
                         />
                       ) : (
-                        <div className="propietarioValorProps">{userData.ape_usu}</div>
+                        <div className="propietarioValorProps">{userData.ape_per}</div>
                       )}
                     </div>
 
@@ -283,12 +283,12 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           type="date"
                           className="inputEditProps"
                           name="fechaNacimiento"
-                          defaultValue={formatDate(formData.fec_nac_usu)}
+                          defaultValue={formatDate(formData.fec_nac_per)}
                           onChange={handleChange}
                           disabled
                         />
                       ) : (
-                        <div className="propietarioValorProps">{formatDate(userData.fec_nac_usu)}</div>
+                        <div className="propietarioValorProps">{formatDate(userData.fec_nac_per)}</div>
                       )}
                     </div>
 
@@ -296,13 +296,13 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                     <div className="propietarioCampoProps">
                       <div className="propietarioEtiquetaProps">Género</div>
                       {isEditing ? (
-                        <select className="inputEditProps" name="genero" defaultValue={formData.gen_usu} onChange={handleChange}>
+                        <select className="inputEditProps" name="genero" defaultValue={formData.gen_per} onChange={handleChange}>
                           <option value="Masculino">Masculino</option>
                           <option value="Femenino">Femenino</option>
                           <option value="Otro">Otro</option>
                         </select>
                       ) : (
-                        <div className="propietarioValorProps">{userData.gen_usu || "no-registrado"}</div>
+                        <div className="propietarioValorProps">{userData.gen_per || "no-registrado"}</div>
                       )}
                     </div>
 
@@ -314,11 +314,11 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           type="text"
                           className="inputEditProps"
                           name="celular"
-                          defaultValue={formData.cel_usu}
+                          defaultValue={formData.cel_per}
                           onChange={handleChange}
                         />
                       ) : (
-                        <div className="propietarioValorProps">{userData.cel_usu}</div>
+                        <div className="propietarioValorProps">{userData.cel_per}</div>
                       )}
                     </div>
 
@@ -330,11 +330,11 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           type="text"
                           className="inputEditProps"
                           name="direccion"
-                          defaultValue={formData.dir_usu}
+                          defaultValue={formData.dir_per}
                           onChange={handleChange}
                         />
                       ) : (
-                        <div className="propietarioValorProps">{userData.dir_usu}</div>
+                        <div className="propietarioValorProps">{userData.dir_per}</div>
                       )}
                     </div>
 
@@ -346,11 +346,11 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                           type="email"
                           className="inputEditProps"
                           name="correo"
-                          defaultValue={formData.email_usu}
+                          defaultValue={formData.email_per}
                           onChange={handleChange}
                         />
                       ) : (
-                        <div className="propietarioValorProps">{userData.email_usu}</div>
+                        <div className="propietarioValorProps">{userData.email_per}</div>
                       )}
                     </div>
                   </div>
@@ -363,7 +363,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
             <div className="mascotasContenedorProps">
               <div className="mascotasGrillaProps">
                 {petsData.map((mascota) => (
-                  <div key={mascota.doc_usu} className="mascotaTarjetaProps">
+                  <div key={mascota.doc_per} className="mascotaTarjetaProps">
                     <div className="mascotaImagenProps">
                       <img src={mascota.fot_mas || "/placeholder.svg"} alt={mascota.nom_mas} />
                     </div>
@@ -385,7 +385,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
                         </div>
                       </div>
                       <div className="mascotaAccionesProps">
-                        <button className="botonHistorialProps" onClick={() => verHistorial(mascota.doc_usu)}>
+                        <button className="botonHistorialProps" onClick={() => verHistorial(mascota.doc_per)}>
                           <Calendar size={16} />
                           <span>Ver historial</span>
                         </button>

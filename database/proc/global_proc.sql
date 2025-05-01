@@ -22,23 +22,23 @@ CREATE PROCEDURE pets_heaven.Login(
 )
 BEGIN
     SELECT
-        u.nom_usu,
-        u.ape_usu,
-        u.doc_usu,
-        u.cont_usu,
+        u.nom_per,
+        u.ape_per,
+        u.doc_per,
+        u.cont_per,
         GROUP_CONCAT(r.nom_rol SEPARATOR ', ') AS roles
     FROM
-        usuarios u
+        personas u
     JOIN
-        otorgar_roles otr ON otr.id_usu = u.id_usu
+        otorgar_roles otr ON otr.id_per = u.id_per
     JOIN
         roles r ON otr.id_rol = r.id_rol
     WHERE
         u.estado = 1
         AND (
-            u.doc_usu = p_firstData OR 
-            u.email_usu = p_firstData
+            u.doc_per = p_firstData OR 
+            u.email_per = p_firstData
         )
-    GROUP BY u.nom_usu
+    GROUP BY u.nom_per
     LIMIT 40;
 END //

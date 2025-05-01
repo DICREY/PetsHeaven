@@ -22,8 +22,6 @@ class Pet {
                 data.fot_mas
             ]
 
-            console.log(pet)
-
             // conect to database
             let database = new DataBase()
             database.conect()
@@ -191,6 +189,7 @@ class Pet {
             database.conection.end()
         })
     }
+    
     // function to find all Medical History by Pet
     async findHistoryBy(data) {
         return new Promise((res,rej) => {

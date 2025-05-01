@@ -94,7 +94,7 @@ Route.get('/history:by', ValidatorRol("veterinario") ,async (req,res) => {
     const by = req.params.by
 
     // Verify if exist
-    const find = pet.findAllBy(toString(body.user))
+    const find = pet.findAllBy(toString(by.user))
     if (!find.result) res.status(404).json({message: "Mascota no encontrada"})
 
     try {

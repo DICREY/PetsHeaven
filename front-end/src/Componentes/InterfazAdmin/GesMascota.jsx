@@ -47,7 +47,7 @@ export function GesMascota({ URL = "" }) {
             Especie: 'esp_mas',
             Raza: 'raz_mas',
             Edad: 'fec_nac_mas',
-            Propietario: 'nom_usu',
+            Propietario: 'nom_per',
             Estado: 'estado',
           })
           setLoading(false)
