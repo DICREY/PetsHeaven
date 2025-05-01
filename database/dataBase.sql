@@ -79,12 +79,6 @@ CREATE TABLE pets_heaven.mascotas(
     fec_cre_mas DATE DEFAULT(NOW())
 );
 
-CREATE TABLE pets_heaven.consultas(
-    id_con INT AUTO_INCREMENT PRIMARY KEY,
-    pro_mas_con INT NOT NULL,INDEX(pro_mas_con),FOREIGN KEY (pro_mas_con) REFERENCES personas(id_per) ON DELETE CASCADE ON UPDATE CASCADE,
-    vet_con INT NOT NULL,INDEX(vet_con),FOREIGN KEY(vet_con) REFERENCES veterinarios(id_vet) ON DELETE CASCADE ON UPDATE CASCADE,
-    mas_con INT NOT NULL,INDEX(mas_con),FOREIGN KEY(mas_con) REFERENCES mascotas(id_mas) ON DELETE CASCADE ON UPDATE CASCADE
-);
 
 CREATE TABLE pets_heaven.categorias_ser(
     id_cat INT AUTO_INCREMENT PRIMARY KEY,
@@ -100,19 +94,6 @@ CREATE TABLE pets_heaven.servicios(
     tec_des_ser TEXT NOT NULL,  # Descripción tecnica
     img_ser TEXT NOT NULL,
     estado BOOLEAN DEFAULT(1)
-);
-
-CREATE TABLE pets_heaven.citas(
-    id_cit INT AUTO_INCREMENT,
-    fec_reg_cit DATE NOT NULL,
-    fec_cit DATE NOT NULL,
-    hor_ini_cit TIME NOT NULL,
-    hor_fin_cit TIME NOT NULL,
-    ser_cit INT NOT NULL,INDEX(ser_cit),FOREIGN KEY(ser_cit) REFERENCES servicios(id_ser) ON DELETE CASCADE ON UPDATE CASCADE,
-    vet_cit INT NOT NULL,INDEX(vet_cit),FOREIGN KEY(vet_cit) REFERENCES veterinarios(id_vet) ON DELETE CASCADE ON UPDATE CASCADE,
-    mas_cit INT NOT NULL,INDEX(mas_cit),FOREIGN KEY(mas_cit) REFERENCES mascotas(id_mas) ON DELETE CASCADE ON UPDATE CASCADE,
-    estado ENUM("PENDIENTE","EN-ESPERA","CANCELADO","RECHAZADO","REALIZADO") NOT NULL,
-    PRIMARY KEY (id_cit,mas_cit)
 );
 
 CREATE TABLE pets_heaven.cirugias(
@@ -138,4 +119,24 @@ CREATE TABLE pets_heaven.vacunas (
     fec_ven_vac DATE NOT NULL,
     pre_vac DECIMAL(10,2) NOT NULL,
     ser_vac INT NOT NULL,INDEX(ser_vac), FOREIGN KEY(ser_vac) REFERENCES servicios(id_ser) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE pets_heaven.consultas(
+    id_con INT AUTO_INCREMENT PRIMARY KEY,
+    pro_mas_con INT NOT NULL,INDEX(pro_mas_con),FOREIGN KEY (pro_mas_con) REFERENCES personas(id_per) ON DELETE CASCADE ON UPDATE CASCADE,
+    vet_con INT NOT NULL,INDEX(vet_con),FOREIGN KEY(vet_con) REFERENCES veterinarios(id_vet) ON DELETE CASCADE ON UPDATE CASCADE,
+    mas_con INT NOT NULL,INDEX(mas_con),FOREIGN KEY(mas_con) REFERENCES mascotas(id_mas) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE pets_heaven.citas(
+    id_cit INT AUTO_INCREMENT,
+    fec_reg_cit DATE NOT NULL,
+    fec_cit DATE NOT NULL,
+    hor_ini_cit TIME NOT NULL,
+    hor_fin_cit TIME NOT NULL,
+    ser_cit INT NOT NULL,INDEX(ser_cit),FOREIGN KEY(ser_cit) REFERENCES servicios(id_ser) ON DELETE CASCADE ON UPDATE CASCADE,
+    vet_cit INT NOT NULL,INDEX(vet_cit),FOREIGN KEY(vet_cit) REFERENCES veterinarios(id_vet) ON DELETE CASCADE ON UPDATE CASCADE,
+    mas_cit INT NOT NULL,INDEX(mas_cit),FOREIGN KEY(mas_cit) REFERENCES mascotas(id_mas) ON DELETE CASCADE ON UPDATE CASCADE,
+    estado ENUM("PENDIENTE","EN-ESPERA","CANCELADO","RECHAZADO","REALIZADO") NOT NULL,
+    PRIMARY KEY (id_cit,mas_cit)
 );

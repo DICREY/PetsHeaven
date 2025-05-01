@@ -224,28 +224,77 @@ BEGIN
         );
 END //
 
+
+/* Historys */
 CREATE PROCEDURE pets_heaven.SearchHistoryBy(
-    IN p_pet_id INT
+    IN p_by VARCHAR(100),
+    IN p_by_two VARCHAR(100)
 )
 BEGIN
     SELECT
-        hm.id_his AS historial_id,
-        hm.fec_his AS fecha_historial,
-        hm.tra_his AS tratamiento,
-        hm.des_his AS descripcion,
-        v.id_vet AS id_veterinario,
-        u.nom_per AS nombre_veterinario,
-        u.ape_per AS apellido_veterinario,
-        v.especialidad AS especialidad_veterinario,
-        v.fot_vet AS foto_veterinario
+        m.nom_mas,
+        m.esp_mas,
+        m.col_mas,
+        m.raz_mas,
+        m.ali_mas,
+        m.fec_nac_mas,
+        m.pes_mas,
+        m.gen_mas,
+        m.est_rep_mas,
+        m.fot_mas,
+        m.fec_cre_mas,
+        p.nom_per,
+        p.ape_per,
+        p.doc_per,
+        p.cel_per,
+        p.email_per,
+        p.gen_per,
+        p.estado
+        (
+            SELECT GROUP_CONCAT(
+                CONCAT_WS(',',
+                    c.mas_con,
+                    c.pro_mas_con
+                ) 
+                SEPARATOR '; '
+            ) 
+            FROM consultas c
+            WHERE 
+                c.mas_con = m.id_mas
+        ) AS consultas,
+        (
+            SELECT GROUP_CONCAT(
+                CONCAT_WS(',',
+                    ct.fec_reg_cit,
+                    ct.fec_cit,
+                    ct.hor_ini_cit,
+                    ct.hor_fin_cit,
+                    ct.ser_cit,
+                    ct.vet_cit,
+                    ct.mas_cit,
+                    ct.estado
+                ) 
+                SEPARATOR '; '
+            ) 
+            FROM citas ct 
+            WHERE 
+                ct.mas_cit = m.id_mas
+        ) AS citas
     FROM 
-        historiales_medicos hm
+        mascotas m
     JOIN
-        mascotas m ON hm.id_mas_his = m.id_mas
-    JOIN
-        veterinarios v ON hm.id_vet_his = v.id_vet
-    JOIN
-        personas u ON v.id_vet = u.id_per
+        personas p 
+        ON p.id_per = m.id_pro_mas
+        AND p.estado = 1
+        AND (
+            p.email_per LIKE p_by_two
+            OR p.doc_per LIKE p_by_two
+        )
     WHERE 
-        hm.id_mas_his = p_pet_id;
+        m.estado = 1
+        AND m.nom_mas LIKE p_by
+    ORDER BY m.nom_mas
+    LIMIT 50;
 END //
+
+CALL pets_heaven.SearchHistoryBy('luna','87654321');
