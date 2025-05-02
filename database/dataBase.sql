@@ -1,4 +1,4 @@
--- Active: 1745808709557@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 DROP DATABASE IF EXISTS pets_heaven;
 CREATE DATABASE IF NOT EXISTS pets_heaven;
 
@@ -130,7 +130,7 @@ CREATE TABLE pets_heaven.consultas(
 
 CREATE TABLE pets_heaven.citas(
     id_cit INT AUTO_INCREMENT,
-    fec_reg_cit DATE NOT NULL,
+    fec_reg_cit DATE DEFAULT(NOW()),
     fec_cit DATE NOT NULL,
     hor_ini_cit TIME NOT NULL,
     hor_fin_cit TIME NOT NULL,

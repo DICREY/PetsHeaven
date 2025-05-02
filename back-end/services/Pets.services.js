@@ -191,17 +191,57 @@ class Pet {
     }
     
     // function to find all Medical History by Pet
-    async findHistoryBy(data) {
+    async findHistoryBy(firstData = "",secondData = "") {
         return new Promise((res,rej) => {
             // vars
-            const by = data.replace(":","").replace(" ","")
-            const proc = "CALL SearchHistoryBy(?);"
+            const by = firstData.replace(":","").replace(" ","")
+            const byTwo = secondData.replace(":","").replace(" ","")
+            const proc = "CALL SearchHistoryBy(?,?);"
+
+            // Functions
+            const format = (datas) => {
+                const results = datas.map(data => {
+                    const consultList = data.consultas.split(";").filter(Boolean)
+                    .map(item => {
+                        const consult = item.split("---")
+                        return {
+                            pro_mas_con: consult[0]
+                        }
+                    })
+                    const appoimentList = data.citas.split(";").filter(Boolean)
+                    .map(item => {
+                        const appoiment = item.split("---")
+                        return {
+                            fec_reg_cit: appoiment[0],
+                            fec_cit: appoiment[1],
+                            hor_ini_cit: appoiment[2],
+                            hor_fin_cit: appoiment[3],    
+                            nom_ser: appoiment[4],
+                            pre_ser: appoiment[5],
+                            des_ser: appoiment[6],
+                            tec_des_ser: appoiment[7],
+                            nom_per: appoiment[8],
+                            ape_per: appoiment[9],
+                            especialidad: appoiment[10],
+                            nom_cat: appoiment[11],
+                            img_ser: appoiment[12],
+                            fot_vet: appoiment[13]
+                        }
+                    })
+                    return {
+                        ...data,
+                        consultas: consultList,
+                        citas: appoimentList
+                    }
+                })
+                return results
+            }
 
             // conect to database
             let database = new DataBase()
             database.conect()
             
-            if (database) database.conection.query(proc,by,(err,result) => {
+            if (database) database.conection.query(proc,[by,byTwo],(err,result) => {
                 if(err) rej({ message: err })
                 if(!result[0][0]) rej({
                     message: "Not found",
@@ -210,7 +250,7 @@ class Pet {
                 setTimeout(() => {
                     res({
                         message: "History found",
-                        result: result
+                        result: format(result[0])
                     })
                 },1000)
             })

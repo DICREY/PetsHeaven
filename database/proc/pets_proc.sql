@@ -1,4 +1,4 @@
--- Active: 1745808709557@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.RegistPets(
     IN p_nom_mas VARCHAR(100),
     IN p_esp_mas VARCHAR(100),
@@ -249,37 +249,63 @@ BEGIN
         p.cel_per,
         p.email_per,
         p.gen_per,
-        p.estado
+        p.estado,
         (
             SELECT GROUP_CONCAT(
-                CONCAT_WS(',',
-                    c.mas_con,
-                    c.pro_mas_con
+                CONCAT_WS('---',
+                    c.pro_mas_con,
+                    p.nom_per,
+                    p.ape_per,
+                    v.especialidad,
+                    cv.nom_cat,
+                    v.fot_vet
                 ) 
                 SEPARATOR '; '
             ) 
-            FROM consultas c
+            FROM 
+                consultas c
+            JOIN
+                personas p ON p.id_per = ct.vet_cit
+            JOIN
+                veterinarios v ON v.id_vet = ct.vet_cit
+            JOIN
+                categorias_veterinario cv ON v.cat_vet = cv.id_cat
             WHERE 
                 c.mas_con = m.id_mas
         ) AS consultas,
         (
             SELECT GROUP_CONCAT(
-                CONCAT_WS(',',
+                CONCAT_WS('---',
                     ct.fec_reg_cit,
                     ct.fec_cit,
                     ct.hor_ini_cit,
                     ct.hor_fin_cit,
-                    ct.ser_cit,
-                    ct.vet_cit,
-                    ct.mas_cit,
-                    ct.estado
+                    s.nom_ser,
+                    s.pre_ser,
+                    s.des_ser,
+                    s.tec_des_ser,
+                    p.nom_per,
+                    p.ape_per,
+                    v.especialidad,
+                    cv.nom_cat,
+                    s.img_ser,
+                    v.fot_vet
                 ) 
                 SEPARATOR '; '
             ) 
-            FROM citas ct 
+            FROM 
+                citas ct
+            JOIN
+                servicios s ON s.id_ser = ct.ser_cit
+            JOIN
+                personas p ON p.id_per = ct.vet_cit
+            JOIN
+                veterinarios v ON v.id_vet = ct.vet_cit
+            JOIN
+                categorias_veterinario cv ON v.cat_vet = cv.id_cat
             WHERE 
-                ct.mas_cit = m.id_mas
-        ) AS citas
+                ct.estado != "CANCELADO"
+        ) AS citas 
     FROM 
         mascotas m
     JOIN
@@ -298,3 +324,4 @@ BEGIN
 END //
 
 CALL pets_heaven.SearchHistoryBy('luna','87654321');
+DROP PROCEDURE SearchHistoryBy;

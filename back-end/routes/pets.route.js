@@ -48,19 +48,13 @@ Route.post('/register', ValidatorRol("veterinario"), async (req,res) => {
     const { body } = req
 
     // Verify if exist
-    // const find = pet.findAllBy(toString(body.name))
-    // const findPet = await find.result[0][0]
-
-    // if (findPet) {
-    //     return res.status(404).json({message: "La mascota ya existe"})
-    // }
-    console.log(body)
+    const find = pet.findAllBy(toString(body.name))
+    const findPet = await find.result[0][0]
+    if (findPet) return res.status(404).json({message: "La mascota ya existe"})
 
     try{
         const created = await pet.create(body)
-        if (created.create) {
-            return res.status(201).json(created)
-        }
+        if (created.create) return res.status(201).json(created)
         res.status(500).json({message: "Error interno"})
     } catch (err) {
         if(err.status) return res.status(err.status).json(err.message)
@@ -76,9 +70,7 @@ Route.put('/modify', ValidatorRol("usuario"), async (req,res) => {
     const find = await pet.findAllBy(body.doc_usu,body.nom_mas)
     const findOne = await find.result[0][0]
 
-    if (!findOne) {
-        return res.status(404).json({message: "Mascota no encontrada"})
-    }
+    if (!findOne) return res.status(404).json({message: "Mascota no encontrada"})
 
     try {
         const petMod = await pet.modify(body)
@@ -89,17 +81,18 @@ Route.put('/modify', ValidatorRol("usuario"), async (req,res) => {
     }
 })
 
-Route.get('/history:by', ValidatorRol("veterinario") ,async (req,res) => {
+Route.get('/history', ValidatorRol("veterinario") ,async (req,res) => {
     // Vars 
-    const by = req.params.by
+    const body = req.body
 
     // Verify if exist
-    const find = pet.findAllBy(toString(by.user))
-    if (!find.result) res.status(404).json({message: "Mascota no encontrada"})
+    const findPet = await pet.findAllBy(body.firstData, body.secondData)
+    if (!findPet.result) return res.status(404).json({message: "Mascota no encontrada"})
 
     try {
-        const pets = await pet.findHistoryBy(toString(by))
-        res.status(200).json(pets)
+        const pets = await pet.findHistoryBy(body.firstData, body.secondData)
+        if(pets) return res.status(200).json(pets)
+        return res.status(404).json({message: "Historial no encontrado"})
     } catch (err) {
         if(err.status) return res.status(err.status).json(err.message)
         res.status(500).json({ message: err })

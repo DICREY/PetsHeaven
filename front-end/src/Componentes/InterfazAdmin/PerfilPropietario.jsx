@@ -5,6 +5,7 @@ import { User, PawPrint, ArrowLeft, Trash2, Edit, Save, X, Calendar } from "luci
 // Imports 
 import {NavBarAdmin} from '../BarrasNavegacion/NavBarAdmi'
 import { loadingAlert, getRoles, formatDate, getAge, errorStatusHandler } from '../Varios/Util'
+import { DescriptionPeople } from '../Peoples/DescriptionPeople'
 import { DeleteData, ModifyData } from '../Varios/Requests'
 import "../../../public/styles/InterfazAdmin/PerfilPropietario.css"
 
@@ -18,10 +19,22 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
   const [userData,setUserData] = useState({})
   const [modPro,setModPro] = useState({})
 
-  // Vars
+  // Vars 
   const mainUrl = `${URL}/owner`
   const secondUrl = `${URL}/user`
   const navigate = useNavigate()
+  const headers = {
+    Nombres: 'nom_per',
+    Apellidos: 'ape_per',
+    'Fecha Nacimiento': 'fec_nac_per',
+    'T. Doc': 'tip_doc_per',
+    Documento: 'doc_per',
+    Direccion: 'dir_per',
+    Celular: 'cel_per',
+    'Celular 2': 'cel2_per',
+    Correo: 'email_per',
+    Genero: 'gen_per'
+  }
 
   // Functions 
   const verHistorial = (id) => {
@@ -65,6 +78,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target
+    console.log(name, value)
     setModPro((prev) => ({
       ...prev,
       [name]: value,
@@ -111,29 +125,30 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
     }
   }
 
+  // Effects
+  useEffect(() => {
+    setModPro({
+      nombres: userData.Nombres,
+      apellidos: userData.Apellidos,
+      fechaNacimiento: formatDate(userData['Fecha Nacimiento']),
+      tipoDocumento: userData['T. Doc'],
+      numeroDocumento: userData.Documento,
+      direccion: userData.Direccion,
+      celular: userData.Celular,
+      celular2: userData['Celular 2'],
+      email: userData.Correo,
+      password: userData.cont_per,
+      genero: userData.Genero,
+    })
+    setPetsData(userData.mascotas)
+  },[petsData])
+
   useEffect(() => {
     if (userSelect) {
       setUserData(userSelect)
       setFormData(userSelect)
     } else navigate("/admin/consultorio")
   },[])
-
-  useEffect(() => {
-    setModPro({
-      nombres: userData.nom_per,
-      apellidos: userData.ape_per,
-      fechaNacimiento: formatDate(userData.fec_nac_per),
-      tipoDocumento: userData.tip_doc_per,
-      numeroDocumento: userData.doc_per,
-      direccion: userData.dir_per,
-      celular: userData.cel_per,
-      celular2: userData.cel2_per,
-      email: userData.email_per,
-      password: userData.cont_per,
-      genero: userData.gen_per,
-    })
-    setPetsData(userData.mascotas)
-  },[petsData])
 
   return (
     <main className="contenedorpageProps">
@@ -200,168 +215,13 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
 
         <div className="contenidoProps">
           {activeTab === "propietario" && (
-            <div className="propietarioSeccionProps">
-              <h2 className="seccionTituloProps">Información personal:</h2>
-
-              <div className="propietarioInfoProps">
-                <div className="propietarioFotoInfoProps">
-                  <div className="propietarioFotoProps">
-                    <User size={100} />
-                  </div>
-                  <div className="propietarioDatosProps">
-                    {/* Tipo de Documento */}
-                    <div className="propietarioCampoProps">
-                      <div className="propietarioEtiquetaProps">Tipo de Documento</div>
-                      {isEditing ? (
-                        <select
-                          className="inputEditProps"
-                          name="tipoDocumento"
-                          defaultValue={formData.tip_doc_per}
-                          onChange={handleChange}
-                          
-                        >
-                          <option disabled>Seleccione tipo</option>
-                          <option value="CC">Cédula de Ciudadanía</option>
-                          <option value="TI">Tarjeta de Identidad</option>
-                          <option value="Pasaporte">Pasaporte</option>
-                          <option value="CE">Cédula de Extranjería</option>
-                        </select>
-                      ) : (
-                        <div className="propietarioValorProps">{userData.tip_doc_per}</div>
-                      )}
-                    </div>
-
-                    {/* Número de Documento */}
-                    <div className="propietarioCampoProps">
-                      <div className="propietarioEtiquetaProps">Número de Documento</div>
-                      {isEditing ? (
-                        <input
-                          type="text"
-                          className="inputEditProps"
-                          name="numeroDocumento"
-                          defaultValue={formData.doc_per}
-                          onChange={handleChange}
-                          disabled
-                        />
-                      ) : (
-                        <div className="propietarioValorProps">{userData.doc_per}</div>
-                      )}
-                    </div>
-
-                    {/* Nombres */}
-                    <div className="propietarioCampoProps">
-                      <div className="propietarioEtiquetaProps">Nombres</div>
-                      {isEditing ? (
-                        <input
-                          type="text"
-                          className="inputEditProps"
-                          name="nombres"
-                          defaultValue={formData.nom_per}
-                          onChange={handleChange}
-                        />
-                      ) : (
-                        <div className="propietarioValorProps">{userData.nom_per}</div>
-                      )}
-                    </div>
-
-                    {/* Apellidos */}
-                    <div className="propietarioCampoProps">
-                      <div className="propietarioEtiquetaProps">Apellidos</div>
-                      {isEditing ? (
-                        <input
-                          type="text"
-                          className="inputEditProps"
-                          name="apellidos"
-                          defaultValue={formData.ape_per}
-                          onChange={handleChange}
-                        />
-                      ) : (
-                        <div className="propietarioValorProps">{userData.ape_per}</div>
-                      )}
-                    </div>
-
-                    {/* Fecha de Nacimiento */}
-                    <div className="propietarioCampoProps">
-                      <div className="propietarioEtiquetaProps">Fecha de Nacimiento</div>
-                      {isEditing ? (
-                        <input
-                          type="date"
-                          className="inputEditProps"
-                          name="fechaNacimiento"
-                          defaultValue={formatDate(formData.fec_nac_per)}
-                          onChange={handleChange}
-                          disabled
-                        />
-                      ) : (
-                        <div className="propietarioValorProps">{formatDate(userData.fec_nac_per)}</div>
-                      )}
-                    </div>
-
-                    {/* Género */}
-                    <div className="propietarioCampoProps">
-                      <div className="propietarioEtiquetaProps">Género</div>
-                      {isEditing ? (
-                        <select className="inputEditProps" name="genero" defaultValue={formData.gen_per} onChange={handleChange}>
-                          <option value="Masculino">Masculino</option>
-                          <option value="Femenino">Femenino</option>
-                          <option value="Otro">Otro</option>
-                        </select>
-                      ) : (
-                        <div className="propietarioValorProps">{userData.gen_per || "no-registrado"}</div>
-                      )}
-                    </div>
-
-                    {/* Teléfonos */}
-                    <div className="propietarioCampoProps">
-                      <div className="propietarioEtiquetaProps">Celular</div>
-                      {isEditing ? (
-                        <input
-                          type="text"
-                          className="inputEditProps"
-                          name="celular"
-                          defaultValue={formData.cel_per}
-                          onChange={handleChange}
-                        />
-                      ) : (
-                        <div className="propietarioValorProps">{userData.cel_per}</div>
-                      )}
-                    </div>
-
-                    {/* Dirección */}
-                    <div className="propietarioCampoProps">
-                      <div className="propietarioEtiquetaProps">Dirección</div>
-                      {isEditing ? (
-                        <input
-                          type="text"
-                          className="inputEditProps"
-                          name="direccion"
-                          defaultValue={formData.dir_per}
-                          onChange={handleChange}
-                        />
-                      ) : (
-                        <div className="propietarioValorProps">{userData.dir_per}</div>
-                      )}
-                    </div>
-
-                    {/* Correo */}
-                    <div className="propietarioCampoProps">
-                      <div className="propietarioEtiquetaProps">Correo</div>
-                      {isEditing ? (
-                        <input
-                          type="email"
-                          className="inputEditProps"
-                          name="email"
-                          defaultValue={formData.email_per}
-                          onChange={handleChange}
-                        />
-                      ) : (
-                        <div className="propietarioValorProps">{userData.email_per}</div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <DescriptionPeople 
+              handleChange={handleChange} 
+              headers={headers}
+              datas={userSelect}
+              navigate={navigate}
+              edit={isEditing}
+            />
           )}
 
           {activeTab === "mascotas" && (

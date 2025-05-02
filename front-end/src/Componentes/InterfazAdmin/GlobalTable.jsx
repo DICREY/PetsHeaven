@@ -44,8 +44,7 @@ export class GlobalTable extends Component {
       const { clickCount } = this.state
       this.setState( () => ({
         clickCount: clickCount + 1
-      }))
-
+      })) 
       
       setTimeout(() => {
         if (clickCount === 1) {
