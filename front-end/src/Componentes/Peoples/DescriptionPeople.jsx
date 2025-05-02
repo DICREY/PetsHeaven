@@ -7,20 +7,24 @@ import { formatDate } from '../Varios/Util'
 export class DescriptionPeople extends React.Component {
   constructor(props) {
     super(props)
+
   }
 
   // Functions
   renderCell = (item, header) => {
+    const { disabled } = this.props
+
+    const deactive = disabled.some(item => item === header)
     // Lógica para tipos de datos comunes
     if (header.includes("fec")) return {
       value: formatDate(item),
       type: "date",
-      active: true
+      active: deactive? false : true
     }
     return {
       value: item,
       type: "text",
-      active: true
+      active: deactive? false : true
     }
   }
 
@@ -35,8 +39,6 @@ export class DescriptionPeople extends React.Component {
           label: key,
           ...item}
     })
-
-    
 
     return (
       <div className="propietarioSeccionProps">
@@ -54,10 +56,14 @@ export class DescriptionPeople extends React.Component {
                       <div className="propietarioEtiquetaProps">{header.label}</div>
                       <input
                         name={header.label}
-                        type="text"
+                        type={header.type}
                         className="propietarioCampoProps"
-                        defaultValue={header.value}
+                        max={header.type === "date" ? "2006-01-01" : 100}
+                        min={header.type === "date" ? "1900-01-01" : 0}
+                        placeholder={header.label}
                         onChange={handleChange}
+                        defaultValue={header.value}
+                        disabled={!header.active}
                       />
                     </div>
                   ): (

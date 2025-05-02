@@ -78,7 +78,6 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    console.log(name, value)
     setModPro((prev) => ({
       ...prev,
       [name]: value,
@@ -144,10 +143,9 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
   },[petsData])
 
   useEffect(() => {
-    if (userSelect) {
-      setUserData(userSelect)
-      setFormData(userSelect)
-    } else navigate("/admin/consultorio")
+    if (!userSelect) navigate("/admin/consultorio")
+    setUserData(userSelect)
+    setFormData(userSelect)
   },[])
 
   return (
@@ -156,7 +154,7 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
       <div className="principalpageProp">
         <div className="contenedorProps">
         
-        <div className="cabeceraProps">
+        <header className="cabeceraProps">
           <h1 className="tituloProps">
             Configuración de usuario <span className="subtituloProps"> | Creación</span>
           </h1>
@@ -194,9 +192,9 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
               </>
             )}
           </div>
-        </div>
+        </header>
 
-        <div className="pestanasProps">
+        <nav className="pestanasProps">
           <button
             className={`pestanaProps ${activeTab === "propietario" ? "activaProps" : ""}`}
             onClick={() => handleTabChange("propietario")}
@@ -211,21 +209,22 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
             <PawPrint size={18} />
             <span>Mascotas</span>
           </button>
-        </div>
+        </nav>
 
-        <div className="contenidoProps">
+        <section className="contenidoProps">
           {activeTab === "propietario" && (
             <DescriptionPeople 
               handleChange={handleChange} 
               headers={headers}
               datas={userSelect}
               navigate={navigate}
-              edit={isEditing}
+              isEditing={isEditing}
+              disabled={["doc_per", "tip_doc_per"]}
             />
           )}
 
           {activeTab === "mascotas" && (
-            <div className="mascotasContenedorProps">
+            <section className="mascotasContenedorProps">
               <div className="mascotasGrillaProps">
                 {petsData.map((mascota) => (
                   <div key={mascota.doc_per} className="mascotaTarjetaProps">
@@ -261,9 +260,9 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
               </div>
 
               {petsData.length === 0 && <div className="sinResultadosProps">No hay mascotas vinculadas</div>}
-            </div>
+            </section>
           )}
-        </div>
+        </section>
       </div>
       </div>      
     
