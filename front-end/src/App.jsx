@@ -20,7 +20,7 @@ import { ErrorInternalServer } from "./Componentes/Errores/ErrorInternalServer"
 import { getRoles } from './Componentes/Varios/Util'
 import VeterinariaPage from "./Componentes/VeterinariaPage"
 import { GesAgendaGeneral } from "./Componentes/InterfazAdmin/GesAgendaGeneral"
-import { PerfilPropietario } from "./Componentes/InterfazAdmin/PerfilPropietario"
+import { PerfilPropietario } from "./Componentes/Peoples/PerfilPropietario"
 import { MainAdmin } from './Componentes/InterfazAdmin/MainAdmin'
 
 //import Crud personal
@@ -31,6 +31,7 @@ import { ConfiguracionUsuarioCrud } from "./Componentes/InterfazAdmin/CrudPerson
 // Main Component
 export default function App () {
   const [userSelect,setUserSelect] = useState()
+  const [owner,setOwner] = useState(false)
   const URL = "http://localhost:3000"
   
   // Route types
@@ -77,10 +78,10 @@ export default function App () {
         {/* Admin routes  */}
         <Route path="/admin" element={<MainAdmin />} >
           <Route path="consultorio" element={
-            <AdminRoute children={<HomeAdmin setUserSelect={setUserSelect} URL={URL}/>} />}>  
+            <AdminRoute children={<HomeAdmin setOwner={setOwner} setUserSelect={setUserSelect} URL={URL}/>} />}>  
           </Route>
           <Route path="gestion/usuarios" element={
-            <AdminRoute children={<GesUsuario URL={URL} />} />} >
+            <AdminRoute children={<GesUsuario setUserSelect={setUserSelect} URL={URL} />} />} >
           </Route>
           <Route path="usuario/registro" element={
             <AdminRoute children={<ConfiguracionUsuario URL={URL} />} />} >
@@ -89,12 +90,12 @@ export default function App () {
             <AdminRoute children={<GesAgendaGeneral URL={URL} />} />} >
           </Route>
           <Route path="propietario/datos" element={
-            <AdminRoute children={<PerfilPropietario userSelect={userSelect} URL={URL} />} />} >
+            <AdminRoute children={<PerfilPropietario owner={owner} userSelect={userSelect} URL={URL} />} />} >
           </Route>
 
-          <Route path="actualizar/datos personal" element={
-            <AdminRoute children={<ConfiguracionUsuarioCrud userSelect={userSelect} URL={URL} />} />} >
-          </Route>
+        </Route>
+        <Route path="actualizar/datos personal" element={
+          <AdminRoute children={<ConfiguracionUsuarioCrud userSelect={userSelect} URL={URL} />} />} >
         </Route>
         
 

@@ -118,8 +118,19 @@ export const errorStatusHandler = (errStatus) => {
       message = 'Ya existe en el sistema'
       break
 
+    case 400:
+      message = 'Contenido invalido'
+      break
+
     case 401:
       message = 'Usuario o contraseña incorrectos'
+      break
+
+    case 403:
+      message = 'Sesion expirada'
+      setTimeout(() => {
+        Logout()
+      }, 2000)
       break
       
     case 404:
@@ -128,6 +139,14 @@ export const errorStatusHandler = (errStatus) => {
 
     case 429: 
       message = 'Demasiados intentos espera 5 minutos'
+      break
+
+    case 498: 
+      message = 'Usuario no autorizado'
+      break
+
+    case 500: 
+      message = 'Error en el sistema. Intente nuevamente más tarde'
       break
     
     default:

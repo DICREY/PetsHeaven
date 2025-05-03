@@ -16,11 +16,12 @@ class Owner {
             const proc = "CALL SearchOwners();"
 
             // conect to database
+            this.database = new DataBase()
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,(err,result) => {
                 if(err) rej({ message: err })
-                if(!result[0][0]) rej({
+                if(!result || !result[0][0]) rej({
                     message: "Not found",
                     status: 404
                 })
@@ -46,11 +47,12 @@ class Owner {
             const proc = "CALL SearchOwnersBy(?);"
             
             // conect to database
+            this.database = new DataBase()
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,by,(err,result) => {
                 if(err) rej({ message: err })
-                if(!result[0][0]) rej({
+                if(!result || !result[0][0]) rej({
                     message: "Not found",
                     status: 404
                 })
@@ -75,11 +77,12 @@ class Owner {
             const proc = "CALL SearchOwnerBy(?);"
             
             // conect to database
+            this.database = new DataBase()
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,by,(err,result) => {
                 if(err) rej({ message: err })
-                if(!result[0][0]) rej({
+                if(!result || !result[0][0]) rej({
                     message: "Not found",
                     status: 404
                 })
@@ -104,11 +107,12 @@ class Owner {
             const proc = "CALL SearchOwnersByPet(?);"
 
             // conect to database
+            this.database = new DataBase()
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,by,(err,result) => {
                 if(err) rej({ message: err })
-                if(!result[0][0]) rej({
+                if(!result || !result[0][0]) rej({
                     message: "Not found",
                     status: 404
                 })
@@ -133,6 +137,7 @@ class Owner {
             const procedure = "CALL DeleteOwner(?);"
 
             // conect to database
+            this.database = new DataBase()
             this.database.conect()
 
             // call procedure

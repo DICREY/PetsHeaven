@@ -29,6 +29,7 @@ class Pet {
             ]
 
             // conect to database
+            this.database = new DataBase()
             this.database.conect()
 
             // Query
@@ -51,11 +52,12 @@ class Pet {
             const proc = "CALL SearchPets();"
 
             // conect to database
+            this.database = new DataBase()
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,(err,result) => {
                 if(err) rej({ message: err })
-                if(!result[0][0]) rej({
+                if(!result || !result[0][0]) rej({
                     message: "Not found",
                     status: 404
                 })
@@ -81,11 +83,12 @@ class Pet {
             const proc = "CALL SearchPetsBy(?,?)"
 
             // conect to database
+            this.database = new DataBase()
             this.database.conect()
             
             if (this.database) this.database.conection.query(proc,[by,secondBy],(err,result) => {
                 if(err) rej({ message: err })
-                if(!result[0][0]) rej({
+                if(!result || !result[0][0]) rej({
                     message: "Not found",
                     status: 404
                 })
@@ -109,11 +112,12 @@ class Pet {
             const proc = "CALL SearchPetBy(?)"
 
             // conect to database
+            this.database = new DataBase()
             this.database.conect()
             
             if (this.database) this.database.conection.query(proc,by,(err,result) => {
                 if(err) rej({ message: err })
-                if(!result[0][0]) rej({
+                if(!result || !result[0][0]) rej({
                     message: "Not found",
                     status: 404
                 })
@@ -151,13 +155,15 @@ class Pet {
             console.log(moficatedData)
 
             // conect to database
+            this.database = new DataBase()
             this.database.conect()
 
             // Query 
             if (this.database) this.database.conection.query(proc,moficatedData,err => {
                 if(err) rej(err)
                 setTimeout(() => res({
-                    message: "Pet Modify"
+                    message: "Pet Modify",
+                    modify: true
                 }),1000)
             })
             
@@ -173,6 +179,7 @@ class Pet {
             const proc = "CALL DeletePetBy(?,?)"
 
             // conect to database
+            this.database = new DataBase()
             this.database.conect()
             
             if (this.database) this.database.conection.query(proc,[firstData,secondData],err => {
@@ -238,11 +245,12 @@ class Pet {
             }
 
             // conect to database
+            this.database = new DataBase()
             this.database.conect()
             
             if (this.database) this.database.conection.query(proc,[by,byTwo],(err,result) => {
                 if(err) rej({ message: err })
-                if(!result[0][0]) rej({
+                if(!result || !result[0][0]) rej({
                     message: "Not found",
                     status: 404
                 })

@@ -54,7 +54,7 @@ Route.post('/login',limiterLog, async (req,res) => {
                 roles: user.roles
             },
             secret,
-            { expiresIn: '8h' }
+            { expiresIn: '1h' }
         )
         res.status(200).json({ token: token })
 

@@ -1,10 +1,16 @@
+// Librarys 
 import React from "react"
 import { useRef } from "react"
 import { Pencil, User } from "lucide-react"
 
-
+// Component
 export const InformacionPersonalCrud = ({ userData, isEditing, onChange }) => {
   const profileInputRef = useRef(null)
+  const date = new Date(
+    new Date.getFullYear() - 18,
+    new Date.getMonth(),
+    new Date.getDate()
+  ).toLocaleDateString("en-CA")
 
   const handleProfileImageChange = (e) => {
     const file = e.target.files[0]
@@ -55,7 +61,7 @@ export const InformacionPersonalCrud = ({ userData, isEditing, onChange }) => {
               {isEditing ? (
                 <select
                   className="campo-info-personal"
-                  value={userData.tipoDocumento}
+                  defaultValue={userData.tipoDocumento}
                   onChange={(e) => onChange("tipoDocumento", e.target.value)}
                 >
                   <option value="CC">Cédula de Ciudadanía</option>
@@ -81,7 +87,8 @@ export const InformacionPersonalCrud = ({ userData, isEditing, onChange }) => {
                 <input
                   type="text"
                   className="campo-info-personal"
-                  value={userData.numeroDocumento}
+                  max={10}
+                  defaultValue={userData.numeroDocumento}
                   onChange={(e) => onChange("numeroDocumento", e.target.value)}
                   placeholder="Número de identificación"
                 />
@@ -95,10 +102,12 @@ export const InformacionPersonalCrud = ({ userData, isEditing, onChange }) => {
               {isEditing ? (
                 <input
                   type="text"
+                  max={20}
+                  min={3}
                   className="campo-info-personal"
-                  value={userData.nombres}
-                  onChange={(e) => onChange("nombres", e.target.value)}
+                  defaultValue={userData.nombres}
                   placeholder="Nombres"
+                  onChange={(e) => onChange("nombres", e.target.value)}
                 />
               ) : (
                 <div className="valor-info-personal">{userData.nombres}</div>
@@ -111,7 +120,9 @@ export const InformacionPersonalCrud = ({ userData, isEditing, onChange }) => {
                 <input
                   type="text"
                   className="campo-info-personal"
-                  value={userData.apellidos}
+                  defaultValue={userData.apellidos}
+                  max={20}
+                  min={3}
                   onChange={(e) => onChange("apellidos", e.target.value)}
                   placeholder="Apellidos"
                 />
@@ -125,7 +136,7 @@ export const InformacionPersonalCrud = ({ userData, isEditing, onChange }) => {
               {isEditing ? (
                 <select
                   className="campo-info-personal"
-                  value={userData.genero}
+                  defaultValue={userData.genero}
                   onChange={(e) => onChange("genero", e.target.value)}
                 >
                   <option value="Masculino">Masculino</option>
@@ -143,7 +154,9 @@ export const InformacionPersonalCrud = ({ userData, isEditing, onChange }) => {
                 <input
                   type="date"
                   className="campo-info-personal"
-                  value={userData.fechaNacimiento}
+                  value={date}
+                  max={date}
+                  min="1900-01-01"
                   onChange={(e) => onChange("fechaNacimiento", e.target.value)}
                 />
               ) : (
@@ -157,7 +170,7 @@ export const InformacionPersonalCrud = ({ userData, isEditing, onChange }) => {
                 <input
                   type="text"
                   className="campo-info-personal"
-                  value={userData.celular}
+                  defaultValue={userData.celular}
                   onChange={(e) => onChange("celular", e.target.value)}
                   placeholder="Número de celular"
                 />
@@ -172,7 +185,7 @@ export const InformacionPersonalCrud = ({ userData, isEditing, onChange }) => {
                 <input
                   type="text"
                   className="campo-info-personal"
-                  value={userData.direccion}
+                  defaultValue={userData.direccion}
                   onChange={(e) => onChange("direccion", e.target.value)}
                   placeholder="Dirección"
                 />
@@ -187,7 +200,7 @@ export const InformacionPersonalCrud = ({ userData, isEditing, onChange }) => {
                 <input
                   type="email"
                   className="campo-info-personal"
-                  value={userData.email}
+                  defaultValue={userData.email}
                   onChange={(e) => onChange("email", e.target.value)}
                   placeholder="Email"
                 />

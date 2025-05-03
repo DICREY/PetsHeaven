@@ -7,7 +7,6 @@ import { formatDate } from '../Varios/Util'
 export class DescriptionPeople extends React.Component {
   constructor(props) {
     super(props)
-
   }
 
   // Functions
@@ -30,6 +29,7 @@ export class DescriptionPeople extends React.Component {
 
   render = () => {
     let { datas, isEditing, handleChange, headers } = this.props
+    console.log(datas)
     const headersKeys = Object.keys(headers)
     const headersValues = Object.values(headers)
 
@@ -46,7 +46,12 @@ export class DescriptionPeople extends React.Component {
         <div className="propietarioInfoProps">
           <div className="propietarioFotoInfoProps">
             <div className="propietarioFotoProps">
-              <User size={100} />
+              <img 
+                width={100}
+                height={100}
+                src={datas.fot_vet || '/default-user.jpg'}
+                alt={`${datas.nom_per} ${datas.ape_per}` || "No Registrado"}
+              />
             </div>
             <div className="propietarioDatosProps">
               {

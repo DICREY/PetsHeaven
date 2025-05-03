@@ -16,11 +16,12 @@ class User {
             const proc = "CALL SearchPeoples();"
 
             // conect to database
+            this.database = new DataBase()
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,(err,result) => {
                 if(err) rej({ message: err })
-                if(!result[0][0]) rej({
+                if(!result || !result[0][0]) rej({
                     message: "Not found",
                     status: 404
                 })
@@ -43,11 +44,12 @@ class User {
             const proc = "CALL SearchAllPeoples();"
 
             // conect to database
+            this.database = new DataBase()
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,(err,result) => {
                 if(err) rej({ message: err })
-                if(!result[0][0]) rej({
+                if(!result || !result[0][0]) rej({
                     message: "Not found",
                     status: 404
                 })
@@ -72,11 +74,12 @@ class User {
             const proc = "CALL SearchPeoplesBy(?);"
 
             // conect to database
+            this.database = new DataBase()
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,by,(err,result) => {
                 if(err) rej({ message: err })
-                if(!result[0][0]) rej({
+                if(!result || !result[0][0]) rej({
                     message: "Not found",
                     status: 404
                 })
@@ -101,11 +104,12 @@ class User {
             const proc = "CALL SearchPeopleBy(?);"
 
             // conect to database
+            this.database = new DataBase()
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,by,(err,result) => {
                 if(err) rej({ message: err })
-                if(!result[0][0]) rej({
+                if(!result || !result[0][0]) rej({
                     message: "Not found",
                     status: 404
                 })
@@ -142,6 +146,7 @@ class User {
             let procedure = "CALL RegistPeoples(?,?,?,?,?,?,?,?,?,?,?);"
 
             // conect to database
+            this.database = new DataBase()
             this.database.conect()
             
             // call procedure
@@ -149,7 +154,7 @@ class User {
                 if(err) rej(err) 
                 setTimeout(() => res({
                     message: "User Created",
-                    ...data
+                    created: 1
                 }),1000)
             })
             
@@ -186,6 +191,7 @@ class User {
             let procedure = "CALL RegistPersonal(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"
 
             // conect to database
+            this.database = new DataBase()
             this.database.conect()
             
             // call procedure
@@ -193,7 +199,7 @@ class User {
                 if(err) rej(err) 
                 setTimeout(() => res({
                     message: "User Created",
-                    state: 1
+                    created: 1
                 }),1000)
             })
             
@@ -222,7 +228,7 @@ class User {
             const procedure = "CALL ModifyPeople(?,?,?,?,?,?,?,?,?,?,?);"
 
             // conect to database
-            const database = new DataBase()
+            this.database = new DataBase()
             this.database.conect()
 
             // call procedure
@@ -269,11 +275,12 @@ class User {
     //         const proc = "CALL SearchPeoplesBy(?);"
 
     //         // conect to database
+            // this.database = new DataBase()
     //         this.database.conect()
 
     //         if (this.database) this.database.conection.query(proc,by,(err,result) => {
             //    rej({ message: err })
-        //     if(!result[0][0]) rej({
+        //     if(!result || !result[0][0]) rej({
         //             message: "Not found",
         //             status: 404
         //         })

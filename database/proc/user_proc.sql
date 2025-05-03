@@ -199,6 +199,7 @@ BEGIN
         u.cel2_per,
         u.email_per,
         u.cont_per,
+        u.gen_per,
         u.fec_cre_per,
         GROUP_CONCAT(r.nom_rol SEPARATOR ', ') AS roles
     FROM 
@@ -226,6 +227,7 @@ BEGIN
         u.cel2_per,
         u.email_per,
         u.cont_per,
+        u.gen_per,
         u.fec_cre_per,
         GROUP_CONCAT(r.nom_rol SEPARATOR ', ') AS roles
     FROM 
@@ -254,6 +256,7 @@ BEGIN
         u.cel2_per,
         u.email_per,
         u.cont_per,
+        u.gen_per,
         u.fec_cre_per,
         GROUP_CONCAT(r.nom_rol SEPARATOR ', ') AS roles
     FROM 
@@ -288,6 +291,7 @@ BEGIN
         u.cel2_per,
         u.email_per,
         u.cont_per,
+        u.gen_per,
         u.fec_cre_per,
         GROUP_CONCAT(r.nom_rol SEPARATOR ', ') AS roles
     FROM 

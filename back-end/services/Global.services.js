@@ -5,7 +5,7 @@ const DataBase = require('./DataBase')
 class Global {
     // constructor
     constructor(...args) {
-        this.database = new DataBase()
+        this.database
         this.args = args
     }
 
@@ -16,11 +16,12 @@ class Global {
             const proc = "CALL SearchServices();"
 
             // conect to database
+            this.database = new DataBase()
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,(err,result) => {
                 if(err) rej({ message: err })
-                if(!result[0][0]) rej({
+                if(!result || !result[0][0]) rej({
                     message: "Not found",
                     status: 404
                 })
@@ -43,11 +44,12 @@ class Global {
             const by = this.args[0].replace(" ","")
 
             // conect to database
+            this.database = new DataBase()
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,by,(err,result) => {
                 if(err) rej({ message: err }) 
-                if(!result[0][0]) rej({
+                if(!result || !result[0][0]) rej({
                     message: "Not found",
                     status: 404
                 })

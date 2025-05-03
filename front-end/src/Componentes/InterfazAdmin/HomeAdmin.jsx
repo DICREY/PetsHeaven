@@ -11,7 +11,7 @@ import { errorStatusHandler, formatDate } from '../Varios/Util'
 // Import styles 
 import '../../../public/styles/InterfazAdmin/HomeAdmin.css'
 
-export function HomeAdmin({ URL = "", setUserSelect }) {
+export function HomeAdmin({ URL = "", setUserSelect, setOwner }) {
   const mainUrl = `${URL}/owner`
   const [datas, setDatas] = useState([])
   const [datasAlmac, setDatasAlmac] = useState([])
@@ -232,6 +232,7 @@ export function HomeAdmin({ URL = "", setUserSelect }) {
                           className="accionadminhome" 
                           onClick={() => {
                             setUserSelect(propietario)
+                            setOwner(true)
                             navigate("/admin/propietario/datos")
                           }}
                           aria-label={`Ver detalles de ${propietario.nom_per}`}

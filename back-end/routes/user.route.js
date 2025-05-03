@@ -21,7 +21,7 @@ Route.get('/all', ValidatorRol("administrador"), async (req,res) => {
     if (!search.result) res.status(404).json({ message: "Usuarios no encontrado"})
 
     try {
-        res.status(200).json(search)
+        if (search.result) return res.status(200).json(search)
     } catch (err) {
         if(err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: err })

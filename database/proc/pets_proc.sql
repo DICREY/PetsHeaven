@@ -265,13 +265,13 @@ BEGIN
             FROM 
                 consultas c
             JOIN
-                personas p ON p.id_per = ct.vet_cit
+                mascotas m ON m.id_mas = c.mas_con
             JOIN
-                veterinarios v ON v.id_vet = ct.vet_cit
+                personas p ON p.id_per = c.vet_con
+            JOIN
+                veterinarios v ON v.id_vet = c.vet_con
             JOIN
                 categorias_veterinario cv ON v.cat_vet = cv.id_cat
-            WHERE 
-                c.mas_con = m.id_mas
         ) AS consultas,
         (
             SELECT GROUP_CONCAT(
@@ -324,4 +324,4 @@ BEGIN
 END //
 
 CALL pets_heaven.SearchHistoryBy('luna','87654321');
-DROP PROCEDURE SearchHistoryBy;
+DROP PROCEDURE pets_heaven.SearchHistoryBy;

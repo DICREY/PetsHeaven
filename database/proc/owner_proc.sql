@@ -183,6 +183,7 @@ BEGIN
         u.cel2_per,
         u.email_per,
         u.cont_per,
+        u.gen_per,
         u.fec_cre_per
     ORDER BY
         u.id_per DESC
@@ -250,6 +251,7 @@ BEGIN
         u.cel2_per,
         u.email_per,
         u.cont_per,
+        u.gen_per,
         u.fec_cre_per
     ORDER BY
         u.id_per DESC

@@ -20,12 +20,12 @@ export const Historial = ({ datas }) => {
           
           {datas? (
             <aside className="info-grid">
-                <div key={datas.doc_usu} className="info-item">
+                <div key={datas.doc_per} className="info-item">
                   <span className="info-label">
                     {formatDate(datas.fec_his) || "No Registrado"}
                   </span>
                   <div className="info-value">
-                    <p><strong>Veterinario:</strong> {datas.nom_usu}</p>
+                    <p><strong>Veterinario:</strong> {datas.nom_per}</p>
                     <p><strong>Tratamiento:</strong> {datas.tra_his || "No Registrado"}</p>
                     <p><strong>Descripción:</strong> {datas.des_his || "No Registrado"}</p>
                   </div>

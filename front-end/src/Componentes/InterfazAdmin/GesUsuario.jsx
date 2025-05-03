@@ -1,6 +1,6 @@
 // Librarys 
-import React, { useEffect, useState } from "react"
-import { Outlet } from "react-router-dom"
+import React, { use, useEffect, useState } from "react"
+import { Outlet, useNavigate } from "react-router-dom"
 import { Plus} from "lucide-react"
 
 // Imports 
@@ -11,13 +11,18 @@ import { divideList,errorStatusHandler, getName } from '../Varios/Util'
 import { Loader } from '../Errores/Loader'
 import { GlobalTable } from './GlobalTable'
 
-export function GesUsuario({ URL = "" }) {
+export function GesUsuario({ setUserSelect, URL = "" }) {
+  // Dynamic vars
   const mainUrl = `${URL}/user/all`
   const [users,setUsers] = useState([])
   const [usersAlmac,setUsersAlmac] = useState([])
   const [loading,setLoading] = useState(true)
   const [headers,setHeaders] = useState([])
 
+  // Vars 
+  const navigate = useNavigate()
+
+  // Functions
   const GetUsers = async () => {
     const token = localStorage.getItem("token")
     try {
@@ -47,6 +52,11 @@ export function GesUsuario({ URL = "" }) {
         })
       } else console.log(err)
     }
+  }
+
+  const handleDescription = (user) => {
+    setUserSelect(user)
+    navigate("/admin/propietario/datos")
   }
 
   useEffect(() => {
@@ -91,6 +101,7 @@ export function GesUsuario({ URL = "" }) {
               fullData={usersAlmac}
               headersSearch={['nom_per', 'email_per', 'cel_per', 'ape_per']}
               headers={headers}
+              edit={handleDescription}
             /> 
 
           </div>

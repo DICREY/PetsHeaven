@@ -5,12 +5,12 @@ import { User, PawPrint, ArrowLeft, Trash2, Edit, Save, X, Calendar } from "luci
 // Imports 
 import {NavBarAdmin} from '../BarrasNavegacion/NavBarAdmi'
 import { loadingAlert, getRoles, formatDate, getAge, errorStatusHandler } from '../Varios/Util'
-import { DescriptionPeople } from '../Peoples/DescriptionPeople'
+import { DescriptionPeople } from './DescriptionPeople'
 import { DeleteData, ModifyData } from '../Varios/Requests'
 import "../../../public/styles/InterfazAdmin/PerfilPropietario.css"
 
 // Component 
-export const PerfilPropietario = ({ userSelect, URL = "" }) => {
+export const PerfilPropietario = ({ userSelect,user = false, owner = false, URL = "" }) => {
   // Vars dynamic
   const [activeTab, setActiveTab] = useState("propietario")
   const [isEditing, setIsEditing] = useState(false)
@@ -194,22 +194,26 @@ export const PerfilPropietario = ({ userSelect, URL = "" }) => {
           </div>
         </header>
 
-        <nav className="pestanasProps">
-          <button
-            className={`pestanaProps ${activeTab === "propietario" ? "activaProps" : ""}`}
-            onClick={() => handleTabChange("propietario")}
-          >
-            <User size={18} />
-            <span>Usuario</span>
-          </button>
-          <button
-            className={`pestanaProps ${activeTab === "mascotas" ? "activaProps" : ""}`}
-            onClick={() => handleTabChange("mascotas")}
-          >
-            <PawPrint size={18} />
-            <span>Mascotas</span>
-          </button>
-        </nav>
+        {
+          owner && (
+            <nav className="pestanasProps">
+              <button
+                className={`pestanaProps ${activeTab === "propietario" ? "activaProps" : ""}`}
+                onClick={() => handleTabChange("propietario")}
+              >
+                <User size={18} />
+                <span>Usuario</span>
+              </button>
+              <button
+                className={`pestanaProps ${activeTab === "mascotas" ? "activaProps" : ""}`}
+                onClick={() => handleTabChange("mascotas")}
+              >
+                <PawPrint size={18} />
+                <span>Mascotas</span>
+              </button>
+            </nav>
+          )
+        }
 
         <section className="contenidoProps">
           {activeTab === "propietario" && (

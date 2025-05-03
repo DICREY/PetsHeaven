@@ -24,9 +24,9 @@ class DataBase {
             if (err) {
                 // throw Error(err)
                 console.log(err)
-                return
+                return null
             }
-            return true
+            return 1
         })
     }
 }

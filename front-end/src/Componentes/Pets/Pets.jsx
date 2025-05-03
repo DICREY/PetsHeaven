@@ -38,7 +38,13 @@ export const Pets = ({URL = ""}) => {
         } catch (err) {
             setLoading(false)
             if (err.status){
-                errorStatusHandler(err.status)
+                const message = errorStatusHandler(err.status)
+                swal({
+                    icon: 'error',
+                    title: 'Error',
+                    text: message,
+                    button: 'Aceptar'
+                })
             }
         }
     }
