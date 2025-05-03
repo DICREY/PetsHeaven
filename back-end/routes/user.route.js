@@ -3,7 +3,7 @@ const { Router } = require('express')
 const { hash } = require('bcrypt')
 
 // Imports
-const User = require('../services/Users.services')
+const User = require('../services/User.services')
 const { authenticateJWT, ValidatorRol } = require('../middleware/validator.handler')
 
 // vars

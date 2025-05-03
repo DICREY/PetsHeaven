@@ -11,11 +11,12 @@ const { limiterLog } = require('../middleware/varios.handler')
 const secret = process.env.JWT_SECRET
 
 // vars
-const global = new Global()
 const Route = Router()
 
 // Routes
 Route.get('/services', async (req,res) => {
+    // Vars
+    const global = new Global()
     const services = await global.SearchServices()
 
     // Verify if exist 
@@ -32,10 +33,11 @@ Route.get('/services', async (req,res) => {
 Route.post('/login',limiterLog, async (req,res) => {
     // Vars
     const { firstData, secondData } = req.body
+    const global = new Global(firstData)
     
     try {
         // Search in database
-        let log = await global.login(firstData)
+        let log = await global.login()
         let user = await log.result[0][0]
 
         if(!user) return res.status(404).json({ message: 'Usuario no encontrado' })

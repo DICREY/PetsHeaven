@@ -3,6 +3,12 @@ const DataBase = require('./DataBase')
 
 // Main class 
 class Pet {
+    // constructor
+    constructor(...args) {
+        this.database = new DataBase()
+        this.args = args
+    }
+
     // function to register
     async create(data) {
         return new Promise((res,rej) => {
@@ -23,11 +29,10 @@ class Pet {
             ]
 
             // conect to database
-            let database = new DataBase()
-            database.conect()
+            this.database.conect()
 
             // Query
-            if (database) database.conection.query(proc,pet,err => { 
+            if (this.database) this.database.conection.query(proc,pet,err => { 
                 if(err) rej(err)
                 setTimeout(() => res({
                     message: "Pet Created",
@@ -36,7 +41,7 @@ class Pet {
             })
 
             // close conection 
-        database.conection.end()
+        this.database.conection.end()
         })
     }
     // function to find all
@@ -46,10 +51,9 @@ class Pet {
             const proc = "CALL SearchPets();"
 
             // conect to database
-            let database = new DataBase()
-            database.conect()
+            this.database.conect()
 
-            if (database) database.conection.query(proc,(err,result) => {
+            if (this.database) this.database.conection.query(proc,(err,result) => {
                 if(err) rej({ message: err })
                 if(!result[0][0]) rej({
                     message: "Not found",
@@ -64,7 +68,7 @@ class Pet {
             })
 
             // close conection 
-            database.conection.end()
+            this.database.conection.end()
         })
     }
 
@@ -77,10 +81,9 @@ class Pet {
             const proc = "CALL SearchPetsBy(?,?)"
 
             // conect to database
-            let database = new DataBase()
-            database.conect()
+            this.database.conect()
             
-            if (database) database.conection.query(proc,[by,secondBy],(err,result) => {
+            if (this.database) this.database.conection.query(proc,[by,secondBy],(err,result) => {
                 if(err) rej({ message: err })
                 if(!result[0][0]) rej({
                     message: "Not found",
@@ -95,7 +98,7 @@ class Pet {
             })
 
             // close conection 
-            database.conection.end()
+            this.database.conection.end()
         })
     }
     // function to find by
@@ -106,10 +109,9 @@ class Pet {
             const proc = "CALL SearchPetBy(?)"
 
             // conect to database
-            let database = new DataBase()
-            database.conect()
+            this.database.conect()
             
-            if (database) database.conection.query(proc,by,(err,result) => {
+            if (this.database) this.database.conection.query(proc,by,(err,result) => {
                 if(err) rej({ message: err })
                 if(!result[0][0]) rej({
                     message: "Not found",
@@ -124,7 +126,7 @@ class Pet {
             })
 
             // close conection 
-            database.conection.end()
+            this.database.conection.end()
         })
     }
     
@@ -149,11 +151,10 @@ class Pet {
             console.log(moficatedData)
 
             // conect to database
-            let database = new DataBase()
-            database.conect()
+            this.database.conect()
 
             // Query 
-            if (database) database.conection.query(proc,moficatedData,err => {
+            if (this.database) this.database.conection.query(proc,moficatedData,err => {
                 if(err) rej(err)
                 setTimeout(() => res({
                     message: "Pet Modify"
@@ -161,7 +162,7 @@ class Pet {
             })
             
             // close conection 
-            database.conection.end()
+            this.database.conection.end()
         })
     }
     
@@ -172,10 +173,9 @@ class Pet {
             const proc = "CALL DeletePetBy(?,?)"
 
             // conect to database
-            let database = new DataBase()
-            database.conect()
+            this.database.conect()
             
-            if (database) database.conection.query(proc,[firstData,secondData],err => {
+            if (this.database) this.database.conection.query(proc,[firstData,secondData],err => {
                 if(err) rej({ message: err })
                 setTimeout(() => {
                     res({
@@ -186,7 +186,7 @@ class Pet {
             })
 
             // close conection 
-            database.conection.end()
+            this.database.conection.end()
         })
     }
     
@@ -238,10 +238,9 @@ class Pet {
             }
 
             // conect to database
-            let database = new DataBase()
-            database.conect()
+            this.database.conect()
             
-            if (database) database.conection.query(proc,[by,byTwo],(err,result) => {
+            if (this.database) this.database.conection.query(proc,[by,byTwo],(err,result) => {
                 if(err) rej({ message: err })
                 if(!result[0][0]) rej({
                     message: "Not found",
@@ -256,7 +255,7 @@ class Pet {
             })
 
             // close conection 
-            database.conection.end()
+            this.database.conection.end()
         })
     }
 }

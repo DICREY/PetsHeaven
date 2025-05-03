@@ -3,6 +3,12 @@ const DataBase = require('./DataBase')
 
 // Main class
 class User {
+    // constructor
+    constructor(...args) {
+        this.database = new DataBase()
+        this.args = args
+    }
+
     // function to find all
     async findAll() {
         return new Promise((res,rej) => {
@@ -10,10 +16,9 @@ class User {
             const proc = "CALL SearchPeoples();"
 
             // conect to database
-            let database = new DataBase()
-            database.conect()
+            this.database.conect()
 
-            if (database) database.conection.query(proc,(err,result) => {
+            if (this.database) this.database.conection.query(proc,(err,result) => {
                 if(err) rej({ message: err })
                 if(!result[0][0]) rej({
                     message: "Not found",
@@ -28,7 +33,7 @@ class User {
             })
 
             // close conection 
-            database.conection.end()
+            this.database.conection.end()
         })
     }
     // function to find all
@@ -38,10 +43,9 @@ class User {
             const proc = "CALL SearchAllPeoples();"
 
             // conect to database
-            let database = new DataBase()
-            database.conect()
+            this.database.conect()
 
-            if (database) database.conection.query(proc,(err,result) => {
+            if (this.database) this.database.conection.query(proc,(err,result) => {
                 if(err) rej({ message: err })
                 if(!result[0][0]) rej({
                     message: "Not found",
@@ -56,7 +60,7 @@ class User {
             })
 
             // close conection 
-            database.conection.end()
+            this.database.conection.end()
         })
     }
 
@@ -68,10 +72,9 @@ class User {
             const proc = "CALL SearchPeoplesBy(?);"
 
             // conect to database
-            let database = new DataBase()
-            database.conect()
+            this.database.conect()
 
-            if (database) database.conection.query(proc,by,(err,result) => {
+            if (this.database) this.database.conection.query(proc,by,(err,result) => {
                 if(err) rej({ message: err })
                 if(!result[0][0]) rej({
                     message: "Not found",
@@ -86,7 +89,7 @@ class User {
             })
 
             // close conection 
-            database.conection.end()
+            this.database.conection.end()
         })
     }
 
@@ -98,10 +101,9 @@ class User {
             const proc = "CALL SearchPeopleBy(?);"
 
             // conect to database
-            let database = new DataBase()
-            database.conect()
+            this.database.conect()
 
-            if (database) database.conection.query(proc,by,(err,result) => {
+            if (this.database) this.database.conection.query(proc,by,(err,result) => {
                 if(err) rej({ message: err })
                 if(!result[0][0]) rej({
                     message: "Not found",
@@ -116,7 +118,7 @@ class User {
             })
 
             // close conection 
-            database.conection.end()
+            this.database.conection.end()
         })
     }
     
@@ -140,11 +142,10 @@ class User {
             let procedure = "CALL RegistPeoples(?,?,?,?,?,?,?,?,?,?,?);"
 
             // conect to database
-            let database = new DataBase()
-            database.conect()
+            this.database.conect()
             
             // call procedure
-            if (database) database.conection.query(procedure,newUser,err => { 
+            if (this.database) this.database.conection.query(procedure,newUser,err => { 
                 if(err) rej(err) 
                 setTimeout(() => res({
                     message: "User Created",
@@ -153,7 +154,7 @@ class User {
             })
             
             // close conection 
-            database.conection.end()
+            this.database.conection.end()
         })
     }
 
@@ -185,11 +186,10 @@ class User {
             let procedure = "CALL RegistPersonal(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"
 
             // conect to database
-            let database = new DataBase()
-            database.conect()
+            this.database.conect()
             
             // call procedure
-            if (database) database.conection.query(procedure,newUser,err=> {
+            if (this.database) this.database.conection.query(procedure,newUser,err=> {
                 if(err) rej(err) 
                 setTimeout(() => res({
                     message: "User Created",
@@ -198,7 +198,7 @@ class User {
             })
             
             // close conection 
-            database.conection.end()
+            this.database.conection.end()
         })
     }
 
@@ -223,10 +223,10 @@ class User {
 
             // conect to database
             const database = new DataBase()
-            database.conect()
+            this.database.conect()
 
             // call procedure
-            if (database) database.conection.query(procedure,newUser,err => { 
+            if (this.database) this.database.conection.query(procedure,newUser,err => { 
                 if(err) rej(err) 
                 setTimeout(() => res({
                     message: "User Modify",
@@ -235,7 +235,7 @@ class User {
             })
 
             // close conection 
-            database.conection.end()
+            this.database.conection.end()
         })
     }
 
@@ -269,10 +269,9 @@ class User {
     //         const proc = "CALL SearchPeoplesBy(?);"
 
     //         // conect to database
-    //         let database = new DataBase()
-    //         database.conect()
+    //         this.database.conect()
 
-    //         if (database) database.conection.query(proc,by,(err,result) => {
+    //         if (this.database) this.database.conection.query(proc,by,(err,result) => {
             //    rej({ message: err })
         //     if(!result[0][0]) rej({
         //             message: "Not found",
@@ -287,7 +286,7 @@ class User {
     //         })
 
     //         // close conection 
-    //         database.conection.end()
+    //         this.database.conection.end()
     //     })
     // }
 }

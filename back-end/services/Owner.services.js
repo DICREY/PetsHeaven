@@ -2,7 +2,13 @@
 const DataBase = require('./DataBase')
 
 // Main class
-class Owner{
+class Owner {
+    // constructor
+    constructor(...args) {
+        this.database = new DataBase()
+        this.args = args
+    }
+
     // function to find all
     async findAll() {
         return new Promise((res,rej) => {
@@ -10,10 +16,9 @@ class Owner{
             const proc = "CALL SearchOwners();"
 
             // conect to database
-            const database = new DataBase()
-            database.conect()
+            this.database.conect()
 
-            if (database) database.conection.query(proc,(err,result) => {
+            if (this.database) this.database.conection.query(proc,(err,result) => {
                 if(err) rej({ message: err })
                 if(!result[0][0]) rej({
                     message: "Not found",
@@ -28,7 +33,7 @@ class Owner{
             })
 
             // close conection 
-            database.conection.end()
+            this.database.conection.end()
         })
     }
 
@@ -36,14 +41,14 @@ class Owner{
     async findAllBy(data) {
         return new Promise((res,rej) => {
             // vars
+            // const by = this.args[0].replace(" ","")
             const by = data.replace(":","").replace(" ","")
             const proc = "CALL SearchOwnersBy(?);"
             
             // conect to database
-            const database = new DataBase()
-            database.conect()
+            this.database.conect()
 
-            if (database) database.conection.query(proc,by,(err,result) => {
+            if (this.database) this.database.conection.query(proc,by,(err,result) => {
                 if(err) rej({ message: err })
                 if(!result[0][0]) rej({
                     message: "Not found",
@@ -58,7 +63,7 @@ class Owner{
             })
 
             // close conection 
-            database.conection.end()
+            this.database.conection.end()
         })
     }
 
@@ -70,10 +75,9 @@ class Owner{
             const proc = "CALL SearchOwnerBy(?);"
             
             // conect to database
-            const database = new DataBase()
-            database.conect()
+            this.database.conect()
 
-            if (database) database.conection.query(proc,by,(err,result) => {
+            if (this.database) this.database.conection.query(proc,by,(err,result) => {
                 if(err) rej({ message: err })
                 if(!result[0][0]) rej({
                     message: "Not found",
@@ -88,7 +92,7 @@ class Owner{
             })
 
             // close conection 
-            database.conection.end()
+            this.database.conection.end()
         })
     }
 
@@ -100,10 +104,9 @@ class Owner{
             const proc = "CALL SearchOwnersByPet(?);"
 
             // conect to database
-            const database = new DataBase()
-            database.conect()
+            this.database.conect()
 
-            if (database) database.conection.query(proc,by,(err,result) => {
+            if (this.database) this.database.conection.query(proc,by,(err,result) => {
                 if(err) rej({ message: err })
                 if(!result[0][0]) rej({
                     message: "Not found",
@@ -118,7 +121,7 @@ class Owner{
             })
 
             // close conection 
-            database.conection.end()
+            this.database.conection.end()
         })
     }
     
@@ -130,11 +133,10 @@ class Owner{
             const procedure = "CALL DeleteOwner(?);"
 
             // conect to database
-            const database = new DataBase()
-            database.conect()
+            this.database.conect()
 
             // call procedure
-            if (database) database.conection.query(procedure,by,err => {
+            if (this.database) this.database.conection.query(procedure,by,err => {
                 if(err) rej({message: err})
                 setTimeout(() => res({
                     message: "Owner Deleted",
@@ -143,7 +145,7 @@ class Owner{
             })
 
             // close conection 
-            database.conection.end()
+            this.database.conection.end()
         })
     }
 }
