@@ -1,6 +1,6 @@
 // Imports 
 import { formatDate,errorStatusHandler } from '../../Varios/Util'
-import { GetDataWithBody } from '../../Varios/Requests'
+import { PostData } from '../../Varios/Requests'
 import { Loader } from '../../Errores/Loader'
 
 // Librarys
@@ -21,7 +21,7 @@ export const Historial = ({ datas, URL = "" }) => {
   const fetchData = async (url = "", token = "") => {
     console.log(mainURL)
     try {
-      const history = await GetDataWithBody(url, token, {
+      const history = await PostData(url, token, {
         firstData: datas.nom_mas,
         secondData: datas.doc_per
       })

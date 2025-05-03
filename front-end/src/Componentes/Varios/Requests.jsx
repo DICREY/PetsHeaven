@@ -50,29 +50,6 @@ export async function GetData(URL = "",token = "") {
         throw error
     }
 }
-export async function GetDataWithBody(URL = "",token = "",datas = {}) {
-    try {
-        const response = await fetch(URL,{
-            method: "POST",
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'User': getName(token),
-                'Roles': decodeJWT(token).roles,
-                ...HeaderWeb
-            },
-            body: JSON.stringify(datas)
-        })
-
-        if (!response.ok) {
-            throw response
-        }
-
-        const data = await response.json()
-        return data.result[0]
-    } catch (error) {
-        throw error
-    }
-}
 // Enviar datos 
 export async function PostData(URL = "", token = "", datas = {}) {
     try {
