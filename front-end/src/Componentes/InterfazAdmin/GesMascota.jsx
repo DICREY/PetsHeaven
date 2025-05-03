@@ -36,7 +36,7 @@ export function GesMascota({ URL = "" }) {
     const token = localStorage.getItem("token")
       try {
         if(token) {
-          const pets = await GetData(`${mainURL}/all`,token)
+          const pets = await GetData(`${mainURL}/all`,token)  
           const roles = getRoles(token)
 
           const admin = roles.some(role => role.toLowerCase() === "administrador")

@@ -257,7 +257,8 @@ class Pet {
                 setTimeout(() => {
                     res({
                         message: "History found",
-                        result: format(result[0])
+                        result: format(result[0]),
+                        find: 1
                     })
                 },1000)
             })

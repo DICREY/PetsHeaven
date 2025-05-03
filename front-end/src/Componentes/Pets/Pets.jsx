@@ -17,6 +17,7 @@ export const Pets = ({URL = ""}) => {
     // Declare Vars
     const mainURL = `${URL}/pet`
     const [petsData, setPetsData] = useState([])
+    const [history, setHistory] = useState([])
     const [loading, setLoading] = useState(true)
     const [selectedPet, setSelectedPet] = useState(null)
     const [showModal, setShowModal] = useState(false)

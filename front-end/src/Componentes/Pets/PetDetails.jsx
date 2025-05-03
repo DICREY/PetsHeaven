@@ -1,5 +1,5 @@
 // Librarys 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import swal from 'sweetalert'
 
 // Import
@@ -27,6 +27,7 @@ export const PetDetails = ({ datas, ready, editMode, open = false, admin = false
         document.body.style.overflow = 'auto' // Habilita el scroll del body
     }
 
+    // Change tabs
     const tabSelected = (e) => {
         // Vars 
         setCurrentTab(e.currentTarget.textContent)
@@ -40,6 +41,7 @@ export const PetDetails = ({ datas, ready, editMode, open = false, admin = false
         e.currentTarget.classList.add('link-active')
     }
 
+    // Delete pet 
     const deletePet = async () => {
         // Vars
         const mainURL = `${URL}/delete`
@@ -152,7 +154,7 @@ export const PetDetails = ({ datas, ready, editMode, open = false, admin = false
                             currentTab === "Resumen"?(
                                 <Resumen datas={datas} />
                             ):currentTab === "Historial"?(
-                                <Historial datas={datas} />
+                                <Historial datas={datas} URL={URL} />
                             ):(
                                 <Citas datas={datas} />
                             )

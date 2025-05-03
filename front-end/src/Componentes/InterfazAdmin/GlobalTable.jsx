@@ -120,10 +120,10 @@ export class GlobalTable extends Component {
             <section className={`global-table-container`}>
               <table className="global-table">
                 <thead>
-                  <tr key={112309}>
+                  <tr>
                     {headersKeys.map((header, index) => (
-                      <th key={index}>
-                        <div className="header-content">
+                      <th key={index +120}>
+                        <div key={index} className="header-content">
                           {header}
                         </div>
                       </th>
@@ -134,9 +134,9 @@ export class GlobalTable extends Component {
                 <tbody>
                   {info[page-1]?.map((item,index) => (
                     <tr key={index} onClick={() => this.handleClick(item)}>
-                      {headersValues.map((header) => (
-                        <td>
-                          {this.renderCell(item, header)}
+                      {headersValues.map((header, index) => (
+                        <td key={index + 170}>
+                          <span>{this.renderCell(item, header)}</span>
                         </td>
                       ))}
                       <td className="actions-cell">

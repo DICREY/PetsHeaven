@@ -81,12 +81,12 @@ Route.put('/modify', ValidatorRol("usuario"), async (req,res) => {
     }
 })
 
-Route.get('/history', ValidatorRol("veterinario") ,async (req,res) => {
+Route.post('/history', ValidatorRol("veterinario") ,async (req,res) => {
     // Vars 
     const body = req.body
-
+    
     // Verify if exist
-    const findPet = await pet.findAllBy(body.firstData, body.secondData)
+    const findPet = await pet.findAllBy(body.secondData, body.firstData)
     if (!findPet.result) return res.status(404).json({message: "Mascota no encontrada"})
 
     try {
