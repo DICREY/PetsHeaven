@@ -1,5 +1,5 @@
 // Librarys
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { BrowserRouter, Routes, Route,Navigate } from "react-router"
 
 // Imports Forms
@@ -17,7 +17,8 @@ import { GesMascota } from "./Componentes/InterfazAdmin/GesMascota"
 import { Pets } from "./Componentes/Pets/Pets"
 import { NotFound } from "./Componentes/Errores/NotFound"
 import { ErrorInternalServer } from "./Componentes/Errores/ErrorInternalServer"
-import { getRoles } from './Componentes/Varios/Util'
+import { getRoles,Logout } from './Componentes/Varios/Util'
+import { useInactivityDetector } from './Componentes/Varios/InactiveDectetor'
 import VeterinariaPage from "./Componentes/VeterinariaPage"
 import { GesAgendaGeneral } from "./Componentes/InterfazAdmin/GesAgendaGeneral"
 import { PerfilPropietario } from "./Componentes/Peoples/PerfilPropietario"
@@ -26,23 +27,49 @@ import { MainAdmin } from './Componentes/InterfazAdmin/MainAdmin'
 //import Crud personal
 import { ConfiguracionUsuarioCrud } from "./Componentes/InterfazAdmin/CrudPersonal/ConfiguracionUsuarioCrud"
 
-
-
 // Main Component
 export default function App () {
+  // Dynamic vars 
   const [userSelect,setUserSelect] = useState()
   const [owner,setOwner] = useState(false)
+
+  // Vars 
   const URL = "http://localhost:3000"
+  const isInactive = useInactivityDetector(20 * 60 * 1000) // 20 minutos de inactividad
   
   // Route types
   const PrivateRoute = ({ children }) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token')
+
+    useEffect(() => {
+      if (isInactive) {
+        const confirms = confirm('Has estado inactivo. ¿Quieres continuar?')
+        if (confirms) {
+          return
+        } else {
+          Logout()
+        }
+      }
+    },[isInactive])
+
     return token? children : <Navigate to="/user/login" />
   }
   
   const VetRoute = ({ children }) => {
     // Vars
     const token = localStorage.getItem('token');
+
+    useEffect(() => {
+      if (isInactive) {
+        const confirms = confirm('Has estado inactivo. ¿Quieres continuar?')
+        if (confirms) {
+          return
+        } else {
+          Logout()
+        }
+      }
+    },[isInactive])
+
     if (token) {
       const roles = getRoles(token)
       return roles.includes('Veterinario')? children :<Navigate to="/user/login" />
@@ -53,7 +80,19 @@ export default function App () {
 
   const AdminRoute = ({ children }) => {
     // Vars
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token')
+
+    useEffect(() => {
+      if (isInactive) {
+        const confirms = confirm('Has estado inactivo. ¿Quieres continuar?')
+        if (confirms) {
+          return
+        } else {
+          Logout()
+        }
+      }
+    },[isInactive])
+
     if (token) {
       const roles = getRoles(token)
       return roles.includes('Administrador')? children :<Navigate to="/user/login" />

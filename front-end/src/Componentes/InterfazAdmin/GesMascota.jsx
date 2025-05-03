@@ -28,6 +28,8 @@ export function GesMascota({ URL = "" }) {
   const [editMode,setEditMode] = useState(false)
   const [isAdmin,setIsAdmin] = useState(false)
   const [headers,setHeaders] = useState([])
+
+  // Vars 
   const navigate = useNavigate()
 
   // Functions
@@ -81,19 +83,19 @@ export function GesMascota({ URL = "" }) {
 
   // Ejecutar el fetch para traer datos
   useEffect(() => {
-      // Vars 
-      const REFRESH_INTERVAL = 2 * 60 * 1000 // 2 minutos
-      let intervalId
-  
-      // Execute the request
-      fetchData()
-  
-      // Configure interval
-      intervalId = setInterval(fetchData(), REFRESH_INTERVAL)
-  
-      // Clean
-      return () => clearInterval(intervalId)
-    }, [])
+    // Vars 
+    const REFRESH_INTERVAL = 2 * 60 * 1000 // 2 minutos
+    let intervalId
+
+    // Execute the request
+    fetchData()
+
+    // Configure interval
+    intervalId = setInterval(fetchData(), REFRESH_INTERVAL)
+
+    // Clean
+    return () => clearInterval(intervalId)
+  }, [])
 
   return (
     <main className="appgesmascota">
