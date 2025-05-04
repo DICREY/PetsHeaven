@@ -1,7 +1,8 @@
 // Librarys 
 import React, { useEffect, useState } from 'react'
 import swal from 'sweetalert'
-
+import { Image } from 'primereact'
+        
 // Import
 import { Resumen } from './Details/Resumen'
 import { Historial } from './Details/Historial'
@@ -10,7 +11,7 @@ import { DeleteData } from '../Varios/Requests'
 import { getRoles,loadingAlert } from '../Varios/Util'
 
 // Import styles 
-import '../../../public/styles/Pets/petDetails.css'
+import '../../../src/styles/Pets/petDetails.css'
 
 // Main component
 export const PetDetails = ({ datas, ready, editMode, open = false, admin = false, URL = ""}) => {
@@ -91,11 +92,14 @@ export const PetDetails = ({ datas, ready, editMode, open = false, admin = false
                         {/* Header con foto y datos principales */}
                         <header className="pet-header">
                             <aside className="pet-avatar-container">
-                                <img 
-                                    className="pet-avatar"
+                                <Image 
+                                    // className="pet-avatar"
                                     src={datas.fot_mas} 
                                     alt={`${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`} 
+                                    preview
                                 />
+                                {/* <img 
+                                /> */}
                                 <div className="pet-status">
                                     <span className={`status-badge ${datas.est_rep_mas === 'Esterilizado' ? 'status-active' : ''}`}>
                                         {datas.est_rep_mas}

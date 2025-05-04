@@ -1,15 +1,19 @@
 // Librarys 
-import React, { useState, useRef, useEffect } from 'react';
-import { Outlet } from 'react-router';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import listPlugin from '@fullcalendar/list';
+import React, { useState, useRef, useEffect } from 'react'
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from '@fullcalendar/interaction'
+import listPlugin from '@fullcalendar/list'
 import esLocale from "@fullcalendar/core/locales/es"
-import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi';
-import "./prueba.css";
 
+// Imports 
+import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
+
+// Import styles 
+import "./prueba.css"
+
+// Component 
 export const GesAgendaGeneral = () => {
 
     //Eventos solo de prueba
@@ -25,18 +29,18 @@ export const GesAgendaGeneral = () => {
             propietario: 'Juan Pérez',
             telefono: '555-1234'
         }
-    ]);
+    ])
 
     //Mes actual
-    const [mesActual, setMesActual] = useState('');
+    const [mesActual, setMesActual] = useState('')
     //Vista Actual del usuario
-    const [currentView, setCurrentView] = useState('dayGridMonth');
+    const [currentView, setCurrentView] = useState('dayGridMonth')
     //Mostrar la descripcion en un pop up de la cita
-    const [showEventModal, setShowEventModal] = useState(false);
+    const [showEventModal, setShowEventModal] = useState(false)
     //Mostrar el pop up de creacion de Cita
-    const [showCreateModal, setShowCreateModal] = useState(false);
+    const [showCreateModal, setShowCreateModal] = useState(false)
     //Evento seleccionado
-    const [selectedEvent, setSelectedEvent] = useState(null);
+    const [selectedEvent, setSelectedEvent] = useState(null)
     //Nuevo evento
     const [newEvent, setNewEvent] = useState({
         title: '',
@@ -47,43 +51,43 @@ export const GesAgendaGeneral = () => {
         paciente: '',
         propietario: '',
         telefono: ''
-    });
+    })
     //Fecha
-    const [selectedDate, setSelectedDate] = useState('');
-    const calendarRef = useRef(null);
+    const [selectedDate, setSelectedDate] = useState('')
+    const calendarRef = useRef(null)
 
 
     //Funcion para cambiar entre meses
     const navigate = (action) => {
-        const calendarApi = calendarRef.current.getApi();
+        const calendarApi = calendarRef.current.getApi()
         switch (action) {
             case 'prev':
-                calendarApi.prev();
-                break;
+                calendarApi.prev()
+                break
             case 'next':
-                calendarApi.next();
-                break;
+                calendarApi.next()
+                break
             case 'today':
-                calendarApi.today();
-                break;
+                calendarApi.today()
+                break
             default:
-                break;
+                break
         }
         // Actualizar el mes actual después de navegar
-        const mes = calendarApi.view.title.split(' ')[0];
-        setMesActual(mes);
-    };
+        const mes = calendarApi.view.title.split(' ')[0]
+        setMesActual(mes)
+    }
 
     // Cambiar vista del calendario
     const changeView = (view) => {
-        const calendarApi = calendarRef.current.getApi();
-        calendarApi.changeView(view);
-        setCurrentView(view);
-    };
+        const calendarApi = calendarRef.current.getApi()
+        calendarApi.changeView(view)
+        setCurrentView(view)
+    }
 
     // Mostrar popup para crear cita
     const handleDateClick = (arg) => {
-        setSelectedDate(arg.dateStr);
+        setSelectedDate(arg.dateStr)
         setNewEvent({
             title: '',
             start: `${arg.dateStr}T09:00:00`,
@@ -93,9 +97,9 @@ export const GesAgendaGeneral = () => {
             paciente: '',
             propietario: '',
             telefono: ''
-        });
-        setShowCreateModal(true);
-    };
+        })
+        setShowCreateModal(true)
+    }
 
     // Mostrar detalles de la cita
     const handleEventClick = (info) => {
@@ -105,51 +109,51 @@ export const GesAgendaGeneral = () => {
             start: info.event.start,
             end: info.event.end,
             ...info.event.extendedProps
-        });
-        setShowEventModal(true);
-    };
+        })
+        setShowEventModal(true)
+    }
 
     // Crear nueva cita
     const handleCreateEvent = () => {
         if (!newEvent.title) {
-            alert('El título es requerido');
-            return;
+            alert('El título es requerido')
+            return
         }
 
         const eventToAdd = {
             id: Date.now().toString(),
             ...newEvent
-        };
+        }
 
-        setEvents([...events, eventToAdd]);
-        setShowCreateModal(false);
-    };
+        setEvents([...events, eventToAdd])
+        setShowCreateModal(false)
+    }
 
     // Actualizar cita existente
     const handleUpdateEvent = () => {
         setEvents(events.map(event => 
             event.id === selectedEvent.id ? selectedEvent : event
-        ));
-        setShowEventModal(false);
-    };
+        ))
+        setShowEventModal(false)
+    }
 
     // Eliminar cita
     const handleDeleteEvent = () => {
         if (window.confirm(`¿Eliminar la cita "${selectedEvent.title}"?`)) {
-            setEvents(events.filter(event => event.id !== selectedEvent.id));
-            setShowEventModal(false);
+            setEvents(events.filter(event => event.id !== selectedEvent.id))
+            setShowEventModal(false)
         }
-    };
+    }
 
     // Manejar cambios en los inputs
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value } = e.target
         if (showCreateModal) {
-            setNewEvent({...newEvent, [name]: value});
+            setNewEvent({...newEvent, [name]: value})
         } else {
-            setSelectedEvent({...selectedEvent, [name]: value});
+            setSelectedEvent({...selectedEvent, [name]: value})
         }
-    };
+    }
 
     return (
         <div className="calendar-container">
@@ -159,8 +163,8 @@ export const GesAgendaGeneral = () => {
             <div className="calendar-controls">
                 <div className="navigation-buttons">
                     <button onClick={() => navigate('today')}>Hoy</button>
-                    <button onClick={() => navigate('prev')}>&lt;</button>
-                    <button onClick={() => navigate('next')}>&gt;</button>
+                    <button onClick={() => navigate('prev')}>&lt</button>
+                    <button onClick={() => navigate('next')}>&gt</button>
                 </div>
                 <h2>{mesActual}</h2>
                 <div className="view-buttons">
@@ -239,7 +243,7 @@ export const GesAgendaGeneral = () => {
                         <div className="modal-header">
                             <h3>Nueva Cita</h3>
                             <button className="modal-close-btn" onClick={() => setShowCreateModal(false)}>
-                                &times;
+                                &times
                             </button>
                         </div>
                         <div className="modal-body">
@@ -295,11 +299,11 @@ export const GesAgendaGeneral = () => {
                                         name="start"
                                         value={newEvent.start.split('T')[1].substring(0, 5)}
                                         onChange={(e) => {
-                                            const time = e.target.value;
+                                            const time = e.target.value
                                             setNewEvent({
                                                 ...newEvent,
                                                 start: `${selectedDate}T${time}:00`
-                                            });
+                                            })
                                         }}
                                     />
                                 </div>
@@ -310,11 +314,11 @@ export const GesAgendaGeneral = () => {
                                         name="end"
                                         value={newEvent.end.split('T')[1].substring(0, 5)}
                                         onChange={(e) => {
-                                            const time = e.target.value;
+                                            const time = e.target.value
                                             setNewEvent({
                                                 ...newEvent,
                                                 end: `${selectedDate}T${time}:00`
-                                            });
+                                            })
                                         }}
                                     />
                                 </div>
@@ -359,7 +363,7 @@ export const GesAgendaGeneral = () => {
                         <div className="modal-header">
                             <h3>{selectedEvent?.id ? 'Editar Cita' : 'Detalles de la Cita'}</h3>
                             <button className="modal-close-btn" onClick={() => setShowEventModal(false)}>
-                                &times;
+                                &times
                             </button>
                         </div>
                         <div className="modal-body">
@@ -444,5 +448,5 @@ export const GesAgendaGeneral = () => {
             )}            
         </div>
         </div>            
-    );
-};
+    )
+}

@@ -1,7 +1,11 @@
+// Librarys 
 import React from 'react'
 import { Link } from 'react-router'
-import '../../../public/styles/Errores/notfound.css'
+
+// Import styles 
+import '../../../src/styles/Errores/notfound.css'
   
+// Component
 export const ErrorInternalServer = () => {
   return (
     <section className="notfound-container">

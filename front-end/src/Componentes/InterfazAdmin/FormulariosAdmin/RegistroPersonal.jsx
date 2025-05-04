@@ -13,7 +13,7 @@ import { formatDate, errorStatusHandler, loadingAlert } from '../../Varios/Util'
 import { PostData } from '../../Varios/Requests'
 
 // Import styles
-import '../../../../public/styles/InterfazAdmin/FormuariosAdmin/RegistroUsu.css'
+import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/RegistroUsu.css'
 
 // Component
 export const ConfiguracionUsuario = ({ URL = '' }) => {

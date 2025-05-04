@@ -131,10 +131,9 @@ export default function App () {
           <Route path="propietario/datos" element={
             <AdminRoute children={<PerfilPropietario owner={owner} userSelect={userSelect} URL={URL} />} />} >
           </Route>
-
-        </Route>
-        <Route path="actualizar/datos personal" element={
-          <AdminRoute children={<ConfiguracionUsuarioCrud userSelect={userSelect} URL={URL} />} />} >
+          <Route path="actualizar/datos personal" element={
+            <AdminRoute children={<ConfiguracionUsuarioCrud userSelect={userSelect} URL={URL} />} />} >
+          </Route>
         </Route>
         
 
@@ -151,7 +150,7 @@ export default function App () {
         </Route>
 
 
-        {/* Routes */}
+        {/* Public Routes */}
         <Route path="/" element={<MainRoute />} />
         <Route path="main" element={<VeterinariaPage URL={URL}/>} />
         <Route path="user/login" element={<LoginForm URL={URL}/>} />

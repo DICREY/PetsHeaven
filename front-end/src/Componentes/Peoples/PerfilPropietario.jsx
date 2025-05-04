@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from "react"
-import { useNavigate } from "react-router"
-import { User, PawPrint, ArrowLeft, Trash2, Edit, Save, X, Calendar } from "lucide-react"
+// Librarys 
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router'
+import { User, PawPrint, ArrowLeft, Trash2, Edit, Save, X, Calendar } from 'lucide-react'
 
 // Imports 
 import {NavBarAdmin} from '../BarrasNavegacion/NavBarAdmi'
 import { loadingAlert, getRoles, formatDate, getAge, errorStatusHandler } from '../Varios/Util'
 import { DescriptionPeople } from './DescriptionPeople'
 import { DeleteData, ModifyData } from '../Varios/Requests'
-import "../../../public/styles/InterfazAdmin/PerfilPropietario.css"
+
+// Import styles 
+import '../../../src/styles/InterfazAdmin/PerfilPropietario.css'
 
 // Component 
-export const PerfilPropietario = ({ userSelect,user = false, owner = false, URL = "" }) => {
+export const PerfilPropietario = ({ userSelect,user = false, owner = false, URL = '' }) => {
   // Vars dynamic
-  const [activeTab, setActiveTab] = useState("propietario")
+  const [activeTab, setActiveTab] = useState('propietario')
   const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState({})
   const [petsData,setPetsData] = useState([])
@@ -53,10 +56,10 @@ export const PerfilPropietario = ({ userSelect,user = false, owner = false, URL 
 
   const handleSaveEdit = async () => {
     setIsEditing(false)
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem('token')
     try {
       if (token) {
-        loadingAlert("Validando...",)
+        loadingAlert('Validando...',)
         const mod = await ModifyData(`${secondUrl}/modify`, token, modPro)
         mod.ok && swal({
           icon: 'success',
@@ -86,13 +89,13 @@ export const PerfilPropietario = ({ userSelect,user = false, owner = false, URL 
 
   const handleDeleteClick = async () => {
     // Vars
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem('token')
     try {
       if(token) {
         const roles = getRoles(token)
-        const admin = roles.some(role => role.toLowerCase() === "administrador")
+        const admin = roles.some(role => role.toLowerCase() === 'administrador')
         if (admin) {
-          loadingAlert("Validando...")
+          loadingAlert('Validando...')
           const deleted = await DeleteData(`${mainUrl}/delete`,token,{
             doc: userData.doc_per
           })
@@ -103,11 +106,11 @@ export const PerfilPropietario = ({ userSelect,user = false, owner = false, URL 
             text: 'La mascota han sido desactivada correctamente.',
           })
         }
-      } else navigate("/34")
+      } else navigate('/34')
     } catch (err) {
       err.message? swal({
-          icon: "error",
-          title: "Error",
+          icon: 'error',
+          title: 'Error',
           text: err.message
       }): console.log(err)
     }
@@ -115,7 +118,7 @@ export const PerfilPropietario = ({ userSelect,user = false, owner = false, URL 
 
   const handleTabChange = (tab) => {
     if (isEditing) {
-      if (window.confirm("Tiene cambios sin guardar. ¿Desea salir sin guardar?")) {
+      if (window.confirm('Tiene cambios sin guardar. ¿Desea salir sin guardar?')) {
         setIsEditing(false)
         setActiveTab(tab)
       }
@@ -143,48 +146,48 @@ export const PerfilPropietario = ({ userSelect,user = false, owner = false, URL 
   },[petsData])
 
   useEffect(() => {
-    if (!userSelect) navigate("/admin/consultorio")
+    if (!userSelect) navigate('/admin/consultorio')
     setUserData(userSelect)
     setFormData(userSelect)
   },[])
 
   return (
-    <main className="contenedorpageProps">
+    <main className='contenedorpageProps'>
       <NavBarAdmin />
-      <div className="principalpageProp">
-        <div className="contenedorProps">
+      <div className='principalpageProp'>
+        <div className='contenedorProps'>
         
-        <header className="cabeceraProps">
-          <h1 className="tituloProps">
-            Configuración de usuario <span className="subtituloProps"> | Creación</span>
+        <header className='cabeceraProps'>
+          <h1 className='tituloProps'>
+            Configuración de usuario <span className='subtituloProps'> | Creación</span>
           </h1>
-          <div className="botonesAccionProps">
-            <button className="botonAtrasProps" onClick={() => navigate('/admin/consultorio')}>
+          <div className='botonesAccionProps'>
+            <button className='botonAtrasProps' onClick={() => navigate('/admin/consultorio')}>
               <ArrowLeft size={18} />
               <span>Atrás</span>
             </button>
 
             {/* Botones de Eliminar y Editar solo cuando estamos en la pestaña de Propietario */}
-            {activeTab === "propietario" && (
+            {activeTab === 'propietario' && (
               <>
-                <button className="botonEliminarProps" onClick={handleDeleteClick}>
+                <button className='botonEliminarProps' onClick={handleDeleteClick}>
                   <Trash2 size={18} />
                   <span>Eliminar</span>
                 </button>
 
                 {isEditing ? (
                   <>
-                    <button className="botonCancelarProps" onClick={handleCancelEdit}>
+                    <button className='botonCancelarProps' onClick={handleCancelEdit}>
                       <X size={18} />
                       <span>Cancelar</span>
                     </button>
-                    <button className="botonGuardarProps" onClick={handleSaveEdit}>
+                    <button className='botonGuardarProps' onClick={handleSaveEdit}>
                       <Save size={18} />
                       <span>Guardar</span>
                     </button>
                   </>
                 ) : (
-                  <button className="botonEditarProps" onClick={handleEditClick}>
+                  <button className='botonEditarProps' onClick={handleEditClick}>
                     <Edit size={18} />
                     <span>Editar</span>
                   </button>
@@ -196,17 +199,17 @@ export const PerfilPropietario = ({ userSelect,user = false, owner = false, URL 
 
         {
           owner && (
-            <nav className="pestanasProps">
+            <nav className='pestanasProps'>
               <button
-                className={`pestanaProps ${activeTab === "propietario" ? "activaProps" : ""}`}
-                onClick={() => handleTabChange("propietario")}
+                className={`pestanaProps ${activeTab === 'propietario' ? 'activaProps' : ''}`}
+                onClick={() => handleTabChange('propietario')}
               >
                 <User size={18} />
                 <span>Usuario</span>
               </button>
               <button
-                className={`pestanaProps ${activeTab === "mascotas" ? "activaProps" : ""}`}
-                onClick={() => handleTabChange("mascotas")}
+                className={`pestanaProps ${activeTab === 'mascotas' ? 'activaProps' : ''}`}
+                onClick={() => handleTabChange('mascotas')}
               >
                 <PawPrint size={18} />
                 <span>Mascotas</span>
@@ -215,45 +218,45 @@ export const PerfilPropietario = ({ userSelect,user = false, owner = false, URL 
           )
         }
 
-        <section className="contenidoProps">
-          {activeTab === "propietario" && (
+        <section className='contenidoProps'>
+          {activeTab === 'propietario' && (
             <DescriptionPeople 
               handleChange={handleChange} 
               headers={headers}
               datas={userSelect}
               navigate={navigate}
               isEditing={isEditing}
-              disabled={["doc_per", "tip_doc_per"]}
+              disabled={['doc_per', 'tip_doc_per']}
             />
           )}
 
-          {activeTab === "mascotas" && (
-            <section className="mascotasContenedorProps">
-              <div className="mascotasGrillaProps">
+          {activeTab === 'mascotas' && (
+            <section className='mascotasContenedorProps'>
+              <div className='mascotasGrillaProps'>
                 {petsData.map((mascota) => (
-                  <div key={mascota.doc_per} className="mascotaTarjetaProps">
-                    <div className="mascotaImagenProps">
-                      <img src={mascota.fot_mas || "/placeholder.svg"} alt={mascota.nom_mas} />
+                  <div key={mascota.doc_per} className='mascotaTarjetaProps'>
+                    <div className='mascotaImagenProps'>
+                      <img src={mascota.fot_mas || '/placeholder.svg'} alt={mascota.nom_mas} />
                     </div>
-                    <div className="mascotaInfoProps">
-                      <h3 className="mascotaNombreProps">{mascota.nom_mas}</h3>
-                      <div className="mascotaDetallesProps">
-                        <div className="mascotaDetalleProps">
-                          <span className="mascotaEtiquetaProps">Especie:</span> {mascota.esp_mas}
+                    <div className='mascotaInfoProps'>
+                      <h3 className='mascotaNombreProps'>{mascota.nom_mas}</h3>
+                      <div className='mascotaDetallesProps'>
+                        <div className='mascotaDetalleProps'>
+                          <span className='mascotaEtiquetaProps'>Especie:</span> {mascota.esp_mas}
                         </div>
-                        <div className="mascotaDetalleProps">
-                          <span className="mascotaEtiquetaProps">Raza:</span> {mascota.raz_mas}
+                        <div className='mascotaDetalleProps'>
+                          <span className='mascotaEtiquetaProps'>Raza:</span> {mascota.raz_mas}
                         </div>
-                        <div className="mascotaDetalleProps">
-                          <span className="mascotaEtiquetaProps">Edad:</span> {getAge(mascota.fec_nac_mas)}
-                           {" Años"}
+                        <div className='mascotaDetalleProps'>
+                          <span className='mascotaEtiquetaProps'>Edad:</span> {getAge(mascota.fec_nac_mas)}
+                           {' Años'}
                         </div>
-                        <div className="mascotaDetalleProps">
-                          <span className="mascotaEtiquetaProps">Género:</span> {mascota.gen_mas}
+                        <div className='mascotaDetalleProps'>
+                          <span className='mascotaEtiquetaProps'>Género:</span> {mascota.gen_mas}
                         </div>
                       </div>
-                      <div className="mascotaAccionesProps">
-                        <button className="botonHistorialProps" onClick={() => verHistorial(mascota.doc_per)}>
+                      <div className='mascotaAccionesProps'>
+                        <button className='botonHistorialProps' onClick={() => verHistorial(mascota.doc_per)}>
                           <Calendar size={16} />
                           <span>Ver historial</span>
                         </button>
@@ -263,7 +266,7 @@ export const PerfilPropietario = ({ userSelect,user = false, owner = false, URL 
                 ))}
               </div>
 
-              {petsData.length === 0 && <div className="sinResultadosProps">No hay mascotas vinculadas</div>}
+              {petsData.length === 0 && <div className='sinResultadosProps'>No hay mascotas vinculadas</div>}
             </section>
           )}
         </section>

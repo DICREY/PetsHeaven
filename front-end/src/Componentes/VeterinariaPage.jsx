@@ -1,5 +1,4 @@
 // Imports 
-import "../../public/styles/VeterinariaPage.css"
 import { NavBar } from "./BarrasNavegacion/NavBar"
 import { GetDataGlobal } from "./Varios/Requests"
 import { diapositivas, promociones, testimonios } from './Varios/varios'
@@ -10,6 +9,9 @@ import Footer from "./Varios/Footer2"
 import React,{ useState, useEffect} from "react"
 import { MapPin, Star, Phone, Mail, Clock, ChevronUp, Instagram, Facebook } from "lucide-react"
 import { motion } from "framer-motion"
+
+// Import styles
+import "../../src/styles/VeterinariaPage.css"
 
 // Animaciones
 const containerVariants = {

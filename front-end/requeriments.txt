@@ -13,4 +13,4 @@ npm i -D vite sass-embedded
 
 yarn add react react-dom react-hook-form boxicons react-router react-router-dom lucide-react @supabase/supabase-js @emailjs/browser sweetalert sweetalert2 framer-motion
 yarn add @fullcalendar/core @fullcalendar/react @fullcalendar/daygrid @fullcalendar/interaction @fullcalendar/timegrid @fullcalendar/list
-yarn add -D vite @vitejs/plugin-react-swc sass-embedded
+yarn add -D vite @vitejs/plugin-react-swc sass-embedded react-scripts

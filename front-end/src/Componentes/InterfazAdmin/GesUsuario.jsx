@@ -4,13 +4,16 @@ import { Outlet, useNavigate } from "react-router-dom"
 import { Plus} from "lucide-react"
 
 // Imports 
-import '../../../public/styles/InterfazAdmin/GesUsuario.css'
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GetData } from '../Varios/Requests'
 import { divideList,errorStatusHandler, getName } from '../Varios/Util'
 import { Loader } from '../Errores/Loader'
 import { GlobalTable } from './GlobalTable'
 
+// Import styles 
+import '../../../src/styles/InterfazAdmin/GesUsuario.css'
+
+// Component
 export function GesUsuario({ setUserSelect, URL = "" }) {
   // Dynamic vars
   const mainUrl = `${URL}/user/all`

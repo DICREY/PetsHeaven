@@ -2,10 +2,10 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom' // Cambiamos el import
 
-// Imports 
-import '../../../public/styles/Errores/notfound.css'
+// Import styles
+import '../../../src/styles/Errores/notfound.css'
 
-// Main component 
+// Main component
 export const NotFound = () => {
   const navigate = useNavigate() // Obtenemos la función de navegación
 

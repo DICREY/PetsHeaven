@@ -3,9 +3,10 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 
 // Imports
-import '../public/styles/Varios/index.css'
 import App from './App'
 
+// Import styles
+import './styles/Varios/index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

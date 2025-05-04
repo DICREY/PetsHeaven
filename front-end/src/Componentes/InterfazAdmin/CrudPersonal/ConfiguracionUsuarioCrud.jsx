@@ -1,12 +1,15 @@
+// Librarys
 import React from "react"
 import { useState } from "react"
 import { ChevronLeft, User, Shield, FileText, Lock } from "lucide-react"
+
+// Imports 
 import {InformacionPersonalCrud} from "./InformacionPersonalCrud"
 import {RolPrivilegiosCrud} from "./RolPrivilegioCrud"
 import {InformacionProfesionalCrud} from "./InformacionProfesionalCrud"
 import {ContrasenaCrud} from "./ContrasenaCrud"
 
-
+// Component
 export const ConfiguracionUsuarioCrud = () => {
   const [activeTab, setActiveTab] = useState("personal")
   const [isEditing, setIsEditing] = useState(false)

@@ -5,9 +5,11 @@ import { Link, useNavigate } from 'react-router'
 import swal from 'sweetalert'
 
 // Imports 
-import '../../../public/styles/Formularios/login.css'
 import { login } from '../Varios/Requests'
 import { getRoles, errorStatusHandler } from '../Varios/Util'
+
+// Import styles
+import '../../../src/styles/Formularios/login.css'
 
 // Main component 
 export const LoginForm = ({ URL = "" }) => {

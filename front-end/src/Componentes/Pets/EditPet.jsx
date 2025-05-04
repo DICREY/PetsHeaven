@@ -7,7 +7,7 @@ import React, { Component } from 'react'
 import swal from 'sweetalert'
 
 // Import Styles
-import '../../../public/styles/Pets/editPets.css'
+import '../../../src/styles/Pets/editPets.css'
 
 // Main component 
 export class EditPetButton extends Component {

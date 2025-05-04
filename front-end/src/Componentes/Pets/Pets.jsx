@@ -7,7 +7,7 @@ import { EditPetButton } from './EditPet'
 import { PetDetails } from './PetDetails'
 
 // Import Styles 
-import '../../../public/styles/Pets/pets.css'
+import '../../../src/styles/Pets/pets.css'
 
 // Librarys 
 import React, { useState, useEffect } from "react"

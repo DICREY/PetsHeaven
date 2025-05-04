@@ -1,7 +1,7 @@
 // Librarys 
-import React, {useEffect, useState} from "react"
-import { useNavigate, Outlet } from "react-router-dom"
-import { Dog, Plus } from "lucide-react"
+import React, {useEffect, useState} from 'react'
+import { useNavigate, Outlet } from 'react-router-dom'
+import { Dog, Plus } from 'lucide-react'
  
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
@@ -14,10 +14,10 @@ import { PetDetails } from '../Pets/PetDetails'
 import { GlobalTable } from '../InterfazAdmin/GlobalTable'
 
 // Import Styles 
-import "../../../public/styles/InterfazAdmin/GesMascota.css"
+import '../../../src/styles/InterfazAdmin/GesMascota.css'
 
 // Main component 
-export function GesMascota({ URL = "" }) {
+export function GesMascota({ URL = '' }) {
   // Declare Vars
   const mainURL = `${URL}/pet`
   const [petsData, setPetsData] = useState([])
@@ -35,13 +35,13 @@ export function GesMascota({ URL = "" }) {
   // Functions
   // fetch para traer datos
   const fetchData = async () => {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem('token')
       try {
         if(token) {
           const pets = await GetData(`${mainURL}/all`,token)  
           const roles = getRoles(token)
 
-          const admin = roles.some(role => role.toLowerCase() === "administrador")
+          const admin = roles.some(role => role.toLowerCase() === 'administrador')
           admin?setIsAdmin(true):setIsAdmin(false)
 
           setHeaders({
@@ -56,11 +56,11 @@ export function GesMascota({ URL = "" }) {
           setPetsAlmac(pets)
           const shortPets = divideList(pets,4)
           setPetsData(shortPets)
-        } else navigate("/34")
+        } else navigate('/34')
       } catch (err) {
         err.message? swal({
-            icon: "error",
-            title: "Error",
+            icon: 'error',
+            title: 'Error',
             text: err.message
         }): console.log(err)
       }
@@ -98,19 +98,19 @@ export function GesMascota({ URL = "" }) {
   }, [])
 
   return (
-    <main className="appgesmascota">
+    <main className='appgesmascota'>
       <NavBarAdmin />
       {
         petsData?(
-          <section className="contenedorgesmascota">
-            <div className="panelgesmascota">
-              <div className="cabeceragesmascota">
-                <h1 className="titulogesmascota">
-                  <Dog className="iconotitulogesmascota" size={20} />
+          <section className='contenedorgesmascota'>
+            <div className='panelgesmascota'>
+              <div className='cabeceragesmascota'>
+                <h1 className='titulogesmascota'>
+                  <Dog className='iconotitulogesmascota' size={20} />
                   Gestión de mascotas
                 </h1>
-                <button className="botongesmascota" onClick={() => navigate("/mascota/registro")}>
-                  <Plus size={16} className="iconoplusadminhome" />
+                <button className='botongesmascota' onClick={() => navigate('/mascota/registro')}>
+                  <Plus size={16} className='iconoplusadminhome' />
                   Registrar mascota
                 </button>
               </div>

@@ -2,8 +2,8 @@
 import React from 'react'
 import { Link } from 'react-router'
 
-// Imports 
-import '../../../public/styles/Errores/notfound.css'
+// Import styles
+import '../../../src/styles/Errores/notfound.css'
 
 // Main component 
 export const NotFound = ({ num = 400, redirectTo }) => {
