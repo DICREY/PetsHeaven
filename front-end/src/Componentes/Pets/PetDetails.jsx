@@ -1,7 +1,6 @@
 // Librarys 
 import React, { useEffect, useState } from 'react'
 import swal from 'sweetalert'
-import { Image } from 'primereact'
         
 // Import
 import { Resumen } from './Details/Resumen'
@@ -92,14 +91,12 @@ export const PetDetails = ({ datas, ready, editMode, open = false, admin = false
                         {/* Header con foto y datos principales */}
                         <header className="pet-header">
                             <aside className="pet-avatar-container">
-                                <Image 
-                                    // className="pet-avatar"
+                                <img 
+                                    className="pet-avatar"
                                     src={datas.fot_mas} 
                                     alt={`${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`} 
                                     preview
-                                />
-                                {/* <img 
-                                /> */}
+                                />    
                                 <div className="pet-status">
                                     <span className={`status-badge ${datas.est_rep_mas === 'Esterilizado' ? 'status-active' : ''}`}>
                                         {datas.est_rep_mas}
