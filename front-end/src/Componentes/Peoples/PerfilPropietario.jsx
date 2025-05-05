@@ -152,6 +152,7 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '' }) => {
     if (!userSelect) navigate('/admin/consultorio')
     setUserData(userSelect)
     setFormData(userSelect)
+    console.log(userSelect)
   },[])
 
   return (

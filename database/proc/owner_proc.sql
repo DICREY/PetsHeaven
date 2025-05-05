@@ -29,7 +29,7 @@ BEGIN
                 m.fot_mas,
                 m.fec_cre_mas
             ) 
-            SEPARATOR '; '
+            SEPARATOR '---'
         ) AS mascotas
     FROM 
         personas u
