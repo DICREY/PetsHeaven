@@ -3,7 +3,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 
 // Imports
-import App from './App'
+import App from './Modules/App'
 
 // Import styles
 import './styles/Varios/index.css'
