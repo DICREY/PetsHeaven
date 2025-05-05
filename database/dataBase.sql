@@ -51,12 +51,18 @@ CREATE TABLE pets_heaven.categorias_veterinario(
     nom_cat VARCHAR(100) NOT NULL
 );
 
+CREATE TABLE pets_heaven.otorgar_categoria_vet(
+    id_cat INT NOT NULL,INDEX(id_cat),FOREIGN KEY(id_cat) REFERENCES categorias_veterinario(id_cat) ON DELETE CASCADE ON UPDATE CASCADE,
+    id_per INT NOT NULL,INDEX(id_per),FOREIGN KEY(id_per) REFERENCES personas(id_per) ON DELETE CASCADE ON UPDATE CASCADE,
+    fec_oto DATE DEFAULT(NOW()),
+    PRIMARY KEY(id_cat,id_per)
+);
+
 CREATE TABLE pets_heaven.veterinarios(
     id_vet INT PRIMARY KEY,INDEX(id_vet),FOREIGN KEY(id_vet)  REFERENCES personas(id_per) ON DELETE CASCADE ON UPDATE CASCADE,
     especialidad VARCHAR(100) NOT NULL,
     horarios VARCHAR(100) NOT NULL,
     num_tar_vet VARCHAR(100) DEFAULT("no-registrado"),
-    cat_vet INT NOT NULL,INDEX(cat_vet), FOREIGN KEY(cat_vet) REFERENCES categorias_veterinario(id_cat) ON DELETE CASCADE ON UPDATE CASCADE,
     fot_tar_vet TEXT DEFAULT("no-registrado"),
     fot_vet TEXT DEFAULT("https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg")
 );
