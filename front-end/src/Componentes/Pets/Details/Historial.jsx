@@ -1,5 +1,5 @@
 // Imports 
-import { formatDate,errorStatusHandler } from '../../Varios/Util'
+import { errorStatusHandler } from '../../Varios/Util'
 import { PostData } from '../../Varios/Requests'
 import { Loader } from '../../Errores/Loader'
 
@@ -19,15 +19,16 @@ export const Historial = ({ datas, URL = "" }) => {
 
   // Functions
   const fetchData = async (url = "", token = "") => {
-    console.log(mainURL)
     try {
       const history = await PostData(url, token, {
         firstData: datas.nom_mas,
         secondData: datas.doc_per
       })
       if(history) {
-        setHistory(history)
-        setLoading(false)
+        if (history.result[0]) {
+          setHistory(history.result[0])
+          setLoading(false)
+        }
       }
     } catch (err) {
       if (err.status) {
@@ -43,7 +44,6 @@ export const Historial = ({ datas, URL = "" }) => {
   }
 
   useEffect(() => {
-    console.log(mainURL)
     const token = localStorage.getItem("token")
     if (!datas) console.log("sin datas")
 
@@ -59,7 +59,6 @@ export const Historial = ({ datas, URL = "" }) => {
             {
               history.citas?.map((history, index) => (
                 <article className="info-card"> 
-                  {console.log(history)}
                   <h2>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>

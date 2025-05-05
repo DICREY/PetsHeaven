@@ -12,7 +12,7 @@ export const Logout = () => {
 }
 
 // Dividir lista en partes 
-export const divideList = (array = [], size = 0) => {
+export const divideList = (array = [], size = 5) => {
   const result = []
   for (let i = 0; i < array.length; i += size) {
     result.push(array.slice(i, i + size))

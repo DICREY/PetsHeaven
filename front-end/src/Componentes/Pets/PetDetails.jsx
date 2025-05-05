@@ -1,23 +1,27 @@
 // Librarys 
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router'
 import swal from 'sweetalert'
         
 // Import
 import { Resumen } from './Details/Resumen'
 import { Historial } from './Details/Historial'
-import { Citas } from './Details/Citas'
 import { DeleteData } from '../Varios/Requests'
 import { getRoles,loadingAlert } from '../Varios/Util'
+// import { Citas } from './Details/Citas'
 
 // Import styles 
 import '../../../src/styles/Pets/petDetails.css'
 
 // Main component
 export const PetDetails = ({ datas, ready, editMode, open = false, admin = false, URL = ""}) => {
-    // Vars 
+    // Dynamic vars
     const [isOpen,setIsOpen] = useState(open)
     const [isAdmin,setIsAdmin] = useState(admin)
     const [currentTab,setCurrentTab] = useState("Resumen")
+    
+    // Vars 
+    const navigate = useNavigate()
 
     // Functions
     // Cerrar sección de detalles
@@ -94,8 +98,7 @@ export const PetDetails = ({ datas, ready, editMode, open = false, admin = false
                                 <img 
                                     className="pet-avatar"
                                     src={datas.fot_mas} 
-                                    alt={`${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`} 
-                                    preview
+                                    alt={`${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`}     
                                 />    
                                 <div className="pet-status">
                                     <span className={`status-badge ${datas.est_rep_mas === 'Esterilizado' ? 'status-active' : ''}`}>
@@ -124,7 +127,10 @@ export const PetDetails = ({ datas, ready, editMode, open = false, admin = false
                                     </svg>
                                     Editar datos
                                 </button>
-                                <button className="action-btn primary">
+                                <button 
+                                    className="action-btn primary"
+                                    onClick={() => navigate("/admin/calendario/general")}
+                                >
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M8 7V3M16 7V3M7 11H17M5 21H19C20.1046 21 21 20.1046 21 19V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V19C3 20.1046 3.89543 21 5 21Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                                     </svg>
@@ -146,19 +152,19 @@ export const PetDetails = ({ datas, ready, editMode, open = false, admin = false
                         {/* Navegación por pestañas */}
                         <nav className="pet-tabs">
                             <a className='tab-active link-active' onClick={tabSelected} >Resumen</a>
-                            <a className='tab-active' onClick={tabSelected} >Historial</a>
-                            <a className='tab-active' onClick={tabSelected} >Citas</a>    
+                            <a className='tab-active' onClick={tabSelected} >Historial</a>    
                         </nav>
 
                         {/* Contenido principal organizado en tarjetas */}
                         {
                             currentTab === "Resumen"?(
                                 <Resumen datas={datas} />
-                            ):currentTab === "Historial"?(
-                                <Historial datas={datas} URL={URL} />
                             ):(
-                                <Citas datas={datas} />
+                                <Historial datas={datas} URL={URL} />
                             )
+                            // ):(
+                            //     <Citas datas={datas} />
+                            // )
                         }
 
                     </div>

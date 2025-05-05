@@ -65,13 +65,13 @@ export async function PostData(URL = "", token = "", datas = {}) {
         })
   
       // Manejar diferentes códigos de estado
-      if (!response.ok) {
+    if (!response.ok) {
         throw response
-      }
+    }
   
       // Parsear la respuesta como JSON
-      const data = await response
-      return data
+    const data = await response.json()
+        return data
   
     } catch (error) {
         throw error

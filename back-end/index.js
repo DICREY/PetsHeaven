@@ -5,9 +5,10 @@ const bodyParser = require('body-parser');
 require('dotenv').config()
 
 // Imports 
+const { errorHandler } = require('./middleware/error.handler')
 const { validatorHeaders } = require('./middleware/validator.handler')
-const { routerApi } = require('./server/router')
 const { corsOptions, limiter } = require('./middleware/varios.handler')
+const { routerApi } = require('./server/router')
 
 // vars
 const app = express()
@@ -20,6 +21,7 @@ app.disable('x-powered-by')
 app.use(bodyParser.json({ limit: '1mb' }));
 app.use(express.json())
 app.use(cors(corsOptions))
+app.use(errorHandler)
 app.use(validatorHeaders)
 app.use(limiter)
 

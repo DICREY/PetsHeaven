@@ -9,20 +9,22 @@ import { formatDate, divideList,getAge } from '../Varios/Util'
 import '../../../src/styles/InterfazAdmin/GlobalTable.css'
 
 export class GlobalTable extends Component {
-    constructor (props) {
+    constructor(props) {
       super(props)
-
-      this.state = {
-        clickCount: 0,
-        page: 1,
-        datas: this.props.data
-      }
 
       // Declare params
       this.void = () => console.log('ver')
+      this.defaultColumns = 5
       this.onMore = this.props.watch || this.void
       this.onEdit = this.props.edit || this.void
       this.headersSearch = this.props.headersSearch || this.void
+      
+      // Declare states
+      this.state = {
+        clickCount: 0,
+        page: 1,
+        datas: divideList(this.props.fullData,this.defaultColumns)
+      }
     }
 
     handleSearch = (term = '', data = [] ) => {
@@ -35,8 +37,8 @@ export class GlobalTable extends Component {
       })
     
       if (find) this.setState(() => ({
-          datas: divideList(find,4)
-        }))
+          datas: divideList(find,this.defaultColumns)
+      }))
     }
     
 
@@ -54,6 +56,16 @@ export class GlobalTable extends Component {
           clickCount: 0
         }))
       }, 300)
+    }
+
+    handleColumns = (e) => {
+      const { fullData } = this.props
+
+      this.defaultColumns = e.target.value
+
+      this.setState(() => ({
+        datas: divideList(fullData,this.defaultColumns)
+      }))
     }
 
     prevPage = () => {
@@ -100,11 +112,14 @@ export class GlobalTable extends Component {
             <nav className='controles-gestion'>
               <div className='btns-gestion'>
                 <span>Mostrar</span>
-                <select className='select-gestion'>
-                  <option value='10'>10</option>
-                  <option value='25'>25</option>
-                  <option value='50'>50</option>
-                  <option value='100'>100</option>
+                <select 
+                  className='select-gestion'
+                  onChange={(e) => this.handleColumns(e)}
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                  <option value={20}>20</option>
                 </select>
                 <span>registros</span>
               </div>
