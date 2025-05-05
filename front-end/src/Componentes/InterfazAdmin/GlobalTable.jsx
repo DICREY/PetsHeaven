@@ -15,6 +15,7 @@ export class GlobalTable extends Component {
       // Declare params
       this.void = () => console.log('ver')
       this.defaultColumns = 5
+      this.defaultImg = this.props.imgDefault
       this.onMore = this.props.watch || this.void
       this.onEdit = this.props.edit || this.void
       this.headersSearch = this.props.headersSearch || this.void
@@ -89,13 +90,13 @@ export class GlobalTable extends Component {
           
         switch (item[header]) {
           case 'date':
-            return formatDate(item[header]);
+            return formatDate(item[header])
           case 'array':
-            return item[header]?.join(', ') || '- Empty -';
+            return item[header]?.join(', ') || '- Empty -'
           case 'status':
-            return <span className={`badge ${item[header]}`}>{item[header]}</span>;
+            return <span className={`badge ${item[header]}`}>{item[header]}</span>
           default:
-            return item[header] || '- Empty -';
+            return item[header] || '- Empty -'
         }
     }
 

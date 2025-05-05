@@ -5,7 +5,7 @@ import { User, PawPrint, ArrowLeft, Trash2, Edit, Save, X, Calendar } from 'luci
 
 // Imports 
 import {NavBarAdmin} from '../BarrasNavegacion/NavBarAdmi'
-import { loadingAlert, getRoles, formatDate, getAge, errorStatusHandler } from '../Varios/Util'
+import { loadingAlert, getRoles, formatDate, getAge, errorStatusHandler, checkImage } from '../Varios/Util'
 import { DescriptionPeople } from './DescriptionPeople'
 import { DeleteData, ModifyData } from '../Varios/Requests'
 
@@ -13,7 +13,7 @@ import { DeleteData, ModifyData } from '../Varios/Requests'
 import '../../../src/styles/InterfazAdmin/PerfilPropietario.css'
 
 // Component 
-export const PerfilPropietario = ({ userSelect,user = false, owner = false, URL = '' }) => {
+export const PerfilPropietario = ({ userSelect, owner = false, URL = '' }) => {
   // Vars dynamic
   const [activeTab, setActiveTab] = useState('propietario')
   const [isEditing, setIsEditing] = useState(false)
@@ -21,10 +21,13 @@ export const PerfilPropietario = ({ userSelect,user = false, owner = false, URL 
   const [petsData,setPetsData] = useState([])
   const [userData,setUserData] = useState({})
   const [modPro,setModPro] = useState({})
+  const [validImg, setValidImg] = useState(false)
 
   // Vars 
   const mainUrl = `${URL}/owner`
   const secondUrl = `${URL}/user`
+  const imgDefault = "https://raw.githubusercontent.com/Mogom/Imagenes_PetsHeaven/refs/heads/main/Defaults/userImg.default.webp"
+  const imgDefaultPet = "https://raw.githubusercontent.com/Mogom/Imagenes_PetsHeaven/refs/heads/main/Defaults/userImg.default.webp"
   const navigate = useNavigate()
   const headers = {
     Nombres: 'nom_per',
@@ -224,6 +227,7 @@ export const PerfilPropietario = ({ userSelect,user = false, owner = false, URL 
               handleChange={handleChange} 
               headers={headers}
               datas={userSelect}
+              imgDefault={imgDefault}
               navigate={navigate}
               isEditing={isEditing}
               disabled={['doc_per', 'tip_doc_per']}
@@ -235,9 +239,24 @@ export const PerfilPropietario = ({ userSelect,user = false, owner = false, URL 
               <div className='mascotasGrillaProps'>
                 {petsData.map((mascota) => (
                   <div key={mascota.doc_per} className='mascotaTarjetaProps'>
-                    <div className='mascotaImagenProps'>
-                      <img src={mascota.fot_mas || '/placeholder.svg'} alt={mascota.nom_mas} />
-                    </div>
+                    {checkImage(mascota.fot_mas,setValidImg)}
+                    {
+                      validImg? (
+                        <div className='mascotaImagenProps'>
+                          <img 
+                            src={mascota.fot_mas} 
+                            alt={`${mascota.esp_mas} de raza ${mascota.raz_mas} color ${mascota.col_mas} con nombre ${mascota.nom_mas}`}
+                          />
+                        </div>
+                      ): (
+                        <div className='mascotaImagenProps'>
+                          <img 
+                            src={imgDefaultPet} 
+                            alt={`${mascota.esp_mas} de raza ${mascota.raz_mas} color ${mascota.col_mas} con nombre ${mascota.nom_mas}`}
+                          />
+                        </div>
+                      )
+                    }
                     <div className='mascotaInfoProps'>
                       <h3 className='mascotaNombreProps'>{mascota.nom_mas}</h3>
                       <div className='mascotaDetallesProps'>

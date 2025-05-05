@@ -1,5 +1,5 @@
 // Librarys 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router'
 import swal from 'sweetalert'
         
@@ -7,18 +7,19 @@ import swal from 'sweetalert'
 import { Resumen } from './Details/Resumen'
 import { Historial } from './Details/Historial'
 import { DeleteData } from '../Varios/Requests'
-import { getRoles,loadingAlert } from '../Varios/Util'
+import { getRoles,loadingAlert, checkImage } from '../Varios/Util'
 // import { Citas } from './Details/Citas'
 
 // Import styles 
 import '../../../src/styles/Pets/petDetails.css'
 
 // Main component
-export const PetDetails = ({ datas, ready, editMode, open = false, admin = false, URL = ""}) => {
+export const PetDetails = ({ datas, ready, editMode, imgDefault, open = false, admin = false, URL = ""}) => {
     // Dynamic vars
     const [isOpen,setIsOpen] = useState(open)
     const [isAdmin,setIsAdmin] = useState(admin)
     const [currentTab,setCurrentTab] = useState("Resumen")
+    const [validImage,setValidImage] = useState(false)
     
     // Vars 
     const navigate = useNavigate()
@@ -76,7 +77,7 @@ export const PetDetails = ({ datas, ready, editMode, open = false, admin = false
                 text: err.message
             }): console.log(err)
         }
-    }
+    }    
     
     return (
         <main>
@@ -95,11 +96,23 @@ export const PetDetails = ({ datas, ready, editMode, open = false, admin = false
                         {/* Header con foto y datos principales */}
                         <header className="pet-header">
                             <aside className="pet-avatar-container">
-                                <img 
-                                    className="pet-avatar"
-                                    src={datas.fot_mas} 
-                                    alt={`${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`}     
-                                />    
+                                {checkImage(datas.fot_mas,setValidImage)}
+                                {
+                                    validImage?(
+                                        <img 
+                                            className="pet-avatar"
+                                            src={datas.fot_mas} 
+                                            alt={`${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`}     
+                                        />        
+                                    ) : (
+                                        <img 
+                                            className="pet-avatar"
+                                            src={imgDefault}    
+                                            alt={`${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`}     
+                                        />
+                                    )
+
+                                }
                                 <div className="pet-status">
                                     <span className={`status-badge ${datas.est_rep_mas === 'Esterilizado' ? 'status-active' : ''}`}>
                                         {datas.est_rep_mas}

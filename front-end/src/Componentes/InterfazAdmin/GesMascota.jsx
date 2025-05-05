@@ -31,6 +31,7 @@ export function GesMascota({ URL = '' }) {
 
   // Vars 
   const navigate = useNavigate()
+  const imgDefault = "https://raw.githubusercontent.com/Mogom/Imagenes_PetsHeaven/refs/heads/main/Defaults/petImg.default.webp"
 
   // Functions
   // fetch para traer datos
@@ -136,6 +137,7 @@ export function GesMascota({ URL = '' }) {
           datas={selectedPet} 
           open={showModal} 
           admin={isAdmin}
+          imgDefault={imgDefault}
           ready={(state) => setShowModal(state)}
           editMode={() => setEditMode(true)} />
       )}

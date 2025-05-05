@@ -14,4 +14,4 @@ function errorHandler (err,req,res,next) {
 }
 
 // export middleware 
-module.exports = { logErrors,errorHandler }
+module.exports = { logErrors, errorHandler }

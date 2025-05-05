@@ -20,6 +20,15 @@ export const divideList = (array = [], size = 5) => {
   return result
 }
 
+// Verify if load img
+export const checkImage = (src = "",set) => {
+  const img = new Image()
+  img.src = src
+
+  img.onload = () => set(true)
+  img.onerror = () => set(false)
+}
+
 
 // decodificar token
 export const decodeJWT = (token = "") => {

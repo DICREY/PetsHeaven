@@ -1,14 +1,14 @@
 // Librarys 
-import React, { use, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 import { Plus} from "lucide-react"
 
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GetData } from '../Varios/Requests'
-import { divideList,errorStatusHandler, getName } from '../Varios/Util'
-import { Loader } from '../Errores/Loader'
+import { divideList, errorStatusHandler } from '../Varios/Util'
 import { GlobalTable } from './GlobalTable'
+// import { Loader } from '../Errores/Loader'
 
 // Import styles 
 import '../../../src/styles/InterfazAdmin/GesUsuario.css'

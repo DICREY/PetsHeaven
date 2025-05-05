@@ -19,7 +19,18 @@ INSERT INTO pets_heaven.personas (nom_per, ape_per, fec_nac_per, tip_doc_per, do
 ('Luis', 'García',NOW(), 'TI', '98765432', 'Transversal 12 #34-56', '3186789012', '3197890123', 'luis.garcia@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi','Masculino'),
 ('Nikola', 'Tesla',NOW(), 'CC', '1298765432', 'Trasversal 12 #34-56', '3186789012', '', 'admin@gmail.com', '$2b$15$P3DlhprB7vdchCiVoGq7SOrvG/ZOJyVVyTInPk7QZPbaKbUNPPQa6','Masculino'),
 ('Marie', 'Curie',NOW(), 'CC', '658790781', 'calle 12 #34-56', '3121141801', '', 'vet@gmail.com', '$2b$15$TDXtAUTWojmNW0MtBmCCQO4Y.6R9OzUAmg9QItKhQVqNUlOD/CTVe','Femenino'),
-('Thomas', 'Edison',NOW(), 'CC', '908990781', 'calle 34 #56', '3121141801', '', 'user@gmail.com', '$2b$15$qxcK9ianAu/jeuG1jBFGReW2iF6E7sfSyPho9ERGAtiJvqwb1MnNm','Masculino');
+('Thomas', 'Edison',NOW(), 'CC', '908990781', 'calle 34 #56', '3121141801', '', 'user@gmail.com', '$2b$15$qxcK9ianAu/jeuG1jBFGReW2iF6E7sfSyPho9ERGAtiJvqwb1MnNm','Masculino'),
+('Sofía', 'López', NOW(), 'CC', '55667788', 'Calle 89 #10-11', '3001122334', NULL, 'sofia.lopez@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Femenino'),
+('Pedro', 'Hernández', NOW(), 'CC', '99887766', 'Av. 68 #23-45', '3102233445', '3203344556', 'pedro.hernandez@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Masculino'),
+('Laura', 'Díaz', NOW(), 'CE', 'CD987654', 'Carrera 12 #34-56', '3154455667', NULL, 'laura.diaz@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Femenino'),
+('Jorge', 'Sánchez', NOW(), 'CC', '33445566', 'Diagonal 78 #90-12', '3175566778', NULL, 'jorge.sanchez@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Masculino'),
+('Elena', 'Ramírez', NOW(), 'TI', '11223355', 'Transversal 45 #67-89', '3186677889', '3197788990', 'elena.ramirez@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Femenino'),
+('Ricardo', 'Torres', NOW(), 'CC', '66778899', 'Calle 34 #56-78', '3009988776', NULL, 'ricardo.torres@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Masculino'),
+('Carmen', 'Vargas', NOW(), 'CC', '22334455', 'Av. 56 #78-90', '3108877665', '3207766554', 'carmen.vargas@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Femenino'),
+('Fernando', 'Castro', NOW(), 'CE', 'EF654321', 'Carrera 78 #90-12', '3156655443', NULL, 'fernando.castro@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Masculino'),
+('Patricia', 'Ortega', NOW(), 'CC', '77889900', 'Diagonal 12 #34-56', '3175544332', NULL, 'patricia.ortega@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Femenino'),
+('Roberto', 'Mendoza', NOW(), 'CC', '88990011', 'Transversal 34 #56-78', '3184433221', '3193322110', 'roberto.mendoza@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Masculino');
+
 
 INSERT INTO pets_heaven.otorgar_roles (id_rol, id_per) VALUES
 (1,1),
@@ -40,7 +51,17 @@ INSERT INTO pets_heaven.otorgar_roles (id_rol, id_per) VALUES
 (3,6),
 (2,7),
 (3,7),
-(3,8);
+(3,8),
+(3,9),
+(3,10),
+(3,11),
+(3,12),
+(3,13),
+(3,14),
+(3,15),
+(3,16),
+(3,17),
+(3,18);
 
 INSERT INTO pets_heaven.otorgar_permisos (id_pem, id_per) VALUES
 (1,1),
@@ -74,7 +95,27 @@ INSERT INTO pets_heaven.mascotas
 ('Lucy', 'Perro', 'Blanco y Negro', 'Border Collie', 'Eukanuba', '2016-09-05', 20.3, 'F', 2, 'Esterilizado', 'https://ventadecachorros.com.co/wp-content/uploads/2020/10/cachorros-border-collie-hembras-y-machos-D_NQ_NP_886207-MCO33051173463_112019-F.jpg'),
 ('Oliver', 'Gato', 'Naranja', 'Maine Coon', 'Blue Buffalo', '2018-12-18', 7.5, 'M', 3, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2024-02/sitesdefaultfilesstylessquare_medium_440x440public2022-06Maine20Coon.1.jpg?itok=25PAnnaV'),
 ('Daisy', 'Perro', 'Crema', 'Poodle', 'Nutro', '2020-06-08', 6.8, 'F', 4, 'No esterilizado', 'https://img.freepik.com/fotos-premium/lindo-cachorro-caniche-crema-poco-peludo_126745-916.jpg'),
-('Leo', 'Perro', 'Negro y Fuego', 'Doberman', 'Canidae', '2017-04-20', 34.2, 'M', 5, 'Esterilizado', 'https://tucachorrotienda.com/wp-content/uploads/2019/12/doberman-cachorro5.jpg');
+('Leo', 'Perro', 'Negro y Fuego', 'Doberman', 'Canidae', '2017-04-20', 34.2, 'M', 5, 'Esterilizado', 'https://tucachorrotienda.com/wp-content/uploads/2019/12/doberman-cachorro5.jpg'),
+('Toby', 'Perro', 'Blanco', 'Bichón Frisé', 'Purina Pro Plan', '2020-08-12', 5.2, 'M', 6, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0006_bichon_frise.jpg'),
+('Mía', 'Gato', 'Calicó', 'Mestizo', 'Whiskas', '2019-04-25', 3.9, 'F', 7, 'No esterilizado', 'https://www.thesprucepets.com/thmb/8xUqz8fxYb9yX9r1XJZqJZQY7j4=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/calico-cats-profile-554694-hero-728x546-2b5d315d4b6b4a4c8c8c4c4c4c4c4c4c.jpg'),
+('Thor', 'Perro', 'Negro', 'Rottweiler', 'Royal Canin', '2018-11-30', 45.0, 'M', 8, 'No esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0013_rottweiler.jpg'),
+('Lola', 'Gato', 'Blanco', 'Angora Turco', 'Hill\'s Science Diet', '2021-01-15', 4.5, 'F', 9, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0001_angora_turco.jpg'),
+('Bruno', 'Perro', 'Marrón', 'Beagle', 'Pedigree', '2019-07-20', 15.3, 'M', 10, 'No esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0002_beagle.jpg'),
+('Nina', 'Gato', 'Gris', 'Británico de Pelo Corto', 'Friskies', '2020-03-05', 5.8, 'F', 6, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0004_britanico_pelo_corto.jpg'),
+('Zeus', 'Perro', 'Negro', 'Pastor Alemán', 'Eukanuba', '2017-12-10', 38.7, 'M', 7, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0012_pastor_aleman.jpg'),
+('Luna', 'Gato', 'Blanco', 'Ragdoll', 'Blue Buffalo', '2021-05-18', 6.2, 'F', 8, 'No esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0011_ragdoll.jpg'),
+('Rex', 'Perro', 'Marrón', 'Boxer', 'Nutro', '2018-09-22', 30.5, 'M', 9, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0003_boxer.jpg'),
+('Molly', 'Gato', 'Negro', 'Sphynx', 'Canidae', '2020-10-30', 3.5, 'F', 10, 'No esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0010_sphynx.jpg'),
+('Rocky', 'Perro', 'Blanco', 'Bull Terrier', 'Purina Dog Chow', '2019-06-14', 25.8, 'M', 6, 'No esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0005_bull_terrier.jpg'),
+('Chloe', 'Gato', 'Gris', 'Scottish Fold', 'Whiskas', '2021-02-28', 4.1, 'F', 7, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0009_scottish_fold.jpg'),
+('Max', 'Perro', 'Negro', 'Dálmata', 'Royal Canin', '2018-04-17', 28.3, 'M', 8, 'No esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0007_dalmata.jpg'),
+('Bella', 'Gato', 'Blanco', 'Persa', 'Hill\'s Science Diet', '2020-11-09', 5.5, 'F', 9, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0008_persa.jpg'),
+('Simba', 'Perro', 'Dorado', 'Labrador Retriever', 'Pedigree', '2019-08-25', 31.2, 'M', 10, 'No esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0014_labrador_retriever.jpg'),
+('Lily', 'Gato', 'Atigrado', 'Maine Coon', 'Friskies', '2020-07-03', 7.8, 'F', 6, 'No esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0015_maine_coon.jpg'),
+('Toby', 'Perro', 'Blanco y Negro', 'Border Collie', 'Eukanuba', '2017-10-12', 21.5, 'M', 7, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0016_border_collie.jpg'),
+('Mia', 'Gato', 'Naranja', 'Mestizo', 'Blue Buffalo', '2021-04-20', 4.3, 'F', 8, 'No esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0017_mestizo.jpg'),
+('Bruno', 'Perro', 'Crema', 'Caniche', 'Nutro', '2020-09-15', 7.2, 'M', 9, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0018_caniche.jpg'),
+('Lola', 'Gato', 'Negro', 'Bombay', 'Canidae', '2019-12-24', 4.0, 'F', 10, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0019_bombay.jpg');
 
 INSERT INTO pets_heaven.categorias_veterinario (nom_cat)
 VALUES 

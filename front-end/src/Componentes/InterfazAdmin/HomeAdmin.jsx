@@ -52,7 +52,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner }) {
         return { ...item, mascotas: [] }
       }
 
-      const petList = item.mascotas.split('').filter(Boolean)
+      const petList = item.mascotas.split('---').filter(Boolean)
         .map(petString => {
           const petData = petString.split(',')
           return {

@@ -1,12 +1,19 @@
 // Libraries
 import React from "react"
-import { User } from "lucide-react"
+
+// Imports 
 import { formatDate } from '../Varios/Util'
 
 // Component 
 export class DescriptionPeople extends React.Component {
   constructor(props) {
     super(props)
+
+    this.verifyData()
+
+    this.state = {
+      validImg: false
+    }
   }
 
   // Functions
@@ -27,9 +34,22 @@ export class DescriptionPeople extends React.Component {
     }
   }
 
+  checkImage = (src = "") => {
+    const img = new Image()
+    img.src = src
+  
+    img.onload = () => this.setState({ validImg: true })
+    img.onerror = () => this.setState({ validImg: false })
+  }
+
+  verifyData = () => {
+    if(!this.props.datas) window.location.replace((window.location.origin))
+  }
+
   render = () => {
-    let { datas, isEditing, handleChange, headers } = this.props
-    console.log(datas)
+    let { datas, isEditing, handleChange, headers, imgDefault } = this.props
+    const { validImg } = this.state
+
     const headersKeys = Object.keys(headers)
     const headersValues = Object.values(headers)
 
@@ -46,12 +66,24 @@ export class DescriptionPeople extends React.Component {
         <div className="propietarioInfoProps">
           <div className="propietarioFotoInfoProps">
             <div className="propietarioFotoProps">
-              <img 
-                width={100}
-                height={100}
-                src={datas.fot_vet || '/default-user.jpg'}
-                alt={`${datas.nom_per} ${datas.ape_per}` || "No Registrado"}
-              />
+              {this.checkImage(datas.fot_vet)}
+              {
+                validImg? (
+                  <img 
+                    width={100}
+                    height={100}
+                    src={datas.fot_vet}
+                    alt={`${datas.nom_per} ${datas.ape_per}` || "No Registrado"}
+                  />
+                ):(
+                  <img 
+                    width={100}
+                    height={100}                      
+                    src={imgDefault}
+                    alt={`${datas.nom_per} ${datas.ape_per}` || "No Registrado"}
+                  />
+                )
+              }
             </div>
             <div className="propietarioDatosProps">
               {

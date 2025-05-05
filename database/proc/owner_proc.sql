@@ -87,7 +87,7 @@ BEGIN
                     m.fot_mas,
                     m.fec_cre_mas
                 ) 
-                SEPARATOR '; '
+                SEPARATOR '---'
             ) 
             FROM mascotas m 
             WHERE 
@@ -156,7 +156,7 @@ BEGIN
                     m.fot_mas,
                     m.fec_cre_mas
                 ) 
-                SEPARATOR '; '
+                SEPARATOR '---'
             ) 
             FROM mascotas m 
             WHERE 
@@ -221,7 +221,7 @@ BEGIN
                     m.fot_mas,
                     m.fec_cre_mas
                 ) 
-                SEPARATOR '; '
+                SEPARATOR '---'
             ) 
         ) AS mascotas
     FROM 
