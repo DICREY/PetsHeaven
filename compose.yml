@@ -8,5 +8,16 @@ services:
     environment:
       - MARIADB_USER=root
       - MARIADB_ROOT_PASSWORD=123
+  backend:
+    container_name: BackEndPetsHeaven
+    image: node
+    build: 
+      context: ./back-end
+      dockerfile: DockerFile
+    ports:
+      - "80:3000"
+    volumes:
+      - pets-back:
 volumes:
   pets-data:
+  pets-back:
