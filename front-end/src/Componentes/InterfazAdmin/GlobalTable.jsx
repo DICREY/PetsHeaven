@@ -76,11 +76,10 @@ export class GlobalTable extends Component {
     }
 
     nextPage = () => {
-      const { data } = this.props
-      const { page } = this.state
-      if (page < data.length) this.setState( () => ({
+      const { page,datas } = this.state
+      if (page < datas.length) this.setState( () => ({
           page: page + 1
-        }))
+      }))
     }
     
     renderCell = (item, header) => {
