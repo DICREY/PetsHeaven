@@ -27,4 +27,4 @@ app.use(limiter)
 routerApi(app)
 
 
-app.listen(port,() => console.log('Host is: http://localhost:' + port))
+app.listen(port,'0.0.0.0',() => console.log('Host is: http://localhost:' + port))
