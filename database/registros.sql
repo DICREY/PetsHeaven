@@ -131,11 +131,17 @@ VALUES
 ('María', 'Gómez', '1990-08-15', 'DNI', '876333954321', 'Avenida Real 456', '555-5678', 'maria.gsdfsfomez@email.com', 'contraseña456', 'Femenino'),
 ('Carlos', 'López', '1985-12-05', 'DNI', '114444223344', 'Calle Nueva 789', '555-9101', 'carlos.losdfsdpez@email.com', 'contraseña789', 'Masculino');
 
-INSERT INTO pets_heaven.veterinarios (id_vet, especialidad, horarios, cat_vet, fot_vet)
+INSERT INTO pets_heaven.veterinarios (id_vet, especialidad, horarios, fot_vet)
 VALUES
-(1, 'Veterinario Generalista', 'Lunes a Viernes 9:00 - 18:00', 1, 'https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg'),
-(2, 'Cirujano Veterinario', 'Lunes a Viernes 10:00 - 16:00', 2, 'https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg'),
-(3, 'Especialista en Dermatología', 'Martes a Jueves 9:00 - 14:00', 3, 'https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg');
+(1, 'Veterinario Generalista', 'Lunes a Viernes 9:00 - 18:00', 'https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg'),
+(2, 'Cirujano Veterinario', 'Lunes a Viernes 10:00 - 16:00', 'https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg'),
+(3, 'Especialista en Dermatología', 'Martes a Jueves 9:00 - 14:00','https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg');
+
+INSERT INTO pets_heaven.otorgar_categoria_vet (id_cat,id_per)
+VALUES
+(1,1),
+(2,2),
+(3,3);
 
 INSERT INTO pets_heaven.consultas (pro_mas_con, vet_con, mas_con) VALUES
 (1, 1, 1),

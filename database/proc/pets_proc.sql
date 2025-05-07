@@ -271,7 +271,9 @@ BEGIN
             JOIN
                 veterinarios v ON v.id_vet = c.vet_con
             JOIN
-                categorias_veterinario cv ON v.cat_vet = cv.id_cat
+                otorgar_categoria_vet otv ON otv.id_per = c.vet_con
+            JOIN
+                categorias_veterinario cv ON otv.id_cat = cv.id_cat
         ) AS consultas,
         (
             SELECT GROUP_CONCAT(
@@ -302,7 +304,9 @@ BEGIN
             JOIN
                 veterinarios v ON v.id_vet = ct.vet_cit
             JOIN
-                categorias_veterinario cv ON v.cat_vet = cv.id_cat
+                otorgar_categoria_vet otv ON otv.id_per = ct.vet_cit
+            JOIN
+                categorias_veterinario cv ON otv.id_cat = cv.id_cat
             WHERE 
                 ct.estado != "CANCELADO"
         ) AS citas 
