@@ -21,10 +21,43 @@ export const GesAgendaGeneral = () => {
         {
             id: '1',
             title: 'Vacunación de Perro',
-            start: '2025-04-22T10:30:00',
-            end: '2025-04-22T11:00:00',
+            start: '2025-05-22T10:30:00',
+            end: '2025-05-22T11:00:00',
             description: 'Vacunación anual contra la rabia',
             category: 'vacuna',
+            paciente: 'Max (Golden Retriever)',
+            propietario: 'Juan Pérez',
+            telefono: '555-1234'
+        },
+        {
+            id: '2',
+            title: 'Vacunación de Perro',
+            start: '2025-05-22T11:30:00',
+            end: '2025-05-22T12:00:00',
+            description: 'Vacunación anual contra la rabia',
+            category: 'consulta',
+            paciente: 'Max (Golden Retriever)',
+            propietario: 'Juan Pérez',
+            telefono: '555-1234'
+        },
+        {
+            id: '3',
+            title: 'Vacunación de Perro',
+            start: '2025-05-22T12:30:00',
+            end: '2025-05-22T13:00:00',
+            description: 'Vacunación anual contra la rabia',
+            category: 'emergencia',
+            paciente: 'Max (Golden Retriever)',
+            propietario: 'Juan Pérez',
+            telefono: '555-1234'
+        },
+        {
+            id: '4',
+            title: 'Vacunación de Perro',
+            start: '2025-05-22T12:30:00',
+            end: '2025-05-22T13:00:00',
+            description: 'Vacunación anual contra la rabia',
+            category: 'emergencia',
             paciente: 'Max (Golden Retriever)',
             propietario: 'Juan Pérez',
             telefono: '555-1234'
@@ -160,7 +193,7 @@ export const GesAgendaGeneral = () => {
             <NavBarAdmin />
             <div className='calendar-container' id='main-container-calendar'>
                 
-            <div className="calendar-controls">
+            {/* <div className="calendar-controls">
                 <div className="navigation-buttons">
                     <button onClick={() => navigate('today')}>Hoy</button>
                     <button onClick={() => navigate('prev')}>&lt</button>
@@ -193,17 +226,22 @@ export const GesAgendaGeneral = () => {
                         Lista
                     </button>
                 </div>
-            </div>
+            </div> */}
 
             <FullCalendar
                 ref={calendarRef}
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
                 initialView={currentView}
-                headerToolbar={false}
+                headerToolbar={{
+                    start:"prev today next",
+                    center:"title",
+                    end:"dayGridMonth timeGridWeek listDay"
+                }}
                 events={events.map(event => ({
                     ...event,
                     classNames: [event.category]
                 }))}
+                selectable="true"
                 dateClick={handleDateClick}
                 eventClick={handleEventClick}
                 editable={true}
@@ -221,6 +259,7 @@ export const GesAgendaGeneral = () => {
                     minute: '2-digit',
                     hour12: true
                 }}
+                eventInteractive="true"
                 eventContent={(eventInfo) => (
                     <div className={`fc-event-content ${eventInfo.event.extendedProps.category}`}>
                         <div className="fc-event-time">
