@@ -148,13 +148,18 @@ export const errorStatusHandler = (errStatus) => {
 
     case 403:
       message = 'Sesion expirada'
-      setTimeout(() => {
-        Logout()
-      }, 2000)
       break
       
     case 404:
       message = 'No se encontro lo que buscas'
+      break
+
+    case 423: 
+      message = 'Bloqueado'
+      break
+
+    case 425:
+      message = 'Demasiado temprano'
       break
 
     case 429: 

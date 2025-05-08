@@ -14,6 +14,7 @@ export const NavBar = () => {
   const [menuAbierto, setMenuAbierto] = useState(false)
   const [isAutenticate, setIsAutenticate] = useState(false)
   const [petsUrl, setPetsUrl] = useState('/user/pets')
+  const [isAdmin, setIsAdmin] = useState(false)
   const refNav = useRef(null)
   
   // Función para manejar el scroll a secciones
@@ -47,8 +48,12 @@ export const NavBar = () => {
       setIsAutenticate(true) 
 
       if(roles.includes('Administrador') || roles.includes('Veterinario')) {
-        setPetsUrl('/gestion/mascotas')
-      } else setPetsUrl('/user/pets')
+        setPetsUrl('/admin/consultorio')
+        setIsAdmin(true)
+      } else {
+        setPetsUrl('/user/pets')
+        setIsAdmin(false)
+      }
 
     } else setIsAutenticate(false)
   }, [])
@@ -83,7 +88,7 @@ export const NavBar = () => {
           {
             isAutenticate && (
               <a href={petsUrl} className='enlace-nav'>
-                Mascotas
+                {isAdmin?"Consultorio":"Mascotas"}
               </a>
             )
           }

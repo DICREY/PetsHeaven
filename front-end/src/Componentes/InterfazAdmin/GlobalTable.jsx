@@ -12,19 +12,36 @@ export class GlobalTable extends Component {
     constructor(props) {
       super(props)
 
-      // Declare params
-      this.void = () => console.log('ver')
-      this.defaultColumns = 5
-      this.defaultImg = this.props.imgDefault
-      this.onMore = this.props.watch || this.void
-      this.onEdit = this.props.edit || this.void
-      this.headersSearch = this.props.headersSearch || this.void
-      
       // Declare states
       this.state = {
         clickCount: 0,
         page: 1,
-        datas: divideList(this.props.fullData,this.defaultColumns)
+        datas: []
+      }
+
+      // Declare params
+      this.void = () => console.log('ver')
+      this.defaultColumns = 5
+      this.defaultImg = this.props.imgDefault
+      this.onWatch = this.props.watch || this.void
+      this.headersSearch = this.props.headersSearch || this.void
+    }
+
+    componentDidMount() {
+      // Actualizar si los props llegan después del montaje
+      const { fullData } = this.props
+      if (fullData) {
+        this.setState({
+          datas: divideList(fullData, this.defaultColumns)
+        });
+      }
+    }
+
+    componentDidUpdate(prevProps) {
+      if (prevProps.fullData !== this.props.fullData) {
+        this.setState({
+          datas: divideList(this.props.fullData || [], 5)
+        });
       }
     }
 
@@ -72,12 +89,13 @@ export class GlobalTable extends Component {
     prevPage = () => {
       const { page } = this.state
       if (page != 1) this.setState( () => ({
-          page: page - 1
-        }))
+        page: page - 1
+      }))
     }
-
+    
     nextPage = () => {
-      const { page,datas } = this.state
+      const { page, datas } = this.state
+      console.log(datas)
       if (page < datas.length) this.setState( () => ({
           page: page + 1
       }))
@@ -101,11 +119,11 @@ export class GlobalTable extends Component {
     }
 
     render () {
-        const { headers ,subtitle, fullData, listHeader, minHeader } = this.props
-        const { page } = this.state
+        const { headers ,subtitle, fullData, listHeader } = this.props
+        const { page, datas } = this.state
         const headersKeys = Object.keys(headers)
         const headersValues = Object.values(headers)
-        const info = divideList(fullData,this.defaultColumns)
+        const info = datas
 
         return (
           <main>
@@ -176,7 +194,7 @@ export class GlobalTable extends Component {
                       ))}
                       <td className='actions-cell'>
                         <button 
-                          onClick={() => this.onEdit(item)} 
+                          onClick={() => this.onWatch(item)} 
                           aria-label={`Ver detalles de ${item.nom_per}`}
                         >
                           <FileText size={18} aria-hidden='true' />

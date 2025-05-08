@@ -122,7 +122,6 @@ export function GesMascota({ URL = '' }) {
                 headersSearch={['nom_mas', 'raz_mas', 'esp_mas', 'est_rep_mas']}
                 fullData={petsAlmac}
                 headers={headers}
-                edit={changeEditMode}
                 watch={openModal}
               />
             </div>

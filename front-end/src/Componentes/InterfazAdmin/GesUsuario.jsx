@@ -53,6 +53,11 @@ export function GesUsuario({ setUserSelect, URL = "" }) {
           icon: "error",
           button: "Aceptar"
         })
+        if(err.status === 403) {
+          setTimeout(() => {
+            Logout()
+          }, 2000)
+        }
       } else console.log(err)
     }
   }
@@ -100,11 +105,10 @@ export function GesUsuario({ setUserSelect, URL = "" }) {
             {/* Table  */}
             <GlobalTable 
               subtitle={'Personal vinculado a la veterinaria: Petsheaven'}
-              data={users}
               fullData={usersAlmac}
               headersSearch={['nom_per', 'email_per', 'cel_per', 'ape_per']}
               headers={headers}
-              edit={handleDescription}
+              watch={handleDescription}
             /> 
 
           </div>
