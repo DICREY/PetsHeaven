@@ -9,14 +9,14 @@ const corsOptions = {
 }
 
 const limiter = rateLimit({
-    windowMs: 5 * 60 * 1000,        // 5 minutes
+    windowMs: 3 * 60 * 1000,        // 5 minutes
     max: 500,                       // Limit each IP to 500 requests per windowMs
     message: 'Demasiadas peticiones desde esta IP, por favor intenta de nuevo más tarde'
 })
 
 const limiterLog = rateLimit({
     // limit login attempts
-    windowMs: 5 * 60 * 1000,        // 5 minutes
+    windowMs: 3 * 60 * 1000,        // 5 minutes
     max: 3,                         // Limit each IP to 3 login requests per windowMs  
     message: 'Demasiadas intentos fallidos, por favor intenta de nuevo más tarde'
 })

@@ -1,33 +1,45 @@
 // Librarys 
 import React, { useState, useEffect } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
-import { Search, ChevronUp, Plus, FileText, User, PawPrint } from 'lucide-react'
+import { Plus, FileText, User, PawPrint } from 'lucide-react'
 import swal from 'sweetalert'
 
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
+import { GlobalTable } from '../InterfazAdmin/GlobalTable'
 import { GetData } from '../Varios/Requests'
-import { errorStatusHandler, formatDate } from '../Varios/Util'
+import { errorStatusHandler } from '../Varios/Util'
 
 // Import styles 
 import '../../../src/styles/InterfazAdmin/HomeAdmin.css'
 
 export function HomeAdmin({ URL = '', setUserSelect, setOwner }) {
-  const mainUrl = `${URL}/owner`
+  // Dynamic vars 
   const [datas, setDatas] = useState([])
+  const [petsDataAlmc, setPetsDataAlmc] = useState([])
   const [datasAlmac, setDatasAlmac] = useState([])
-  const [page, setPage] = useState(1)
+  const [headers, setHeaders] = useState({})
+
+  // Vars 
+  const mainUrl = `${URL}/owner`
   const headersSearchUser = ['nom_per', 'email_per', 'cel_per', 'ape_per']
   const headersSearchPet = ['nom_mas']
   const navigate = useNavigate()
 
+  // Functions
   const GetDataOwners = async () => {
     const token = localStorage.getItem('token')
     try {
       if (token) {
         const data = await GetData(`${mainUrl}/all`, token)
         if (data) formatDatas(data)
-      }
+        setHeaders({
+          'Nombres': 'nom_per',
+          'Documento': 'doc_per',
+          'Celular': 'cel_per',
+          'Mascotas': 'mascotas'
+        })
+      } else navigate('/user/login')
     } catch (err) {
       if (err.status) {
         const message = errorStatusHandler(err.status)
@@ -44,6 +56,23 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner }) {
         })
       } else console.log(err)
     }
+  }
+
+  // fetch para traer datos
+  const getPets = async () => {
+    const token = localStorage.getItem('token')
+      try {
+        if(token) {
+          const pets = await GetData(`${URL}/pet/all`,token)  
+          setPetsDataAlmc(pets)
+        } else navigate('/user/login')
+      } catch (err) {
+        err.message? swal({
+            icon: 'error',
+            title: 'Error',
+            text: err.message
+        }): console.log(err)
+      }
   }
 
   const formatDatas = (data) => {
@@ -69,7 +98,6 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner }) {
             fec_cre_mas: petData[11] || ''
           }
         })
-
       return { ...item, mascotas: petList }
     })
     setDatasAlmac(formattedData)
@@ -78,13 +106,47 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner }) {
 
   const handleSearch = (term = '', data = [], headers = []) => {
     const termLower = term.toLowerCase()
-    const find = data.filter(pet => {
+
+    setHeaders({
+      'Nombres': 'nom_per',
+      'Documento': 'doc_per',
+      'Celular': 'cel_per',
+      'Mascotas': 'mascotas'
+    })
+
+    const find = data.filter(item => {
       return headers.some(field => 
-        pet[field]?.toLowerCase().includes(termLower)
+        item[field]?.toLowerCase().includes(termLower)
       )
     })
   
     if (find) setDatas(find)
+  }
+
+  const handleSearchPets = (term = '', data = [], headers = []) => {
+    setDatas(petsDataAlmc)
+    setHeaders({
+      Nombre: 'nom_mas',
+      Especie: 'esp_mas',
+      Raza: 'raz_mas',
+      Edad: 'fec_nac_mas',
+      Propietario: 'nom_per',
+      Estado: 'estado',
+    })
+    const termLower = term.toLowerCase()
+    const find = data.filter(item => {
+      return headers.some(field => 
+        item[field]?.toLowerCase().includes(termLower)
+      )
+    })
+  
+    if (find) setDatas(find)
+  }
+
+  const handleDescription = (user) => {
+    setUserSelect(user)
+    setOwner(true)
+    navigate('/admin/propietario/datos')
   }
 
   useEffect(() => {
@@ -93,9 +155,11 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner }) {
 
 
     GetDataOwners()
-
+    getPets()
+    
     intervalId = setInterval(() => {
       GetDataOwners()
+      getPets()
     }, REFRESH_INTERVAL)
 
     return () => clearInterval(intervalId)
@@ -153,23 +217,21 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner }) {
                     placeholder='Buscar por nombre o identificador de la mascota'
                     type='search'
                     aria-label='Buscar mascotas'
-                    onChange={e => handleSearch(e.target.value, datasAlmac, headersSearchPet)}
+                    onChange={e => handleSearchPets(e.target.value, petsDataAlmc, headersSearchPet)}
                   />
                 </div>
               </div>
             </section>
 
-            <div className='centradoadminhome'>
-              <button 
-                className='botonbuscaradminhome'
-                aria-label='Buscar'
-              >
-                <Search size={16} className='iconobuscaradminhome' aria-hidden='true' />
-                Buscar
-              </button>
-            </div>
+            <GlobalTable 
+              fullData={datas}
+              headersSearch={['nom_per', 'doc_per', 'cel_per']}
+              listHeader={'mascotas'}
+              headers={headers}
+              edit={handleDescription}
+            /> 
 
-            <div className='tablacontenedoradminhome'>
+            {/* <div className='tablacontenedoradminhome'>
               <table className='tablaadminhome' aria-label='Tabla de usuarios y mascotas'>
                 <thead>
                   <tr className='encabezadotablaadminhome'>
@@ -246,9 +308,9 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner }) {
                   ))}
                 </tbody>
               </table> 
-            </div>
+            </div> */}
 
-            <footer className='paginacionadminhome'>
+            {/* <footer className='paginacionadminhome'>
               <div className='resultadosadminhome'>
                 <span className='contadoradminhome'>10</span>
                 <ChevronUp size={14} className='flechaadminhome' aria-hidden='true' />
@@ -260,7 +322,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner }) {
                 <PawPrint className='huella1adminhome' />
                 <PawPrint className='huella2adminhome' />
               </div>
-            </footer>
+            </footer> */}
           </div>
         </article>
       </div>

@@ -43,7 +43,7 @@ export function GesUsuario({ setUserSelect, URL = "" }) {
         setUsersAlmac(data)
         setUsers(divideList(data,4))
         setLoading(false)
-      } else window.location.href = "/34"
+      } else navigate('/user/login')
     } catch (err) {
       if (err.status) {
         const message = errorStatusHandler(err.status)

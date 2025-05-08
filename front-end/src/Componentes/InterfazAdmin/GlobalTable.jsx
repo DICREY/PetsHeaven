@@ -1,6 +1,6 @@
 // Librarys 
 import React, { Component } from 'react'
-import { Edit, MoreHorizontal } from 'lucide-react'
+import { FileText } from 'lucide-react'
 
 // Imports
 import { formatDate, divideList,getAge } from '../Varios/Util'
@@ -101,16 +101,17 @@ export class GlobalTable extends Component {
     }
 
     render () {
-        const { headers ,subtitle, fullData, data } = this.props
-        const { page, datas } = this.state
+        const { headers ,subtitle, fullData, listHeader, minHeader } = this.props
+        const { page } = this.state
         const headersKeys = Object.keys(headers)
         const headersValues = Object.values(headers)
-        const info = datas[0]?datas:data
+        const info = divideList(fullData,this.defaultColumns)
+
         return (
           <main>
-            <h2 className='subtitle-panel-gestion'>{subtitle}</h2>
+            {subtitle && (<h2 className='subtitle-panel-gestion'>{subtitle}</h2>)}
             <nav className='controles-gestion'>
-              <div className='btns-gestion'>
+              <span className='btns-gestion'>
                 <span>Mostrar</span>
                 <select 
                   className='select-gestion'
@@ -122,15 +123,16 @@ export class GlobalTable extends Component {
                   <option value={20}>20</option>
                 </select>
                 <span>registros</span>
-              </div>
+              </span>
 
-              <div className='buscar-gestion'>
+              {subtitle && (
+              <span className='buscar-gestion'>
                 <span>Buscar:</span>
                 <input
                   type='text' 
                   className='input-gestion' 
                   onChange={e => this.handleSearch(e.target.value, fullData)}/>
-              </div>
+              </span>)}
             </nav>
             <section className={`global-table-container`}>
               <table className='global-table'>
@@ -151,16 +153,34 @@ export class GlobalTable extends Component {
                     <tr key={index} onClick={() => this.handleClick(item)}>
                       {headersValues.map((header, index) => (
                         <td key={index + 170}>
-                          <span>{this.renderCell(item, header)}</span>
+                          {header === 'nom_per'?(
+                          <div className='infoadminhome'>
+                            <span className='nombreadminhome'>{this.renderCell(item, 'nom_per')}</span>
+                            <span className='fechaadminhome'>Creado el {formatDate(item.fec_nac_per)}</span>
+                          </div>
+                          ):header === listHeader?(
+                            <ul className='mascotasadminhome' aria-label='Mascotas del usuario'>
+                              {item[listHeader].map((mascota, index) => (
+                                <li key={index} className='mascotaitemadminhome'>
+                                  <span>
+                                    {`${this.renderCell(mascota, 'nom_mas')} - 
+                                    ${this.renderCell(mascota, 'esp_mas')}`}
+                                  </span>
+                                </li>
+                              ))}
+                            </ul>
+                          ):(
+                            <span>{this.renderCell(item, header)}</span>)
+                          }
                         </td>
                       ))}
                       <td className='actions-cell'>
-                        <button onClick={() => this.onEdit(item)} >
-                          <Edit size={16} />
-                        </button>
-                        <button onClick={() => this.onMore(item)}>
-                          <MoreHorizontal size={16} />
-                        </button>
+                        <button 
+                          onClick={() => this.onEdit(item)} 
+                          aria-label={`Ver detalles de ${item.nom_per}`}
+                        >
+                          <FileText size={18} aria-hidden='true' />
+                        </button>  
                       </td>
                     </tr>
                   ))}

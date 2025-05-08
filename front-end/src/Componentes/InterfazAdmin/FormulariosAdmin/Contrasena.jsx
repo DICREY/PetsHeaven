@@ -1,5 +1,6 @@
 // Librarys 
 import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
 
 // Import styles 
 import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/Contrasena.css'

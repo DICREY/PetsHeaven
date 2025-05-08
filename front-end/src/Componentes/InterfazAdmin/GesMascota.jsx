@@ -57,7 +57,7 @@ export function GesMascota({ URL = '' }) {
           setPetsAlmac(pets)
           const shortPets = divideList(pets,4)
           setPetsData(shortPets)
-        } else navigate('/34')
+        } else navigate('/user/login')
       } catch (err) {
         err.message? swal({
             icon: 'error',

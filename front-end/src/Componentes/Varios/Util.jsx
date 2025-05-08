@@ -11,6 +11,17 @@ export const Logout = () => {
   }
 }
 
+// Convertir a hora
+export const formatoTiempo = (segundos) => {
+  const horas = Math.floor(segundos / 3600)
+  const minutos = Math.floor((segundos % 3600) / 60)
+  const segs = segundos % 60
+
+  return `${horas.toString().padStart(2, '0')}:${minutos
+    .toString()
+    .padStart(2, '0')}:${segs.toString().padStart(2, '0')}`
+}
+
 // Dividir lista en partes 
 export const divideList = (array = [], size = 5) => {
   const result = []
@@ -147,7 +158,7 @@ export const errorStatusHandler = (errStatus) => {
       break
 
     case 429: 
-      message = 'Demasiados intentos espera 5 minutos'
+      message = 'Demasiados intentos espera 3 minutos'
       break
 
     case 498: 

@@ -1,6 +1,6 @@
 // Librarys 
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import { User, PawPrint, ArrowLeft, Trash2, Edit, Save, X, Calendar } from 'lucide-react'
 
 // Imports 
@@ -109,7 +109,7 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '' }) => {
             text: 'La mascota han sido desactivada correctamente.',
           })
         }
-      } else navigate('/34')
+      } else navigate('/user/login')
     } catch (err) {
       err.message? swal({
           icon: 'error',
@@ -152,7 +152,6 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '' }) => {
     if (!userSelect) navigate('/admin/consultorio')
     setUserData(userSelect)
     setFormData(userSelect)
-    console.log(userSelect)
   },[])
 
   return (
@@ -166,7 +165,7 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '' }) => {
             Configuración de usuario <span className='subtituloProps'> | Creación</span>
           </h1>
           <div className='botonesAccionProps'>
-            <button className='botonAtrasProps' onClick={() => navigate('/admin/consultorio')}>
+            <button className='botonAtrasProps' onClick={() => navigate(-1)}>
               <ArrowLeft size={18} />
               <span>Atrás</span>
             </button>
@@ -176,7 +175,7 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '' }) => {
               <>
                 <button className='botonEliminarProps' onClick={handleDeleteClick}>
                   <Trash2 size={18} />
-                  <span>Eliminar</span>
+                  <span>Desactivar</span>
                 </button>
 
                 {isEditing ? (

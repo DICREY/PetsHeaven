@@ -1,12 +1,12 @@
 // Librarys 
-import React,{ useState } from 'react'
+import React,{ useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router'
 import swal from 'sweetalert'
 
 // Imports 
 import { login } from '../Varios/Requests'
-import { getRoles, errorStatusHandler } from '../Varios/Util'
+import { getRoles, errorStatusHandler, formatoTiempo } from '../Varios/Util'
 
 // Import styles
 import '../../../src/styles/Formularios/login.css'
@@ -15,6 +15,8 @@ import '../../../src/styles/Formularios/login.css'
 export const LoginForm = ({ URL = "" }) => {
   // Vars 
   const [verPassword, setVerPassword] =  useState(false)
+  const [waitTime, setWaitTime] =  useState(false)
+  const [time, setTime] = useState()
   const imagenFondo = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Fondos/fondo.png' 
   const logoUrl = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/5.png'
   const navigate = useNavigate()
@@ -82,6 +84,9 @@ export const LoginForm = ({ URL = "" }) => {
 
     } catch (err) {
       if(err.status) {
+        if (err.status === 429) {
+          setWaitTime(true)
+        } else setWaitTime(false)
         const message = errorStatusHandler(err.status)
         swal({
           title: 'Error',
@@ -96,6 +101,35 @@ export const LoginForm = ({ URL = "" }) => {
   const cambiarVisibilidadPassword = () => {
     setVerPassword(!verPassword)
   }
+
+  useEffect(() => {
+    let intervalo = null
+    
+    if (waitTime) {
+      // Inicia el contador
+      intervalo = setInterval(() => {
+        setTime(prev => {
+          if(prev <= 0) {
+            clearInterval(intervalo)
+            setWaitTime(false)
+            return 0
+          }
+          return prev - 1
+        })
+      }, 1000)
+    }
+  
+    return () => {
+      if (intervalo) clearInterval(intervalo)
+    }
+  }, [waitTime])
+  
+  // Resetear a 20 cuando waitTime cambia a true
+  useEffect(() => {
+    if (waitTime) {
+      setTime(180)
+    }
+  }, [waitTime])
 
   return (
     <div className='login-container'>
@@ -228,6 +262,13 @@ export const LoginForm = ({ URL = "" }) => {
               >
                 Entrar
               </button>
+              {
+                waitTime && (
+                  <span>
+                    Tiempo de espera: {formatoTiempo(time)}
+                  </span>
+                )
+              }
 
               <div className='enlaces-container-login'>
                 <Link 
