@@ -35,7 +35,7 @@ export default function App () {
 
   // Vars 
   const URL = 'http://localhost:3000'
-  const isInactive = useInactivityDetector(20 * 60 * 1000) // 20 minutos de inactividad
+  const isInactive = useInactivityDetector(2 * 1000) // 20 minutos de inactividad
   
   // Route types
   const PrivateRoute = ({ children }) => {
