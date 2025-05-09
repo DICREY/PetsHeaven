@@ -48,7 +48,7 @@ export const NavBar = () => {
       setIsAutenticate(true) 
 
       if(roles.includes('Administrador') || roles.includes('Veterinario')) {
-        setPetsUrl('/admin/consultorio')
+        setPetsUrl('/consultorio')
         setIsAdmin(true)
       } else {
         setPetsUrl('/user/pets')

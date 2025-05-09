@@ -149,7 +149,7 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '' }) => {
   },[petsData])
 
   useEffect(() => {
-    if (!userSelect) navigate('/admin/consultorio')
+    if (!userSelect) navigate('/consultorio')
     setUserData(userSelect)
     setFormData(userSelect)
   },[])

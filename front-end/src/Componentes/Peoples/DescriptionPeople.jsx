@@ -87,7 +87,7 @@ export class DescriptionPeople extends React.Component {
             </div>
             <div className="propietarioDatosProps">
               {
-                headers.map(header => (
+                headers.map((header,index) => (
                   isEditing? (
                     <div className="propietarioCampoProps">
                       <div className="propietarioEtiquetaProps">{header.label}</div>
@@ -104,7 +104,7 @@ export class DescriptionPeople extends React.Component {
                       />
                     </div>
                   ): (
-                    <div className="propietarioCampoProps">
+                    <div key={index+11290} className="propietarioCampoProps">
                       <div className="propietarioEtiquetaProps">{header.label}</div>
                       <div className="propietarioValorProps">
                         {header.value || "no-registrado"}

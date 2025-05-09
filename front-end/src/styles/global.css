@@ -82,3 +82,6 @@
 .enlacenavadmin.active{
     background: var(--gray-200);
 }
+.subenlacenavadmin.active{
+    background: var(--gray-200);
+}

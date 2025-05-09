@@ -119,114 +119,114 @@ export class GlobalTable extends Component {
     }
 
     render () {
-        const { headers ,subtitle, fullData, listHeader } = this.props
-        const { page, datas } = this.state
-        const headersKeys = Object.keys(headers)
-        const headersValues = Object.values(headers)
-        const info = datas
+      const { headers ,subtitle, fullData, listHeader } = this.props
+      const { page, datas } = this.state
+      const headersKeys = Object.keys(headers)
+      const headersValues = Object.values(headers)
+      const info = datas
 
-        return (
-          <main>
-            {subtitle && (<h2 className='subtitle-panel-gestion'>{subtitle}</h2>)}
-            <nav className='controles-gestion'>
-              <span className='btns-gestion'>
-                <span>Mostrar</span>
-                <select 
-                  className='select-gestion'
-                  onChange={(e) => this.handleColumns(e)}
-                >
-                  <option value={5}>5</option>
-                  <option value={10}>10</option>
-                  <option value={15}>15</option>
-                  <option value={20}>20</option>
-                </select>
-                <span>registros</span>
-              </span>
+      return (
+        <main>
+          {subtitle && (<h2 className='subtitle-panel-gestion'>{subtitle}</h2>)}
+          <nav className='controles-gestion'>
+            <span className='btns-gestion'>
+              <span>Mostrar</span>
+              <select 
+                className='select-gestion'
+                onChange={(e) => this.handleColumns(e)}
+              >
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={15}>15</option>
+                <option value={20}>20</option>
+              </select>
+              <span>registros</span>
+            </span>
 
-              {subtitle && (
-              <span className='buscar-gestion'>
-                <span>Buscar:</span>
-                <input
-                  type='text' 
-                  className='input-gestion' 
-                  onChange={e => this.handleSearch(e.target.value, fullData)}/>
-              </span>)}
-            </nav>
-            <section className={`global-table-container`}>
-              <table className='global-table'>
-                <thead>
-                  <tr>
-                    {headersKeys.map((header, index) => (
-                      <th key={index +120}>
-                        <div key={index} className='header-content'>
-                          {header}
-                        </div>
-                      </th>
-                    ))}
-                    <th className='actions-header'>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {info[page-1]?.map((item,index) => (
-                    <tr key={index} onClick={() => this.handleClick(item)}>
-                      {headersValues.map((header, index) => (
-                        <td key={index + 170}>
-                          {header === 'nom_per'?(
-                          <div className='infoadminhome'>
-                            <span className='nombreadminhome'>{this.renderCell(item, 'nom_per')}</span>
-                            <span className='fechaadminhome'>Creado el {formatDate(item.fec_nac_per)}</span>
-                          </div>
-                          ):header === listHeader?(
-                            <ul className='mascotasadminhome' aria-label='Mascotas del usuario'>
-                              {item[listHeader].map((mascota, index) => (
-                                <li key={index} className='mascotaitemadminhome'>
-                                  <span>
-                                    {`${this.renderCell(mascota, 'nom_mas')} - 
-                                    ${this.renderCell(mascota, 'esp_mas')}`}
-                                  </span>
-                                </li>
-                              ))}
-                            </ul>
-                          ):(
-                            <span>{this.renderCell(item, header)}</span>)
-                          }
-                        </td>
-                      ))}
-                      <td className='actions-cell'>
-                        <button 
-                          onClick={() => this.onWatch(item)} 
-                          aria-label={`Ver detalles de ${item.nom_per}`}
-                        >
-                          <FileText size={18} aria-hidden='true' />
-                        </button>  
-                      </td>
-                    </tr>
+            {subtitle && (
+            <span className='buscar-gestion'>
+              <span>Buscar:</span>
+              <input
+                type='text' 
+                className='input-gestion' 
+                onChange={e => this.handleSearch(e.target.value, fullData)}/>
+            </span>)}
+          </nav>
+          <section className={`global-table-container`}>
+            <table className='global-table'>
+              <thead>
+                <tr>
+                  {headersKeys.map((header, index) => (
+                    <th key={index +120}>
+                      <div key={index} className='header-content'>
+                        {header}
+                      </div>
+                    </th>
                   ))}
-                </tbody>
-              </table>
-            </section>
-            <footer className='paginacion-gestion'>
-              <div className='info-paginacion'>Mostrando registros del 1 al {info.length} de un total de {fullData.length} registros.</div>
-              <div className='btns-container-paginacion'>
-                <button 
-                  type='button' 
-                  className='btn-paginacion' 
-                  onClick={this.prevPage}                  
-                  >
-                  Anterior
-                </button>
-                <button 
-                  type='button' 
-                  className='btn-paginacion btn-active'
-                  >{page}</button>
-                <button 
-                  type='button' 
-                  className='btn-paginacion'
-                  onClick={this.nextPage}
-                >Siguiente</button>
-              </div>
-            </footer>
-          </main>
-        )
+                  <th className='actions-header'>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {info[page-1]?.map((item,index) => (
+                  <tr key={index} onClick={() => this.handleClick(item)}>
+                    {headersValues.map((header, index) => (
+                      <td key={index + 170}>
+                        {header === 'nom_per'?(
+                        <div className='infoadminhome'>
+                          <span className='nombreadminhome'>{this.renderCell(item, 'nom_per')}</span>
+                          <span className='fechaadminhome'>Creado en {formatDate(item.fec_nac_per)}</span>
+                        </div>
+                        ):header === listHeader?(
+                          <ul className='mascotasadminhome' aria-label='Mascotas del usuario'>
+                            {item[listHeader].map((mascota, index) => (
+                              <li key={index} className='mascotaitemadminhome'>
+                                <span>
+                                  {`${this.renderCell(mascota, 'nom_mas')} - 
+                                  ${this.renderCell(mascota, 'esp_mas')}`}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        ):(
+                          <span>{this.renderCell(item, header)}</span>)
+                        }
+                      </td>
+                    ))}
+                    <td className='actions-cell'>
+                      <button 
+                        onClick={() => this.onWatch(item)} 
+                        aria-label={`Ver detalles de ${item.nom_per}`}
+                      >
+                        <FileText size={18} aria-hidden='true' />
+                      </button>  
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </section>
+          <footer className='paginacion-gestion'>
+            <div className='info-paginacion'>Mostrando registros del 1 al {info.length} de un total de {fullData.length} registros.</div>
+            <div className='btns-container-paginacion'>
+              <button 
+                type='button' 
+                className='btn-paginacion' 
+                onClick={this.prevPage}                  
+                >
+                Anterior
+              </button>
+              <button 
+                type='button' 
+                className='btn-paginacion btn-active'
+                >{page}</button>
+              <button 
+                type='button' 
+                className='btn-paginacion'
+                onClick={this.nextPage}
+              >Siguiente</button>
+            </div>
+          </footer>
+        </main>
+      )
     }
 }
