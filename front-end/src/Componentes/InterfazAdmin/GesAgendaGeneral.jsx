@@ -9,13 +9,51 @@ import esLocale from "@fullcalendar/core/locales/es"
 
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
+import { GetData } from '../Varios/Requests'
 
 // Import styles 
 import "./prueba.css"
 
 // Component 
 export const GesAgendaGeneral = () => {
-    
+
+    // Functions
+    const GetAppointments = async () => {
+    const token = localStorage.getItem("token")
+    try {
+        if (token){
+        const data = await GetData(mainUrl,token)
+        setHeaders({
+            'Nombres': 'nom_per',
+            'Apellidos': 'ape_per',
+            'T. Doc': 'tip_doc_per',
+            'Documento': 'doc_per',
+            'Direccion': 'dir_per',
+            'Celular': 'cel_per',
+            'Correo': 'email_per'
+        })
+        setUsersAlmac(data)
+        setUsers(divideList(data,4))
+        setLoading(false)
+        } else navigate('/user/login')
+    } catch (err) {
+        if (err.status) {
+        const message = errorStatusHandler(err.status)
+        swal({
+            title: "Error",
+            text: message,
+            icon: "error",
+            button: "Aceptar"
+        })
+        if(err.status === 403) {
+            setTimeout(() => {
+            Logout()
+            }, 2000)
+        }
+        } else console.log(err)
+    }
+    }
+
     //Dia de hoy
     const today = new Date().toISOString().split('T')[0]; // 'YYYY-MM-DD'
 
@@ -424,7 +462,7 @@ export const GesAgendaGeneral = () => {
                         <div className="modal-header">
                             <h3>{selectedEvent?.id ? 'Editar Cita' : 'Detalles de la Cita'}</h3>
                             <button className="modal-close-btn" onClick={() => setShowEventModal(false)}>
-                                &times
+                                X
                             </button>
                         </div>
                         <div className="modal-body">
