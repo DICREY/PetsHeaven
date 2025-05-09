@@ -52,7 +52,7 @@ Route.post('/login',limiterLog, async (req,res) => {
                 names: user.nom_per,
                 lastNames: user.ape_per,
                 roles: user.roles,
-                fotos: user.fot_roles
+                img: user.fot_roles.split(',')[0]
             },
             secret,
             { expiresIn: '2h' }
