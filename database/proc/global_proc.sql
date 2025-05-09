@@ -1,4 +1,4 @@
--- Active: 1746046445434@@127.0.0.1@3306@pets_heaven
+-- Active: 1746046629653@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchServices()
 BEGIN
     SELECT
@@ -26,7 +26,8 @@ BEGIN
         u.ape_per,
         u.doc_per,
         u.cont_per,
-        GROUP_CONCAT(r.nom_rol SEPARATOR ', ') AS roles
+        GROUP_CONCAT(r.nom_rol SEPARATOR ', ') AS roles,
+        GROUP_CONCAT(r.fot_rol SEPARATOR ', ') AS fot_roles
     FROM
         personas u
     JOIN
@@ -42,3 +43,5 @@ BEGIN
     GROUP BY u.nom_per
     LIMIT 40;
 END //
+
+DROP PROCEDURE pets_heaven.`Login`;

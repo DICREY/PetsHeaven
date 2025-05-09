@@ -51,7 +51,8 @@ Route.post('/login',limiterLog, async (req,res) => {
             { 
                 names: user.nom_per,
                 lastNames: user.ape_per,
-                roles: user.roles
+                roles: user.roles,
+                fotos: user.fot_roles
             },
             secret,
             { expiresIn: '2h' }
