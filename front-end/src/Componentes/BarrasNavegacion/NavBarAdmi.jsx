@@ -54,7 +54,6 @@ export const NavBarAdmin = () => {
       const tokenJWT = decodeJWT(token)
       setUser(tokenJWT)
       setImg(tokenJWT.fotos.split(','))
-      console.log(tokenJWT.fotos.split(','))
       const roles = getRoles(token)
       const admin = roles.some(role => role.toLowerCase() === 'administrador')
       setIsAdmin(admin)
@@ -83,7 +82,7 @@ export const NavBarAdmin = () => {
         <div className='perfilsuperiornavadmin'>
           <div className='avatarnavadmin'>
             <img
-              src={img[0] || imgDefault}
+              src={imgDefault}
               className='inicialnavadmin'
             />
           </div>
