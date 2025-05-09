@@ -68,7 +68,7 @@ export class GlobalTable extends Component {
       
       setTimeout(() => {
         if (clickCount === 1) {
-          this.onMore(pet)
+          this.onWatch(pet)
         }
         this.setState( () => ({
           clickCount: 0

@@ -7,7 +7,7 @@ import swal from 'sweetalert'
 import { Resumen } from './Details/Resumen'
 import { Historial } from './Details/Historial'
 import { DeleteData } from '../Varios/Requests'
-import { getRoles,loadingAlert, checkImage } from '../Varios/Util'
+import { getRoles,loadingAlert, checkImage, getAge } from '../Varios/Util'
 // import { Citas } from './Details/Citas'
 
 // Import styles 
@@ -128,7 +128,7 @@ export const PetDetails = ({ datas, ready, editMode, imgDefault, open = false, a
                                     <span className="breed">{datas.raz_mas}</span>
                                 </div>
                                 <span className="pet-age">
-                                    {new Date(datas.fec_nac_mas).toLocaleDateString('es-ES')}
+                                    {`${getAge(new Date(datas.fec_nac_mas))} Años de edad`}
                                 </span>
                             </aside>
 

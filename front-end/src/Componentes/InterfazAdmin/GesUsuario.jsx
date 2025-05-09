@@ -64,7 +64,7 @@ export function GesUsuario({ setUserSelect, URL = "" }) {
 
   const handleDescription = (user) => {
     setUserSelect(user)
-    navigate("/admin/propietario/datos")
+    navigate("/propietario/datos")
   }
 
   useEffect(() => {

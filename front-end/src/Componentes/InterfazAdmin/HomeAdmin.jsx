@@ -146,7 +146,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner }) {
   const handleDescription = (user) => {
     setUserSelect(user)
     setOwner(true)
-    navigate('/admin/propietario/datos')
+    navigate('/propietario/datos')
   }
 
   useEffect(() => {

@@ -101,7 +101,7 @@ export const NavBarAdmin = () => {
             }
 
             <li className='itemnavadmin'>
-              <a href='/admin/consultorio' className='enlacenavadmin'>
+              <a href='/consultorio' className='enlacenavadmin'>
                 <Stethoscope className='icononavadmin' />
                 <span>Consultorio</span>
               </a>
@@ -136,7 +136,7 @@ export const NavBarAdmin = () => {
 
               <ul className={`submenunavadmin ${agendaAbierta ? 'abiertonavadmin' : 'cerradonavadmin'}`}>
                 <li>
-                  <a href='/admin/calendario/general' className='subenlacenavadmin'>
+                  <a href='/calendario/general' className='subenlacenavadmin'>
                     <CalendarRange className='iconosubnavadmin' />
                     <span>Agenda General</span>
                   </a>

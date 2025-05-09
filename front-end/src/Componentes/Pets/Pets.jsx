@@ -1,6 +1,6 @@
 // Imports
 import { GetData } from '../Varios/Requests'
-import { decodeJWT, errorStatusHandler, getRoles } from '../Varios/Util'
+import { decodeJWT, errorStatusHandler, getRoles, checkImage } from '../Varios/Util'
 import { Loader } from '../Errores/Loader'
 import { NotFound } from '../Errores/NotFound'
 import { EditPetButton } from './EditPet'
@@ -14,8 +14,7 @@ import React, { useState, useEffect } from "react"
 
 // Main component
 export const Pets = ({URL = ""}) => {
-    // Declare Vars
-    const mainURL = `${URL}/pet`
+    // Dynamic Vars
     const [petsData, setPetsData] = useState([])
     const [history, setHistory] = useState([])
     const [loading, setLoading] = useState(true)
@@ -25,6 +24,11 @@ export const Pets = ({URL = ""}) => {
     const [found,setfound] = useState(false)
     const [editMode,setEditMode] = useState(false)
     const [isAdmin,setIsAdmin] = useState(false)
+    const [validImage,setValidImage] = useState(false)
+    
+    // Vars 
+    const mainURL = `${URL}/pet`
+    const imgDefault = "https://raw.githubusercontent.com/Mogom/Imagenes_PetsHeaven/refs/heads/main/Defaults/petImg.default.webp"
 
     // fetch para traer datos
     const fetchData = async (url = "", token = "") => {
@@ -97,12 +101,22 @@ export const Pets = ({URL = ""}) => {
                             {petsData.map((i, index) => (
                                 <aside key={index} className='pets-card'>
                                 <div className='pets-img-container'>
-                                    <img 
-                                        className='pets-card-img' 
-                                        src={i.fot_mas || '/default-pet.jpg'}
-                                        alt={`${i.esp_mas} de raza ${i.raz_mas} color ${i.col_mas} con nombre ${i.nom_mas}`}
-                                        onError={(e) => e.target.src = '/default-pet.jpg'}
-                                    />
+                                    {checkImage(i.fot_mas,setValidImage)}
+                                    {
+                                        validImage? (
+                                            <img 
+                                                className='pets-card-img'
+                                                src={i.fot_mas}
+                                                alt={`${i.esp_mas} de raza ${i.raz_mas} color ${i.col_mas} con nombre ${i.nom_mas}`}
+                                            />
+                                        ): (
+                                        <img 
+                                            className='pets-card-img' 
+                                            src={imgDefault}
+                                            alt={`${i.esp_mas} de raza ${i.raz_mas} color ${i.col_mas} con nombre ${i.nom_mas}`}
+                                        />
+                                        )
+                                    }
                                     <span className='pets-species-badge'>{i.esp_mas}</span>
                                 </div>
                                 
@@ -134,6 +148,7 @@ export const Pets = ({URL = ""}) => {
                             datas={selectedPet} 
                             open={showModal} 
                             admin={isAdmin}
+                            imgDefault={imgDefault}
                             ready={(state) => setShowModal(state)}
                             editMode={() => setEditMode(true)} />
                     )}

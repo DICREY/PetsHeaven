@@ -122,12 +122,6 @@ export default function App () {
           <Route path='usuario/registro' element={
             <AdminRoute children={<ConfiguracionUsuario URL={URL} />} />} >
           </Route>
-          <Route path='calendario/general' element={
-            <AdminRoute children={<GesAgendaGeneral URL={URL} />} />} >
-          </Route>
-          <Route path='propietario/datos' element={
-            <AdminRoute children={<PerfilPropietario owner={owner} userSelect={userSelect} URL={URL} />} />} >
-          </Route>
           <Route path='actualizar/datos personal' element={
             <AdminRoute children={<ConfiguracionUsuarioCrud userSelect={userSelect} URL={URL} />} />} >
           </Route>
@@ -143,8 +137,14 @@ export default function App () {
         <Route path='propietario/registro' element={
           <VetRoute children={<RegistroPro URL={URL} />} />} >
         </Route>
-        <Route path='admin/consultorio' element={
+        <Route path='consultorio' element={
           <VetRoute children={<HomeAdmin setOwner={setOwner} setUserSelect={setUserSelect} URL={URL}/>} />}>  
+        </Route>
+        <Route path='propietario/datos' element={
+          <VetRoute children={<PerfilPropietario owner={owner} userSelect={userSelect} URL={URL} />} />} >
+        </Route>
+        <Route path='calendario/general' element={
+          <VetRoute children={<GesAgendaGeneral URL={URL} />} />} >
         </Route>
 
         {/* Public Routes */}

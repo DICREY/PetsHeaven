@@ -106,7 +106,7 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '' }) => {
           deleted.deleted && swal({
             icon: 'success',
             title: 'Desactivada',
-            text: 'La mascota han sido desactivada correctamente.',
+            text: 'La persona ha sido desactivada correctamente.',
           })
         }
       } else navigate('/user/login')
