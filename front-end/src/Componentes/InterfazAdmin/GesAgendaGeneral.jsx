@@ -15,43 +15,36 @@ import { GetData } from '../Varios/Requests'
 import "./prueba.css"
 
 // Component 
-export const GesAgendaGeneral = () => {
+export const GesAgendaGeneral = ({ URL = '' }) => {
+    // Dynamic vars 
+    const [app,setApp] = useState()
+    const mainUrl = `${URL}/user`
 
     // Functions
     const GetAppointments = async () => {
-    const token = localStorage.getItem("token")
-    try {
-        if (token){
-        const data = await GetData(mainUrl,token)
-        setHeaders({
-            'Nombres': 'nom_per',
-            'Apellidos': 'ape_per',
-            'T. Doc': 'tip_doc_per',
-            'Documento': 'doc_per',
-            'Direccion': 'dir_per',
-            'Celular': 'cel_per',
-            'Correo': 'email_per'
-        })
-        setUsersAlmac(data)
-        setUsers(divideList(data,4))
-        setLoading(false)
-        } else navigate('/user/login')
-    } catch (err) {
-        if (err.status) {
-        const message = errorStatusHandler(err.status)
-        swal({
-            title: "Error",
-            text: message,
-            icon: "error",
-            button: "Aceptar"
-        })
-        if(err.status === 403) {
-            setTimeout(() => {
-            Logout()
-            }, 2000)
+        const token = localStorage.getItem("token")
+        try {
+            if (token){
+                const data = await GetData(`${mainUrl}/calendar/general`,token)
+                console.log(data)
+                setApp(data)
+            } else navigate('/user/login')
+        } catch (err) {
+            if (err.status) {
+            const message = errorStatusHandler(err.status)
+            swal({
+                title: "Error",
+                text: message,
+                icon: "error",
+                button: "Aceptar"
+            })
+            if(err.status === 403) {
+                setTimeout(() => {
+                    Logout()
+                }, 2000)
+            }
+            } else console.log(err)
         }
-        } else console.log(err)
-    }
     }
 
     //Dia de hoy
