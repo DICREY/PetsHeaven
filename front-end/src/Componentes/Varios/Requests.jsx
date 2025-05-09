@@ -1,37 +1,41 @@
+// Librarys 
+import axios from 'axios'
 import { getName, decodeJWT } from './Util'
 
 // Vars
 const HeaderWeb = {
-    "Content-Type": "application/json",
-    "x-api-key": "pets_heaven_vite",
+    'Content-Type': 'application/json',
+    'x-api-key': 'pets_heaven_vite',
 }
 
 // Functions 
 // Traer datos
-export async function GetDataGlobal(URL = "") {
+export async function GetDataGlobal(URL = '') {
     try {
-        const response = await fetch(URL,{
-            method: "GET",
+        const response = await axios.get(URL, {
             headers: {
-                'User': "Desconocido",
-                ...HeaderWeb
-            }
+                "Content-Type": 'application/json',
+                'x-api-key': 'pets_heaven_vite',
+                'user': 'Unknow'
+            },
+            // Opciones adicionales:
+            withCredentials: true,
+            timeout: 10000 // 10 segundos timeout
         })
 
-        if (!response.ok) {
-            throw await response.json()
+        if (response.statusText !== 'OK') {
+            throw response
         }
-
-        const data = await response.json()
-        return data.result[0]
+        
+        return response.data.result[0]
     } catch (error) {
         throw error
     }
 }
-export async function GetData(URL = "",token = "") {
+export async function GetData(URL = '',token = '') {
     try {
         const response = await fetch(URL,{
-            method: "GET",
+            method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'User': getName(token),
@@ -51,10 +55,10 @@ export async function GetData(URL = "",token = "") {
     }
 }
 // Enviar datos 
-export async function PostData(URL = "", token = "", datas = {}) {
+export async function PostData(URL = '', token = '', datas = {}) {
     try {
         const response = await fetch(URL, {
-            method: "POST",
+            method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'User': getName(token),
@@ -78,10 +82,10 @@ export async function PostData(URL = "", token = "", datas = {}) {
     }
 }
 // Modificar datos
-export async function ModifyData(URL = "", token = "", datas = {}) {
+export async function ModifyData(URL = '', token = '', datas = {}) {
     try {
         const response = await fetch(URL,{
-            method:"PUT",
+            method:'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'User': getName(token),
@@ -104,10 +108,10 @@ export async function ModifyData(URL = "", token = "", datas = {}) {
     }
 }
 // Delete data
-export async function DeleteData(URL = "", token = "", datas = {}) {
+export async function DeleteData(URL = '', token = '', datas = {}) {
     try {
         const response = await fetch(URL,{
-            method:"DELETE",
+            method:'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'User': getName(token),
@@ -130,12 +134,12 @@ export async function DeleteData(URL = "", token = "", datas = {}) {
     }
 }
 
-export async function login(url = "", first = "", second = "") {
+export async function login(url = '', first = '', second = '') {
     try {
         const response = await fetch(url, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                'User': "Desconocido",
+                'User': 'Desconocido',
                 ...HeaderWeb},
             body: JSON.stringify({
                 firstData: first, 
@@ -148,7 +152,7 @@ export async function login(url = "", first = "", second = "") {
         }
   
         const data = await response.json()
-        localStorage.setItem("token",data.token)
+        localStorage.setItem('token',data.token)
 
         return true
   
