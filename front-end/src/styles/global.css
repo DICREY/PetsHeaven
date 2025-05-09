@@ -79,3 +79,6 @@
     color: var(--white);
     transform: translateY(-2px);
 }
+.enlacenavadmin.active{
+    background: var(--gray-200);
+}

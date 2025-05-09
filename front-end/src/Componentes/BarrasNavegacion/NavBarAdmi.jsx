@@ -1,7 +1,7 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
-import { Settings,Users,User,Headset,ChevronDown,Syringe,Bath,Scissors,Cat,Calendar,LogOut,Menu,X,Stethoscope,CalendarRange,
-  CalendarClock,FlaskRoundIcon as Flask } from 'lucide-react'
+import { NavLink } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Settings, Users, Headset, ChevronDown, Syringe, Bath, Scissors, Cat, Calendar, LogOut, Menu, X,
+  Stethoscope, CalendarRange, CalendarClock, FlaskRoundIcon as Flask } from 'lucide-react'
 
 // Imports
 import { Logout, decodeJWT,getRoles } from '../Varios/Util'
@@ -92,37 +92,37 @@ export const NavBarAdmin = () => {
             {
               isAdmin && (
                 <li className='itemnavadmin'>
-                  <a href='/admin/administracion' className='enlacenavadmin'>
+                  <NavLink to={'/admin/administracion'} className='enlacenavadmin'>
                     <Settings className='icononavadmin' />
                     <span>Administración</span>
-                  </a>
+                  </NavLink>
                 </li>
               )
             }
 
             <li className='itemnavadmin'>
-              <a href='/consultorio' className='enlacenavadmin'>
+              <NavLink to={'/consultorio'} className='enlacenavadmin'>
                 <Stethoscope className='icononavadmin' />
                 <span>Consultorio</span>
-              </a>
+              </NavLink>
             </li>
 
             {
               isAdmin && (
                 <li className='itemnavadmin'>
-                  <a href='/admin/gestion/usuarios' className='enlacenavadmin'>
+                  <NavLink to={'/admin/gestion/usuarios'} className='enlacenavadmin'>
                     <Users className='icononavadmin' />
                     <span>Personal</span>
-                  </a>
+                  </NavLink>
                 </li>
               )
             }
 
             <li className='itemnavadmin'>
-              <a href='/gestion/mascotas' className='enlacenavadmin'>
+              <NavLink to={'/gestion/mascotas'} className='enlacenavadmin'>
                 <Cat className='icononavadmin' />
                 <span>Mascotas</span>
-              </a>
+              </NavLink>
             </li>
 
             <li className='itemnavadmin'>
@@ -136,16 +136,16 @@ export const NavBarAdmin = () => {
 
               <ul className={`submenunavadmin ${agendaAbierta ? 'abiertonavadmin' : 'cerradonavadmin'}`}>
                 <li>
-                  <a href='/calendario/general' className='subenlacenavadmin'>
+                  <NavLink to={'/calendario/general'} className='subenlacenavadmin'>
                     <CalendarRange className='iconosubnavadmin' />
                     <span>Agenda General</span>
-                  </a>
+                  </NavLink>
                 </li>
                 <li>
-                  <a href='/agenda/personal' className='subenlacenavadmin'>
+                  <NavLink to={'/agenda/personal'} className='subenlacenavadmin'>
                     <CalendarClock className='iconosubnavadmin' />
                     <span>Agenda Personal</span>
-                  </a>
+                  </NavLink>
                 </li>
               </ul>
             </li>
@@ -162,28 +162,28 @@ export const NavBarAdmin = () => {
 
                   <ul className={`submenunavadmin ${serviciosAbierto ? 'abiertonavadmin' : 'cerradonavadmin'}`}>
                     <li>
-                      <a href='/servicios/vacunas' className='subenlacenavadmin'>
+                      <NavLink to={'/servicios/vacunas'} className='subenlacenavadmin'>
                         <Syringe className='iconosubnavadmin' />
                         <span>Vacunas</span>
-                      </a>
+                      </NavLink>
                     </li>
                     <li>
-                      <a href='/servicios/cirugia' className='subenlacenavadmin'>
+                      <NavLink to={'/servicios/cirugia'} className='subenlacenavadmin'>
                         <Scissors className='iconosubnavadmin' />
                         <span>Cirugía</span>
-                      </a>
+                      </NavLink>
                     </li>
                     <li>
-                      <a href='/servicios/laboratorio' className='subenlacenavadmin'>
+                      <NavLink to={'/servicios/laboratorio'} className='subenlacenavadmin'>
                         <Flask className='iconosubnavadmin' />
                         <span>Pruebas Laboratorio</span>
-                      </a>
+                      </NavLink>
                     </li>
                     <li>
-                      <a href='/servicios/spa' className='subenlacenavadmin'>
+                      <NavLink to={'/servicios/spa'} className='subenlacenavadmin'>
                         <Bath className='iconosubnavadmin' />
                         <span>Spa</span>
-                      </a>
+                      </NavLink>
                     </li>
                   </ul>
                 </li>
