@@ -259,7 +259,7 @@ export const GesAgendaGeneral = () => {
                 // Eventos del calendario, se mapea para añadir clases personalizadas
                 events={events.map(event => ({
                     ...event,
-                    classNames: [event.category] // Agrega una clase CSS personalizada según la categoría
+                    classNames: [event.category] 
                 }))}
 
                 // Permite la selección de fechas o rangos de fechas
