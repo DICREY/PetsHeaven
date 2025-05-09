@@ -222,6 +222,9 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
         }
     }
 
+    useEffect(() => {
+        GetAppointments()
+    },[])
     return (
         <div className="calendar-container">
             <NavBarAdmin />
