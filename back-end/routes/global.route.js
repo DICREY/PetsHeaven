@@ -30,6 +30,22 @@ Route.get('/services', async (req,res) => {
     }
 })
 
+Route.get('/calendar/generals', async (req,res) => {
+    // Vars
+    const global = new Global()
+    const services = await global.findAppointments()
+
+    // Verify if exist 
+    if (!services.result) res.status(404).json({ message: "Citas no encontradas" })
+
+    try {
+        res.status(200).json(services)
+    } catch (err) {
+        if (err.status) return res.status(err.status).json({ message: err.message })
+        res.status(500).json({ message: err ,})
+    }
+})
+
 Route.post('/login',limiterLog, async (req,res) => {
     // Vars
     const { firstData, secondData } = req.body
