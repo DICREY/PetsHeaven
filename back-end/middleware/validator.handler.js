@@ -11,7 +11,6 @@ function validatorHeaders (req,res,next) {
     const contentType = req.headers['content-type']
     const userAgent = req.headers['user-agent']
     const user = req.headers['user']
-    console.log(apiKey, contentType, userAgent, user)
 
     // Validation
     if (!apiKey || apiKey !== 'pets_heaven_vite' ) {

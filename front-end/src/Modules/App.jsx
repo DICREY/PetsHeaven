@@ -135,7 +135,7 @@ export default function App () {
           <VetRoute children={<FormularioRegMascotas URL={URL} />} />} >
         </Route>
         <Route path='propietario/registro' element={
-          <VetRoute children={<RegistroPro URL={URL} />} />} >
+          <VetRoute children={<RegistroPro URL={URL} />} />}>
         </Route>
         <Route path='consultorio' element={
           <VetRoute children={<HomeAdmin setOwner={setOwner} setUserSelect={setUserSelect} URL={URL}/>} />}>  

@@ -75,23 +75,6 @@ export class DescriptionPeople extends React.Component {
           <div className="propietarioFotoInfoProps">
             <div className="propietarioFotoProps">
               {this.checkImage(datas.fot_vet,`${datas.nom_per} ${datas.ape_per}`)}
-              {/* {
-                validImg? (
-                  <img 
-                    width={100}
-                    height={100}
-                    src={datas.fot_vet}
-                    alt={`${datas.nom_per} ${datas.ape_per}` || "No Registrado"}
-                  />
-                ):(
-                  <img 
-                    width={100}
-                    height={100}                      
-                    src={imgDefault}
-                    alt={`${datas.nom_per} ${datas.ape_per}` || "No Registrado"}
-                  />
-                )
-              } */}
             </div>
             <div className="propietarioDatosProps">
               {
