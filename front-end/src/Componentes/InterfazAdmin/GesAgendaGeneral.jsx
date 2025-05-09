@@ -15,6 +15,9 @@ import "./prueba.css"
 
 // Component 
 export const GesAgendaGeneral = () => {
+    
+    //Dia de hoy
+    const today = new Date().toISOString().split('T')[0]; // 'YYYY-MM-DD'
 
     //Eventos solo de prueba
     const [events, setEvents] = useState([
@@ -193,87 +196,106 @@ export const GesAgendaGeneral = () => {
             <NavBarAdmin />
             <div className='calendar-container' id='main-container-calendar'>
                 
-            {/* <div className="calendar-controls">
-                <div className="navigation-buttons">
-                    <button onClick={() => navigate('today')}>Hoy</button>
-                    <button onClick={() => navigate('prev')}>&lt</button>
-                    <button onClick={() => navigate('next')}>&gt</button>
-                </div>
-                <h2>{mesActual}</h2>
-                <div className="view-buttons">
-                    <button 
-                        onClick={() => changeView('dayGridMonth')}
-                        className={currentView === 'dayGridMonth' ? 'active' : ''}
-                    >
-                        Mes
-                    </button>
-                    <button 
-                        onClick={() => changeView('timeGridWeek')}
-                        className={currentView === 'timeGridWeek' ? 'active' : ''}
-                    >
-                        Semana
-                    </button>
-                    <button 
-                        onClick={() => changeView('timeGridDay')}
-                        className={currentView === 'timeGridDay' ? 'active' : ''}
-                    >
-                        Día
-                    </button>
-                    <button 
-                        onClick={() => changeView('listDay')}
-                        className={currentView === 'listDay' ? 'active' : ''}
-                    >
-                        Lista
-                    </button>
-                </div>
-            </div> */}
-
             <FullCalendar
+                // Refencia del calendario, permite acceder a la instancia del componente para manipularlo
                 ref={calendarRef}
+
+                // Plugins utilizados para habilitar características adicionales en el calendario
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
+                
+                // Vista inicial del calendario (se puede cambiar dinámicamente)
                 initialView={currentView}
-                headerToolbar={{
-                    start:"prev today next",
-                    center:"title",
-                    end:"dayGridMonth timeGridWeek listDay"
+
+                // Deshabilita los dias que ya pasaron 
+                validRange={{
+                    start:today
                 }}
+
+                // Configuración de la barra de herramientas del encabezado
+                headerToolbar={{
+                    start: "prev today next",  // Botones para navegar entre fechas
+                    center: "title",           // Título del calendario
+                    end: "dayGridMonth dayGridWeek dayGridDay listWeek"  // Vistas disponibles: mes, semana, lista
+                }}
+                
+                // Eventos del calendario, se mapea para añadir clases personalizadas
                 events={events.map(event => ({
                     ...event,
-                    classNames: [event.category]
+                    classNames: [event.category] // Agrega una clase CSS personalizada según la categoría
                 }))}
-                selectable="true"
+
+                // Permite la selección de fechas o rangos de fechas
+                selectable={true}
+
+                // Función que se ejecuta al hacer clic en una fecha
                 dateClick={handleDateClick}
+
+                // Función que se ejecuta al hacer clic en un evento
                 eventClick={handleEventClick}
+
+                // Habilita la edición de los eventos: mover, redimensionar, eliminar
                 editable={true}
-                dayMaxEvents={3}
-                moreLinkText={`Ver mas`}
+
+                // Texto que aparece cuando hay más eventos de los que se pueden mostrar en un día
+                moreLinkText={`Ver más`}
+
+                // Altura del calendario, ajustada para ocupar el espacio restante de la ventana
                 height="calc(100vh - 120px)"
+
+                // Muestra una línea indicadora para la hora actual
                 nowIndicator={true}
-                slotMinTime="08:00:00"
-                slotMaxTime="20:00:00"
-                slotDuration="00:30:00"
-                locales={[esLocale]}
-                locale="es"
+
+                // Configura la hora mínima visible en las vistas basadas en tiempo
+                slotMinTime="06:00:00" 
+
+                // Configura la hora máxima visible en las vistas basadas en tiempo
+                slotMaxTime="19:00:00" 
+
+                // Duración de cada franja horaria en las vistas de tiempo
+                slotDuration="00:30:00" // Cada ranura dura 30 minutos
+
+                // Configura el idioma del calendario a español
+                locales={[esLocale]}   // Idiomas disponibles
+                locale="es"            // Idioma predeterminado
+
+                // Formato de la hora para los eventos, en formato de 12 horas
                 eventTimeFormat={{
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true
+                    hour: '2-digit',    // Dos dígitos para la hora
+                    minute: '2-digit',  // Dos dígitos para los minutos
+                    hour12: true        // Usa el formato de 12 horas (AM/PM)
                 }}
-                eventInteractive="true"
+
+                // Configuración de las horas de negocio (días y horarios en los que el calendario está disponible)
+                businessHours={{
+                    daysOfWeek: [1, 2, 3, 4, 5, 6], // Lunes a Sábado
+                    startTime: "06:00",              // Comienza a las 6:00 AM
+                    endTime: "18:00"                 // Finaliza a las 6:00 PM
+                }}
+
+                // Permite la interactividad de los eventos (clics, drag-and-drop, etc.)
+                eventInteractive={true}
+
+                views={{
+                    dayGridDay: { dayMaxEvents: false }, // Sin límite de eventos en la vista de día
+                    dayGridMonth: { dayMaxEvents: 2 } ,   // Límite de 2 eventos solo en la vista de mes
+                    dayGridWeek: { dayMaxEvents: false} // Limite de eventos deshabilitado en semana
+                }}
+
+                // Función que personaliza el contenido de los eventos en el calendario
                 eventContent={(eventInfo) => (
                     <div className={`fc-event-content ${eventInfo.event.extendedProps.category}`}>
-                        <div className="fc-event-time">
-                            {eventInfo.timeText}
-                        </div>
-                        <div className="fc-event-title">
-                            {eventInfo.event.title}
-                        </div>
-                        <div className="fc-event-patient">
-                            {eventInfo.event.extendedProps.paciente}
-                        </div>
+                    <div className="fc-event-time">
+                        {eventInfo.timeText}  {/* Muestra la hora del evento */}
+                    </div>
+                    <div className="fc-event-title">
+                        {eventInfo.event.title}  {/* Título del evento */}
+                    </div>
+                    <div className="fc-event-patient">
+                        {eventInfo.event.extendedProps.paciente}  {/* Información personalizada del evento */}
+                    </div>
                     </div>
                 )}
-            />
+                />
 
             {/* Popup para crear nueva cita */}
             {showCreateModal && (
@@ -282,7 +304,7 @@ export const GesAgendaGeneral = () => {
                         <div className="modal-header">
                             <h3>Nueva Cita</h3>
                             <button className="modal-close-btn" onClick={() => setShowCreateModal(false)}>
-                                &times
+                                X
                             </button>
                         </div>
                         <div className="modal-body">
