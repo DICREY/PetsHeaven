@@ -13,7 +13,7 @@ import { DeleteData, ModifyData } from '../Varios/Requests'
 import '../../../src/styles/InterfazAdmin/PerfilPropietario.css'
 
 // Component 
-export const PerfilPropietario = ({ userSelect, owner = false, URL = '' }) => {
+export const PerfilPropietario = ({ userSelect, owner = false, URL = '', imgPetDefault = '', imgUserDefault = ''}) => {
   // Vars dynamic
   const [activeTab, setActiveTab] = useState('propietario')
   const [isEditing, setIsEditing] = useState(false)
@@ -26,8 +26,8 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '' }) => {
   // Vars 
   const mainUrl = `${URL}/owner`
   const secondUrl = `${URL}/user`
-  const imgDefault = "https://raw.githubusercontent.com/Mogom/Imagenes_PetsHeaven/refs/heads/main/Defaults/userImg.default.webp"
-  const imgDefaultPet = "https://raw.githubusercontent.com/Mogom/Imagenes_PetsHeaven/refs/heads/main/Defaults/userImg.default.webp"
+  const imgDefault = imgUserDefault
+  const imgDefaultPet = imgPetDefault
   const navigate = useNavigate()
   const headers = {
     Nombres: 'nom_per',

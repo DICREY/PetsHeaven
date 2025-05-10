@@ -12,6 +12,7 @@ import '../../../src/styles/Formularios/Registro.css'
 
 // Component 
 const Registro = ({ URL = '' }) => {
+  // Vars 
   const imagenFondo = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Fondos/fondo.png'
   const logoUrl = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/5.png'
 

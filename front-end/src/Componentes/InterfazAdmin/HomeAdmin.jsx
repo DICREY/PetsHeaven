@@ -143,8 +143,8 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner }) {
     if (find) setDatas(find)
   }
 
-  const handleDescription = (user) => {
-    setUserSelect(user)
+  const handleDescription = (data) => {
+    setUserSelect(data)
     setOwner(true)
     navigate('/propietario/datos')
   }

@@ -14,7 +14,14 @@ import { getRoles,loadingAlert, checkImage, getAge } from '../Varios/Util'
 import '../../../src/styles/Pets/petDetails.css'
 
 // Main component
-export const PetDetails = ({ datas, ready, editMode, imgDefault, open = false, admin = false, URL = ""}) => {
+export const PetDetails = ({ 
+        datas,
+        ready,
+        editMode,
+        imgPetDefault,
+        open = false,
+        admin = false,
+        URL = ""}) => {
     // Dynamic vars
     const [isOpen,setIsOpen] = useState(open)
     const [isAdmin,setIsAdmin] = useState(admin)
@@ -107,7 +114,7 @@ export const PetDetails = ({ datas, ready, editMode, imgDefault, open = false, a
                                     ) : (
                                         <img 
                                             className="pet-avatar"
-                                            src={imgDefault}    
+                                            src={imgPetDefault}    
                                             alt={`${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`}     
                                         />
                                     )

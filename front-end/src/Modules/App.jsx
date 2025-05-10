@@ -34,6 +34,8 @@ export default function App () {
   const [owner,setOwner] = useState(false)
 
   // Vars 
+  const imgPetDefault = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Default/no%20imagen.png'
+  const imgUserDefault = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/default_veterinario.png'
   const URL = 'http://localhost:3000'
   const isInactive = useInactivityDetector(20 * 60 * 1000) // 20 minutos de inactividad
   
@@ -111,7 +113,7 @@ export default function App () {
       <Routes>
         {/* Private routes */}
         <Route path='user/pets' element={
-          <PrivateRoute children={<Pets URL={URL}/>}/>}>
+          <PrivateRoute children={<Pets URL={URL} imgPetDefault={imgPetDefault} imgUserDefault={imgUserDefault} />}/>}>
         </Route>
 
         {/* Admin routes  */}
@@ -141,7 +143,14 @@ export default function App () {
           <VetRoute children={<HomeAdmin setOwner={setOwner} setUserSelect={setUserSelect} URL={URL}/>} />}>  
         </Route>
         <Route path='propietario/datos' element={
-          <VetRoute children={<PerfilPropietario owner={owner} userSelect={userSelect} URL={URL} />} />} >
+          <VetRoute children={
+          <PerfilPropietario 
+            owner={owner} 
+            userSelect={userSelect} 
+            URL={URL}
+            imgPetDefault={imgPetDefault} 
+            imgUserDefault={imgUserDefault} 
+          />} />} >
         </Route>
         <Route path='calendario/general' element={
           <VetRoute children={<GesAgendaGeneral URL={URL} />} />} >

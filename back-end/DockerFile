@@ -8,4 +8,6 @@ COPY . .
 RUN yarn add cors express mysql express-rate-limit jsonwebtoken bcrypt dotenv
 RUN yarn add -D nodemon
 
+EXPOSE 3000
+
 CMD ["yarn", "dev"]

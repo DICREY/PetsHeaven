@@ -13,10 +13,12 @@ import '../../../src/styles/Formularios/login.css'
 
 // Main component 
 export const LoginForm = ({ URL = "" }) => {
-  // Vars 
+  // Dynamic Vars 
   const [verPassword, setVerPassword] =  useState(false)
   const [waitTime, setWaitTime] =  useState(false)
   const [time, setTime] = useState()
+  
+  // Vars 
   const imagenFondo = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Fondos/fondo.png' 
   const logoUrl = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/5.png'
   const navigate = useNavigate()
