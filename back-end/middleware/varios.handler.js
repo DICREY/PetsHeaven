@@ -2,7 +2,7 @@
 const rateLimit = require('express-rate-limit')
 
 const corsOptions = {
-    origin:'192.168.20.57',
+    origin:['http://192.168.20.57:5173','http://localhost:5173','FrontEndPetsHeaven'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'x-api-key', 'Authorization','User','Roles'],
     credentials: true

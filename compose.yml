@@ -9,6 +9,13 @@ services:
     environment:
       - MARIADB_USER=root
       - MARIADB_ROOT_PASSWORD=123
+  nginx:
+    container_name: nginx
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
   backend:
     container_name: BackEndPetsHeaven
     image: node
@@ -26,7 +33,7 @@ services:
       context: ./front-end
       dockerfile: DockerFile
     ports:
-      - "80:5173"
+      - "5173:5173"
     volumes:
       - pets-front:/front-end
 volumes:
