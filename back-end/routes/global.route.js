@@ -32,6 +32,7 @@ Route.get('/services', async (req,res) => {
 
 Route.post('/login',limiterLog, async (req,res) => {
     // Vars
+    console.log(req)
     const { firstData, secondData } = req.body
     const global = new Global(firstData)
     

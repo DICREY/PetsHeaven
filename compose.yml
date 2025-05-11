@@ -3,19 +3,24 @@ services:
     container_name: DataBasePetsHeaven
     image: mariadb
     ports:
-      - 3306:3306
+      - "3306:3306"
     volumes:
       - pets-data:/var/lib/mysql
     environment:
       - MARIADB_USER=root
       - MARIADB_ROOT_PASSWORD=123
-  # nginx:
-  #   container_name: nginx
-  #   image: nginx
-  #   ports:
-  #     - "80:80"
-  #   volumes:
-  #     - ./nginx/conf.d:/etc/nginx/conf.d
+
+  nginx:
+    container_name: nginx
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - frontend
+      - backend
+    
   backend:
     container_name: BackEndPetsHeaven
     image: node
@@ -23,9 +28,10 @@ services:
       context: ./back-end
       dockerfile: DockerFile
     ports:
-      - "3000:3000"
+      - 3000:3000
     volumes:
-      - pets-back:/back-end
+      - pets-back:/home/dicrey/Documents/PetsHeaven/back-end
+
   frontend:
     container_name: FrontEndPetsHeaven
     image: node
@@ -35,7 +41,7 @@ services:
     ports:
       - "5173:5173"
     volumes:
-      - pets-front:/front-end
+      - pets-front:/home/dicrey/Documents/PetsHeaven/front-end/
 volumes:
   pets-data:
   pets-back:

@@ -12,16 +12,14 @@ const HeaderWeb = {
 // Traer datos
 export async function GetDataGlobal(URL = '') {
     try {
-        const response = await axios.get(URL, {
-            headers: {
+        const response = await axios.get(
+            URL,
+            {headers: {
                 "Content-Type": 'application/json',
                 'x-api-key': 'pets_heaven_vite',
                 'user': 'Unknow'
-            },
-            // Opciones adicionales:
-            withCredentials: true,
-            timeout: 10000 // 10 segundos timeout
-        })
+            }}
+        )
 
         if (response.statusText !== 'OK') {
             throw response
@@ -34,22 +32,20 @@ export async function GetDataGlobal(URL = '') {
 }
 export async function GetData(URL = '',token = '') {
     try {
-        const response = await fetch(URL,{
-            method: 'GET',
+        const response = await axios.get(URL,{
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'User': getName(token),
                 'Roles': decodeJWT(token).roles,
-                ...HeaderWeb
+                'x-api-key': 'pets_heaven_vite',
             }
         })
 
-        if (!response.ok) {
+        if (response.statusText !== 'OK') {
             throw response
         }
 
-        const data = await response.json()
-        return data.result[0]
+        return response.data.result[0]
     } catch (error) {
         throw error
     }
@@ -57,25 +53,24 @@ export async function GetData(URL = '',token = '') {
 // Enviar datos 
 export async function PostData(URL = '', token = '', datas = {}) {
     try {
-        const response = await fetch(URL, {
-            method: 'POST',
-            headers: {
+        const response = await axios.post(
+            URL,
+            {...datas},
+            {headers: {
                 'Authorization': `Bearer ${token}`,
                 'User': getName(token),
                 'Roles': decodeJWT(token).roles,
-                ...HeaderWeb
-            },
-            body: JSON.stringify(datas)
-        })
+                'Content-Type': 'application/json',
+                'x-api-key': 'pets_heaven_vite',
+            }}
+        )
   
       // Manejar diferentes códigos de estado
-    if (!response.ok) {
+      if (response.statusText !== 'OK') {
         throw response
     }
-  
-      // Parsear la respuesta como JSON
-    const data = await response.json()
-        return data
+
+    return response.data.result[0]
   
     } catch (error) {
         throw error
@@ -84,24 +79,23 @@ export async function PostData(URL = '', token = '', datas = {}) {
 // Modificar datos
 export async function ModifyData(URL = '', token = '', datas = {}) {
     try {
-        const response = await fetch(URL,{
-            method:'PUT',
-            headers: {
+        const response = await axios.put(
+            URL,
+            {...datas},
+            {headers: {
                 'Authorization': `Bearer ${token}`,
                 'User': getName(token),
                 'Roles': decodeJWT(token).roles,
-                ...HeaderWeb
-            },
-            body: JSON.stringify(datas),
-        })
+                'Content-Type': 'application/json',
+                'x-api-key': 'pets_heaven_vite',
+            }}
+        )
 
-        if (!response.ok) {
+        if (response.statusText !== 'OK') {
             throw response
         }
 
-        // Parsear la respuesta como JSON
-        const data = await response
-        return data
+        return response.data.result[0]
 
     } catch (error) {
         throw error
@@ -110,24 +104,23 @@ export async function ModifyData(URL = '', token = '', datas = {}) {
 // Delete data
 export async function DeleteData(URL = '', token = '', datas = {}) {
     try {
-        const response = await fetch(URL,{
-            method:'DELETE',
-            headers: {
+        const response = await axios.delete(
+            URL,
+            {...datas},
+            {headers: {
                 'Authorization': `Bearer ${token}`,
                 'User': getName(token),
                 'Roles': decodeJWT(token).roles,
-                ...HeaderWeb
-            },
-            body: JSON.stringify(datas),
-        })
+                'Content-Type': 'application/json',
+                'x-api-key': 'pets_heaven_vite',
+            }},
+        )
 
-        if (!response.ok) {
+        if (response.statusText !== 'OK') {
             throw response
         }
 
-        // Parsear la respuesta como JSON
-        const data = await response.json()
-        return data
+        return response.data.result[0]
 
     } catch (error) {
         throw await error.json()
@@ -136,22 +129,26 @@ export async function DeleteData(URL = '', token = '', datas = {}) {
 
 export async function login(url = '', first = '', second = '') {
     try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
+        const response = await axios.post(
+            url, 
+            {
+              firstData: first, 
+              secondData: second 
+            },
+            {
+              headers: {
                 'User': 'Desconocido',
-                ...HeaderWeb},
-            body: JSON.stringify({
-                firstData: first, 
-                secondData: second 
-            })
-        })
+                'Content-Type': 'application/json',
+                'x-api-key': 'pets_heaven_vite',
+                }
+            }
+        )
   
-        if (!response.ok) {
-            throw await response
+        if (response.statusText !== 'OK') {
+            throw response
         }
   
-        const data = await response.json()
+        const data = response.data
         localStorage.setItem('token',data.token)
 
         return true
