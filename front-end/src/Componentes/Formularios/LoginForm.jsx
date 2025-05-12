@@ -12,7 +12,7 @@ import { getRoles, errorStatusHandler, formatoTiempo } from '../Varios/Util'
 import '../../../src/styles/Formularios/login.css'
 
 // Main component 
-export const LoginForm = ({ URL = "" }) => {
+export const LoginForm = ({ URL = "", arriveTo = ''}) => {
   // Dynamic Vars 
   const [verPassword, setVerPassword] =  useState(false)
   const [waitTime, setWaitTime] =  useState(false)
@@ -68,7 +68,7 @@ export const LoginForm = ({ URL = "" }) => {
       if (log) {
         const token = localStorage.getItem("token")
         const roles = getRoles(token)
-        const pathRedirect = useRoleRedirect(roles)
+        arriveTo = arriveTo? arriveTo: useRoleRedirect(roles)
         
         if(token){ 
           swal({
@@ -78,7 +78,7 @@ export const LoginForm = ({ URL = "" }) => {
             buttons: false
           })
           setTimeout(() => {
-            navigate(pathRedirect)
+            navigate(arriveTo)
           },2000)
         } 
       } else console.log(log)

@@ -2,7 +2,7 @@
 import React from "react"
 
 // Imports 
-import { formatDate } from '../Varios/Util'
+import { formatDate, backUrl } from '../Varios/Util'
 
 // Component 
 export class DescriptionPeople extends React.Component {
@@ -52,7 +52,7 @@ export class DescriptionPeople extends React.Component {
   }
 
   verifyData = () => {
-    if(!this.props.datas) window.location.replace((window.location.origin))
+    if(!this.props.datas) window.location.href = '/consultorio'
   }
 
   render = () => {

@@ -62,7 +62,7 @@ Route.delete('/delete', ValidatorRol("veterinario"), async (req,res) => {
         // Verifiy if exist
         const search = await owner.findBy(by.doc)
 
-        if (!search.result[0][0]) return res.status(404).json({ message: "Usuario no encontrado" })
+        if (!search.result[0][0]) return res.status(404).json({ message: "Usuario no encontrado" })    
 
         const deleted = await owner.deleteOwner(by.doc)
         

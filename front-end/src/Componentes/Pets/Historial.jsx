@@ -1,7 +1,7 @@
 // Imports 
-import { errorStatusHandler } from '../../Varios/Util'
-import { PostData } from '../../Varios/Requests'
-import { Loader } from '../../Errores/Loader'
+import { errorStatusHandler } from '../Varios/Util'
+import { PostData } from '../Varios/Requests'
+import { Loader } from '../Errores/Loader'
 
 // Librarys
 import React, { useEffect, useState } from "react"
@@ -55,7 +55,7 @@ export const Historial = ({ datas, URL = "" }) => {
       loading ? (
         <Loader />
       ) : (
-        <section className="pet-content">  
+        <main className="pet-content">  
             {
               history.citas?.map((history, index) => (
                 <article className="info-card"> 
@@ -112,7 +112,7 @@ export const Historial = ({ datas, URL = "" }) => {
                 </article>
               ))
             }
-          </section>  
+          </main>  
       )
   )
 }

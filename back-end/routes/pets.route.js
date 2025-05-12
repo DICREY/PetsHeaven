@@ -46,11 +46,10 @@ Route.get('/all:by', ValidatorRol("usuario"),async (req,res) => {
 Route.post('/register', ValidatorRol("veterinario"), async (req,res) => {
     // Vars
     const { body } = req
-
+    
     // Verify if exist
-    const find = pet.findAllBy(toString(body.name))
-    const findPet = await find.result[0][0]
-    if (findPet) return res.status(404).json({message: "La mascota ya existe"})
+    const find = await pet.findAllBy(body.nom_mas,body.doc_per)
+    if (find.result[0][0]) return res.status(409).json({message: "La mascota ya existe"})
 
     try{
         const created = await pet.create(body)

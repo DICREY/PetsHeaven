@@ -1,6 +1,6 @@
 // Librarys 
-import React from 'react'
-import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom'
+import React, { useState, useRef } from 'react';
 import { Pencil, ChevronLeft, User } from 'lucide-react'
 import swal from 'sweetalert'
 
@@ -13,13 +13,16 @@ import { PostData } from '../Varios/Requests'
 import '../../../src/styles/Formularios/FormularioMascotas.css'
 
 export const FormularioRegMascotas = ({ URL = ''}) => {
+  // Dynamic vars
   const [activeTab, setActiveTab] = useState('personal')
   const [profileImage, setProfileImage] = useState(null)
   const [signatureImage, setSignatureImage] = useState(null)
   const [formData, setFormData] = useState({})
 
+  // Vars 
   const profileInputRef = useRef(null)
-  const signatureInputRef = useRef(null)
+  const navigate = useNavigate()
+  const mainURL = `${URL}/pet`
 
   const handleProfileImageChange = (e) => {
     const file = e.target.files[0]
@@ -41,15 +44,17 @@ export const FormularioRegMascotas = ({ URL = ''}) => {
   const sendData = async () => {
     try {
       const token = localStorage.getItem('token')
-      if (profileImage)
+      // if (profileImage)
       if (token) {
-        loadingAlert('Validando...',)
+        loadingAlert('Validando...')
         formData.fec_nac_mas = formatDate(formData.fec_nac_mas)
-        const created = await PostData(URL, token, formData)
-        created.ok && swal({
-            icon: 'success',
-            title: 'Modificado',
-            text: 'Los datos de la mascota han sido modificados',
+
+        const created = await PostData(`${mainURL}/register`, token, formData)
+
+        created.status === 201 & swal({
+          icon: 'success',
+          title: 'Registrada',
+          text: 'La mascota ha sido registrada correctamente',
         })
       }
     } catch (err) {
@@ -75,11 +80,14 @@ export const FormularioRegMascotas = ({ URL = ''}) => {
               <span className='creacion-regusuario'>| Creación</span>
             </div>
             <div className='acciones-regusuario'>
-              <button className='atras-regusuario' onClick={() => window.location.href = '/gestion/mascotas'}>
+              <button className='atras-regusuario' onClick={() => navigate(-1)}>
                 <ChevronLeft size={16} />
                 <span className='texto-btn-regusuario'>Atrás</span>
               </button>
-              <button className='guardar-regusuario'>Guardar</button>
+              <button 
+                className='guardar-regusuario'
+                onClick={sendData}
+                >Guardar</button>
             </div>
           </div>
 
@@ -226,13 +234,29 @@ export const FormularioRegMascotas = ({ URL = ''}) => {
                   </div>
         
                   <div className='grupo-regusuario'>
+                    <label className='etiqueta-regusuario'>Documento del propietario</label>
+                    <input type='number' 
+                      name='doc_per'
+                      placeholder='Documento, persona encargada de la mascota' 
+                      className='campo-regusuario' 
+                      maxLength={20}
+                      minLength={0}
+                      pattern='^[0-9]+$'
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+
+                  <div className='grupo-regusuario'>
                     <label className='etiqueta-regusuario'>Sexo de la mascota</label>
                     <select 
                       name='gen_mas'
                       className='campo-regusuario'
+                      defaultValue='--'
+                      required
                       onChange={handleChange}
                       >
-                    <option disabled selected>Seleccione tipo</option>
+                    <option disabled value='--'>Seleccione tipo</option>
                     <option value='Femenino'>Hembra</option>
                     <option value='Masculino'>Macho</option>
                     </select>
@@ -243,11 +267,13 @@ export const FormularioRegMascotas = ({ URL = ''}) => {
                     <label className='etiqueta-regusuario'>Estado reproductivo</label>
                     <select className='campo-regusuario'
                       name='est_rep_mas'
+                      defaultValue='--'
+                      required
                       onChange={handleChange}
                       >
-                    <option disabled selected>Seleccione tipo</option>
-                    <option value=''>Esterilizado</option>
-                    <option value=''>No esterilizado</option>
+                    <option disabled value='--'>Seleccione tipo</option>
+                    <option value='Esterilizado'>Esterilizado</option>
+                    <option value='No esterilizado'>No esterilizado</option>
                     </select>
                   </div>
                 </div>

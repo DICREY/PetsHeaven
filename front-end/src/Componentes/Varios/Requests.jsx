@@ -65,12 +65,11 @@ export async function PostData(URL = '', token = '', datas = {}) {
             }}
         )
   
-      // Manejar diferentes códigos de estado
-      if (response.statusText !== 'OK') {
-        throw response
-    }
+        // Manejar diferentes códigos de estado
+        if(200 >= response.status <= 299) {
+            return response
+        } else throw response
 
-    return response.data.result[0]
   
     } catch (error) {
         throw error
@@ -95,7 +94,7 @@ export async function ModifyData(URL = '', token = '', datas = {}) {
             throw response
         }
 
-        return response.data.result[0]
+        return response
 
     } catch (error) {
         throw error
@@ -106,24 +105,25 @@ export async function DeleteData(URL = '', token = '', datas = {}) {
     try {
         const response = await axios.delete(
             URL,
-            {...datas},
             {headers: {
                 'Authorization': `Bearer ${token}`,
                 'User': getName(token),
                 'Roles': decodeJWT(token).roles,
                 'Content-Type': 'application/json',
-                'x-api-key': 'pets_heaven_vite',
-            }},
+                'x-api-key': 'pets_heaven_vite'
+            },
+            data:{...datas}
+            },
         )
 
         if (response.statusText !== 'OK') {
             throw response
         }
 
-        return response.data.result[0]
+        return response
 
     } catch (error) {
-        throw await error.json()
+        throw error
     }
 }
 
@@ -132,8 +132,8 @@ export async function login(url = '', first = '', second = '') {
         const response = await axios.post(
             url, 
             {
-              firstData: first, 
-              secondData: second 
+                firstData: first,
+                secondData: second
             },
             {
               headers: {

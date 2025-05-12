@@ -32,6 +32,7 @@ export default function App () {
   // Dynamic vars 
   const [userSelect,setUserSelect] = useState()
   const [owner,setOwner] = useState(false)
+  const [arriveTo,setArriveTo] = useState('')
 
   // Vars 
   const imgPetDefault = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Default/no%20imagen.png'
@@ -158,8 +159,8 @@ export default function App () {
 
         {/* Public Routes */}
         <Route path='/' element={<MainRoute />} />
-        <Route path='main' element={<VeterinariaPage URL={URL}/>} />
-        <Route path='user/login' element={<LoginForm URL={URL}/>} />
+        <Route path='main' element={<VeterinariaPage URL={URL} setArriveTo={setArriveTo} />} />
+        <Route path='user/login' element={<LoginForm URL={URL} arriveTo={arriveTo} />} />
         <Route path='user/register' element={<Registro URL={URL}/>} />
         <Route path='user/recuperar' element={<ForgotPassword />} />
         <Route path='internal' element={<ErrorInternalServer />} />

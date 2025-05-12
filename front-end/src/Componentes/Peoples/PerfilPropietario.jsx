@@ -64,10 +64,11 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '', imgPetD
       if (token) {
         loadingAlert('Validando...',)
         const mod = await ModifyData(`${secondUrl}/modify`, token, modPro)
-        mod.ok && swal({
+        console.log(mod)
+        mod.modified & swal({
           icon: 'success',
           title: 'Modificado',
-          text: 'Los datos de la mascota han sido modificados',
+          text: 'Los datos del usuario han sido modificados',
         })
       }
     } catch (err) {
@@ -103,7 +104,7 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '', imgPetD
             doc: userData.doc_per
           })
   
-          deleted.deleted && swal({
+          deleted.deleted & swal({
             icon: 'success',
             title: 'Desactivada',
             text: 'La persona ha sido desactivada correctamente.',
@@ -111,11 +112,14 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '', imgPetD
         }
       } else navigate('/user/login')
     } catch (err) {
-      err.message? swal({
+      if(err.status) {
+        const message = errorStatusHandler(err.status)
+        swal({
           icon: 'error',
           title: 'Error',
-          text: err.message
-      }): console.log(err)
+          text: message
+        })
+      } else console.log(err)
     }
   }
 

@@ -1,14 +1,21 @@
 // Librays
 import Swal from 'sweetalert2'
 import 'sweetalert2/src/sweetalert2.scss'
+import { useNavigate } from 'react-router-dom'
 
 //componente de cerrar sesion 
 export const Logout = () => {
   const token = localStorage.getItem("token")
   if (token){
-    window.location.href = "/main"
     localStorage.setItem('token','')
   }
+  window.location.href = "/main"
+}
+
+// Back 
+export const backUrl = () => {
+  const navigate = useNavigate
+  return navigate(-1)
 }
 
 // Convertir a hora
@@ -32,12 +39,19 @@ export const divideList = (array = [], size = 5) => {
 }
 
 // Verify if load img
-export const checkImage = (src = "",set) => {
+export const checkImage = (src = '', alt, imgDefault = '', className = '') => {
   const img = new Image()
-  img.src = src
+  let srcMod = src? src: imgDefault
 
-  img.onload = () => set(true)
-  img.onerror = () => set(false)
+  img.src = srcMod
+  img.onload = () => srcMod
+  img.onerror = () => srcMod = imgDefault
+
+  return <img
+    className={className}
+    src={srcMod}
+    alt={alt || "No Registrado"}
+  />
 }
 
 
@@ -128,58 +142,61 @@ export const getAge = (fec = "") => {
   return calcAge(fec) 
 }
 
-export const errorStatusHandler = (errStatus) => {
-  let message = 'Error interno'
-
-  if (errStatus >= 500) return 'Error en el servidor'
-  
-  switch (errStatus) {
-    case 302:
-      message = 'Ya existe en el sistema'
-      break
-
-    case 400:
-      message = 'Contenido invalido'
-      break
-
-    case 401:
-      message = 'Usuario o contraseña incorrectos'
-      break
-
-    case 403:
-      message = 'Sesion expirada'
-      break
-      
-    case 404:
-      message = 'No se encontro lo que buscas'
-      break
-
-    case 423: 
-      message = 'Bloqueado'
-      break
-
-    case 425:
-      message = 'Demasiado temprano'
-      break
-
-    case 429: 
-      message = 'Demasiados intentos espera 3 minutos'
-      break
-
-    case 498: 
-      message = 'Usuario no autorizado'
-      break
-
-    case 500: 
-      message = 'Error en el sistema. Intente nuevamente más tarde'
-      break
+export const errorStatusHandler = (status) => {
+  const returnMessage = (errStatus) => {
+    let message = 'Error interno'
     
-    default:
-      message = errStatus
-      break
-  }
+    if (errStatus >= 500) return 'Error en el sistema. Intente nuevamente más tarde'
+    
+    switch (errStatus) {
+      case 302:
+        message = 'Ya existe en el sistema'
+        break
 
-  return message
+      case 400:
+        message = 'Contenido invalido'
+        break
+
+      case 401:
+        message = 'Usuario o contraseña incorrectos'
+        break
+      
+      case 403:
+        message = 'Sesion expirada'
+        break
+      
+      case 404:
+        message = 'No se encontro lo que buscas'
+        break
+
+      case 409:
+        message = 'Conflicto, datos duplicados'
+        break
+
+      case 423: 
+        message = 'Bloqueado'
+        break
+
+      case 425:
+        message = 'Demasiado temprano'
+        break
+
+      case 429: 
+        message = 'Demasiados intentos espera 3 minutos'
+        break
+
+      case 498: 
+        message = 'Usuario no autorizado'
+        break
+        
+      default:
+        message = errStatus
+        break
+    }
+    
+    return message
+  }
+  return returnMessage(status)
 }
 
 export const loadingAlert = (

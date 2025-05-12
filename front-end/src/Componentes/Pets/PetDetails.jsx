@@ -5,7 +5,7 @@ import swal from 'sweetalert'
         
 // Import
 import { Resumen } from './Details/Resumen'
-import { Historial } from './Details/Historial'
+import { Historial } from './Historial'
 import { DeleteData } from '../Varios/Requests'
 import { getRoles,loadingAlert, checkImage, getAge } from '../Varios/Util'
 // import { Citas } from './Details/Citas'

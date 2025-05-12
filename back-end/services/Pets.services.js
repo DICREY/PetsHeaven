@@ -22,10 +22,10 @@ class Pet {
                 data.ali_mas,
                 data.fec_nac_mas,
                 data.pes_mas,
-                data.doc_usu,
+                data.doc_per,
                 data.gen_mas,
                 data.est_rep_mas,
-                data.fot_mas
+                data.fot_mas || ''
             ]
 
             // conect to database
@@ -88,10 +88,10 @@ class Pet {
             
             if (this.database) this.database.conection.query(proc,[by,secondBy],(err,result) => {
                 if(err) rej({ message: err })
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
+                // if(!result || !result[0][0]) rej({
+                //     message: "Not found",
+                //     status: 404
+                // })
                 setTimeout(() => {
                     res({
                         message: "Pets found",
