@@ -18,7 +18,7 @@
   justify-content: center;
 }
 .botonmovilnavadmin.activonavadmin {
-  background-color: #4b5563;
+  background-color: #00BCD4;
   color: white;
 }
 
@@ -57,11 +57,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 2rem;
 }
 
 .avatarnavadmin {
-  width: 6rem;
-  height: 6rem;
+  width: 13rem;
+  height: 16rem;
   flex-shrink: 0;
   border-radius: 0.5rem;
   background-color: #00bcd4;
@@ -107,7 +108,7 @@
 }
 
 .menunavadmin::-webkit-scrollbar-thumb {
-  background-color: #cbd5e1;
+  background-color: #00BCD4;
   border-radius: 20px;
 }
 
@@ -137,7 +138,7 @@
 }
 
 .enlacenavadmin:hover {
-  background-color: #f3f4f6;
+  background-color: #b2ebf2;
   color: #111827;
 }
 
@@ -164,7 +165,7 @@
 }
 
 .botonnavadmin:hover {
-  background-color: #f3f4f6;
+  background-color: #b2ebf2;
   color: #111827;
 }
 
@@ -215,7 +216,7 @@
 }
 
 .subenlacenavadmin:hover {
-  background-color: #f3f4f6;
+  background-color: #b2ebf2;
   color: #111827;
 }
 
@@ -254,7 +255,7 @@
 }
 
 .opcionnavadmin:hover {
-  background-color: #f3f4f6;
+  background-color: #b2ebf2;
 }
 
 .iconoopcionnavadmin {

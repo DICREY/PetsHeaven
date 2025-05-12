@@ -137,13 +137,6 @@ export const NavBarAdmin = () => {
             }
 
             <li className='itemnavadmin'>
-              <NavLink to={'/gestion/mascotas'} className='enlacenavadmin'>
-                <Cat className='icononavadmin' />
-                <span>Mascotas</span>
-              </NavLink>
-            </li>
-
-            <li className='itemnavadmin'>
               <button className='botonnavadmin' onClick={toggleAgenda}>
                 <div className='contenidobotonnavadmin'>
                   <Calendar className='icononavadmin' />
