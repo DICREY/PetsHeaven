@@ -101,22 +101,12 @@ export const Pets = ({URL = '', imgPetDefault = ''}) => {
                             {petsData.map((i, index) => (
                                 <aside key={index} className='pets-card'>
                                 <div className='pets-img-container'>
-                                    {checkImage(i.fot_mas,setValidImage)}
-                                    {
-                                        validImage? (
-                                            <img 
-                                                className='pets-card-img'
-                                                src={i.fot_mas}
-                                                alt={`${i.esp_mas} de raza ${i.raz_mas} color ${i.col_mas} con nombre ${i.nom_mas}`}
-                                            />
-                                        ): (
-                                        <img 
-                                            className='pets-card-img' 
-                                            src={imgDefault}
-                                            alt={`${i.esp_mas} de raza ${i.raz_mas} color ${i.col_mas} con nombre ${i.nom_mas}`}
-                                        />
-                                        )
-                                    }
+                                    {checkImage(
+                                        i.fot_mas,
+                                        `${i.esp_mas} de raza ${i.raz_mas} color ${i.col_mas} con nombre ${i.nom_mas}`,
+                                        imgDefault,
+                                        'pets-card-img'
+                                    )}
                                     <span className='pets-species-badge'>{i.esp_mas}</span>
                                 </div>
                                 

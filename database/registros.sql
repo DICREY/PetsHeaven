@@ -156,13 +156,13 @@ INSERT INTO pets_heaven.consultas (pro_mas_con, vet_con, mas_con) VALUES
 (2, 1, 10);
 
 INSERT INTO pets_heaven.citas (fec_cit, hor_ini_cit, hor_fin_cit, ser_cit, vet_cit, mas_cit, estado) VALUES
-('2023-11-15', '09:00:00', '10:00:00', 1, 1, 1, 'REALIZADO'),  -- Consulta General
-('2023-12-01', '11:00:00', '12:00:00', 2, 1, 1, 'PENDIENTE'),  -- Vacunación
-('2023-11-18', '14:00:00', '15:00:00', 3, 2, 2, 'REALIZADO'),  -- Cirugía
-('2023-12-05', '10:30:00', '11:30:00', 1, 2, 2, 'EN-ESPERA'),  -- Consulta General
-('2023-11-20', '16:00:00', '17:00:00', 4, 3, 3, 'REALIZADO'),  -- Emergencias
-('2023-12-10', '09:30:00', '10:30:00', 2, 3, 3, 'CANCELADO'),  -- Vacunación
-('2023-11-22', '13:00:00', '14:00:00', 5, 1, 4, 'REALIZADO'),  -- Spa y Baño
-('2023-12-15', '15:30:00', '16:30:00', 1, 1, 4, 'PENDIENTE'), -- Consulta General
-('2023-11-25', '11:30:00', '12:30:00', 3, 2, 5, 'REALIZADO'),  -- Cirugía
-('2023-12-20', '17:00:00', '18:00:00', 4, 2, 5, 'PENDIENTE');  -- Emergencias
+('2025-06-15', '09:00:00', '10:00:00', 1, 1, 1, 'REALIZADO'),  -- Consulta General
+('2025-06-01', '11:00:00', '12:00:00', 2, 1, 1, 'PENDIENTE'),  -- Vacunación
+('2025-06-18', '14:00:00', '15:00:00', 3, 2, 2, 'REALIZADO'),  -- Cirugía
+('2025-06-05', '10:30:00', '11:30:00', 1, 2, 2, 'EN-ESPERA'),  -- Consulta General
+('2025-06-20', '16:00:00', '17:00:00', 4, 3, 3, 'REALIZADO'),  -- Emergencias
+('2025-06-10', '09:30:00', '10:30:00', 2, 3, 3, 'CANCELADO'),  -- Vacunación
+('2025-06-22', '13:00:00', '14:00:00', 5, 1, 4, 'REALIZADO'),  -- Spa y Baño
+('2025-06-15', '15:30:00', '16:30:00', 1, 1, 4, 'PENDIENTE'), -- Consulta General
+('2025-05-25', '11:30:00', '12:30:00', 3, 2, 5, 'REALIZADO'),  -- Cirugía
+('2025-06-20', '17:00:00', '18:00:00', 4, 2, 5, 'PENDIENTE');  -- Emergencias
