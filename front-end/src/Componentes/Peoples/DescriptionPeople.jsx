@@ -2,7 +2,7 @@
 import React from "react"
 
 // Imports 
-import { formatDate, backUrl } from '../Varios/Util'
+import { formatDate, checkImage } from '../Varios/Util'
 
 // Component 
 export class DescriptionPeople extends React.Component {
@@ -34,29 +34,12 @@ export class DescriptionPeople extends React.Component {
     }
   }
 
-  checkImage = (src = "",alt = "") => {
-    const { imgDefault } = this.props
-    const img = new Image()
-    let srcMod = src? src: imgDefault
-  
-    img.src = srcMod
-    img.onload = () => srcMod
-    img.onerror = () => srcMod = imgDefault
-
-    return <img 
-      width={100}
-      height={100}
-      src={srcMod}
-      alt={alt || "No Registrado"}
-    />
-  }
-
   verifyData = () => {
     if(!this.props.datas) window.location.href = '/consultorio'
   }
 
   render = () => {
-    let { datas, isEditing, handleChange, headers } = this.props
+    let { datas, isEditing, handleChange, headers, imgDefault } = this.props
 
     const headersKeys = Object.keys(headers)
     const headersValues = Object.values(headers)
@@ -74,7 +57,11 @@ export class DescriptionPeople extends React.Component {
         <div className="propietarioInfoProps">
           <div className="propietarioFotoInfoProps">
             <div className="propietarioFotoProps">
-              {this.checkImage(datas.fot_vet,`${datas.nom_per} ${datas.ape_per}`)}
+              {checkImage(
+                datas.fot_vet,
+                `${datas.nom_per} ${datas.ape_per}`,
+                imgDefault
+              )}
             </div>
             <div className="propietarioDatosProps">
               {

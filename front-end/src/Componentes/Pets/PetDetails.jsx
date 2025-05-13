@@ -103,23 +103,12 @@ export const PetDetails = ({
                         {/* Header con foto y datos principales */}
                         <header className="pet-header">
                             <aside className="pet-avatar-container">
-                                {checkImage(datas.fot_mas,setValidImage)}
-                                {
-                                    validImage?(
-                                        <img 
-                                            className="pet-avatar"
-                                            src={datas.fot_mas} 
-                                            alt={`${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`}     
-                                        />        
-                                    ) : (
-                                        <img 
-                                            className="pet-avatar"
-                                            src={imgPetDefault}    
-                                            alt={`${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`}     
-                                        />
-                                    )
-
-                                }
+                                {checkImage(
+                                    datas.fot_mas,
+                                    `${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`,
+                                    imgPetDefault,
+                                    "pet-avatar"
+                                )}
                                 <div className="pet-status">
                                     <span className={`status-badge ${datas.est_rep_mas === 'Esterilizado' ? 'status-active' : ''}`}>
                                         {datas.est_rep_mas}

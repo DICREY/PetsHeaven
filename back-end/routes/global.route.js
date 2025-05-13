@@ -55,7 +55,7 @@ Route.post('/login',limiterLog, async (req,res) => {
                 img: user.fot_roles.split(',')[0]
             },
             secret,
-            { expiresIn: '2h' }
+            { expiresIn: '8h' }
         )
         res.status(200).json({ token: token })
 

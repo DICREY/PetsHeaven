@@ -6,6 +6,7 @@ const globalRoute = require('../routes/global.route')
 const userRoute = require('../routes/user.route')
 const ownerRoute = require('../routes/owner.route')
 const petRoute = require('../routes/pets.route')
+const appointmentRoute = require('../routes/appointment.route')
 
 // function to Define routers
 function routerApi(app) {
@@ -19,6 +20,7 @@ function routerApi(app) {
     router.use('/owner',ownerRoute)
     router.use('/user',userRoute)
     router.use('/pet',petRoute)
+    router.use('/appointment',appointmentRoute)
 }
 
 // Export Router

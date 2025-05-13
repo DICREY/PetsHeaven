@@ -21,7 +21,6 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '', imgPetD
   const [petsData,setPetsData] = useState([])
   const [userData,setUserData] = useState({})
   const [modPro,setModPro] = useState({})
-  const [validImg, setValidImg] = useState(false)
 
   // Vars 
   const mainUrl = `${URL}/owner`
@@ -243,24 +242,13 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '', imgPetD
               <div className='mascotasGrillaProps'>
                 {petsData.map((mascota) => (
                   <div key={mascota.doc_per} className='mascotaTarjetaProps'>
-                    {checkImage(mascota.fot_mas,setValidImg)}
-                    {
-                      validImg? (
-                        <div className='mascotaImagenProps'>
-                          <img 
-                            src={mascota.fot_mas} 
-                            alt={`${mascota.esp_mas} de raza ${mascota.raz_mas} color ${mascota.col_mas} con nombre ${mascota.nom_mas}`}
-                          />
-                        </div>
-                      ): (
-                        <div className='mascotaImagenProps'>
-                          <img 
-                            src={imgDefaultPet} 
-                            alt={`${mascota.esp_mas} de raza ${mascota.raz_mas} color ${mascota.col_mas} con nombre ${mascota.nom_mas}`}
-                          />
-                        </div>
-                      )
-                    }
+                    <div className='mascotaImagenProps'>
+                      {checkImage(
+                        mascota.fot_mas,
+                        `${mascota.esp_mas} de raza ${mascota.raz_mas} color ${mascota.col_mas} con nombre ${mascota.nom_mas}`,
+                        imgDefaultPet
+                      )}
+                    </div>
                     <div className='mascotaInfoProps'>
                       <h3 className='mascotaNombreProps'>{mascota.nom_mas}</h3>
                       <div className='mascotaDetallesProps'>

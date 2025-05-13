@@ -10,22 +10,23 @@ import esLocale from "@fullcalendar/core/locales/es"
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GetData } from '../Varios/Requests'
+import { errorStatusHandler } from '../Varios/Util'
 
 // Import styles 
-import "./prueba.css"
+import "../../styles/InterfazAdmin/GesAgendaGeneral.css"
 
 // Component 
 export const GesAgendaGeneral = ({ URL = '' }) => {
     // Dynamic vars 
     const [app,setApp] = useState()
-    const mainUrl = `${URL}/user`
+    const mainUrl = `${URL}/appointment`
 
     // Functions
     const GetAppointments = async () => {
         const token = localStorage.getItem("token")
         try {
             if (token){
-                const data = await GetData(`${mainUrl}/calendar/general`,token)
+                const data = await GetData(`${mainUrl}/general`,token)
                 console.log(data)
                 setApp(data)
             } else navigate('/user/login')

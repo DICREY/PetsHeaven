@@ -135,20 +135,6 @@ Route.delete('/delete', ValidatorRol("administrador"), async (req,res) => {
     }
 })
 
-Route.get('/calendar/general', ValidatorRol("administrador"), async (req,res) => {
-    
-    const search = await user.findAppointments()
-
-    if (!search.result) res.status(404).json({ message: "Citas no encontradas"})
-    
-    try {
-        res.status(200).json(search)
-    } catch (err) {
-        if (err.status) return res.status(err.status).json({message: err.message})
-        res.status(500).json({message: err})
-    }
-})
-
 // Route.get('/all/time:by', async (req,res) => {
 //     // Vars 
 //     const by = req.params.by
