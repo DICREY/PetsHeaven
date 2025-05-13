@@ -217,12 +217,14 @@ BEGIN
     WHERE 
         m.estado = 1
         AND u.estado = 1
-        AND m.nom_mas LIKE p_second_by
+        AND m.nom_mas = p_second_by
         AND ( 
-            u.email_per LIKE p_first_by
-            OR u.doc_per LIKE p_first_by
+            u.email_per = p_first_by
+            OR u.doc_per = p_first_by
         );
 END //
+
+CALL `DeletePetBy`("12345678A",'Max');
 
 
 /* Historys */

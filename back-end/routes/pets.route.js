@@ -103,18 +103,14 @@ Route.delete('/delete', ValidatorRol("administrador") ,async (req,res) => {
     const body = req.body
 
     // Verify if exist
-    const find = await pet.findAllBy(body.doc_usu,body.nom_mas)
+    const find = await pet.findAllBy(body.doc_per,body.nom_mas)
     const findOne = await find.result[0][0]
 
-    if (!findOne) {
-        return res.status(404).json({message: "Mascota no encontrada"})
-    }
+    if (!findOne) return res.status(404).json({message: "Mascota no encontrada"})
 
     try {
         const petDeleted = await pet.deleteBy(body.doc_usu,body.nom_mas)
-        if (petDeleted.deleted){
-            return res.status(200).json(petDeleted)
-        }
+        if (petDeleted.deleted) return res.status(200).json(petDeleted)
         return res.status(500).json({message: "Error interno"})
         
     } catch (err) {

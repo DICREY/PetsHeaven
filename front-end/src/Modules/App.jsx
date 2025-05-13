@@ -117,7 +117,7 @@ export default function App () {
         {/* Private routes */}
         <Route path='user/pets' element={
           <PrivateRoute children={<Pets 
-            petSelect={setPetSelect}
+            setPetSelect={setPetSelect}
             URL={URL}
             imgPetDefault={imgPetDefault}
             imgUserDefault={imgUserDefault} 
@@ -158,6 +158,7 @@ export default function App () {
           <VetRoute children={<HomeAdmin 
             setOwner={setOwner} 
             setUserSelect={setUserSelect} 
+            setPetSelect={setPetSelect}
             URL={URL}
           />} />}>  
         </Route>

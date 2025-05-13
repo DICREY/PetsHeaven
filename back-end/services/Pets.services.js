@@ -78,8 +78,8 @@ class Pet {
     async findAllBy(data,secondData = "") {
         return new Promise((res,rej) => {
             // vars
-            const by = data.replace(" ","")
-            const secondBy = secondData.replace(" ","")
+            const by = data?.replace(" ","")
+            const secondBy = secondData?.replace(" ","")
             const proc = "CALL SearchPetsBy(?,?)"
 
             // conect to database

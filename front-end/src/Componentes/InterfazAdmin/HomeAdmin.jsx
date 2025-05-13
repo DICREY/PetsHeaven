@@ -13,12 +13,13 @@ import { errorStatusHandler } from '../Varios/Util'
 // Import styles 
 import '../../../src/styles/InterfazAdmin/HomeAdmin.css'
 
-export function HomeAdmin({ URL = '', setUserSelect, setOwner }) {
+export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   // Dynamic vars 
   const [datas, setDatas] = useState([])
   const [petsDataAlmc, setPetsDataAlmc] = useState([])
   const [datasAlmac, setDatasAlmac] = useState([])
   const [headers, setHeaders] = useState({})
+  const [currentInfo, setCurrentInfo] = useState(false)
 
   // Vars 
   const mainUrl = `${URL}/owner`
@@ -106,6 +107,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner }) {
 
   const handleSearch = (term = '', data = [], headers = []) => {
     const termLower = term.toLowerCase()
+    setCurrentInfo(false)
 
     setHeaders({
       'Nombres': 'nom_per',
@@ -124,6 +126,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner }) {
   }
 
   const handleSearchPets = (term = '', data = [], headers = []) => {
+    setCurrentInfo(true)
     setDatas(petsDataAlmc)
     setHeaders({
       Nombre: 'nom_mas',
@@ -144,9 +147,20 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner }) {
   }
 
   const handleDescription = (data) => {
+    console.log(currentInfo)
+    const handler = currentInfo? handleDescriptionPet: handleDescriptionOwner
+    return handler(data)
+  }
+
+  const handleDescriptionOwner = (data) => {
     setUserSelect(data)
     setOwner(true)
     navigate('/propietario/datos')
+  }
+
+  const handleDescriptionPet = (data) => {
+    setPetSelect(data)
+    navigate('/pets/details')
   }
 
   useEffect(() => {

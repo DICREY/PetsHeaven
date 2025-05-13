@@ -110,3 +110,51 @@
 .subenlacenavadmin.active{
     background: var(--gray-200);
 }
+
+.BackBtn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #666;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.DeleteBtn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 16px;
+  border: 1px solid #e74c3c;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #e74c3c;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.DeleteBtn:hover {
+  background-color: #fef5f5;
+}
+
+.EditBtn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #00bcd4;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.EditBtn:hover {
+  background-color: #0097A7;
+}

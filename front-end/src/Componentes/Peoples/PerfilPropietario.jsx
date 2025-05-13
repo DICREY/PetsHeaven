@@ -49,7 +49,14 @@ export const PerfilPropietario = ({
 
   // Functions 
   const verHistorial = (data) => {
-    setPetSelect(data)
+    setPetSelect({
+      nom_per: userSelect.doc_per,
+      ape_per: userSelect.doc_per,
+      doc_per: userSelect.doc_per,
+      dir_per: userSelect.doc_per,
+      cel_per: userSelect.doc_per,
+      email_per: userSelect.doc_per,
+      ...data})
     navigate('/pets/details')
   }
 
