@@ -1,31 +1,25 @@
+/* Imports  */
+@import url('../vars.css');
+
 .contenido-paso {
   display: block;
 }
 
 .paso-oculto {
-  display: none !important;
+  display: none;
 }
 
 /* Contenedor principal */
 .registro-container {
   display: flex;
-  min-height: 100vh;
-  font-family: "Arial", sans-serif;
-  /* Por defecto, en dispositivos pequeños y medianos, el contenedor será en columna */
   flex-direction: column;
+  min-height: 100vh;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Sección derecha - Imagen y cita */
 .registro-imagen-container {
-  flex: 1;
-  position: relative;
-  color: white;
-  display: flex;
-  align-items: flex-end;
-  overflow: hidden;
-  /* Por defecto, en dispositivos pequeños y medianos, la imagen estará arriba */
-  order: 1;
-  min-height: 200px;
+  display: none;
 }
 
 .imagen-fondo-contenedor {
@@ -41,7 +35,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0.7);
+  filter: brightness(35%);
 }
 
 .overlay-imagen {
@@ -58,9 +52,7 @@
   position: relative;
   z-index: 2;
   padding: 2rem;
-  margin-bottom: 2rem;
   text-align: center;
-  margin-left: 0;
   width: 100%;
 }
 
@@ -76,22 +68,23 @@
 }
 
 .subtexto-cita {
-  font-size: 0.875rem;
+  font-size: var(--font-size);
 }
 
 /* Sección izquierda - Formulario de registro */
 .registro-formulario-container {
   flex: 1;
-  background-color: #f5f5f5;
-  background-image: url("https://www.toptal.com/designers/subtlepatterns/uploads/leaves-pattern.png");
-  background-repeat: repeat;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100vh;
   padding: 1rem;
-  /* Por defecto, en dispositivos pequeños y medianos, el formulario estará abajo */
+  background-color: #f5f5f5;
+  background-image: url("https://www.toptal.com/designers/subtlepatterns/uploads/leaves-pattern.png");
+  background-repeat: repeat;
   order: 2;
+  overflow: auto;
 }
 
 /* Logo externo al formulario */
@@ -101,18 +94,18 @@
 }
 
 .logo-veterinaria {
-  max-width: 200px;
+  max-width: 11rem;
   height: auto;
 }
 
 /* Contenedor del formulario */
 .formulario-card {
   background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  width: 100%;
-  max-width: 550px;
+  border-radius: 0.7rem;
+  box-shadow: 0 0.2rem 1.4rem rgba(0, 0, 0, 0.08);
   padding: 2rem;
+  width: 100%;
+  max-width: 46rem;
 }
 
 .contenido-formulario {
@@ -188,32 +181,9 @@
   grid-column: span 2;
 }
 
-label {
-  font-size: 0.875rem;
-  margin-bottom: 0.25rem;
-  color: #424242;
-}
-
 .obligatorio {
   color: #f44336;
 }
-
-input,
-select {
-  padding: 0.75rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  transition: border-color 0.2s;
-}
-
-input:focus,
-select:focus {
-  outline: none;
-  border-color: #00bcd4;
-  box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.1);
-}
-
 .campo-error {
   border-color: #f44336;
 }
@@ -237,7 +207,7 @@ select:focus {
   gap: 0.5rem;
 }
 
-.checkbox input {
+.checkbox .register-input {
   margin: 0;
 }
 
@@ -310,7 +280,7 @@ select:focus {
   position: relative;
 }
 
-.contenedor-input-password input {
+.contenedor-input-password .register-input {
   padding-right: 2.5rem; /* Espacio para el icono del ojo */
   width: 100%;
   box-sizing: border-box;
@@ -440,24 +410,13 @@ select:focus {
     max-height: 50px;
     min-height: 50px;
     padding: 1rem;
-    margin-bottom: 9vh;
   }
   .texto-cita {
-    font-size: 1rem;
     margin-top: 0;
     max-width: 100%;
   }
-  .subtexto-cita {
-    font-size: 0.75rem;
-  }
   .formulario-card {
     padding: 1rem;
-  }
-  .logo-veterinaria {
-    max-width: 150px;
-  }
-  .titulo-formulario {
-    font-size: 1.25rem;
   }
   .paso {
     width: 1.75rem;
@@ -497,7 +456,6 @@ select:focus {
   .input-codigo {
     width: 2.5rem;
     height: 2.5rem;
-    font-size: 1rem;
   }
 }
 
@@ -509,20 +467,10 @@ select:focus {
   }
   .contenedor-cita {
     padding: 1.5rem;
-    margin-bottom: 0;
-  }
-  .texto-cita {
-    font-size: 1.2rem;
-  }
-  .subtexto-cita {
-    font-size: 0.8rem;
   }
   .grid-campos {
     grid-template-columns: 1fr;
   }
-  /* .campo-ancho-completo {
-    grid-column: span 1;
-  } */
   .navegacion-botones,
   .botones-verificacion {
     flex-direction: column;
@@ -543,29 +491,20 @@ select:focus {
 }
 
 /* ===== RESPONSIVE: TABLET (768px - 1023px) ===== */
-@media (min-width: 768px) and (max-width: 1023px) {
+@media (768px < width < 1023px) {
   /* Mantenemos el diseño en columna para tablets */
   .registro-container {
-    flex-direction: column;
+    flex-direction: row;
   }
   .registro-imagen-container {
-    order: 1;
     min-height: 250px;
     max-height: 300px;
   }
   .registro-formulario-container {
-    order: 2;
     padding: 2rem;
   }
   .contenedor-cita {
     padding: 2rem;
-    margin-bottom: 2rem;
-  }
-  .texto-cita {
-    font-size: 1.5rem;
-  }
-  .formulario-card {
-    max-width: 600px;
   }
   /* Mantiene dos columnas para los campos del formulario en tablets */
   .grid-campos {
@@ -581,29 +520,36 @@ select:focus {
 }
 
 /* ===== RESPONSIVE: IPAD PRO Y TABLETS GRANDES (1024px - 1199px) ===== */
-@media (min-width: 1024px) and (max-width: 1199px) {
+@media (width > 1024px) {
+  .registro-imagen-container {
+    flex: 1;
+    order: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    color: white;
+    overflow: hidden;
+  }
+}
+@media (1024px < width < 1199px) {
   /* Mantenemos el diseño en columna para iPad Pro */
   .registro-container {
     flex-direction: column;
   }
   .registro-imagen-container {
-    order: 1;
     min-height: 350px;
     max-height: 400px;
   }
   .registro-formulario-container {
-    order: 2;
     padding: 2.5rem;
   }
   .contenedor-cita {
     padding: 2.5rem;
-    margin-bottom: 3rem;
   }
   .texto-cita {
     font-size: 1.75rem;
-  }
-  .formulario-card {
-    max-width: 700px;
   }
 }
 
@@ -614,17 +560,11 @@ select:focus {
     flex-direction: row;
   }
   .registro-imagen-container {
-    order: 2;
     min-height: auto;
     max-height: none;
   }
-  .registro-formulario-container {
-    order: 1;
-  }
   .contenedor-cita {
-    margin-left: 3rem;
-    margin-bottom: 10rem;
-    text-align: left;
+    text-align: center;
     width: auto;
   }
   .texto-cita {
@@ -633,56 +573,21 @@ select:focus {
   }
 }
 
-/* ===== RESPONSIVE: ESCRITORIO MEDIANO (1280px - 1535px) ===== */
-@media (min-width: 1280px) and (max-width: 1535px) {
-  .contenedor-cita {
-    margin-left: 5rem;
-    margin-bottom: 12rem;
-  }
-  .texto-cita {
-    font-size: 1.75rem;
-  }
-}
-
 /* ===== RESPONSIVE: ESCRITORIO GRANDE (>= 1536px) ===== */
 @media (min-width: 1536px) {
   .formulario-card {
-    max-width: 650px;
     padding: 2.5rem;
   }
   .contenedor-cita {
-    margin-left: 8rem;
-    margin-bottom: 20rem;
     padding: 3rem;
   }
-  .texto-cita {
-    font-size: 2rem;
-  }
-  .subtexto-cita {
-    font-size: 1rem;
-  }
-  .titulo-formulario {
-    font-size: 1.75rem;
-  }
-  .subtitulo-formulario {
-    font-size: 1rem;
-  }
-  input,
-  select {
+  .register-select {
     padding: 0.85rem;
-    font-size: 1rem;
   }
 }
 
 /* ===== MONITORES PEQUEÑOS ===== */
 @media (min-width: 1200px) and (max-width: 1279px) {
-  .contenedor-cita {
-    margin-left: 2rem;
-    margin-bottom: 8rem;
-  }
-  .texto-cita {
-    font-size: 1.4rem;
-  }
   .formulario-card {
     padding: 1.75rem;
   }
@@ -696,16 +601,9 @@ select:focus {
   .registro-formulario-container {
     padding: 0.75rem;
   }
-  .logo-veterinaria {
-    max-width: 130px;
-  }
-  .titulo-formulario {
-    font-size: 1.1rem;
-  }
   .paso {
     width: 1.5rem;
     height: 1.5rem;
-    font-size: 0.8rem;
   }
   .linea {
     width: 1rem;
@@ -723,7 +621,6 @@ select:focus {
   .boton-verificar,
   .boton-reenviar {
     padding: 0.65rem 1rem;
-    font-size: 0.8rem;
   }
 }
 
@@ -735,12 +632,9 @@ select:focus {
   .registro-imagen-container {
     min-height: 100vh;
   }
-  .contenedor-cita {
-    margin-bottom: 2rem;
-  }
   /* Formulario compacto para orientación horizontal */
   .formulario-card {
-    max-height: 90vh;
+    max-height: 80vh;
     overflow-y: auto;
   }
 }

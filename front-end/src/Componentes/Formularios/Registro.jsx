@@ -5,13 +5,14 @@ import { Link } from 'react-router'
 // import emailjs from '@emailjs/browser'
 
 // Imports 
-import { PostData } from '../Varios/Requests'
+import { Register } from '../Varios/Requests'
 
 // Import styles
 import '../../../src/styles/Formularios/Registro.css'
+import { checkImage } from '../Varios/Util'
 
 // Component 
-const Registro = ({ URL = '' }) => {
+const Registro = ({ URL = '', imgDefault = '' }) => {
   // Vars 
   const imagenFondo = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Fondos/fondo.png'
   const logoUrl = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/5.png'
@@ -235,17 +236,15 @@ const Registro = ({ URL = '' }) => {
     alert(`Nuevo código enviado a ${formData.email}`)
   }
   
-  const SendData = async (data) => {
+  const SendData = async data => {
     // Vars
-    const mainUrl = `${URL}/user/register`
-    setLoading(true)
-    console.log(data)
+    const mainUrl = `${URL}/global/register`
     try {
-      await PostData(mainUrl,data)
-      setLoading(false)
-      alert('Registro exitoso')
+      const send = await Register(mainUrl,data)
+      console.log(send)
+      send.data.created & alert('Registro exitoso')
     } catch (error) {
-      console.log(error)
+      console.log(error)  
     }
 
   }
@@ -286,9 +285,13 @@ const Registro = ({ URL = '' }) => {
     {/* Sección derecha - Imagen y cita */}
     <div className='registro-imagen-container'>
       <div className='imagen-fondo-contenedor'>
-        <img src={imagenFondo || '/placeholder.svg'} alt='Una veterinaria sostiene con cuidado la pata de un perro tipo Border Collie mientras le colocan una inyección intravenosa. La persona lleva puesto un uniforme azul y guantes médicos, y tiene dos trenzas largas. El perro está recostado sobre una mesa blanca, mirando directamente a la cámara con expresión tranquila.' className='imagen-fondo' />
+        {checkImage(
+          imagenFondo,
+          'Una veterinaria sostiene con cuidado la pata de un perro tipo Border Collie mientras le colocan una inyección intravenosa. La persona lleva puesto un uniforme azul y guantes médicos, y tiene dos trenzas largas. El perro está recostado sobre una mesa blanca, mirando directamente a la cámara con expresión tranquila.',
+          imgDefault,
+          'imagen-fondo'
+        )}
       </div>
-      <div className='overlay-imagen'></div>
       <div className='contenedor-cita'>
         <h2 className='texto-cita'>'El amor por los animales es el reflejo de nuestra humanidad'</h2>
         <p className='subtexto-cita'>En PetsHeaven cuidamos de quienes más amas</p>
@@ -298,8 +301,13 @@ const Registro = ({ URL = '' }) => {
     {/* Sección izquierda - Formulario de registro */}
     <div className='registro-formulario-container'>
       <div className='contenedor-logo-externo'>
-        <a href='/VeterinariaPage' className='cursor-pointer' aria-label='Regresar al inicio'>
-          <img src={logoUrl || '/placeholder.svg'} alt='Logo de PetsHeaven con la palabra Pets en celeste y Heaven en negro, en una tipografía moderna.' className='logo-veterinaria' />
+        <a href='/main' className='cursor-pointer' aria-label='Regresar al inicio'>
+          {checkImage(
+            logoUrl,
+            'Logo de PetsHeaven con la palabra Pets en celeste y Heaven en negro, en una tipografía moderna.',
+            imgDefault,
+            'logo-veterinaria'
+          )}
         </a>
       </div>
 
@@ -326,14 +334,14 @@ const Registro = ({ URL = '' }) => {
             <div className={`contenido-paso ${paso === 1 ? '' : 'paso-oculto'}`}>
               <div className='grid-campos'>
               <div className='grupo-campo'>
-                <label htmlFor='tipoDocumento'>
+                <label className='label' htmlFor='tipoDocumento'>
                   Tipo de documento <span className='obligatorio'>*</span>
                 </label>
                 <select
                   id='tipoDocumento'
                   autoFocus // Soporte nativo para el focus en react :v
                   onFocus={(e) => e.target.focus()} // Refuerza el enfoque
-                  className={errors.tipoDocumento ? 'campo-error' : ''}
+                  className={errors.tipoDocumento ? 'campo-error select' : 'select'}
                   {...register('tipoDocumento', {
                     required: 'Debes seleccionar un tipo de documento',
                     validate: value => value !== 'Null' || 'Debes seleccionar una opción válida'
@@ -357,7 +365,7 @@ const Registro = ({ URL = '' }) => {
                 )}
               </div>
                   <div className='grupo-campo'>
-                    <label htmlFor='numeroDocumento'>
+                    <label className='label' htmlFor='numeroDocumento'>
                       Número de documento <span className='obligatorio'>*</span>
                     </label>
                     <input
@@ -365,7 +373,7 @@ const Registro = ({ URL = '' }) => {
                       type='text'
                       placeholder='Ej: 65642312'
                       maxLength={15}
-                      className={errors.numeroDocumento ? 'campo-error' : ''}
+                      className={errors.numeroDocumento ? 'campo-error input' : 'input'}
                       onKeyPress={permitirSoloNumeros}
                       {...register('numeroDocumento', {
                         required: true,
@@ -392,7 +400,7 @@ const Registro = ({ URL = '' }) => {
                   </div>
 
                   <div className='grupo-campo'>
-                    <label htmlFor='name'>
+                    <label className='label' htmlFor='name'>
                       Nombres <span className='obligatorio'>*</span>
                     </label>
                     <input
@@ -400,7 +408,7 @@ const Registro = ({ URL = '' }) => {
                       type='text'
                       placeholder='Ej: Pepito Juan'
                       maxLength={50}
-                      className={errors.nombres ? 'campo-error' : ''}
+                      className={errors.nombres ? 'campo-error input' : 'input'}
                       onKeyPress={permitirSoloLetras}
                       {...register('nombres', {
                         required: true,
@@ -430,7 +438,7 @@ const Registro = ({ URL = '' }) => {
                   </div>
 
                   <div className='grupo-campo'>
-                    <label htmlFor='last-name'>
+                    <label className='label' htmlFor='last-name'>
                       Apellidos <span className='obligatorio'>*</span>
                     </label>
                     <input
@@ -438,7 +446,7 @@ const Registro = ({ URL = '' }) => {
                       type='text'
                       placeholder='Ej: López Pérez'
                       maxLength={50}
-                      className={errors.apellidos ? 'campo-error' : ''}
+                      className={errors.apellidos ? 'campo-error input' : 'input'}
                       onKeyPress={permitirSoloLetras}
                       {...register('apellidos', {
                         required: true,
@@ -468,13 +476,13 @@ const Registro = ({ URL = '' }) => {
                   </div>
 
                   <div className='grupo-campo'>
-                  <label htmlFor='date'>
+                  <label className='label' htmlFor='date'>
                       Fecha de nacimiento <span className='obligatorio'>*</span>
                   </label>
                   <input
                       id='date'
                       type='date'
-                      className={errors.fechaNacimiento ? 'campo-error' : watch('fechaNacimiento') ? 'campo-valido' : ''}
+                      className={errors.fechaNacimiento ? 'campo-error input' : watch('fechaNacimiento') ? 'campo-valido' : 'input'}
                       {...register('fechaNacimiento', {
                       required: 'La fecha de nacimiento es obligatoria',
                       validate: {
@@ -512,21 +520,21 @@ const Registro = ({ URL = '' }) => {
                   </div>
 
                   <div className='grupo-campo'>
-                    <label htmlFor='genre'>
+                    <label className='label' htmlFor='genre'>
                       Género <span className='obligatorio'>*</span>
                     </label>
                     <select
                       id='genre'
-                      className={errors.genero ? 'campo-error' : ''}
+                      className={errors.genero ? 'campo-error select' : 'select'}
                       {...register('genero', {
                         required: true,
                       })}
                       aria-describedby={errors.genero ? 'error-genero': undefined}
                     >
                       <option value='Null' disabled>Seleccione...</option>
-                      <option value='F'>Femenino</option>
-                      <option value='M'>Masculino</option>
-                      <option value='O'>Otro</option>
+                      <option value='Femenino'>Femenino</option>
+                      <option value='Masculino'>Masculino</option>
+                      <option value='Otro'>Otro</option>
                     </select>
                     {errors.genero && <p className='mensaje-error'
                     aria-live='assertive' // Solo anuncia este mensaje
@@ -534,7 +542,7 @@ const Registro = ({ URL = '' }) => {
                   </div>
 
                   <div className='grupo-campo'>
-                    <label htmlFor='cel'>
+                    <label className='label' htmlFor='cel'>
                       Celular <span className='obligatorio'>*</span>
                     </label>
                     <input
@@ -542,7 +550,7 @@ const Registro = ({ URL = '' }) => {
                       type='text'
                       placeholder='Ej: 65642312'
                       maxLength={10}
-                      className={errors.celular ? 'campo-error' : ''}
+                      className={errors.celular ? 'campo-error input' : 'input'}
                       onKeyPress={permitirSoloNumeros}
                       {...register('celular', {
                         required: true,
@@ -565,7 +573,7 @@ const Registro = ({ URL = '' }) => {
                   </div>
 
                   <div className='grupo-campo'>
-                    <label htmlFor='dir'>
+                    <label className='label' htmlFor='dir'>
                       Dirección <span className='obligatorio'>*</span>
                     </label>
                     <input
@@ -573,7 +581,7 @@ const Registro = ({ URL = '' }) => {
                       type='text'
                       placeholder='Ej: Calle 123 Nro. 456'
                       maxLength={100}
-                      className={errors.direccion ? 'campo-error' : ''}
+                      className={errors.direccion ? 'campo-error input' : 'input'}
                       {...register('direccion', {
                         required: true,
                         minLength: {
@@ -627,7 +635,7 @@ const Registro = ({ URL = '' }) => {
             <div className={`contenido-paso ${paso === 2 ? '' : 'paso-oculto'}`}>
               <div className='grid-campos'>
               <div className='grupo-campo'>
-                    <label htmlFor='email'>
+                    <label className='label' htmlFor='email'>
                       Email <span className='obligatorio'>*</span>
                     </label>
                     <input
@@ -636,7 +644,7 @@ const Registro = ({ URL = '' }) => {
                       type='email'
                       placeholder='Ej: juan.lopez@example.com'
                       maxLength={100}
-                      className={errors.email ? 'campo-error' : ''}
+                      className={errors.email ? 'campo-error input' : 'input'}
                       onPaste={evitarPegado}
                       {...register('email', {
                         required: true,
@@ -660,14 +668,14 @@ const Registro = ({ URL = '' }) => {
                   </div>
 
                   <div className='grupo-campo'>
-                    <label>
+                    <label className='label'>
                       Confirmación Email <span className='obligatorio'>*</span>
                     </label>
                     <input
                       type='email'
                       placeholder='Confirmar correo electrónico'
                       maxLength={100}
-                      className={errors.confirmEmail ? 'campo-error' : ''}
+                      className={errors.confirmEmail ? 'campo-error input' : 'input'}
                       onPaste={evitarPegado}
                       {...register('confirmEmail', {
                         required: true,
@@ -691,7 +699,7 @@ const Registro = ({ URL = '' }) => {
                   </div>
 
                   <div className='grupo-campo'>
-                    <label htmlFor='psw'>
+                    <label className='label' htmlFor='psw'>
                       Contraseña <span className='obligatorio'>*</span>
                     </label>
                     <div className='contenedor-input-password'>
@@ -701,7 +709,7 @@ const Registro = ({ URL = '' }) => {
                         aria-hidden={!verPassword ? 'false' : undefined}
                         placeholder='Contraseña'
                         maxLength={64}
-                        className={errors.password ? 'campo-error' : ''}
+                        className={errors.password ? 'campo-error input' : 'input'}
                         onPaste={evitarPegado}
                         {...register('password', {
                           required: true,
@@ -774,7 +782,7 @@ const Registro = ({ URL = '' }) => {
                   </div>
 
                   <div className='grupo-campo'>
-                  <label>
+                  <label className='label'>
                       Confirmación Contraseña <span className='obligatorio'>*</span>
                   </label>
                   <div className='contenedor-input-password'>
@@ -782,7 +790,7 @@ const Registro = ({ URL = '' }) => {
                       type={verConfirmarPassword ? 'text' : 'password'}
                       placeholder='Confirmar contraseña'
                       maxLength={64}
-                      className={errors.confirmPassword ? 'campo-error' : ''}
+                      className={errors.confirmPassword ? 'campo-error input' : 'input'}
                       onPaste={evitarPegado}
                       {...register('confirmPassword', {
                           required: 'La confirmación de contraseña es obligatoria',
@@ -844,12 +852,12 @@ const Registro = ({ URL = '' }) => {
                   <input
                     type='checkbox'
                     id='terminos'
-                    className={errors.terminos ? 'campo-error' : ''}
+                    className={errors.terminos ? 'campo-error input' : 'input'}
                     {...register('terminos', {
                       required: true,
                     })}                    
                   />
-                  <label htmlFor='terminos'>
+                  <label className='label' htmlFor='terminos'>
                     Acepto los términos y condiciones <span className='obligatorio'>*</span>
                     {errors.terminos && <p className='mensaje-error'>Debes aceptar los términos y condiciones</p>}
                   </label>

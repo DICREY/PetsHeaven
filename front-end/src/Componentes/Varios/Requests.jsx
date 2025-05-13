@@ -75,6 +75,28 @@ export async function PostData(URL = '', token = '', datas = {}) {
         throw error
     }
 }
+export async function Register(URL = '', datas = {}) {
+    try {
+        const response = await axios.post(
+            URL,
+            {...datas},
+            {headers: {
+                'User': 'Unknow',
+                'Content-Type': 'application/json',
+                'x-api-key': 'pets_heaven_vite',
+            }}
+        )
+  
+        // Manejar diferentes códigos de estado
+        if(200 >= response.status <= 299) {
+            return response
+        } else throw response
+
+  
+    } catch (error) {
+        throw error
+    }
+}
 // Modificar datos
 export async function ModifyData(URL = '', token = '', datas = {}) {
     try {

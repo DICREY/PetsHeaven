@@ -160,8 +160,8 @@ export default function App () {
         {/* Public Routes */}
         <Route path='/' element={<MainRoute />} />
         <Route path='main' element={<VeterinariaPage URL={URL} setArriveTo={setArriveTo} />} />
-        <Route path='user/login' element={<LoginForm URL={URL} arriveTo={arriveTo} />} />
-        <Route path='user/register' element={<Registro URL={URL}/>} />
+        <Route path='user/login' element={<LoginForm URL={URL} imgDefault={imgUserDefault} arriveTo={arriveTo} />} />
+        <Route path='user/register' element={<Registro URL={URL} imgDefault={imgUserDefault} />} />
         <Route path='user/recuperar' element={<ForgotPassword />} />
         <Route path='internal' element={<ErrorInternalServer />} />
         <Route path='*' element={<NotFound />} />

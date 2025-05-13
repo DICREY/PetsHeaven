@@ -9,7 +9,7 @@ import Footer from './Varios/Footer2'
 // Librarys 
 import React,{ useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
-import { MapPin, Star, Phone, Mail, Clock, ChevronUp, Instagram, Facebook, Mountain } from 'lucide-react'
+import { MapPin, Star, Phone, Mail, Clock, ChevronUp, Instagram, Facebook } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 // Import styles
@@ -581,7 +581,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo = ''}) {
           {/* Botón para subir */}
           <motion.button 
             onClick={subirInicio} 
-            className='boton-subir'   
+            className='boton-subir'
             aria-label='Volver arriba'
             initial={{ opacity: 0 }}
             animate={{ opacity: mostrarBoton ? 1 : 0 }}

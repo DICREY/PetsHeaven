@@ -60,24 +60,6 @@ Route.get('/by:by', ValidatorRol("administrador"), async (req,res) => {
     }
 })
 
-Route.post('/register', async (req,res) => {
-    // Vars 
-    const saltRounds = 15
-    const body = req.body
-    
-    // Verifiy if exist
-    const find = await user.findBy(toString(body.numeroDocumento))
-    if (find.result[0][0].nom_usu) res.status(302).json({ message: "Usuario ya existe" })
-        
-    try {
-        const create = await user.create({hash_pass: await hash(body.password,saltRounds), ...body})
-        res.status(201).json(create)
-    } catch(err) {
-        if(err.status) return res.status(err.status).json({message: err.message})
-        res.status(500).json({ message: err })
-    }
-})
-
 Route.post('/register/personal', ValidatorRol("administrador"), async (req,res) => {
     // Vars 
     const saltRounds = 15
