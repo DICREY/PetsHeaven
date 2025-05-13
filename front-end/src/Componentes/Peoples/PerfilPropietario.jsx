@@ -13,7 +13,13 @@ import { DeleteData, ModifyData } from '../Varios/Requests'
 import '../../../src/styles/InterfazAdmin/PerfilPropietario.css'
 
 // Component 
-export const PerfilPropietario = ({ userSelect, owner = false, URL = '', imgPetDefault = '', imgUserDefault = ''}) => {
+export const PerfilPropietario = ({ 
+    userSelect, 
+    owner = false, 
+    URL = '', 
+    imgPetDefault = '', 
+    imgUserDefault = '',
+    setPetSelect }) => {
   // Vars dynamic
   const [activeTab, setActiveTab] = useState('propietario')
   const [isEditing, setIsEditing] = useState(false)
@@ -42,9 +48,9 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '', imgPetD
   }
 
   // Functions 
-  const verHistorial = (id) => {
-    // Aquí se implementaría la lógica para mostrar el historial
-    alert(`Mostrando historial de la mascota con ID: ${id}`)
+  const verHistorial = (data) => {
+    setPetSelect(data)
+    navigate('/pets/details')
   }
 
   const handleEditClick = () => {
@@ -267,7 +273,7 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '', imgPetD
                         </div>
                       </div>
                       <div className='mascotaAccionesProps'>
-                        <button className='botonHistorialProps' onClick={() => verHistorial(mascota.doc_per)}>
+                        <button className='botonHistorialProps' onClick={() => verHistorial(mascota)}>
                           <Calendar size={16} />
                           <span>Ver historial</span>
                         </button>

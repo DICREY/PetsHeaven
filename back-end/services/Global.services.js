@@ -41,7 +41,7 @@ class Global {
         return new Promise((res,rej) => {
             // vars
             const proc = "CALL Login(?);"
-            const by = this.args[0].replace(" ","")
+            const by = this.args[0]?.replace(" ","")
 
             // conect to database
             this.database = new DataBase()

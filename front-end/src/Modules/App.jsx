@@ -15,6 +15,7 @@ import { HomeAdmin } from '../Componentes/InterfazAdmin/HomeAdmin'
 import { GesUsuario } from '../Componentes/InterfazAdmin/GesUsuario'
 import { GesMascota } from '../Componentes/InterfazAdmin/GesMascota'
 import { Pets } from '../Componentes/Pets/Pets'
+import { PetDetails } from '../Componentes/Pets/PetDetails'
 import { NotFound } from '../Componentes/Errores/NotFound'
 import { ErrorInternalServer } from '../Componentes/Errores/ErrorInternalServer'
 import { getRoles,Logout } from '../Componentes/Varios/Util'
@@ -31,6 +32,7 @@ import { ConfiguracionUsuarioCrud } from '../Componentes/InterfazAdmin/CrudPerso
 export default function App () {
   // Dynamic vars 
   const [userSelect,setUserSelect] = useState()
+  const [petSelect,setPetSelect] = useState()
   const [owner,setOwner] = useState(false)
   const [arriveTo,setArriveTo] = useState('')
 
@@ -114,7 +116,19 @@ export default function App () {
       <Routes>
         {/* Private routes */}
         <Route path='user/pets' element={
-          <PrivateRoute children={<Pets URL={URL} imgPetDefault={imgPetDefault} imgUserDefault={imgUserDefault} />}/>}>
+          <PrivateRoute children={<Pets 
+            petSelect={setPetSelect}
+            URL={URL}
+            imgPetDefault={imgPetDefault}
+            imgUserDefault={imgUserDefault} 
+          />}/>}>
+        </Route>
+        <Route path='/pets/details' element={
+          <PrivateRoute children={<PetDetails
+            datas={petSelect}
+            imgPetDefault={imgPetDefault}
+            URL={URL}
+          />}/>}>
         </Route>
 
         {/* Admin routes  */}
@@ -141,16 +155,21 @@ export default function App () {
           <VetRoute children={<RegistroPro URL={URL} />} />}>
         </Route>
         <Route path='consultorio' element={
-          <VetRoute children={<HomeAdmin setOwner={setOwner} setUserSelect={setUserSelect} URL={URL}/>} />}>  
+          <VetRoute children={<HomeAdmin 
+            setOwner={setOwner} 
+            setUserSelect={setUserSelect} 
+            URL={URL}
+          />} />}>  
         </Route>
         <Route path='propietario/datos' element={
           <VetRoute children={
           <PerfilPropietario 
             owner={owner} 
-            userSelect={userSelect} 
-            URL={URL}
+            userSelect={userSelect}
             imgPetDefault={imgPetDefault} 
             imgUserDefault={imgUserDefault} 
+            URL={URL}
+            setPetSelect={setPetSelect}
           />} />} >
         </Route>
         <Route path='calendario/general' element={
