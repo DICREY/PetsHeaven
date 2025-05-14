@@ -30,7 +30,6 @@ export const PerfilPropietario = ({
 
   // Vars 
   const mainUrl = `${URL}/owner`
-  const secondUrl = `${URL}/user`
   const imgDefault = imgUserDefault
   const imgDefaultPet = imgPetDefault
   const navigate = useNavigate()
@@ -38,7 +37,7 @@ export const PerfilPropietario = ({
     Nombres: 'nom_per',
     Apellidos: 'ape_per',
     'Fecha Nacimiento': 'fec_nac_per',
-    'T. Doc': 'tip_doc_per',
+    'Tipo Documento': 'tip_doc_per',
     Documento: 'doc_per',
     Direccion: 'dir_per',
     Celular: 'cel_per',
@@ -75,7 +74,7 @@ export const PerfilPropietario = ({
     try {
       if (token) {
         loadingAlert('Validando...',)
-        const mod = await ModifyData(`${secondUrl}/modify`, token, modPro)
+        const mod = await ModifyData(`${mainUrl}/modify`, token, modPro)
         console.log(mod)
         mod.modified & swal({
           icon: 'success',

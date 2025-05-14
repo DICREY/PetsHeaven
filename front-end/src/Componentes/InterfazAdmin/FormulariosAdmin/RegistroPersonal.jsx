@@ -13,7 +13,7 @@ import { formatDate, errorStatusHandler, loadingAlert } from '../../Varios/Util'
 import { PostData } from '../../Varios/Requests'
 
 // Import styles
-import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/RegistroUsu.css'
+import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/RegistroPersonal.css'
 
 // Component
 export const ConfiguracionUsuario = ({ URL = '' }) => {
@@ -28,7 +28,7 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
     watch,
     setValue, // Si necesitas setear valores programáticamente
   } = useForm({ mode: 'onChange' })
-  const mainUrl = `${URL}/user`
+  const mainUrl = `${URL}/staff`
   const navigate = useNavigate()
 
   // Manejo de la imagen
@@ -68,7 +68,7 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
       const token = localStorage.getItem('token')
       if (token) {
         loadingAlert('Validando...')
-        const created = await PostData(`${mainUrl}/register/personal`, token, datas)
+        const created = await PostData(`${mainUrl}/register`, token, datas)
         created.ok && swal({
           icon: 'success',
           title: 'Registrado',

@@ -69,17 +69,30 @@ export class DescriptionPeople extends React.Component {
                   isEditing? (
                     <div className="propietarioCampoProps">
                       <div className="propietarioEtiquetaProps">{header.label}</div>
-                      <input
-                        name={header.label}
-                        type={header.type}
-                        className="propietarioCampoProps"
-                        max={header.type === "date" ? "2006-01-01" : 100}
-                        min={header.type === "date" ? "1900-01-01" : 0}
-                        placeholder={header.label}
-                        onChange={handleChange}
-                        defaultValue={header.value}
-                        disabled={!header.active}
-                      />
+                      {header.label.toLowerCase().includes("gen")? (
+                        <select 
+                          className="select"
+                          name={header.label}
+                          onChange={handleChange}
+                          defaultValue={header.value}
+                          disabled={!header.active}
+                        >
+                          <option value="Femenino">Femenino</option>
+                          <option value="Masculino">Masculino</option>
+                        </select>
+                      ):(
+                        <input
+                          name={header.label}
+                          type={header.type}
+                          className="input"
+                          max={header.type === "date" ? "2006-01-01" : 100}
+                          min={header.type === "date" ? "1900-01-01" : 0}
+                          placeholder={header.label}
+                          onChange={handleChange}
+                          defaultValue={header.value}
+                          disabled={!header.active}
+                        />)
+                      }
                     </div>
                   ): (
                     <div key={index+11290} className="propietarioCampoProps">

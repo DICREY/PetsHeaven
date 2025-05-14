@@ -8,11 +8,11 @@ import Registro from '../Componentes/Formularios/Registro'
 import ForgotPassword from '../Componentes/Formularios/ForgotPassword'
 import { ConfiguracionUsuario } from '../Componentes/InterfazAdmin/FormulariosAdmin/RegistroPersonal'
 import { FormularioRegMascotas } from '../Componentes/Formularios/FormularioMascotas'
-import { RegistroPro } from '../Componentes/InterfazAdmin/FormulariosAdmin/RegistroUsu'
+import { RegistroPro } from '../Componentes/InterfazAdmin/FormulariosAdmin/RegistroPersona'
 
 // Imports
-import { HomeAdmin } from '../Componentes/InterfazAdmin/HomeAdmin'
-import { GesUsuario } from '../Componentes/InterfazAdmin/GesUsuario'
+import { HomeAdmin } from '../Componentes/InterfazAdmin/Consultorio'
+import { GesUsuario } from '../Componentes/InterfazAdmin/GesPersonal'
 import { GesMascota } from '../Componentes/InterfazAdmin/GesMascota'
 import { Pets } from '../Componentes/Pets/Pets'
 import { PetDetails } from '../Componentes/Pets/PetDetails'
@@ -37,7 +37,7 @@ export default function App () {
   const [arriveTo,setArriveTo] = useState('')
 
   // Vars 
-  const imgPetDefault = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Default/no%20imagen.png'
+  const imgPetDefault = 'https://raw.githubusercontent.com/Mogom/Imagenes_PetsHeaven/refs/heads/main/Defaults/petImg.default.webp'
   const imgUserDefault = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/default_veterinario.png'
   const URL = 'http://localhost:3000'
   const isInactive = useInactivityDetector(20 * 60 * 1000) // 20 minutos de inactividad

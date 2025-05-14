@@ -6,12 +6,12 @@ import swal from 'sweetalert'
 
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
-import { GlobalTable } from '../InterfazAdmin/GlobalTable'
+import { GlobalTable } from './GlobalTable'
 import { GetData } from '../Varios/Requests'
 import { errorStatusHandler } from '../Varios/Util'
 
 // Import styles 
-import '../../../src/styles/InterfazAdmin/HomeAdmin.css'
+import '../../../src/styles/InterfazAdmin/Consultorio.css'
 
 export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   // Dynamic vars 

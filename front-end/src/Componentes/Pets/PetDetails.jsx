@@ -259,30 +259,6 @@ export const PetDetails = ({ datas, imgPetDefault, URL = ''}) => {
                             </div>
                         </article>
 
-                        {/* <!-- Tarjeta de comportamiento --> */}
-                        <article className='info-card-pet-details'>
-                            <h2 className='info-card-h2-pet-details'>
-                                <svg width='20' height='20' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
-                                    <path d='M22 12H18L15 21L9 3L6 12H2' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
-                                </svg>
-                                Comportamiento
-                            </h2>
-                            <div className='info-grid-pet-details'>
-                                <div className='info-item-pet-details'>
-                                    <span className='info-label-pet-details'>Temperamento</span>
-                                    <span className='info-value-pet-details'>Amigable</span>
-                                </div>
-                                <div className='info-item-pet-details'>
-                                    <span className='info-label-pet-details'>Socialización</span>
-                                    <span className='info-value-pet-details'>Buena con personas y perros</span>
-                                </div>
-                                <div className='info-item-pet-details'>
-                                    <span className='info-label-pet-details'>Notas</span>
-                                    <span className='info-value-pet-details'>Le gusta nadar</span>
-                                </div>
-                            </div>
-                        </article>
-
                         {/* <!-- Tarjeta de propietario --> */}
                         <article className='info-card-pet-details owner-card-pet-details'>
                             <h2 className='info-card-h2-pet-details'>

@@ -3,7 +3,8 @@ const express = require('express')
 
 // Imports 
 const globalRoute = require('../routes/global.route')
-const userRoute = require('../routes/user.route')
+const peopleRoute = require('../routes/people.route')
+const staffRoute = require('../routes/staff.route')
 const ownerRoute = require('../routes/owner.route')
 const petRoute = require('../routes/pets.route')
 const appointmentRoute = require('../routes/appointment.route')
@@ -17,8 +18,9 @@ function routerApi(app) {
     app.use('/',router)
 
     router.use('/global',globalRoute)
+    router.use('/people',peopleRoute)
+    router.use('/staff',staffRoute)
     router.use('/owner',ownerRoute)
-    router.use('/user',userRoute)
     router.use('/pet',petRoute)
     router.use('/appointment',appointmentRoute)
 }

@@ -1,16 +1,18 @@
 // Imports
 const DataBase = require('./DataBase')
+const People = require('./People.services')
 
 // Main class
-class Owner {
+class Owner extends People{
     // constructor
-    constructor(...args) {
+    constructor(args) {
+        super(args)
         this.database = new DataBase()
         this.args = args
     }
 
     // function to find all
-    async findAll() {
+    async findAllOwner() {
         return new Promise((res,rej) => {
             // vars
             const proc = "CALL SearchOwners();"
@@ -39,11 +41,10 @@ class Owner {
     }
 
     // function to find all by
-    async findAllBy(data) {
+    async findAllByOwner(data) {
         return new Promise((res,rej) => {
             // vars
-            // const by = this.args[0].replace(" ","")
-            const by = data.replace(":","").replace(" ","")
+            const by = data?.replace(":","").replace(" ","")
             const proc = "CALL SearchOwnersBy(?);"
             
             // conect to database
@@ -70,7 +71,7 @@ class Owner {
     }
 
     // function to find by
-    async findBy(data) {
+    async findByOwner(data) {
         return new Promise((res,rej) => {
             // vars
             const by = data.replace(":","").replace(" ","")
@@ -100,7 +101,7 @@ class Owner {
     }
 
     // function to find by
-    async findAllByPet(data) {
+    async findAllByPetOwner(data) {
         return new Promise((res,rej) => {
             // vars
             const by = data.replace(":","").replace(" ","")
@@ -130,7 +131,7 @@ class Owner {
     }
     
     // function to delete
-    async deleteOwner(data = "") {
+    async deleteOwnerOwner(data = "") {
         return new Promise((res,rej) => {
             // data 
             const by = data.replace(":","").replace(" ","")

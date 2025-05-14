@@ -6,11 +6,11 @@ import { useForm } from 'react-hook-form'
 // Imports
 import Contrasena from './Contrasena'
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
-import { formatDate, errorStatusHandler, loadingAlert } from '../../Varios/Util'
+import { errorStatusHandler, loadingAlert } from '../../Varios/Util'
 import { PostData } from '../../Varios/Requests'
 
 // Import styles
-import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/RegistroUsu.css'
+import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/RegistroPersonal.css'
 
 export const RegistroPro = ({ URL = '' }) => {
   // Vars
@@ -24,7 +24,7 @@ export const RegistroPro = ({ URL = '' }) => {
     formState: { errors },
     watch,
   } = useForm({ mode: 'onChange' })
-  const mainUrl = `${URL}/user`
+  const mainUrl = `${URL}/people`
 
   // Functions
   const handleProfileImageChange = (e) => {
@@ -52,19 +52,19 @@ export const RegistroPro = ({ URL = '' }) => {
       email: finalData.email,
       password: finalData.password,
       genero: finalData.genero
-    }
-    console.log(datas)
+    }    
 
     try {
       const token = localStorage.getItem('token')
       if (token) {
         loadingAlert('Validando...')
         const created = await PostData(`${mainUrl}/register`, token, datas)
-        created.ok && swal({
+        created.data.created && swal({
           icon: 'success',
           title: 'Registrado',
           text: 'Ha sido registrado correctamente',
         })
+        console.log(created)
       }
     } catch (err) {
       if (err.status) {
