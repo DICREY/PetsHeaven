@@ -37,7 +37,7 @@ export default function App () {
   const [arriveTo,setArriveTo] = useState('')
 
   // Vars 
-  const imgPetDefault = 'https://raw.githubusercontent.com/Mogom/Imagenes_PetsHeaven/refs/heads/main/Defaults/petImg.default.webp'
+  const imgPetDefault = 'https://github.com/Mogom/Imagenes_PetsHeaven/blob/main/Defaults/petImg.default.jpg?raw=true'
   const imgUserDefault = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/default_veterinario.png'
   const URL = 'http://localhost:3000'
   const isInactive = useInactivityDetector(20 * 60 * 1000) // 20 minutos de inactividad

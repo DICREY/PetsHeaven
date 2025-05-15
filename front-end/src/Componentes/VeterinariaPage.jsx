@@ -481,102 +481,20 @@ export default function VeterinariaPage({ URL = '', setArriveTo = ''}) {
                     </div>
                   </motion.div>
 
-                  <div className='mapa-contacto'>
-                    <iframe
-                      src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.9728971442!2d-74.07800742426815!3d4.598916042707592!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f99a7eccfe58f%3A0x9620f171953c6c95!2sTransversal%2045%2C%20Bogot%C3%A1%2C%20Colombia!5e0!3m2!1ses!2sco!4v1710798850813!5m2!1ses!2sco'
-                      width='100%'
-                      height='250'
-                      style={{ border: 0 }}
-                      allowFullScreen
-                      loading='lazy'
-                      referrerPolicy='no-referrer-when-downgrade'
-                      title='Ubicación de PetsHeaven'
-                      className='iframe-mapa'
-                    ></iframe>
-                  </div>
                 </motion.div>
-                <motion.div className='columna-formulario' variants={itemVariants}>
-                  <motion.div 
-                    className='tarjeta-cita'
-                    whileHover={{ y: -5 }}
-                  >
-                    <h3 className='titulo-cita'>Agendar una Cita</h3>
-                    <p className='descripcion-cita'>
-                      Completa el formulario a continuación y nos pondremos en contacto contigo lo antes posible
-                    </p>
-                    <form className='formulario-cita'>
-                      <div className='fila-formulario'>
-                        <div className='grupo-formulario'>
-                          <label htmlFor='nombre' className='etiqueta-formulario'>
-                            Nombre
-                          </label>
-                          <input type='text' id='nombre' className='campo-formulario' placeholder='Ingresa tu nombre' />
-                        </div>
-                        <div className='grupo-formulario'>
-                          <label htmlFor='apellido' className='etiqueta-formulario'>
-                            Apellido
-                          </label>
-                          <input type='text' id='apellido' className='campo-formulario' placeholder='Ingresa tu apellido' />
-                        </div>
-                      </div>
-                      <div className='grupo-formulario'>
-                        <label htmlFor='email' className='etiqueta-formulario'>
-                          Correo Electrónico
-                        </label>
-                        <input
-                          type='email'
-                          id='email'
-                          className='campo-formulario'
-                          placeholder='Ingresa tu correo electrónico'
-                        />
-                      </div>
-                      <div className='grupo-formulario'>
-                        <label htmlFor='telefono' className='etiqueta-formulario'>
-                          Teléfono
-                        </label>
-                        <input
-                          type='tel'
-                          id='telefono'
-                          className='campo-formulario'
-                          placeholder='Ingresa tu número de teléfono'
-                        />
-                      </div>
-                      <div className='grupo-formulario'>
-                        <label htmlFor='tipo-mascota' className='etiqueta-formulario'>
-                          Tipo de Mascota
-                        </label>
-                        <select id='tipo-mascota' className='selector-formulario'>
-                          <option value='perro'>Perro</option>
-                          <option value='gato'>Gato</option>
-                          <option value='ave'>Ave</option>
-                          <option value='roedor'>Roedor</option>
-                          <option value='otro'>Otro</option>
-                        </select>
-                      </div>
-                      <div className='grupo-formulario'>
-                        <label htmlFor='mensaje' className='etiqueta-formulario'>
-                          Mensaje
-                        </label>
-                        <textarea
-                          id='mensaje'
-                          className='area-texto-formulario'
-                          placeholder='Cuéntanos sobre tu mascota y el motivo de tu visita'
-                        ></textarea>
-                      </div>
-                      <motion.button 
-                        type='submit' 
-                        className='boton-cita'
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                      >
-                        Agendar Cita
-                      </motion.button>
-                    </form>
-                  </motion.div>
-                </motion.div>
+                <aside className='mapa-contacto'>
+                  <iframe
+                    src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.9728971442!2d-74.07800742426815!3d4.598916042707592!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f99a7eccfe58f%3A0x9620f171953c6c95!2sTransversal%2045%2C%20Bogot%C3%A1%2C%20Colombia!5e0!3m2!1ses!2sco!4v1710798850813!5m2!1ses!2sco'
+                    loading='lazy'
+                    referrerPolicy='no-referrer-when-downgrade'
+                    title='Ubicación de PetsHeaven'
+                    className='iframe-mapa'
+                    allowFullScreen
+                  ></iframe>
+                </aside>
               </motion.div>
             </div>
-          </motion.section>
+          </motion.section> 
           
           {/* Botón para subir */}
           <motion.button 
