@@ -22,82 +22,101 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
     const mainUrl = `${URL}/appointment`
 
     // Functions
-    const GetAppointments = async () => {
-        const token = localStorage.getItem("token")
-        try {
-            if (token){
-                const data = await GetData(`${mainUrl}/general`,token)
-                console.log(data)
-                setApp(data)
-            } else navigate('/user/login')
-        } catch (err) {
-            if (err.status) {
-            const message = errorStatusHandler(err.status)
-            swal({
-                title: "Error",
-                text: message,
-                icon: "error",
-                button: "Aceptar"
-            })
-            if(err.status === 403) {
-                setTimeout(() => {
-                    Logout()
-                }, 2000)
+    useEffect(() => {
+        const GetAppointments = async () => {
+            const token = localStorage.getItem("token");
+            try {
+                if (token) {
+                    const data = await GetData(`${mainUrl}/general`, token);
+                    if (data && data.result) {
+                        // Actualiza el estado 'events' con los datos obtenidos del backend
+                        setEvents(data.result.map(event => ({
+                            id: event.id,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            description: event.description,
+                            category: event.category,
+                            paciente: event.paciente,
+                            propietario: event.propietario,
+                            telefono: event.telefono,
+                        })));
+                    }
+                } else {
+                    navigate('/user/login');
+                }
+            } catch (err) {
+                if (err.status) {
+                    const message = errorStatusHandler(err.status);
+                    swal({
+                        title: "Error",
+                        text: message,
+                        icon: "error",
+                        button: "Aceptar",
+                    });
+                    if (err.status === 403) {
+                        setTimeout(() => {
+                            Logout();
+                        }, 2000);
+                    }
+                } else {
+                    console.log(err);
+                }
             }
-            } else console.log(err)
-        }
-    }
-
+        };
+    
+        GetAppointments();
+    }, []);
     //Dia de hoy
     const today = new Date().toISOString().split('T')[0]; // 'YYYY-MM-DD'
 
     //Eventos solo de prueba
-    const [events, setEvents] = useState([
-        {
-            id: '1',
-            title: 'Vacunación de Perro',
-            start: '2025-05-22T10:30:00',
-            end: '2025-05-22T11:00:00',
-            description: 'Vacunación anual contra la rabia',
-            category: 'vacuna',
-            paciente: 'Max (Golden Retriever)',
-            propietario: 'Juan Pérez',
-            telefono: '555-1234'
-        },
-        {
-            id: '2',
-            title: 'Vacunación de Perro',
-            start: '2025-05-22T11:30:00',
-            end: '2025-05-22T12:00:00',
-            description: 'Vacunación anual contra la rabia',
-            category: 'consulta',
-            paciente: 'Max (Golden Retriever)',
-            propietario: 'Juan Pérez',
-            telefono: '555-1234'
-        },
-        {
-            id: '3',
-            title: 'Vacunación de Perro',
-            start: '2025-05-22T12:30:00',
-            end: '2025-05-22T13:00:00',
-            description: 'Vacunación anual contra la rabia',
-            category: 'emergencia',
-            paciente: 'Max (Golden Retriever)',
-            propietario: 'Juan Pérez',
-            telefono: '555-1234'
-        },
-        {
-            id: '4',
-            title: 'Vacunación de Perro',
-            start: '2025-05-22T12:30:00',
-            end: '2025-05-22T13:00:00',
-            description: 'Vacunación anual contra la rabia',
-            category: 'emergencia',
-            paciente: 'Max (Golden Retriever)',
-            propietario: 'Juan Pérez',
-            telefono: '555-1234'
-        }
-    ])
+    // const [events, setEvents] = useState([
+    //     {
+    //         id: '1',
+    //         title: 'Vacunación de Perro',
+    //         start: '2025-05-22T10:30:00',
+    //         end: '2025-05-22T11:00:00',
+    //         description: 'Vacunación anual contra la rabia',
+    //         category: 'vacuna',
+    //         paciente: 'Max (Golden Retriever)',
+    //         propietario: 'Juan Pérez',
+    //         telefono: '555-1234'
+    //     },
+    //     {
+    //         id: '2',
+    //         title: 'Vacunación de Perro',
+    //         start: '2025-05-22T11:30:00',
+    //         end: '2025-05-22T12:00:00',
+    //         description: 'Vacunación anual contra la rabia',
+    //         category: 'consulta',
+    //         paciente: 'Max (Golden Retriever)',
+    //         propietario: 'Juan Pérez',
+    //         telefono: '555-1234'
+    //     },
+    //     {
+    //         id: '3',
+    //         title: 'Vacunación de Perro',
+    //         start: '2025-05-22T12:30:00',
+    //         end: '2025-05-22T13:00:00',
+    //         description: 'Vacunación anual contra la rabia',
+    //         category: 'emergencia',
+    //         paciente: 'Max (Golden Retriever)',
+    //         propietario: 'Juan Pérez',
+    //         telefono: '555-1234'
+    //     },
+    //     {
+    //         id: '4',
+    //         title: 'Vacunación de Perro',
+    //         start: '2025-05-22T12:30:00',
+    //         end: '2025-05-22T13:00:00',
+    //         description: 'Vacunación anual contra la rabia',
+    //         category: 'emergencia',
+    //         paciente: 'Max (Golden Retriever)',
+    //         propietario: 'Juan Pérez',
+    //         telefono: '555-1234'
+    //     }
+    // ])
 
     //Mes actual
     const [mesActual, setMesActual] = useState('')
@@ -224,8 +243,50 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
     }
 
     useEffect(() => {
-        GetAppointments()
-    },[])
+        const GetAppointments = async () => {
+            const token = localStorage.getItem("token");
+            try {
+                if (token) {
+                    const data = await GetData(`${mainUrl}/general`, token);
+                    if (data && data.result) {
+                        // Actualiza el estado 'events' con los datos obtenidos del backend
+                        setEvents(data.result.map(event => ({
+                            id: event.id,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            description: event.description,
+                            category: event.category,
+                            paciente: event.paciente,
+                            propietario: event.propietario,
+                            telefono: event.telefono,
+                        })));
+                    }
+                } else {
+                    navigate('/user/login');
+                }
+            } catch (err) {
+                if (err.status) {
+                    const message = errorStatusHandler(err.status);
+                    swal({
+                        title: "Error",
+                        text: message,
+                        icon: "error",
+                        button: "Aceptar",
+                    });
+                    if (err.status === 403) {
+                        setTimeout(() => {
+                            Logout();
+                        }, 2000);
+                    }
+                } else {
+                    console.log(err);
+                }
+            }
+        };
+
+        GetAppointments();
+    }, []);
     return (
         <div className="calendar-container">
             <NavBarAdmin />
