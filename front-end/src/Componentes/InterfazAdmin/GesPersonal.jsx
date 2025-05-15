@@ -14,7 +14,7 @@ import { GlobalTable } from './GlobalTable'
 import '../../../src/styles/InterfazAdmin/GesPersonal.css'
 
 // Component
-export function GesUsuario({ setUserSelect, URL = "" }) {
+export function GesPersonal({ setUserSelect, URL = "" }) {
   // Dynamic vars
   const mainUrl = `${URL}/staff/all`
   const [users,setUsers] = useState([])

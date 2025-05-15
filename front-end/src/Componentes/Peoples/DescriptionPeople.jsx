@@ -44,7 +44,7 @@ export class DescriptionPeople extends React.Component {
     const headersKeys = Object.keys(headers)
     const headersValues = Object.values(headers)
 
-    headers = headersKeys.map((key, index) => {
+    headers = headersKeys?.map((key, index) => {
       const item = this.renderCell(datas[headersValues[index]], headersValues[index])
       return {
           label: key,
@@ -65,7 +65,7 @@ export class DescriptionPeople extends React.Component {
             </div>
             <div className="propietarioDatosProps">
               {
-                headers.map((header,index) => (
+                headers?.map((header,index) => (
                   isEditing? (
                     <div className="propietarioCampoProps">
                       <div className="propietarioEtiquetaProps">{header.label}</div>

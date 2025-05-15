@@ -252,8 +252,8 @@ export const PerfilPropietario = ({
           {activeTab === 'mascotas' && (
             <section className='mascotasContenedorProps'>
               <div className='mascotasGrillaProps'>
-                {petsData.map((mascota) => (
-                  <div key={mascota.doc_per} className='mascotaTarjetaProps'>
+                {petsData?.map((mascota, index) => (
+                  <div key={index + 1293} className='mascotaTarjetaProps'>
                     <div className='mascotaImagenProps'>
                       {checkImage(
                         mascota.fot_mas,
@@ -289,7 +289,7 @@ export const PerfilPropietario = ({
                 ))}
               </div>
 
-              {petsData.length === 0 && <div className='sinResultadosProps'>No hay mascotas vinculadas</div>}
+              {petsData?.length === 0 && <div className='sinResultadosProps'>No hay mascotas vinculadas</div>}
             </section>
           )}
         </section>

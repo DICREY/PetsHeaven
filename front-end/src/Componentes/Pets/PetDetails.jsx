@@ -140,10 +140,10 @@ export const PetDetails = ({ datas, imgPetDefault, URL = ''}) => {
                                 imgPetDefault,
                                 'pet-avatar-pet-details'
                             )}      
-                            <div className='pet-status-pet-details'>
+                            {/* <div className='pet-status-pet-details'>
                                 <span className='status-badge-pet-details status-active-pet-details'>Esterilizado</span>
                                 <span className='weight-badge-pet-details'>{datas.pes_mas} kg</span>
-                            </div>
+                            </div> */}
                         </aside>
                         
                         <aside className='pet-main-info-pet-details'>
@@ -191,7 +191,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = ''}) => {
                                 </div>
                                 <div className='info-item-pet-details'>
                                     <span className='info-label-pet-details'>Registro</span>
-                                    <span className='info-value-pet-details'>{datas.fec_reg_mas || "no registrado"}</span>
+                                    <span className='info-value-pet-details'>{datas.fec_cre_mas || "No Registrado"}</span>
                                 </div>
                             </div>
                         </article>
@@ -210,25 +210,21 @@ export const PetDetails = ({ datas, imgPetDefault, URL = ''}) => {
                                     <span className='info-value-pet-details'>{datas.est_rep_mas}</span>
                                 </div>
                                 <div className='info-item-pet-details'>
-                                    <span className='info-label-pet-details'>Alergias</span>
-                                    <span className='info-value-pet-details'>Ninguna</span>
+                                    <span className='info-label-pet-details'>Alimento Frecuente</span>
+                                    <span className='info-value-pet-details'>{datas.ali_mas || "No Registrado"}</span>
                                 </div>
                                 <div className='info-item-pet-details'>
-                                    <span className='info-label-pet-details'>Última visita</span>
-                                    <span className='info-value-pet-details'>15/06/2023</span>
+                                    <span className='info-label-pet-details'>Peso</span>
+                                    <span className='info-value-pet-details'>{`${datas.pes_mas} kg` || "No Registrado"}</span>
                                 </div>
                                 <div className='info-item-pet-details'>
-                                    <span className='info-label-pet-details'>Vacunas</span>
-                                    <span className='info-value-pet-details'>Completas</span>
-                                </div>
-                                <div className='info-item-pet-details'>
-                                    <span className='info-label-pet-details'>Enfermedades</span>
-                                    <span className='info-value-pet-details'>Ninguna</span>
+                                    <span className='info-label-pet-details'>Consulta Reciente</span>
+                                    <span className='info-value-pet-details'>{datas.fec_cit || "No Registrado"}</span>
                                 </div>
                             </div>
                         </article>
 
-                        {/* <!-- Tarjeta de alimentación --> */}
+                        {/* <!-- Tarjeta de alimentación -->
                         <article className='info-card-pet-details'>
                             <h2 className='info-card-h2-pet-details'>
                                 <svg width='20' height='20' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -257,9 +253,9 @@ export const PetDetails = ({ datas, imgPetDefault, URL = ''}) => {
                                     <span className='info-value-pet-details'>Glucosamina</span>
                                 </div>
                             </div>
-                        </article>
+                        </article> */}
 
-                        {/* <!-- Tarjeta de propietario --> */}
+                        {/* <!-- Tarjeta de propietario -->
                         <article className='info-card-pet-details owner-card-pet-details'>
                             <h2 className='info-card-h2-pet-details'>
                                 <svg width='20' height='20' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -309,7 +305,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = ''}) => {
                                     </a>
                                 </div>
                             </div>
-                        </article>
+                        </article> */}
                     </div>
                 </div>
             </div>

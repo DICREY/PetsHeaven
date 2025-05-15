@@ -12,7 +12,7 @@ import { RegistroPro } from '../Componentes/InterfazAdmin/FormulariosAdmin/Regis
 
 // Imports
 import { HomeAdmin } from '../Componentes/InterfazAdmin/Consultorio'
-import { GesUsuario } from '../Componentes/InterfazAdmin/GesPersonal'
+import { GesPersonal } from '../Componentes/InterfazAdmin/GesPersonal'
 import { GesMascota } from '../Componentes/InterfazAdmin/GesMascota'
 import { Pets } from '../Componentes/Pets/Pets'
 import { PetDetails } from '../Componentes/Pets/PetDetails'
@@ -134,7 +134,7 @@ export default function App () {
         {/* Admin routes  */}
         <Route path='/admin' element={<MainAdmin />} >
           <Route path='gestion/usuarios' element={
-            <AdminRoute children={<GesUsuario setUserSelect={setUserSelect} URL={URL} />} />} >
+            <AdminRoute children={<GesPersonal setUserSelect={setUserSelect} URL={URL} />} />} >
           </Route>
           <Route path='usuario/registro' element={
             <AdminRoute children={<ConfiguracionUsuario URL={URL} />} />} >
