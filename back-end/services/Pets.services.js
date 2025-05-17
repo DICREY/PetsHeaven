@@ -208,13 +208,6 @@ class Pet {
             // Functions
             const format = (datas) => {
                 const results = datas.map(data => {
-                    const consultList = data.consultas.split(";").filter(Boolean)
-                    .map(item => {
-                        const consult = item.split("---")
-                        return {
-                            pro_mas_con: consult[0]
-                        }
-                    })
                     const appoimentList = data.citas.split(";").filter(Boolean)
                     .map(item => {
                         const appoiment = item.split("---")
@@ -237,7 +230,6 @@ class Pet {
                     })
                     return {
                         ...data,
-                        consultas: consultList,
                         citas: appoimentList
                     }
                 })
@@ -257,7 +249,7 @@ class Pet {
                 setTimeout(() => {
                     res({
                         message: "History found",
-                        result: format(result[0]),
+                        result: format(result[0])[0],
                         find: 1
                     })
                 },1000)

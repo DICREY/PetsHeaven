@@ -6,7 +6,7 @@ import swal from 'sweetalert'
         
 // Import
 import { Description } from '../Global/Description'
-import { DeleteData, ModifyData } from '../Varios/Requests'
+import { DeleteData, ModifyData, PostData } from '../Varios/Requests'
 import { getRoles,loadingAlert, checkImage, getAge, errorStatusHandler } from '../Varios/Util'
 
 // Import styles 
@@ -18,6 +18,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
     const [isAdmin,setIsAdmin] = useState(false)
     const [isEditing,setIsEditing] = useState(false)
     const [modPet,setModPet] = useState({})
+    const [history,setHistory] = useState({})
     const [currentTab,setCurrentTab] = useState(tab)
     const headers = {
         Nombre: 'nom_mas',
@@ -55,13 +56,36 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
         } else setCurrentTab(tab)
     }
 
+    const getHistory = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            if (token) {
+                loadingAlert("Validando...",)
+                const data = await PostData(`${mainURL}/history`, token,{
+                    firstData: datas.nom_mas,
+                    secondData: datas.doc_per
+                })
+                if (data.data.result) setHistory(data.data.result)
+            }
+        } catch (err) {
+            if(err.status) {
+                const message = errorStatusHandler(err.status)
+                swal({
+                  title: 'Error',
+                  text: `${message}`,
+                  icon: 'warning',
+                })
+            } else console.log(err)
+        }
+    }
+
     const modifyData = async () => {
         try {
             const token = localStorage.getItem('token')
             if (token) {
                 loadingAlert("Validando...",)
                 const mod = await ModifyData(URL, token, modPet)
-                mod.modify && swal({
+                mod.data.modify && swal({
                     icon: 'success',
                     title: 'Modificado',
                     text: 'Los datos de la mascota han sido modificados',
@@ -124,6 +148,11 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
     useEffect(() => {
         // Vars
         const token = localStorage.getItem('token')
+
+        if (!datas) navigate(-1)
+        
+        getHistory()
+
         if(token) {
             // Vars
             const roles =  getRoles(token)
@@ -132,11 +161,6 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
             admin?setIsAdmin(true):setIsAdmin(false)
         } else navigate('/user/login')
     }, [])
-
-    useEffect(() => {
-        if (!datas) navigate(-1)
-    },[])
-
     
     return (
         <main className='app-container-pet-details'>
@@ -233,41 +257,38 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
                                 disabled={['esp_mas','raz_mas','col_mas','gen_mas']}
                             />
                         )}
-                        {currentTab === 'Historia Clinica' && 
-                            (
-                        <article className='info-card-pet-details'>
-                            <h2 className='info-card-h2-pet-details'>
-                                <svg width='20' height='20' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
-                                    <path d='M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z' fill='currentColor' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
-                                    <path d='M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
-                                    <path d='M16 2V6' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
-                                    <path d='M8 2V6' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
-                                    <path d='M3 10H21' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
-                                </svg>
-                                Información Básica
-                            </h2>
-                            <div className='info-grid-pet-details'>
-                                <div className='info-item-pet-details'>
-                                    <span className='info-label-pet-details'>Género</span>
-                                    <span className='info-value-pet-details'>{datas.gen_mas}</span>
+                        {currentTab === 'Historia Clinica' && history.citas?.map((item, index) => (
+                            <article key={index} className='info-card-pet-details'>
+                                <h2 className='info-card-h2-pet-details'>
+                                    <svg width='20' height='20' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                                        <path d='M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z' fill='currentColor' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
+                                        <path d='M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
+                                        <path d='M16 2V6' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
+                                        <path d='M8 2V6' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
+                                        <path d='M3 10H21' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
+                                    </svg>
+                                    Atencion Médica #{index + 989}
+                                </h2>
+                                <div className='info-grid-pet-details'>
+                                    <div className='info-item-pet-details'>
+                                        <span className='info-label-pet-details'>Fecha Cita</span>
+                                        <span className='info-value-pet-details'>{item.fec_cit || "No Registrado"}</span>
+                                    </div>
+                                    <div className='info-item-pet-details'>
+                                        <span className='info-label-pet-details'>Servicio</span>
+                                        <span className='info-value-pet-details'>{item.nom_ser}</span>
+                                    </div>
+                                    <div className='info-item-pet-details'>
+                                        <span className='info-label-pet-details'>Veterinario</span>
+                                        <span className='info-value-pet-details'>{`${item.nom_per} ${item.ape_per}`}</span>
+                                    </div>
+                                    <div className='info-item-pet-details'>
+                                        <span className='info-label-pet-details'>Especialidad de Veterinario</span>
+                                        <span className='info-value-pet-details'>{`${item.especialidad}`}</span>
+                                    </div>
                                 </div>
-                                <div className='info-item-pet-details'>
-                                    <span className='info-label-pet-details'>Color</span>
-                                    <span className='info-value-pet-details'>{datas.col_mas}</span>
-                                </div>
-                                <div className='info-item-pet-details'>
-                                    <span className='info-label-pet-details'>Fecha Nacimiento</span>
-                                    <span className='info-value-pet-details'>{datas.fec_nac_mas}</span>
-                                </div>
-                                <div className='info-item-pet-details'>
-                                    <span className='info-label-pet-details'>Registro</span>
-                                    <span className='info-value-pet-details'>{datas.fec_cre_mas || "No Registrado"}</span>
-                                </div>
-                            </div>
-                        </article>
-                        
-                            )
-                        }
+                            </article>
+                        ))}
                     </div> 
                 </div>
             </div>

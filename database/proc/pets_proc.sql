@@ -273,31 +273,6 @@ BEGIN
         (
             SELECT GROUP_CONCAT(
                 CONCAT_WS('---',
-                    c.pro_mas_con,
-                    p.nom_per,
-                    p.ape_per,
-                    v.especialidad,
-                    cv.nom_cat,
-                    v.fot_vet
-                ) 
-                SEPARATOR '; '
-            ) 
-            FROM 
-                consultas c
-            JOIN
-                mascotas m ON m.id_mas = c.mas_con
-            JOIN
-                personas p ON p.id_per = c.vet_con
-            JOIN
-                veterinarios v ON v.id_vet = c.vet_con
-            JOIN
-                otorgar_categoria_vet otv ON otv.id_per = c.vet_con
-            JOIN
-                categorias_veterinario cv ON otv.id_cat = cv.id_cat
-        ) AS consultas,
-        (
-            SELECT GROUP_CONCAT(
-                CONCAT_WS('---',
                     ct.fec_reg_cit,
                     ct.fec_cit,
                     ct.hor_ini_cit,
@@ -344,7 +319,7 @@ BEGIN
         m.estado = 1
         AND m.nom_mas LIKE p_by
     ORDER BY m.nom_mas
-    LIMIT 50;
+    LIMIT 1000;
 END //
 
 
