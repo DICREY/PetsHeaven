@@ -6,7 +6,7 @@ import swal from 'sweetalert'
 
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
-import { GlobalTable } from './GlobalTable'
+import { GlobalTable } from '../Global/GlobalTable'
 import { GetData } from '../Varios/Requests'
 import { errorStatusHandler } from '../Varios/Util'
 
@@ -96,7 +96,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
             gen_mas: petData[7] || '',
             est_rep_mas: petData[8] || '',
             fot_mas: petData[9] || '',
-            fec_cre_mas: petData[11] || ''
+            fec_cre_mas: petData[10] || ''
           }
         })
       return { ...item, mascotas: petList }

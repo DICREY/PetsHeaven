@@ -7,7 +7,7 @@ import { Plus} from "lucide-react"
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GetData } from '../Varios/Requests'
 import { divideList, errorStatusHandler } from '../Varios/Util'
-import { GlobalTable } from './GlobalTable'
+import { GlobalTable } from '../Global/GlobalTable'
 // import { Loader } from '../Errores/Loader'
 
 // Import styles 

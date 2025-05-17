@@ -57,7 +57,7 @@ const itemVariants = {
   }
 };
 
-export default function VeterinariaPage({ URL = '', setArriveTo = ''}) {
+export default function VeterinariaPage({ URL = '', setArriveTo}) {
   // Dynamic vars
   const mainUrl = `${URL}/global/services`
   const [diaActual, setDiaActual] = useState(0)
@@ -311,6 +311,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo = ''}) {
                       <h3 className='titulo-promocion'>{promocion.titulo}</h3>
                       <p className='descripcion-promocion'>{promocion.descripcion}</p>
                       <motion.button 
+                        onClick={() => setArriveTo('/calendario/general')}
                         className='boton-promocion'
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
