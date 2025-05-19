@@ -11,7 +11,7 @@ import { GetData } from '../Varios/Requests'
 import { getRoles, divideList } from '../Varios/Util'
 import { EditPetButton } from '../Pets/EditPet'
 import { PetDetails } from '../Pets/PetDetails'
-import { GlobalTable } from '../InterfazAdmin/GlobalTable'
+import { GlobalTable } from '../Global/GlobalTable'
 
 // Import Styles 
 import '../../../src/styles/InterfazAdmin/GesMascota.css'

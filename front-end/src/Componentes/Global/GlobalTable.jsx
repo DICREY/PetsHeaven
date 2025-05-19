@@ -6,7 +6,7 @@ import { FileText } from 'lucide-react'
 import { formatDate, divideList,getAge } from '../Varios/Util'
 
 // Import Styles 
-import '../../../src/styles/InterfazAdmin/GlobalTable.css'
+import '../../../src/styles/Global/GlobalTable.css'
 
 export class GlobalTable extends Component {
     constructor(props) {
@@ -16,12 +16,12 @@ export class GlobalTable extends Component {
       this.state = {
         clickCount: 0,
         page: 1,
-        datas: []
+        datas: [],
+        columnSize: 5
       }
 
       // Declare params
       this.void = () => console.log('ver')
-      this.defaultColumns = 5
       this.defaultImg = this.props.imgDefault
       this.onWatch = this.props.watch || this.void
       this.headersSearch = this.props.headersSearch || this.void
@@ -32,7 +32,7 @@ export class GlobalTable extends Component {
       const { fullData } = this.props
       if (fullData) {
         this.setState({
-          datas: divideList(fullData, this.defaultColumns)
+          datas: divideList(fullData, this.state.columnSize)
         });
       }
     }
@@ -55,7 +55,7 @@ export class GlobalTable extends Component {
       })
     
       if (find) this.setState(() => ({
-          datas: divideList(find,this.defaultColumns)
+          datas: divideList(find,this.state.columnSize)
       }))
     }
     
@@ -78,11 +78,11 @@ export class GlobalTable extends Component {
 
     handleColumns = (e) => {
       const { fullData } = this.props
-
-      this.defaultColumns = e.target.value
+      const newColumnSize = parseInt(e.target.value, 10)
 
       this.setState(() => ({
-        datas: divideList(fullData,this.defaultColumns)
+        columnSize: newColumnSize,
+        datas: divideList(fullData,newColumnSize)
       }))
     }
 
@@ -95,7 +95,6 @@ export class GlobalTable extends Component {
     
     nextPage = () => {
       const { page, datas } = this.state
-      console.log(datas)
       if (page < datas.length) this.setState( () => ({
           page: page + 1
       }))
@@ -133,6 +132,7 @@ export class GlobalTable extends Component {
               <span>Mostrar</span>
               <select 
                 className='select-gestion'
+                defaultValue={this.state.columnSize || 5}
                 onChange={(e) => this.handleColumns(e)}
               >
                 <option value={5}>5</option>
@@ -153,10 +153,11 @@ export class GlobalTable extends Component {
             </span>)}
           </nav>
           <section className={`global-table-container`}>
-            <table className='global-table'>
+            {info?(
+              <table className='global-table'>
               <thead>
                 <tr>
-                  {headersKeys.map((header, index) => (
+                  {headersKeys?.map((header, index) => (
                     <th key={index +120}>
                       <div key={index} className='header-content'>
                         {header}
@@ -168,27 +169,35 @@ export class GlobalTable extends Component {
               </thead>
               <tbody>
                 {info[page-1]?.map((item,index) => (
-                  <tr key={index} onClick={() => this.handleClick(item)}>
-                    {headersValues.map((header, index) => (
+                  <tr key={index} onClick={() => this.handleClick(item)} style={{ cursor: 'pointer'}}>
+                    {headersValues?.map((header, index) => (
                       <td key={index + 170}>
-                        {header === 'nom_per'?(
-                        <div className='infoadminhome'>
-                          <span className='nombreadminhome'>{this.renderCell(item, 'nom_per')}</span>
-                          <span className='fechaadminhome'>Creado en {formatDate(item.fec_nac_per)}</span>
-                        </div>
-                        ):header === listHeader?(
-                          <ul className='mascotasadminhome' aria-label='Mascotas del usuario'>
-                            {item[listHeader].map((mascota, index) => (
-                              <li key={index} className='mascotaitemadminhome'>
+                        {header === listHeader && item[listHeader]? 
+                          (
+                            <ul 
+                              className='mascotasadminhome' 
+                              aria-label='Mascotas del usuario'
+                              key={index + 18237}
+                            >
+                              <li className='mascotaitemadminhome'>
                                 <span>
-                                  {`${this.renderCell(mascota, 'nom_mas')} - 
-                                  ${this.renderCell(mascota, 'esp_mas')}`}
+                                  {`${this.renderCell(item[listHeader][0], 'nom_mas')} - 
+                                  ${this.renderCell(item[listHeader][0], 'esp_mas')}`}
                                 </span>
                               </li>
-                            ))}
-                          </ul>
-                        ):(
-                          <span>{this.renderCell(item, header)}</span>)
+                              <li className='mascotaitemadminhome'>
+                                <span>
+                                  {`${this.renderCell(item[listHeader][1], 'nom_mas')} - 
+                                  ${this.renderCell(item[listHeader][1], 'esp_mas')}`}
+                                </span>
+                              </li>
+                              {item[listHeader].length > 2 && (
+                                <li className='mascotaitemadminhome'>
+                                  <span className=''>-- Ver mas --</span>
+                                </li>
+                              )}
+                            </ul>
+                          ):(<span>{this.renderCell(item, header)}</span>)
                         }
                       </td>
                     ))}
@@ -201,12 +210,16 @@ export class GlobalTable extends Component {
                       </button>  
                     </td>
                   </tr>
-                ))}
+                ))
+              }
               </tbody>
             </table>
+            ):(
+              <p>No ahi resultados</p>
+            )}
           </section>
           <footer className='paginacion-gestion'>
-            <div className='info-paginacion'>Mostrando registros del 1 al {info.length} de un total de {fullData.length} registros.</div>
+            <div className='info-paginacion'>Mostrando registros del 1 al {info?.length} de un total de {fullData?.length} registros.</div>
             <div className='btns-container-paginacion'>
               <button 
                 type='button' 

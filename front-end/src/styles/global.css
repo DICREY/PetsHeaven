@@ -1,5 +1,5 @@
 /* Imports */
-@import url("../styles/vars.css");
+@import url("./vars.css");
 
 /* Dynamic class */
 .text {
@@ -21,17 +21,42 @@
     font-size: var(--font-size);
     margin-top: 5px;
 }
-.input{
-    padding: 12px;
-    width: 100%;
-    border: 1px solid var(--border-input);
-    border-radius: 5px;
-    font-size: var(--font-size);
-    transition: all 0.3s ease;
+.label {
+  color: #424242;
+  font-size: var(--font-size);
+  width: 100%;
+  font-weight: bold;
 }
+.input {
+  padding: 0.75rem;
+  border: 0.1rem solid #e0e0e0;
+  border-radius: 0.3rem;
+  font-size: var(--font-size);
+  transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .input:focus {
-  box-shadow: 0 0 0 2px var(--border-focus-input);
+  outline: none;
+  border-color: #00bcd4;
+  box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.1);
 }
+
+.select {
+  padding: 0.75rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  transition: border-color 0.2s;
+}
+.select:focus {
+  outline: none;
+  border-color: #00bcd4;
+  box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.1);
+}
+
+
 /* Btns */
 .link{
     position: relative;
@@ -84,4 +109,52 @@
 }
 .subenlacenavadmin.active{
     background: var(--gray-200);
+}
+
+.BackBtn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #666;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.DeleteBtn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 16px;
+  border: 1px solid #e74c3c;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #e74c3c;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.DeleteBtn:hover {
+  background-color: #fef5f5;
+}
+
+.EditBtn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #00bcd4;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.EditBtn:hover {
+  background-color: #0097A7;
 }

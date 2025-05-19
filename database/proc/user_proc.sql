@@ -346,9 +346,3 @@ BEGIN
 
     SET autocommit = 1;
 END //
-
-CREATE PROCEDURE pets_heaven.SearchAllAppointments()
-BEGIN 
-    SELECT * FROM citas;
-END //
-

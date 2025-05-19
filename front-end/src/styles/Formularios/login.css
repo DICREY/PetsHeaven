@@ -1,9 +1,11 @@
+/* Imports  */
+@import url("../vars.css");
+
 /* Contenedor principal */
 .login-container {
   display: flex;
   min-height: 100vh;
   font-family: "Arial", sans-serif;
-  /* Por defecto, en dispositivos pequeños y medianos, el contenedor será en columna */
   flex-direction: column;
 }
 
@@ -11,14 +13,12 @@
 .login-formulario-container {
   flex: 1;
   background-color: #f5f5f5;
-  background-image: url("https://www.toptal.com/designers/subtlepatterns/uploads/leaves-pattern.png");
-  background-repeat: repeat;
+  background: url("https://www.toptal.com/designers/subtlepatterns/uploads/leaves-pattern.png") repeat;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   padding: 1rem;
-  /* Por defecto, en dispositivos pequeños y medianos, el formulario estará abajo */
   order: 2;
 }
 
@@ -29,18 +29,19 @@
 }
 
 .logo-veterinaria-login {
-  max-width: 200px;
+  cursor: pointer;
+  max-width: 11rem;
   height: auto;
 }
 
 /* Contenedor del formulario */
 .formulario-card-login {
   background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 0.9rem;
+  box-shadow: 0 0.2rem 1.4rem rgba(0, 0, 0, 0.08);
   width: 100%;
-  max-width: 450px;
-  padding: 2rem;
+  max-width: 25rem;
+  padding: 1.5rem 2rem;
 }
 
 .contenido-formulario-login {
@@ -76,31 +77,8 @@
   position: relative;
 }
 
-label {
-  font-size: 0.875rem;
-  margin-bottom: 0.25rem;
-  color: #424242;
-  font-weight: bold;
-}
-
 .obligatorio-login {
   color: #f44336;
-}
-
-input {
-  padding: 0.75rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  transition: border-color 0.2s;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-input:focus {
-  outline: none;
-  border-color: #00bcd4;
-  box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.1);
 }
 
 .campo-error-login {
@@ -109,7 +87,7 @@ input:focus {
 
 .mensaje-error-login {
   color: #f44336;
-  font-size: 0.75rem;
+  font-size: var(--font-size);
   margin-top: 0.25rem;
 }
 
@@ -118,7 +96,7 @@ input:focus {
   position: relative;
 }
 
-.contenedor-input-password-login input {
+.contenedor-input-password-login .input {
   padding-right: 2.5rem; /* Espacio para el icono del ojo */
   width: 100%;
   box-sizing: border-box;
@@ -150,8 +128,8 @@ input:focus {
   width: 100%;
   padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 6px;
-  font-size: 0.875rem;
+  border-radius: 0.3rem;
+  font-size: var(--font-size);
   cursor: pointer;
   transition: all 0.2s;
   background-color: #00bcd4;
@@ -163,7 +141,7 @@ input:focus {
 .boton-login:hover {
   background-color: #00acc1;
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 188, 212, 0.2);
+  box-shadow: 0 0.2rem 0.5rem rgba(0, 188, 212, 0.2);
 }
 
 /* Enlaces */
@@ -178,7 +156,7 @@ input:focus {
 .enlace-login {
   color: #00bcd4;
   text-decoration: none;
-  font-size: 0.875rem;
+  font-size: var(--font-size);
 }
 
 .enlace-login:hover {
@@ -187,15 +165,15 @@ input:focus {
 
 /* Sección derecha - Imagen y cita */
 .login-imagen-container {
-  flex: 1;
   position: relative;
+  flex: 1;
   color: white;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
-  /* Por defecto, en dispositivos pequeños y medianos, la imagen estará arriba */
   order: 1;
-  min-height: 200px;
+  min-height: 11rem;
 }
 
 .imagen-fondo-contenedor-login {
@@ -211,31 +189,19 @@ input:focus {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0.7);
-}
-
-.overlay-imagen-login {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1;
+  filter: brightness(35%);
 }
 
 .contenedor-cita-login {
-  position: relative;
+  position: relative;  
   z-index: 2;
   padding: 2rem;
-  margin-bottom: 2rem;
   text-align: center;
-  margin-left: 0;
   width: 100%;
 }
 
 .texto-cita-login {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: bold;
   display: flex;
   justify-content: center;
@@ -244,7 +210,7 @@ input:focus {
 }
 
 .subtexto-cita-login {
-  font-size: 0.875rem;
+  font-size: calc(var(--font-size) + 0.1rem);
 }
 
 /* ===== RESPONSIVE: MÓVIL PEQUEÑO (< 480px) ===== */
@@ -257,39 +223,23 @@ input:focus {
     max-height: 50px;
     min-height: 50px;
     padding: 1rem;
-    margin-bottom: 9vh;
   }
   .texto-cita-login {
-    font-size: 1rem;
     margin-top: 0;
     max-width: 100%;
-  }
-  .subtexto-cita-login {
-    font-size: 0.75rem;
   }
   .formulario-card-login {
     padding: 1.5rem;
   }
   .logo-veterinaria-login {
-    max-width: 150px;
+    max-width: 10rem;
   }
 }
 
 /* ===== RESPONSIVE: MÓVIL (480px - 767px) ===== */
 @media (min-width: 480px) and (max-width: 767px) {
-  .login-imagen-container {
-    min-height: 150px;
-    max-height: 200px;
-  }
   .contenedor-cita-login {
     padding: 1.5rem;
-    margin-bottom: 0;
-  }
-  .texto-cita-login {
-    font-size: 1.2rem;
-  }
-  .subtexto-cita-login {
-    font-size: 0.8rem;
   }
 }
 
@@ -305,12 +255,6 @@ input:focus {
   .contenedor-cita-login {
     padding: 2rem;
     margin-bottom: 2rem;
-  }
-  .texto-cita-login {
-    font-size: 1.5rem;
-  }
-  .formulario-card-login {
-    max-width: 500px;
   }
 }
 
@@ -331,13 +275,6 @@ input:focus {
   }
   .contenedor-cita-login {
     padding: 2.5rem;
-    margin-bottom: 3rem;
-  }
-  .texto-cita-login {
-    font-size: 1.75rem;
-  }
-  .formulario-card-login {
-    max-width: 600px;
   }
 }
 
@@ -356,62 +293,25 @@ input:focus {
     order: 1;
   }
   .contenedor-cita-login {
-    margin-left: 3rem;
-    margin-bottom: 10rem;
-    text-align: left;
     width: auto;
   }
   .texto-cita-login {
-    font-size: 1.5rem;
     justify-content: flex-start;
   }
 }
-
-/* ===== RESPONSIVE: ESCRITORIO MEDIANO (1280px - 1535px) ===== */
-@media (min-width: 1280px) and (max-width: 1535px) {
-  .contenedor-cita-login {
-    margin-left: 5rem;
-    margin-bottom: 12rem;
-  }
-  .texto-cita-login {
-    font-size: 1.75rem;
-  }
-}
-
 /* ===== RESPONSIVE: ESCRITORIO GRANDE (>= 1536px) ===== */
 @media (min-width: 1536px) {
   .formulario-card-login {
-    max-width: 550px;
+    width: auto;
     padding: 2.5rem;
   }
   .contenedor-cita-login {
-    margin-left: 8rem;
-    margin-bottom: 20rem;
     padding: 3rem;
-  }
-  .texto-cita-login {
-    font-size: 2rem;
-  }
-  .subtexto-cita-login {
-    font-size: 1rem;
-  }
-  .titulo-formulario-login {
-    font-size: 1.75rem;
-  }
-  .subtitulo-formulario-login {
-    font-size: 1rem;
   }
 }
 
 /* ===== MONITORES PEQUEÑOS ===== */
 @media (min-width: 1200px) and (max-width: 1279px) {
-  .contenedor-cita-login {
-    margin-left: 2rem;
-    margin-bottom: 8rem;
-  }
-  .texto-cita-login {
-    font-size: 1.4rem;
-  }
   .formulario-card-login {
     padding: 1.75rem;
   }

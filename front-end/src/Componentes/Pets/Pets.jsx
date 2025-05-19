@@ -4,31 +4,29 @@ import { decodeJWT, errorStatusHandler, getRoles, checkImage } from '../Varios/U
 import { Loader } from '../Errores/Loader'
 import { NotFound } from '../Errores/NotFound'
 import { EditPetButton } from './EditPet'
-import { PetDetails } from './PetDetails'
 
 // Import Styles 
 import '../../../src/styles/Pets/pets.css'
 
 // Librarys 
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 // Main component
-export const Pets = ({URL = '', imgPetDefault = ''}) => {
+export const Pets = ({URL = '', imgPetDefault = '', setPetSelect }) => {
     // Dynamic Vars
     const [petsData, setPetsData] = useState([])
-    const [history, setHistory] = useState([])
     const [loading, setLoading] = useState(true)
     const [selectedPet, setSelectedPet] = useState(null)
-    const [showModal, setShowModal] = useState(false)
     const [searchBy,setSearchBy] = useState('')
     const [found,setfound] = useState(false)
     const [editMode,setEditMode] = useState(false)
     const [isAdmin,setIsAdmin] = useState(false)
-    const [validImage,setValidImage] = useState(false)
     
     // Vars 
     const mainURL = `${URL}/pet`
     const imgDefault = imgPetDefault
+    const navigate = useNavigate()
 
     // fetch para traer datos
     const fetchData = async (url = '', token = '') => {
@@ -53,12 +51,6 @@ export const Pets = ({URL = '', imgPetDefault = ''}) => {
             }
         }
     }
-
-    const openModal = (pet) => {
-        setSelectedPet(pet)
-        setShowModal(true)
-        document.body.style.overflow = 'hidden' // Deshabilita el scroll del body
-    }
     
     // Ejecutar el fetch para traer datos
     useEffect(() => {
@@ -76,7 +68,7 @@ export const Pets = ({URL = '', imgPetDefault = ''}) => {
             const newUrl = admin? `${mainURL}/all`: `${mainURL}/all:${by}`
 
             fetchData(newUrl,token)
-        } else window.location.href = '/user/login'
+        } else navigate('/user/login')
     }, [])
 
     return (
@@ -101,22 +93,12 @@ export const Pets = ({URL = '', imgPetDefault = ''}) => {
                             {petsData.map((i, index) => (
                                 <aside key={index} className='pets-card'>
                                 <div className='pets-img-container'>
-                                    {checkImage(i.fot_mas,setValidImage)}
-                                    {
-                                        validImage? (
-                                            <img 
-                                                className='pets-card-img'
-                                                src={i.fot_mas}
-                                                alt={`${i.esp_mas} de raza ${i.raz_mas} color ${i.col_mas} con nombre ${i.nom_mas}`}
-                                            />
-                                        ): (
-                                        <img 
-                                            className='pets-card-img' 
-                                            src={imgDefault}
-                                            alt={`${i.esp_mas} de raza ${i.raz_mas} color ${i.col_mas} con nombre ${i.nom_mas}`}
-                                        />
-                                        )
-                                    }
+                                    {checkImage(
+                                        i.fot_mas,
+                                        `${i.esp_mas} de raza ${i.raz_mas} color ${i.col_mas} con nombre ${i.nom_mas}`,
+                                        imgDefault,
+                                        'pets-card-img'
+                                    )}
                                     <span className='pets-species-badge'>{i.esp_mas}</span>
                                 </div>
                                 
@@ -129,7 +111,7 @@ export const Pets = ({URL = '', imgPetDefault = ''}) => {
                                     <button 
                                         type='button' 
                                         className='boton-enviar pets-detail-btn'
-                                        onClick={() => openModal(i)}
+                                        onClick={() => setPetSelect(i)}
                                     >Descripción
                                     </button>
                                 </section>
@@ -142,17 +124,6 @@ export const Pets = ({URL = '', imgPetDefault = ''}) => {
                     }
 
                     {/* Modal para mostrar detalles completos */}
-                    {showModal && selectedPet && (
-                        <PetDetails 
-                            URL={mainURL}
-                            datas={selectedPet} 
-                            open={showModal} 
-                            admin={isAdmin}
-                            imgPetDefault={imgDefault}
-                            ready={(state) => setShowModal(state)}
-                            editMode={() => setEditMode(true)} />
-                    )}
-
                     {editMode && (
                         <EditPetButton
                             URL={mainURL}

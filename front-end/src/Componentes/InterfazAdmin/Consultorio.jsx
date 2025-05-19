@@ -6,19 +6,20 @@ import swal from 'sweetalert'
 
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
-import { GlobalTable } from '../InterfazAdmin/GlobalTable'
+import { GlobalTable } from '../Global/GlobalTable'
 import { GetData } from '../Varios/Requests'
 import { errorStatusHandler } from '../Varios/Util'
 
 // Import styles 
-import '../../../src/styles/InterfazAdmin/HomeAdmin.css'
+import '../../../src/styles/InterfazAdmin/Consultorio.css'
 
-export function HomeAdmin({ URL = '', setUserSelect, setOwner }) {
+export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   // Dynamic vars 
   const [datas, setDatas] = useState([])
   const [petsDataAlmc, setPetsDataAlmc] = useState([])
   const [datasAlmac, setDatasAlmac] = useState([])
   const [headers, setHeaders] = useState({})
+  const [currentInfo, setCurrentInfo] = useState(false)
 
   // Vars 
   const mainUrl = `${URL}/owner`
@@ -95,7 +96,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner }) {
             gen_mas: petData[7] || '',
             est_rep_mas: petData[8] || '',
             fot_mas: petData[9] || '',
-            fec_cre_mas: petData[11] || ''
+            fec_cre_mas: petData[10] || ''
           }
         })
       return { ...item, mascotas: petList }
@@ -104,8 +105,11 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner }) {
     setDatas(formattedData)
   }
 
-  const handleSearch = (term = '', data = [], headers = []) => {
+  const handleSearch = async (term = '', data = [], headers = []) => {
+    if(!datasAlmac) await GetDataOwners()
+
     const termLower = term.toLowerCase()
+    setCurrentInfo(false)
 
     setHeaders({
       'Nombres': 'nom_per',
@@ -123,7 +127,10 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner }) {
     if (find) setDatas(find)
   }
 
-  const handleSearchPets = (term = '', data = [], headers = []) => {
+  const handleSearchPets = async (term = '', data = [], headers = []) => {
+    if(!petsDataAlmc) await getPets()
+    
+    setCurrentInfo(true)
     setDatas(petsDataAlmc)
     setHeaders({
       Nombre: 'nom_mas',
@@ -139,20 +146,29 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner }) {
         item[field]?.toLowerCase().includes(termLower)
       )
     })
-  
+    
     if (find) setDatas(find)
   }
 
   const handleDescription = (data) => {
+    const handler = currentInfo? handleDescriptionPet: handleDescriptionOwner
+    return handler(data)
+  }
+
+  const handleDescriptionOwner = (data) => {
     setUserSelect(data)
     setOwner(true)
     navigate('/propietario/datos')
   }
 
+  const handleDescriptionPet = (data) => {
+    setPetSelect(data)
+    navigate('/pets/details')
+  }
+
   useEffect(() => {
     const REFRESH_INTERVAL = 2 * 60 * 1000 // 2 minutes
     let intervalId
-
 
     GetDataOwners()
     getPets()

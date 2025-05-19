@@ -10,16 +10,16 @@ services:
       - MARIADB_USER=root
       - MARIADB_ROOT_PASSWORD=123
 
-  nginx:
-    container_name: nginx
-    image: nginx
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-    depends_on:
-      - frontend
-      - backend
+  # nginx:
+  #   container_name: nginx
+  #   image: nginx
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx/conf.d:/etc/nginx/conf.d
+  #   depends_on:
+  #     - frontend
+  #     - backend
     
   backend:
     container_name: BackEndPetsHeaven

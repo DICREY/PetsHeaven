@@ -8,13 +8,14 @@ import Registro from '../Componentes/Formularios/Registro'
 import ForgotPassword from '../Componentes/Formularios/ForgotPassword'
 import { ConfiguracionUsuario } from '../Componentes/InterfazAdmin/FormulariosAdmin/RegistroPersonal'
 import { FormularioRegMascotas } from '../Componentes/Formularios/FormularioMascotas'
-import { RegistroPro } from '../Componentes/InterfazAdmin/FormulariosAdmin/RegistroUsu'
+import { RegistroPro } from '../Componentes/InterfazAdmin/FormulariosAdmin/RegistroPersona'
 
 // Imports
-import { HomeAdmin } from '../Componentes/InterfazAdmin/HomeAdmin'
-import { GesUsuario } from '../Componentes/InterfazAdmin/GesUsuario'
+import { HomeAdmin } from '../Componentes/InterfazAdmin/Consultorio'
+import { GesPersonal } from '../Componentes/InterfazAdmin/GesPersonal'
 import { GesMascota } from '../Componentes/InterfazAdmin/GesMascota'
 import { Pets } from '../Componentes/Pets/Pets'
+import { PetDetails } from '../Componentes/Pets/PetDetails'
 import { NotFound } from '../Componentes/Errores/NotFound'
 import { ErrorInternalServer } from '../Componentes/Errores/ErrorInternalServer'
 import { getRoles,Logout } from '../Componentes/Varios/Util'
@@ -31,11 +32,12 @@ import { ConfiguracionUsuarioCrud } from '../Componentes/InterfazAdmin/CrudPerso
 export default function App () {
   // Dynamic vars 
   const [userSelect,setUserSelect] = useState()
+  const [petSelect,setPetSelect] = useState()
   const [owner,setOwner] = useState(false)
   const [arriveTo,setArriveTo] = useState('')
 
   // Vars 
-  const imgPetDefault = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Default/no%20imagen.png'
+  const imgPetDefault = 'https://github.com/Mogom/Imagenes_PetsHeaven/blob/main/Defaults/petImg.default.jpg?raw=true'
   const imgUserDefault = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/default_veterinario.png'
   const URL = 'http://localhost:3000'
   const isInactive = useInactivityDetector(20 * 60 * 1000) // 20 minutos de inactividad
@@ -114,13 +116,25 @@ export default function App () {
       <Routes>
         {/* Private routes */}
         <Route path='user/pets' element={
-          <PrivateRoute children={<Pets URL={URL} imgPetDefault={imgPetDefault} imgUserDefault={imgUserDefault} />}/>}>
+          <PrivateRoute children={<Pets 
+            setPetSelect={setPetSelect}
+            URL={URL}
+            imgPetDefault={imgPetDefault}
+            imgUserDefault={imgUserDefault} 
+          />}/>}>
+        </Route>
+        <Route path='/pets/details' element={
+          <PrivateRoute children={<PetDetails
+            datas={petSelect}
+            imgPetDefault={imgPetDefault}
+            URL={URL}
+          />}/>}>
         </Route>
 
         {/* Admin routes  */}
         <Route path='/admin' element={<MainAdmin />} >
           <Route path='gestion/usuarios' element={
-            <AdminRoute children={<GesUsuario setUserSelect={setUserSelect} URL={URL} />} />} >
+            <AdminRoute children={<GesPersonal setUserSelect={setUserSelect} URL={URL} />} />} >
           </Route>
           <Route path='usuario/registro' element={
             <AdminRoute children={<ConfiguracionUsuario URL={URL} />} />} >
@@ -141,16 +155,22 @@ export default function App () {
           <VetRoute children={<RegistroPro URL={URL} />} />}>
         </Route>
         <Route path='consultorio' element={
-          <VetRoute children={<HomeAdmin setOwner={setOwner} setUserSelect={setUserSelect} URL={URL}/>} />}>  
+          <VetRoute children={<HomeAdmin 
+            setOwner={setOwner} 
+            setUserSelect={setUserSelect} 
+            setPetSelect={setPetSelect}
+            URL={URL}
+          />} />}>  
         </Route>
         <Route path='propietario/datos' element={
           <VetRoute children={
           <PerfilPropietario 
             owner={owner} 
-            userSelect={userSelect} 
-            URL={URL}
+            userSelect={userSelect}
             imgPetDefault={imgPetDefault} 
             imgUserDefault={imgUserDefault} 
+            URL={URL}
+            setPetSelect={setPetSelect}
           />} />} >
         </Route>
         <Route path='calendario/general' element={
@@ -160,8 +180,8 @@ export default function App () {
         {/* Public Routes */}
         <Route path='/' element={<MainRoute />} />
         <Route path='main' element={<VeterinariaPage URL={URL} setArriveTo={setArriveTo} />} />
-        <Route path='user/login' element={<LoginForm URL={URL} arriveTo={arriveTo} />} />
-        <Route path='user/register' element={<Registro URL={URL}/>} />
+        <Route path='user/login' element={<LoginForm URL={URL} imgDefault={imgUserDefault} arriveTo={arriveTo} />} />
+        <Route path='user/register' element={<Registro URL={URL} imgDefault={imgUserDefault} />} />
         <Route path='user/recuperar' element={<ForgotPassword />} />
         <Route path='internal' element={<ErrorInternalServer />} />
         <Route path='*' element={<NotFound />} />

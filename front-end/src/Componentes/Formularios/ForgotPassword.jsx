@@ -57,7 +57,7 @@ const ForgotPassword = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className='contenido-paso-forgot'>
                 <div className='grupo-campo-forgot'>
-                  <label htmlFor='email'>
+                  <label className='label' htmlFor='email'>
                     Correo Electrónico <span className='obligatorio'>*</span>
                   </label>
                   <input
@@ -66,7 +66,7 @@ const ForgotPassword = () => {
                     id='email'
                     type='email'
                     placeholder='Ingresa tu correo electrónico'
-                    className={errors.email ? 'campo-error-forgot' : ''}
+                    className={errors.email ? 'campo-error-forgot input' : 'input'}
                     {...register('email', {
                       required: 'Este campo es obligatorio',
                       pattern: {
@@ -113,7 +113,6 @@ const ForgotPassword = () => {
         <div className='imagen-fondo-contenedor-forgot'>
           <img src={imagenFondo || '/placeholder.svg'} alt='Una veterinaria sostiene con cuidado la pata de un perro tipo Border Collie mientras le colocan una inyección intravenosa. La persona lleva puesto un uniforme azul y guantes médicos, y tiene dos trenzas largas. El perro está recostado sobre una mesa blanca, mirando directamente a la cámara con expresión tranquila' className='imagen-fondo-forgot' />
         </div>
-        <div className='overlay-imagen-forgot'></div>
         <div className='contenedor-cita-forgot'>
           <h2 className='texto-cita-forgot'>'El amor por los animales es el reflejo de nuestra humanidad'</h2>
           <p className='subtexto-cita-forgot'>En PetsHeaven cuidamos de quienes más amas</p>

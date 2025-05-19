@@ -4,28 +4,33 @@ import { useNavigate } from 'react-router-dom'
 import { User, PawPrint, ArrowLeft, Trash2, Edit, Save, X, Calendar } from 'lucide-react'
 
 // Imports 
-import {NavBarAdmin} from '../BarrasNavegacion/NavBarAdmi'
+import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { loadingAlert, getRoles, formatDate, getAge, errorStatusHandler, checkImage } from '../Varios/Util'
-import { DescriptionPeople } from './DescriptionPeople'
+import { Description } from '../Global/Description'
 import { DeleteData, ModifyData } from '../Varios/Requests'
 
 // Import styles 
 import '../../../src/styles/InterfazAdmin/PerfilPropietario.css'
 
 // Component 
-export const PerfilPropietario = ({ userSelect, owner = false, URL = '', imgPetDefault = '', imgUserDefault = ''}) => {
+export const PerfilPropietario = ({ 
+    userSelect, 
+    owner = false,
+    URL = '', 
+    imgPetDefault = '', 
+    imgUserDefault = '',
+    setPetSelect }) => {
   // Vars dynamic
-  const [activeTab, setActiveTab] = useState('propietario')
   const [isEditing, setIsEditing] = useState(false)
-  const [formData, setFormData] = useState({})
+  const [isAdmin,setIsAdmin] = useState(false)
+  const [activeTab, setActiveTab] = useState('propietario')
   const [petsData,setPetsData] = useState([])
+  const [formData, setFormData] = useState({})
   const [userData,setUserData] = useState({})
   const [modPro,setModPro] = useState({})
-  const [validImg, setValidImg] = useState(false)
 
   // Vars 
   const mainUrl = `${URL}/owner`
-  const secondUrl = `${URL}/user`
   const imgDefault = imgUserDefault
   const imgDefaultPet = imgPetDefault
   const navigate = useNavigate()
@@ -33,7 +38,7 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '', imgPetD
     Nombres: 'nom_per',
     Apellidos: 'ape_per',
     'Fecha Nacimiento': 'fec_nac_per',
-    'T. Doc': 'tip_doc_per',
+    'Tipo Documento': 'tip_doc_per',
     Documento: 'doc_per',
     Direccion: 'dir_per',
     Celular: 'cel_per',
@@ -43,9 +48,16 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '', imgPetD
   }
 
   // Functions 
-  const verHistorial = (id) => {
-    // Aquí se implementaría la lógica para mostrar el historial
-    alert(`Mostrando historial de la mascota con ID: ${id}`)
+  const verHistorial = (data) => {
+    setPetSelect({
+      nom_per: userSelect.doc_per,
+      ape_per: userSelect.doc_per,
+      doc_per: userSelect.doc_per,
+      dir_per: userSelect.doc_per,
+      cel_per: userSelect.doc_per,
+      email_per: userSelect.doc_per,
+      ...data})
+    navigate('/pets/details')
   }
 
   const handleEditClick = () => {
@@ -63,7 +75,7 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '', imgPetD
     try {
       if (token) {
         loadingAlert('Validando...',)
-        const mod = await ModifyData(`${secondUrl}/modify`, token, modPro)
+        const mod = await ModifyData(`${mainUrl}/modify`, token, modPro)
         console.log(mod)
         mod.modified & swal({
           icon: 'success',
@@ -153,9 +165,20 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '', imgPetD
   },[petsData])
 
   useEffect(() => {
+    // Vars
+    const token = localStorage.getItem('token')
+
     if (!userSelect) navigate('/consultorio')
     setUserData(userSelect)
     setFormData(userSelect)
+
+    if(token) {
+      // Vars
+      const roles =  getRoles(token)
+      const admin = roles.some(role => role.toLowerCase() === 'administrador')
+
+      admin?setIsAdmin(true):setIsAdmin(false)
+    } else navigate('/user/login')
   },[])
 
   return (
@@ -169,7 +192,7 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '', imgPetD
             Configuración de usuario <span className='subtituloProps'> | Creación</span>
           </h1>
           <div className='botonesAccionProps'>
-            <button className='botonAtrasProps' onClick={() => navigate(-1)}>
+            <button className='BackBtn' onClick={() => navigate(-1)}>
               <ArrowLeft size={18} />
               <span>Atrás</span>
             </button>
@@ -177,11 +200,6 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '', imgPetD
             {/* Botones de Eliminar y Editar solo cuando estamos en la pestaña de Propietario */}
             {activeTab === 'propietario' && (
               <>
-                <button className='botonEliminarProps' onClick={handleDeleteClick}>
-                  <Trash2 size={18} />
-                  <span>Desactivar</span>
-                </button>
-
                 {isEditing ? (
                   <>
                     <button className='botonCancelarProps' onClick={handleCancelEdit}>
@@ -194,11 +212,17 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '', imgPetD
                     </button>
                   </>
                 ) : (
-                  <button className='botonEditarProps' onClick={handleEditClick}>
+                  <button className='EditBtn' onClick={handleEditClick}>
                     <Edit size={18} />
                     <span>Editar</span>
                   </button>
                 )}
+                {isAdmin && !isEditing && (
+                  <button className='DeleteBtn' onClick={handleDeleteClick}>
+                    <Trash2 size={18} />
+                    <span>Desactivar</span>
+                  </button>)
+                }
               </>
             )}
           </div>
@@ -227,7 +251,7 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '', imgPetD
 
         <section className='contenidoProps'>
           {activeTab === 'propietario' && (
-            <DescriptionPeople 
+            <Description
               handleChange={handleChange} 
               headers={headers}
               datas={userSelect}
@@ -241,26 +265,15 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '', imgPetD
           {activeTab === 'mascotas' && (
             <section className='mascotasContenedorProps'>
               <div className='mascotasGrillaProps'>
-                {petsData.map((mascota) => (
-                  <div key={mascota.doc_per} className='mascotaTarjetaProps'>
-                    {checkImage(mascota.fot_mas,setValidImg)}
-                    {
-                      validImg? (
-                        <div className='mascotaImagenProps'>
-                          <img 
-                            src={mascota.fot_mas} 
-                            alt={`${mascota.esp_mas} de raza ${mascota.raz_mas} color ${mascota.col_mas} con nombre ${mascota.nom_mas}`}
-                          />
-                        </div>
-                      ): (
-                        <div className='mascotaImagenProps'>
-                          <img 
-                            src={imgDefaultPet} 
-                            alt={`${mascota.esp_mas} de raza ${mascota.raz_mas} color ${mascota.col_mas} con nombre ${mascota.nom_mas}`}
-                          />
-                        </div>
-                      )
-                    }
+                {petsData?.map((mascota, index) => (
+                  <div key={index + 1293} className='mascotaTarjetaProps'>
+                    <div className='mascotaImagenProps'>
+                      {checkImage(
+                        mascota.fot_mas,
+                        `${mascota.esp_mas} de raza ${mascota.raz_mas} color ${mascota.col_mas} con nombre ${mascota.nom_mas}`,
+                        imgDefaultPet
+                      )}
+                    </div>
                     <div className='mascotaInfoProps'>
                       <h3 className='mascotaNombreProps'>{mascota.nom_mas}</h3>
                       <div className='mascotaDetallesProps'>
@@ -279,7 +292,7 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '', imgPetD
                         </div>
                       </div>
                       <div className='mascotaAccionesProps'>
-                        <button className='botonHistorialProps' onClick={() => verHistorial(mascota.doc_per)}>
+                        <button className='botonHistorialProps' onClick={() => verHistorial(mascota)}>
                           <Calendar size={16} />
                           <span>Ver historial</span>
                         </button>
@@ -289,7 +302,7 @@ export const PerfilPropietario = ({ userSelect, owner = false, URL = '', imgPetD
                 ))}
               </div>
 
-              {petsData.length === 0 && <div className='sinResultadosProps'>No hay mascotas vinculadas</div>}
+              {petsData?.length === 0 && <div className='sinResultadosProps'>No hay mascotas vinculadas</div>}
             </section>
           )}
         </section>

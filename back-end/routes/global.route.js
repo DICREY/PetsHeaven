@@ -2,9 +2,11 @@
 const jwt = require('jsonwebtoken')
 const { compare } = require('bcrypt')
 const { Router } = require('express')
+const { hash } = require('bcrypt')
 
 // Imports
 const Global = require('../services/Global.services')
+const People = require('../services/People.services')
 const { limiterLog } = require('../middleware/varios.handler')
 
 // Env vars
@@ -55,13 +57,32 @@ Route.post('/login',limiterLog, async (req,res) => {
                 img: user.fot_roles.split(',')[0]
             },
             secret,
-            { expiresIn: '2h' }
+            { expiresIn: '8h' }
         )
         res.status(200).json({ token: token })
 
     } catch (err) {
         if (err.status) return res.status(err.status).json({ message: err.message })
 
+        res.status(500).json({ message: err })
+    }
+})
+
+Route.post('/register', async (req,res) => {
+    // Vars 
+    const user = new People()
+    const saltRounds = 15
+    const body = req.body
+    
+    try {
+        // Verifiy if exist
+        const find = await user.findBy(toString(body.numeroDocumento))
+        if (find.result[0][0].nom_per) res.status(302).json({ message: "Usuario ya existe" })
+
+        const create = await user.create({hash_pass: await hash(body.password,saltRounds), ...body})
+        res.status(201).json(create)
+    } catch(err) {
+        if(err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: err })
     }
 })

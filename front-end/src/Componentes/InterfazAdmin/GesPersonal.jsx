@@ -7,16 +7,16 @@ import { Plus} from "lucide-react"
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GetData } from '../Varios/Requests'
 import { divideList, errorStatusHandler } from '../Varios/Util'
-import { GlobalTable } from './GlobalTable'
+import { GlobalTable } from '../Global/GlobalTable'
 // import { Loader } from '../Errores/Loader'
 
 // Import styles 
-import '../../../src/styles/InterfazAdmin/GesUsuario.css'
+import '../../../src/styles/InterfazAdmin/GesPersonal.css'
 
 // Component
-export function GesUsuario({ setUserSelect, URL = "" }) {
+export function GesPersonal({ setUserSelect, URL = "" }) {
   // Dynamic vars
-  const mainUrl = `${URL}/user/all`
+  const mainUrl = `${URL}/staff/all`
   const [users,setUsers] = useState([])
   const [usersAlmac,setUsersAlmac] = useState([])
   const [loading,setLoading] = useState(true)

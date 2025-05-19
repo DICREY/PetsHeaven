@@ -2,18 +2,20 @@
 import React from "react"
 
 // Imports 
-import { formatDate, backUrl } from '../Varios/Util'
+import { formatDate, checkImage } from '../Varios/Util'
 
 // Component 
-export class DescriptionPeople extends React.Component {
+export class Description extends React.Component {
   constructor(props) {
     super(props)
-
-    this.verifyData()
 
     this.state = {
       validImg: false
     }
+  }
+
+  componentDidMount() {
+    if(!this.props.datas) window.location.href = '/consultorio'
   }
 
   // Functions
@@ -34,34 +36,13 @@ export class DescriptionPeople extends React.Component {
     }
   }
 
-  checkImage = (src = "",alt = "") => {
-    const { imgDefault } = this.props
-    const img = new Image()
-    let srcMod = src? src: imgDefault
-  
-    img.src = srcMod
-    img.onload = () => srcMod
-    img.onerror = () => srcMod = imgDefault
-
-    return <img 
-      width={100}
-      height={100}
-      src={srcMod}
-      alt={alt || "No Registrado"}
-    />
-  }
-
-  verifyData = () => {
-    if(!this.props.datas) window.location.href = '/consultorio'
-  }
-
   render = () => {
-    let { datas, isEditing, handleChange, headers } = this.props
+    let { datas, isEditing, handleChange, headers, imgDefault } = this.props
 
     const headersKeys = Object.keys(headers)
     const headersValues = Object.values(headers)
 
-    headers = headersKeys.map((key, index) => {
+    headers = headersKeys?.map((key, index) => {
       const item = this.renderCell(datas[headersValues[index]], headersValues[index])
       return {
           label: key,
@@ -74,25 +55,42 @@ export class DescriptionPeople extends React.Component {
         <div className="propietarioInfoProps">
           <div className="propietarioFotoInfoProps">
             <div className="propietarioFotoProps">
-              {this.checkImage(datas.fot_vet,`${datas.nom_per} ${datas.ape_per}`)}
+              {checkImage(
+                datas.image,
+                `${datas.alt_img}`,
+                imgDefault
+              )}
             </div>
             <div className="propietarioDatosProps">
               {
-                headers.map((header,index) => (
+                headers?.map((header,index) => (
                   isEditing? (
                     <div className="propietarioCampoProps">
                       <div className="propietarioEtiquetaProps">{header.label}</div>
-                      <input
-                        name={header.label}
-                        type={header.type}
-                        className="propietarioCampoProps"
-                        max={header.type === "date" ? "2006-01-01" : 100}
-                        min={header.type === "date" ? "1900-01-01" : 0}
-                        placeholder={header.label}
-                        onChange={handleChange}
-                        defaultValue={header.value}
-                        disabled={!header.active}
-                      />
+                      {header.label.toLowerCase().includes("gen")? (
+                        <select 
+                          className="select"
+                          name={header.label}
+                          onChange={handleChange}
+                          defaultValue={header.value}
+                          disabled={!header.active}
+                        >
+                          <option value="Femenino">Femenino</option>
+                          <option value="Masculino">Masculino</option>
+                        </select>
+                      ):(
+                        <input
+                          name={header.label}
+                          type={header.type}
+                          className="input"
+                          max={header.type === "date" ? "2006-01-01" : 100}
+                          min={header.type === "date" ? "1900-01-01" : 0}
+                          placeholder={header.label}
+                          onChange={handleChange}
+                          defaultValue={header.value}
+                          disabled={!header.active}
+                        />)
+                      }
                     </div>
                   ): (
                     <div key={index+11290} className="propietarioCampoProps">

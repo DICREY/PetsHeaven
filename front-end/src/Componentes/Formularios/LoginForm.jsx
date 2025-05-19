@@ -6,13 +6,13 @@ import swal from 'sweetalert'
 
 // Imports 
 import { login } from '../Varios/Requests'
-import { getRoles, errorStatusHandler, formatoTiempo } from '../Varios/Util'
+import { getRoles, errorStatusHandler, formatoTiempo, checkImage } from '../Varios/Util'
 
 // Import styles
 import '../../../src/styles/Formularios/login.css'
 
 // Main component 
-export const LoginForm = ({ URL = "", arriveTo = ''}) => {
+export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
   // Dynamic Vars 
   const [verPassword, setVerPassword] =  useState(false)
   const [waitTime, setWaitTime] =  useState(false)
@@ -136,8 +136,15 @@ export const LoginForm = ({ URL = "", arriveTo = ''}) => {
   return (
     <div className='login-container'>
       <div className='login-formulario-container'>
-        <div className='contenedor-logo-externo-login'>
-          <img src={logoUrl || '/placeholder.svg'} alt='Logo de PetsHeaven con la palabra Pets en celeste y Heaven en negro, en una tipografía moderna.' className='logo-veterinaria-login' />
+        <div 
+          className='contenedor-logo-externo-login'
+          onClick={() => navigate('/main')}>
+          {checkImage(
+            logoUrl,
+            'Logo de PetsHeaven con la palabra Pets en celeste y Heaven en negro, en una tipografía moderna.',
+            imgDefault,
+            'logo-veterinaria-login'
+          )}
         </div>
 
         {/* Contenedor del formulario */}
@@ -151,14 +158,14 @@ export const LoginForm = ({ URL = "", arriveTo = ''}) => {
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className='contenido-paso-login'>
               <div className='grupo-campo-login'>
-                <label htmlFor="docEmail">
+                <label className='label' htmlFor="docEmail">
                   Documento o Email <span className='obligatorio-login'>*</span>
                 </label>
                 <input
                   id="docEmail"
                   type='text'
                   placeholder='Número de documento o email'
-                  className={errors.docEmail ? 'campo-error-login' : ''}
+                  className={errors.docEmail ? 'campo-error-login input' : 'input'}
                   {...register('docEmail', {
                     required: 'Este campo es obligatorio',
                     minLength: {
@@ -183,7 +190,7 @@ export const LoginForm = ({ URL = "", arriveTo = ''}) => {
               </div>
 
               <div className='grupo-campo-login'>
-                <label htmlFor="password">
+                <label className='label' htmlFor="password">
                   Contraseña <span className='obligatorio-login'>*</span>
                 </label>
                 <div className='contenedor-input-password-login'>
@@ -191,7 +198,7 @@ export const LoginForm = ({ URL = "", arriveTo = ''}) => {
                     id="password"
                     type={verPassword ? 'text' : 'password'}
                     placeholder='Contraseña'
-                    className={errors.password ? 'campo-error-login' : ''}
+                    className={errors.password ? 'campo-error-login input' : 'input'}
                     {...register('password', {
                       required: 'Este campo es obligatorio',
                       minLength: {
@@ -299,7 +306,6 @@ export const LoginForm = ({ URL = "", arriveTo = ''}) => {
         <div className='imagen-fondo-contenedor-login'>
           <img src={imagenFondo || '/placeholder.svg'} alt='Una veterinaria sostiene con cuidado la pata de un perro tipo Border Collie mientras le colocan una inyección intravenosa. La persona lleva puesto un uniforme azul y guantes médicos, y tiene dos trenzas largas. El perro está recostado sobre una mesa blanca, mirando directamente a la cámara con expresión tranquila.' className='imagen-fondo-login' />
         </div>
-        <div className='overlay-imagen-login'></div>
         <div className='contenedor-cita-login'>
           <h2 className='texto-cita-login'>'El amor por los animales es el reflejo de nuestra humanidad'</h2>
           <p className='subtexto-cita-login'>En PetsHeaven cuidamos de quienes más amas</p>

@@ -1,196 +1,298 @@
 // Librarys 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { ArrowLeft, Trash2, Edit, Save, X } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import swal from 'sweetalert'
         
 // Import
-import { Resumen } from './Details/Resumen'
-import { Historial } from './Historial'
-import { DeleteData } from '../Varios/Requests'
-import { getRoles,loadingAlert, checkImage, getAge } from '../Varios/Util'
-// import { Citas } from './Details/Citas'
+import { Description } from '../Global/Description'
+import { DeleteData, ModifyData, PostData } from '../Varios/Requests'
+import { getRoles,loadingAlert, checkImage, getAge, errorStatusHandler } from '../Varios/Util'
 
 // Import styles 
 import '../../../src/styles/Pets/petDetails.css'
 
 // Main component
-export const PetDetails = ({ 
-        datas,
-        ready,
-        editMode,
-        imgPetDefault,
-        open = false,
-        admin = false,
-        URL = ""}) => {
+export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Generales'}) => {
     // Dynamic vars
-    const [isOpen,setIsOpen] = useState(open)
-    const [isAdmin,setIsAdmin] = useState(admin)
-    const [currentTab,setCurrentTab] = useState("Resumen")
-    const [validImage,setValidImage] = useState(false)
+    const [isAdmin,setIsAdmin] = useState(false)
+    const [isEditing,setIsEditing] = useState(false)
+    const [modPet,setModPet] = useState({})
+    const [history,setHistory] = useState({})
+    const [currentTab,setCurrentTab] = useState(tab)
+    const headers = {
+        Nombre: 'nom_mas',
+        Especie: 'esp_mas',
+        Raza: 'raz_mas',
+        Color: 'col_mas',
+        Alimento: 'ali_mas',
+        Peso: 'pes_mas',
+        'Estado Reproductivo': 'est_rep_mas',
+        Genero: 'gen_mas',
+        'Fecha Nacimiento': 'fec_nac_mas'
+    }
     
     // Vars 
     const navigate = useNavigate()
+    const mainURL = `${URL}/pet`
 
     // Functions
-    // Cerrar sección de detalles
-    const closeModal = () => {
-        ready(false)
-        setIsOpen(false)
-        document.body.style.overflow = 'auto' // Habilita el scroll del body
+    // Handle value change
+    const handleChange = (e) => {
+        const { name, value } = e.target
+        setModPet((prev) => ({
+        ...prev,
+        [name]: value,
+        }))
     }
 
     // Change tabs
-    const tabSelected = (e) => {
-        // Vars 
-        setCurrentTab(e.currentTarget.textContent)
+    const handleTabChange = (tab) => {
+        if (isEditing) {
+            if (window.confirm('Tiene cambios sin guardar. ¿Desea salir sin guardar?')) {
+                setIsEditing(false)
+                setCurrentTab(tab)
+            }
+        } else setCurrentTab(tab)
+    }
 
-        // remover la clase 'link-active' de todos los elementos
-        document.querySelectorAll('.tab-active').forEach(tab => {
-            tab.classList.remove('link-active')
-        })
-        
-        // Agregar la clase al elemento clickeado
-        e.currentTarget.classList.add('link-active')
+    const getHistory = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            if (token) {
+                loadingAlert("Validando...",)
+                const data = await PostData(`${mainURL}/history`, token,{
+                    firstData: datas.nom_mas,
+                    secondData: datas.doc_per
+                })
+                if (data.data.result) setHistory(data.data.result)
+            }
+        } catch (err) {
+            if(err.status) {
+                const message = errorStatusHandler(err.status)
+                swal({
+                  title: 'Error',
+                  text: `${message}`,
+                  icon: 'warning',
+                })
+            } else console.log(err)
+        }
+    }
+
+    const modifyData = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            if (token) {
+                loadingAlert("Validando...",)
+                const mod = await ModifyData(URL, token, modPet)
+                mod.data.modify && swal({
+                    icon: 'success',
+                    title: 'Modificado',
+                    text: 'Los datos de la mascota han sido modificados',
+                })
+            }
+        } catch (err) {
+            if(err.status) {
+                const message = errorStatusHandler(err.status)
+                swal({
+                  title: 'Error',
+                  text: `${message}`,
+                  icon: 'warning',
+                })
+            } else console.log(err)
+        }
     }
 
     // Delete pet 
     const deletePet = async () => {
         // Vars
-        const mainURL = `${URL}/delete`
-        const token = localStorage.getItem("token")
+        const deleteURL = `${mainURL}/delete`
+        const token = localStorage.getItem('token')
         try {
             if(token) {
                 const roles = getRoles(token)
-                const admin = roles.some(role => role.toLowerCase() === "administrador")
+                const admin = roles.some(role => role.toLowerCase() === 'administrador')
                 if (admin) {
-                    loadingAlert("Validando...")
+                    loadingAlert('Validando...')
             
-                    const deleted = await DeleteData(mainURL,token,{
+                    const deleted = await DeleteData(deleteURL,token,{
                         nom_mas: datas.nom_mas,
-                        doc_usu: datas.doc_per
+                        doc_mas: datas.doc_mas
                     })
-            
-                    deleted.deleted && swal({
+                    
+                    console.log(deleted)
+                    deleted.data.deleted? swal({
                         icon: 'success',
                         title: 'Desactivada',
                         text: 'La mascota han sido desactivada correctamente.',
+                    }): swal({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'La mascota no ha sido desactivada'
                     })
                 }
-            } else window.location.href = "/34"
+            } else navigate('/34')
         } catch (err) {
-            err.message? swal({
-                icon: "error",
-                title: "Error",
-                text: err.message
-            }): console.log(err)
+            if (err.status) {
+                const message = errorStatusHandler(err.status)
+                swal({
+                    icon: 'error',
+                    title: 'Error',
+                    text: message
+                })
+            } else console.log(err)
         }
-    }    
+    }
+
+    // Effects 
+    useEffect(() => {
+        // Vars
+        const token = localStorage.getItem('token')
+
+        if (!datas) navigate(-1)
+        
+        getHistory()
+
+        if(token) {
+            // Vars
+            const roles =  getRoles(token)
+            const admin = roles.some(role => role.toLowerCase() === 'administrador')
+
+            admin?setIsAdmin(true):setIsAdmin(false)
+        } else navigate('/user/login')
+    }, [])
     
     return (
-        <main>
-            {isOpen && (
-                <section className="pet-modal-overlay" >
-                    <div className="pet-modal-content" onClick={e => e.stopPropagation()}>
-                        <button className="pet-modal-close" onClick={closeModal}>
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M18 6L6 18M6 6L18 18" 
-                                    stroke="currentColor" 
-                                    strokeWidth="2" 
-                                    strokeLinecap="round"/>
-                            </svg>
+        <main className='app-container-pet-details'>
+        {/* Barra de navegación superior */}
+        <nav className='top-nav-pet-details'>
+            <div className='nav-title-pet-details'>Ficha de Mascota</div>
+            <div className='nav-actions-pet-details'>
+                <button className='BackBtn' onClick={() => navigate(-1)}>
+                    <ArrowLeft size={18} />
+                    <span>Atrás</span>
+                </button>
+                {/* Botones de Eliminar y Editar solo cuando estamos en la pestaña de Propietario */}
+                {currentTab === 'Datos Generales' && (
+                    <>
+                    {isEditing ? (
+                        <>
+                            <button className='botonCancelarProps' onClick={() => setIsEditing(false)}>
+                                <X size={18} />
+                                <span>Cancelar</span>
+                            </button>
+                            <button className='botonGuardarProps' onClick={modifyData}>
+                                <Save size={18} />
+                                <span>Guardar</span>
+                            </button>
+                        </>
+                    ) : (
+                        <button className='EditBtn' onClick={() => setIsEditing(true)}>
+                            <Edit size={18} />
+                            <span>Editar</span>
                         </button>
+                    )}
+                    {isAdmin && !isEditing && (
+                        <button className='DeleteBtn' onClick={deletePet}>
+                            <Trash2 size={18} />
+                            <span>Desactivar</span>
+                        </button>)
+                    }
+                    </>
+                )}
+            </div>
+        </nav>
+
+        {/* <!-- Contenido principal --> */}
+        <main className='main-content-pet-details'>
+            <div className='pet-modal-overlay-pet-details'>
+                <div className='pet-modal-content-pet-details'>
+                    
+                    {/* <!-- Header con foto y datos principales --> */}
+                    <header className='pet-header-pet-details'>
+                        <aside className='pet-avatar-container-pet-details'>
+                            {checkImage(
+                                datas.fot_mas,
+                                `${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`,
+                                imgPetDefault,
+                                'pet-avatar-pet-details'
+                            )}
+                        </aside>
                         
-                        {/* Header con foto y datos principales */}
-                        <header className="pet-header">
-                            <aside className="pet-avatar-container">
-                                {checkImage(datas.fot_mas,setValidImage)}
-                                {
-                                    validImage?(
-                                        <img 
-                                            className="pet-avatar"
-                                            src={datas.fot_mas} 
-                                            alt={`${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`}     
-                                        />        
-                                    ) : (
-                                        <img 
-                                            className="pet-avatar"
-                                            src={imgPetDefault}    
-                                            alt={`${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`}     
-                                        />
-                                    )
+                        <aside className='pet-main-info-pet-details'>
+                            <h1 className='pet-main-info-h1-pet-details'>{datas.nom_mas}</h1>
+                            <div className='pet-meta-pet-details'>
+                                <span className='species-pet-details'>{datas.esp_mas}</span>
+                                <span className='breed-pet-details'>{datas.raz_mas}</span>
+                                <span className='pet-age-pet-details'>{`${getAge(datas.fec_nac_mas)} Años`}</span>
+                            </div>
+                        </aside>
+                    </header>
 
-                                }
-                                <div className="pet-status">
-                                    <span className={`status-badge ${datas.est_rep_mas === 'Esterilizado' ? 'status-active' : ''}`}>
-                                        {datas.est_rep_mas}
-                                    </span>
-                                    <span className="weight-badge">{datas.pes_mas} kg</span>
-                                </div>
-                            </aside>
-                            
-                            <aside className="pet-main-info">
-                                <h1>{datas.nom_mas}</h1>
-                                <div className="pet-meta">
-                                    <span className="species">{datas.esp_mas}</span>
-                                    <span className="breed">{datas.raz_mas}</span>
-                                </div>
-                                <span className="pet-age">
-                                    {`${getAge(new Date(datas.fec_nac_mas))} Años de edad`}
-                                </span>
-                            </aside>
+                    {/* Navegación por pestañas */}
+                    <nav className='pestanasProps'>
+                        <a
+                            className={`tab-active-pet-details ${currentTab === 'Datos Generales' ? 'link-active-pet-details' : ''}`}
+                            onClick={() => handleTabChange('Datos Generales')}
+                        >Datos Generales</a>
+                        <a
+                            className={`tab-active-pet-details ${currentTab === 'Historia Clinica' ? 'link-active-pet-details' : ''}`}
+                            onClick={() => handleTabChange('Historia Clinica')}
+                        >Historia Clinica</a>
+                    </nav>
 
-                            {/* Acciones rápidas */}
-                            <aside className="quick-actions">
-                                <button className="action-btn secondary" onClick={editMode}>
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M11 5H6C4.89543 5 4 5.89543 4 7V18C4 19.1046 4.89543 20 6 20H17C18.1046 20 19 19.1046 19 18V13M17.5858 3.58579C18.3668 2.80474 19.6332 2.80474 20.4142 3.58579C21.1953 4.36683 21.1953 5.63316 20.4142 6.41421L11.8284 15H9L9 12.1716L17.5858 3.58579Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    {/* <!-- Contenido principal --> */}
+                    <div className='pet-content-pet-details'>
+                        {currentTab === 'Datos Generales' && (
+                            <Description
+                                handleChange={handleChange} 
+                                headers={headers}
+                                datas={{
+                                    image: datas.fot_mas,
+                                    alt_img: `${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`,
+                                    ...datas}}
+                                imgDefault={imgPetDefault}
+                                navigate={navigate}
+                                isEditing={isEditing}
+                                disabled={['esp_mas','raz_mas','col_mas','gen_mas']}
+                            />
+                        )}
+                        {currentTab === 'Historia Clinica' && history.citas?.map((item, index) => (
+                            <article key={index} className='info-card-pet-details'>
+                                <h2 className='info-card-h2-pet-details'>
+                                    <svg width='20' height='20' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                                        <path d='M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z' fill='currentColor' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
+                                        <path d='M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
+                                        <path d='M16 2V6' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
+                                        <path d='M8 2V6' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
+                                        <path d='M3 10H21' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
                                     </svg>
-                                    Editar datos
-                                </button>
-                                <button 
-                                    className="action-btn primary"
-                                    onClick={() => navigate("/calendario/general")}
-                                >
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M8 7V3M16 7V3M7 11H17M5 21H19C20.1046 21 21 20.1046 21 19V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V19C3 20.1046 3.89543 21 5 21Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
-                                    Nueva cita
-                                </button>
-                                {
-                                    isAdmin && (
-                                        <button className="action-btn primary" onClick={deletePet}>
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M19 7L18.1327 19.1425C18.0579 20.1891 17.187 21 16.1378 21H7.86224C6.81296 21 5.94208 20.1891 5.86732 19.1425L5 7M10 11V17M14 11V17M15 7V4C15 3.44772 14.5523 3 14 3H10C9.44772 3 9 3.44772 9 4V7M4 7H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                            </svg>
-                                            Desactivar
-                                        </button>
-                                    )
-                                }
-                            </aside>
-                        </header>
-
-                        {/* Navegación por pestañas */}
-                        <nav className="pet-tabs">
-                            <a className='tab-active link-active' onClick={tabSelected} >Resumen</a>
-                            <a className='tab-active' onClick={tabSelected} >Historial</a>    
-                        </nav>
-
-                        {/* Contenido principal organizado en tarjetas */}
-                        {
-                            currentTab === "Resumen"?(
-                                <Resumen datas={datas} />
-                            ):(
-                                <Historial datas={datas} URL={URL} />
-                            )
-                            // ):(
-                            //     <Citas datas={datas} />
-                            // )
-                        }
-
-                    </div>
-                </section>
-            )}
+                                    Atencion Médica #{index + 989}
+                                </h2>
+                                <div className='info-grid-pet-details'>
+                                    <div className='info-item-pet-details'>
+                                        <span className='info-label-pet-details'>Fecha Cita</span>
+                                        <span className='info-value-pet-details'>{item.fec_cit || "No Registrado"}</span>
+                                    </div>
+                                    <div className='info-item-pet-details'>
+                                        <span className='info-label-pet-details'>Servicio</span>
+                                        <span className='info-value-pet-details'>{item.nom_ser}</span>
+                                    </div>
+                                    <div className='info-item-pet-details'>
+                                        <span className='info-label-pet-details'>Veterinario</span>
+                                        <span className='info-value-pet-details'>{`${item.nom_per} ${item.ape_per}`}</span>
+                                    </div>
+                                    <div className='info-item-pet-details'>
+                                        <span className='info-label-pet-details'>Especialidad de Veterinario</span>
+                                        <span className='info-value-pet-details'>{`${item.especialidad}`}</span>
+                                    </div>
+                                </div>
+                            </article>
+                        ))}
+                    </div> 
+                </div>
+            </div>
         </main>
-
+    </main>
     )
 }
