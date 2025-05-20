@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 -- Active: 1747352860830@@127.0.0.1@3306@pets_heaven
+=======
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
+>>>>>>> 8dd66983bb87af9a5556da5ee387a3fb547dc806
 CREATE PROCEDURE pets_heaven.RegistPets(
     IN p_nom_mas VARCHAR(100),
     IN p_esp_mas VARCHAR(100),
@@ -24,12 +28,12 @@ BEGIN
 
     START TRANSACTION;
 
-    SELECT u.id_per INTO p_id_pro_mas 
+    SELECT p.id_per INTO p_id_pro_mas 
     FROM 
-        personas u 
+        personas p 
     WHERE 
-        u.doc_per = p_persona
-        OR u.email_per = p_persona;
+        p.doc_per = p_persona
+        OR p.email_per = p_persona;
 
     INSERT INTO pets_heaven.mascotas (nom_mas,esp_mas,col_mas,raz_mas,ali_mas,fec_nac_mas,pes_mas,gen_mas,id_pro_mas,est_rep_mas,fot_mas)
     VALUES(p_nom_mas,p_esp_mas,p_col_mas,p_raz_mas,p_ali_mas,p_fec_nac_mas,p_pes_mas,p_gen_mas,p_id_pro_mas,p_est_rep_mas,p_fot_mas);
@@ -63,7 +67,7 @@ BEGIN
     START TRANSACTION;
 
     UPDATE
-        mascotas m, personas u
+        mascotas m, personas p
     SET 
         m.esp_mas = p_esp_mas,
         m.col_mas = p_col_mas,
@@ -77,10 +81,10 @@ BEGIN
     WHERE
         m.estado = 1
         AND (
-            u.doc_per = p_persona 
-            OR u.email_per = p_persona
+            p.doc_per = p_persona 
+            OR p.email_per = p_persona
         ) AND m.nom_mas = p_nom_mas
-        AND m.id_pro_mas = u.id_per;
+        AND m.id_pro_mas = p.id_per;
 
     COMMIT;
     SET autocommit = 1;
@@ -100,20 +104,27 @@ BEGIN
         m.est_rep_mas,
         m.fot_mas,
         m.fec_cre_mas,
-        u.nom_per,
-        u.ape_per,
-        u.doc_per,
-        u.cel_per,
-        u.email_per,
-        u.gen_per,
-        u.estado
+        p.nom_per,
+        p.ape_per,
+        p.doc_per,
+        p.cel_per,
+        p.email_per,
+        p.gen_per,
+        p.estado,
+        (
+            SELECT c.fec_cit 
+            FROM citas c
+            WHERE
+                c.mas_cit = m.id_mas
+                AND c.estado = 'REALIZADO'
+        )
     FROM 
         mascotas m
     JOIN
-        personas u ON u.id_per = m.id_pro_mas
+        personas p ON p.id_per = m.id_pro_mas
     WHERE 
         m.estado = 1
-        AND u.estado = 1
+        AND p.estado = 1
     ORDER BY 
         m.nom_mas
     LIMIT 40;
@@ -137,27 +148,34 @@ BEGIN
         m.est_rep_mas,
         m.fot_mas,
         m.fec_cre_mas,
-        u.nom_per,
-        u.ape_per,
-        u.doc_per,
-        u.cel_per,
-        u.email_per,
-        u.gen_per,
-        u.estado
+        p.nom_per,
+        p.ape_per,
+        p.doc_per,
+        p.cel_per,
+        p.email_per,
+        p.gen_per,
+        p.estado,
+        (
+            SELECT c.fec_cit 
+            FROM citas c
+            WHERE
+                c.mas_cit = m.id_mas
+                AND c.estado = 'REALIZADO'
+        )
     FROM 
         mascotas m
     JOIN
-        personas u ON u.id_per = m.id_pro_mas
+        personas p ON p.id_per = m.id_pro_mas
     WHERE 
         m.estado = 1
-        AND u.estado = 1
+        AND p.estado = 1
         AND (
             m.nom_mas LIKE p_by
             OR m.raz_mas LIKE p_by
             OR m.esp_mas LIKE p_by
-            OR u.nom_per LIKE p_by
-            OR (u.email_per LIKE p_by AND m.nom_mas LIKE p_second_by)
-            OR (u.doc_per LIKE p_by AND m.nom_mas LIKE p_second_by)
+            OR p.nom_per LIKE p_by
+            OR (p.email_per LIKE p_by AND m.nom_mas LIKE p_second_by)
+            OR (p.doc_per LIKE p_by AND m.nom_mas LIKE p_second_by)
         )
     ORDER BY m.nom_mas
     LIMIT 40;
@@ -179,27 +197,34 @@ BEGIN
         m.est_rep_mas,
         m.fot_mas,
         m.fec_cre_mas,
-        u.nom_per,
-        u.ape_per,
-        u.doc_per,
-        u.cel_per,
-        u.email_per,
-        u.gen_per,
-        u.estado
+        p.nom_per,
+        p.ape_per,
+        p.doc_per,
+        p.cel_per,
+        p.email_per,
+        p.gen_per,
+        p.estado,
+        (
+            SELECT c.fec_cit 
+            FROM citas c
+            WHERE
+                c.mas_cit = m.id_mas
+                AND c.estado = 'REALIZADO'
+        )
     FROM 
         mascotas m
     JOIN
-        personas u ON u.id_per = m.id_pro_mas
+        personas p ON p.id_per = m.id_pro_mas
     WHERE 
         m.estado = 1
-        AND u.estado = 1
+        AND p.estado = 1
         AND (
             m.nom_mas LIKE p_by
             OR m.raz_mas LIKE p_by
             OR m.esp_mas LIKE p_by
-            OR u.nom_per LIKE p_by
-            OR u.email_per LIKE p_by
-            OR u.doc_per LIKE p_by
+            OR p.nom_per LIKE p_by
+            OR p.email_per LIKE p_by
+            OR p.doc_per LIKE p_by
         )
     ORDER BY m.nom_mas
     LIMIT 40;
@@ -211,21 +236,18 @@ CREATE PROCEDURE pets_heaven.DeletePetBy(
 )
 BEGIN
     UPDATE 
-        mascotas m, personas u
+        mascotas m, personas p
     SET 
         m.estado = 0
     WHERE 
         m.estado = 1
-        AND u.estado = 1
+        AND p.estado = 1
         AND m.nom_mas = p_second_by
         AND ( 
-            u.email_per = p_first_by
-            OR u.doc_per = p_first_by
+            p.email_per = p_first_by
+            OR p.doc_per = p_first_by
         );
 END //
-
-CALL `DeletePetBy`("12345678A",'Max');
-
 
 /* Historys */
 CREATE PROCEDURE pets_heaven.SearchHistoryBy(
@@ -252,31 +274,6 @@ BEGIN
         p.email_per,
         p.gen_per,
         p.estado,
-        (
-            SELECT GROUP_CONCAT(
-                CONCAT_WS('---',
-                    c.pro_mas_con,
-                    p.nom_per,
-                    p.ape_per,
-                    v.especialidad,
-                    cv.nom_cat,
-                    v.fot_vet
-                ) 
-                SEPARATOR '; '
-            ) 
-            FROM 
-                consultas c
-            JOIN
-                mascotas m ON m.id_mas = c.mas_con
-            JOIN
-                personas p ON p.id_per = c.vet_con
-            JOIN
-                veterinarios v ON v.id_vet = c.vet_con
-            JOIN
-                otorgar_categoria_vet otv ON otv.id_per = c.vet_con
-            JOIN
-                categorias_veterinario cv ON otv.id_cat = cv.id_cat
-        ) AS consultas,
         (
             SELECT GROUP_CONCAT(
                 CONCAT_WS('---',
@@ -310,7 +307,7 @@ BEGIN
             JOIN
                 categorias_veterinario cv ON otv.id_cat = cv.id_cat
             WHERE 
-                ct.estado != "CANCELADO"
+                ct.estado = "REALIZADO"
         ) AS citas 
     FROM 
         mascotas m
@@ -326,7 +323,7 @@ BEGIN
         m.estado = 1
         AND m.nom_mas LIKE p_by
     ORDER BY m.nom_mas
-    LIMIT 50;
+    LIMIT 1000;
 END //
 
 /* CALL pets_heaven.SearchHistoryBy('luna','87654321'); */

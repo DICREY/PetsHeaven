@@ -44,6 +44,7 @@
     width: 100%;
 }
 
+
 /* Modal de mascota (adaptado del código original) */
 .pet-modal-overlay-pet-details {
     position: relative;
@@ -154,8 +155,8 @@
     margin: 0 -32px;
     padding: 0 32px;
 }
-
 .tab-active-pet-details {
+    cursor: pointer;
     padding: 12px 24px;
     border-bottom: 3px solid transparent;
     font-weight: 500;
@@ -182,6 +183,7 @@
 }
 
 .info-card-pet-details {
+    cursor: pointer;
     background-color: var(--white);
     border-radius: 8px;
     padding: 24px;

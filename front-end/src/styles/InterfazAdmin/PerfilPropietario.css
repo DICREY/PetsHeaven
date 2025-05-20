@@ -203,12 +203,15 @@
   flex-shrink: 0;
 }
 
-
 .propietarioFotoProps img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
+  transition: all .3s ease-in-out;
+}
+.propietarioFotoProps img:hover {
+  filter: brightness(70%);
 }
 
 .propietarioDatosProps {

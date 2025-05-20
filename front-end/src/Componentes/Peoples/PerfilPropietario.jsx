@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom'
 import { User, PawPrint, ArrowLeft, Trash2, Edit, Save, X, Calendar } from 'lucide-react'
 
 // Imports 
-import {NavBarAdmin} from '../BarrasNavegacion/NavBarAdmi'
+import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { loadingAlert, getRoles, formatDate, getAge, errorStatusHandler, checkImage } from '../Varios/Util'
-import { DescriptionPeople } from './DescriptionPeople'
+import { Description } from '../Global/Description'
 import { DeleteData, ModifyData } from '../Varios/Requests'
 
 // Import styles 
@@ -15,16 +15,18 @@ import '../../../src/styles/InterfazAdmin/PerfilPropietario.css'
 // Component 
 export const PerfilPropietario = ({ 
     userSelect, 
-    owner = false, 
+    owner = false,
     URL = '', 
     imgPetDefault = '', 
     imgUserDefault = '',
+    setPetDetailTab,
     setPetSelect }) => {
   // Vars dynamic
-  const [activeTab, setActiveTab] = useState('propietario')
   const [isEditing, setIsEditing] = useState(false)
-  const [formData, setFormData] = useState({})
+  const [isAdmin,setIsAdmin] = useState(false)
+  const [activeTab, setActiveTab] = useState('propietario')
   const [petsData,setPetsData] = useState([])
+  const [formData, setFormData] = useState({})
   const [userData,setUserData] = useState({})
   const [modPro,setModPro] = useState({})
 
@@ -56,6 +58,7 @@ export const PerfilPropietario = ({
       cel_per: userSelect.doc_per,
       email_per: userSelect.doc_per,
       ...data})
+    setPetDetailTab('Historia Clinica')
     navigate('/pets/details')
   }
 
@@ -164,9 +167,20 @@ export const PerfilPropietario = ({
   },[petsData])
 
   useEffect(() => {
+    // Vars
+    const token = localStorage.getItem('token')
+
     if (!userSelect) navigate('/consultorio')
     setUserData(userSelect)
     setFormData(userSelect)
+
+    if(token) {
+      // Vars
+      const roles =  getRoles(token)
+      const admin = roles.some(role => role.toLowerCase() === 'administrador')
+
+      admin?setIsAdmin(true):setIsAdmin(false)
+    } else navigate('/user/login')
   },[])
 
   return (
@@ -180,7 +194,7 @@ export const PerfilPropietario = ({
             Configuración de usuario <span className='subtituloProps'> | Creación</span>
           </h1>
           <div className='botonesAccionProps'>
-            <button className='botonAtrasProps' onClick={() => navigate(-1)}>
+            <button className='BackBtn' onClick={() => navigate(-1)}>
               <ArrowLeft size={18} />
               <span>Atrás</span>
             </button>
@@ -188,11 +202,6 @@ export const PerfilPropietario = ({
             {/* Botones de Eliminar y Editar solo cuando estamos en la pestaña de Propietario */}
             {activeTab === 'propietario' && (
               <>
-                <button className='botonEliminarProps' onClick={handleDeleteClick}>
-                  <Trash2 size={18} />
-                  <span>Desactivar</span>
-                </button>
-
                 {isEditing ? (
                   <>
                     <button className='botonCancelarProps' onClick={handleCancelEdit}>
@@ -205,11 +214,17 @@ export const PerfilPropietario = ({
                     </button>
                   </>
                 ) : (
-                  <button className='botonEditarProps' onClick={handleEditClick}>
+                  <button className='EditBtn' onClick={handleEditClick}>
                     <Edit size={18} />
                     <span>Editar</span>
                   </button>
                 )}
+                {isAdmin && !isEditing && (
+                  <button className='DeleteBtn' onClick={handleDeleteClick}>
+                    <Trash2 size={18} />
+                    <span>Desactivar</span>
+                  </button>)
+                }
               </>
             )}
           </div>
@@ -238,7 +253,7 @@ export const PerfilPropietario = ({
 
         <section className='contenidoProps'>
           {activeTab === 'propietario' && (
-            <DescriptionPeople 
+            <Description
               handleChange={handleChange} 
               headers={headers}
               datas={userSelect}
@@ -252,8 +267,8 @@ export const PerfilPropietario = ({
           {activeTab === 'mascotas' && (
             <section className='mascotasContenedorProps'>
               <div className='mascotasGrillaProps'>
-                {petsData.map((mascota) => (
-                  <div key={mascota.doc_per} className='mascotaTarjetaProps'>
+                {petsData?.map((mascota, index) => (
+                  <div key={index + 1293} className='mascotaTarjetaProps'>
                     <div className='mascotaImagenProps'>
                       {checkImage(
                         mascota.fot_mas,
@@ -289,7 +304,7 @@ export const PerfilPropietario = ({
                 ))}
               </div>
 
-              {petsData.length === 0 && <div className='sinResultadosProps'>No hay mascotas vinculadas</div>}
+              {petsData?.length === 0 && <div className='sinResultadosProps'>No hay mascotas vinculadas</div>}
             </section>
           )}
         </section>

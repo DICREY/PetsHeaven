@@ -6,7 +6,7 @@ import swal from 'sweetalert'
 
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
-import { GlobalTable } from './GlobalTable'
+import { GlobalTable } from '../Global/GlobalTable'
 import { GetData } from '../Varios/Requests'
 import { errorStatusHandler } from '../Varios/Util'
 
@@ -96,7 +96,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
             gen_mas: petData[7] || '',
             est_rep_mas: petData[8] || '',
             fot_mas: petData[9] || '',
-            fec_cre_mas: petData[11] || ''
+            fec_cre_mas: petData[10] || ''
           }
         })
       return { ...item, mascotas: petList }
@@ -105,7 +105,9 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
     setDatas(formattedData)
   }
 
-  const handleSearch = (term = '', data = [], headers = []) => {
+  const handleSearch = async (term = '', data = [], headers = []) => {
+    if(!datasAlmac) await GetDataOwners()
+
     const termLower = term.toLowerCase()
     setCurrentInfo(false)
 
@@ -125,7 +127,9 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
     if (find) setDatas(find)
   }
 
-  const handleSearchPets = (term = '', data = [], headers = []) => {
+  const handleSearchPets = async (term = '', data = [], headers = []) => {
+    if(!petsDataAlmc) await getPets()
+    
     setCurrentInfo(true)
     setDatas(petsDataAlmc)
     setHeaders({
@@ -142,12 +146,11 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
         item[field]?.toLowerCase().includes(termLower)
       )
     })
-  
+    
     if (find) setDatas(find)
   }
 
   const handleDescription = (data) => {
-    console.log(currentInfo)
     const handler = currentInfo? handleDescriptionPet: handleDescriptionOwner
     return handler(data)
   }
@@ -166,7 +169,6 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   useEffect(() => {
     const REFRESH_INTERVAL = 2 * 60 * 1000 // 2 minutes
     let intervalId
-
 
     GetDataOwners()
     getPets()
