@@ -303,7 +303,7 @@ BEGIN
             JOIN
                 categorias_veterinario cv ON otv.id_cat = cv.id_cat
             WHERE 
-                ct.estado != "CANCELADO"
+                ct.estado = "REALIZADO"
         ) AS citas 
     FROM 
         mascotas m

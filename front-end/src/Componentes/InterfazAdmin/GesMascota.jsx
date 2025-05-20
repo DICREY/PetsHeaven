@@ -5,13 +5,9 @@ import { Dog, Plus } from 'lucide-react'
  
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
-import { Loader } from '../Errores/Loader'
 import { NotFound} from '../Errores/NotFound'
 import { GetData } from '../Varios/Requests'
 import { getRoles, divideList } from '../Varios/Util'
-import { EditPetButton } from '../Pets/EditPet'
-import { PetDetails } from '../Pets/PetDetails'
-import { GlobalTable } from '../Global/GlobalTable'
 
 // Import Styles 
 import '../../../src/styles/InterfazAdmin/GesMascota.css'
@@ -116,39 +112,12 @@ export function GesMascota({ URL = '' }) {
                 </button>
               </div>
 
-              <GlobalTable 
-                subtitle={'Mascotas Registradas'}
-                data={petsData}
-                headersSearch={['nom_mas', 'raz_mas', 'esp_mas', 'est_rep_mas']}
-                fullData={petsAlmac}
-                headers={headers}
-                watch={openModal}
-              />
             </div>
           </section>
         ):(
           <NotFound/>
         )
-      }
-      {showModal && selectedPet && (
-        <PetDetails 
-          URL={mainURL}
-          datas={selectedPet} 
-          open={showModal} 
-          admin={isAdmin}
-          imgDefault={imgDefault}
-          ready={(state) => setShowModal(state)}
-          editMode={() => setEditMode(true)} />
-      )}
-      {editMode && (
-        <EditPetButton 
-          URL={mainURL}
-          petData={selectedPet}
-          open={editMode}
-          onSave={(state) => setEditMode(state)}
-        />
-        )
-      }
+      }  
 
       <Outlet />
     </main>
