@@ -15,14 +15,25 @@ import { errorStatusHandler } from '../Varios/Util'
 // Import styles 
 import "../../styles/InterfazAdmin/GesAgendaGeneral.css"
 
+// Función para unir fecha y hora en formato ISO
+function joinDateTime(date, time) {
+    const cleanDate = date.split('T')[0];
+    return `${cleanDate}T${time}`;
+}
+
 // Component 
 export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     // Dynamic vars 
     const [app,setApp] = useState()
     const mainUrl = `${URL}/appointment`
+    const [events, setEvents] = useState([]);
+    
+    const didFetch = useRef(false);
 
-    // Functions
+    // Functions    
     useEffect(() => {
+        if (didFetch.current) return;
+        didFetch.current = true;
         const GetAppointments = async () => {
             const token = localStorage.getItem("token");
             try {
@@ -34,17 +45,17 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                         const mappedEvents = data.map(event => ({
                             id: event.id_cit, // ID único de la cita
                             title: `${event.nom_ser} - ${event.nom_mas}`, // Servicio y mascota
-                            start: `${event.fec_cit}T${event.hor_ini_cit}`, // Fecha y hora de inicio
-                            end: `${event.fec_cit}T${event.hor_fin_cit}`, // Fecha y hora de fin
+                            start: joinDateTime(event.fec_cit, event.hor_ini_cit), // Fecha y hora de inicio
+                            end: joinDateTime(event.fec_cit, event.hor_fin_cit), // Fecha y hora de fin
                             description: event.des_ser, // Descripción del servicio
-                            category: event.nom_cat || 'consulta', // Categoría del servicio
+                            category: event.nom_ser || 'vacuna', // Categoría del servicio
                             paciente: event.nom_mas, // Nombre de la mascota
                             propietario: `${event.nom_per} ${event.ape_per}`, // Nombre completo del veterinario
                             telefono: event.cel_per, // Teléfono del veterinario
                             estado: event.estado, // Estado de la cita
                             fotoMascota: event.fot_mas // Foto de la mascota
                         }));
-                        setEvents(mappedEvents); // Actualiza el estado con los eventos mapeados
+                        setEvents(mappedEvents); 
                     }
                 } else {
                     navigate('/user/login');
@@ -68,16 +79,14 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                 }
             }
         };
-    
+        
         GetAppointments();
     }, []);
-
+    
     //Dia de hoy
     const today = new Date().toISOString().split('T')[0]; // 'YYYY-MM-DD'
-    const [events, setEvents] = useState([]);
 
-    //Eventos solo de prueba
-    // const [events, setEvents] = useState([
+
     //     {
     //         id: '1',
     //         title: 'Vacunación de Perro',
@@ -88,41 +97,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     //         paciente: 'Max (Golden Retriever)',
     //         propietario: 'Juan Pérez',
     //         telefono: '555-1234'
-    //     },
-    //     {
-    //         id: '2',
-    //         title: 'Vacunación de Perro',
-    //         start: '2025-05-22T11:30:00',
-    //         end: '2025-05-22T12:00:00',
-    //         description: 'Vacunación anual contra la rabia',
-    //         category: 'consulta',
-    //         paciente: 'Max (Golden Retriever)',
-    //         propietario: 'Juan Pérez',
-    //         telefono: '555-1234'
-    //     },
-    //     {
-    //         id: '3',
-    //         title: 'Vacunación de Perro',
-    //         start: '2025-05-22T12:30:00',
-    //         end: '2025-05-22T13:00:00',
-    //         description: 'Vacunación anual contra la rabia',
-    //         category: 'emergencia',
-    //         paciente: 'Max (Golden Retriever)',
-    //         propietario: 'Juan Pérez',
-    //         telefono: '555-1234'
-    //     },
-    //     {
-    //         id: '4',
-    //         title: 'Vacunación de Perro',
-    //         start: '2025-05-22T12:30:00',
-    //         end: '2025-05-22T13:00:00',
-    //         description: 'Vacunación anual contra la rabia',
-    //         category: 'emergencia',
-    //         paciente: 'Max (Golden Retriever)',
-    //         propietario: 'Juan Pérez',
-    //         telefono: '555-1234'
     //     }
-    // ])
 
     //Mes actual
     const [mesActual, setMesActual] = useState('')
@@ -248,52 +223,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
             setSelectedEvent({...selectedEvent, [name]: value})
         }
     }
-
-    // useEffect(() => {
-    //     const GetAppointments = async () => {
-    //         const token = localStorage.getItem("token");
-    //         try {
-    //             if (token) {
-    //                 const data = await GetData(`${mainUrl}/general`, token);
-    //                 if (data && data.result) {
-    //                     // Actualiza el estado 'events' con los datos obtenidos del backend
-    //                     setEvents(data.result.map(event => ({
-    //                         id: event.id,
-    //                         title: event.title,
-    //                         start: event.start,
-    //                         end: event.end,
-    //                         description: event.description,
-    //                         category: event.category,
-    //                         paciente: event.paciente,
-    //                         propietario: event.propietario,
-    //                         telefono: event.telefono,
-    //                     })));
-    //                 }
-    //             } else {
-    //                 navigate('/user/login');
-    //             }
-    //         } catch (err) {
-    //             if (err.status) {
-    //                 const message = errorStatusHandler(err.status);
-    //                 swal({
-    //                     title: "Error",
-    //                     text: message,
-    //                     icon: "error",
-    //                     button: "Aceptar",
-    //                 });
-    //                 if (err.status === 403) {
-    //                     setTimeout(() => {
-    //                         Logout();
-    //                     }, 2000);
-    //                 }
-    //             } else {
-    //                 console.log(err);
-    //             }
-    //         }
-    //     };
-
-    //     GetAppointments();
-    // }, []);
+    
     return (
         <div className="calendar-container">
             <NavBarAdmin />
@@ -324,10 +254,9 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                 // Eventos del calendario, se mapea para añadir clases personalizadas
                 events={events.map(event => ({
                     ...event,
-                    classNames: [event.category] 
+                    classNames: [event.service] 
                 }))}
-                
-
+            
                 // Permite la selección de fechas o rangos de fechas
                 selectable={true}
 
@@ -353,7 +282,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                 slotMinTime="06:00:00" 
 
                 // Configura la hora máxima visible en las vistas basadas en tiempo
-                slotMaxTime="22:00:00" 
+                slotMaxTime="24:00:00" 
 
                 // Duración de cada franja horaria en las vistas de tiempo
                 slotDuration="00:30:00" // Cada ranura dura 30 minutos
@@ -373,7 +302,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                 businessHours={{
                     daysOfWeek: [1, 2, 3, 4, 5, 6], // Lunes a Sábado
                     startTime: "06:00",              // Comienza a las 6:00 AM
-                    endTime: "18:00"                 // Finaliza a las 6:00 PM
+                    endTime: "24:00"                 // Finaliza a las 6:00 PM
                 }}
 
                 // Permite la interactividad de los eventos (clics, drag-and-drop, etc.)
@@ -495,7 +424,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                     value={newEvent.category}
                                     onChange={handleInputChange}
                                 >
-                                    <option value="consulta">Consulta</option>
+                                    <option value="consulta">Consulta general</option>
                                     <option value="vacuna">Vacuna</option>
                                     <option value="emergencia">Emergencia</option>
                                 </select>
@@ -583,7 +512,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                     value={selectedEvent?.category || 'consulta'}
                                     onChange={handleInputChange}
                                 >
-                                    <option value="consulta">Consulta</option>
+                                    <option value="consulta">Consulta general</option>
                                     <option value="vacuna">Vacuna</option>
                                     <option value="emergencia">Emergencia</option>
                                 </select>
