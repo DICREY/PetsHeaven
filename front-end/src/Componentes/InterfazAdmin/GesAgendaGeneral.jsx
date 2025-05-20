@@ -86,18 +86,19 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     //Dia de hoy
     const today = new Date().toISOString().split('T')[0]; // 'YYYY-MM-DD'
 
-
-    //     {
-    //         id: '1',
-    //         title: 'Vacunación de Perro',
-    //         start: '2025-05-22T10:30:00',
-    //         end: '2025-05-22T11:00:00',
-    //         description: 'Vacunación anual contra la rabia',
-    //         category: 'vacuna',
-    //         paciente: 'Max (Golden Retriever)',
-    //         propietario: 'Juan Pérez',
-    //         telefono: '555-1234'
-    //     }
+    // const [events, setEvents] = useState([
+    //         {
+    //             id: '1',
+    //             title: 'Vacunación de Perro',
+    //             start: '2025-05-22T10:30:00',
+    //             end: '2025-05-22T11:00:00',
+    //             description: 'Vacunación anual contra la rabia',
+    //             category: 'vacuna',
+    //             paciente: 'Max (Golden Retriever)',
+    //             propietario: 'Juan Pérez',
+    //             telefono: '555-1234'
+    //         }
+    // ]);
 
     //Mes actual
     const [mesActual, setMesActual] = useState('')
@@ -223,7 +224,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
             setSelectedEvent({...selectedEvent, [name]: value})
         }
     }
-    
+
     return (
         <div className="calendar-container">
             <NavBarAdmin />
@@ -254,7 +255,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                 // Eventos del calendario, se mapea para añadir clases personalizadas
                 events={events.map(event => ({
                     ...event,
-                    classNames: [event.service] 
+                    classNames: [event.category] 
                 }))}
             
                 // Permite la selección de fechas o rangos de fechas
