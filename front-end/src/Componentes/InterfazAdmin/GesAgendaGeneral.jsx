@@ -16,7 +16,7 @@ import { errorStatusHandler } from '../Varios/Util'
 import "../../styles/InterfazAdmin/GesAgendaGeneral.css"
 
 // Component 
-export const GesAgendaGeneral = ({ URL = '' }) => {
+export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     // Dynamic vars 
     const [app,setApp] = useState()
     const mainUrl = `${URL}/appointment`
@@ -28,19 +28,23 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
             try {
                 if (token) {
                     const data = await GetData(`${mainUrl}/general`, token);
-                    if (data && data.result) {
-                        // Actualiza el estado 'events' con los datos obtenidos del backend
-                        setEvents(data.result.map(event => ({
-                            id: event.id,
-                            title: event.title,
-                            start: event.start,
-                            end: event.end,
-                            description: event.description,
-                            category: event.category,
-                            paciente: event.paciente,
-                            propietario: event.propietario,
-                            telefono: event.telefono,
-                        })));
+                    if (data) {
+                        console.log(data)
+                        // Mapea los datos obtenidos del backend
+                        const mappedEvents = data.map(event => ({
+                            id: event.id_cit, // ID único de la cita
+                            title: `${event.nom_ser} - ${event.nom_mas}`, // Servicio y mascota
+                            start: `${event.fec_cit}T${event.hor_ini_cit}`, // Fecha y hora de inicio
+                            end: `${event.fec_cit}T${event.hor_fin_cit}`, // Fecha y hora de fin
+                            description: event.des_ser, // Descripción del servicio
+                            category: event.nom_cat || 'consulta', // Categoría del servicio
+                            paciente: event.nom_mas, // Nombre de la mascota
+                            propietario: `${event.nom_per} ${event.ape_per}`, // Nombre completo del veterinario
+                            telefono: event.cel_per, // Teléfono del veterinario
+                            estado: event.estado, // Estado de la cita
+                            fotoMascota: event.fot_mas // Foto de la mascota
+                        }));
+                        setEvents(mappedEvents); // Actualiza el estado con los eventos mapeados
                     }
                 } else {
                     navigate('/user/login');
@@ -67,8 +71,10 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
     
         GetAppointments();
     }, []);
+
     //Dia de hoy
     const today = new Date().toISOString().split('T')[0]; // 'YYYY-MM-DD'
+    const [events, setEvents] = useState([]);
 
     //Eventos solo de prueba
     // const [events, setEvents] = useState([
@@ -137,8 +143,9 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
         category: 'consulta',
         paciente: '',
         propietario: '',
-        telefono: ''
-    })
+        telefono: '',
+        estado: 'PENDIENTE' // Estado inicial de la cita
+    });
     //Fecha
     const [selectedDate, setSelectedDate] = useState('')
     const calendarRef = useRef(null)
@@ -242,51 +249,51 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
         }
     }
 
-    useEffect(() => {
-        const GetAppointments = async () => {
-            const token = localStorage.getItem("token");
-            try {
-                if (token) {
-                    const data = await GetData(`${mainUrl}/general`, token);
-                    if (data && data.result) {
-                        // Actualiza el estado 'events' con los datos obtenidos del backend
-                        setEvents(data.result.map(event => ({
-                            id: event.id,
-                            title: event.title,
-                            start: event.start,
-                            end: event.end,
-                            description: event.description,
-                            category: event.category,
-                            paciente: event.paciente,
-                            propietario: event.propietario,
-                            telefono: event.telefono,
-                        })));
-                    }
-                } else {
-                    navigate('/user/login');
-                }
-            } catch (err) {
-                if (err.status) {
-                    const message = errorStatusHandler(err.status);
-                    swal({
-                        title: "Error",
-                        text: message,
-                        icon: "error",
-                        button: "Aceptar",
-                    });
-                    if (err.status === 403) {
-                        setTimeout(() => {
-                            Logout();
-                        }, 2000);
-                    }
-                } else {
-                    console.log(err);
-                }
-            }
-        };
+    // useEffect(() => {
+    //     const GetAppointments = async () => {
+    //         const token = localStorage.getItem("token");
+    //         try {
+    //             if (token) {
+    //                 const data = await GetData(`${mainUrl}/general`, token);
+    //                 if (data && data.result) {
+    //                     // Actualiza el estado 'events' con los datos obtenidos del backend
+    //                     setEvents(data.result.map(event => ({
+    //                         id: event.id,
+    //                         title: event.title,
+    //                         start: event.start,
+    //                         end: event.end,
+    //                         description: event.description,
+    //                         category: event.category,
+    //                         paciente: event.paciente,
+    //                         propietario: event.propietario,
+    //                         telefono: event.telefono,
+    //                     })));
+    //                 }
+    //             } else {
+    //                 navigate('/user/login');
+    //             }
+    //         } catch (err) {
+    //             if (err.status) {
+    //                 const message = errorStatusHandler(err.status);
+    //                 swal({
+    //                     title: "Error",
+    //                     text: message,
+    //                     icon: "error",
+    //                     button: "Aceptar",
+    //                 });
+    //                 if (err.status === 403) {
+    //                     setTimeout(() => {
+    //                         Logout();
+    //                     }, 2000);
+    //                 }
+    //             } else {
+    //                 console.log(err);
+    //             }
+    //         }
+    //     };
 
-        GetAppointments();
-    }, []);
+    //     GetAppointments();
+    // }, []);
     return (
         <div className="calendar-container">
             <NavBarAdmin />
@@ -319,6 +326,7 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
                     ...event,
                     classNames: [event.category] 
                 }))}
+                
 
                 // Permite la selección de fechas o rangos de fechas
                 selectable={true}
@@ -345,7 +353,7 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
                 slotMinTime="06:00:00" 
 
                 // Configura la hora máxima visible en las vistas basadas en tiempo
-                slotMaxTime="19:00:00" 
+                slotMaxTime="22:00:00" 
 
                 // Duración de cada franja horaria en las vistas de tiempo
                 slotDuration="00:30:00" // Cada ranura dura 30 minutos

@@ -65,6 +65,7 @@ class Global {
             this.database.conection.end()
         })
     }
+
 }
 
 // Export
