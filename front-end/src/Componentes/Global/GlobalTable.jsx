@@ -58,7 +58,6 @@ export class GlobalTable extends Component {
           datas: divideList(find,this.state.columnSize)
       }))
     }
-    
 
     handleClick = (pet) => {
       const { clickCount } = this.state

@@ -58,7 +58,8 @@ export class Description extends React.Component {
               {datas && checkImage(
                 datas.image,
                 `${datas.alt_img}`,
-                imgDefault
+                imgDefault,
+                ''
               )}
             </div>
             <div className="propietarioDatosProps">
