@@ -322,6 +322,5 @@ BEGIN
     LIMIT 1000;
 END //
 
-
 /* CALL pets_heaven.SearchHistoryBy('luna','87654321'); */
 /* DROP PROCEDURE pets_heaven.SearchHistoryBy; */

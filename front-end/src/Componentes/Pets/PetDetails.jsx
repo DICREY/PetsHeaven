@@ -220,7 +220,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
                         )}
                     </div>
                 </nav>
-                <main className='main-content-pet-details'> 
+                <main className='main-content-pet-details'>
                     <div className='pet-modal-overlay-pet-details'>
                         <div className='pet-modal-content-pet-details'>
                             
@@ -314,10 +314,10 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
                                                 <span className='info-label-pet-details'>Veterinario</span>
                                                 <span className='info-value-pet-details'>{`${item.nom_per} ${item.ape_per}`}</span>
                                             </div>
-                                            <div className='info-item-pet-details'>
-                                                <span className='info-label-pet-details'>Especialidad de Veterinario</span>
-                                                <span className='info-value-pet-details'>{`${item.especialidad}`}</span>
-                                            </div>
+                                            <button className='EditBtn'>
+                                                <Edit size={18} />
+                                                <span>Descripción</span>
+                                            </button>
                                         </div>
                                     </article>))
                                 }
