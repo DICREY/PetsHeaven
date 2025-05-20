@@ -37,11 +37,12 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                             start: `${event.fec_cit}T${event.hor_ini_cit}`, // Fecha y hora de inicio
                             end: `${event.fec_cit}T${event.hor_fin_cit}`, // Fecha y hora de fin
                             description: event.des_ser, // Descripción del servicio
-                            // category: event.nom_cat || 'consulta', // Categoría del servicio
+                            category: event.nom_cat || 'consulta', // Categoría del servicio
                             paciente: event.nom_mas, // Nombre de la mascota
                             propietario: `${event.nom_per} ${event.ape_per}`, // Nombre completo del veterinario
                             telefono: event.cel_per, // Teléfono del veterinario
                             estado: event.estado, // Estado de la cita
+                            fotoMascota: event.fot_mas // Foto de la mascota
                         }));
                         setEvents(mappedEvents); // Actualiza el estado con los eventos mapeados
                     }
