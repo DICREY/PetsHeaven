@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+-- Active: 1747352860830@@127.0.0.1@3306@pets_heaven
+=======
 -- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
+>>>>>>> 8dd66983bb87af9a5556da5ee387a3fb547dc806
 CREATE PROCEDURE pets_heaven.RegistPeoples(
     IN p_nom_per VARCHAR(100),
     IN p_ape_per VARCHAR(100),
