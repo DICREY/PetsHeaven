@@ -19,13 +19,13 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   const [petsDataAlmc, setPetsDataAlmc] = useState([])
   const [datasAlmac, setDatasAlmac] = useState([])
   const [headers, setHeaders] = useState({})
-  const [currentInfo, setCurrentInfo] = useState(false)
-
+  
   // Vars 
   const mainUrl = `${URL}/owner`
   const headersSearchUser = ['nom_per', 'email_per', 'cel_per', 'ape_per']
   const headersSearchPet = ['nom_mas']
   const navigate = useNavigate()
+  let currentDesc = false
 
   // Functions
   const GetDataOwners = async () => {
@@ -109,7 +109,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
     if(!datasAlmac) await GetDataOwners()
 
     const termLower = term.toLowerCase()
-    setCurrentInfo(false)
+    currentDesc = false
 
     setHeaders({
       'Nombres': 'nom_per',
@@ -127,10 +127,11 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
     if (find) setDatas(find)
   }
 
+  // Handle search pets 
   const handleSearchPets = async (term = '', data = [], headers = []) => {
     if(!petsDataAlmc) await getPets()
-    
-    setCurrentInfo(true)
+
+    currentDesc = true
     setDatas(petsDataAlmc)
     setHeaders({
       Nombre: 'nom_mas',
@@ -151,7 +152,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   }
 
   const handleDescription = (data) => {
-    const handler = currentInfo? handleDescriptionPet: handleDescriptionOwner
+    const handler = currentDesc? handleDescriptionPet: handleDescriptionOwner
     return handler(data)
   }
 

@@ -35,7 +35,7 @@ export default function App () {
   const [petSelect,setPetSelect] = useState()
   const [owner,setOwner] = useState(false)
   const [arriveTo,setArriveTo] = useState('')
-  const [petDetailTab,setPetDetailTab] = useState('')
+  const [petDetailTab,setPetDetailTab] = useState('Datos Generales')
 
   // Vars 
   const imgPetDefault = 'https://github.com/Mogom/Imagenes_PetsHeaven/blob/main/Defaults/petImg.default.jpg?raw=true'

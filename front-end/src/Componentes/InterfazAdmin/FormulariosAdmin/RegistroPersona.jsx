@@ -1,5 +1,6 @@
 // Librarys
 import React, { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Pencil, ChevronLeft, User, Lock } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
@@ -13,7 +14,7 @@ import { PostData } from '../../Varios/Requests'
 import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/RegistroPersonal.css'
 
 export const RegistroPro = ({ URL = '' }) => {
-  // Vars
+  // Dynamic vars
   const [activeTab, setActiveTab] = useState('personal')
   const [profileImage, setProfileImage] = useState(null)
   const profileInputRef = useRef(null)
@@ -24,7 +25,10 @@ export const RegistroPro = ({ URL = '' }) => {
     formState: { errors },
     watch,
   } = useForm({ mode: 'onChange' })
+
+  // Vars 
   const mainUrl = `${URL}/people`
+  const navigate = useNavigate()
 
   // Functions
   const handleProfileImageChange = (e) => {
@@ -95,7 +99,10 @@ export const RegistroPro = ({ URL = '' }) => {
               <span className='creacion-regusuario'>| Creación</span>
             </div>
             <div className='acciones-regusuario'>
-              <button className='atras-regusuario'>
+              <button 
+                className='atras-regusuario'
+                onClick={() => navigate(-1)}
+                >
                 <ChevronLeft size={16} />
                 <span className='texto-btn-regusuario'>Atrás</span>
               </button>

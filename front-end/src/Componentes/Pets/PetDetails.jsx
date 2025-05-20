@@ -166,6 +166,8 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
         // Vars
         const token = localStorage.getItem('token')
 
+        console.log(datas)
+
         if (!datas) navigate(-1)
         
         getHistory()
