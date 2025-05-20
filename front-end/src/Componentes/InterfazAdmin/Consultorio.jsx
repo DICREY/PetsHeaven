@@ -151,8 +151,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   }
 
   const handleDescription = (data) => {
-    const handler = currentInfo? handleDescriptionPet: handleDescriptionOwner
-    return handler(data)
+      (data.nom_mas) ? handleDescriptionPet(data) : handleDescriptionOwner(data)
   }
 
   const handleDescriptionOwner = (data) => {
