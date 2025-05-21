@@ -3,7 +3,6 @@ import { GetData } from '../Varios/Requests'
 import { decodeJWT, errorStatusHandler, getRoles, checkImage } from '../Varios/Util'
 import { Loader } from '../Errores/Loader'
 import { NotFound } from '../Errores/NotFound'
-import { EditPetButton } from './EditPet'
 
 // Import Styles 
 import '../../../src/styles/Pets/pets.css'
@@ -17,10 +16,8 @@ export const Pets = ({URL = '', imgPetDefault = '', setPetSelect }) => {
     // Dynamic Vars
     const [petsData, setPetsData] = useState([])
     const [loading, setLoading] = useState(true)
-    const [selectedPet, setSelectedPet] = useState(null)
     const [searchBy,setSearchBy] = useState('')
     const [found,setfound] = useState(false)
-    const [editMode,setEditMode] = useState(false)
     const [isAdmin,setIsAdmin] = useState(false)
     
     // Vars 
@@ -121,17 +118,7 @@ export const Pets = ({URL = '', imgPetDefault = '', setPetSelect }) => {
                         ):(
                             <NotFound />
                         )
-                    }
-
-                    {/* Modal para mostrar detalles completos */}
-                    {editMode && (
-                        <EditPetButton
-                            URL={mainURL}
-                            petData={selectedPet}
-                            open={editMode}
-                            onSave={(state) => setEditMode(state)}
-                        />
-                    )}
+                    }    
                 </main>
             )}   
         </>

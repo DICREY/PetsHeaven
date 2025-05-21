@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+-- Active: 1747352860830@@127.0.0.1@3306@pets_heaven
+=======
 -- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
+>>>>>>> 8dd66983bb87af9a5556da5ee387a3fb547dc806
 CREATE PROCEDURE pets_heaven.RegistPets(
     IN p_nom_mas VARCHAR(100),
     IN p_esp_mas VARCHAR(100),
@@ -303,7 +307,7 @@ BEGIN
             JOIN
                 categorias_veterinario cv ON otv.id_cat = cv.id_cat
             WHERE 
-                ct.estado != "CANCELADO"
+                ct.estado = "REALIZADO"
         ) AS citas 
     FROM 
         mascotas m
@@ -321,7 +325,6 @@ BEGIN
     ORDER BY m.nom_mas
     LIMIT 1000;
 END //
-
 
 /* CALL pets_heaven.SearchHistoryBy('luna','87654321'); */
 /* DROP PROCEDURE pets_heaven.SearchHistoryBy; */

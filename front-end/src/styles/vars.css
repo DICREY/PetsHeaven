@@ -52,13 +52,28 @@ html {
         font-size: 16px;
     }
 }
-@media (2500px < width) {
+@media (2000px < width) {
     html {
-        font-size: 28px;
+        font-size: 24px;
     }
 }
-@media (3500px < width) {
+@media (3000px < width) {
+    html {
+        font-size: 32px;
+    }
+}
+@media (4000px < width) {
+    html {
+        font-size: 40px;
+    }
+}
+@media (5000px < width) {
     html {
         font-size: 48px;
+    }
+}
+@media (6000px < width) {
+    html {
+        font-size: 56px;
     }
 }

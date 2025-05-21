@@ -19,6 +19,7 @@ export const PerfilPropietario = ({
     URL = '', 
     imgPetDefault = '', 
     imgUserDefault = '',
+    setPetDetailTab,
     setPetSelect }) => {
   // Vars dynamic
   const [isEditing, setIsEditing] = useState(false)
@@ -57,6 +58,7 @@ export const PerfilPropietario = ({
       cel_per: userSelect.doc_per,
       email_per: userSelect.doc_per,
       ...data})
+    setPetDetailTab('Historia Clinica')
     navigate('/pets/details')
   }
 

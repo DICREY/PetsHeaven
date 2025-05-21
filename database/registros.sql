@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+-- Active: 1747352860830@@127.0.0.1@3306@pets_heaven
+=======
 -- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
+>>>>>>> 8dd66983bb87af9a5556da5ee387a3fb547dc806
 INSERT INTO pets_heaven.roles (nom_rol,fot_rol) VALUES
 ('Administrador','https://imgs.search.brave.com/JheS1cTjYH1Y1E7rp1FADfQDL9uXw20FxZAFfjZwEaY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy9k/L2Q0L04uVGVzbGEu/SlBH'),
 ('Veterinario','https://imgs.search.brave.com/rL6dnhwCDXLvz02lsRs2QjVj1F8o-8D0o4pTYhmHah8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy90/aHVtYi9jL2M4L01h/cmllX0N1cmllX2Mu/XzE5MjBzLmpwZy81/MTJweC1NYXJpZV9D/dXJpZV9jLl8xOTIw/cy5qcGc'),
@@ -156,13 +160,13 @@ INSERT INTO pets_heaven.consultas (pro_mas_con, vet_con, mas_con) VALUES
 (2, 1, 10);
 
 INSERT INTO pets_heaven.citas (fec_cit, hor_ini_cit, hor_fin_cit, ser_cit, vet_cit, mas_cit, estado) VALUES
-('2025-06-15', '09:00:00', '10:00:00', 1, 1, 1, 'REALIZADO'),  -- Consulta General
-('2025-06-01', '11:00:00', '12:00:00', 2, 1, 1, 'PENDIENTE'),  -- Vacunación
-('2025-06-18', '14:00:00', '15:00:00', 3, 2, 2, 'REALIZADO'),  -- Cirugía
-('2025-06-05', '10:30:00', '11:30:00', 1, 2, 2, 'EN-ESPERA'),  -- Consulta General
-('2025-06-20', '16:00:00', '17:00:00', 4, 3, 3, 'REALIZADO'),  -- Emergencias
-('2025-06-10', '09:30:00', '10:30:00', 2, 3, 3, 'CANCELADO'),  -- Vacunación
-('2025-06-22', '13:00:00', '14:00:00', 5, 1, 4, 'REALIZADO'),  -- Spa y Baño
-('2025-06-15', '15:30:00', '16:30:00', 1, 1, 4, 'PENDIENTE'), -- Consulta General
-('2025-05-25', '11:30:00', '12:30:00', 3, 2, 5, 'REALIZADO'),  -- Cirugía
-('2025-06-20', '17:00:00', '18:00:00', 4, 2, 5, 'PENDIENTE');  -- Emergencias
+('2025-06-16', '09:00:00', '10:00:00', 1, 1, 1, 'REALIZADO'),  -- Lunes, Consulta General
+('2025-06-17', '11:00:00', '12:00:00', 2, 1, 1, 'PENDIENTE'),   -- Martes, Vacunación
+('2025-06-18', '14:00:00', '15:00:00', 3, 2, 2, 'REALIZADO'),   -- Miércoles, Cirugía
+('2025-06-19', '10:30:00', '11:30:00', 1, 2, 2, 'EN-ESPERA'),   -- Jueves, Consulta General
+('2025-06-20', '16:00:00', '17:00:00', 4, 3, 3, 'REALIZADO'),   -- Viernes, Emergencias
+('2025-06-21', '09:30:00', '10:30:00', 2, 3, 3, 'CANCELADO'),   -- Sábado, Vacunación
+('2025-06-22', '13:00:00', '14:00:00', 5, 1, 4, 'REALIZADO'),   -- Domingo, Spa y Baño
+('2025-06-23', '15:30:00', '16:30:00', 1, 1, 4, 'PENDIENTE'),   -- Lunes, Consulta General
+('2025-06-24', '11:30:00', '12:30:00', 3, 2, 5, 'REALIZADO'),   -- Martes, Cirugía
+('2025-06-25', '17:00:00', '18:00:00', 4, 2, 5, 'PENDIENTE');   -- Miércoles, Emergencias

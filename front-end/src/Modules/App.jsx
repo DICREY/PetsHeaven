@@ -14,6 +14,8 @@ import { RegistroPro } from '../Componentes/InterfazAdmin/FormulariosAdmin/Regis
 import { HomeAdmin } from '../Componentes/InterfazAdmin/Consultorio'
 import { GesPersonal } from '../Componentes/InterfazAdmin/GesPersonal'
 import { GesMascota } from '../Componentes/InterfazAdmin/GesMascota'
+import { GesAgendaGeneral } from '../Componentes/InterfazAdmin/GesAgendaGeneral'
+import { MainAdmin } from '../Componentes/InterfazAdmin/MainAdmin'
 import { Pets } from '../Componentes/Pets/Pets'
 import { PetDetails } from '../Componentes/Pets/PetDetails'
 import { NotFound } from '../Componentes/Errores/NotFound'
@@ -21,9 +23,7 @@ import { ErrorInternalServer } from '../Componentes/Errores/ErrorInternalServer'
 import { getRoles,Logout } from '../Componentes/Varios/Util'
 import { useInactivityDetector } from '../Componentes/Varios/InactiveDectetor'
 import VeterinariaPage from '../Componentes/VeterinariaPage'
-import { GesAgendaGeneral } from '../Componentes/InterfazAdmin/GesAgendaGeneral'
 import { PerfilPropietario } from '../Componentes/Peoples/PerfilPropietario'
-import { MainAdmin } from '../Componentes/InterfazAdmin/MainAdmin'
 
 //import Crud personal
 import { ConfiguracionUsuarioCrud } from '../Componentes/InterfazAdmin/CrudPersonal/ConfiguracionUsuarioCrud'
@@ -35,12 +35,13 @@ export default function App () {
   const [petSelect,setPetSelect] = useState()
   const [owner,setOwner] = useState(false)
   const [arriveTo,setArriveTo] = useState('')
+  const [petDetailTab,setPetDetailTab] = useState('Datos Generales')
 
   // Vars 
   const imgPetDefault = 'https://github.com/Mogom/Imagenes_PetsHeaven/blob/main/Defaults/petImg.default.jpg?raw=true'
   const imgUserDefault = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/default_veterinario.png'
   const URL = 'http://localhost:3000'
-  const isInactive = useInactivityDetector(20 * 60 * 1000) // 20 minutos de inactividad
+  const isInactive = useInactivityDetector(20 * 60 * 1000) // 20 minutos de inactividad  
   
   // Route types
   const PrivateRoute = ({ children }) => {
@@ -125,6 +126,7 @@ export default function App () {
         </Route>
         <Route path='/pets/details' element={
           <PrivateRoute children={<PetDetails
+            tab={petDetailTab}
             datas={petSelect}
             imgPetDefault={imgPetDefault}
             URL={URL}
@@ -165,6 +167,7 @@ export default function App () {
         <Route path='propietario/datos' element={
           <VetRoute children={
           <PerfilPropietario 
+            setPetDetailTab={setPetDetailTab}
             owner={owner} 
             userSelect={userSelect}
             imgPetDefault={imgPetDefault} 

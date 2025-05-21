@@ -84,7 +84,7 @@
 }
 
 /* Categorías de eventos */
-.fc .fc-event.vacuna {
+.fc .fc-event.Vacunación {
   background-color: #a5f3fc !important;
   color: #0e7490 !important;
   border-left: 4px solid #06b6d4 !important;
@@ -96,7 +96,13 @@
   border-left: 4px solid #ef4444 !important;
 }
 
-.fc .fc-event.consulta {
+.fc .fc-event.Cirugía {
+  background-color: #eee895 !important;
+  color: #dc9f6a !important;
+  border-left: 4px solid #7b6111 !important;
+}
+
+.fc .fc-event.Consulta.General {
   background-color: #c7d2fe !important;
   color: #4c1d95 !important;
   border-left: 4px solid #6366f1 !important;
