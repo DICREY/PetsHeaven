@@ -10,6 +10,7 @@ import { getRoles, errorStatusHandler, formatoTiempo, checkImage } from '../Vari
 
 // Import styles
 import '../../../src/styles/Formularios/login.css'
+import { Loading } from '../Global/Notifys'
 
 // Main component 
 export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
@@ -17,6 +18,7 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
   const [verPassword, setVerPassword] =  useState(false)
   const [waitTime, setWaitTime] =  useState(false)
   const [time, setTime] = useState()
+  const [validating, setValidating] = useState(false)
   
   // Vars 
   const imagenFondo = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Fondos/fondo.png' 
@@ -55,16 +57,12 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
     const url = `${URL}/global/login`
     const firstData = datas.docEmail
     const secondData = datas.password
-
-    swal({
-      title: 'Validando..',
-      text: 'Verificando datos de inicio de sesión',
-      buttons: false
-    })
+    setValidating(true)
     
     try {
       const log = await login(url,firstData,secondData)
 
+      setValidating(false)
       if (log) {
         const token = localStorage.getItem("token")
         const roles = getRoles(token)
@@ -311,6 +309,12 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
           <p className='subtexto-cita-login'>En PetsHeaven cuidamos de quienes más amas</p>
         </div>
       </div>
+      {validating && (
+        <Loading 
+          title='Validando...'
+          message='Verificando datos de inicio de sesión'
+        />)
+      }
     </div>
   )
 }

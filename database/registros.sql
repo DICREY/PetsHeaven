@@ -1,8 +1,4 @@
-<<<<<<< HEAD
--- Active: 1747352860830@@127.0.0.1@3306@pets_heaven
-=======
 -- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
->>>>>>> 8dd66983bb87af9a5556da5ee387a3fb547dc806
 INSERT INTO pets_heaven.roles (nom_rol,fot_rol) VALUES
 ('Administrador','https://imgs.search.brave.com/JheS1cTjYH1Y1E7rp1FADfQDL9uXw20FxZAFfjZwEaY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy9k/L2Q0L04uVGVzbGEu/SlBH'),
 ('Veterinario','https://imgs.search.brave.com/rL6dnhwCDXLvz02lsRs2QjVj1F8o-8D0o4pTYhmHah8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy90/aHVtYi9jL2M4L01h/cmllX0N1cmllX2Mu/XzE5MjBzLmpwZy81/MTJweC1NYXJpZV9D/dXJpZV9jLl8xOTIw/cy5qcGc'),
@@ -97,29 +93,29 @@ INSERT INTO pets_heaven.mascotas
 ('Charlie', 'Perro', 'Dorado', 'Golden Retriever', 'Pedigree', '2019-01-25', 32.0, 'M', 5, 'No esterilizado', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqPq2Bq0BvX-vNuOnoo4ruQA1sBuWdNru7Tw&s'),
 ('Milo', 'Gato', 'Atigrado', 'Mestizo', 'Friskies', '2021-02-14', 3.8, 'M', 1, 'No esterilizado', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Female_European_shorthair_in_cat_show_Helsinki_2005-07-31.JPG/320px-Female_European_shorthair_in_cat_show_Helsinki_2005-07-31.JPG'),
 ('Lucy', 'Perro', 'Blanco y Negro', 'Border Collie', 'Eukanuba', '2016-09-05', 20.3, 'F', 2, 'Esterilizado', 'https://ventadecachorros.com.co/wp-content/uploads/2020/10/cachorros-border-collie-hembras-y-machos-D_NQ_NP_886207-MCO33051173463_112019-F.jpg'),
-('Oliver', 'Gato', 'Naranja', 'Maine Coon', 'Blue Buffalo', '2018-12-18', 7.5, 'M', 3, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2024-02/sitesdefaultfilesstylessquare_medium_440x440public2022-06Maine20Coon.1.jpg?itok=25PAnnaV'),
+('Oliver', 'Gato', 'Naranja', 'Maine Coon', 'Blue Buffalo', '2018-12-18', 7.5, 'M', 3, 'Esterilizado', ''),
 ('Daisy', 'Perro', 'Crema', 'Poodle', 'Nutro', '2020-06-08', 6.8, 'F', 4, 'No esterilizado', 'https://img.freepik.com/fotos-premium/lindo-cachorro-caniche-crema-poco-peludo_126745-916.jpg'),
 ('Leo', 'Perro', 'Negro y Fuego', 'Doberman', 'Canidae', '2017-04-20', 34.2, 'M', 5, 'Esterilizado', 'https://tucachorrotienda.com/wp-content/uploads/2019/12/doberman-cachorro5.jpg'),
-('Toby', 'Perro', 'Blanco', 'Bichón Frisé', 'Purina Pro Plan', '2020-08-12', 5.2, 'M', 6, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0006_bichon_frise.jpg'),
-('Mía', 'Gato', 'Calicó', 'Mestizo', 'Whiskas', '2019-04-25', 3.9, 'F', 7, 'No esterilizado', 'https://www.thesprucepets.com/thmb/8xUqz8fxYb9yX9r1XJZqJZQY7j4=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/calico-cats-profile-554694-hero-728x546-2b5d315d4b6b4a4c8c8c4c4c4c4c4c4c.jpg'),
-('Thor', 'Perro', 'Negro', 'Rottweiler', 'Royal Canin', '2018-11-30', 45.0, 'M', 8, 'No esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0013_rottweiler.jpg'),
-('Lola', 'Gato', 'Blanco', 'Angora Turco', 'Hill\'s Science Diet', '2021-01-15', 4.5, 'F', 9, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0001_angora_turco.jpg'),
-('Bruno', 'Perro', 'Marrón', 'Beagle', 'Pedigree', '2019-07-20', 15.3, 'M', 10, 'No esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0002_beagle.jpg'),
-('Nina', 'Gato', 'Gris', 'Británico de Pelo Corto', 'Friskies', '2020-03-05', 5.8, 'F', 6, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0004_britanico_pelo_corto.jpg'),
-('Zeus', 'Perro', 'Negro', 'Pastor Alemán', 'Eukanuba', '2017-12-10', 38.7, 'M', 7, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0012_pastor_aleman.jpg'),
-('Luna', 'Gato', 'Blanco', 'Ragdoll', 'Blue Buffalo', '2021-05-18', 6.2, 'F', 8, 'No esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0011_ragdoll.jpg'),
-('Rex', 'Perro', 'Marrón', 'Boxer', 'Nutro', '2018-09-22', 30.5, 'M', 9, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0003_boxer.jpg'),
-('Molly', 'Gato', 'Negro', 'Sphynx', 'Canidae', '2020-10-30', 3.5, 'F', 10, 'No esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0010_sphynx.jpg'),
-('Rocky', 'Perro', 'Blanco', 'Bull Terrier', 'Purina Dog Chow', '2019-06-14', 25.8, 'M', 6, 'No esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0005_bull_terrier.jpg'),
-('Chloe', 'Gato', 'Gris', 'Scottish Fold', 'Whiskas', '2021-02-28', 4.1, 'F', 7, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0009_scottish_fold.jpg'),
-('Max', 'Perro', 'Negro', 'Dálmata', 'Royal Canin', '2018-04-17', 28.3, 'M', 8, 'No esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0007_dalmata.jpg'),
-('Bella', 'Gato', 'Blanco', 'Persa', 'Hill\'s Science Diet', '2020-11-09', 5.5, 'F', 9, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0008_persa.jpg'),
-('Simba', 'Perro', 'Dorado', 'Labrador Retriever', 'Pedigree', '2019-08-25', 31.2, 'M', 10, 'No esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0014_labrador_retriever.jpg'),
-('Lily', 'Gato', 'Atigrado', 'Maine Coon', 'Friskies', '2020-07-03', 7.8, 'F', 6, 'No esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0015_maine_coon.jpg'),
-('Toby', 'Perro', 'Blanco y Negro', 'Border Collie', 'Eukanuba', '2017-10-12', 21.5, 'M', 7, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0016_border_collie.jpg'),
-('Mia', 'Gato', 'Naranja', 'Mestizo', 'Blue Buffalo', '2021-04-20', 4.3, 'F', 8, 'No esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0017_mestizo.jpg'),
-('Bruno', 'Perro', 'Crema', 'Caniche', 'Nutro', '2020-09-15', 7.2, 'M', 9, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0018_caniche.jpg'),
-('Lola', 'Gato', 'Negro', 'Bombay', 'Canidae', '2019-12-24', 4.0, 'F', 10, 'Esterilizado', 'https://www.purina.es/sites/default/files/styles/ttt_image_510/public/2021-02/BREED%20Hero%20Mobile_0019_bombay.jpg');
+('Toby', 'Perro', 'Blanco', 'Bichón Frisé', 'Purina Pro Plan', '2020-08-12', 5.2, 'M', 6, 'Esterilizado', ''),
+('Mía', 'Gato', 'Calicó', 'Mestizo', 'Whiskas', '2019-04-25', 3.9, 'F', 7, 'No esterilizado', ''),
+('Thor', 'Perro', 'Negro', 'Rottweiler', 'Royal Canin', '2018-11-30', 45.0, 'M', 8, 'No esterilizado', ''),
+('Lola', 'Gato', 'Blanco', 'Angora Turco', 'Hill\'s Science Diet', '2021-01-15', 4.5, 'F', 9, 'Esterilizado', ''),
+('Bruno', 'Perro', 'Marrón', 'Beagle', 'Pedigree', '2019-07-20', 15.3, 'M', 10, 'No esterilizado', ''),
+('Nina', 'Gato', 'Gris', 'Británico de Pelo Corto', 'Friskies', '2020-03-05', 5.8, 'F', 6, 'Esterilizado', ''),
+('Zeus', 'Perro', 'Negro', 'Pastor Alemán', 'Eukanuba', '2017-12-10', 38.7, 'M', 7, 'Esterilizado', ''),
+('Luna', 'Gato', 'Blanco', 'Ragdoll', 'Blue Buffalo', '2021-05-18', 6.2, 'F', 8, 'No esterilizado', ''),
+('Rex', 'Perro', 'Marrón', 'Boxer', 'Nutro', '2018-09-22', 30.5, 'M', 9, 'Esterilizado', ''),
+('Molly', 'Gato', 'Negro', 'Sphynx', 'Canidae', '2020-10-30', 3.5, 'F', 10, 'No esterilizado', ''),
+('Rocky', 'Perro', 'Blanco', 'Bull Terrier', 'Purina Dog Chow', '2019-06-14', 25.8, 'M', 6, 'No esterilizado', ''),
+('Chloe', 'Gato', 'Gris', 'Scottish Fold', 'Whiskas', '2021-02-28', 4.1, 'F', 7, 'Esterilizado', ''),
+('Max', 'Perro', 'Negro', 'Dálmata', 'Royal Canin', '2018-04-17', 28.3, 'M', 8, 'No esterilizado', ''),
+('Bella', 'Gato', 'Blanco', 'Persa', 'Hill\'s Science Diet', '2020-11-09', 5.5, 'F', 9, 'Esterilizado', ''),
+('Simba', 'Perro', 'Dorado', 'Labrador Retriever', 'Pedigree', '2019-08-25', 31.2, 'M', 10, 'No esterilizado', ''),
+('Lily', 'Gato', 'Atigrado', 'Maine Coon', 'Friskies', '2020-07-03', 7.8, 'F', 6, 'No esterilizado', ''),
+('Toby', 'Perro', 'Blanco y Negro', 'Border Collie', 'Eukanuba', '2017-10-12', 21.5, 'M', 7, 'Esterilizado', ''),
+('Mia', 'Gato', 'Naranja', 'Mestizo', 'Blue Buffalo', '2021-04-20', 4.3, 'F', 8, 'No esterilizado', ''),
+('Bruno', 'Perro', 'Crema', 'Caniche', 'Nutro', '2020-09-15', 7.2, 'M', 9, 'Esterilizado', ''),
+('Lola', 'Gato', 'Negro', 'Bombay', 'Canidae', '2019-12-24', 4.0, 'F', 10, 'Esterilizado', '');
 
 INSERT INTO pets_heaven.categorias_veterinario (nom_cat)
 VALUES 
