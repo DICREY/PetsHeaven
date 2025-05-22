@@ -285,7 +285,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
                                         <input
                                             id='busqueda-usuario'
                                             className='campoadminhome'
-                                            placeholder='Buscar por fecha de la cita, nombre del servicio o nombre del veterinario'
+                                            placeholder='Buscar por fecha de la cita(yyyy-mm-dd), nombre del servicio o nombre del veterinario'
                                             type='search'
                                             aria-label='Buscar usuarios'
                                             onChange={handleSearch}
