@@ -19,7 +19,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
-    padding: 0 24px;
+    padding: 0 1.5rem;
     z-index: 100;
 }
 
@@ -38,7 +38,7 @@
 /* Contenido principal */
 .main-content-pet-details {
     flex: 1;
-    padding: 88px 24px 24px;
+    padding: 88px 1.5rem 1.5rem;
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
@@ -61,15 +61,15 @@
     overflow-y: visible;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     padding: 32px;
-    gap: 24px;
+    gap: 1.5rem;
 }
 
 /* Header de mascota */
 .pet-header-pet-details {
     display: grid;
     grid-template-columns: auto 1fr auto;
-    gap: 24px;
-    padding-bottom: 24px;
+    gap: 1.5rem;
+    padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--gris-medio);
     align-items: center;
 }
@@ -157,7 +157,7 @@
 }
 .tab-active-pet-details {
     cursor: pointer;
-    padding: 12px 24px;
+    padding: 12px 1.5rem;
     border-bottom: 3px solid transparent;
     font-weight: 500;
     color: var(--secondary);
@@ -175,18 +175,23 @@
 }
 
 /* Contenido de mascota */
+.pet-content-pet-details-main {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+}
 .pet-content-pet-details {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 24px;
-    margin-top: 24px;
+    gap: 1.5rem;
 }
 
 .info-card-pet-details {
     cursor: pointer;
     background-color: var(--white);
     border-radius: 8px;
-    padding: 24px;
+    padding: 1.5rem;
     border: 1px solid var(--gris-medio);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
@@ -240,7 +245,7 @@
 .owner-info-pet-details {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 24px;
+    gap: 1.5rem;
 }
 
 .owner-name-pet-details {
@@ -298,12 +303,12 @@
 
 @media (max-width: 768px) {
     .pet-modal-content-pet-details {
-        padding: 24px;
+        padding: 1.5rem;
     }
     
     .pet-tabs-pet-details {
-        margin: 0 -24px;
-        padding: 0 24px;
+        margin: 0 -1.5rem;
+        padding: 0 1.5rem;
         overflow-x: auto;
     }
     

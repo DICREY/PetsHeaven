@@ -26,7 +26,6 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   const headersSearchUser = ['nom_per', 'email_per', 'cel_per', 'ape_per']
   const headersSearchPet = ['nom_mas']
   const navigate = useNavigate()
-  let currentDesc = false
 
   // Functions
   const GetDataOwners = async () => {
@@ -70,9 +69,9 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
         } else navigate('/user/login')
       } catch (err) {
         err.message? swal({
-            icon: 'error',
-            title: 'Error',
-            text: err.message
+          icon: 'error',
+          title: 'Error',
+          text: err.message
         }): console.log(err)
       }
   }
@@ -110,7 +109,6 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
     if(!datasAlmac) await GetDataOwners()
 
     const termLower = term.toLowerCase()
-    currentDesc = false
 
     setHeaders({
       'Nombres': 'nom_per',
@@ -132,7 +130,6 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   const handleSearchPets = async (term = '', data = [], headers = []) => {
     if(!petsDataAlmc) await getPets()
 
-    currentDesc = true
     setDatas(petsDataAlmc)
     setHeaders({
       Nombre: 'nom_mas',

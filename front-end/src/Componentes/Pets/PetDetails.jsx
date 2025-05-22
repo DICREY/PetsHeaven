@@ -8,7 +8,7 @@ import swal from 'sweetalert'
 import { Description } from '../Global/Description'
 import { Loading } from '../Global/Notifys'
 import { DeleteData, ModifyData, PostData } from '../Varios/Requests'
-import { getRoles,loadingAlert, checkImage, getAge, errorStatusHandler } from '../Varios/Util'
+import { getRoles,loadingAlert, checkImage, getAge, errorStatusHandler,divideList } from '../Varios/Util'
 
 // Import styles 
 import '../../../src/styles/Pets/petDetails.css'
@@ -22,6 +22,8 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
     const [history,setHistory] = useState({})
     const [currentTab,setCurrentTab] = useState(tab)
     const [appointment,setAppointment] = useState()
+    const [appointmentAlmc,setAppointmentAlmc] = useState()
+    const [page,setPage] = useState(1)
     const headers = {
         Nombre: 'nom_mas',
         Especie: 'esp_mas',
@@ -58,19 +60,21 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
         } else setCurrentTab(tab)
     }
 
+    // Handle search filter
     const handleSearch = (e) => {
         const termLower = e.target.value.toLowerCase()
-        const headers = ['nom_per']
+        const headers = ['fec_cit','nom_ser','nom_vet']
 
-        const find = appointment?.filter(item => {
-            return headers?.some(field => 
+        const find = appointmentAlmc?.filter(item => {
+            return headers.some(field => 
                 item[field]?.toLowerCase().includes(termLower)
             )
         })
 
-        if (find) setAppointment(find)
+        if (find) setAppointment(divideList(find,6))
     }
 
+    // Get pets history
     const getHistory = async () => {
         try {
             const token = localStorage.getItem('token')
@@ -81,7 +85,8 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
                 })
                 if (data.data.result) {
                     setHistory(data.data.result)
-                    setAppointment(data.data.result.citas)
+                    setAppointment(divideList(data.data.result.citas,6))
+                    setAppointmentAlmc(data.data.result.citas)
                 }
             }
         } catch (err) {
@@ -96,6 +101,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
         }
     }
 
+    // Request for Modify Data
     const modifyData = async () => {
         try {
             const token = localStorage.getItem('token')
@@ -120,7 +126,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
         }
     }
 
-    // Delete pet 
+    // Request for Delete pet 
     const deletePet = async () => {
         // Vars
         const deleteURL = `${mainURL}/delete`
@@ -161,12 +167,20 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
         }
     }
 
+    // Change to prev Page
+    const prevPage = () => {
+        if (page != 1) setPage(page - 1)
+    }
+    
+    // Change to next Page
+    const nextPage = () => {
+      if (page < appointment.length) setPage(page + 1)
+    }
+
     // Effects 
     useEffect(() => {
         // Vars
         const token = localStorage.getItem('token')
-
-        console.log(datas)
 
         if (!datas) navigate(-1)
         
@@ -187,7 +201,11 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
             <main className='app-container-pet-details'>
                 {/* Barra de navegación superior */}
                 <nav className='top-nav-pet-details'>
-                    <div className='nav-title-pet-details'>Ficha de Mascota</div>
+                    <div className='nav-title-pet-details'>
+                        <h1 className='tituloProps'>
+                            Configuración de Mascota<span className='subtituloProps'> | Descripción</span>
+                        </h1>
+                    </div>
                     <div className='nav-actions-pet-details'>
                         <button className='BackBtn' onClick={() => navigate(-1)}>
                             <ArrowLeft size={18} />
@@ -225,27 +243,6 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
                 <main className='main-content-pet-details'> 
                     <div className='pet-modal-overlay-pet-details'>
                         <div className='pet-modal-content-pet-details'>
-                            
-                            {/*  Header con foto y datos principales */}
-                            <header className='pet-header-pet-details'>
-                                <aside className='pet-avatar-container-pet-details'>
-                                    {checkImage(
-                                        datas.fot_mas,
-                                        `${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`,
-                                        imgPetDefault,
-                                        'pet-avatar-pet-details'
-                                    )}
-                                </aside>
-                                
-                                <aside className='pet-main-info-pet-details'>
-                                    <h1 className='pet-main-info-h1-pet-details'>{datas.nom_mas}</h1>
-                                    <div className='pet-meta-pet-details'>
-                                        <span className='species-pet-details'>{datas.esp_mas}</span>
-                                        <span className='breed-pet-details'>{datas.raz_mas}</span>
-                                        <span className='pet-age-pet-details'>{`${getAge(datas.fec_nac_mas)} Años`}</span>
-                                    </div>
-                                </aside>
-                            </header>
 
                             {/* Navegación por pestañas */}
                             <nav className='pestanasProps'>
@@ -260,70 +257,117 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
                             </nav>
 
                             {/* <!-- Contenido principal --> */}
-                            {currentTab === 'Historia Clinica' && (
-                                <div className='inputcontenedoradminhome'>
-                                    <input
-                                        id='busqueda-usuario'
-                                        className='campoadminhome'
-                                        placeholder='Buscar por identificación o nombre de usuario'
-                                        type='search'
-                                        aria-label='Buscar usuarios'
-                                        onChange={handleSearch}
-                                    />
-                                </div>
-                            )}
-                            <div className='pet-content-pet-details'>
-                                {currentTab === 'Datos Generales' && (
-                                    <Description
-                                        handleChange={handleChange} 
-                                        headers={headers}
-                                        datas={{
-                                            image: datas.fot_mas,
-                                            alt_img: `${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`,
-                                            ...datas}}
-                                        imgDefault={imgPetDefault}
-                                        navigate={navigate}
-                                        isEditing={isEditing}
-                                        disabled={['esp_mas','raz_mas','col_mas','gen_mas']}
-                                    />
+                            <section className='pet-content-pet-details-main'>
+                                {currentTab === 'Historia Clinica' && (
+                                    /*  Header con foto y datos principales */
+                                    <header className='pet-header-pet-details'>
+                                        <aside className='pet-avatar-container-pet-details'>
+                                            {checkImage(
+                                                datas.fot_mas,
+                                                `${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`,
+                                                imgPetDefault,
+                                                'pet-avatar-pet-details'
+                                            )}
+                                        </aside>
+                                        
+                                        <aside className='pet-main-info-pet-details'>
+                                            <h1 className='pet-main-info-h1-pet-details'>{datas.nom_mas}</h1>
+                                            <div className='pet-meta-pet-details'>
+                                                <span className='species-pet-details'>{datas.esp_mas}</span>
+                                                <span className='breed-pet-details'>{datas.raz_mas}</span>
+                                                <span className='pet-age-pet-details'>{`${getAge(datas.fec_nac_mas)} Años`}</span>
+                                            </div>
+                                        </aside>
+                                    </header>
                                 )}
-                                {currentTab === 'Historia Clinica' && appointment?.map((item, index) => (
-                                    <article 
-                                        key={index} 
-                                        className='info-card-pet-details'
-                                        onClick={() => alert("Historial medico")}
-                                    >
-                                        <h2 className='info-card-h2-pet-details'>
-                                            <svg width='20' height='20' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
-                                                <path d='M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z' fill='currentColor' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
-                                                <path d='M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
-                                                <path d='M16 2V6' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
-                                                <path d='M8 2V6' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
-                                                <path d='M3 10H21' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
-                                            </svg>
-                                            Atencion Médica #{index + 959}
-                                        </h2>
-                                        <div className='info-grid-pet-details'>
-                                            <div className='info-item-pet-details'>
-                                                <span className='info-label-pet-details'>Fecha Cita</span>
-                                                <span className='info-value-pet-details'>{item.fec_cit || "No Registrado"}</span>
+                                {currentTab === 'Historia Clinica' && (
+                                    <div className='inputcontenedoradminhome'>
+                                        <input
+                                            id='busqueda-usuario'
+                                            className='campoadminhome'
+                                            placeholder='Buscar por fecha de la cita, nombre del servicio o nombre del veterinario'
+                                            type='search'
+                                            aria-label='Buscar usuarios'
+                                            onChange={handleSearch}
+                                        />
+                                    </div>
+                                )}
+                                <section className='pet-content-pet-details'>
+                                    {currentTab === 'Datos Generales' && (
+                                        <Description
+                                            handleChange={handleChange} 
+                                            headers={headers}
+                                            datas={{
+                                                image: datas.fot_mas,
+                                                alt_img: `${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`,
+                                                ...datas}}
+                                            imgDefault={imgPetDefault}
+                                            navigate={navigate}
+                                            isEditing={isEditing}
+                                            disabled={['esp_mas','raz_mas','col_mas','gen_mas']}
+                                        />
+                                    )}
+                                    {currentTab === 'Historia Clinica' && appointment[page -1]?.map((item, index) => (
+                                        <article 
+                                            key={index} 
+                                            className='info-card-pet-details'
+                                            onClick={() => alert("Historial medico")}
+                                        >
+                                            <h2 className='info-card-h2-pet-details'>
+                                                <svg width='20' height='20' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                                                    <path d='M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z' fill='currentColor' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
+                                                    <path d='M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
+                                                    <path d='M16 2V6' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
+                                                    <path d='M8 2V6' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
+                                                    <path d='M3 10H21' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
+                                                </svg>
+                                                Atencion Médica #{index + 959}
+                                            </h2>
+                                            <div className='info-grid-pet-details'>
+                                                <div className='info-item-pet-details'>
+                                                    <span className='info-label-pet-details'>Fecha Cita</span>
+                                                    <span className='info-value-pet-details'>{item.fec_cit || "No Registrado"}</span>
+                                                </div>
+                                                <div className='info-item-pet-details'>
+                                                    <span className='info-label-pet-details'>Servicio</span>
+                                                    <span className='info-value-pet-details'>{item.nom_ser}</span>
+                                                </div>
+                                                <div className='info-item-pet-details'>
+                                                    <span className='info-label-pet-details'>Veterinario</span>
+                                                    <span className='info-value-pet-details'>{`${item.nom_per} ${item.ape_per}`}</span>
+                                                </div>
+                                                <button className='EditBtn'>
+                                                    <Edit size={18} />
+                                                    <span>Ver</span>
+                                                </button>
                                             </div>
-                                            <div className='info-item-pet-details'>
-                                                <span className='info-label-pet-details'>Servicio</span>
-                                                <span className='info-value-pet-details'>{item.nom_ser}</span>
-                                            </div>
-                                            <div className='info-item-pet-details'>
-                                                <span className='info-label-pet-details'>Veterinario</span>
-                                                <span className='info-value-pet-details'>{`${item.nom_per} ${item.ape_per}`}</span>
-                                            </div>
-                                            <button className='EditBtn'>
-                                                <Edit size={18} />
-                                                <span>Ver</span>
+                                        </article>))
+                                    }
+                                </section>
+                                {currentTab === 'Historia Clinica' && (
+                                    <footer className='paginacion-gestion'>
+                                        <div className='info-paginacion'>Mostrando registros del 1 al {appointment?.length || '1'} de un total de {appointmentAlmc?.length || '0'} registros.</div>
+                                        <div className='btns-container-paginacion'>
+                                            <button 
+                                                type='button' 
+                                                className='btn-paginacion' 
+                                                onClick={prevPage}
+                                                >
+                                                Anterior
                                             </button>
+                                            <button 
+                                                type='button' 
+                                                className='btn-paginacion btn-active'
+                                                >{page}</button>
+                                            <button 
+                                                type='button' 
+                                                className='btn-paginacion'
+                                                onClick={nextPage}
+                                            >Siguiente</button>
                                         </div>
-                                    </article>))
-                                }
-                            </div> 
+                                    </footer>
+                                )}
+                            </section>
                         </div>
                     </div>
                 </main>
