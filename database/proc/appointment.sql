@@ -72,7 +72,6 @@ BEGIN
     LIMIT 50;
 END //
 
-DROP PROCEDURE SearchAppointmentsByUser
 
 CREATE PROCEDURE RegistAppointment(
     IN p_reg_date DATE
