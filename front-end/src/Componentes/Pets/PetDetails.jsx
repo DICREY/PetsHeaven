@@ -6,6 +6,7 @@ import swal from 'sweetalert'
         
 // Import
 import { Description } from '../Global/Description'
+import { HistoryTest } from './historyTest'
 import { Loading } from '../Global/Notifys'
 import { DeleteData, ModifyData, PostData } from '../Varios/Requests'
 import { getRoles,loadingAlert, checkImage, getAge, errorStatusHandler,divideList } from '../Varios/Util'
@@ -19,10 +20,10 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
     const [isAdmin,setIsAdmin] = useState(false)
     const [isEditing,setIsEditing] = useState(false)
     const [modPet,setModPet] = useState({})
-    const [history,setHistory] = useState({})
     const [currentTab,setCurrentTab] = useState(tab)
     const [appointment,setAppointment] = useState()
     const [appointmentAlmc,setAppointmentAlmc] = useState()
+    const [mHSelected,setMHSelected] = useState()
     const [page,setPage] = useState(1)
     const [showMedicHistory,setShowMedicHistory] = useState(false)
     const headers = {
@@ -77,9 +78,9 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
 
     // Show medic history
     const showHistory = (item) => {
-        alert("Show Medic History")
+        console.log(appointment)
         setShowMedicHistory(true)
-        console.log(item)
+        setMHSelected({...datas,...item})
     }
 
     // Get pets history
@@ -92,7 +93,6 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
                     secondData: datas.doc_per
                 })
                 if (data.data.result) {
-                    setHistory(data.data.result)
                     setAppointment(divideList(data.data.result.citas,6))
                     setAppointmentAlmc(data.data.result.citas)
                 }
@@ -378,6 +378,13 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
                             </section>
                         </div>
                     </div>
+                    {showMedicHistory && (
+                        <HistoryTest 
+                            appointmentData={mHSelected}
+                            imgDefault={imgPetDefault}
+                            onClose={() => setShowMedicHistory(false)}
+                        />
+                    )}
                 </main>
             </main>):(
                 <Loading />

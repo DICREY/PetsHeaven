@@ -1,0 +1,193 @@
+:root {
+  --primary-color: #00BCD4;
+  --primary-dark: #0097A7;
+  --primary-light: #B2EBF2;
+  --white: #FFFFFF;
+  --gray-light: #F5F5F5;
+  --gray-medium: #E0E0E0;
+  --gray-dark: #757575;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Estructura principal */
+.floating-window-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(3px);
+}
+
+.floating-window {
+  background-color: var(--white);
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow);
+  position: relative;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Header */
+.window-header {
+  padding: 20px;
+  border-bottom: 1px solid var(--gray-medium);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.window-header h2 {
+  margin: 0;
+  color: var(--primary-dark);
+  font-size: 1.4rem;
+}
+
+/* Botón de cierre */
+.close-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.close-button:hover {
+  background-color: var(--gray-light);
+}
+
+/* Contenido */
+.window-content {
+  padding: 20px;
+}
+
+/* Sección de mascota */
+.pet-info-section {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--gray-medium);
+}
+
+.pet-avatar-container {
+  margin-right: 15px;
+}
+
+.pet-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary-light);
+}
+
+.pet-details h3 {
+  margin: 0 0 5px 0;
+  color: var(--primary-dark);
+  font-size: 1.2rem;
+}
+
+.pet-details p {
+  margin: 0;
+  color: var(--gray-dark);
+}
+
+/* Detalles de la cita */
+.appointment-details {
+  margin-bottom: 20px;
+}
+
+.detail-row {
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: var(--primary-dark);
+  min-width: 120px;
+  font-size: 0.95rem;
+}
+
+.detail-value {
+  color: var(--gray-dark);
+  flex: 1;
+}
+
+/* Info del propietario */
+.owner-info-section {
+  padding: 15px;
+  background-color: var(--gray-light);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.owner-info-section h3 {
+  margin-top: 0;
+  color: var(--primary-dark);
+  font-size: 1.1rem;
+}
+
+/* Info de registro */
+.registration-info {
+  font-size: 0.85rem;
+  color: var(--gray-dark);
+  text-align: right;
+  font-style: italic;
+}
+
+/* Badge de estado */
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.status-badge.pendiente {
+  background-color: #FFF3E0;
+  color: #E65100;
+}
+
+.status-badge.realizado {
+  background-color: #E8F5E9;
+  color: #2E7D32;
+}
+
+.status-badge.cancelado {
+  background-color: #FFEBEE;
+  color: #C62828;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .detail-row {
+    flex-direction: column;
+  }
+  
+  .detail-label {
+    margin-bottom: 4px;
+  }
+  
+  .floating-window {
+    width: 95%;
+  }
+}
