@@ -74,4 +74,25 @@ END //
 
 DROP PROCEDURE SearchAppointmentsByUser
 
-CALL `SearchAppointmentsByUser`("Luna")
+CREATE PROCEDURE RegistAppointment(
+    IN p_reg_date DATE
+    IN p_date DATE
+    IN p_hor_ini TIME
+    IN p_hor_fin TIME
+    IN p_ser INT 
+    IN p_vet INT
+    IN p_mas INT
+    IN p_status VARCHAR("25")
+)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    SET autocommit = 0;
+
+    START TRANSACTION;
+
+END //
