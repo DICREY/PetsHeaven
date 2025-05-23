@@ -61,6 +61,19 @@ class Appointment {
             this.database.conection.end()
         }) 
     }
+
+    async registAppointment () {
+        
+    }
+
+    async modifyAppointment() {
+
+    }
+
+    async disableAppointment () {
+
+    }
+    
 }
 
 module.exports = Appointment
