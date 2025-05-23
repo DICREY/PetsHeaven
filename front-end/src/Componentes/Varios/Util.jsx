@@ -46,8 +46,6 @@ export const checkImage = (src = '', alt, imgDefault = '', className = '') => {
   img.src = srcMod
   img.onerror = () => srcMod = imgDefault
 
-  console.log(srcMod)
-
   return <img
     className={`${className}`}
     src={srcMod}
