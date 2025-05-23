@@ -22,6 +22,7 @@
     box-shadow: 0 0.2rem 1.3rem rgba(0, 0, 0, 0.1);
     width: 20rem;
     text-align: center;
+    font-size: 1rem;
     border: .1rem solid #00000010;
 }
 
@@ -46,14 +47,15 @@
 .LoadingText p {
     margin: 0;
     color: var(--azul-turquesa);
-    font-weight: 500;
+    font-weight: bold;
+    font-size: 1.2rem;
 }
 
 .LoadingSubText {
     color: #757575 !important;
-    font-size: 0.9rem;
-    font-weight: 400 !important;
-    margin-top: 1.2rem;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    margin-top: 0.4rem !important;
 }
 
 .LoadingBar {

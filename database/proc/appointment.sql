@@ -32,6 +32,6 @@ BEGIN
     LIMIT 50;
 END //
 
-CALL `SearchAllAppointments`();
+/* CALL `SearchAllAppointments`(); */
 
 /* DROP PROCEDURE `SearchAllAppointments`; */ 
