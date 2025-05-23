@@ -391,7 +391,6 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
                             </section>
                         </div>
                     </div>
-<<<<<<< HEAD
                     {showMedicHistory && (
                         <HistoryTest 
                             appointmentData={mHSelected}
@@ -399,12 +398,10 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
                             onClose={() => setShowMedicHistory(false)}
                         />
                     )}
-=======
                     {consult && (<FormularioConsulta 
                         mascota={datas}
                         imgDedault={imgPetDefault}
                     />)}
->>>>>>> 5f2610dd933654fdac34f7f4a36d934cf844ad26
                 </main>
                 {validating && (
                     <Loading 

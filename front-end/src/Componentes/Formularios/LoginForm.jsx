@@ -61,7 +61,6 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
     
     try {
       const log = await login(url,firstData,secondData)
-
       setValidating(false)
       if (log) {
         const token = localStorage.getItem("token")
@@ -83,6 +82,7 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
       
 
     } catch (err) {
+      setValidating(false)
       if(err.status) {
         if (err.status === 429) {
           setWaitTime(true)
