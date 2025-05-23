@@ -24,6 +24,7 @@ import { getRoles,Logout } from '../Componentes/Varios/Util'
 import { useInactivityDetector } from '../Componentes/Varios/InactiveDectetor'
 import VeterinariaPage from '../Componentes/VeterinariaPage'
 import { PerfilPropietario } from '../Componentes/Peoples/PerfilPropietario'
+import {GesAgendaPersonal} from '../Componentes/InterfazAdmin/GesAgendaPersonal'
 
 //import Crud personal
 import { ConfiguracionUsuarioCrud } from '../Componentes/InterfazAdmin/CrudPersonal/ConfiguracionUsuarioCrud'
@@ -178,6 +179,9 @@ export default function App () {
         </Route>
         <Route path='calendario/general' element={
           <VetRoute children={<GesAgendaGeneral URL={URL} />} />} >
+        </Route>
+        <Route path='calendario/usuario' element={
+          <VetRoute children={<GesAgendaPersonal URL={URL} />} />} >
         </Route>
 
         {/* Public Routes */}

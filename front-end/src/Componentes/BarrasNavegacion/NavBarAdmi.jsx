@@ -145,7 +145,7 @@ export const NavBarAdmin = () => {
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to={'/agenda/personal'} className='subenlacenavadmin'>
+                  <NavLink to={'/calendario/usuario'} className='subenlacenavadmin'>
                     <CalendarClock className='iconosubnavadmin' />
                     <span>Agenda Personal</span>
                   </NavLink>
