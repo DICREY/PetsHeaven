@@ -1,0 +1,71 @@
+import React from "react"
+import { useState } from "react"
+import "../../../styles/InterfazAdmin/FormulariosAdmin/Consulta.css"
+
+const FormularioConsulta = () => {
+
+
+    // Datos mascota  
+  const [mascota, setMascota] = useState({
+    nombre: "Max",
+    especie: "Perro",
+    raza: "Labrador Retriever",
+    edad: "7 Años",
+    foto: "/placeholder.svg?height=100&width=100",
+  })
+
+  return (
+    <div className="contenedor-consul">
+      <div className="cabecera-consul">
+        <div className="contenido-cabecera-consul">
+          <div className="avatar-consul">
+            <img src={mascota.foto || "/placeholder.svg"} alt={mascota.nombre} className="imagen-consul" />
+          </div>
+          <div className="info-consul">
+            <h1 className="nombre-consul">{mascota.nombre}</h1>
+            <div className="etiquetas-consul">
+              <span className="etiqueta-consul">{mascota.especie}</span>
+              <span className="etiqueta-consul">{mascota.raza}</span>
+              <span className="etiqueta-consul">{mascota.edad}</span>
+            </div>
+          </div>
+        </div>
+        <button className="boton-consul" onClick={() => alert("Consulta guardada")}>
+          Guardar
+        </button>
+      </div>
+
+      <div className="seccion-consul">
+        <h3 className="titulo-consul">Consulta</h3>
+
+        <div className="grid-consul">
+          <div className="item-consul">
+            <label className="label-consul">Peso (kg)</label>
+            <input type="text" className="input-consul" placeholder="Ej: 28.50" />
+          </div>
+
+          <div className="item-consul">
+            <label className="label-consul">Temperatura (°C)</label>
+            <input type="text" className="input-consul" placeholder="Ej: 38.5" />
+          </div>
+        </div>
+
+        <div className="divisor-consul"></div>
+
+        <div className="item-consul ancho-consul">
+          <label className="label-consul">Motivo de la consulta</label>
+          <textarea className="area-consul" placeholder="Describa el motivo de la consulta" rows={4}></textarea>
+        </div>
+
+        <div className="divisor-consul"></div>
+
+        <div className="item-consul ancho-consul">
+          <label className="label-consul">Tratamiento</label>
+          <textarea className="area-consul" placeholder="Describa el tratamiento recomendado" rows={4}></textarea>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default FormularioConsulta

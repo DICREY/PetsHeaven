@@ -52,6 +52,11 @@ html {
         font-size: 16px;
     }
 }
+@media (1500px < width) {
+    html {
+        font-size: 18px;
+    }
+}
 @media (2000px < width) {
     html {
         font-size: 24px;

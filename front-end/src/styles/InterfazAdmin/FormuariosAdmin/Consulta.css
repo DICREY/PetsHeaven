@@ -1,0 +1,160 @@
+.contenedor-consul {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background-color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.cabecera-consul {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.contenido-cabecera-consul {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-consul {
+  margin-right: 20px;
+}
+
+.imagen-consul {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+}
+
+.info-consul {
+  display: flex;
+  flex-direction: column;
+}
+
+.nombre-consul {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.etiquetas-consul {
+  display: flex;
+  gap: 10px;
+}
+
+.etiqueta-consul {
+  background-color: #e6f7ff;
+  color: #0096cc;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.seccion-consul {
+  padding: 20px;
+}
+
+.titulo-consul {
+  font-size: 16px;
+  color: #666;
+  margin: 0 0 15px 0;
+  font-weight: 500;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 8px;
+}
+
+.grid-consul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.item-consul {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.label-consul {
+  font-size: 12px;
+  color: #0096cc;
+  margin-bottom: 5px;
+}
+
+.input-consul {
+  width: 100%;
+  height: 40px;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+}
+
+.area-consul {
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 12px;
+  font-size: 14px;
+  color: #333;
+  resize: vertical;
+  min-height: 100px;
+  background-color: #fff;
+}
+
+.divisor-consul {
+  height: 1px;
+  background-color: #e5e7eb;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.ancho-consul {
+  grid-column: 1 / -1;
+}
+
+.input-consul:focus,
+.area-consul:focus {
+  outline: none;
+  border-color: #0096cc;
+  box-shadow: 0 0 0 2px rgba(0, 150, 204, 0.1);
+}
+
+@media (max-width: 640px) {
+  .grid-consul {
+    grid-template-columns: 1fr;
+  }
+}
+
+.boton-consul {
+  background-color: #0096cc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.boton-consul:hover {
+  background-color: #0078a3;
+}
+
+.boton-consul:active {
+  background-color: #006690;
+}
