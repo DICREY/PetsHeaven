@@ -175,7 +175,6 @@ BEGIN
         )
     ORDER BY m.nom_mas
     LIMIT 40;
-
 END //
 CREATE PROCEDURE pets_heaven.SearchPetBy(
     IN p_by VARCHAR(100)
