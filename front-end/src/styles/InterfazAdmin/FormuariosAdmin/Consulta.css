@@ -1,0 +1,157 @@
+.contenedor-consul {
+  max-width: 42rem;
+  padding: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.cabecera-consul {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.contenido-cabecera-consul {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-consul {
+  margin-right: 1.2rem;
+}
+
+.imagen-consul {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+}
+
+.info-consul {
+  display: flex;
+  flex-direction: column;
+}
+
+.nombre-consul {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.etiquetas-consul {
+  display: flex;
+  gap: 10px;
+}
+
+.etiqueta-consul {
+  background-color: #e6f7ff;
+  color: #0096cc;
+  font-size: 0.9rem;
+  padding: 4px 10px;
+  border-radius: 1.2rem;
+}
+
+.seccion-consul {
+  padding: 1.2rem;
+}
+
+.titulo-consul {
+  font-size: 1rem;
+  color: #666;
+  margin: 0 0 0.9rem 0;
+  font-weight: 500;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 0.5rem;
+}
+
+.grid-consul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+
+.item-consul {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.9rem;
+}
+
+.label-consul {
+  font-size: 0.9rem;
+  color: #0096cc;
+  margin-bottom: 5px;
+}
+
+.input-consul {
+  width: 100%;
+  height: 40px;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 8px 0.7rem;
+  font-size: 0.9rem;
+  color: #333;
+  background-color: #fff;
+}
+
+.area-consul {
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 0.7rem;
+  font-size: 0.9rem;
+  color: #333;
+  resize: vertical;
+  min-height: 6.2rem;
+  background-color: #fff;
+}
+
+.divisor-consul {
+  height: 0.1rem;
+  background-color: #e5e7eb;
+  margin: 1.2rem 0;
+  width: 100%;
+}
+
+.ancho-consul {
+  grid-column: 1 / -1;
+}
+
+.input-consul:focus,
+.area-consul:focus {
+  outline: none;
+  border-color: #0096cc;
+  box-shadow: 0 0 0 2px rgba(0, 150, 204, 0.1);
+}
+
+@media (max-width: 640px) {
+  .grid-consul {
+    grid-template-columns: 1fr;
+  }
+}
+
+.boton-consul {
+  background-color: #0096cc;
+  color: white;
+  border: none;
+  border-radius: 0.2rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.boton-consul:hover {
+  background-color: #0078a3;
+}
+
+.boton-consul:active {
+  background-color: #006690;
+}

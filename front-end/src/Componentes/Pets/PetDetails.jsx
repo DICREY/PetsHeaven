@@ -1,6 +1,6 @@
 // Librarys 
 import React, { useState, useEffect } from 'react'
-import { ArrowLeft, Trash2, Edit, Save, X } from 'lucide-react'
+import { ArrowLeft, Trash2, Edit, Save, X, FilePlus } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import swal from 'sweetalert'
         
@@ -13,6 +13,7 @@ import { getRoles,loadingAlert, checkImage, getAge, errorStatusHandler,divideLis
 
 // Import styles 
 import '../../../src/styles/Pets/petDetails.css'
+import { FormularioConsulta } from '../InterfazAdmin/FormulariosAdmin/Consulta'
 
 // Main component
 export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Generales'}) => {
@@ -26,6 +27,8 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
     const [mHSelected,setMHSelected] = useState()
     const [page,setPage] = useState(1)
     const [showMedicHistory,setShowMedicHistory] = useState(false)
+    const [consult,setConsult] = useState(false)
+    const [validating, setValidating] = useState(false)
     const headers = {
         Nombre: 'nom_mas',
         Especie: 'esp_mas',
@@ -111,11 +114,12 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
 
     // Request for Modify Data
     const modifyData = async () => {
+        setValidating(true)
         try {
             const token = localStorage.getItem('token')
             if (token) {
-                loadingAlert("Validando...",)
                 const mod = await ModifyData(URL, token, modPet)
+                setValidating(false)
                 mod.data.modify && swal({
                     icon: 'success',
                     title: 'Modificado',
@@ -123,6 +127,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
                 })
             }
         } catch (err) {
+            setValidating(false)
             if(err.status) {
                 const message = errorStatusHandler(err.status)
                 swal({
@@ -139,17 +144,18 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
         // Vars
         const deleteURL = `${mainURL}/delete`
         const token = localStorage.getItem('token')
+        setValidating(true)
         try {
             if(token) {
                 const roles = getRoles(token)
                 const admin = roles.some(role => role.toLowerCase() === 'administrador')
                 if (admin) {
-                    loadingAlert('Validando...')
-            
+                    
                     const deleted = await DeleteData(deleteURL,token,{
                         nom_mas: datas.nom_mas,
                         doc_mas: datas.doc_mas
                     })
+                    setValidating(false)
                     
                     console.log(deleted)
                     deleted.data.deleted? swal({
@@ -164,6 +170,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
                 }
             } else navigate('/34')
         } catch (err) {
+            setValidating(false)
             if (err.status) {
                 const message = errorStatusHandler(err.status)
                 swal({
@@ -207,50 +214,56 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
         <>
         {datas && appointment? (
             <main className='app-container-pet-details'>
-                {/* Barra de navegación superior */}
-                <nav className='top-nav-pet-details'>
-                    <div className='nav-title-pet-details'>
-                        <h1 className='tituloProps'>
-                            Configuración de Mascota<span className='subtituloProps'> | Descripción</span>
-                        </h1>
-                    </div>
-                    <div className='nav-actions-pet-details'>
-                        <button className='BackBtn' onClick={() => navigate(-1)}>
-                            <ArrowLeft size={18} />
-                            <span>Atrás</span>
-                        </button>
-                        {currentTab === 'Datos Generales' && (
-                            <>
-                            {isEditing ? (
-                                <>
-                                    <button className='botonCancelarProps' onClick={() => setIsEditing(false)}>
-                                        <X size={18} />
-                                        <span>Cancelar</span>
-                                    </button>
-                                    <button className='botonGuardarProps' onClick={modifyData}>
-                                        <Save size={18} />
-                                        <span>Guardar</span>
-                                    </button>
-                                </>
-                            ) : (
-                                <button className='EditBtn' onClick={() => setIsEditing(true)}>
-                                    <Edit size={18} />
-                                    <span>Editar</span>
-                                </button>
-                            )}
-                            {isAdmin && !isEditing && (
-                                <button className='DeleteBtn' onClick={deletePet}>
-                                    <Trash2 size={18} />
-                                    <span>Desactivar</span>
-                                </button>)
-                            }
-                            </>
-                        )}
-                    </div>
-                </nav>
                 <main className='main-content-pet-details'> 
                     <div className='pet-modal-overlay-pet-details'>
                         <div className='pet-modal-content-pet-details'>
+
+                            {/* Barra de navegación superior */}
+                            <header className='cabeceraProps'>
+                                <h1 className='tituloProps'>
+                                    Configuración de Mascota<span className='subtituloProps'>| {currentTab}</span>
+                                </h1>
+                                <div className='botonesAccionProps'>
+                                    <button className='BackBtn' onClick={() => navigate(-1)}>
+                                        <ArrowLeft size={18} />
+                                        <span>Atrás</span>
+                                    </button>
+                        
+                                    {currentTab === 'Historia Clinica' && (
+                                        <button className='EditBtn' onClick={() => setConsult(true)}>
+                                            <FilePlus size={18} />
+                                            <span>Agregar Consulta</span>
+                                        </button>
+                                    )}
+                                    {currentTab === 'Datos Generales' && (
+                                    <>
+                                        {isEditing ? (
+                                            <>
+                                                <button className='DeleteBtn' onClick={() => setIsEditing(false)}>
+                                                    <X size={18} />
+                                                    <span>Cancelar</span>
+                                                </button>
+                                                <button className='EditBtn' onClick={modifyData}>
+                                                    <Save size={18} />
+                                                    <span>Guardar</span>
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <button className='EditBtn' onClick={() => setIsEditing(true)}>
+                                                <Edit size={18} />
+                                                <span>Editar</span>
+                                            </button>
+                                        )}
+                                        {isAdmin && !isEditing && (
+                                            <button className='DeleteBtn' onClick={deletePet}>
+                                                <Trash2 size={18} />
+                                                <span>Desactivar</span>
+                                            </button>)
+                                        }
+                                    </>
+                                    )}
+                                </div>
+                            </header>
 
                             {/* Navegación por pestañas */}
                             <nav className='pestanasProps'>
@@ -378,6 +391,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
                             </section>
                         </div>
                     </div>
+<<<<<<< HEAD
                     {showMedicHistory && (
                         <HistoryTest 
                             appointmentData={mHSelected}
@@ -385,7 +399,19 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
                             onClose={() => setShowMedicHistory(false)}
                         />
                     )}
+=======
+                    {consult && (<FormularioConsulta 
+                        mascota={datas}
+                        imgDedault={imgPetDefault}
+                    />)}
+>>>>>>> 5f2610dd933654fdac34f7f4a36d934cf844ad26
                 </main>
+                {validating && (
+                    <Loading 
+                        title='Validando...'
+                        message='Verificando datos de inicio de sesión'
+                    />)
+                }
             </main>):(
                 <Loading />
             )}
