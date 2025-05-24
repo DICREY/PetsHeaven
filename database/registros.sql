@@ -1,8 +1,3 @@
-<<<<<<< HEAD
--- Active: 1747081666433@@127.0.0.1@3306@pets_heaven
-=======
--- Active: 1746046445434@@127.0.0.1@3306@pets_heaven
->>>>>>> 7683f047b7a9893aecaa095aacc01b0edc7cfdcd
 INSERT INTO pets_heaven.roles (nom_rol,fot_rol) VALUES
 ('Administrador','https://imgs.search.brave.com/JheS1cTjYH1Y1E7rp1FADfQDL9uXw20FxZAFfjZwEaY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy9k/L2Q0L04uVGVzbGEu/SlBH'),
 ('Veterinario','https://imgs.search.brave.com/rL6dnhwCDXLvz02lsRs2QjVj1F8o-8D0o4pTYhmHah8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy90/aHVtYi9jL2M4L01h/cmllX0N1cmllX2Mu/XzE5MjBzLmpwZy81/MTJweC1NYXJpZV9D/dXJpZV9jLl8xOTIw/cy5qcGc'),
@@ -147,18 +142,6 @@ VALUES
 (2,2),
 (3,3);
 
-INSERT INTO pets_heaven.consultas (pro_mas_con, vet_con, mas_con) VALUES
-(1, 1, 1),
-(2, 2, 2),
-(3, 3, 3),
-(4, 1, 4),
-(5, 2, 5),
-(6, 3, 6),
-(7, 1, 7),
-(8, 2, 8),
-(1, 3, 9),
-(2, 1, 10);
-
 INSERT INTO pets_heaven.citas (fec_cit, hor_ini_cit, hor_fin_cit, ser_cit, vet_cit, mas_cit, estado) VALUES
 ('2025-06-16', '09:00:00', '10:00:00', 1, 1, 1, 'REALIZADO'),  -- Lunes, Consulta General
 ('2025-06-17', '11:00:00', '12:00:00', 2, 1, 1, 'PENDIENTE'),   -- Martes, Vacunación
@@ -170,3 +153,28 @@ INSERT INTO pets_heaven.citas (fec_cit, hor_ini_cit, hor_fin_cit, ser_cit, vet_c
 ('2025-06-23', '15:30:00', '16:30:00', 1, 1, 4, 'PENDIENTE'),   -- Lunes, Consulta General
 ('2025-06-24', '11:30:00', '12:30:00', 3, 2, 5, 'REALIZADO'),   -- Martes, Cirugía
 ('2025-06-25', '17:00:00', '18:00:00', 4, 2, 5, 'PENDIENTE');   -- Miércoles, Emergencias
+
+INSERT INTO pets_heaven.consultas (
+    pes_mas_con, tem_mas_con, mot_con, tra_con, dia_con, med_con, 
+    fec_con, cit_con, pro_mas_con, vet_con, mas_con, estado_con
+) VALUES
+(28.3, 38, 'Revisión anual de rutina', 'Examen físico completo', 'Mascota saludable', 'Ninguno necesario', 
+ '2025-06-16', 1, 1, 1, 1, 'realizada'),
+(4.1, 39, 'Vacunación anual', 'Aplicación de vacuna múltiple', 'Mascota en buen estado', 'Antiparasitario interno', 
+ '2025-06-17', 2, 2, 1, 2, 'pendiente'),
+(12.5, 38, 'Cirugía de esterilización', 'Esterilización exitosa', 'Recuperación normal post-quirúrgica', 'Analgésicos y antibióticos', 
+ '2025-06-18', 3, 3, 2, 3, 'realizada'),
+(5.0, 38, 'Control post-operatorio', 'Curación de herida', 'Herida cicatrizando correctamente', 'Antibiótico tópico', 
+ '2025-06-19', 4, 4, 2, 4, 'en-espera'),
+(31.8, 40, 'Emergencia por fiebre alta', 'Hidratación intravenosa', 'Infección bacteriana detectada', 'Antibiótico y antipirético', 
+ '2025-06-20', 5, 5, 3, 5, 'realizada'),
+(3.7, 38, 'Vacunación antirrábica', 'Aplicación de vacuna', 'Mascota saludable', 'Ninguno', 
+ '2025-06-21', 6, 1, 3, 6, 'cancelado'),
+(20.1, 38, 'Baño y corte de pelo', 'Baño terapéutico', 'Piel en buen estado', 'Champú medicado', 
+ '2025-06-22', 7, 2, 1, 7, 'realizada'),
+(7.3, 39, 'Revisión de rutina', 'Examen físico', 'Leve sobrepeso', 'Dieta especial recomendada', 
+ '2025-06-23', 8, 3, 1, 8, 'pendiente'),
+(6.7, 38, 'Cirugía menor', 'Extracción de diente', 'Recuperación normal', 'Analgésicos por 3 días', 
+ '2025-06-24', 9, 4, 2, 9, 'realizada'),
+(34.0, 39, 'Emergencia por herida', 'Sutura y curación', 'Herida superficial limpia', 'Antibiótico y analgésico', 
+ '2025-06-25', 10, 5, 2, 10, 'pendiente');

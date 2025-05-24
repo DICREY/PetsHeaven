@@ -6,7 +6,7 @@ import swal from 'sweetalert'
 
 // Imports 
 import { login } from '../Varios/Requests'
-import { getRoles, errorStatusHandler, formatoTiempo, checkImage } from '../Varios/Util'
+import { getRoles, errorStatusHandler, formatoTiempo, checkImage, Logout } from '../Varios/Util'
 
 // Import styles
 import '../../../src/styles/Formularios/login.css'
@@ -104,6 +104,7 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
 
   useEffect(() => {
     let intervalo = null
+    if (localStorage.getItem("token")) Logout()
     
     if (waitTime) {
       // Inicia el contador
@@ -157,11 +158,11 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
               <div className='contenido-paso-login'>
               <div className='grupo-campo-login'>
                 <label className='label' htmlFor="docEmail">
-                  Documento o Email <span className='obligatorio-login'>*</span>
+                  Email <span className='obligatorio-login'>*</span>
                 </label>
                 <input
                   id="docEmail"
-                  type='text'
+                  type='email'
                   placeholder='Número de documento o email'
                   className={errors.docEmail ? 'campo-error-login input' : 'input'}
                   {...register('docEmail', {
@@ -173,6 +174,10 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
                     maxLength: {
                       value: 100,
                       message: 'Debe contener menos de 100 caracteres',
+                    },
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: 'El correo electrónico es inválido',
                     },
                   })}
                   aria-describedby={errors.docEmail ? "docEmail-error" : undefined}

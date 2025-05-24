@@ -1,7 +1,7 @@
 // Librarys
 import React, { useState, useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 // import emailjs from '@emailjs/browser'
 
 // Imports 
@@ -9,13 +9,15 @@ import { Register } from '../Varios/Requests'
 
 // Import styles
 import '../../../src/styles/Formularios/Registro.css'
-import { checkImage } from '../Varios/Util'
+import { checkImage, LegalAge } from '../Varios/Util'
 
 // Component 
 const Registro = ({ URL = '', imgDefault = '' }) => {
   // Vars 
   const imagenFondo = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Fondos/fondo.png'
   const logoUrl = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/5.png'
+  const legalDate = LegalAge()
+  const navigate = useNavigate()
 
   // Datos que entran del formulario de registro
   const [formData, setFormData] = useState({
@@ -40,15 +42,15 @@ const Registro = ({ URL = '', imgDefault = '' }) => {
     codigoIngresado: ['', '', '', '', '', '']
   })
   
-  // Estados de UI
+  // Dynamic vars
   const [paso, setPaso] = useState(1)
   const [verPassword, setVerPassword] = useState(false)
   const [verConfirmarPassword, setVerConfirmarPassword] = useState(false)
   const [mostrarRequisitosFecha, setMostrarRequisitosFecha] = useState(false)
   const [errorCodigo, setErrorCodigo] = useState(false)
-  const [tiempoRestante, setTiempoRestante] = useState(300)
   const [timerActivo, setTimerActivo] = useState(false)
-  const [loading, setLoading] = useState()
+  const [validating, setValidating] = useState(0)
+  const [tiempoRestante, setTiempoRestante] = useState(300)
   const emailInputRef = useRef(null)
 
   // Configuración de react-hook-form
@@ -60,36 +62,8 @@ const Registro = ({ URL = '', imgDefault = '' }) => {
       trigger,
       setValue,
       getValues
-    } = useForm({ mode: 'onChange',
-        defaultValues: formData
-     })
-    const password = watch('password')
-
-  // Efectos
-  useEffect(() => {
-    const subscription = watch((values) => {
-      setFormData(prev => ({
-        ...prev,
-        ...values,
-        codigoVerificacion: prev.codigoVerificacion,
-        codigoIngresado: prev.codigoIngresado
-      }))
-    })
-    return () => subscription.unsubscribe()
-  }, [watch])
-
-  useEffect(() => {
-    let intervalo = null
-    if (timerActivo && tiempoRestante > 0) {
-      intervalo = setInterval(() => {
-        setTiempoRestante((prev) => prev - 1)
-      }, 1000)
-    } else if (tiempoRestante === 0) {
-      setTimerActivo(false)
-      if (paso === 3) generarCodigoVerificacion()
-    }
-    return () => clearInterval(intervalo)
-  }, [timerActivo, tiempoRestante, paso])
+    } = useForm({ mode: 'onChange', defaultValues: formData})
+  const password = watch('password')
 
   // Funciones principales
   const onSubmit = async (data) => {
@@ -239,12 +213,20 @@ const Registro = ({ URL = '', imgDefault = '' }) => {
   const SendData = async data => {
     // Vars
     const mainUrl = `${URL}/global/register`
+    setValidating(true)
+
     try {
       const send = await Register(mainUrl,data)
-      console.log(send)
-      send.data.created & alert('Registro exitoso')
+      setValidating(false)
+      if (send.data.created) {
+        console.log('registrado')
+        setTimeout(() => navigate('/user/login'),2000)
+      }
     } catch (error) {
-      console.log(error)  
+      setValidating(false)
+      if (error.status) {
+        console.log(error.status)
+      } else console.log(error)
     }
 
   }
@@ -280,10 +262,36 @@ const Registro = ({ URL = '', imgDefault = '' }) => {
     return `${minutos}:${segs < 10 ? '0' : ''}${segs}`
   }
 
+  // Efectos
+  useEffect(() => {
+    const subscription = watch((values) => {
+      setFormData(prev => ({
+        ...prev,
+        ...values,
+        codigoVerificacion: prev.codigoVerificacion,
+        codigoIngresado: prev.codigoIngresado
+      }))
+    })
+    return () => subscription.unsubscribe()
+  }, [watch])
+
+  useEffect(() => {
+    let intervalo = null
+    if (timerActivo && tiempoRestante > 0) {
+      intervalo = setInterval(() => {
+        setTiempoRestante((prev) => prev - 1)
+      }, 1000)
+    } else if (tiempoRestante === 0) {
+      setTimerActivo(false)
+      if (paso === 3) generarCodigoVerificacion()
+    }
+    return () => clearInterval(intervalo)
+  }, [timerActivo, tiempoRestante, paso])
+
   return (
-  <div className='registro-container'>
+  <main className='registro-container'>
     {/* Sección derecha - Imagen y cita */}
-    <div className='registro-imagen-container'>
+    <section className='registro-imagen-container'>
       <div className='imagen-fondo-contenedor'>
         {checkImage(
           imagenFondo,
@@ -296,10 +304,10 @@ const Registro = ({ URL = '', imgDefault = '' }) => {
         <h2 className='texto-cita'>'El amor por los animales es el reflejo de nuestra humanidad'</h2>
         <p className='subtexto-cita'>En PetsHeaven cuidamos de quienes más amas</p>
       </div>
-    </div>
+    </section>
 
     {/* Sección izquierda - Formulario de registro */}
-    <div className='registro-formulario-container'>
+    <section className='registro-formulario-container'>
       <div className='contenedor-logo-externo'>
         <a href='/main' className='cursor-pointer' aria-label='Regresar al inicio'>
           {checkImage(
@@ -333,37 +341,37 @@ const Registro = ({ URL = '', imgDefault = '' }) => {
             {/* Paso 1: Información Personal */}
             <div className={`contenido-paso ${paso === 1 ? '' : 'paso-oculto'}`}>
               <div className='grid-campos'>
-              <div className='grupo-campo'>
-                <label className='label' htmlFor='tipoDocumento'>
-                  Tipo de documento <span className='obligatorio'>*</span>
-                </label>
-                <select
-                  id='tipoDocumento'
-                  autoFocus // Soporte nativo para el focus en react :v
-                  onFocus={(e) => e.target.focus()} // Refuerza el enfoque
-                  className={errors.tipoDocumento ? 'campo-error select' : 'select'}
-                  {...register('tipoDocumento', {
-                    required: 'Debes seleccionar un tipo de documento',
-                    validate: value => value !== 'Null' || 'Debes seleccionar una opción válida'
-                  })}
-                  defaultValue='Null' // Establece el valor por defecto
-                  aria-describedby={errors.tipoDocumento ? 'error-tipo documento' : undefined}
-                  >
-                  <option value='Null' disabled>
-                    Seleccione el tipo de documento...
-                  </option>
-                  <option value='CC'>Cédula de Ciudadanía (CC)</option>
-                  <option value='CE'>Cédula de Extranjería (CE)</option>
-                  <option value='PAS'>Pasaporte</option>
-                </select>
-                {errors.tipoDocumento && (
-                  <p id='error-tipo-documento' className='mensaje-error' 
-                  aria-live='assertive' // Solo anuncia este mensaje
-                  role='alert'>
-                    {errors.tipoDocumento.message}
-                  </p>
-                )}
-              </div>
+                <div className='grupo-campo'>
+                  <label className='label' htmlFor='tipoDocumento'>
+                    Tipo de documento <span className='obligatorio'>*</span>
+                  </label>
+                  <select
+                    id='tipoDocumento'
+                    autoFocus // Soporte nativo para el focus en react :v
+                    onFocus={(e) => e.target.focus()} // Refuerza el enfoque
+                    className={errors.tipoDocumento ? 'campo-error select' : 'select'}
+                    {...register('tipoDocumento', {
+                      required: 'Debes seleccionar un tipo de documento',
+                      validate: value => value !== 'Null' || 'Debes seleccionar una opción válida'
+                    })}
+                    defaultValue='Null' // Establece el valor por defecto
+                    aria-describedby={errors.tipoDocumento ? 'error-tipo documento' : undefined}
+                    >
+                    <option value='Null' disabled>
+                      Seleccione el tipo de documento...
+                    </option>
+                    <option value='CC'>Cédula de Ciudadanía (CC)</option>
+                    <option value='CE'>Cédula de Extranjería (CE)</option>
+                    <option value='PAS'>Pasaporte</option>
+                  </select>
+                  {errors.tipoDocumento && (
+                    <p id='error-tipo-documento' className='mensaje-error' 
+                    aria-live='assertive' // Solo anuncia este mensaje
+                    role='alert'>
+                      {errors.tipoDocumento.message}
+                    </p>
+                  )}
+                </div>
                   <div className='grupo-campo'>
                     <label className='label' htmlFor='numeroDocumento'>
                       Número de documento <span className='obligatorio'>*</span>
@@ -482,25 +490,10 @@ const Registro = ({ URL = '', imgDefault = '' }) => {
                   <input
                       id='date'
                       type='date'
-                      className={errors.fechaNacimiento ? 'campo-error input' : watch('fechaNacimiento') ? 'campo-valido' : 'input'}
+                      max={legalDate}
+                      className={errors.fechaNacimiento ? 'campo-error input' : watch('fechaNacimiento input') ? 'campo-valido input' : 'input'}
                       {...register('fechaNacimiento', {
-                      required: 'La fecha de nacimiento es obligatoria',
-                      validate: {
-                          mayorDeEdad: (value) => {
-                          if (!value) return true
-                          
-                          const fechaNac = new Date(value)
-                          const hoy = new Date()
-                          let edad = hoy.getFullYear() - fechaNac.getFullYear()
-                          const m = hoy.getMonth() - fechaNac.getMonth()
-                          
-                          if (m < 0 || (m === 0 && hoy.getDate() < fechaNac.getDate())) {
-                              edad--
-                          }
-                          
-                          return edad >= 18 || 'Debes ser mayor de 18 años'
-                          }
-                      }
+                        required: 'La fecha de nacimiento es obligatoria',
                       })}
                       onFocus={() => setMostrarRequisitosFecha(true)}
                       onBlur={() => setMostrarRequisitosFecha(false)}
@@ -517,99 +510,99 @@ const Registro = ({ URL = '', imgDefault = '' }) => {
                   {mostrarRequisitosFecha && !errors.fechaNacimiento && (
                       <p className='mensaje-info'>Debes ser mayor de 18 años para registrarte</p>
                   )}
-                  </div>
+                </div>
 
-                  <div className='grupo-campo'>
-                    <label className='label' htmlFor='genre'>
-                      Género <span className='obligatorio'>*</span>
-                    </label>
-                    <select
-                      id='genre'
-                      className={errors.genero ? 'campo-error select' : 'select'}
-                      {...register('genero', {
-                        required: true,
-                      })}
-                      aria-describedby={errors.genero ? 'error-genero': undefined}
-                    >
-                      <option value='Null' disabled>Seleccione...</option>
-                      <option value='Femenino'>Femenino</option>
-                      <option value='Masculino'>Masculino</option>
-                      <option value='Otro'>Otro</option>
-                    </select>
-                    {errors.genero && <p className='mensaje-error'
+                <div className='grupo-campo'>
+                  <label className='label' htmlFor='genre'>
+                    Género <span className='obligatorio'>*</span>
+                  </label>
+                  <select
+                    id='genre'
+                    className={errors.genero ? 'campo-error select' : 'select'}
+                    {...register('genero', {
+                      required: true,
+                    })}
+                    aria-describedby={errors.genero ? 'error-genero': undefined}
+                  >
+                    <option value='Null' disabled>Seleccione...</option>
+                    <option value='Femenino'>Femenino</option>
+                    <option value='Masculino'>Masculino</option>
+                    <option value='Otro'>Otro</option>
+                  </select>
+                  {errors.genero && <p className='mensaje-error'
+                  aria-live='assertive' // Solo anuncia este mensaje
+                  role='alert'>Debes seleccionar un género</p>}
+                </div>
+
+                <div className='grupo-campo'>
+                  <label className='label' htmlFor='cel'>
+                    Celular <span className='obligatorio'>*</span>
+                  </label>
+                  <input
+                    id='cel'
+                    type='text'
+                    placeholder='Ej: 65642312'
+                    maxLength={10}
+                    className={errors.celular ? 'campo-error input' : 'input'}
+                    onKeyPress={permitirSoloNumeros}
+                    {...register('celular', {
+                      required: true,
+                      pattern: {
+                        value: /^[0-9]{10}$/,
+                        message: 'El celular debe tener 10 dígitos numéricos',
+                      },
+                    })}
+                    aria-describedby={errors.celular ? 'error-celular': undefined}
+                  />
+                  {errors.celular && (
+                    <p className='mensaje-error'
                     aria-live='assertive' // Solo anuncia este mensaje
-                    role='alert'>Debes seleccionar un género</p>}
-                  </div>
+                    role='alert'>
+                      {errors.celular.type === 'required'
+                        ? 'El teléfono es obligatorio'
+                        : 'El teléfono debe tener 10 dígitos numéricos'}
+                    </p>
+                  )}
+                </div>
 
-                  <div className='grupo-campo'>
-                    <label className='label' htmlFor='cel'>
-                      Celular <span className='obligatorio'>*</span>
-                    </label>
-                    <input
-                      id='cel'
-                      type='text'
-                      placeholder='Ej: 65642312'
-                      maxLength={10}
-                      className={errors.celular ? 'campo-error input' : 'input'}
-                      onKeyPress={permitirSoloNumeros}
-                      {...register('celular', {
-                        required: true,
-                        pattern: {
-                          value: /^[0-9]{10}$/,
-                          message: 'El celular debe tener 10 dígitos numéricos',
-                        },
-                      })}
-                      aria-describedby={errors.celular ? 'error-celular': undefined}
-                    />
-                    {errors.celular && (
-                      <p className='mensaje-error'
-                      aria-live='assertive' // Solo anuncia este mensaje
-                      role='alert'>
-                        {errors.celular.type === 'required'
-                          ? 'El teléfono es obligatorio'
-                          : 'El teléfono debe tener 10 dígitos numéricos'}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className='grupo-campo'>
-                    <label className='label' htmlFor='dir'>
-                      Dirección <span className='obligatorio'>*</span>
-                    </label>
-                    <input
-                      id='dir'
-                      type='text'
-                      placeholder='Ej: Calle 123 Nro. 456'
-                      maxLength={100}
-                      className={errors.direccion ? 'campo-error input' : 'input'}
-                      {...register('direccion', {
-                        required: true,
-                        minLength: {
-                          value: 5,
-                          message: 'La dirección debe tener al menos 5 caracteres',
-                        },
-                        maxLength: 100,
-                      })}
-                      aria-describedby={errors.direccion ? 'error-direccion': undefined}
-                    />
-                    {errors.direccion && (
-                      <p className='mensaje-error'
-                      aria-live='assertive' // Solo anuncia este mensaje
-                      role='alert'>
-                        {errors.direccion.type === 'required'
-                          ? 'La dirección es obligatoria'
-                          : 'La dirección debe tener al menos 5 caracteres'}
-                      </p>
-                    )}
-                  </div>
+                <div className='grupo-campo'>
+                  <label className='label' htmlFor='dir'>
+                    Dirección <span className='obligatorio'>*</span>
+                  </label>
+                  <input
+                    id='dir'
+                    type='text'
+                    placeholder='Ej: Calle 123 Nro. 456'
+                    maxLength={100}
+                    className={errors.direccion ? 'campo-error input' : 'input'}
+                    {...register('direccion', {
+                      required: true,
+                      minLength: {
+                        value: 5,
+                        message: 'La dirección debe tener al menos 5 caracteres',
+                      },
+                      maxLength: 100,
+                    })}
+                    aria-describedby={errors.direccion ? 'error-direccion': undefined}
+                  />
+                  {errors.direccion && (
+                    <p className='mensaje-error'
+                    aria-live='assertive' // Solo anuncia este mensaje
+                    role='alert'>
+                      {errors.direccion.type === 'required'
+                        ? 'La dirección es obligatoria'
+                        : 'La dirección debe tener al menos 5 caracteres'}
+                    </p>
+                  )}
+                </div>
               </div>
 
               <div className='navegacion-botones'>
               <button
-                  aria-label='Continuar con el formulario'
-                  type='button' 
-                  className='boton-siguiente'
-                  onClick={async () => {
+                aria-label='Continuar con el formulario'
+                type='button' 
+                className='boton-siguiente'
+                onClick={async () => {
                   const isValid = await trigger([
                       'tipoDocumento',
                       'numeroDocumento', 
@@ -620,13 +613,10 @@ const Registro = ({ URL = '', imgDefault = '' }) => {
                       'telefono',
                       'direccion'
                   ])
-                  
-                  if (isValid) {
-                      setPaso(2)
-                  }
-                  }}
+                  if (isValid) setPaso(2)
+                }}
               >
-                  Siguiente
+                Siguiente
               </button>
               </div>
             </div>
@@ -719,7 +709,7 @@ const Registro = ({ URL = '', imgDefault = '' }) => {
                           },
                           maxLength: 64,
                           pattern: {
-                            value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                            value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*?#|°%&]{8,}$/,
                             message:
                               'La contraseña debe tener al menos una letra mayúscula, una minúscula, un número y un carácter especial',
                           },
@@ -968,8 +958,14 @@ const Registro = ({ URL = '', imgDefault = '' }) => {
           </div>
         )}
       </div>
-    </div>
-  </div>
+    </section>
+    {validating && (
+      <Loading 
+        title='Validando...'
+        message='Verificando datos de inicio de sesión'
+      />)
+    }
+  </main>
   )
 }
 

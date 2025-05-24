@@ -105,6 +105,27 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
     setDatas(formattedData)
   }
 
+  const handleDataShow = (isPets) => {
+    if (isPets) {
+      setDatas(petsDataAlmc)
+      setHeaders({
+        Nombre: 'nom_mas',
+        Especie: 'esp_mas',
+        Raza: 'raz_mas',
+        Edad: 'fec_nac_mas',
+        Propietario: 'nom_per'
+      })
+    } else {
+      setDatas(datasAlmac)
+      setHeaders({
+        'Nombres': 'nom_per',
+        'Documento': 'doc_per',
+        'Celular': 'cel_per',
+        'Mascotas': 'mascotas'
+      })
+    }
+  }
+
   const handleSearch = async (term = '', data = [], headers = []) => {
     if(!datasAlmac) await GetDataOwners()
 
@@ -136,8 +157,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
       Especie: 'esp_mas',
       Raza: 'raz_mas',
       Edad: 'fec_nac_mas',
-      Propietario: 'nom_per',
-      Estado: 'estado',
+      Propietario: 'nom_per'
     })
     const termLower = term.toLowerCase()
     const find = data.filter(item => {
@@ -219,6 +239,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
                     type='search'
                     aria-label='Buscar usuarios'
                     onChange={e => handleSearch(e.target.value, datasAlmac, headersSearchUser)}
+                    onFocus={() => handleDataShow(0)}
                   />
                 </div>
               </div>
@@ -234,6 +255,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
                     type='search'
                     aria-label='Buscar mascotas'
                     onChange={e => handleSearchPets(e.target.value, petsDataAlmc, headersSearchPet)}
+                    onFocus={() => handleDataShow(1)}
                   />
                 </div>
               </div>

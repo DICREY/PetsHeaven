@@ -1,4 +1,4 @@
--- Active: 1747081666433@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 DROP DATABASE IF EXISTS pets_heaven;
 CREATE DATABASE IF NOT EXISTS pets_heaven;
 
@@ -127,13 +127,6 @@ CREATE TABLE pets_heaven.vacunas (
     ser_vac INT NOT NULL,INDEX(ser_vac), FOREIGN KEY(ser_vac) REFERENCES servicios(id_ser) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE pets_heaven.consultas(
-    id_con INT AUTO_INCREMENT PRIMARY KEY,
-    pro_mas_con INT NOT NULL,INDEX(pro_mas_con),FOREIGN KEY (pro_mas_con) REFERENCES personas(id_per) ON DELETE CASCADE ON UPDATE CASCADE,
-    vet_con INT NOT NULL,INDEX(vet_con),FOREIGN KEY(vet_con) REFERENCES veterinarios(id_vet) ON DELETE CASCADE ON UPDATE CASCADE,
-    mas_con INT NOT NULL,INDEX(mas_con),FOREIGN KEY(mas_con) REFERENCES mascotas(id_mas) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
 CREATE TABLE pets_heaven.citas(
     id_cit INT AUTO_INCREMENT,
     fec_reg_cit DATE DEFAULT(NOW()) NOT NULL,
@@ -145,4 +138,22 @@ CREATE TABLE pets_heaven.citas(
     mas_cit INT NOT NULL,INDEX(mas_cit),FOREIGN KEY(mas_cit) REFERENCES mascotas(id_mas) ON DELETE CASCADE ON UPDATE CASCADE,
     estado ENUM("PENDIENTE","EN-ESPERA","CANCELADO","RECHAZADO","REALIZADO") NOT NULL,
     PRIMARY KEY (id_cit,mas_cit)
+);
+
+/* Posibilidad de crear tablas aparte para evitar datos repetidos la insercion repetida 
+    mot_con 'Motivo de consulta', tra_con 'Tratamiento aplicado' */
+CREATE TABLE pets_heaven.consultas(
+    id_con INT AUTO_INCREMENT PRIMARY KEY,
+    pes_mas_con DECIMAL(5,2) COMMENT 'Peso en kg',
+    tem_mas_con SMALLINT COMMENT 'Temperatura en °C',
+    mot_con TEXT NOT NULL COMMENT 'Motivo de consulta',
+    tra_con TEXT NOT NULL COMMENT 'Tratamiento aplicado',
+    dia_con TEXT COMMENT 'diagnostico',
+    med_con TEXT COMMENT 'Medicamentos',
+    fec_con DATE DEFAULT(NOW()) NOT NULL,INDEX(fec_con),
+    cit_con INT NOT NULL,INDEX (cit_con),FOREIGN KEY (cit_con) REFERENCES citas(id_cit) ON DELETE CASCADE ON UPDATE CASCADE,
+    pro_mas_con INT NOT NULL,INDEX (pro_mas_con),FOREIGN KEY (pro_mas_con) REFERENCES personas(id_per) ON DELETE CASCADE ON UPDATE CASCADE,
+    vet_con INT NOT NULL,INDEX (vet_con),FOREIGN KEY (vet_con) REFERENCES veterinarios(id_vet) ON DELETE RESTRICT ON UPDATE CASCADE,
+    mas_con INT NOT NULL,INDEX (mas_con),FOREIGN KEY (mas_con) REFERENCES mascotas(id_mas) ON DELETE RESTRICT ON UPDATE CASCADE,
+    estado_con VARCHAR(100) DEFAULT 'programada'
 );

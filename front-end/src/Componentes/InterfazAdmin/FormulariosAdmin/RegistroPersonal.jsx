@@ -9,7 +9,7 @@ import RolPrivilegios from './RolPrivilegios'
 import InformacionProfesional from './InformacionProfesional'
 import Contrasena from './Contrasena'
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
-import { formatDate, errorStatusHandler, loadingAlert } from '../../Varios/Util'
+import { formatDate, errorStatusHandler, loadingAlert, LegalAge } from '../../Varios/Util'
 import { PostData } from '../../Varios/Requests'
 
 // Import styles
@@ -17,7 +17,7 @@ import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/RegistroPersonal.cs
 
 // Component
 export const ConfiguracionUsuario = ({ URL = '' }) => {
-  // Vars
+  // Dynamic vars
   const [activeTab, setActiveTab] = useState('personal')
   const [profileImage, setProfileImage] = useState(null)
   const profileInputRef = useRef(null)
@@ -28,8 +28,11 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
     watch,
     setValue, // Si necesitas setear valores programáticamente
   } = useForm({ mode: 'onChange' })
+
+  // Vars 
   const mainUrl = `${URL}/staff`
   const navigate = useNavigate()
+  const legalDate = LegalAge()
 
   // Manejo de la imagen
   const handleProfileImageChange = (e) => {
@@ -302,6 +305,7 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
                     <input
                       type="date"
                       name="fecNac"
+                      max={legalDate}
                       aria-required
                       className={`campo-regusuario ${errors.fecNac ? 'campo-error' : ''}`}
                       {...register("fecNac", { required: "La fecha de nacimiento es requerida." })}

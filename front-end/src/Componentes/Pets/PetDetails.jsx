@@ -68,7 +68,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
     // Handle search filter
     const handleSearch = (e) => {
         const termLower = e.target.value.toLowerCase()
-        const headers = ['fec_cit','nom_ser','nom_vet']
+        const headers = ['fec_cit','nom_ser','nom_per']
 
         const find = appointmentAlmc?.filter(item => {
             return headers.some(field => 

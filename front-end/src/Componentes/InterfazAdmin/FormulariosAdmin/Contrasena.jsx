@@ -54,7 +54,7 @@ const Contrasena = () => {
                     message: 'La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una minúscula, un número y un carácter especial.',
                   },
                   pattern: {
-                    value: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?#|°%&]{8,}$/,
                     message: 'La contraseña debe contener al menos una letra, un número y un carácter especial.',
                   },
                 })}

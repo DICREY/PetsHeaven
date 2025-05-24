@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 // Imports
 import Contrasena from './Contrasena'
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
-import { errorStatusHandler, loadingAlert } from '../../Varios/Util'
+import { errorStatusHandler, LegalAge, loadingAlert } from '../../Varios/Util'
 import { PostData } from '../../Varios/Requests'
 
 // Import styles
@@ -29,6 +29,7 @@ export const RegistroPro = ({ URL = '' }) => {
   // Vars 
   const mainUrl = `${URL}/people`
   const navigate = useNavigate()
+  const legalDate = LegalAge()
 
   // Functions
   const handleProfileImageChange = (e) => {
@@ -237,6 +238,7 @@ export const RegistroPro = ({ URL = '' }) => {
                     <input
                       aria-describedby={errors.fecNac ? 'Error': undefined}
                       type='date'
+                      max={legalDate}
                       name='fecNac'
                       className={`campo-regusuario ${errors.fecNac ? 'campo-error' : ''}`}
                       {...register('fecNac', { required: 'La fecha de nacimiento es requerida.' })}

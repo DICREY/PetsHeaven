@@ -6,7 +6,7 @@
   --gray-light: #F5F5F5;
   --gray-medium: #E0E0E0;
   --gray-dark: #757575;
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
 }
 
 /* Estructura principal */
@@ -21,14 +21,14 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(0.1875rem); 
 }
 
 .floating-window {
   background-color: var(--white);
-  border-radius: 12px;
+  border-radius: 0.75rem; 
   width: 90%;
-  max-width: 500px;
+  max-width: 31.25rem; 
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: var(--shadow);
@@ -37,14 +37,14 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(1.25rem); } 
   to { opacity: 1; transform: translateY(0); }
 }
 
 /* Header */
 .window-header {
-  padding: 20px;
-  border-bottom: 1px solid var(--gray-medium);
+  padding: 1.25rem; 
+  border-bottom: 0.0625rem solid var(--gray-medium); 
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -59,12 +59,12 @@
 /* Botón de cierre */
 .close-button {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 0.9375rem; 
+  right: 0.9375rem; 
   background: none;
   border: none;
   cursor: pointer;
-  padding: 5px;
+  padding: 0.3125rem; 
   border-radius: 50%;
   transition: all 0.2s;
 }
@@ -75,32 +75,32 @@
 
 /* Contenido */
 .window-content {
-  padding: 20px;
+  padding: 1.25rem; 
 }
 
 /* Sección de mascota */
 .pet-info-section {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--gray-medium);
+  margin-bottom: 1.25rem; 
+  padding-bottom: 1.25rem; 
+  border-bottom: 0.0625rem solid var(--gray-medium); 
 }
 
 .pet-avatar-container {
-  margin-right: 15px;
+  margin-right: 0.9375rem; 
 }
 
 .pet-avatar {
-  width: 70px;
-  height: 70px;
+  width: 4.375rem; 
+  height: 4.375rem; 
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid var(--primary-light);
+  border: 0.1875rem solid var(--primary-light); 
 }
 
 .pet-details h3 {
-  margin: 0 0 5px 0;
+  margin: 0 0 0.3125rem 0; 
   color: var(--primary-dark);
   font-size: 1.2rem;
 }
@@ -112,18 +112,18 @@
 
 /* Detalles de la cita */
 .appointment-details {
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem; 
 }
 
 .detail-row {
   display: flex;
-  margin-bottom: 12px;
+  margin-bottom: 0.75rem; 
 }
 
 .detail-label {
   font-weight: 600;
   color: var(--primary-dark);
-  min-width: 120px;
+  min-width: 7.5rem; 
   font-size: 0.95rem;
 }
 
@@ -134,10 +134,10 @@
 
 /* Info del propietario */
 .owner-info-section {
-  padding: 15px;
+  padding: 0.9375rem;
   background-color: var(--gray-light);
-  border-radius: 8px;
-  margin-bottom: 20px;
+  border-radius: 0.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .owner-info-section h3 {
@@ -156,8 +156,8 @@
 
 /* Badge de estado */
 .status-badge {
-  padding: 4px 12px;
-  border-radius: 20px;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1.25rem;
   font-size: 0.85rem;
   font-weight: 500;
 }
@@ -181,13 +181,5 @@
 @media (max-width: 480px) {
   .detail-row {
     flex-direction: column;
-  }
-  
-  .detail-label {
-    margin-bottom: 4px;
-  }
-  
-  .floating-window {
-    width: 95%;
   }
 }

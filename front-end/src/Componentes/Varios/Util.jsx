@@ -9,7 +9,7 @@ export const Logout = () => {
   if (token){
     localStorage.setItem('token','')
   }
-  window.location.href = "/main"
+  window.location.href = "/user/login"
 }
 
 // Back 
@@ -27,6 +27,15 @@ export const formatoTiempo = (segundos) => {
   return `${horas.toString().padStart(2, '0')}:${minutos
     .toString()
     .padStart(2, '0')}:${segs.toString().padStart(2, '0')}`
+}
+
+// Get current date
+export const LegalAge = () => {
+  const currentDate = new Date()
+
+  currentDate.setFullYear(currentDate.getFullYear() - 18)
+
+  return currentDate.toLocaleDateString('en-CA')
 }
 
 // Dividir lista en partes 

@@ -1,6 +1,6 @@
 // Librarys 
 import React, { Component } from 'react'
-import { FileText } from 'lucide-react'
+import { FileText, User } from 'lucide-react'
 
 // Imports
 import { formatDate, divideList,getAge } from '../Varios/Util'
@@ -143,13 +143,17 @@ export class GlobalTable extends Component {
             </span>
 
             {subtitle && (
-            <span className='buscar-gestion'>
-              <span>Buscar:</span>
+            <div className='inputcontenedoradminhome'>
+              <User className='inputiconoadminhome' aria-hidden='true' />
               <input
-                type='text' 
-                className='input-gestion' 
-                onChange={e => this.handleSearch(e.target.value, fullData)}/>
-            </span>)}
+                id='busqueda-usuario'
+                className='campoadminhome'
+                placeholder='Buscar por identificación o nombre de usuario'
+                type='search'
+                aria-label='Buscar usuarios'
+                onChange={e => this.handleSearch(e.target.value, fullData)}
+              />
+            </div>)}
           </nav>
           <section className={`global-table-container`}>
             {info?(
