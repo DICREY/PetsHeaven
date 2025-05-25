@@ -1,4 +1,4 @@
--- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
+-- Active: 1747352860830@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchAllAppointments()
 BEGIN 
     SELECT 
@@ -6,6 +6,7 @@ BEGIN
         c.fec_cit,
         c.hor_ini_cit,
         c.hor_fin_cit,
+        c.lug_ate_cit, 
         cs.nom_cat,
         s.nom_ser,
         s.des_ser,
@@ -42,6 +43,7 @@ BEGIN
         c.fec_cit,
         c.hor_ini_cit,
         c.hor_fin_cit,
+        c.lug_ate_cit,
         cs.nom_cat,
         s.nom_ser,
         s.des_ser,
@@ -78,7 +80,8 @@ CREATE PROCEDURE pets_heaven.RegistAppointment(
     IN p_date DATE,
     IN p_hor_ini TIME,
     IN p_hor_fin TIME,
-    IN p_ser INT ,
+    IN p_lugar VARCHAR(100),
+    IN p_ser INT,
     IN p_vet INT,
     IN p_mas INT,
     IN p_status VARCHAR(25)
@@ -91,7 +94,41 @@ BEGIN
     END;
 
     SET autocommit = 0;
-
     START TRANSACTION;
 
+    INSERT INTO pets_heaven.citas (
+        fec_reg_cit, fec_cit, hor_ini_cit, hor_fin_cit, lug_ate_cit, ser_cit, vet_cit, mas_cit, estado
+    ) VALUES (
+        p_reg_date, p_date, p_hor_ini, p_hor_fin, p_lugar, p_ser, p_vet, p_mas, p_status
+    );
+
+    COMMIT;
+    SET autocommit = 1;
 END //
+
+CREATE PROCEDURE pets_heaven.CancelAppointment(
+    IN p_id_cit INT,
+    IN p_id_mas INT
+)
+BEGIN
+    UPDATE pets_heaven.citas
+    SET estado = 'CANCELADO'
+    WHERE id_cit = p_id_cit AND mas_cit = p_id_mas;
+END //
+
+CREATE PROCEDURE pets_heaven.UpdateAppointmentDate(
+    IN p_id_cit INT,
+    IN p_id_mas INT,
+    IN p_new_date DATE,
+    IN p_new_hor_ini TIME,
+    IN p_new_hor_fin TIME
+)
+BEGIN
+    UPDATE pets_heaven.citas
+    SET fec_cit = p_new_date,
+        hor_ini_cit = p_new_hor_ini,
+        hor_fin_cit = p_new_hor_fin
+    WHERE id_cit = p_id_cit AND mas_cit = p_id_mas;
+END //
+
+
