@@ -34,6 +34,7 @@ export default function App () {
   // Dynamic vars 
   const [userSelect,setUserSelect] = useState()
   const [petSelect,setPetSelect] = useState()
+  const [inactiveCon,setInactiveCon] = useState(null)
   const [owner,setOwner] = useState(false)
   const [arriveTo,setArriveTo] = useState('')
   const [petDetailTab,setPetDetailTab] = useState('Datos Generales')
@@ -48,34 +49,12 @@ export default function App () {
   const PrivateRoute = ({ children }) => {
     const token = localStorage.getItem('token')
 
-    useEffect(() => {
-      if (isInactive) {
-        const confirms = confirm('Has estado inactivo. ¿Quieres continuar?')
-        if (confirms) {
-          return
-        } else {
-          Logout()
-        }
-      }
-    },[isInactive])
-
     return token? children : <Navigate to='/user/login' />
   }
   
   const VetRoute = ({ children }) => {
     // Vars
     const token = localStorage.getItem('token');
-
-    useEffect(() => {
-      if (isInactive) {
-        const confirms = confirm('Has estado inactivo. ¿Quieres continuar?')
-        if (confirms) {
-          return
-        } else {
-          Logout()
-        }
-      }
-    },[isInactive])
 
     if (token) {
       const roles = getRoles(token)
@@ -89,17 +68,6 @@ export default function App () {
     // Vars
     const token = localStorage.getItem('token')
 
-    useEffect(() => {
-      if (isInactive) {
-        const confirms = confirm('Has estado inactivo. ¿Quieres continuar?')
-        if (confirms) {
-          return
-        } else {
-          Logout()
-        }
-      }
-    },[isInactive])
-
     if (token) {
       const roles = getRoles(token)
       return roles.includes('Administrador')? children :<Navigate to='/user/login' />
@@ -111,6 +79,17 @@ export default function App () {
   const MainRoute = () => {
     window.location.replace('/main')
   }
+
+  useEffect(() => {
+    if (isInactive) {
+      const confirms = confirm('Has estado inactivo. ¿Quieres continuar?')
+      if (confirms) {
+        return
+      } else {
+        Logout()
+      }
+    }
+  },[isInactive])
 
   return (
     // Define Routes

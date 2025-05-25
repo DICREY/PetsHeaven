@@ -6,10 +6,11 @@ import { Link, useNavigate } from 'react-router'
 
 // Imports 
 import { Register } from '../Varios/Requests'
+import { checkImage, LegalAge } from '../Varios/Util'
+import { Notification } from '../Global/Notifys'
 
 // Import styles
 import '../../../src/styles/Formularios/Registro.css'
-import { checkImage, LegalAge } from '../Varios/Util'
 
 // Component 
 const Registro = ({ URL = '', imgDefault = '' }) => {
@@ -18,8 +19,17 @@ const Registro = ({ URL = '', imgDefault = '' }) => {
   const logoUrl = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/5.png'
   const legalDate = LegalAge()
   const navigate = useNavigate()
-
-  // Datos que entran del formulario de registro
+  
+  // Dynamic vars
+  const [paso, setPaso] = useState(1)
+  const [verPassword, setVerPassword] = useState(false)
+  const [verConfirmarPassword, setVerConfirmarPassword] = useState(false)
+  const [mostrarRequisitosFecha, setMostrarRequisitosFecha] = useState(false)
+  const [errorCodigo, setErrorCodigo] = useState(false)
+  const [timerActivo, setTimerActivo] = useState(false)
+  const [tiempoRestante, setTiempoRestante] = useState(300)
+  const [notify, setNotify] = useState(null)
+  const emailInputRef = useRef(null)
   const [formData, setFormData] = useState({
     // Paso 1
     tipoDocumento: 'Null',
@@ -41,17 +51,6 @@ const Registro = ({ URL = '', imgDefault = '' }) => {
     codigoVerificacion: '',
     codigoIngresado: ['', '', '', '', '', '']
   })
-  
-  // Dynamic vars
-  const [paso, setPaso] = useState(1)
-  const [verPassword, setVerPassword] = useState(false)
-  const [verConfirmarPassword, setVerConfirmarPassword] = useState(false)
-  const [mostrarRequisitosFecha, setMostrarRequisitosFecha] = useState(false)
-  const [errorCodigo, setErrorCodigo] = useState(false)
-  const [timerActivo, setTimerActivo] = useState(false)
-  const [validating, setValidating] = useState(0)
-  const [tiempoRestante, setTiempoRestante] = useState(300)
-  const emailInputRef = useRef(null)
 
   // Configuración de react-hook-form
   const {
@@ -213,17 +212,21 @@ const Registro = ({ URL = '', imgDefault = '' }) => {
   const SendData = async data => {
     // Vars
     const mainUrl = `${URL}/global/register`
-    setValidating(true)
+    setNotify({
+      title:'Validando...',
+      message:'Verificando datos de registro',
+      load:1
+    })
 
     try {
       const send = await Register(mainUrl,data)
-      setValidating(false)
+      setNotify(false)
       if (send.data.created) {
         console.log('registrado')
         setTimeout(() => navigate('/user/login'),2000)
       }
     } catch (error) {
-      setValidating(false)
+      setNotify(false)
       if (error.status) {
         console.log(error.status)
       } else console.log(error)
@@ -888,8 +891,8 @@ const Registro = ({ URL = '', imgDefault = '' }) => {
                 <h3 className='titulo-verificacion'>Verifica tu correo electrónico</h3>
 
                 <p className='descripcion-verificacion'>
-                Hemos enviado un código de verificación a <strong aria-label={formData.email}>{formData.email}</strong>. 
-                <span className='sr-only'>Ingrese el código de 6 dígitos recibido en su correo.</span>
+                  Hemos enviado un código de verificación a <strong aria-label={formData.email}>{formData.email}</strong>. 
+                  <span className='sr-only'>Ingrese el código de 6 dígitos recibido en su correo.</span>
                 </p>
                 <div className='contenedor-codigo' role='group' aria-labelledby='codigo-label'>
                   <span id='codigo-label' className='sr-only'>Ingrese el código de 6 dígitos</span>
@@ -957,12 +960,12 @@ const Registro = ({ URL = '', imgDefault = '' }) => {
             </Link>
           </div>
         )}
+
       </div>
     </section>
-    {validating && (
-      <Loading 
-        title='Validando...'
-        message='Verificando datos de inicio de sesión'
+    {notify && (
+      <Notification
+        {...notify}
       />)
     }
   </main>

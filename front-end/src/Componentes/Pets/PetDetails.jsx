@@ -2,25 +2,26 @@
 import React, { useState, useEffect } from 'react'
 import { ArrowLeft, Trash2, Edit, Save, X, FilePlus } from 'lucide-react'
 import { useNavigate } from 'react-router'
-import swal from 'sweetalert'
         
 // Import
 import { Description } from '../Global/Description'
 import { HistoryTest } from './historyTest'
-import { Loading } from '../Global/Notifys'
+import { Notification } from '../Global/Notifys'
 import { DeleteData, ModifyData, PostData } from '../Varios/Requests'
-import { getRoles,loadingAlert, checkImage, getAge, errorStatusHandler,divideList } from '../Varios/Util'
+import { getRoles, checkImage, getAge, errorStatusHandler,divideList } from '../Varios/Util'
+import { FormularioConsulta } from '../InterfazAdmin/FormulariosAdmin/Consulta'
+import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
+import Footer from '../Varios/Footer2'
 
 // Import styles 
 import '../../../src/styles/Pets/petDetails.css'
-import { FormularioConsulta } from '../InterfazAdmin/FormulariosAdmin/Consulta'
 
 // Main component
 export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Generales'}) => {
     // Dynamic vars
     const [isAdmin,setIsAdmin] = useState(false)
     const [isEditing,setIsEditing] = useState(false)
-    const [modPet,setModPet] = useState({})
+    const [modPet,setModPet] = useState({...datas})
     const [currentTab,setCurrentTab] = useState(tab)
     const [appointment,setAppointment] = useState()
     const [appointmentAlmc,setAppointmentAlmc] = useState()
@@ -28,7 +29,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
     const [page,setPage] = useState(1)
     const [showMedicHistory,setShowMedicHistory] = useState(false)
     const [consult,setConsult] = useState(false)
-    const [validating, setValidating] = useState(false)
+    const [notify, setNotify] = useState(null)
     const headers = {
         Nombre: 'nom_mas',
         Especie: 'esp_mas',
@@ -103,10 +104,10 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
         } catch (err) {
             if(err.status) {
                 const message = errorStatusHandler(err.status)
-                swal({
-                  title: 'Error',
-                  text: `${message}`,
-                  icon: 'warning',
+                setNotify({
+                    title: 'Error',
+                    message: `${message}`,    
+                    close: setNotify
                 })
             } else console.log(err)
         }
@@ -114,26 +115,31 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
 
     // Request for Modify Data
     const modifyData = async () => {
-        setValidating(true)
+        setNotify({
+            title: 'Validando...',
+            message: 'Verificando datos proporcionados',
+            load:1
+        })
         try {
             const token = localStorage.getItem('token')
+            console.log(modPet)
             if (token) {
-                const mod = await ModifyData(URL, token, modPet)
-                setValidating(false)
-                mod.data.modify && swal({
-                    icon: 'success',
-                    title: 'Modificado',
-                    text: 'Los datos de la mascota han sido modificados',
+                const mod = await ModifyData(`${mainURL}/modify`, token, modPet )
+                setNotify(null)
+                if (mod.data.modify) setNotify({
+                    title: 'Modificación exitosa',
+                    message: 'Los datos de la mascota han sido modificados exitosamente',
+                    close: setNotify
                 })
             }
         } catch (err) {
-            setValidating(false)
+            setNotify(null)
             if(err.status) {
                 const message = errorStatusHandler(err.status)
-                swal({
-                  title: 'Error',
-                  text: `${message}`,
-                  icon: 'warning',
+                setNotify({
+                    title: 'Error',
+                    message: `${message}`,    
+                    close: setNotify
                 })
             } else console.log(err)
         }
@@ -144,7 +150,11 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
         // Vars
         const deleteURL = `${mainURL}/delete`
         const token = localStorage.getItem('token')
-        setValidating(true)
+        setNotify({
+            title: 'Validando...',
+            message: 'Verificando datos proporcionados',
+            load:1
+        })
         try {
             if(token) {
                 const roles = getRoles(token)
@@ -153,30 +163,24 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
                     
                     const deleted = await DeleteData(deleteURL,token,{
                         nom_mas: datas.nom_mas,
-                        doc_mas: datas.doc_mas
+                        doc_per: datas.doc_per
                     })
-                    setValidating(false)
-                    
-                    console.log(deleted)
-                    deleted.data.deleted? swal({
-                        icon: 'success',
-                        title: 'Desactivada',
-                        text: 'La mascota han sido desactivada correctamente.',
-                    }): swal({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'La mascota no ha sido desactivada'
+                    setNotify(null)
+                    if (deleted.data.deleted) setNotify({
+                        title: 'Mascota Desactivada',
+                        message: 'La mascota ha sido desactivada correctamente.',
+                        close: setNotify
                     })
                 }
-            } else navigate('/34')
+            } else navigate('/user/login')
         } catch (err) {
-            setValidating(false)
+            setNotify(null)
             if (err.status) {
                 const message = errorStatusHandler(err.status)
-                swal({
-                    icon: 'error',
+                setNotify({
                     title: 'Error',
-                    text: message
+                    message: message,
+                    close: setNotify
                 })
             } else console.log(err)
         }
@@ -214,6 +218,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
         <>
         {datas && appointment? (
             <main className='app-container-pet-details'>
+                <NavBarAdmin />
                 <main className='main-content-pet-details'> 
                     <div className='pet-modal-overlay-pet-details'>
                         <div className='pet-modal-content-pet-details'>
@@ -389,6 +394,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
                                     </section>
                                 )}    
                             </section>
+                            <Footer />
                         </div>
                     </div>
                     {showMedicHistory && (
@@ -403,14 +409,19 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
                         imgDedault={imgPetDefault}
                     />)}
                 </main>
-                {validating && (
-                    <Loading 
-                        title='Validando...'
-                        message='Verificando datos de inicio de sesión'
-                    />)
-                }
-            </main>):(
-                <Loading />
+
+                {notify && (
+                    <Notification 
+                        {...notify}
+                    />
+                )}
+            </main>
+            ):(
+                <Notification 
+                    title='Cargando...'
+                    message='Obteniendo datos'
+                    load={1}
+                />
             )}
         </>
     )

@@ -26,6 +26,12 @@
     border: .1rem solid #00000010;
 }
 
+.LoadingContainer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
 .LoadingPaw {
     margin: 0 auto;
     height: 10rem;

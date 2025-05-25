@@ -2,7 +2,6 @@
 import React,{ useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router'
-import swal from 'sweetalert'
 
 // Imports 
 import { login } from '../Varios/Requests'
@@ -10,7 +9,7 @@ import { getRoles, errorStatusHandler, formatoTiempo, checkImage, Logout } from 
 
 // Import styles
 import '../../../src/styles/Formularios/login.css'
-import { Loading } from '../Global/Notifys'
+import { Notification } from '../Global/Notifys'
 
 // Main component 
 export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
@@ -18,7 +17,7 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
   const [verPassword, setVerPassword] =  useState(false)
   const [waitTime, setWaitTime] =  useState(false)
   const [time, setTime] = useState()
-  const [validating, setValidating] = useState(false)
+  const [notify, setNotify] = useState(null)
   
   // Vars 
   const imagenFondo = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Fondos/fondo.png' 
@@ -57,23 +56,23 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
     const url = `${URL}/global/login`
     const firstData = datas.docEmail
     const secondData = datas.password
-    setValidating(true)
+
+    setNotify({
+      title: 'Validando...',
+      message: 'Verificando datos de inicio de sesión',
+      load: true
+    })
     
     try {
       const log = await login(url,firstData,secondData)
-      setValidating(false)
+      setNotify(null)
       if (log) {
         const token = localStorage.getItem("token")
         const roles = getRoles(token)
         arriveTo = arriveTo? arriveTo: useRoleRedirect(roles)
         
         if(token){ 
-          swal({
-            title: 'Bienvenido',
-            icon: 'success',
-            text: 'Gracias por visitar nuestra pagina web',
-            buttons: false
-          })
+          
           setTimeout(() => {
             navigate(arriveTo)
           },2000)
@@ -82,17 +81,12 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
       
 
     } catch (err) {
-      setValidating(false)
+      setNotify(null)
       if(err.status) {
         if (err.status === 429) {
           setWaitTime(true)
         } else setWaitTime(false)
         const message = errorStatusHandler(err.status)
-        swal({
-          title: 'Error',
-          text: `${message}`,
-          icon: 'warning',
-        })
       } else console.log(err)
     }
   }
@@ -314,10 +308,9 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
           <p className='subtexto-cita-login'>En PetsHeaven cuidamos de quienes más amas</p>
         </div>
       </div>
-      {validating && (
-        <Loading 
-          title='Validando...'
-          message='Verificando datos de inicio de sesión'
+      {notify && (
+        <Notification 
+          {...notify}
         />)
       }
     </div>

@@ -2,13 +2,13 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { Plus, FileText, User, PawPrint } from 'lucide-react'
-import swal from 'sweetalert'
 
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GlobalTable } from '../Global/GlobalTable'
+import { Notification } from '../Global/Notifys'
 import { GetData } from '../Varios/Requests'
-import { errorStatusHandler } from '../Varios/Util'
+import { errorStatusHandler, formatDate } from '../Varios/Util'
 
 // Import styles 
 import '../../../src/styles/InterfazAdmin/Consultorio.css'
@@ -19,6 +19,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   const [petsDataAlmc, setPetsDataAlmc] = useState([])
   const [datasAlmac, setDatasAlmac] = useState([])
   const [headers, setHeaders] = useState({})
+  const [notify, setNotify] = useState(null)
   let didFetch = useRef(false)
   
   // Vars 
@@ -33,6 +34,8 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
     try {
       if (token) {
         const data = await GetData(`${mainUrl}/all`, token)
+        setNotify(null)
+
         if (data) formatDatas(data)
         setHeaders({
           'Nombres': 'nom_per',
@@ -42,18 +45,13 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
         })
       } else navigate('/user/login')
     } catch (err) {
+      setNotify(null)
       if (err.status) {
         const message = errorStatusHandler(err.status)
-        swal({
-          icon: 'error',
+        setNotify({
           title: 'Error',
-          text: message
-        })
-      } else if (err.message) {
-        swal({
-          icon: 'error',
-          title: 'Error',
-          text: err.message
+          message: `${message}`,    
+          close: setNotify
         })
       } else console.log(err)
     }
@@ -65,14 +63,19 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
       try {
         if(token) {
           const pets = await GetData(`${URL}/pet/all`,token)  
+          setNotify(null)
           setPetsDataAlmc(pets)
         } else navigate('/user/login')
       } catch (err) {
-        err.message? swal({
-          icon: 'error',
-          title: 'Error',
-          text: err.message
-        }): console.log(err)
+        setNotify(null)
+        if (err.status) {
+          const message = errorStatusHandler(err.status)
+          setNotify({
+            title: 'Error',
+            message: `${message}`,    
+            close: setNotify
+          })
+       } else console.log(err)
       }
   }
 
@@ -181,6 +184,8 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   }
 
   const handleDescriptionPet = (data) => {
+    data.fec_nac_mas = formatDate(data.fec_nac_mas)
+    data.fec_cre_mas = formatDate(data.fec_cre_mas)
     setPetSelect(data)
     navigate('/pets/details')
   }
@@ -271,6 +276,12 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
           </div>
         </article>
       </div>
+
+      {notify && (
+        <Notification 
+          {...notify}
+        />
+      )}
 
       <Outlet />
     </main>

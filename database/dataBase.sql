@@ -140,20 +140,29 @@ CREATE TABLE pets_heaven.citas(
     PRIMARY KEY (id_cit,mas_cit)
 );
 
-/* Posibilidad de crear tablas aparte para evitar datos repetidos la insercion repetida 
-    mot_con 'Motivo de consulta', tra_con 'Tratamiento aplicado' */
+
+/* tablas aparte para evitar la insercion repetida de 'Motivo de consulta' y 'Tratamiento aplicado' */
+CREATE TABLE pets_heaven.motivos_consultas(
+    id_mot_con INT AUTO_INCREMENT PRIMARY KEY,
+    mot_con TEXT NOT NULL COMMENT 'Motivo de consulta'
+);
+CREATE TABLE pets_heaven.tratamientos_consultas(
+    id_tra_con INT AUTO_INCREMENT PRIMARY KEY,
+    nom_tra_con VARCHAR(100) NOT NULL COMMENT 'Tratamiento aplicado',
+    des_tra_con TEXT NOT NULL
+);
+
 CREATE TABLE pets_heaven.consultas(
     id_con INT AUTO_INCREMENT PRIMARY KEY,
     pes_mas_con DECIMAL(5,2) COMMENT 'Peso en kg',
     tem_mas_con SMALLINT COMMENT 'Temperatura en °C',
-    mot_con TEXT NOT NULL COMMENT 'Motivo de consulta',
-    tra_con TEXT NOT NULL COMMENT 'Tratamiento aplicado',
     dia_con TEXT COMMENT 'diagnostico',
     med_con TEXT COMMENT 'Medicamentos',
     fec_con DATE DEFAULT(NOW()) NOT NULL,INDEX(fec_con),
+    mot_con INT NOT NULL,INDEX(mot_con),FOREIGN KEY (mot_con) REFERENCES motivos_consultas(id_mot_con) ON DELETE RESTRICT ON UPDATE CASCADE,
+    nom_tra INT NOT NULL,INDEX(nom_tra),FOREIGN KEY (nom_tra) REFERENCES tratamientos_consultas(id_tra_con) ON DELETE RESTRICT ON UPDATE CASCADE,
     cit_con INT NOT NULL,INDEX (cit_con),FOREIGN KEY (cit_con) REFERENCES citas(id_cit) ON DELETE CASCADE ON UPDATE CASCADE,
     pro_mas_con INT NOT NULL,INDEX (pro_mas_con),FOREIGN KEY (pro_mas_con) REFERENCES personas(id_per) ON DELETE CASCADE ON UPDATE CASCADE,
     vet_con INT NOT NULL,INDEX (vet_con),FOREIGN KEY (vet_con) REFERENCES veterinarios(id_vet) ON DELETE RESTRICT ON UPDATE CASCADE,
-    mas_con INT NOT NULL,INDEX (mas_con),FOREIGN KEY (mas_con) REFERENCES mascotas(id_mas) ON DELETE RESTRICT ON UPDATE CASCADE,
-    estado_con VARCHAR(100) DEFAULT 'programada'
+    mas_con INT NOT NULL,INDEX (mas_con),FOREIGN KEY (mas_con) REFERENCES mascotas(id_mas) ON DELETE RESTRICT ON UPDATE CASCADE
 );

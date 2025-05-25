@@ -1,4 +1,4 @@
--- Active: 1746046445434@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchAllAppointments()
 BEGIN 
     SELECT 
@@ -73,15 +73,15 @@ BEGIN
 END //
 
 
-CREATE PROCEDURE RegistAppointment(
-    IN p_reg_date DATE
-    IN p_date DATE
-    IN p_hor_ini TIME
-    IN p_hor_fin TIME
-    IN p_ser INT 
-    IN p_vet INT
-    IN p_mas INT
-    IN p_status VARCHAR("25")
+CREATE PROCEDURE pets_heaven.RegistAppointment(
+    IN p_reg_date DATE,
+    IN p_date DATE,
+    IN p_hor_ini TIME,
+    IN p_hor_fin TIME,
+    IN p_ser INT ,
+    IN p_vet INT,
+    IN p_mas INT,
+    IN p_status VARCHAR(25)
 )
 BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION

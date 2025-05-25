@@ -16,7 +16,7 @@ const limiter = rateLimit({
 
 const limiterLog = rateLimit({
     // limit login attempts
-    windowMs: 3 * 60 * 1000,        // 5 minutes
+    windowMs: 10000,                // 10 segundos
     max: 3,                         // Limit each IP to 3 login requests per windowMs  
     message: 'Demasiadas intentos fallidos, por favor intenta de nuevo más tarde'
 })

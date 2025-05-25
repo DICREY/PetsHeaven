@@ -1,8 +1,3 @@
-<<<<<<< HEAD
--- Active: 1747081666433@@127.0.0.1@3306@pets_heaven
-=======
--- Active: 1746046445434@@127.0.0.1@3306@pets_heaven
->>>>>>> 7683f047b7a9893aecaa095aacc01b0edc7cfdcd
 CREATE PROCEDURE pets_heaven.SearchOwners()
 BEGIN
     SELECT

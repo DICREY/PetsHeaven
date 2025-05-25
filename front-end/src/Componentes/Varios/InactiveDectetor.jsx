@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 
 // Component
-export const useInactivityDetector = (timeout = 1000) => { // 5 minutos por defecto
+export const useInactivityDetector = (timeout = 5000) => { // 5 minutos por defecto
   const [isInactive, setIsInactive] = useState(false)
 
   useEffect(() => {

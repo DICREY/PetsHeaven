@@ -2,11 +2,11 @@
 import { useNavigate } from 'react-router-dom'
 import React, { useState, useRef } from 'react';
 import { Pencil, ChevronLeft, User } from 'lucide-react'
-import swal from 'sweetalert'
 
 // Imports
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
-import { formatDate, errorStatusHandler, loadingAlert } from '../Varios/Util'
+import { formatDate, errorStatusHandler } from '../Varios/Util'
+import { Notification } from '../Global/Notifys'
 import { PostData } from '../Varios/Requests'
 
 // Import styles
@@ -15,9 +15,9 @@ import '../../../src/styles/Formularios/FormularioMascotas.css'
 export const FormularioRegMascotas = ({ URL = ''}) => {
   // Dynamic vars
   const [activeTab, setActiveTab] = useState('personal')
-  const [profileImage, setProfileImage] = useState(null)
-  const [signatureImage, setSignatureImage] = useState(null)
   const [formData, setFormData] = useState({})
+  const [profileImage, setProfileImage] = useState(null)
+  const [notify, setNotify] = useState(null)
 
   // Vars 
   const profileInputRef = useRef(null)
@@ -38,32 +38,40 @@ export const FormularioRegMascotas = ({ URL = ''}) => {
   const handleChange = (e) => {
     let { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
-    console.log(formData)
   }
 
   const sendData = async () => {
+    setNotify({
+      title:'Validando...',
+      message:'Verificando datos proporcionados',
+      load:1
+    })
     try {
       const token = localStorage.getItem('token')
-      // if (profileImage)
+      
       if (token) {
-        loadingAlert('Validando...')
         formData.fec_nac_mas = formatDate(formData.fec_nac_mas)
 
         const created = await PostData(`${mainURL}/register`, token, formData)
 
-        created.status === 201 & swal({
-          icon: 'success',
-          title: 'Registrada',
-          text: 'La mascota ha sido registrada correctamente',
+        setNotify(null)
+
+        if(created.status === 201) setNotify({
+          title: 'Registro Exitoso',
+          message: 'La mascota ha sido registrada con exito',
+          time: 2000,
+          btnClose:1
         })
       }
     } catch (err) {
+      setNotify(null)
       if(err.status) {
         const message = errorStatusHandler(err.status)
-        swal({
+        setNotify({
           title: 'Error',
-          text: `${message}`,
-          icon: 'warning',
+          message: `${message}`,
+          time: 2000,
+          btnClose:1
         })
       } else console.log(err)
     }
@@ -281,10 +289,12 @@ export const FormularioRegMascotas = ({ URL = ''}) => {
                 
               </div>
             )}
-
           </div>
         </div>
       </main>
+      <Notification 
+        {...notify}
+      />
     </div>
   )
 }

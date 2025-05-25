@@ -153,28 +153,3 @@ INSERT INTO pets_heaven.citas (fec_cit, hor_ini_cit, hor_fin_cit, ser_cit, vet_c
 ('2025-06-23', '15:30:00', '16:30:00', 1, 1, 4, 'PENDIENTE'),   -- Lunes, Consulta General
 ('2025-06-24', '11:30:00', '12:30:00', 3, 2, 5, 'REALIZADO'),   -- Martes, Cirugía
 ('2025-06-25', '17:00:00', '18:00:00', 4, 2, 5, 'PENDIENTE');   -- Miércoles, Emergencias
-
-INSERT INTO pets_heaven.consultas (
-    pes_mas_con, tem_mas_con, mot_con, tra_con, dia_con, med_con, 
-    fec_con, cit_con, pro_mas_con, vet_con, mas_con, estado_con
-) VALUES
-(28.3, 38, 'Revisión anual de rutina', 'Examen físico completo', 'Mascota saludable', 'Ninguno necesario', 
- '2025-06-16', 1, 1, 1, 1, 'realizada'),
-(4.1, 39, 'Vacunación anual', 'Aplicación de vacuna múltiple', 'Mascota en buen estado', 'Antiparasitario interno', 
- '2025-06-17', 2, 2, 1, 2, 'pendiente'),
-(12.5, 38, 'Cirugía de esterilización', 'Esterilización exitosa', 'Recuperación normal post-quirúrgica', 'Analgésicos y antibióticos', 
- '2025-06-18', 3, 3, 2, 3, 'realizada'),
-(5.0, 38, 'Control post-operatorio', 'Curación de herida', 'Herida cicatrizando correctamente', 'Antibiótico tópico', 
- '2025-06-19', 4, 4, 2, 4, 'en-espera'),
-(31.8, 40, 'Emergencia por fiebre alta', 'Hidratación intravenosa', 'Infección bacteriana detectada', 'Antibiótico y antipirético', 
- '2025-06-20', 5, 5, 3, 5, 'realizada'),
-(3.7, 38, 'Vacunación antirrábica', 'Aplicación de vacuna', 'Mascota saludable', 'Ninguno', 
- '2025-06-21', 6, 1, 3, 6, 'cancelado'),
-(20.1, 38, 'Baño y corte de pelo', 'Baño terapéutico', 'Piel en buen estado', 'Champú medicado', 
- '2025-06-22', 7, 2, 1, 7, 'realizada'),
-(7.3, 39, 'Revisión de rutina', 'Examen físico', 'Leve sobrepeso', 'Dieta especial recomendada', 
- '2025-06-23', 8, 3, 1, 8, 'pendiente'),
-(6.7, 38, 'Cirugía menor', 'Extracción de diente', 'Recuperación normal', 'Analgésicos por 3 días', 
- '2025-06-24', 9, 4, 2, 9, 'realizada'),
-(34.0, 39, 'Emergencia por herida', 'Sutura y curación', 'Herida superficial limpia', 'Antibiótico y analgésico', 
- '2025-06-25', 10, 5, 2, 10, 'pendiente');

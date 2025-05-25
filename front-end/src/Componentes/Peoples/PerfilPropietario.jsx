@@ -11,6 +11,7 @@ import { DeleteData, ModifyData } from '../Varios/Requests'
 
 // Import styles 
 import '../../../src/styles/InterfazAdmin/PerfilPropietario.css'
+import Footer from '../Varios/Footer2'
 
 // Component 
 export const PerfilPropietario = ({ 
@@ -268,15 +269,15 @@ export const PerfilPropietario = ({
             <section className='mascotasContenedorProps'>
               <div className='mascotasGrillaProps'>
                 {petsData?.map((mascota, index) => (
-                  <div key={index + 1293} className='mascotaTarjetaProps'>
-                    <div className='mascotaImagenProps'>
+                  <article key={index + 1293} className='mascotaTarjetaProps'>
+                    <section className='mascotaImagenProps'>
                       {checkImage(
                         mascota.fot_mas,
                         `${mascota.esp_mas} de raza ${mascota.raz_mas} color ${mascota.col_mas} con nombre ${mascota.nom_mas}`,
                         imgDefaultPet
                       )}
-                    </div>
-                    <div className='mascotaInfoProps'>
+                    </section>
+                    <section className='mascotaInfoProps'>
                       <h3 className='mascotaNombreProps'>{mascota.nom_mas}</h3>
                       <div className='mascotaDetallesProps'>
                         <div className='mascotaDetalleProps'>
@@ -299,8 +300,8 @@ export const PerfilPropietario = ({
                           <span>Ver historial</span>
                         </button>
                       </div>
-                    </div>
-                  </div>
+                    </section>
+                  </article>
                 ))}
               </div>
 

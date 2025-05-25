@@ -45,6 +45,7 @@ export class Description extends React.Component {
     headers = datas && headersKeys?.map((key, index) => {
       const item = this.renderCell(datas[headersValues[index]], headersValues[index])
       return {
+        headerValue: headers[key],
         label: key,
         ...item}
     })
@@ -70,7 +71,7 @@ export class Description extends React.Component {
                     {header.label.toLowerCase().includes("gen")? (
                       <select 
                         className="select"
-                        name={header.label}
+                        name={header.headerValue}
                         onChange={handleChange}
                         defaultValue={header.value}
                         disabled={!header.active}
@@ -80,7 +81,7 @@ export class Description extends React.Component {
                       </select>
                     ):(
                       <input
-                        name={header.label}
+                        name={header.headerValue}
                         type={header.type}
                         className="input"
                         max={header.type === "date" ? "2006-01-01" : 100}
