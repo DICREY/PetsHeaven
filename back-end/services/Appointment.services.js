@@ -62,16 +62,90 @@ class Appointment {
         }) 
     }
 
-    async registAppointment () {
-        
+    async registAppointment(data) {
+        return new Promise((res, rej) => {
+            const procedure = "CALL RegistAppointment(?,?,?,?,?,?,?,?,?)";
+            const params = [
+                data.fec_reg_cit,   
+                data.fec_cit,       
+                data.hor_ini_cit,   
+                data.hor_fin_cit,   
+                data.lug_ate_cit,   
+                data.ser_cit,       
+                data.vet_cit,       
+                data.mas_cit,       
+                data.estado         
+            ];
+
+            this.database = new DataBase();
+            this.database.conect();
+
+            if (this.database) this.database.conection.query(procedure, params, (err, result) => {
+                if (err) rej({ message: err });
+                setTimeout(() => {
+                    res({
+                        message: "Appointment registered",
+                        result: result
+                    });
+                }, 500);
+            });
+
+            this.database.conection.end();
+        });
     }
 
-    async modifyAppointment() {
+    async modifyAppointment(data) {
+        return new Promise((res, rej) => {
+            const procedure = "CALL UpdateAppointmentDate(?,?,?,?,?,?)";
+            const params = [
+                data.id_cit,         
+                data.mas_cit,        
+                data.fec_cit,        
+                data.hor_ini_cit,    
+                data.hor_fin_cit,    
+                data.lug_ate_cit     
+            ];
 
+            this.database = new DataBase();
+            this.database.conect();
+
+            if (this.database) this.database.conection.query(procedure, params, (err, result) => {
+                if (err) rej({ message: err });
+                setTimeout(() => {
+                    res({
+                        message: "Appointment updated",
+                        result: result
+                    });
+                }, 500);
+            });
+
+            this.database.conection.end();
+        });
     }
 
-    async disableAppointment () {
+    async disableAppointment(data) {
+        return new Promise((res, rej) => {
+            const procedure = "CALL CancelAppointment(?,?)";
+            const params = [
+                data.id_cit,   
+                data.mas_cit   
+            ];
 
+            this.database = new DataBase();
+            this.database.conect();
+
+            if (this.database) this.database.conection.query(procedure, params, (err, result) => {
+                if (err) rej({ message: err });
+                setTimeout(() => {
+                    res({
+                        message: "Appointment cancelled",
+                        result: result
+                    });
+                }, 500);
+            });
+
+            this.database.conection.end();
+        });
     }
     
 }
