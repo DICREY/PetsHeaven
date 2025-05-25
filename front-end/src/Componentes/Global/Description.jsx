@@ -2,7 +2,7 @@
 import React from "react"
 
 // Imports 
-import { formatDate, checkImage } from '../Varios/Util'
+import { formatDate, checkImage, LegalAge } from '../Varios/Util'
 
 // Component 
 export class Description extends React.Component {
@@ -12,6 +12,8 @@ export class Description extends React.Component {
     this.state = {
       validImg: false
     }
+    this.legalDate = LegalAge()
+    this.maxDate = new Date().toLocaleDateString('en-CA')
   }
 
   componentDidMount() {
@@ -84,8 +86,7 @@ export class Description extends React.Component {
                         name={header.headerValue}
                         type={header.type}
                         className="input"
-                        max={header.type === "date" ? "2006-01-01" : 100}
-                        min={header.type === "date" ? "1900-01-01" : 0}
+                        max={header.type === "date" ? header.headerValue === 'fec_nac_per'? this.legalDate: this.maxDate : 100}
                         placeholder={header.label}
                         onChange={handleChange}
                         defaultValue={header.value}

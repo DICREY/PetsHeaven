@@ -73,6 +73,11 @@
 }
 
 /* Button Styles */
+.BtnsRegisters {
+  display: flex;
+  gap: 2rem;
+}
+
 .botonadminhome {
   background-color: #e0edff;
   color: #00bcd4;

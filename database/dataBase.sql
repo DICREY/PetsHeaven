@@ -133,6 +133,7 @@ CREATE TABLE pets_heaven.citas(
     fec_cit DATE NOT NULL,
     hor_ini_cit TIME NOT NULL,
     hor_fin_cit TIME NOT NULL,
+    lug_ate_cit VARCHAR(100) NOT NULL COMMENT 'lugar de atención',
     ser_cit INT NOT NULL,INDEX(ser_cit),FOREIGN KEY(ser_cit) REFERENCES servicios(id_ser) ON DELETE CASCADE ON UPDATE CASCADE,
     vet_cit INT NOT NULL,INDEX(vet_cit),FOREIGN KEY(vet_cit) REFERENCES veterinarios(id_vet) ON DELETE CASCADE ON UPDATE CASCADE,
     mas_cit INT NOT NULL,INDEX(mas_cit),FOREIGN KEY(mas_cit) REFERENCES mascotas(id_mas) ON DELETE CASCADE ON UPDATE CASCADE,

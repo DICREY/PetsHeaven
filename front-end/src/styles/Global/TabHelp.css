@@ -1,0 +1,222 @@
+/* Estructura principal */
+.help-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(0.1875rem); /* 3px */
+}
+
+.help-window {
+  background-color: var(--white);
+  border-radius: 0.75rem; /* 12px */
+  width: 90%;
+  max-width: 37.5rem; /* 600px */
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.1); /* 4px 20px */
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Encabezado */
+.help-header {
+  padding: 1.25rem; /* 20px */
+  border-bottom: 0.0625rem solid var(--gray-300); /* 1px */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.help-header h2 {
+  margin: 0;
+  color: var(--verdeaguamarina);
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem; /* 10px */
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.3125rem; /* 5px */
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.close-btn:hover {
+  background-color: var(--gris-claro);
+}
+
+/* Pestañas */
+.help-tabs {
+  display: flex;
+  border-bottom: 0.0625rem solid var(--gray-300); /* 1px */
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 0.9375rem; /* 15px */
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--gray-600);
+  transition: all 0.2s;
+  border-bottom: 0.1875rem solid transparent; /* 3px */
+}
+
+.tab-btn:hover {
+  color: var(--verdeaguamarina);
+}
+
+.tab-btn.active {
+  color: var(--verdeaguamarina);
+  border-bottom-color: var(--azulturquesa);
+}
+
+/* Contenido */
+.help-content {
+  padding: 1.25rem; /* 20px */
+}
+
+/* Sección de Contacto */
+.contact-section h3,
+.manual-section h3,
+.faq-section h3 {
+  margin-top: 0;
+  color: var(--verdeaguamarina);
+  font-size: 1.3rem;
+  margin-bottom: 1.25rem; /* 20px */
+}
+
+.contact-card {
+  display: flex;
+  gap: 0.9375rem; /* 15px */
+  padding: 0.9375rem; /* 15px */
+  margin-bottom: 0.9375rem; /* 15px */
+  border-radius: 0.5rem; /* 8px */
+  background-color: var(--gris-claro);
+  align-items: flex-start;
+}
+
+.contact-icon {
+  padding: 0.625rem; /* 10px */
+  background-color: var(--white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.contact-info h4 {
+    margin: 0 0 0.625rem 0; /* 0 0 10px 0 */
+    color: var(--verdeaguamarina);
+}
+
+.contact-info p {
+  margin: 0.3125rem 0; /* 5px 0 */
+  color: var(--gray-600);
+}
+
+.contact-info a {
+  color: var(--verdeaguamarina);
+  text-decoration: none;
+}
+
+.contact-info a:hover {
+  text-decoration: underline;
+}
+
+/* Sección de Manuales */
+.manual-card {
+  padding: 0.9375rem; /* 15px */
+  margin-bottom: 0.9375rem; /* 15px */
+  border: 0.0625rem solid var(--gray-300); /* 1px */
+  border-radius: 0.5rem; /* 8px */
+}
+
+.manual-card h4 {
+  margin: 0 0 0.3125rem 0; /* 0 0 5px 0 */
+  color: var(--verdeaguamarina);
+}
+
+.manual-card p {
+  margin: 0 0 0.9375rem 0; /* 0 0 15px 0 */
+  color: var(--gray-600);
+}
+
+.download-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* 8px */
+  padding: 0.5rem 0.9375rem; /* 8px 15px */
+  background-color: var(--white);
+  border: 0.0625rem solid var(--azulturquesa); /* 1px */
+  border-radius: 0.375rem; /* 6px */
+  color: var(--verdeaguamarina);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.download-btn:hover {
+  background-color: var(--azulclaro);
+}
+
+/* Sección de FAQ */
+.faq-item {
+  padding: 0.9375rem 0; /* 15px 0 */
+  border-bottom: 0.0625rem solid var(--gray-300); /* 1px */
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+}
+
+.faq-item h4 {
+  margin: 0 0 0.625rem 0; /* 0 0 10px 0 */
+  color: var(--verdeaguamarina);
+}
+
+.faq-item p {
+  margin: 0;
+  color: var(--gray-600);
+  line-height: 1.5;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(1.25rem); } /* 20px */
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .help-tabs {
+    flex-direction: column;
+  }
+  
+  .tab-btn {
+    padding: 0.75rem; /* 12px */
+    border-bottom: 0.0625rem solid var(--gray-300); /* 1px */
+    border-left: 0.1875rem solid transparent; /* 3px */
+  }
+  
+  .tab-btn.active {
+    border-bottom: 0.0625rem solid var(--gray-300); /* 1px */
+    border-left: 0.1875rem solid var(--azulturquesa); /* 3px */
+  }
+  
+  .contact-card {
+    flex-direction: column;
+  }
+}

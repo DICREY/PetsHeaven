@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 
 // Imports
 import { checkImage } from '../Varios/Util'
+import { SmallLoader } from '../Errores/SmallLoader'
 
 // Import styles 
 import '../../styles/Global/notifys.css'
@@ -38,13 +39,16 @@ export const Notification = ({
                 <section className="LoadingNotification">
                     <article className="LoadingContent">
                         <aside className="LoadingPaw">
+                            {load && ( <SmallLoader /> )}
+                        </aside> 
+                        {/* <aside className="LoadingPawImg">
                             {checkImage(
                                 img,
                                 'ganzo antropomorfico con traje formal negro con una lupa antigua en la pata derecha y la cabeza inclinada 40grados a la izquierda',
                                 imgDefault,
                                 'LoadingImg'
-                            )}
-                        </aside>
+                            )} 
+                        </aside> */}
                         <aside className="LoadingText">
                             <p>{title}</p>
                             <p className="LoadingSubText">{message}</p>

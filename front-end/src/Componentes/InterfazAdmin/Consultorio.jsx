@@ -222,14 +222,24 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
                 </div>
               </div>
 
-              <button 
-                className='botonadminhome' 
-                onClick={() => navigate('/propietario/registro')}
-                aria-label='Registrar nuevo usuario'
-              >
-                <Plus size={16} className='iconoplusadminhome' aria-hidden='true' />
-                Registrar usuario
-              </button>
+              <nav className='BtnsRegisters'>
+                <button 
+                  className='botonadminhome' 
+                  onClick={() => navigate('/mascota/registro')}
+                  aria-label='Registrar nueva mascota'
+                >
+                  <Plus size={16} className='iconoplusadminhome' aria-hidden='true' />
+                  Registrar Mascota
+                </button>
+                <button 
+                  className='botonadminhome' 
+                  onClick={() => navigate('/propietario/registro')}
+                  aria-label='Registrar nuevo usuario'
+                >
+                  <Plus size={16} className='iconoplusadminhome' aria-hidden='true' />
+                  Registrar usuario
+                </button>
+              </nav>
             </header>
 
             <section className='busquedaadminhome' aria-label='Búsqueda de usuarios y mascotas'>

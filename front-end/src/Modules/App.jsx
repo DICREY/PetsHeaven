@@ -24,7 +24,7 @@ import { getRoles,Logout } from '../Componentes/Varios/Util'
 import { useInactivityDetector } from '../Componentes/Varios/InactiveDectetor'
 import VeterinariaPage from '../Componentes/VeterinariaPage'
 import { PerfilPropietario } from '../Componentes/Peoples/PerfilPropietario'
-import {GesAgendaPersonal} from '../Componentes/InterfazAdmin/GesAgendaPersonal'
+import { GesAgendaPersonal } from '../Componentes/InterfazAdmin/GesAgendaPersonal'
 
 //import Crud personal
 import { ConfiguracionUsuarioCrud } from '../Componentes/InterfazAdmin/CrudPersonal/ConfiguracionUsuarioCrud'
@@ -131,10 +131,10 @@ export default function App () {
           <VetRoute children={<GesMascota URL={URL}/>} />} >
         </Route>
         <Route path='mascota/registro' element={
-          <VetRoute children={<FormularioRegMascotas URL={URL} />} />} >
+          <VetRoute children={<FormularioRegMascotas URL={URL} imgDefault={imgPetDefault} />} />} >
         </Route>
         <Route path='propietario/registro' element={
-          <VetRoute children={<RegistroPro URL={URL} />} />}>
+          <VetRoute children={<RegistroPro URL={URL} imgDefault={imgUserDefault} />} />}>
         </Route>
         <Route path='consultorio' element={
           <VetRoute children={<HomeAdmin 

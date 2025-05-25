@@ -5,14 +5,14 @@ import { Pencil, ChevronLeft, User } from 'lucide-react'
 
 // Imports
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
-import { formatDate, errorStatusHandler } from '../Varios/Util'
+import { formatDate, errorStatusHandler, checkImage } from '../Varios/Util'
 import { Notification } from '../Global/Notifys'
 import { PostData } from '../Varios/Requests'
 
 // Import styles
 import '../../../src/styles/Formularios/FormularioMascotas.css'
 
-export const FormularioRegMascotas = ({ URL = ''}) => {
+export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
   // Dynamic vars
   const [activeTab, setActiveTab] = useState('personal')
   const [formData, setFormData] = useState({})
@@ -21,6 +21,7 @@ export const FormularioRegMascotas = ({ URL = ''}) => {
 
   // Vars 
   const profileInputRef = useRef(null)
+  const maxDate = new Date().toLocaleDateString('en-CA')
   const navigate = useNavigate()
   const mainURL = `${URL}/pet`
 
@@ -81,13 +82,13 @@ export const FormularioRegMascotas = ({ URL = ''}) => {
     <div className='contenedorgesusuario'>
       <NavBarAdmin />
       <main className='principalgesusuario'>
-        <div className='contenedor-regusuario'>
-          <div className='cabecera-regusuario'>
+        <main className='contenedor-regusuario'>
+          <header className='cabecera-regusuario'>
             <div className='titulo-regusuario'>
               <h1>Registro mascota</h1>
               <span className='creacion-regusuario'>| Creación</span>
             </div>
-            <div className='acciones-regusuario'>
+            <address className='acciones-regusuario'>
               <button className='atras-regusuario' onClick={() => navigate(-1)}>
                 <ChevronLeft size={16} />
                 <span className='texto-btn-regusuario'>Atrás</span>
@@ -96,10 +97,10 @@ export const FormularioRegMascotas = ({ URL = ''}) => {
                 className='guardar-regusuario'
                 onClick={sendData}
                 >Guardar</button>
-            </div>
-          </div>
+            </address>
+          </header>
 
-          <div className='tabs-regusuario'>
+          <nav className='tabs-regusuario'>
             <div
               className={`tab-regusuario ${activeTab === 'personal' ? 'activo-regusuario' : ''}`}
               onClick={() => setActiveTab('personal')}
@@ -107,24 +108,27 @@ export const FormularioRegMascotas = ({ URL = ''}) => {
               <User className='icono-regusuario' size={18} />
               <span className='texto-tab-regusuario'>Información mascota</span>
             </div>
-          </div>
+          </nav>
 
-          <div className='contenido-regusuario'>
+          <section className='contenido-regusuario'>
             {activeTab === 'personal' && (
-              <div className='form-regusuario'>
+              <section className='form-regusuario'>
                 <h2>Datos Básicos de la Mascota:</h2>
 
                 <div className='grupo-regusuario'>
                   <label className='etiqueta-regusuario'>Imagen de la mascota</label>
                   <div className='perfil-regusuario'>
                     <div className='imagen-regusuario'>
-                      {profileImage ? (
-                        <img src={profileImage || '/placeholder.svg'} alt='Perfil' />
-                      ) : (
-                        <div className='placeholder-imagen'>
-                          <User size={40} strokeWidth={1} />
-                        </div>
-                      )}
+                      {profileImage?
+                        checkImage(
+                          profileImage,
+                          'imagen de la mascota para guardar en el sistema',
+                          imgDefault): 
+                        checkImage(
+                          imgDefault,
+                          'imagen de la mascota para guardar en el sistema',
+                          imgDefault)
+                      }
                     </div>
                     <button className='editar-regusuario' onClick={() => profileInputRef.current.click()}>
                       <Pencil size={16} />
@@ -221,7 +225,8 @@ export const FormularioRegMascotas = ({ URL = ''}) => {
                     <input 
                       name='fec_nac_mas'
                       onChange={handleChange}
-                      type='date'  
+                      type='date'
+                      max={maxDate}
                       className='campo-regusuario'
                       required  
                     />
@@ -234,7 +239,7 @@ export const FormularioRegMascotas = ({ URL = ''}) => {
                       onChange={handleChange}
                       placeholder='Peso (en kg)' 
                       className='campo-regusuario' 
-                      maxLength={3}
+                      maxLength={7}
                       minLength={1}
                       pattern='^[0-9]+$'
                       required
@@ -287,14 +292,16 @@ export const FormularioRegMascotas = ({ URL = ''}) => {
                 </div>
 
                 
-              </div>
+              </section>
             )}
-          </div>
-        </div>
+          </section>
+        </main>
       </main>
-      <Notification 
-        {...notify}
-      />
+      {notify && (
+        <Notification 
+          {...notify}
+        />
+      )}
     </div>
   )
 }
