@@ -9,7 +9,7 @@ import esLocale from "@fullcalendar/core/locales/es"
 
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
-import { GetData } from '../Varios/Requests'
+import { GetData, PostData, ModifyData } from '../Varios/Requests'
 import { errorStatusHandler } from '../Varios/Util'
 import { Notification } from '../Global/Notifys'
 
@@ -54,49 +54,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     useEffect(() => {
         if (didFetch.current) return
         didFetch.current = true
-        const GetAppointments = async () => {
-            const token = localStorage.getItem("token")
-            try {
-                if (token) {
-                    const data = await GetData(`${mainUrl}/general`, token)
-                    if (data) {
-                        // Mapea los datos obtenidos del backend
-                        const mappedEvents = data.map(event => ({
-                            id: event.id_cit,
-                            title:event.nom_ser,
-                            start: joinDateTime(event.fec_cit, event.hor_ini_cit),
-                            end: joinDateTime(event.fec_cit, event.hor_fin_cit),
-                            description: event.des_ser,
-                            category: event.nom_ser || 'vacuna',
-                            paciente: event.nom_mas,
-                            propietario: `${event.nom_per} ${event.ape_per}`,
-                            telefono: event.cel_per,
-                            estado: event.estado,
-                            fotoMascota: event.fot_mas
-                        }))
-                        setEvents(mappedEvents) 
-                    }
-                } else {
-                    navigate('/user/login')
-                }
-            } catch (err) {
-                if (err.status) {
-                    const message = errorStatusHandler(err.status)
-                    setNotify({
-                        title: 'Error',
-                        message: `${message}`,    
-                        close: setNotify
-                    })
-                    if (err.status === 403) {
-                        setTimeout(() => {
-                            Logout()
-                        }, 2000)
-                    }
-                } else console.log(err)
-            }
-        }
-        
-        GetAppointments()
+        fetchAppointments()
     }, [])
     
     //Dia de hoy
@@ -172,35 +130,69 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
         setShowEventModal(true)
     }
 
-    // Crear nueva cita
-    const handleCreateEvent = () => {
+    // Crear nueva cita en el backend
+    const handleCreateEvent = async () => {
         if (!newEvent.title) {
             alert('El título es requerido')
             return
         }
 
-        const eventToAdd = {
-            id: Date.now().toString(),
-            ...newEvent
+        const token = localStorage.getItem("token")
+        try {
+            const citaData = {
+                fec_reg_cit: new Date().toISOString().split('T')[0],
+                fec_cit: newEvent.start.split('T')[0],
+                hor_ini_cit: newEvent.start.split('T')[1],
+                hor_fin_cit: newEvent.end.split('T')[1],
+                lug_ate_cit: "Consultorio", // Puedes agregar un input para esto si lo necesitas
+                ser_cit: 1, // Ajusta según tu lógica de servicios
+                vet_cit: 1, // Ajusta según tu lógica de veterinarios
+                mas_cit: 1, // Ajusta según tu lógica de mascotas
+                estado: 'PENDIENTE'
+            }
+            await PostData(`${mainUrl}/register`, citaData, token)
+            setShowCreateModal(false)
+            // Refresca las citas
+            fetchAppointments()
+        } catch (err) {
+            alert('Error al crear la cita')
         }
-
-        setEvents([...events, eventToAdd])
-        setShowCreateModal(false)
     }
 
-    // Actualizar cita existente
-    const handleUpdateEvent = () => {
-        setEvents(events.map(event => 
-            event.id === selectedEvent.id ? selectedEvent : event
-        ))
-        setShowEventModal(false)
-    }
-
-    // Eliminar cita
-    const handleDeleteEvent = () => {
-        if (window.confirm(`¿Eliminar la cita "${selectedEvent.title}"?`)) {
-            setEvents(events.filter(event => event.id !== selectedEvent.id))
+    // Actualizar cita existente en el backend
+    const handleUpdateEvent = async () => {
+        const token = localStorage.getItem("token")
+        try {
+            const citaData = {
+                id_cit: selectedEvent.id,
+                mas_cit: 1, // Ajusta según tu lógica
+                fec_cit: typeof selectedEvent.start === "string" ? selectedEvent.start.split('T')[0] : selectedEvent.start.toISOString().split('T')[0],
+                hor_ini_cit: typeof selectedEvent.start === "string" ? selectedEvent.start.split('T')[1] : selectedEvent.start.toISOString().split('T')[1],
+                hor_fin_cit: typeof selectedEvent.end === "string" ? selectedEvent.end.split('T')[1] : selectedEvent.end.toISOString().split('T')[1],
+                lug_ate_cit: "Consultorio" // O el valor que corresponda
+            }
+            await ModifyData(`${mainUrl}/modify`, citaData, token)
             setShowEventModal(false)
+            fetchAppointments()
+        } catch (err) {
+            alert('Error al actualizar la cita')
+        }
+    }
+
+    // Cancelar cita en el backend
+    const handleDeleteEvent = async () => {
+        if (!window.confirm(`¿Eliminar la cita "${selectedEvent.title}"?`)) return
+        const token = localStorage.getItem("token")
+        try {
+            const citaData = {
+                id_cit: selectedEvent.id,
+                mas_cit: 1 // Ajusta según tu lógica
+            }
+            await ModifyData(`${mainUrl}/cancel`, citaData, token)
+            setShowEventModal(false)
+            fetchAppointments()
+        } catch (err) {
+            alert('Error al cancelar la cita')
         }
     }
 
@@ -211,6 +203,31 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
             setNewEvent({...newEvent, [name]: value})
         } else {
             setSelectedEvent({...selectedEvent, [name]: value})
+        }
+    }
+
+    const fetchAppointments = async () => {
+        const token = localStorage.getItem("token")
+        try {
+            const data = await GetData(`${mainUrl}/general`, token)
+            if (data) {
+                const mappedEvents = data.map(event => ({
+                    id: event.id_cit,
+                    title: event.nom_ser,
+                    start: joinDateTime(event.fec_cit, event.hor_ini_cit),
+                    end: joinDateTime(event.fec_cit, event.hor_fin_cit),
+                    description: event.des_ser,
+                    category: event.nom_ser || 'vacuna',
+                    paciente: event.nom_mas,
+                    propietario: `${event.nom_per} ${event.ape_per}`,
+                    telefono: event.cel_per,
+                    estado: event.estado,
+                    fotoMascota: event.fot_mas
+                }))
+                setEvents(mappedEvents)
+            }
+        } catch (err) {
+            // Manejo de error
         }
     }
 
