@@ -134,6 +134,21 @@ export const formatDate = (dateString = "") => {
   return false
 }
 
+export const searchFilter = (term = '', data = [], headers = [], set = null) => {
+  if (!term || !data || !headers || !Array.isArray(data) || !Array.isArray(headers)) return
+
+  // const termLower = term == ''? term.toLowerCase(): term
+  const termLower = term.toLowerCase()
+
+  const find = data?.filter(item => {
+    return headers?.some(field => 
+      item[field]?.toLowerCase().includes(termLower)
+    )
+  })
+
+  if (find && set) set(find)
+}
+
 export const getAge = (fec = "") => {
   const calcAge = (fechaNac) => {
     const hoy = new Date()

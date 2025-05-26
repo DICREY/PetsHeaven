@@ -8,7 +8,7 @@ import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GlobalTable } from '../Global/GlobalTable'
 import { Notification } from '../Global/Notifys'
 import { GetData } from '../Varios/Requests'
-import { errorStatusHandler, formatDate } from '../Varios/Util'
+import { errorStatusHandler, formatDate, searchFilter } from '../Varios/Util'
 
 // Import styles 
 import '../../../src/styles/InterfazAdmin/Consultorio.css'
@@ -25,7 +25,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   // Vars 
   const mainUrl = `${URL}/owner`
   const headersSearchUser = ['nom_per', 'email_per', 'cel_per', 'ape_per']
-  const headersSearchPet = ['nom_mas']
+  const headersSearchPet = ['nom_mas','esp_mas','raz_mas','ali_mas','gen_mas']
   const navigate = useNavigate()
 
   // Functions
@@ -162,14 +162,8 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
       Edad: 'fec_nac_mas',
       Propietario: 'nom_per'
     })
-    const termLower = term.toLowerCase()
-    const find = data.filter(item => {
-      return headers.some(field => 
-        item[field]?.toLowerCase().includes(termLower)
-      )
-    })
     
-    if (find) setDatas(find)
+    searchFilter(term, data, headers, setDatas)
   }
 
   const handleDescription = (data) => {

@@ -208,6 +208,11 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
 
     const fetchAppointments = async () => {
         const token = localStorage.getItem("token")
+        setNotify({
+            title: 'Cargando',
+            message: 'Cargando citas, por favor espere...',
+            load: 1
+        })
         try {
             const data = await GetData(`${mainUrl}/general`, token)
             if (data) {
@@ -227,6 +232,14 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                 setEvents(mappedEvents)
             }
         } catch (err) {
+            if(err.status) {
+                const message = errorStatusHandler(err.status)
+                setNotify({
+                    title: 'Error',
+                    message: `${message}`,
+                    close: setNotify
+                })
+            } else console.error(err)
             // Manejo de error
         }
     }

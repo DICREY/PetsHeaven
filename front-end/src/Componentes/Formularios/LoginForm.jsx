@@ -122,7 +122,7 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
   // Resetear a 20 cuando waitTime cambia a true
   useEffect(() => {
     if (waitTime) {
-      setTime(180)
+      setTime(10)
     }
   }, [waitTime])
 
