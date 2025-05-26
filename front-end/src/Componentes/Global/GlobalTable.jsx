@@ -117,7 +117,7 @@ export class GlobalTable extends Component {
     }
 
     render () {
-      const { headers ,subtitle, fullData, listHeader } = this.props
+      const { headers ,subtitle, fullData, listHeader,filters } = this.props
       const { page, datas } = this.state
       const headersKeys = Object.keys(headers)
       const headersValues = Object.values(headers)
@@ -148,7 +148,7 @@ export class GlobalTable extends Component {
               <input
                 id='busqueda-usuario'
                 className='campoadminhome'
-                placeholder='Buscar por identificación o nombre de usuario'
+                placeholder={filters?`Buscar por ${filters}`: 'Filtrar'}
                 type='search'
                 aria-label='Buscar usuarios'
                 onChange={e => this.handleSearch(e.target.value, fullData)}

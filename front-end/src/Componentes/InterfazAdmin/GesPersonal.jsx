@@ -105,6 +105,7 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
             {/* Table  */}
             <GlobalTable 
               subtitle={'Personal vinculado a la veterinaria: Petsheaven'}
+              filters='nombre, apellido, email, celular o documento'
               fullData={usersAlmac}
               headersSearch={['nom_per', 'email_per', 'cel_per', 'ape_per','doc_per']}
               headers={headers}

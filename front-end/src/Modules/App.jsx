@@ -25,6 +25,7 @@ import { useInactivityDetector } from '../Componentes/Varios/InactiveDectetor'
 import VeterinariaPage from '../Componentes/VeterinariaPage'
 import { PerfilPropietario } from '../Componentes/Peoples/PerfilPropietario'
 import { GesAgendaPersonal } from '../Componentes/InterfazAdmin/GesAgendaPersonal'
+import { Services } from '../Componentes/InterfazAdmin/Services'
 
 //import Crud personal
 import { ConfiguracionUsuarioCrud } from '../Componentes/InterfazAdmin/CrudPersonal/ConfiguracionUsuarioCrud'
@@ -34,7 +35,6 @@ export default function App () {
   // Dynamic vars 
   const [userSelect,setUserSelect] = useState()
   const [petSelect,setPetSelect] = useState()
-  const [inactiveCon,setInactiveCon] = useState(null)
   const [owner,setOwner] = useState(false)
   const [arriveTo,setArriveTo] = useState('')
   const [petDetailTab,setPetDetailTab] = useState('Datos Generales')
@@ -42,6 +42,7 @@ export default function App () {
   // Vars 
   const imgPetDefault = 'https://github.com/Mogom/Imagenes_PetsHeaven/blob/main/Defaults/petImg.default.jpg?raw=true'
   const imgUserDefault = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/default_veterinario.png'
+  const imgServiceDefault = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/default_veterinario.png'
   const URL = 'http://localhost:3000'
   const isInactive = useInactivityDetector(20 * 60 * 1000) // 20 minutos de inactividad  
   
@@ -110,6 +111,12 @@ export default function App () {
             datas={petSelect}
             imgPetDefault={imgPetDefault}
             URL={URL}
+          />}/>}>
+        </Route>
+        <Route path='services' element={
+          <PrivateRoute children={<Services 
+            URL={URL}
+            imgDefault={imgServiceDefault}
           />}/>}>
         </Route>
 
