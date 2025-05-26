@@ -15,6 +15,7 @@ import { motion } from 'framer-motion'
 
 // Import styles
 import '../../src/styles/VeterinariaPage.css'
+import HeaderUser from './BarrasNavegacion/HeaderUser'
 
 // Animaciones
 const containerVariants = {

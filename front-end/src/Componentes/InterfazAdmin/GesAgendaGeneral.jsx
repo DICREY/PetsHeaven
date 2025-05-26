@@ -13,6 +13,7 @@ import { GetData, PostData, ModifyData } from '../Varios/Requests'
 import { errorStatusHandler } from '../Varios/Util'
 import { Notification } from '../Global/Notifys'
 import { searchFilter } from '../Varios/Util'
+import HeaderUser from '../BarrasNavegacion/HeaderUser'
 
 // Import styles 
 import "../../styles/InterfazAdmin/GesAgendaGeneral.css"
@@ -251,7 +252,6 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     return (
         <main className="calendar-container">
             <NavBarAdmin />
-
             <main className='calendar-container' id='main-container-calendar'>
 
                 <FullCalendar
