@@ -138,7 +138,7 @@ export const TabHelp = ({ onClose }) => {
                     
                     <div className="faq-item">
                         <h4>¿Cómo programo una nueva cita?</h4>
-                        <p>Dirígete a la sección "Citas" en el menú principal y haz clic en "Nueva Cita". Completa el formulario con los datos requeridos.</p>
+                        <p>Dirígete a la sección "Agenda" en la barra de navegación, haz clic en "Agenda Personal" y luego clic en "En el día a programar la cita". Completa el formulario con los datos requeridos.</p>
                     </div>
                     
                     <div className="faq-item">

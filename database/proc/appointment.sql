@@ -1,4 +1,4 @@
--- Active: 1747352860830@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchAllAppointments()
 BEGIN 
     SELECT 
@@ -6,7 +6,7 @@ BEGIN
         c.fec_cit,
         c.hor_ini_cit,
         c.hor_fin_cit,
-        c.lug_ate_cit, 
+        c.lug_ate_cit,
         cs.nom_cat,
         s.nom_ser,
         s.des_ser,
