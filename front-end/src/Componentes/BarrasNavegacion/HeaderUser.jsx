@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from '../../styles/BarrasNavegacion/HeaderUser.module.css';
 import { User, HelpCircle, LogOut } from 'lucide-react';
+import '../../styles/global.css'; 
 
 export default function HeaderUser() {
   const handleLogout = () => {
@@ -27,7 +28,7 @@ export default function HeaderUser() {
       <nav className={styles.navLinks}>
         <button 
           onClick={handleHelp} 
-          className={styles.navButton}
+          className={`${styles.navButton} ${styles.helpButton}`}
           aria-label="Ayuda"
         >
           <HelpCircle size={20} className={styles.icon} />
@@ -36,7 +37,7 @@ export default function HeaderUser() {
         
         <button 
           onClick={handleProfile} 
-          className={styles.navButton}
+          className={`${styles.navButton} ${styles.profileButton}`}
           aria-label="Perfil"
         >
           <User size={20} className={styles.icon} />
