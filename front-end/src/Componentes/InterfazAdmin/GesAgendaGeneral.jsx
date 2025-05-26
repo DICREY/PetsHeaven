@@ -27,7 +27,6 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     // Dynamic vars 
     const [events, setEvents] = useState([])
     const [notify, setNotify] = useState(null)
-    const [mesActual, setMesActual] = useState('')
     const [currentView, setCurrentView] = useState('dayGridMonth')
     const [showEventModal, setShowEventModal] = useState(false) //Mostrar la descripcion en un pop up de la cita
     const [showCreateModal, setShowCreateModal] = useState(false) //Mostrar el pop up de creacion de Cita
@@ -45,7 +44,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
         telefono: '',
         estado: 'PENDIENTE'
     })
-    
+
     // Vars 
     const didFetch = useRef(false)
     const mainUrl = `${URL}/appointment`
@@ -56,7 +55,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
         didFetch.current = true
         fetchAppointments()
     }, [])
-    
+
     //Dia de hoy
     const today = new Date().toISOString().split('T')[0] // 'YYYY-MM-DD'
 
@@ -74,33 +73,6 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     //         }
     // ])
 
-    //Funcion para cambiar entre meses
-    const navigate = (action) => {
-        const calendarApi = calendarRef.current.getApi()
-        switch (action) {
-            case 'prev':
-                calendarApi.prev()
-                break
-            case 'next':
-                calendarApi.next()
-                break
-            case 'today':
-                calendarApi.today()
-                break
-            default:
-                break
-        }
-        // Actualizar el mes actual después de navegar
-        const mes = calendarApi.view.title.split(' ')[0]
-        setMesActual(mes)
-    }
-
-    // Cambiar vista del calendario
-    const changeView = (view) => {
-        const calendarApi = calendarRef.current.getApi()
-        calendarApi.changeView(view)
-        setCurrentView(view)
-    }
 
     // Mostrar popup para crear cita
     const handleDateClick = (arg) => {
@@ -200,9 +172,9 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     const handleInputChange = (e) => {
         const { name, value } = e.target
         if (showCreateModal) {
-            setNewEvent({...newEvent, [name]: value})
+            setNewEvent({ ...newEvent, [name]: value })
         } else {
-            setSelectedEvent({...selectedEvent, [name]: value})
+            setSelectedEvent({ ...selectedEvent, [name]: value })
         }
     }
 
@@ -215,6 +187,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
         })
         try {
             const data = await GetData(`${mainUrl}/general`, token)
+            setNotify(null)
             if (data) {
                 const mappedEvents = data.map(event => ({
                     id: event.id_cit,
@@ -232,7 +205,8 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                 setEvents(mappedEvents)
             }
         } catch (err) {
-            if(err.status) {
+            setNotify(null)
+            if (err.status) {
                 const message = errorStatusHandler(err.status)
                 setNotify({
                     title: 'Error',
@@ -249,20 +223,20 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
             <NavBarAdmin />
 
             <main className='calendar-container' id='main-container-calendar'>
-                
+
                 <FullCalendar
                     // Refencia del calendario, permite acceder a la instancia del componente para manipularlo
                     ref={calendarRef}
 
                     // Plugins utilizados para habilitar características adicionales en el calendario
                     plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
-                    
+
                     // Vista inicial del calendario (se puede cambiar dinámicamente)
                     initialView={currentView}
 
                     // Deshabilita los dias que ya pasaron
                     validRange={{
-                        start:today
+                        start: today
                     }}
 
                     // Configuración de la barra de herramientas del encabezado
@@ -271,11 +245,11 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                         center: "title",           // Título del calendario
                         end: "dayGridMonth dayGridWeek dayGridDay listWeek"  // Vistas disponibles: mes, semana, lista
                     }}
-                    
+
                     events={events.map(event => ({
-                        ...event, classNames: [event.category] 
+                        ...event, classNames: [event.category]
                     }))}
-                
+
                     // Permite la selección de fechas o rangos de fechas
                     selectable={true}
 
@@ -294,10 +268,10 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                     nowIndicator={true}
 
                     // Configura la hora mínima visible en las vistas basadas en tiempo
-                    slotMinTime="06:00:00" 
+                    slotMinTime="06:00:00"
 
                     // Configura la hora máxima visible en las vistas basadas en tiempo
-                    slotMaxTime="24:00:00" 
+                    slotMaxTime="24:00:00"
 
                     // Duración de cada franja horaria en las vistas de tiempo
                     slotDuration="00:30:00" // Cada ranura dura 30 minutos
@@ -325,8 +299,8 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
 
                     views={{
                         dayGridDay: { dayMaxEvents: false }, // Sin límite de eventos en la vista de día
-                        dayGridMonth: { dayMaxEvents: 2 } ,   // Límite de 2 eventos solo en la vista de mes
-                        dayGridWeek: { dayMaxEvents: false} // Limite de eventos deshabilitado en semana
+                        dayGridMonth: { dayMaxEvents: 2 },   // Límite de 2 eventos solo en la vista de mes
+                        dayGridWeek: { dayMaxEvents: false } // Limite de eventos deshabilitado en semana
                     }}
 
                     // Función que personaliza el contenido de los eventos en el calendario
@@ -358,44 +332,44 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                             <section className="modal-body">
                                 <div className="form-group">
                                     <label>Título:</label>
-                                    <input 
-                                        type="text" 
-                                        name="title" 
+                                    <input
+                                        type="text"
+                                        name="title"
                                         value={newEvent.title}
                                         onChange={handleInputChange}
                                     />
                                 </div>
                                 <div className="form-group">
                                     <label>Paciente:</label>
-                                    <input 
-                                        type="text" 
-                                        name="paciente" 
+                                    <input
+                                        type="text"
+                                        name="paciente"
                                         value={newEvent.paciente}
                                         onChange={handleInputChange}
                                     />
                                 </div>
                                 <div className="form-group">
                                     <label>Propietario:</label>
-                                    <input 
-                                        type="text" 
-                                        name="propietario" 
+                                    <input
+                                        type="text"
+                                        name="propietario"
                                         value={newEvent.propietario}
                                         onChange={handleInputChange}
                                     />
                                 </div>
                                 <div className="form-group">
                                     <label>Teléfono:</label>
-                                    <input 
-                                        type="text" 
-                                        name="telefono" 
+                                    <input
+                                        type="text"
+                                        name="telefono"
                                         value={newEvent.telefono}
                                         onChange={handleInputChange}
                                     />
                                 </div>
                                 <div className="form-group">
                                     <label>Fecha:</label>
-                                    <input 
-                                        type="date" 
+                                    <input
+                                        type="date"
                                         value={selectedDate}
                                         disabled
                                     />
@@ -403,8 +377,8 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                 <div className="form-row">
                                     <div className="form-group">
                                         <label>Hora Inicio:</label>
-                                        <input 
-                                            type="time" 
+                                        <input
+                                            type="time"
                                             name="start"
                                             value={newEvent.start.split('T')[1].substring(0, 5)}
                                             onChange={(e) => {
@@ -418,8 +392,8 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                     </div>
                                     <div className="form-group">
                                         <label>Hora Fin:</label>
-                                        <input 
-                                            type="time" 
+                                        <input
+                                            type="time"
                                             name="end"
                                             value={newEvent.end.split('T')[1].substring(0, 5)}
                                             onChange={(e) => {
@@ -434,8 +408,8 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                 </div>
                                 <div className="form-group">
                                     <label>Tipo:</label>
-                                    <select 
-                                        name="category" 
+                                    <select
+                                        name="category"
                                         value={newEvent.category}
                                         onChange={handleInputChange}
                                     >
@@ -446,8 +420,8 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                 </div>
                                 <div className="form-group">
                                     <label>Descripción:</label>
-                                    <textarea 
-                                        name="description" 
+                                    <textarea
+                                        name="description"
                                         value={newEvent.description}
                                         onChange={handleInputChange}
                                     />
@@ -478,36 +452,36 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                             <section className="modal-body">
                                 <div className="form-group">
                                     <label>Título:</label>
-                                    <input 
-                                        type="text" 
-                                        name="title" 
+                                    <input
+                                        type="text"
+                                        name="title"
                                         value={selectedEvent?.title || ''}
                                         onChange={handleInputChange}
                                     />
                                 </div>
                                 <div className="form-group">
                                     <label>Paciente:</label>
-                                    <input 
-                                        type="text" 
-                                        name="paciente" 
+                                    <input
+                                        type="text"
+                                        name="paciente"
                                         value={selectedEvent?.paciente || ''}
                                         onChange={handleInputChange}
                                     />
                                 </div>
                                 <div className="form-group">
                                     <label>Propietario:</label>
-                                    <input 
-                                        type="text" 
-                                        name="propietario" 
+                                    <input
+                                        type="text"
+                                        name="propietario"
                                         value={selectedEvent?.propietario || ''}
                                         onChange={handleInputChange}
                                     />
                                 </div>
                                 <div className="form-group">
                                     <label>Teléfono:</label>
-                                    <input 
-                                        type="text" 
-                                        name="telefono" 
+                                    <input
+                                        type="text"
+                                        name="telefono"
                                         value={selectedEvent?.telefono || ''}
                                         onChange={handleInputChange}
                                     />
@@ -515,15 +489,15 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                 <div className="form-group">
                                     <label>Fecha y Hora:</label>
                                     <div>
-                                        {selectedEvent?.start?.toLocaleDateString()} 
-                                        {selectedEvent?.start?.toLocaleTimeString()} - 
+                                        {selectedEvent?.start?.toLocaleDateString()}
+                                        {selectedEvent?.start?.toLocaleTimeString()} -
                                         {selectedEvent?.end?.toLocaleTimeString()}
                                     </div>
                                 </div>
                                 <div className="form-group">
                                     <label>Tipo:</label>
-                                    <select 
-                                        name="category" 
+                                    <select
+                                        name="category"
                                         value={selectedEvent?.category || 'consulta'}
                                         onChange={handleInputChange}
                                     >
@@ -534,8 +508,8 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                 </div>
                                 <div className="form-group">
                                     <label>Descripción:</label>
-                                    <textarea 
-                                        name="description" 
+                                    <textarea
+                                        name="description"
                                         value={selectedEvent?.description || ''}
                                         onChange={handleInputChange}
                                     />
@@ -557,7 +531,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                 )}
             </main>
             {notify && (
-                <Notification 
+                <Notification
                     {...notify}
                 />
             )}

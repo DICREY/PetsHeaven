@@ -1,11 +1,11 @@
 // Librarys 
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate, Outlet } from 'react-router-dom'
 import { Dog, Plus } from 'lucide-react'
- 
+
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
-import { NotFound} from '../Errores/NotFound'
+import { NotFound } from '../Errores/NotFound'
 import { GetData } from '../Varios/Requests'
 import { getRoles, divideList } from '../Varios/Util'
 
@@ -17,13 +17,13 @@ export function GesMascota({ URL = '' }) {
   // Declare Vars
   const mainURL = `${URL}/pet`
   const [petsData, setPetsData] = useState([])
-  const [petsAlmac,setPetsAlmac] = useState([])
+  const [petsAlmac, setPetsAlmac] = useState([])
   const [loading, setLoading] = useState(false)
   const [selectedPet, setSelectedPet] = useState(null)
   const [showModal, setShowModal] = useState(false)
-  const [editMode,setEditMode] = useState(false)
-  const [isAdmin,setIsAdmin] = useState(false)
-  const [headers,setHeaders] = useState([])
+  const [editMode, setEditMode] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [headers, setHeaders] = useState([])
 
   // Vars 
   const navigate = useNavigate()
@@ -33,34 +33,34 @@ export function GesMascota({ URL = '' }) {
   // fetch para traer datos
   const fetchData = async () => {
     const token = localStorage.getItem('token')
-      try {
-        if(token) {
-          const pets = await GetData(`${mainURL}/all`,token)  
-          const roles = getRoles(token)
+    try {
+      if (token) {
+        const pets = await GetData(`${mainURL}/all`, token)
+        const roles = getRoles(token)
 
-          const admin = roles.some(role => role.toLowerCase() === 'administrador')
-          admin?setIsAdmin(true):setIsAdmin(false)
+        const admin = roles.some(role => role.toLowerCase() === 'administrador')
+        admin ? setIsAdmin(true) : setIsAdmin(false)
 
-          setHeaders({
-            Nombre: 'nom_mas',
-            Especie: 'esp_mas',
-            Raza: 'raz_mas',
-            Edad: 'fec_nac_mas',
-            Propietario: 'nom_per',
-            Estado: 'estado',
-          })
-          setLoading(false)
-          setPetsAlmac(pets)
-          const shortPets = divideList(pets,4)
-          setPetsData(shortPets)
-        } else navigate('/user/login')
-      } catch (err) {
-        err.message? swal({
-            icon: 'error',
-            title: 'Error',
-            text: err.message
-        }): console.log(err)
-      }
+        setHeaders({
+          Nombre: 'nom_mas',
+          Especie: 'esp_mas',
+          Raza: 'raz_mas',
+          Edad: 'fec_nac_mas',
+          Propietario: 'nom_per',
+          Estado: 'estado',
+        })
+        setLoading(false)
+        setPetsAlmac(pets)
+        const shortPets = divideList(pets, 4)
+        setPetsData(shortPets)
+      } else navigate('/user/login')
+    } catch (err) {
+      err.message ? swal({
+        icon: 'error',
+        title: 'Error',
+        text: err.message
+      }) : console.log(err)
+    }
   }
 
   // edit mode
@@ -98,7 +98,7 @@ export function GesMascota({ URL = '' }) {
     <main className='appgesmascota'>
       <NavBarAdmin />
       {
-        petsData?(
+        petsData ? (
           <section className='contenedorgesmascota'>
             <div className='panelgesmascota'>
               <div className='cabeceragesmascota'>
@@ -114,10 +114,10 @@ export function GesMascota({ URL = '' }) {
 
             </div>
           </section>
-        ):(
-          <NotFound/>
+        ) : (
+          <NotFound />
         )
-      }  
+      }
 
       <Outlet />
     </main>
