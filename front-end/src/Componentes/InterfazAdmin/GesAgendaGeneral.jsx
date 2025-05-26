@@ -12,6 +12,8 @@ import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GetData, PostData, ModifyData } from '../Varios/Requests'
 import { errorStatusHandler } from '../Varios/Util'
 import { Notification } from '../Global/Notifys'
+import { searchFilter } from '../Varios/Util'
+import HeaderUser from '../BarrasNavegacion/HeaderUser'
 
 // Import styles 
 import "../../styles/InterfazAdmin/GesAgendaGeneral.css"
@@ -33,6 +35,9 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     const [selectedEvent, setSelectedEvent] = useState(null)
     const [selectedDate, setSelectedDate] = useState('')
     const calendarRef = useRef(null)
+    const [allPacientes, setAllPacientes] = useState([]); // Todos los pacientes
+    const [filteredPacientes, setFilteredPacientes] = useState([]); // Resultados filtrados
+    const [showPacientesDropdown, setShowPacientesDropdown] = useState(false); // Controlar dropdown
     const [newEvent, setNewEvent] = useState({
         title: '',
         start: '',
@@ -74,9 +79,20 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     // ])
 
 
-    // Mostrar popup para crear cita
+    const fetchPacientes = async () => {
+        const token = localStorage.getItem("token");
+        try {
+            const data = await GetData(`${URL}/pets`, token); // Ajusta el endpoint
+            if (data) setAllPacientes(data);
+        } catch (err) {
+            console.error("Error al cargar pacientes:", err);
+        }
+    };
+
+    // Crear citas
     const handleDateClick = (arg) => {
-        setSelectedDate(arg.dateStr)
+        setSelectedDate(arg.dateStr);
+        fetchPacientes(); // Cargar pacientes cuando se abre el modal
         setNewEvent({
             title: '',
             start: `${arg.dateStr}T09:00:00`,
@@ -85,10 +101,11 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
             category: 'consulta',
             paciente: '',
             propietario: '',
-            telefono: ''
-        })
-        setShowCreateModal(true)
-    }
+            telefono: '',
+            estado: 'PENDIENTE'
+        });
+        setShowCreateModal(true);
+    };
 
     // Mostrar detalles de la cita
     const handleEventClick = (info) => {
@@ -116,10 +133,10 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                 fec_cit: newEvent.start.split('T')[0],
                 hor_ini_cit: newEvent.start.split('T')[1],
                 hor_fin_cit: newEvent.end.split('T')[1],
-                lug_ate_cit: "Consultorio", // Puedes agregar un input para esto si lo necesitas
-                ser_cit: 1, // Ajusta según tu lógica de servicios
-                vet_cit: 1, // Ajusta según tu lógica de veterinarios
-                mas_cit: 1, // Ajusta según tu lógica de mascotas
+                lug_ate_cit: "Consultorio",
+                ser_cit: 1,
+                vet_cit: 1, 
+                mas_cit: 1, 
                 estado: 'PENDIENTE'
             }
             await PostData(`${mainUrl}/register`, citaData, token)
@@ -218,10 +235,23 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
         }
     }
 
+    // cerrar el dropdown al hacer clic fuera
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (!event.target.closest('.paciente-autocomplete')) {
+                setShowPacientesDropdown(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
     return (
         <main className="calendar-container">
             <NavBarAdmin />
-
             <main className='calendar-container' id='main-container-calendar'>
 
                 <FullCalendar
@@ -246,9 +276,8 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                         end: "dayGridMonth dayGridWeek dayGridDay listWeek"  // Vistas disponibles: mes, semana, lista
                     }}
 
-                    events={events.map(event => ({
-                        ...event, classNames: [event.category]
-                    }))}
+                    events={events}
+                    eventClassNames={(event) => [event.event.extendedProps.category]}
 
                     // Permite la selección de fechas o rangos de fechas
                     selectable={true}
@@ -341,12 +370,46 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                 </div>
                                 <div className="form-group">
                                     <label>Paciente:</label>
-                                    <input
-                                        type="text"
-                                        name="paciente"
-                                        value={newEvent.paciente}
-                                        onChange={handleInputChange}
-                                    />
+                                    <div className="paciente-autocomplete">
+                                        <input
+                                            type="text"
+                                            name="paciente"
+                                            value={newEvent.paciente}
+                                            onChange={(e) => {
+                                                const value = e.target.value;
+                                                setNewEvent({ ...newEvent, paciente: value });
+                                                searchFilter(
+                                                    value,
+                                                    allPacientes,
+                                                    ['nom_mas', 'nom_per', 'ape_per'], // Campos a buscar
+                                                    setFilteredPacientes
+                                                );
+                                                setShowPacientesDropdown(value.length > 0);
+                                            }}
+                                            onFocus={() => setShowPacientesDropdown(newEvent.paciente.length > 0)}
+                                        />
+                                        {showPacientesDropdown && filteredPacientes.length > 0 && (
+                                            <div className="paciente-dropdown">
+                                                {filteredPacientes.map((paciente) => (
+                                                    <div
+                                                        key={paciente.id_mas}
+                                                        className="dropdown-item"
+                                                        onClick={() => {
+                                                            setNewEvent({
+                                                                ...newEvent,
+                                                                paciente: paciente.nom_mas,
+                                                                propietario: `${paciente.nom_per} ${paciente.ape_per}`,
+                                                                telefono: paciente.cel_per || ''
+                                                            });
+                                                            setShowPacientesDropdown(false);
+                                                        }}
+                                                    >
+                                                        {paciente.nom_mas} ({paciente.nom_per} {paciente.ape_per})
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                                 <div className="form-group">
                                     <label>Propietario:</label>

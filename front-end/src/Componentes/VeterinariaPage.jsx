@@ -4,16 +4,18 @@ import { GetDataGlobal } from './Varios/Requests'
 import { diapositivas, promociones, testimonios } from './Varios/varios'
 import { checkImage } from './Varios/Util'
 import { Loader } from './Errores/Loader'
+import { Load } from './Errores/Load'
 import Footer from './Varios/Footer2'
 
 // Librarys 
 import React,{ useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
-import { MapPin, Star, Phone, Mail, Clock, ChevronUp, Instagram, Facebook } from 'lucide-react'
+import { MapPin, Star, Phone, Mail, Clock, ChevronUp, Instagram, Facebook, Loader2 } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 // Import styles
 import '../../src/styles/VeterinariaPage.css'
+import HeaderUser from './BarrasNavegacion/HeaderUser'
 
 // Animaciones
 const containerVariants = {
@@ -156,7 +158,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo}) {
   return (
     <>
     {
-      loading ? (<Loader />) : (
+      loading ? (<Load />) : (
         <div className='pagina'>
           <NavBar />
 
@@ -510,7 +512,6 @@ export default function VeterinariaPage({ URL = '', setArriveTo}) {
           >
             <ChevronUp className='icono-subir' />
           </motion.button> 
-          
           <Footer/>
         </div>
       )
