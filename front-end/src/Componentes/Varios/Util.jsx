@@ -138,7 +138,7 @@ export const searchFilter = (term = '', data = [], headers = [], set = null) => 
   if (!term || !data || !headers || !Array.isArray(data) || !Array.isArray(headers)) return
 
   // const termLower = term == ''? term.toLowerCase(): term
-  const termLower = term.toLowerCase()
+  const termLower = term.toLowerCase().trim()
 
   const find = data?.filter(item => {
     return headers?.some(field => 

@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const { compare } = require('bcrypt')
 const { Router } = require('express')
 const { hash } = require('bcrypt')
-// const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser')
 
 // Imports
 const Global = require('../services/Global.services')
@@ -89,12 +89,12 @@ Route.post('/register', async (req,res) => {
     }
 })
 
-// Route.use(cookieParser())
+Route.use(cookieParser())
 
-// Route.get('/cookie', authenticateJWT,(req, res) => {
-//     const expirationDate = new Date()
-//     expirationDate.setDate(expirationDate.getDate() + 30)
-// })
+Route.get('/cookie', authenticateJWT,(req, res) => {
+    const expirationDate = new Date()
+    expirationDate.setDate(expirationDate.getDate() + 30)
+})
 
 // Export 
 module.exports = Route

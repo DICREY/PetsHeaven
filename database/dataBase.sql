@@ -97,7 +97,7 @@ CREATE TABLE pets_heaven.servicios(
     nom_ser VARCHAR(100) NOT NULL,
     pre_ser DECIMAL(10,2) NOT NULL,
     des_ser TEXT NOT NULL,
-    tec_des_ser TEXT NOT NULL,  # Descripción tecnica
+    tec_des_ser TEXT NOT NULL,
     img_ser TEXT NOT NULL,
     estado BOOLEAN DEFAULT(1) NOT NULL
 );
