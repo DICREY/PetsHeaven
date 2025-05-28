@@ -11,7 +11,7 @@ export const SmallLoader = () => {
     return <SmallLoaderDog />
   }
   if (random === 2) {
-    return <SmallLoaderHamster />
+    return <SmallLoaderDog />
   }
 }
 

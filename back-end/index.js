@@ -1,8 +1,7 @@
 // librarys
 const express = require('express')
 const cors = require('cors')
-const bodyParser = require('body-parser')
-const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser');
 require('dotenv').config()
 
 // Imports 
@@ -14,7 +13,6 @@ const { routerApi } = require('./server/router')
 // vars
 const app = express()
 const port = process.env.PORT
-const secret = process.env.JWT_SECRET
 
 // desativar header extra 
 app.disable('x-powered-by')
@@ -26,7 +24,6 @@ app.use(cors(corsOptions))
 app.use(errorHandler)
 app.use(validatorHeaders)
 app.use(limiter)
-app.use(cookieParser(secret))
 
 // Routes
 routerApi(app)

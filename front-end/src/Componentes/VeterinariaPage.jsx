@@ -1,9 +1,10 @@
 // Imports 
 import { NavBar } from './BarrasNavegacion/NavBar'
-import { GetDataGlobal, PostDataGlobal } from './Varios/Requests'
+import { GetDataGlobal } from './Varios/Requests'
 import { diapositivas, promociones, testimonios } from './Varios/varios'
-import { checkImage, errorStatusHandler } from './Varios/Util'
+import { checkImage } from './Varios/Util'
 import { Loader } from './Errores/Loader'
+import { Load } from './Errores/Load'
 import Footer from './Varios/Footer2'
 
 // Librarys 
@@ -87,29 +88,6 @@ export default function VeterinariaPage({ URL = '', setArriveTo}) {
     return grupos
   }
 
-  const ConfigCookie = async () => {
-    try {
-      const cook = await PostDataGlobal(`${URL}/global/cookie`,{name: 'Puta',value: 'Cuanto cobras'})
-      console.log(cook)
-    } catch (err) {
-      if (err.status) {
-        const message = errorStatusHandler(err.status)
-        // console.log(message)
-      } else console.log(err)
-    }
-  }
-  const CheckCookie = async () => {
-    try {
-      const cook = await GetDataGlobal(`${URL}/global/check-cookie`)
-      console.log(cook.data.message)
-    } catch (err) {
-      if (err.status) {
-        const message = errorStatusHandler(err.status)
-        console.log(message)
-      } else console.log(err)
-    }
-  }
-
   // Función para scroll al inicio
   const subirInicio = () => {
     window.scrollTo({
@@ -123,7 +101,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo}) {
     const fetchData = async () => {
       try {
         const services = await GetDataGlobal(mainUrl)
-        setSerData(services.data.result[0])
+        setSerData(services)
         setLoading(false)
       } catch (error) {
         setSerData()
@@ -180,21 +158,9 @@ export default function VeterinariaPage({ URL = '', setArriveTo}) {
   return (
     <>
     {
-      loading ? (<Loader />) : (
+      loading ? (<Load />) : (
         <div className='pagina'>
           <NavBar />
-          {/* <button
-            className='BackBtn'
-            onClick={ConfigCookie}
-          >
-            Cookie
-          </button>
-          <button
-            className='BackBtn'
-            onClick={CheckCookie}
-          >
-            Check Cookie
-          </button> */}
 
           {/* COMPONENTE: Carrusel */}
           <motion.section 

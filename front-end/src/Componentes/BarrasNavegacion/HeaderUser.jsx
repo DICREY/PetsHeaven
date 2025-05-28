@@ -1,38 +1,33 @@
-// Librarys
-import React from 'react'
-import { User, HelpCircle, LogOut } from 'lucide-react'
+import React from 'react';
+import styles from '../../styles/BarrasNavegacion/HeaderUser.module.css';
+import { User, HelpCircle, LogOut } from 'lucide-react';
+import '../../styles/global.css'; 
 
-// Imports 
-import { Logout, checkImage } from '../Varios/Util'
+export default function HeaderUser() {
+  const handleLogout = () => {
+    // Lógica para cerrar sesión
+    console.log('Cerrando sesión...');
+  };
 
-// Import styles
-import styles from '../../styles/BarrasNavegacion/HeaderUser.module.css'
-import '../../styles/global.css' 
-
-export default function HeaderUser({ imgDefault = '', openHelp = null }) {
   const handleProfile = () => {
     // Lógica para ir al perfil
-    console.log('Navegando al perfil...')
-  }
+    console.log('Navegando al perfil...');
+  };
 
   const handleHelp = () => {
-    return 
-  }
+    // Lógica para mostrar ayuda
+    console.log('Mostrando ayuda...');
+  };
 
   return (
     <header className={styles.navbar}>
       <div className={styles.logo}>
-        {checkImage(
-          'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/5.png',
-          'Logo de PetsHeaven con la palabra Pets en celeste y Heaven en negro, en una tipografía moderna.',
-          imgDefault,
-          'logo-img'
-        )}
+        <img src='https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/5.png' alt='Logo de PetsHeaven con la palabra Pets en celeste y Heaven en negro, en una tipografía moderna.' width={50} height={50} className='logo-img' />
       </div>
       
       <nav className={styles.navLinks}>
         <button 
-          onClick={openHelp? openHelp: handleHelp}
+          onClick={handleHelp} 
           className={`${styles.navButton} ${styles.helpButton}`}
           aria-label="Ayuda"
         >
@@ -50,7 +45,7 @@ export default function HeaderUser({ imgDefault = '', openHelp = null }) {
         </button>
         
         <button 
-          onClick={Logout} 
+          onClick={handleLogout} 
           className={`${styles.navButton} ${styles.logoutButton}`}
           aria-label="Cerrar sesión"
         >
@@ -59,5 +54,5 @@ export default function HeaderUser({ imgDefault = '', openHelp = null }) {
         </button>
       </nav>
     </header>
-  )
+  );
 }
