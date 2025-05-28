@@ -1,3 +1,4 @@
+-- Active: 1747352860830@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.RegistPets(
     IN p_nom_mas VARCHAR(100),
     IN p_esp_mas VARCHAR(100),
@@ -88,6 +89,7 @@ END //
 CREATE PROCEDURE pets_heaven.SearchPets()
 BEGIN
     SELECT
+        m.id_mas,
         m.nom_mas,
         m.esp_mas,
         m.col_mas,
@@ -132,6 +134,7 @@ CREATE PROCEDURE pets_heaven.SearchPetsBy(
 )
 BEGIN
     SELECT
+        m.id_mas,
         m.nom_mas,
         m.esp_mas,
         m.col_mas,
@@ -175,11 +178,13 @@ BEGIN
     ORDER BY m.nom_mas
     LIMIT 40;
 END //
+
 CREATE PROCEDURE pets_heaven.SearchPetBy(
     IN p_by VARCHAR(100)
 )
 BEGIN
     SELECT
+        m.id_mas,
         m.nom_mas,
         m.esp_mas,
         m.col_mas,
