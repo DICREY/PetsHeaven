@@ -12,6 +12,8 @@ import { GlobalTable } from '../Global/GlobalTable'
 
 // Import styles 
 import '../../../src/styles/InterfazAdmin/GesPersonal.css'
+import HeaderUser from "../BarrasNavegacion/HeaderUser"
+import Footer from "../Varios/Footer2"
 
 // Component
 export function GesPersonal({ setUserSelect, URL = "" }) {
@@ -86,8 +88,8 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
   return (
     <main className="contenedorgesusuario">
       <NavBarAdmin />
-
       <section className="principalgesusuario">
+      <HeaderUser/>
         <section className="tarjetagesusuario">
           <div className="contenidogesusuario">
             <header className="encabezadogesusuario">
@@ -114,6 +116,7 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
 
           </div>
         </section>
+      <Footer/>
       </section>
       <Outlet />
     </main>
