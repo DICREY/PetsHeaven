@@ -233,3 +233,8 @@ export const loadingAlert = (
     }
   })
 }
+
+export const getCookie = (name = '') => {
+  const hasToken = document.cookie.split(';').some(item => item.trim().startsWith(`${name}=`));
+  return hasToken
+}
