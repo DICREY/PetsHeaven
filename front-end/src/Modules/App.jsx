@@ -19,7 +19,7 @@ import { Pets } from '../Componentes/Pets/Pets'
 import { PetDetails } from '../Componentes/Pets/PetDetails'
 import { NotFound } from '../Componentes/Errores/NotFound'
 import { ErrorInternalServer } from '../Componentes/Errores/ErrorInternalServer'
-import { getCookie, getRoles,Logout } from '../Componentes/Varios/Util'
+import { decodeJWT, getCookie, getRoles,Logout } from '../Componentes/Varios/Util'
 import { useInactivityDetector } from '../Componentes/Varios/InactiveDectetor'
 import VeterinariaPage from '../Componentes/VeterinariaPage'
 import { PerfilPropietario } from '../Componentes/Peoples/PerfilPropietario'
@@ -47,17 +47,17 @@ export default function App () {
   
   // Route types
   const PrivateRoute = ({ children }) => {
-    const token = getCookie('token')
+    const token = localStorage.getItem('token')
 
     return token? children : <Navigate to='/user/login' />
   }
   
   const VetRoute = ({ children }) => {
     // Vars
-    const token = getCookie('token')
+    const token = localStorage.getItem('token')
 
     if (token) {
-      const vet = getCookie('Marie')
+      const vet = decodeJWT(token).roles.include('Veterinario')
       return vet? children :<Navigate to='/user/login' />
     }
 
@@ -66,8 +66,8 @@ export default function App () {
 
   const AdminRoute = ({ children }) => {
     // Vars
-    const token = getCookie('token')
-    const admin = getCookie('Nikola')
+    const token = localStorage.getItem('token')
+    const admin = decodeJWT(token).roles.include('Administrador')
 
     if (token) {
       return admin? children :<Navigate to='/user/login' />
