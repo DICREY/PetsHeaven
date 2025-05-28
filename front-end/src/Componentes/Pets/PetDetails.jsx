@@ -8,7 +8,7 @@ import { Description } from '../Global/Description'
 import { HistoryTest } from './historyTest'
 import { Notification } from '../Global/Notifys'
 import { DeleteData, ModifyData, PostData } from '../Varios/Requests'
-import { getRoles, checkImage, getAge, errorStatusHandler,divideList } from '../Varios/Util'
+import { checkImage, getAge, errorStatusHandler,divideList } from '../Varios/Util'
 import { FormularioConsulta } from '../InterfazAdmin/FormulariosAdmin/Consulta'
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import Footer from '../Varios/Footer2'
@@ -157,8 +157,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
         })
         try {
             if(token) {
-                const roles = getRoles(token)
-                const admin = roles.some(role => role.toLowerCase() === 'administrador')
+                const admin = decodeJWT(token).roles.include('Administrador')
                 if (admin) {
                     
                     const deleted = await DeleteData(deleteURL,token,{
@@ -207,10 +206,9 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
 
         if(token) {
             // Vars
-            const roles =  getRoles(token)
-            const admin = roles.some(role => role.toLowerCase() === 'administrador')
+            const admin = decodeJWT(token).roles.include('Administrador')
 
-            admin?setIsAdmin(true):setIsAdmin(false)
+            admin? setIsAdmin(true): setIsAdmin(false)
         } else navigate('/user/login')
     }, [])
     

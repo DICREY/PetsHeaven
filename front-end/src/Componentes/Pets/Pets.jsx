@@ -1,6 +1,6 @@
 // Imports
 import { GetData } from '../Varios/Requests'
-import { decodeJWT, errorStatusHandler, getRoles, checkImage } from '../Varios/Util'
+import { decodeJWT, errorStatusHandler, checkImage } from '../Varios/Util'
 import { Notification } from '../Global/Notifys'
 import { Loader } from '../Errores/Loader'
 import { NotFound } from '../Errores/NotFound'
@@ -64,7 +64,7 @@ export const Pets = ({URL = '', imgPetDefault = '', setPetSelect }) => {
             // Vars
             const by = decodeJWT(token).names.toLowerCase()
 
-            const admin = getCookie('Nikola')
+            const admin = decodeJWT(token).roles.include('Administrador')
 
             admin? setIsAdmin(true): setIsAdmin(false)
 

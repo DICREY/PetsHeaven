@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router'
 
 // Imports 
 import { login } from '../Varios/Requests'
-import { getRoles, errorStatusHandler, formatoTiempo, checkImage, Logout, getCookie } from '../Varios/Util'
+import { errorStatusHandler, formatoTiempo, checkImage, Logout, decodeJWT } from '../Varios/Util'
 
 // Import styles
 import '../../../src/styles/Formularios/login.css'
@@ -33,7 +33,7 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
     mode: 'onChange',
   })
 
-  const useRoleRedirect = () => {
+  const useRoleRedirect = (roles = []) => {
     const roleRoutes = {
       'Administrador': '/admin/gestion/usuarios',
       'Veterinario': '/gestion/mascotas',
@@ -41,9 +41,9 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
     }
     
     // Determinar la ruta basada en jerarquía de roles
-    const path = getCookie('Nikola')
+    const path = roles.includes('Administrador') 
     ? roleRoutes['Administrador']
-    : getCookie('Marie') 
+    : roles.includes('Veterinario') 
     ? roleRoutes['Veterinario']
     : roleRoutes['default']
 
@@ -68,7 +68,10 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
       setNotify(null)
       if (log) {
         const token = localStorage.getItem('token')
-        arriveTo = arriveTo? arriveTo: useRoleRedirect()
+        const roles = decodeJWT(token).roles.split(',')
+        console.log(roles)
+
+        arriveTo = arriveTo? arriveTo: useRoleRedirect(roles)
         
         if(token){ 
           setTimeout(() => {
@@ -99,7 +102,7 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
 
   useEffect(() => {
     let intervalo = null
-    if (getCookie('token')) Logout()
+    if (localStorage.getItem('token')) Logout()
     
     if (waitTime) {
       // Inicia el contador

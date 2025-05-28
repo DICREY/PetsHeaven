@@ -6,8 +6,9 @@ import { Plus} from "lucide-react"
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GetData } from '../Varios/Requests'
-import { divideList, errorStatusHandler } from '../Varios/Util'
+import { divideList, errorStatusHandler, Logout } from '../Varios/Util'
 import { GlobalTable } from '../Global/GlobalTable'
+import { Notification } from '../Global/Notifys'
 // import { Loader } from '../Errores/Loader'
 
 // Import styles 
@@ -21,6 +22,7 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
   const [usersAlmac,setUsersAlmac] = useState([])
   const [loading,setLoading] = useState(true)
   const [headers,setHeaders] = useState([])
+  const [notify, setNotify] = useState(null)
 
   // Vars 
   const navigate = useNavigate()
@@ -31,6 +33,7 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
     try {
       if (token){
         const data = await GetData(mainUrl,token)
+        setNotify(null)
         setHeaders({
           'Nombres': 'nom_per',
           'Apellidos': 'ape_per',
@@ -45,13 +48,13 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
         setLoading(false)
       } else navigate('/user/login')
     } catch (err) {
+      setNotify(null)
       if (err.status) {
         const message = errorStatusHandler(err.status)
-        swal({
-          title: "Error",
-          text: message,
-          icon: "error",
-          button: "Aceptar"
+        setNotify({
+          title: 'Error',
+          message: `${message}`,    
+          close: setNotify
         })
         if(err.status === 403) {
           setTimeout(() => {
@@ -115,6 +118,11 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
           </div>
         </section>
       </section>
+      {notify && (
+        <Notification 
+          {...notify}
+        />
+      )}
       <Outlet />
     </main>
   )

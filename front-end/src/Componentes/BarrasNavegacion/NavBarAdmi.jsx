@@ -56,9 +56,8 @@ export const NavBarAdmin = () => {
       const tokenJWT = decodeJWT(token)
       setUser(tokenJWT)
       setImg(tokenJWT.img)
-      const roles = getRoles()
-      console.log(roles)
-      const admin = roles.some(role => role.toLowerCase() === 'administrador')
+      const roles = decodeJWT(token).roles.split(',')
+      const admin = roles.includes('Administrador')
       setIsAdmin(admin)
     }
     
@@ -198,20 +197,12 @@ export const NavBarAdmin = () => {
 
         <hr className='separadornavadmin' />
         <div className='opcionesnavadmin'>
-          <button className='opcionnavadmin'>
-            <Settings className='iconoopcionnavadmin' />
-            <span>Configuración</span>
-          </button>
           <button 
             className='opcionnavadmin'
             onClick={() => navigate('/main')}
           >
             <Home className='iconoopcionnavadmin' />
             <span>Pagina Principal</span>
-          </button>
-          <button className='opcionnavadmin salirnavadmin'>
-            <LogOut className='iconoopcionnavadmin' />
-            <span onClick={Logout}>Cerrar Sesión</span>
           </button>
         </div>
       </aside>

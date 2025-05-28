@@ -3,12 +3,11 @@ const jwt = require('jsonwebtoken')
 const { compare } = require('bcrypt')
 const { Router } = require('express')
 const { hash } = require('bcrypt')
-const cookieParser = require('cookie-parser')
 
 // Imports
 const Global = require('../services/Global.services')
 const People = require('../services/People.services')
-const { limiterLog } = require('../middleware/varios.handler')
+const { limiterLog, cookiesOptions, cookiesOptionsLog } = require('../middleware/varios.handler')
 const { authenticateJWT } = require('../middleware/validator.handler')
 
 // Env vars
@@ -63,6 +62,7 @@ Route.post('/login',limiterLog, async (req,res) => {
             { 
                 names: user.nom_per,
                 lastNames: user.ape_per,
+                roles: user.roles,
                 img: user.fot_roles.split(',')[0]
             },
             secret,
@@ -76,8 +76,10 @@ Route.post('/login',limiterLog, async (req,res) => {
         if (user.roles.includes('Veterinario')) res.cookie('Marie', 'Que miras', cookiesOptions)
 
         res.status(200).json({ token: tokenInfo })
+        
 
     } catch (err) {
+        console.log(err)
         if (err.status) return res.status(err.status).json({ message: err.message })
 
         res.status(500).json({ message: err })
@@ -102,8 +104,6 @@ Route.post('/register', async (req,res) => {
         res.status(500).json({ message: err })
     }
 })
-
-Route.use(cookieParser())
 
 Route.get('/cookie', authenticateJWT,(req, res) => {
     const expirationDate = new Date()
