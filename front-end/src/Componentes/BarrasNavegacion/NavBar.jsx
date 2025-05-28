@@ -44,9 +44,8 @@ export const NavBar = () => {
   useEffect(() => {
     const token = localStorage.getItem('token')
     if(token){
-      const roles = getRoles()
-      console.log(roles)
-      console.log(getCookie('Nikola'))
+      const roles = getRoles()      
+      console.log(getCookie('token'))
       setIsAutenticate(true) 
 
       if(roles.includes('Administrador') || roles.includes('Veterinario')) {
