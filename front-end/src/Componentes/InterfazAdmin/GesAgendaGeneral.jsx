@@ -8,7 +8,6 @@ import listPlugin from '@fullcalendar/list'
 import esLocale from "@fullcalendar/core/locales/es"
 import axios from 'axios'
 
-
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GetData, PostData, ModifyData } from '../Varios/Requests'
@@ -202,11 +201,19 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                             'roles': 'Administrador', 
                             'accept': 'application/json'
                         }
-                    });            
+                    })
             setShowEventModal(false)
             fetchAppointments()
         } catch (err) {
-            alert('Error al actualizar la cita')
+            setNotify(null)
+            if (err.status) {
+                const message = errorStatusHandler(err.status)
+                setNotify({
+                    title: 'Error',
+                    message: `${message}`,
+                    close: setNotify
+                })
+            } else console.log(err)
         }
     }
 
@@ -223,7 +230,15 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
             setShowEventModal(false)
             fetchAppointments()
         } catch (err) {
-            alert('Error al cancelar la cita')
+            setNotify(null)
+            if (err.status) {
+                const message = errorStatusHandler(err.status)
+                setNotify({
+                    title: 'Error',
+                    message: `${message}`,
+                    close: setNotify
+                })
+            } else console.log(err)
         }
     }
 
