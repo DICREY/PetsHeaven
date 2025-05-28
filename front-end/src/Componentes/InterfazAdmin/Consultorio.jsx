@@ -7,6 +7,7 @@ import { Plus, FileText, User, PawPrint } from 'lucide-react'
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GlobalTable } from '../Global/GlobalTable'
 import { Notification } from '../Global/Notifys'
+import { TabHelp } from '../Global/TabHelp'
 import { GetData } from '../Varios/Requests'
 import { errorStatusHandler, formatDate, searchFilter } from '../Varios/Util'
 
@@ -21,6 +22,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   const [datasAlmac, setDatasAlmac] = useState([])
   const [headers, setHeaders] = useState({})
   const [notify, setNotify] = useState(null)
+  const [tabHelp, setTabHelp] = useState()
   let didFetch = useRef(false)
   
   // Vars 
@@ -185,6 +187,10 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
     navigate('/pets/details')
   }
 
+  const handleClose = () => {
+    setTabHelp(false)
+  }
+
   useEffect(() => {
     const REFRESH_INTERVAL = 2 * 60 * 1000 // 2 minutes
     let intervalId
@@ -203,9 +209,14 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
 
   return (
     <main className='contenedoradminhome'>
+      {tabHelp && (
+        <TabHelp onClose={handleClose} />
+      )}
       <NavBarAdmin />
+
       <div className='principaladminhome'>
-      <HeaderUser/>
+        <HeaderUser openHelp={() => setTabHelp(true)} />
+          
         <article className='tarjetaadminhome' aria-labelledby='lista-usuarios-titulo'>
           <div className='contenidoadminhome'>
             <header className='encabezadoadminhome'>

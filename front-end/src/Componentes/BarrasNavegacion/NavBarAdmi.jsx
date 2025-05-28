@@ -197,20 +197,12 @@ export const NavBarAdmin = () => {
 
         <hr className='separadornavadmin' />
         <div className='opcionesnavadmin'>
-          <button className='opcionnavadmin'>
-            <Settings className='iconoopcionnavadmin' />
-            <span>Configuración</span>
-          </button>
           <button 
             className='opcionnavadmin'
             onClick={() => navigate('/main')}
           >
             <Home className='iconoopcionnavadmin' />
             <span>Pagina Principal</span>
-          </button>
-          <button className='opcionnavadmin salirnavadmin'>
-            <LogOut className='iconoopcionnavadmin' />
-            <span onClick={Logout}>Cerrar Sesión</span>
           </button>
         </div>
       </aside>

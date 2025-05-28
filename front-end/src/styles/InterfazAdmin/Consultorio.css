@@ -2,13 +2,11 @@
 .contenedoradminhome {
   display: flex;
   min-height: 100vh;
-  background-color: #f8fafc;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  width: 100vw;
+  background-color: var(--back2);
 }
-
 .principaladminhome {
   flex: 1;
-  padding: 1.5rem;
   transition: padding 0.3s ease;
 }
 
