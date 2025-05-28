@@ -1,4 +1,4 @@
--- Active: 1747081666433@@127.0.0.1@3306
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 DROP DATABASE IF EXISTS pets_heaven;
 CREATE DATABASE IF NOT EXISTS pets_heaven;
 
@@ -88,7 +88,9 @@ CREATE TABLE pets_heaven.mascotas(
 
 CREATE TABLE pets_heaven.categorias_ser(
     id_cat INT AUTO_INCREMENT PRIMARY KEY,
-    nom_cat VARCHAR(100) NOT NULL,INDEX(nom_cat)
+    nom_cat VARCHAR(100) NOT NULL,INDEX(nom_cat),
+    img_cat TEXT DEFAULT('No-Registrado') NOT NULL,
+    estado BOOLEAN DEFAULT(1) NOT NULL
 );
 
 CREATE TABLE pets_heaven.servicios(
@@ -97,9 +99,7 @@ CREATE TABLE pets_heaven.servicios(
     nom_ser VARCHAR(100) NOT NULL,
     pre_ser DECIMAL(10,2) NOT NULL,
     des_ser TEXT NOT NULL,
-    tec_des_ser TEXT NOT NULL,
-    img_ser TEXT NOT NULL,
-    estado BOOLEAN DEFAULT(1) NOT NULL
+    tec_des_ser TEXT NOT NULL
 );
 
 CREATE TABLE pets_heaven.cirugias(
@@ -133,7 +133,7 @@ CREATE TABLE pets_heaven.citas(
     fec_cit DATE NOT NULL,
     hor_ini_cit TIME NOT NULL,
     hor_fin_cit TIME NOT NULL,
-    lug_ate_cit VARCHAR(100) NOT NULL COMMENT 'lugar de atención',
+    lug_ate_cit VARCHAR(100) DEFAULT('No-Registrado') NOT NULL COMMENT 'lugar de atención',
     ser_cit INT NOT NULL,INDEX(ser_cit),FOREIGN KEY(ser_cit) REFERENCES servicios(id_ser) ON DELETE CASCADE ON UPDATE CASCADE,
     vet_cit INT NOT NULL,INDEX(vet_cit),FOREIGN KEY(vet_cit) REFERENCES veterinarios(id_vet) ON DELETE CASCADE ON UPDATE CASCADE,
     mas_cit INT NOT NULL,INDEX(mas_cit),FOREIGN KEY(mas_cit) REFERENCES mascotas(id_mas) ON DELETE CASCADE ON UPDATE CASCADE,

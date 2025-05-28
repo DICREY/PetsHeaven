@@ -25,10 +25,10 @@ Route.get('/all', ValidatorRol("usuario"), async (req,res) => {
     }
 })
 
-// Routes 
 Route.get('/all/:by', ValidatorRol("usuario"), async (req,res) => {
+    const { by } = req.params
     try {
-        const serv = await services.findAll()
+        const serv = await services.findAllBy(by)
         if (!serv.result[0][0]) return res.status(404).json({ message: "Servicios no encontrados" })
 
         res.status(200).json(serv)
@@ -37,3 +37,5 @@ Route.get('/all/:by', ValidatorRol("usuario"), async (req,res) => {
         res.status(500).json({ message: err })
     }
 })
+
+module.exports = Route

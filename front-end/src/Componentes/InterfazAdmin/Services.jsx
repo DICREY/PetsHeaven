@@ -8,35 +8,40 @@ import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GlobalTable } from '../Global/GlobalTable'
 import { Notification } from '../Global/Notifys'
 import { GetData } from '../Varios/Requests'
-import { errorStatusHandler, formatDate, searchFilter } from '../Varios/Util'
+import { errorStatusHandler, searchFilter } from '../Varios/Util'
+import HeaderUser from '../BarrasNavegacion/HeaderUser'
+import Footer from '../Varios/Footer2'
 
 // Component 
-export const Services = ({ URL = '', imgDefault = '' }) => {
+export const Services = ({ URL = '', imgDefault = '', currentTab = null }) => {
     // Dynamic vars 
     const [datas, setDatas] = useState([])
-    const [headers, setHeaders] = useState({})
     const [notify, setNotify] = useState(null)
-      
+    
     // Vars 
-    const mainUrl = `${URL}/owner`
-    const headersSearch = ['nom_per', 'email_per', 'cel_per', 'ape_per']
+    const mainUrl = `${URL}/service`
     const navigate = useNavigate()
+    const headers = {
+      Nombre: 'nom_ser',
+      Precio: 'pre_ser',
+      Categoria: 'nom_cat'
+    }
 
     // Functions
-      const GetDataOwners = async () => {
+      const GetDataServices = async () => {
+        setNotify({
+          title:'Cargando...',
+          message:'Obteniendo datos',
+          load: 1
+        })
         const token = localStorage.getItem('token')
+        const reqUrl = `${mainUrl}/all/${currentTab}`
         try {
           if (token) {
-            const data = await GetData(`${mainUrl}/all`, token)
+            const data = await GetData(reqUrl, token)
             setNotify(null)
     
-            if (data) formatDatas(data)
-            setHeaders({
-              'Nombres': 'nom_per',
-              'Documento': 'doc_per',
-              'Celular': 'cel_per',
-              'Mascotas': 'mascotas'
-            })
+            if (data) setDatas(data)
           } else navigate('/user/login')
         } catch (err) {
           setNotify(null)
@@ -54,15 +59,6 @@ export const Services = ({ URL = '', imgDefault = '' }) => {
     const handleSearch = async (term = '', data = [], headers = []) => {
         // if(!petsDataAlmc) await getPets()
     
-        // setDatas(petsDataAlmc)
-        setHeaders({
-            Nombre: 'nom_mas',
-            Especie: 'esp_mas',
-            Raza: 'raz_mas',
-            Edad: 'fec_nac_mas',
-            Propietario: 'nom_per'
-        })
-        
         searchFilter(term, data, headers, setDatas)
     }
 
@@ -70,45 +66,51 @@ export const Services = ({ URL = '', imgDefault = '' }) => {
         console.log('asdad')
     }
 
+    useEffect(() => {
+      GetDataServices()
+    },[])
+
     return (
         <main className='contenedoradminhome'>
         <NavBarAdmin />
 
-        <div className='principaladminhome'>
+          <section className='principaladminhome'>
+            <HeaderUser />
             <article className='tarjetaadminhome' aria-labelledby='lista-usuarios-titulo'>
-                <div className='contenidoadminhome'>
-                    <header className='encabezadoadminhome'>
-                        <div className='tituloadminhome'>
-                            <FileText className='iconoadminhome' aria-hidden='true' />
-                            <h1 id='lista-usuarios-titulo' className='textoadminhome'>Lista de servicios</h1>
-                            <div className='decoracionadminhome' aria-hidden='true'>
-                            <PawPrint className='huellaadminhome' />
-                            </div>
+              <article className='contenidoadminhome'>
+                <header className='encabezadoadminhome'>
+                    <div className='tituloadminhome'>
+                        <FileText className='iconoadminhome' aria-hidden='true' />
+                        <h1 id='lista-usuarios-titulo' className='textoadminhome'>Lista de servicios</h1>
+                        <div className='decoracionadminhome' aria-hidden='true'>
+                        <PawPrint className='huellaadminhome' />
                         </div>
+                    </div>
 
-                        <nav className='BtnsRegisters'>
-                            <button 
-                                className='botonadminhome' 
-                                // onClick={() => navigate('/mascota/registro')}
-                                aria-label='Registrar nueva mascota'
-                            >
-                                <Plus size={16} className='iconoplusadminhome' aria-hidden='true' />
-                                Registrar Servicio
-                            </button>
-                        </nav>
-                    </header>
+                    <nav className='BtnsRegisters'>
+                        <button 
+                            className='botonadminhome' 
+                            // onClick={() => navigate('/mascota/registro')}
+                            aria-label='Registrar nueva mascota'
+                        >
+                            <Plus size={16} className='iconoplusadminhome' aria-hidden='true' />
+                            Registrar Servicio
+                        </button>
+                    </nav>
+                </header>
 
-                    <GlobalTable 
-                        fullData={datas}
-                        subtitle={'Servicios vinculados a la veterinaria: Petsheaven'}
-                        headersSearch={['nom_ser']}
-                        filters={'nombre o categoria'}
-                        headers={headers}
-                        watch={handleDescription}
-                    /> 
-                </div>
-                </article>
-            </div>
+                <GlobalTable 
+                  fullData={datas}
+                  subtitle={'Servicios vinculados a la veterinaria: Petsheaven'}
+                  headersSearch={['nom_ser']}
+                  filters={'nombre o categoria'}
+                  headers={headers}
+                  watch={handleDescription}
+                />
+              </article>
+            </article>
+            <Footer/>
+          </section>
 
             {notify && (
                 <Notification 

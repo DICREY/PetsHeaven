@@ -103,6 +103,7 @@ export class GlobalTable extends Component {
         // Lógica para tipos de datos comunes
         if (header.includes('fec_nac')) return `${getAge(item[header])} Años`
         if (header.includes('fec')) return formatDate(item[header])
+        if (header.includes('pre')) return `$ ${item[header]}`
           
         switch (item[header]) {
           case 'date':

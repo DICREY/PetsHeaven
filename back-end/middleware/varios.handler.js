@@ -37,7 +37,7 @@ const cookiesOptions = {
     secure: true, // HTTPS en producción
     sameSite: 'lax', // Política de same-site
     domain: 'localhost', // Dominio donde es válida (opcional)
-    signed: true,
+    // signed: false,
     // path: '/' // Ruta donde es válida (opcional)
 }
  

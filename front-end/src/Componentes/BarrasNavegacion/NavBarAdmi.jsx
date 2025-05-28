@@ -164,25 +164,25 @@ export const NavBarAdmin = () => {
 
                   <ul className={`submenunavadmin ${serviciosAbierto ? 'abiertonavadmin' : 'cerradonavadmin'}`}>
                     <li>
-                      <NavLink to={'/servicios/vacunas'} className='subenlacenavadmin'>
+                      <NavLink to={'/services/vacunas'} className='subenlacenavadmin'>
                         <Syringe className='iconosubnavadmin' />
                         <span>Vacunas</span>
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink to={'/servicios/cirugia'} className='subenlacenavadmin'>
+                      <NavLink to={'/services/cirugia'} className='subenlacenavadmin'>
                         <Scissors className='iconosubnavadmin' />
                         <span>Cirugía</span>
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink to={'/servicios/laboratorio'} className='subenlacenavadmin'>
+                      <NavLink to={'/services/laboratorio'} className='subenlacenavadmin'>
                         <Flask className='iconosubnavadmin' />
                         <span>Pruebas Laboratorio</span>
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink to={'/servicios/spa'} className='subenlacenavadmin'>
+                      <NavLink to={'/services/spa'} className='subenlacenavadmin'>
                         <Bath className='iconosubnavadmin' />
                         <span>Spa</span>
                       </NavLink>

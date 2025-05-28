@@ -79,7 +79,6 @@ Route.post('/login',limiterLog, async (req,res) => {
         
 
     } catch (err) {
-        console.log(err)
         if (err.status) return res.status(err.status).json({ message: err.message })
 
         res.status(500).json({ message: err })
@@ -105,9 +104,20 @@ Route.post('/register', async (req,res) => {
     }
 })
 
-Route.get('/cookie', authenticateJWT,(req, res) => {
-    const expirationDate = new Date()
-    expirationDate.setDate(expirationDate.getDate() + 30)
+Route.post('/cookie', authenticateJWT,(req, res) => {
+    const { name, value } = req.body
+    
+    res.cookie( name, value, cookiesOptions)
+
+    res.status(201).json({ message: 'Cookie creada' })
+})
+
+Route.post('/check-cookie', authenticateJWT,(req, res) => {
+    const { name } = req.body
+    const cookie = req.cookies[name]
+    console.log(name)
+
+    return res.status(200).json({ message: cookie })
 })
 
 // Export 

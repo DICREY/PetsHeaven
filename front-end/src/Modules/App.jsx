@@ -37,6 +37,7 @@ export default function App () {
   const [owner,setOwner] = useState(false)
   const [arriveTo,setArriveTo] = useState('')
   const [petDetailTab,setPetDetailTab] = useState('Datos Generales')
+  const [currentTab,setCurrentTab] = useState('Vacunas')
 
   // Vars 
   const imgPetDefault = 'https://github.com/Mogom/Imagenes_PetsHeaven/blob/main/Defaults/petImg.default.jpg?raw=true'
@@ -112,11 +113,25 @@ export default function App () {
             URL={URL}
           />}/>}>
         </Route>
-        <Route path='services' element={
-          <PrivateRoute children={<Services 
-            URL={URL}
-            imgDefault={imgServiceDefault}
-          />}/>}>
+        <Route path='/services' element={
+          <PrivateRoute children={<Services URL={URL}
+            imgDefault={imgServiceDefault} />}/>}>
+        </Route>
+        <Route path='/services/vacunas' element={
+          <PrivateRoute children={<Services URL={URL} currentTab={'Vacunación'}
+            imgDefault={imgServiceDefault} />}/>}>
+        </Route>
+        <Route path='/services/cirugia' element={
+          <PrivateRoute children={<Services URL={URL} currentTab={'Cirugía'}
+            imgDefault={imgServiceDefault} />}/>}>
+        </Route>
+        <Route path='/services/laboratorio' element={
+          <PrivateRoute children={<Services URL={URL} currentTab={'Consulta General'}
+            imgDefault={imgServiceDefault} />}/>}>
+        </Route>
+        <Route path='/services/spa' element={
+          <PrivateRoute children={<Services URL={URL} currentTab={'Spa y Baño'}
+            imgDefault={imgServiceDefault} />}/>}>
         </Route>
 
         {/* Admin routes  */}
