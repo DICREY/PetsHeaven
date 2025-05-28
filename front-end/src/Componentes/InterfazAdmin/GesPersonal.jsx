@@ -100,7 +100,7 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
                 <h1 className="textogesusuario">Gestión de personal</h1>
                 <span className="subtitulogesusuario">/ Administración</span>
               </div>
-              <button className="botongesmascota" onClick={() => window.location.href = "/admin/usuario/registro"}>
+              <button className="botonadminhome" onClick={() => window.location.href = "/admin/usuario/registro"}>
                 <Plus size={16} className="iconoplusadminhome" />
                 Registrar personal
               </button>
@@ -121,6 +121,7 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
         </section>
       <Footer/>
       </section>
+      
       {notify && (
         <Notification 
           {...notify}

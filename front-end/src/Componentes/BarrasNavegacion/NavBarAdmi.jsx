@@ -18,7 +18,6 @@ export const NavBarAdmin = () => {
   const [esMovil, setEsMovil] = useState(false)
   const [user, setUser] = useState({})
   const [isAdmin, setIsAdmin] = useState()
-  const [img, setImg] = useState()
 
   // Vars 
   const token = localStorage.getItem('token')
@@ -54,10 +53,10 @@ export const NavBarAdmin = () => {
   useEffect(() => {
     if(token){
       const tokenJWT = decodeJWT(token)
-      setUser(tokenJWT)
-      setImg(tokenJWT.img)
-      const roles = decodeJWT(token).roles.split(',')
+      const roles = tokenJWT.roles.split(',')
       const admin = roles.includes('Administrador')
+
+      setUser(tokenJWT)
       setIsAdmin(admin)
     }
     

@@ -1,23 +1,26 @@
-import React from 'react';
-import styles from '../../styles/BarrasNavegacion/HeaderUser.module.css';
-import { User, HelpCircle, LogOut } from 'lucide-react';
-import '../../styles/global.css'; 
+import React, { useState } from 'react'
+import { User, HelpCircle, LogOut } from 'lucide-react'
 
+// Imports 
+import { Logout } from '../Varios/Util'
+import { TabHelp } from '../Global/TabHelp'
+
+// Import styles
+import styles from '../../styles/BarrasNavegacion/HeaderUser.module.css'
+import '../../styles/global.css' 
+
+// Component 
 export default function HeaderUser() {
-  const handleLogout = () => {
-    // Lógica para cerrar sesión
-    console.log('Cerrando sesión...');
-  };
+  const [tabHelp,setTabHelp] = useState()
 
   const handleProfile = () => {
     // Lógica para ir al perfil
-    console.log('Navegando al perfil...');
-  };
+    console.log('Navegando al perfil...')
+  }
 
   const handleHelp = () => {
-    // Lógica para mostrar ayuda
-    console.log('Mostrando ayuda...');
-  };
+    tabHelp? setTabHelp(false): setTabHelp(true)
+  }
 
   return (
     <header className={styles.navbar}>
@@ -28,7 +31,8 @@ export default function HeaderUser() {
       <nav className={styles.navLinks}>
         <button 
           onClick={handleHelp} 
-          className={`${styles.navButton} ${styles.helpButton}`}
+          // className={`${styles.navButton} ${styles.helpButton}`}
+          className='BackBtn'
           aria-label="Ayuda"
         >
           <HelpCircle size={20} className={styles.icon} />
@@ -45,14 +49,18 @@ export default function HeaderUser() {
         </button>
         
         <button 
-          onClick={handleLogout} 
-          className={`${styles.navButton} ${styles.logoutButton}`}
+          onClick={Logout}
+          // className={`${styles.navButton} ${styles.logoutButton}`}
+          className='DeleteBtn'
           aria-label="Cerrar sesión"
         >
           <LogOut size={20} className={styles.icon} />
           <span>Cerrar sesión</span>
         </button>
       </nav>
+      {tabHelp && (
+        <TabHelp onClose={handleHelp}/>
+      )}
     </header>
-  );
+  )
 }

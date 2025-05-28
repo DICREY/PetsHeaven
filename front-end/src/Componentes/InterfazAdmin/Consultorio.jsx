@@ -74,7 +74,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
           const message = errorStatusHandler(err.status)
           setNotify({
             title: 'Error',
-            message: `${message}`,    
+            message: `${message}`,
             close: setNotify
           })
        } else console.log(err)

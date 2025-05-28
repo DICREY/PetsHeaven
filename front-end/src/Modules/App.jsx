@@ -57,8 +57,8 @@ export default function App () {
     const token = localStorage.getItem('token')
 
     if (token) {
-      const vet = decodeJWT(token).roles.split(',').includes('Veterinario')
-      return vet? children :<Navigate to='/user/login' />
+      const vet = decodeJWT(token).roles.split(', ').includes('Veterinario')
+      return vet? children : <Navigate to='/user/login' />
     }
 
     return <Navigate to='/user/login' />
@@ -67,7 +67,7 @@ export default function App () {
   const AdminRoute = ({ children }) => {
     // Vars
     const token = localStorage.getItem('token')
-    const admin = decodeJWT(token).roles.split(',').includes('Administrador')
+    const admin = decodeJWT(token).roles.split(', ').includes('Administrador')
 
     if (token) {
       return admin? children :<Navigate to='/user/login' />

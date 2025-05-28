@@ -115,7 +115,7 @@ export const getName = (token = "") => {
   const name = decodeToken.names || ""
   const lastName = decodeToken.lastNames || ""
   
-  return `${name}${lastName ? "_" + lastName : ""}`
+  return `${name}${lastName ? " " + lastName : ""}`
 }
 
 export const formatDate = (dateString = "") => {

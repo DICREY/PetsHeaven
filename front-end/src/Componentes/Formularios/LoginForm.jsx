@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router'
 
 // Imports 
 import { login } from '../Varios/Requests'
-import { errorStatusHandler, formatoTiempo, checkImage, Logout, decodeJWT } from '../Varios/Util'
+import { errorStatusHandler, formatoTiempo, checkImage, Logout, decodeJWT, getName } from '../Varios/Util'
 
 // Import styles
 import '../../../src/styles/Formularios/login.css'
@@ -68,8 +68,12 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
       setNotify(null)
       if (log) {
         const token = localStorage.getItem('token')
+        setNotify({
+          title: 'Bienvenido',
+          message: `Hola, ${getName(token)} Feliz día`,
+          close: setNotify
+        })
         const roles = decodeJWT(token).roles.split(',')
-        console.log(roles)
 
         arriveTo = arriveTo? arriveTo: useRoleRedirect(roles)
         
