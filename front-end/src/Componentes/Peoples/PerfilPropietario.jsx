@@ -12,6 +12,7 @@ import { DeleteData, ModifyData } from '../Varios/Requests'
 // Import styles 
 import '../../../src/styles/InterfazAdmin/PerfilPropietario.css'
 import Footer from '../Varios/Footer2'
+import HeaderUser from '../BarrasNavegacion/HeaderUser'
 
 // Component 
 export const PerfilPropietario = ({ 
@@ -188,6 +189,7 @@ export const PerfilPropietario = ({
     <main className='contenedorpageProps'>
       <NavBarAdmin />
       <div className='principalpageProp'>
+      <HeaderUser/> 
         <div className='contenedorProps'>
         
         <header className='cabeceraProps'>
@@ -310,8 +312,8 @@ export const PerfilPropietario = ({
           )}
         </section>
       </div>
+      <Footer/>
       </div>      
-    
     </main> 
   )
 }

@@ -15,6 +15,7 @@ import Footer from '../Varios/Footer2'
 
 // Import styles 
 import '../../../src/styles/Pets/petDetails.css'
+import HeaderUser from '../BarrasNavegacion/HeaderUser'
 
 // Main component
 export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Generales'}) => {
@@ -218,6 +219,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
             <main className='app-container-pet-details'>
                 <NavBarAdmin />
                 <main className='main-content-pet-details'> 
+                    <HeaderUser/>
                     <div className='pet-modal-overlay-pet-details'>
                         <div className='pet-modal-content-pet-details'>
 

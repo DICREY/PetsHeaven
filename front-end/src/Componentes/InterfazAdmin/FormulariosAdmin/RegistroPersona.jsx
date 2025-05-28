@@ -12,6 +12,8 @@ import { PostData } from '../../Varios/Requests'
 
 // Import styles
 import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/RegistroPersonal.css'
+import HeaderUser from '../../BarrasNavegacion/HeaderUser'
+import Footer from '../../Varios/Footer2'
 
 export const RegistroPro = ({ URL = '' }) => {
   // Dynamic vars
@@ -93,6 +95,7 @@ export const RegistroPro = ({ URL = '' }) => {
     <div className='contenedorgesusuario'>
       <NavBarAdmin />
       <main className='principalgesusuario'>
+        <HeaderUser/>
         <div className='contenedor-regusuario'>
           <div className='cabecera-regusuario'>
             <div className='titulo-regusuario'>
@@ -359,6 +362,7 @@ export const RegistroPro = ({ URL = '' }) => {
                 errors={errors}
               />}
           </div>
+          <Footer/>
         </div>
       </main>
     </div>

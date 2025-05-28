@@ -6,6 +6,8 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import listPlugin from '@fullcalendar/list'
 import esLocale from "@fullcalendar/core/locales/es"
+import axios from 'axios'
+
 
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
@@ -17,6 +19,7 @@ import HeaderUser from '../BarrasNavegacion/HeaderUser'
 
 // Import styles 
 import "../../styles/InterfazAdmin/GesAgendaGeneral.css"
+import Footer from '../Varios/Footer2'
 
 // Función para unir fecha y hora en formato ISO
 function joinDateTime(date, time) {
@@ -34,6 +37,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     const [showCreateModal, setShowCreateModal] = useState(false) //Mostrar el pop up de creacion de Cita
     const [selectedEvent, setSelectedEvent] = useState(null)
     const [selectedDate, setSelectedDate] = useState('')
+    const [lugar, setLugar] = useState('Consultorio');
     const calendarRef = useRef(null)
     const [allPacientes, setAllPacientes] = useState([]); // Todos los pacientes
     const [filteredPacientes, setFilteredPacientes] = useState([]); // Resultados filtrados
@@ -46,9 +50,28 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
         category: 'consulta',
         paciente: '',
         propietario: '',
+        lug_ate_cit: 'Consultorio',
         telefono: '',
-        estado: 'PENDIENTE'
+        estado: 'PENDIENTE',
+        mas_cit: '' 
     })
+    const createModalRef = useRef(null);
+    const eventModalRef = useRef(null);
+
+    // Cerrar modal al hacer clic fuera
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (showCreateModal && createModalRef.current && !createModalRef.current.contains(event.target)) {
+                setShowCreateModal(false);
+            }
+            if (showEventModal && eventModalRef.current && !eventModalRef.current.contains(event.target)) {
+                setShowEventModal(false);
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [showCreateModal, showEventModal]);
+
 
     // Vars 
     const didFetch = useRef(false)
@@ -82,7 +105,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     const fetchPacientes = async () => {
         const token = localStorage.getItem("token");
         try {
-            const data = await GetData(`${URL}/pets`, token); // Ajusta el endpoint
+            const data = await GetData(`${URL}/pet/all`, token); // Ajusta el endpoint
             if (data) setAllPacientes(data);
         } catch (err) {
             console.error("Error al cargar pacientes:", err);
@@ -101,6 +124,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
             category: 'consulta',
             paciente: '',
             propietario: '',
+            lug_ate_cit: 'Consultorio',
             telefono: '',
             estado: 'PENDIENTE'
         });
@@ -127,19 +151,28 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
         }
 
         const token = localStorage.getItem("token")
+        console.log(token)
         try {
             const citaData = {
                 fec_reg_cit: new Date().toISOString().split('T')[0],
                 fec_cit: newEvent.start.split('T')[0],
                 hor_ini_cit: newEvent.start.split('T')[1],
                 hor_fin_cit: newEvent.end.split('T')[1],
-                lug_ate_cit: "Consultorio",
+                lug_ate_cit: lugar,
                 ser_cit: 1,
                 vet_cit: 1, 
-                mas_cit: 1, 
+                mas_cit: newEvent.mas_cit, 
                 estado: 'PENDIENTE'
             }
-            await PostData(`${mainUrl}/register`, citaData, token)
+            await axios.post(`${mainUrl}/register`, citaData, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'x-api-key': 'pets_heaven_vite',
+                            'user': 'admin', 
+                            'roles': 'Administrador', 
+                            'accept': 'application/json'
+                        }
+                    });
             setShowCreateModal(false)
             // Refresca las citas
             fetchAppointments()
@@ -154,13 +187,21 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
         try {
             const citaData = {
                 id_cit: selectedEvent.id,
-                mas_cit: 1, // Ajusta según tu lógica
+                mas_cit: selectedEvent.id_mas, 
                 fec_cit: typeof selectedEvent.start === "string" ? selectedEvent.start.split('T')[0] : selectedEvent.start.toISOString().split('T')[0],
                 hor_ini_cit: typeof selectedEvent.start === "string" ? selectedEvent.start.split('T')[1] : selectedEvent.start.toISOString().split('T')[1],
                 hor_fin_cit: typeof selectedEvent.end === "string" ? selectedEvent.end.split('T')[1] : selectedEvent.end.toISOString().split('T')[1],
-                lug_ate_cit: "Consultorio" // O el valor que corresponda
+                lug_ate_cit: "Consultorio" 
             }
-            await ModifyData(`${mainUrl}/modify`, citaData, token)
+            await axios.put(`${mainUrl}/modify`, citaData, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'x-api-key': 'pets_heaven_vite',
+                            'user': 'admin', 
+                            'roles': 'Administrador', 
+                            'accept': 'application/json'
+                        }
+                    });            
             setShowEventModal(false)
             fetchAppointments()
         } catch (err) {
@@ -203,8 +244,12 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
             load: 1
         })
         try {
-            const data = await GetData(`${mainUrl}/general`, token)
+            let data = await GetData(`${mainUrl}/general`, token)
             setNotify(null)
+            // Normaliza la respuesta a array
+            if (data && !Array.isArray(data)) {
+                data = [data]
+            }
             if (data) {
                 const mappedEvents = data.map(event => ({
                     id: event.id_cit,
@@ -215,6 +260,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                     category: event.nom_ser || 'vacuna',
                     paciente: event.nom_mas,
                     propietario: `${event.nom_per} ${event.ape_per}`,
+                    lug_ate_cit: event.lug_ate_cit || 'Consultorio',
                     telefono: event.cel_per,
                     estado: event.estado,
                     fotoMascota: event.fot_mas
@@ -230,29 +276,19 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                     message: `${message}`,
                     close: setNotify
                 })
-            } else console.error(err)
+            } 
+            else console.error(err)
             // Manejo de error
         }
     }
 
-    // cerrar el dropdown al hacer clic fuera
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (!event.target.closest('.paciente-autocomplete')) {
-                setShowPacientesDropdown(false);
-            }
-        };
 
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, []);
 
     return (
         <main className="calendar-container">
             <NavBarAdmin />
             <main className='calendar-container' id='main-container-calendar'>
+            <HeaderUser openHelp={() => setTabHelp(true)}/>
 
                 <FullCalendar
                     // Refencia del calendario, permite acceder a la instancia del componente para manipularlo
@@ -399,8 +435,11 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                                                 ...newEvent,
                                                                 paciente: paciente.nom_mas,
                                                                 propietario: `${paciente.nom_per} ${paciente.ape_per}`,
-                                                                telefono: paciente.cel_per || ''
-                                                            });
+                                                                telefono: paciente.cel_per || '',
+                                                                mas_cit: paciente.id_mas
+                                                            },
+                                                            console.log(paciente.id_mas)
+                                                            );
                                                             setShowPacientesDropdown(false);
                                                         }}
                                                     >
@@ -480,6 +519,15 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                         <option value="vacuna">Vacuna</option>
                                         <option value="emergencia">Emergencia</option>
                                     </select>
+                                </div>
+                                <div className="form-group">
+                                    <label>Lugar de atención:</label>
+                                    <input
+                                        type="text"
+                                        name="lugar"
+                                        value={lugar}
+                                        onChange={e => setLugar(e.target.value)}
+                                    />
                                 </div>
                                 <div className="form-group">
                                     <label>Descripción:</label>
@@ -569,6 +617,15 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                         <option value="emergencia">Emergencia</option>
                                     </select>
                                 </div>
+                                    <div className="form-group">
+                                    <label>Consultorio:</label>
+                                    <input
+                                        type="text"
+                                        name="consultorio"
+                                        value={selectedEvent?.lug_ate_cit || ''}
+                                        onChange={handleInputChange}
+                                    />
+                                </div>
                                 <div className="form-group">
                                     <label>Descripción:</label>
                                     <textarea
@@ -592,6 +649,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                         </aside>
                     </aside>
                 )}
+                <Footer/>
             </main>
             {notify && (
                 <Notification

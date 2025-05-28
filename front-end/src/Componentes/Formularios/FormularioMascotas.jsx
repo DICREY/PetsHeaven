@@ -11,6 +11,8 @@ import { PostData } from '../Varios/Requests'
 
 // Import styles
 import '../../../src/styles/Formularios/FormularioMascotas.css'
+import HeaderUser from '../BarrasNavegacion/HeaderUser';
+import Footer from '../Varios/Footer2';
 
 export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
   // Dynamic vars
@@ -82,6 +84,7 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
     <div className='contenedorgesusuario'>
       <NavBarAdmin />
       <main className='principalgesusuario'>
+        <HeaderUser/>
         <main className='contenedor-regusuario'>
           <header className='cabecera-regusuario'>
             <div className='titulo-regusuario'>
@@ -295,6 +298,7 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
               </section>
             )}
           </section>
+          <Footer/>
         </main>
       </main>
       {notify && (
