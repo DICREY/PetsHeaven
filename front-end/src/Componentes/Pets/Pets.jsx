@@ -1,6 +1,7 @@
 // Imports
 import { GetData } from '../Varios/Requests'
 import { decodeJWT, errorStatusHandler, getRoles, checkImage } from '../Varios/Util'
+import { Notification } from '../Global/Notifys'
 import { Loader } from '../Errores/Loader'
 import { NotFound } from '../Errores/NotFound'
 
@@ -15,10 +16,11 @@ import { useNavigate } from 'react-router-dom'
 export const Pets = ({URL = '', imgPetDefault = '', setPetSelect }) => {
     // Dynamic Vars
     const [petsData, setPetsData] = useState([])
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
     const [searchBy,setSearchBy] = useState('')
     const [found,setfound] = useState(false)
     const [isAdmin,setIsAdmin] = useState(false)
+    const [notify, setNotify] = useState(null)
     
     // Vars 
     const mainURL = `${URL}/pet`
@@ -28,22 +30,27 @@ export const Pets = ({URL = '', imgPetDefault = '', setPetSelect }) => {
     // fetch para traer datos
     const fetchData = async (url = '', token = '') => {
         setfound(false)
-        setLoading(true)
+
+        setNotify({
+            title: 'Cargando...',
+            message: 'Obteniendo datos',
+            load: 1
+        })
         try {
             const pets = await GetData(url,token)
-            setLoading(false)
+
+            setNotify(null)
             setPetsData(pets)
             setfound(true)
             if(pets[0]) setfound(true)
         } catch (err) {
-            setLoading(false)
+            setNotify(null)
             if (err.status){
                 const message = errorStatusHandler(err.status)
-                swal({
-                    icon: 'error',
+                setNotify({
                     title: 'Error',
-                    text: message,
-                    button: 'Aceptar'
+                    message: `${message}`,    
+                    close: setNotify
                 })
             }
         }
@@ -56,11 +63,10 @@ export const Pets = ({URL = '', imgPetDefault = '', setPetSelect }) => {
         if(token) {
             // Vars
             const by = decodeJWT(token).names.toLowerCase()
-            const roles =  getRoles(token)
 
-            const admin = roles.some(role => role.toLowerCase() === 'administrador')
+            const admin = getCookie('Nikola')
 
-            admin?setIsAdmin(true):setIsAdmin(false)
+            admin? setIsAdmin(true): setIsAdmin(false)
 
             const newUrl = admin? `${mainURL}/all`: `${mainURL}/all:${by}`
 
@@ -118,7 +124,12 @@ export const Pets = ({URL = '', imgPetDefault = '', setPetSelect }) => {
                         ):(
                             <NotFound />
                         )
-                    }    
+                    }  
+                    {notify && (
+                        <Notification 
+                            {...notify}
+                        />
+                    )}
                 </main>
             )}   
         </>

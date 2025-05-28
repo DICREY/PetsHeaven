@@ -7,7 +7,7 @@ const { hash } = require('bcrypt')
 // Imports
 const Global = require('../services/Global.services')
 const People = require('../services/People.services')
-const { limiterLog } = require('../middleware/varios.handler')
+const { limiterLog, cookiesOptionsLog, cookiesOptions } = require('../middleware/varios.handler')
 
 // Env vars
 const secret = process.env.JWT_SECRET
@@ -50,16 +50,30 @@ Route.post('/login',limiterLog, async (req,res) => {
             return res.status(401).json({ message: 'Credenciales inválidas' })
         }
         const token = jwt.sign(
+            {   
+                names: user.nom_per,
+                lastNames: user.ape_per,
+            },
+            secret,
+            { expiresIn: '8h' }
+        )
+        const tokenInfo = jwt.sign(
             { 
                 names: user.nom_per,
                 lastNames: user.ape_per,
-                roles: user.roles,
                 img: user.fot_roles.split(',')[0]
             },
             secret,
             { expiresIn: '8h' }
         )
-        res.status(200).json({ token: token })
+
+        res.cookie('token', token, cookiesOptions)
+
+        if (user.roles.includes('Administrador')) res.cookie('Nikola', 'Que miras', cookiesOptions)
+
+        if (user.roles.includes('Veterinario')) res.cookie('Marie', 'Que miras', cookiesOptions)
+
+        res.status(200).json({ token: tokenInfo })
 
     } catch (err) {
         if (err.status) return res.status(err.status).json({ message: err.message })
@@ -101,16 +115,7 @@ Route.post('/cookie',(req, res) => {
         
         expirationDate.setDate(expirationDate.getDate() + 30)
         
-        res.cookie(cookieName, cookieValue, {
-            expires: expirationDate, // Fecha exacta de expiración
-            maxAge: 30 * 24 * 60 * 60 * 1000, // Alternativa en milisegundos (30 días)
-            httpOnly: true, // Seguridad: solo accesible por HTTP
-            secure: true, // HTTPS en producción
-            sameSite: 'strict', // Política de same-site
-            domain: 'localhost', // Dominio donde es válida (opcional)
-            signed: true,
-            // path: '/' // Ruta donde es válida (opcional)
-        })
+        res.cookie(cookieName, cookieValue, cookiesOptions)
         
         res.status(200).json({ message: 'Cookie configurada. Expira en 30 dias' })
     } catch (err) {

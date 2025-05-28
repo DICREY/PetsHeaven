@@ -56,7 +56,8 @@ export const NavBarAdmin = () => {
       const tokenJWT = decodeJWT(token)
       setUser(tokenJWT)
       setImg(tokenJWT.img)
-      const roles = getRoles(token)
+      const roles = getRoles()
+      console.log(roles)
       const admin = roles.some(role => role.toLowerCase() === 'administrador')
       setIsAdmin(admin)
     }

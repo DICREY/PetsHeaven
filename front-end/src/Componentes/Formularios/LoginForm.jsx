@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router'
 
 // Imports 
 import { login } from '../Varios/Requests'
-import { getRoles, errorStatusHandler, formatoTiempo, checkImage, Logout } from '../Varios/Util'
+import { getRoles, errorStatusHandler, formatoTiempo, checkImage, Logout, getCookie } from '../Varios/Util'
 
 // Import styles
 import '../../../src/styles/Formularios/login.css'
@@ -33,7 +33,7 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
     mode: 'onChange',
   })
 
-  const useRoleRedirect = (roles = []) => {
+  const useRoleRedirect = () => {
     const roleRoutes = {
       'Administrador': '/admin/gestion/usuarios',
       'Veterinario': '/gestion/mascotas',
@@ -41,9 +41,9 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
     }
     
     // Determinar la ruta basada en jerarquía de roles
-    const path = roles.includes('Administrador') 
+    const path = getCookie('Nikola')
     ? roleRoutes['Administrador']
-    : roles.includes('Veterinario') 
+    : getCookie('Marie') 
     ? roleRoutes['Veterinario']
     : roleRoutes['default']
 
@@ -67,19 +67,15 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
       const log = await login(url,firstData,secondData)
       setNotify(null)
       if (log) {
-        const token = localStorage.getItem("token")
-        const roles = getRoles(token)
-        arriveTo = arriveTo? arriveTo: useRoleRedirect(roles)
+        const token = localStorage.getItem('token')
+        arriveTo = arriveTo? arriveTo: useRoleRedirect()
         
         if(token){ 
-          
           setTimeout(() => {
             navigate(arriveTo)
           },2000)
         } 
       } else console.log(log)
-      
-
     } catch (err) {
       setNotify(null)
       if(err.status) {
@@ -87,6 +83,11 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
           setWaitTime(true)
         } else setWaitTime(false)
         const message = errorStatusHandler(err.status)
+        setNotify({
+          title: 'Error',
+          message: `${message}`,
+          close: setNotify
+        })
       } else console.log(err)
     }
   }
@@ -98,7 +99,7 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
 
   useEffect(() => {
     let intervalo = null
-    if (localStorage.getItem("token")) Logout()
+    if (getCookie('token')) Logout()
     
     if (waitTime) {
       // Inicia el contador

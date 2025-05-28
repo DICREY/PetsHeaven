@@ -20,5 +20,25 @@ const limiterLog = rateLimit({
     max: 3,                         // Limit each IP to 3 login requests per windowMs  
     message: 'Demasiadas intentos fallidos, por favor intenta de nuevo más tarde'
 })
+
+const cookiesOptionsLog = {
+    maxAge: 8 * 60 * 60 * 1000, // Alternativa en milisegundos (8 horas)
+    httpOnly: true, // Seguridad: solo accesible por HTTP
+    secure: true, // HTTPS en producción
+    sameSite: 'strict', // Política de same-site
+    domain: 'localhost', // Dominio donde es válida (opcional)
+    signed: true,
+    // path: '/' // Ruta donde es válida (opcional)
+}
+
+const cookiesOptions = {
+    maxAge: 30 * 24 * 60 * 60 * 1000, // Alternativa en milisegundos (30 días)
+    httpOnly: true, // Seguridad: solo accesible por HTTP
+    secure: true, // HTTPS en producción
+    sameSite: 'lax', // Política de same-site
+    domain: 'localhost', // Dominio donde es válida (opcional)
+    signed: true,
+    // path: '/' // Ruta donde es válida (opcional)
+}
  
-module.exports = { corsOptions, limiter, limiterLog }
+module.exports = { corsOptions, limiter, limiterLog, cookiesOptions, cookiesOptionsLog }

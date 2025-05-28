@@ -98,19 +98,11 @@ export const decodeJWT = (token = "") => {
   }
 }
 
-export const getRoles = (token = "") => {
-  const tokenData = decodeJWT(token)
-  if (!tokenData || !tokenData.roles) {
-    console.warn("No se encontraron roles en el token")
-    return []
-  }
-  
-  // Convierte el string de roles a array (si viene separado por comas)
-  return typeof tokenData.roles === "string" 
-    ? tokenData.roles.split(",").map(role => role.trim())
-    : Array.isArray(tokenData.roles)
-      ? tokenData.roles
-      : []
+export const getRoles = () => {
+  const rol1 = getCookie('Nikola')?'Administrador---':''
+  const rol2 = getCookie('Marie')?'Veterinario---':''
+  const roles = `${rol1}${rol2}Usuario`
+  return roles.split('---')
 }
 
 export const getName = (token = "") => {

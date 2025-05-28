@@ -1,6 +1,6 @@
 // Librarys 
 import axios from 'axios'
-import { getName, decodeJWT } from './Util'
+import { getName, decodeJWT, getRoles } from './Util'
 
 // Vars
 const HeaderWeb = {
@@ -63,7 +63,7 @@ export async function GetData(URL = '',token = '') {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'User': getName(token),
-                'Roles': decodeJWT(token).roles,
+                'Roles': getRoles(),
                 'x-api-key': 'pets_heaven_vite',
             },
             withCredentials: true,
@@ -88,7 +88,7 @@ export async function PostData(URL = '', token = '', datas = {}) {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'User': getName(token),
-                    'Roles': decodeJWT(token).roles,
+                    'Roles': getRoles(),
                     'Content-Type': 'application/json',
                     'x-api-key': 'pets_heaven_vite',
                 },
@@ -141,7 +141,7 @@ export async function ModifyData(URL = '', token = '', datas = {}) {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'User': getName(token),
-                    'Roles': decodeJWT(token).roles,
+                    'Roles': getRoles(),
                     'Content-Type': 'application/json',
                     'x-api-key': 'pets_heaven_vite',
                 },
@@ -169,7 +169,7 @@ export async function DeleteData(URL = '', token = '', datas = {}) {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'User': getName(token),
-                    'Roles': decodeJWT(token).roles,
+                    'Roles': getRoles(),
                     'Content-Type': 'application/json',
                     'x-api-key': 'pets_heaven_vite'
                 },

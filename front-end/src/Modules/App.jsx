@@ -13,14 +13,13 @@ import { RegistroPro } from '../Componentes/InterfazAdmin/FormulariosAdmin/Regis
 // Imports
 import { HomeAdmin } from '../Componentes/InterfazAdmin/Consultorio'
 import { GesPersonal } from '../Componentes/InterfazAdmin/GesPersonal'
-import { GesMascota } from '../Componentes/InterfazAdmin/GesMascota'
 import { GesAgendaGeneral } from '../Componentes/InterfazAdmin/GesAgendaGeneral'
 import { MainAdmin } from '../Componentes/InterfazAdmin/MainAdmin'
 import { Pets } from '../Componentes/Pets/Pets'
 import { PetDetails } from '../Componentes/Pets/PetDetails'
 import { NotFound } from '../Componentes/Errores/NotFound'
 import { ErrorInternalServer } from '../Componentes/Errores/ErrorInternalServer'
-import { getRoles,Logout } from '../Componentes/Varios/Util'
+import { getCookie, getRoles,Logout } from '../Componentes/Varios/Util'
 import { useInactivityDetector } from '../Componentes/Varios/InactiveDectetor'
 import VeterinariaPage from '../Componentes/VeterinariaPage'
 import { PerfilPropietario } from '../Componentes/Peoples/PerfilPropietario'
@@ -48,18 +47,18 @@ export default function App () {
   
   // Route types
   const PrivateRoute = ({ children }) => {
-    const token = localStorage.getItem('token')
+    const token = getCookie('token')
 
     return token? children : <Navigate to='/user/login' />
   }
   
   const VetRoute = ({ children }) => {
     // Vars
-    const token = localStorage.getItem('token');
+    const token = getCookie('token')
 
     if (token) {
-      const roles = getRoles(token)
-      return roles.includes('Veterinario')? children :<Navigate to='/user/login' />
+      const vet = getCookie('Marie')
+      return vet? children :<Navigate to='/user/login' />
     }
 
     return <Navigate to='/user/login' />
@@ -67,11 +66,11 @@ export default function App () {
 
   const AdminRoute = ({ children }) => {
     // Vars
-    const token = localStorage.getItem('token')
+    const token = getCookie('token')
+    const admin = getCookie('Nikola')
 
     if (token) {
-      const roles = getRoles(token)
-      return roles.includes('Administrador')? children :<Navigate to='/user/login' />
+      return admin? children :<Navigate to='/user/login' />
     }
 
     return <Navigate to='/user/login' />
@@ -134,9 +133,6 @@ export default function App () {
         </Route>
         
         {/* Vet routes */}
-        <Route path='gestion/mascotas' element={
-          <VetRoute children={<GesMascota URL={URL}/>} />} >
-        </Route>
         <Route path='mascota/registro' element={
           <VetRoute children={<FormularioRegMascotas URL={URL} imgDefault={imgPetDefault} />} />} >
         </Route>
