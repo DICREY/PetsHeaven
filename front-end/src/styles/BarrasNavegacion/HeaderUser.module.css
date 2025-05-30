@@ -7,10 +7,9 @@
   padding: 1rem 2rem;
   background-color: var(--white);
   box-shadow: var(--shadow-sm);
-  position: sticky;
-  top: 0;
-  z-index: 20;
+  position: relative;
   font-family: var(--font-general);
+  width: 100%;
 }
 
 .logo h1 {
