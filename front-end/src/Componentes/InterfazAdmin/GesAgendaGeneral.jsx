@@ -6,7 +6,6 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import listPlugin from '@fullcalendar/list'
 import esLocale from "@fullcalendar/core/locales/es"
-import axios from 'axios'
 
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
@@ -104,7 +103,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     const fetchPacientes = async () => {
         const token = localStorage.getItem("token");
         try {
-            const data = await GetData(`${URL}/pet/all`, token); // Ajusta el endpoint
+            const data = await GetData(`${URL}/pet/all`, token);
             if (data) setAllPacientes(data);
         } catch (err) {
             console.error("Error al cargar pacientes:", err);
@@ -145,65 +144,51 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     // Crear nueva cita en el backend
     const handleCreateEvent = async () => {
         if (!newEvent.title) {
-            alert('El título es requerido')
-            return
+            alert('El título es requerido');
+            return;
         }
-
-        const token = localStorage.getItem("token")
-        console.log(token)
+        const citaData = {
+            fec_reg_cit: new Date().toISOString().split('T')[0],
+            fec_cit: newEvent.start.split('T')[0],
+            hor_ini_cit: newEvent.start.split('T')[1],
+            hor_fin_cit: newEvent.end.split('T')[1],
+            lug_ate_cit: lugar,
+            ser_cit: 1,
+            vet_cit: 1,
+            mas_cit: newEvent.mas_cit,
+            estado: 'PENDIENTE'
+        };
+        const token = localStorage.getItem("token");
         try {
-            const citaData = {
-                fec_reg_cit: new Date().toISOString().split('T')[0],
-                fec_cit: newEvent.start.split('T')[0],
-                hor_ini_cit: newEvent.start.split('T')[1],
-                hor_fin_cit: newEvent.end.split('T')[1],
-                lug_ate_cit: lugar,
-                ser_cit: 1,
-                vet_cit: 1, 
-                mas_cit: newEvent.mas_cit, 
-                estado: 'PENDIENTE'
-            }
-            await axios.post(`${mainUrl}/register`, citaData, {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            'x-api-key': 'pets_heaven_vite',
-                            'user': 'admin', 
-                            'roles': 'Administrador', 
-                            'accept': 'application/json'
-                        }
-                    });
-            setShowCreateModal(false)
-            // Refresca las citas
-            fetchAppointments()
+            await PostData(`${mainUrl}/register`, token, citaData);
+            setShowCreateModal(false);
+            fetchAppointments();
         } catch (err) {
-            alert('Error al crear la cita')
+            alert('Error al crear la cita');
         }
-    }
+    };
 
     // Actualizar cita existente en el backend
     const handleUpdateEvent = async () => {
-        const token = localStorage.getItem("token")
+        const citaData = {
+            id_cit: selectedEvent.id,
+            mas_cit: selectedEvent.mas_cit,
+            fec_cit: typeof selectedEvent.start === "string"
+                ? selectedEvent.start.split('T')[0]
+                : selectedEvent.start.toISOString().split('T')[0],
+            hor_ini_cit: typeof selectedEvent.start === "string"
+                ? selectedEvent.start.split('T')[1]
+                : selectedEvent.start.toISOString().split('T')[1],
+            hor_fin_cit: typeof selectedEvent.end === "string"
+                ? selectedEvent.end.split('T')[1]
+                : selectedEvent.end.toISOString().split('T')[1],
+            lug_ate_cit: selectedEvent.lug_ate_cit || "Consultorio"
+        };
+        const token = localStorage.getItem("token");
         try {
-            const citaData = {
-                id_cit: selectedEvent.id,
-                mas_cit: selectedEvent.mas_cit, 
-                fec_cit: typeof selectedEvent.start === "string" ? selectedEvent.start.split('T')[0] : selectedEvent.start.toISOString().split('T')[0],
-                hor_ini_cit: typeof selectedEvent.start === "string" ? selectedEvent.start.split('T')[1] : selectedEvent.start.toISOString().split('T')[1],
-                hor_fin_cit: typeof selectedEvent.end === "string" ? selectedEvent.end.split('T')[1] : selectedEvent.end.toISOString().split('T')[1],
-                lug_ate_cit: "Consultorio"
-            }
-            console.log(citaData)
-            await axios.put(`${mainUrl}/modify`, citaData, {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            'x-api-key': 'pets_heaven_vite',
-                            'user': 'admin', 
-                            'roles': 'Administrador', 
-                            'accept': 'application/json'
-                        }
-                    })
-            setShowEventModal(false)
-            fetchAppointments()
+            await ModifyData(`${mainUrl}/modify`, token, citaData);
+            setShowEventModal(false);
+            fetchAppointments();
         } catch (err) {
             setNotify(null)
             if (err.status) {
@@ -224,9 +209,9 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
         try {
             const citaData = {
                 id_cit: selectedEvent.id,
-                mas_cit: 1 // Ajusta según tu lógica
+                mas_cit: selectedEvent.mas_cit
             }
-            await ModifyData(`${mainUrl}/cancel`, citaData, token)
+            await ModifyData(`${mainUrl}/cancel`, token, citaData)
             setShowEventModal(false)
             fetchAppointments()
         } catch (err) {
