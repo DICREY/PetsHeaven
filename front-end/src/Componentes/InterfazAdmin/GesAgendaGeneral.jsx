@@ -284,6 +284,10 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
         }
     }
 
+    const validatePatientName = (input) => {
+        // Expresión regular que solo permite letras, espacios y algunos caracteres especiales comunes en nombres
+        return input.replace(/[0-9]/g, '');
+    };
 
 
     return (
@@ -410,15 +414,6 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                 <div className="form-columns">
                                     <div className="form-column">
                                         <div className="form-group">
-                                            <label>Título:</label>
-                                            <input
-                                                type="text"
-                                                name="title"
-                                                value={newEvent.title}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
-                                        <div className="form-group">
                                             <label>Paciente:</label>
                                             <div className="paciente-autocomplete">
                                                 <input
@@ -427,16 +422,25 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                                     value={newEvent.paciente}
                                                     onChange={(e) => {
                                                         const value = e.target.value;
-                                                        setNewEvent({ ...newEvent, paciente: value });
-                                                        searchFilter(
-                                                            value,
-                                                            allPacientes,
-                                                            ['nom_mas', 'nom_per', 'ape_per'], // Campos a buscar
-                                                            setFilteredPacientes
-                                                        );
-                                                        setShowPacientesDropdown(value.length > 0);
+                                                        // Filtramos los números antes de actualizar el estado
+                                                        const filteredValue = validatePatientName(value);
+                                                        if (filteredValue === value || value.length < newEvent.paciente.length){
+                                                            setNewEvent({ ...newEvent, paciente: value });
+                                                            searchFilter(
+                                                                value,
+                                                                allPacientes,
+                                                                ['nom_mas', 'nom_per', 'ape_per'], // Campos a buscar
+                                                                setFilteredPacientes
+                                                            );
+                                                            setShowPacientesDropdown(value.length > 0);
+                                                        }
                                                     }}
                                                     onFocus={() => setShowPacientesDropdown(newEvent.paciente.length > 0)}
+                                                     onKeyDown={(e) => {
+                                                        // Bloquear teclas numéricas directamente
+                                                        if (e.key >= '0' && e.key <= '9') {
+                                                        e.preventDefault();
+                                                        }}}
                                                 />
                                                 {showPacientesDropdown && filteredPacientes.length > 0 && (
                                                     <div className="paciente-dropdown">
@@ -471,6 +475,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                                 name="propietario"
                                                 value={newEvent.propietario}
                                                 onChange={handleInputChange}
+                                                disabled="true"
                                             />
                                         </div>
                                         <div className="form-group">
@@ -480,6 +485,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                                 name="telefono"
                                                 value={newEvent.telefono}
                                                 onChange={handleInputChange}
+                                                disabled="true"
                                             />
                                         </div>
                                         <div className="form-group">
