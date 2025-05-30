@@ -1,7 +1,7 @@
 import { useState } from "react"
-import "../../../styles/InterfazAdmin/Vacuna.css"
+import "../../../styles/InterfazAdmin/Servicios/Vacuna.css"
 
-export default function VisualizadorVacunas() {
+export function VisualizadorVacunas() {
 
     // Datos ficticios UNU
   const [vacunas, setVacunas] = useState([
