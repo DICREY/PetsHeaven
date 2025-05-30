@@ -170,6 +170,19 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
 
     // Actualizar cita existente en el backend
     const handleUpdateEvent = async () => {
+        // Verificar fecha
+        const eventDate = new Date(selectedEvent.start);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Eliminar la parte de la hora para comparar solo fechas
+        
+        if (eventDate < today) {
+            Alert.alert(
+            'Fecha inválida',
+            'No puedes agendar citas en fechas pasadas',
+            [{ text: 'OK' }]
+            );
+            return;
+        }
         const citaData = {
             id_cit: selectedEvent.id,
             mas_cit: selectedEvent.mas_cit,
@@ -629,8 +642,21 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                             ? selectedEvent.start.split('T')[0]
                                             : selectedEvent.start.toISOString().split('T')[0])
                                             : ''}
+                                        min={new Date().toISOString().split('T')[0]} // Establece la fecha mínima como hoy
                                         onChange={e => {
-                                            const date = e.target.value;
+
+                                            const selectedDate = e.target.value;
+                                            const today = new Date().toISOString().split('T')[0];
+                                            
+                                            if (selectedDate < today) {
+                                                Alert.alert(
+                                                'Fecha inválida',
+                                                'No puedes agendar citas en fechas pasadas',
+                                                [{ text: 'OK' }]
+                                                );
+                                                return;
+                                            }
+
                                             const startTime = selectedEvent?.start
                                                 ? (typeof selectedEvent.start === "string"
                                                     ? selectedEvent.start.split('T')[1].substring(0, 5)
@@ -643,8 +669,8 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                                 : '10:00';
                                             setSelectedEvent({
                                                 ...selectedEvent,
-                                                start: `${date}T${startTime}:00`,
-                                                end: `${date}T${endTime}:00`
+                                                start: `${selectedDate}T${startTime}:00`,
+                                                end: `${selectedDate}T${endTime}:00`
                                             });
                                         }}
                                     />
