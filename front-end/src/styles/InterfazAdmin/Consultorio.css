@@ -8,7 +8,6 @@
 
 .principaladminhome {
   flex: 1;
-  padding: 1.5rem;
   transition: padding 0.3s ease;
 }
 
@@ -22,6 +21,7 @@
 
 .contenidoadminhome {
   padding: 1.5rem;
+  margin-top: 2rem;
 }
 
 /* Header Styles */
@@ -403,9 +403,6 @@
 
 /* Mobile and Tablets (up to 991px) */
 @media (max-width: 991px) {
-  .principaladminhome {
-    padding: 0.75rem;
-  }
 
   .contenidoadminhome {
     padding: 1rem;
@@ -492,9 +489,6 @@
     margin: 0 auto;
   }
 
-  .principaladminhome {
-    padding: 1.75rem;
-  }
 }
 
 /* Medium Desktops (1440px - 1919px) */
@@ -504,9 +498,6 @@
     margin: 0 auto;
   }
 
-  .principaladminhome {
-    padding: 2rem;
-  }
 
   .contenidoadminhome {
     padding: 1.75rem;
@@ -534,9 +525,6 @@
     margin: 0 auto;
   }
 
-  .principaladminhome {
-    padding: 2.5rem;
-  }
 
   .contenidoadminhome {
     padding: 2rem;

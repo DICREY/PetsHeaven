@@ -13,18 +13,18 @@ import { RegistroPro } from '../Componentes/InterfazAdmin/FormulariosAdmin/Regis
 // Imports
 import { HomeAdmin } from '../Componentes/InterfazAdmin/Consultorio'
 import { GesPersonal } from '../Componentes/InterfazAdmin/GesPersonal'
-import { GesMascota } from '../Componentes/InterfazAdmin/GesMascota'
 import { GesAgendaGeneral } from '../Componentes/InterfazAdmin/GesAgendaGeneral'
 import { MainAdmin } from '../Componentes/InterfazAdmin/MainAdmin'
 import { Pets } from '../Componentes/Pets/Pets'
 import { PetDetails } from '../Componentes/Pets/PetDetails'
 import { NotFound } from '../Componentes/Errores/NotFound'
 import { ErrorInternalServer } from '../Componentes/Errores/ErrorInternalServer'
-import { getRoles,Logout } from '../Componentes/Varios/Util'
+import { decodeJWT, Logout } from '../Componentes/Varios/Util'
 import { useInactivityDetector } from '../Componentes/Varios/InactiveDectetor'
 import VeterinariaPage from '../Componentes/VeterinariaPage'
 import { PerfilPropietario } from '../Componentes/Peoples/PerfilPropietario'
 import { GesAgendaPersonal } from '../Componentes/InterfazAdmin/GesAgendaPersonal'
+import { Services } from '../Componentes/InterfazAdmin/Services'
 
 //import Crud personal
 import { ConfiguracionUsuarioCrud } from '../Componentes/InterfazAdmin/CrudPersonal/ConfiguracionUsuarioCrud'
@@ -34,7 +34,6 @@ export default function App () {
   // Dynamic vars 
   const [userSelect,setUserSelect] = useState()
   const [petSelect,setPetSelect] = useState()
-  const [inactiveCon,setInactiveCon] = useState(null)
   const [owner,setOwner] = useState(false)
   const [arriveTo,setArriveTo] = useState('')
   const [petDetailTab,setPetDetailTab] = useState('Datos Generales')
@@ -42,6 +41,7 @@ export default function App () {
   // Vars 
   const imgPetDefault = 'https://github.com/Mogom/Imagenes_PetsHeaven/blob/main/Defaults/petImg.default.jpg?raw=true'
   const imgUserDefault = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/default_veterinario.png'
+  const imgServiceDefault = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/default_veterinario.png'
   const URL = 'http://localhost:3000'
   const isInactive = useInactivityDetector(20 * 60 * 1000) // 20 minutos de inactividad  
   
@@ -54,11 +54,11 @@ export default function App () {
   
   const VetRoute = ({ children }) => {
     // Vars
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token')
 
     if (token) {
-      const roles = getRoles(token)
-      return roles.includes('Veterinario')? children :<Navigate to='/user/login' />
+      const vet = decodeJWT(token).roles.split(', ').includes('Veterinario')
+      return vet? children : <Navigate to='/user/login' />
     }
 
     return <Navigate to='/user/login' />
@@ -67,10 +67,10 @@ export default function App () {
   const AdminRoute = ({ children }) => {
     // Vars
     const token = localStorage.getItem('token')
+    const admin = decodeJWT(token).roles.split(', ').includes('Administrador')
 
     if (token) {
-      const roles = getRoles(token)
-      return roles.includes('Administrador')? children :<Navigate to='/user/login' />
+      return admin? children :<Navigate to='/user/login' />
     }
 
     return <Navigate to='/user/login' />
@@ -112,6 +112,12 @@ export default function App () {
             URL={URL}
           />}/>}>
         </Route>
+        <Route path='services' element={
+          <PrivateRoute children={<Services 
+            URL={URL}
+            imgDefault={imgServiceDefault}
+          />}/>}>
+        </Route>
 
         {/* Admin routes  */}
         <Route path='/admin' element={<MainAdmin />} >
@@ -127,9 +133,6 @@ export default function App () {
         </Route>
         
         {/* Vet routes */}
-        <Route path='gestion/mascotas' element={
-          <VetRoute children={<GesMascota URL={URL}/>} />} >
-        </Route>
         <Route path='mascota/registro' element={
           <VetRoute children={<FormularioRegMascotas URL={URL} imgDefault={imgPetDefault} />} />} >
         </Route>

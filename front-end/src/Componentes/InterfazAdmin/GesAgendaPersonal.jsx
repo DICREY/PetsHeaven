@@ -14,6 +14,8 @@ import { errorStatusHandler } from '../Varios/Util'
 
 // Import styles 
 import "../../styles/InterfazAdmin/GesAgendaGeneral.css"
+import HeaderUser from '../BarrasNavegacion/HeaderUser'
+import Footer from '../Varios/Footer2'
 
 // Función para unir fecha y hora en formato ISO
 function joinDateTime(date, time) {
@@ -214,6 +216,7 @@ export const GesAgendaPersonal = ({ URL = 'http://localhost:3000' }) => {
         <main className="calendar-container">
             <NavBarAdmin />
             <main className='calendar-container' id='main-container-calendar'>
+            <HeaderUser/>
                 <input
                     type="date"
                     ref={dateInputRef}
@@ -530,6 +533,7 @@ export const GesAgendaPersonal = ({ URL = 'http://localhost:3000' }) => {
                         </div>
                     </div>
                 )}            
+                <Footer/>
             </main>
             {notify && (
                 <Notification 

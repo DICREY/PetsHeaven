@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router'
 
 // Imports 
 import { login } from '../Varios/Requests'
-import { getRoles, errorStatusHandler, formatoTiempo, checkImage, Logout } from '../Varios/Util'
+import { errorStatusHandler, formatoTiempo, checkImage, Logout, decodeJWT, getName } from '../Varios/Util'
 
 // Import styles
 import '../../../src/styles/Formularios/login.css'
@@ -67,19 +67,22 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
       const log = await login(url,firstData,secondData)
       setNotify(null)
       if (log) {
-        const token = localStorage.getItem("token")
-        const roles = getRoles(token)
+        const token = localStorage.getItem('token')
+        setNotify({
+          title: 'Bienvenido',
+          message: `Hola, ${getName(token)} Feliz día`,
+          close: setNotify
+        })
+        const roles = decodeJWT(token).roles.split(',')
+
         arriveTo = arriveTo? arriveTo: useRoleRedirect(roles)
         
         if(token){ 
-          
           setTimeout(() => {
             navigate(arriveTo)
           },2000)
         } 
       } else console.log(log)
-      
-
     } catch (err) {
       setNotify(null)
       if(err.status) {
@@ -87,6 +90,11 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
           setWaitTime(true)
         } else setWaitTime(false)
         const message = errorStatusHandler(err.status)
+        setNotify({
+          title: 'Error',
+          message: `${message}`,
+          close: setNotify
+        })
       } else console.log(err)
     }
   }
@@ -98,7 +106,7 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
 
   useEffect(() => {
     let intervalo = null
-    if (localStorage.getItem("token")) Logout()
+    if (localStorage.getItem('token')) Logout()
     
     if (waitTime) {
       // Inicia el contador

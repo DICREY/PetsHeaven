@@ -12,9 +12,12 @@ import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GetData, PostData, ModifyData } from '../Varios/Requests'
 import { errorStatusHandler } from '../Varios/Util'
 import { Notification } from '../Global/Notifys'
+import { searchFilter } from '../Varios/Util'
+import HeaderUser from '../BarrasNavegacion/HeaderUser'
 
 // Import styles 
 import "../../styles/InterfazAdmin/GesAgendaGeneral.css"
+import Footer from '../Varios/Footer2'
 
 // Función para unir fecha y hora en formato ISO
 function joinDateTime(date, time) {
@@ -32,7 +35,11 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     const [showCreateModal, setShowCreateModal] = useState(false) //Mostrar el pop up de creacion de Cita
     const [selectedEvent, setSelectedEvent] = useState(null)
     const [selectedDate, setSelectedDate] = useState('')
+    const [lugar, setLugar] = useState('Consultorio');
     const calendarRef = useRef(null)
+    const [allPacientes, setAllPacientes] = useState([]); // Todos los pacientes
+    const [filteredPacientes, setFilteredPacientes] = useState([]); // Resultados filtrados
+    const [showPacientesDropdown, setShowPacientesDropdown] = useState(false); // Controlar dropdown
     const [newEvent, setNewEvent] = useState({
         title: '',
         start: '',
@@ -41,9 +48,28 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
         category: 'consulta',
         paciente: '',
         propietario: '',
+        lug_ate_cit: 'Consultorio',
         telefono: '',
-        estado: 'PENDIENTE'
+        estado: 'PENDIENTE',
+        mas_cit: '' 
     })
+    const createModalRef = useRef(null);
+    const eventModalRef = useRef(null);
+
+    // Cerrar modal al hacer clic fuera
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (showCreateModal && createModalRef.current && !createModalRef.current.contains(event.target)) {
+                setShowCreateModal(false);
+            }
+            if (showEventModal && eventModalRef.current && !eventModalRef.current.contains(event.target)) {
+                setShowEventModal(false);
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [showCreateModal, showEventModal]);
+
 
     // Vars 
     const didFetch = useRef(false)
@@ -74,9 +100,20 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     // ])
 
 
-    // Mostrar popup para crear cita
+    const fetchPacientes = async () => {
+        const token = localStorage.getItem("token");
+        try {
+            const data = await GetData(`${URL}/pet/all`, token);
+            if (data) setAllPacientes(data);
+        } catch (err) {
+            console.error("Error al cargar pacientes:", err);
+        }
+    };
+
+    // Crear citas
     const handleDateClick = (arg) => {
-        setSelectedDate(arg.dateStr)
+        setSelectedDate(arg.dateStr);
+        fetchPacientes(); // Cargar pacientes cuando se abre el modal
         setNewEvent({
             title: '',
             start: `${arg.dateStr}T09:00:00`,
@@ -85,10 +122,12 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
             category: 'consulta',
             paciente: '',
             propietario: '',
-            telefono: ''
-        })
-        setShowCreateModal(true)
-    }
+            lug_ate_cit: 'Consultorio',
+            telefono: '',
+            estado: 'PENDIENTE'
+        });
+        setShowCreateModal(true);
+    };
 
     // Mostrar detalles de la cita
     const handleEventClick = (info) => {
@@ -105,49 +144,61 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     // Crear nueva cita en el backend
     const handleCreateEvent = async () => {
         if (!newEvent.title) {
-            alert('El título es requerido')
-            return
+            alert('El título es requerido');
+            return;
         }
-
-        const token = localStorage.getItem("token")
+        const citaData = {
+            fec_reg_cit: new Date().toISOString().split('T')[0],
+            fec_cit: newEvent.start.split('T')[0],
+            hor_ini_cit: newEvent.start.split('T')[1],
+            hor_fin_cit: newEvent.end.split('T')[1],
+            lug_ate_cit: lugar,
+            ser_cit: 1,
+            vet_cit: 1,
+            mas_cit: newEvent.mas_cit,
+            estado: 'PENDIENTE'
+        };
+        const token = localStorage.getItem("token");
         try {
-            const citaData = {
-                fec_reg_cit: new Date().toISOString().split('T')[0],
-                fec_cit: newEvent.start.split('T')[0],
-                hor_ini_cit: newEvent.start.split('T')[1],
-                hor_fin_cit: newEvent.end.split('T')[1],
-                lug_ate_cit: "Consultorio", // Puedes agregar un input para esto si lo necesitas
-                ser_cit: 1, // Ajusta según tu lógica de servicios
-                vet_cit: 1, // Ajusta según tu lógica de veterinarios
-                mas_cit: 1, // Ajusta según tu lógica de mascotas
-                estado: 'PENDIENTE'
-            }
-            await PostData(`${mainUrl}/register`, citaData, token)
-            setShowCreateModal(false)
-            // Refresca las citas
-            fetchAppointments()
+            await PostData(`${mainUrl}/register`, token, citaData);
+            setShowCreateModal(false);
+            fetchAppointments();
         } catch (err) {
-            alert('Error al crear la cita')
+            alert('Error al crear la cita');
         }
-    }
+    };
 
     // Actualizar cita existente en el backend
     const handleUpdateEvent = async () => {
-        const token = localStorage.getItem("token")
+        const citaData = {
+            id_cit: selectedEvent.id,
+            mas_cit: selectedEvent.mas_cit,
+            fec_cit: typeof selectedEvent.start === "string"
+                ? selectedEvent.start.split('T')[0]
+                : selectedEvent.start.toISOString().split('T')[0],
+            hor_ini_cit: typeof selectedEvent.start === "string"
+                ? selectedEvent.start.split('T')[1]
+                : selectedEvent.start.toISOString().split('T')[1],
+            hor_fin_cit: typeof selectedEvent.end === "string"
+                ? selectedEvent.end.split('T')[1]
+                : selectedEvent.end.toISOString().split('T')[1],
+            lug_ate_cit: selectedEvent.lug_ate_cit || "Consultorio"
+        };
+        const token = localStorage.getItem("token");
         try {
-            const citaData = {
-                id_cit: selectedEvent.id,
-                mas_cit: 1, // Ajusta según tu lógica
-                fec_cit: typeof selectedEvent.start === "string" ? selectedEvent.start.split('T')[0] : selectedEvent.start.toISOString().split('T')[0],
-                hor_ini_cit: typeof selectedEvent.start === "string" ? selectedEvent.start.split('T')[1] : selectedEvent.start.toISOString().split('T')[1],
-                hor_fin_cit: typeof selectedEvent.end === "string" ? selectedEvent.end.split('T')[1] : selectedEvent.end.toISOString().split('T')[1],
-                lug_ate_cit: "Consultorio" // O el valor que corresponda
-            }
-            await ModifyData(`${mainUrl}/modify`, citaData, token)
-            setShowEventModal(false)
-            fetchAppointments()
+            await ModifyData(`${mainUrl}/modify`, token, citaData);
+            setShowEventModal(false);
+            fetchAppointments();
         } catch (err) {
-            alert('Error al actualizar la cita')
+            setNotify(null)
+            if (err.status) {
+                const message = errorStatusHandler(err.status)
+                setNotify({
+                    title: 'Error',
+                    message: `${message}`,
+                    close: setNotify
+                })
+            } else console.log(err)
         }
     }
 
@@ -158,13 +209,21 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
         try {
             const citaData = {
                 id_cit: selectedEvent.id,
-                mas_cit: 1 // Ajusta según tu lógica
+                mas_cit: selectedEvent.mas_cit
             }
-            await ModifyData(`${mainUrl}/cancel`, citaData, token)
+            await ModifyData(`${mainUrl}/cancel`, token, citaData)
             setShowEventModal(false)
             fetchAppointments()
         } catch (err) {
-            alert('Error al cancelar la cita')
+            setNotify(null)
+            if (err.status) {
+                const message = errorStatusHandler(err.status)
+                setNotify({
+                    title: 'Error',
+                    message: `${message}`,
+                    close: setNotify
+                })
+            } else console.log(err)
         }
     }
 
@@ -186,11 +245,16 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
             load: 1
         })
         try {
-            const data = await GetData(`${mainUrl}/general`, token)
+            let data = await GetData(`${mainUrl}/general`, token)
             setNotify(null)
+            // Normaliza la respuesta a array
+            if (data && !Array.isArray(data)) {
+                data = [data]
+            }
             if (data) {
                 const mappedEvents = data.map(event => ({
                     id: event.id_cit,
+                    mas_cit: event.mas_cit,
                     title: event.nom_ser,
                     start: joinDateTime(event.fec_cit, event.hor_ini_cit),
                     end: joinDateTime(event.fec_cit, event.hor_fin_cit),
@@ -198,6 +262,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                     category: event.nom_ser || 'vacuna',
                     paciente: event.nom_mas,
                     propietario: `${event.nom_per} ${event.ape_per}`,
+                    lug_ate_cit: event.lug_ate_cit || 'Consultorio',
                     telefono: event.cel_per,
                     estado: event.estado,
                     fotoMascota: event.fot_mas
@@ -213,16 +278,19 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                     message: `${message}`,
                     close: setNotify
                 })
-            } else console.error(err)
+            } 
+            else console.error(err)
             // Manejo de error
         }
     }
 
+
+
     return (
         <main className="calendar-container">
             <NavBarAdmin />
-
             <main className='calendar-container' id='main-container-calendar'>
+            <HeaderUser openHelp={() => setTabHelp(true)}/>
 
                 <FullCalendar
                     // Refencia del calendario, permite acceder a la instancia del componente para manipularlo
@@ -241,14 +309,23 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
 
                     // Configuración de la barra de herramientas del encabezado
                     headerToolbar={{
-                        start: "prev today next",  // Botones para navegar entre fechas
-                        center: "title",           // Título del calendario
-                        end: "dayGridMonth dayGridWeek dayGridDay listWeek"  // Vistas disponibles: mes, semana, lista
+                        start: "customPrev today customNext",
+                        center: "title",
+                        end: "dayGridMonth dayGridWeek dayGridDay listWeek"
+                    }}
+                    customButtons={{
+                        customPrev: {
+                            text: '<',
+                            click: () => calendarRef.current.getApi().prev()
+                        },
+                        customNext: {
+                            text: '>',
+                            click: () => calendarRef.current.getApi().next()
+                        }
                     }}
 
-                    events={events.map(event => ({
-                        ...event, classNames: [event.category]
-                    }))}
+                    events={events}
+                    eventClassNames={(event) => [event.event.extendedProps.category]}
 
                     // Permite la selección de fechas o rangos de fechas
                     selectable={true}
@@ -330,101 +407,153 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                 </button>
                             </header>
                             <section className="modal-body">
-                                <div className="form-group">
-                                    <label>Título:</label>
-                                    <input
-                                        type="text"
-                                        name="title"
-                                        value={newEvent.title}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label>Paciente:</label>
-                                    <input
-                                        type="text"
-                                        name="paciente"
-                                        value={newEvent.paciente}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label>Propietario:</label>
-                                    <input
-                                        type="text"
-                                        name="propietario"
-                                        value={newEvent.propietario}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label>Teléfono:</label>
-                                    <input
-                                        type="text"
-                                        name="telefono"
-                                        value={newEvent.telefono}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label>Fecha:</label>
-                                    <input
-                                        type="date"
-                                        value={selectedDate}
-                                        disabled
-                                    />
-                                </div>
-                                <div className="form-row">
-                                    <div className="form-group">
-                                        <label>Hora Inicio:</label>
-                                        <input
-                                            type="time"
-                                            name="start"
-                                            value={newEvent.start.split('T')[1].substring(0, 5)}
-                                            onChange={(e) => {
-                                                const time = e.target.value
-                                                setNewEvent({
-                                                    ...newEvent,
-                                                    start: `${selectedDate}T${time}:00`
-                                                })
-                                            }}
-                                        />
+                                <div className="form-columns">
+                                    <div className="form-column">
+                                        <div className="form-group">
+                                            <label>Título:</label>
+                                            <input
+                                                type="text"
+                                                name="title"
+                                                value={newEvent.title}
+                                                onChange={handleInputChange}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Paciente:</label>
+                                            <div className="paciente-autocomplete">
+                                                <input
+                                                    type="text"
+                                                    name="paciente"
+                                                    value={newEvent.paciente}
+                                                    onChange={(e) => {
+                                                        const value = e.target.value;
+                                                        setNewEvent({ ...newEvent, paciente: value });
+                                                        searchFilter(
+                                                            value,
+                                                            allPacientes,
+                                                            ['nom_mas', 'nom_per', 'ape_per'], // Campos a buscar
+                                                            setFilteredPacientes
+                                                        );
+                                                        setShowPacientesDropdown(value.length > 0);
+                                                    }}
+                                                    onFocus={() => setShowPacientesDropdown(newEvent.paciente.length > 0)}
+                                                />
+                                                {showPacientesDropdown && filteredPacientes.length > 0 && (
+                                                    <div className="paciente-dropdown">
+                                                        {filteredPacientes.map((paciente) => (
+                                                            <div
+                                                                key={paciente.id_mas}
+                                                                className="dropdown-item"
+                                                                onClick={() => {
+                                                                    setNewEvent({
+                                                                        ...newEvent,
+                                                                        paciente: paciente.nom_mas,
+                                                                        propietario: `${paciente.nom_per} ${paciente.ape_per}`,
+                                                                        telefono: paciente.cel_per || '',
+                                                                        mas_cit: paciente.id_mas
+                                                                    },
+                                                                    console.log(paciente.id_mas)
+                                                                    );
+                                                                    setShowPacientesDropdown(false);
+                                                                }}
+                                                            >
+                                                                {paciente.nom_mas} ({paciente.nom_per} {paciente.ape_per})
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Propietario:</label>
+                                            <input
+                                                type="text"
+                                                name="propietario"
+                                                value={newEvent.propietario}
+                                                onChange={handleInputChange}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Teléfono:</label>
+                                            <input
+                                                type="text"
+                                                name="telefono"
+                                                value={newEvent.telefono}
+                                                onChange={handleInputChange}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Tipo:</label>
+                                            <select
+                                                name="category"
+                                                value={newEvent.category}
+                                                onChange={handleInputChange}
+                                            >
+                                                <option value="consulta">Consulta general</option>
+                                                <option value="vacuna">Vacuna</option>
+                                                <option value="emergencia">Emergencia</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div className="form-group">
-                                        <label>Hora Fin:</label>
-                                        <input
-                                            type="time"
-                                            name="end"
-                                            value={newEvent.end.split('T')[1].substring(0, 5)}
-                                            onChange={(e) => {
-                                                const time = e.target.value
-                                                setNewEvent({
-                                                    ...newEvent,
-                                                    end: `${selectedDate}T${time}:00`
-                                                })
-                                            }}
-                                        />
+                                    <div className="form-column">
+                                        <div className="form-group">
+                                            <label>Fecha:</label>
+                                            <input
+                                                type="date"
+                                                value={selectedDate}
+                                                disabled
+                                            />
+                                        </div>
+                                        <div className="form-row">
+                                            <div className="form-group">
+                                                <label>Hora Inicio:</label>
+                                                <input
+                                                    type="time"
+                                                    name="start"
+                                                    value={newEvent.start.split('T')[1].substring(0, 5)}
+                                                    onChange={(e) => {
+                                                        const time = e.target.value
+                                                        setNewEvent({
+                                                            ...newEvent,
+                                                            start: `${selectedDate}T${time}:00`
+                                                        })
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="form-group">
+                                                <label>Hora Fin:</label>
+                                                <input
+                                                    type="time"
+                                                    name="end"
+                                                    value={newEvent.end.split('T')[1].substring(0, 5)}
+                                                    onChange={(e) => {
+                                                        const time = e.target.value
+                                                        setNewEvent({
+                                                            ...newEvent,
+                                                            end: `${selectedDate}T${time}:00`
+                                                        })
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Lugar de atención:</label>
+                                            <input
+                                                type="text"
+                                                name="lugar"
+                                                value={lugar}
+                                                onChange={e => setLugar(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Descripción:</label>
+                                            <textarea
+                                                name="description"
+                                                value={newEvent.description}
+                                                onChange={handleInputChange}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="form-group">
-                                    <label>Tipo:</label>
-                                    <select
-                                        name="category"
-                                        value={newEvent.category}
-                                        onChange={handleInputChange}
-                                    >
-                                        <option value="consulta">Consulta general</option>
-                                        <option value="vacuna">Vacuna</option>
-                                        <option value="emergencia">Emergencia</option>
-                                    </select>
-                                </div>
-                                <div className="form-group">
-                                    <label>Descripción:</label>
-                                    <textarea
-                                        name="description"
-                                        value={newEvent.description}
-                                        onChange={handleInputChange}
-                                    />
                                 </div>
                             </section>
                             <div className="modal-footer">
@@ -487,11 +616,81 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label>Fecha y Hora:</label>
-                                    <div>
-                                        {selectedEvent?.start?.toLocaleDateString()}
-                                        {selectedEvent?.start?.toLocaleTimeString()} -
-                                        {selectedEvent?.end?.toLocaleTimeString()}
+                                    <label>Fecha:</label>
+                                    <input
+                                        type="date"
+                                        value={selectedEvent?.start ? (typeof selectedEvent.start === "string"
+                                            ? selectedEvent.start.split('T')[0]
+                                            : selectedEvent.start.toISOString().split('T')[0])
+                                            : ''}
+                                        onChange={e => {
+                                            const date = e.target.value;
+                                            const startTime = selectedEvent?.start
+                                                ? (typeof selectedEvent.start === "string"
+                                                    ? selectedEvent.start.split('T')[1].substring(0, 5)
+                                                    : selectedEvent.start.toISOString().split('T')[1].substring(0, 5))
+                                                : '09:00';
+                                            const endTime = selectedEvent?.end
+                                                ? (typeof selectedEvent.end === "string"
+                                                    ? selectedEvent.end.split('T')[1].substring(0, 5)
+                                                    : selectedEvent.end.toISOString().split('T')[1].substring(0, 5))
+                                                : '10:00';
+                                            setSelectedEvent({
+                                                ...selectedEvent,
+                                                start: `${date}T${startTime}:00`,
+                                                end: `${date}T${endTime}:00`
+                                            });
+                                        }}
+                                    />
+                                </div>
+                                <div className="form-row">
+                                    <div className="form-group">
+                                        <label>Hora Inicio:</label>
+                                        <input
+                                            type="time"
+                                            name="start"
+                                            value={selectedEvent?.start
+                                                ? (typeof selectedEvent.start === "string"
+                                                    ? selectedEvent.start.split('T')[1].substring(0, 5)
+                                                    : selectedEvent.start.toISOString().split('T')[1].substring(0, 5))
+                                                : ''}
+                                            onChange={e => {
+                                                const time = e.target.value;
+                                                const date = selectedEvent?.start
+                                                    ? (typeof selectedEvent.start === "string"
+                                                        ? selectedEvent.start.split('T')[0]
+                                                        : selectedEvent.start.toISOString().split('T')[0])
+                                                    : '';
+                                                setSelectedEvent({
+                                                    ...selectedEvent,
+                                                    start: `${date}T${time}:00`
+                                                });
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Hora Fin:</label>
+                                        <input
+                                            type="time"
+                                            name="end"
+                                            value={selectedEvent?.end
+                                                ? (typeof selectedEvent.end === "string"
+                                                    ? selectedEvent.end.split('T')[1].substring(0, 5)
+                                                    : selectedEvent.end.toISOString().split('T')[1].substring(0, 5))
+                                                : ''}
+                                            onChange={e => {
+                                                const time = e.target.value;
+                                                const date = selectedEvent?.end
+                                                    ? (typeof selectedEvent.end === "string"
+                                                        ? selectedEvent.end.split('T')[0]
+                                                        : selectedEvent.end.toISOString().split('T')[0])
+                                                    : '';
+                                                setSelectedEvent({
+                                                    ...selectedEvent,
+                                                    end: `${date}T${time}:00`
+                                                });
+                                            }}
+                                        />
                                     </div>
                                 </div>
                                 <div className="form-group">
@@ -505,6 +704,15 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                         <option value="vacuna">Vacuna</option>
                                         <option value="emergencia">Emergencia</option>
                                     </select>
+                                </div>
+                                    <div className="form-group">
+                                    <label>Consultorio:</label>
+                                    <input
+                                        type="text"
+                                        name="consultorio"
+                                        value={selectedEvent?.lug_ate_cit || ''}
+                                        onChange={handleInputChange}
+                                    />
                                 </div>
                                 <div className="form-group">
                                     <label>Descripción:</label>
@@ -529,6 +737,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                         </aside>
                     </aside>
                 )}
+                <Footer/>
             </main>
             {notify && (
                 <Notification

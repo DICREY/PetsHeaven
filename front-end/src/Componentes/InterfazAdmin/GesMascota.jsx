@@ -8,6 +8,7 @@ import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { NotFound } from '../Errores/NotFound'
 import { GetData } from '../Varios/Requests'
 import { getRoles, divideList } from '../Varios/Util'
+import HeaderUser from '../BarrasNavegacion/HeaderUser'
 
 // Import Styles 
 import '../../../src/styles/InterfazAdmin/GesMascota.css'
@@ -97,6 +98,7 @@ export function GesMascota({ URL = '' }) {
   return (
     <main className='appgesmascota'>
       <NavBarAdmin />
+      <HeaderUser/>
       {
         petsData ? (
           <section className='contenedorgesmascota'>

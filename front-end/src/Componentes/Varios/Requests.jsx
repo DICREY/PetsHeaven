@@ -1,6 +1,6 @@
 // Librarys 
 import axios from 'axios'
-import { getName, decodeJWT } from './Util'
+import { getName, decodeJWT, getRoles } from './Util'
 
 // Vars
 const HeaderWeb = {
@@ -14,11 +14,14 @@ export async function GetDataGlobal(URL = '') {
     try {
         const response = await axios.get(
             URL,
-            {headers: {
-                "Content-Type": 'application/json',
-                'x-api-key': 'pets_heaven_vite',
-                'user': 'Unknow'
-            }}
+            {
+                headers: {
+                    "Content-Type": 'application/json',
+                    'x-api-key': 'pets_heaven_vite',
+                    'user': 'Unknow'
+                },
+                withCredentials: true
+            }
         )
 
         if (response.statusText !== 'OK') {
@@ -38,7 +41,8 @@ export async function GetData(URL = '',token = '') {
                 'User': getName(token),
                 'Roles': decodeJWT(token).roles,
                 'x-api-key': 'pets_heaven_vite',
-            }
+            },
+            withCredentials: true
         })
 
         if (response.statusText !== 'OK') {
@@ -56,13 +60,16 @@ export async function PostData(URL = '', token = '', datas = {}) {
         const response = await axios.post(
             URL,
             {...datas},
-            {headers: {
-                'Authorization': `Bearer ${token}`,
-                'User': getName(token),
-                'Roles': decodeJWT(token).roles,
-                'Content-Type': 'application/json',
-                'x-api-key': 'pets_heaven_vite',
-            }}
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'User': getName(token),
+                    'Roles': decodeJWT(token).roles,
+                    'Content-Type': 'application/json',
+                    'x-api-key': 'pets_heaven_vite',
+                },
+                withCredentials: true
+            }
         )
   
         // Manejar diferentes códigos de estado
@@ -80,11 +87,14 @@ export async function Register(URL = '', datas = {}) {
         const response = await axios.post(
             URL,
             {...datas},
-            {headers: {
-                'User': 'Unknow',
-                'Content-Type': 'application/json',
-                'x-api-key': 'pets_heaven_vite',
-            }}
+            {
+                headers: {
+                    'User': 'Unknow',
+                    'Content-Type': 'application/json',
+                    'x-api-key': 'pets_heaven_vite',
+                },
+                withCredentials: true
+            }
         )
   
         // Manejar diferentes códigos de estado
@@ -103,13 +113,16 @@ export async function ModifyData(URL = '', token = '', datas = {}) {
         const response = await axios.put(
             URL,
             {...datas},
-            {headers: {
-                'Authorization': `Bearer ${token}`,
-                'User': getName(token),
-                'Roles': decodeJWT(token).roles,
-                'Content-Type': 'application/json',
-                'x-api-key': 'pets_heaven_vite',
-            }}
+            {   
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'User': getName(token),
+                    'Roles': decodeJWT(token).roles,
+                    'Content-Type': 'application/json',
+                    'x-api-key': 'pets_heaven_vite',
+                },
+                withCredentials: true
+            }
         )
 
         if (response.statusText !== 'OK') {
@@ -127,14 +140,16 @@ export async function DeleteData(URL = '', token = '', datas = {}) {
     try {
         const response = await axios.delete(
             URL,
-            {headers: {
-                'Authorization': `Bearer ${token}`,
-                'User': getName(token),
-                'Roles': decodeJWT(token).roles,
-                'Content-Type': 'application/json',
-                'x-api-key': 'pets_heaven_vite'
-            },
-            data:{...datas}
+            {...datas},
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'User': getName(token),
+                    'Roles': decodeJWT(token).roles,
+                    'Content-Type': 'application/json',
+                    'x-api-key': 'pets_heaven_vite'
+                },
+                withCredentials: true
             },
         )
 
@@ -158,11 +173,12 @@ export async function login(url = '', first = '', second = '') {
                 secondData: second
             },
             {
-              headers: {
-                'User': 'Desconocido',
-                'Content-Type': 'application/json',
-                'x-api-key': 'pets_heaven_vite',
-                }
+                headers: {
+                    'User': 'Desconocido',
+                    'Content-Type': 'application/json',
+                    'x-api-key': 'pets_heaven_vite',
+                },
+                withCredentials: true
             }
         )
   

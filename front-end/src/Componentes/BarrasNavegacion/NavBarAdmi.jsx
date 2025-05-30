@@ -18,7 +18,6 @@ export const NavBarAdmin = () => {
   const [esMovil, setEsMovil] = useState(false)
   const [user, setUser] = useState({})
   const [isAdmin, setIsAdmin] = useState()
-  const [img, setImg] = useState()
 
   // Vars 
   const token = localStorage.getItem('token')
@@ -54,10 +53,10 @@ export const NavBarAdmin = () => {
   useEffect(() => {
     if(token){
       const tokenJWT = decodeJWT(token)
+      const roles = tokenJWT.roles.split(',')
+      const admin = roles.includes('Administrador')
+
       setUser(tokenJWT)
-      setImg(tokenJWT.img)
-      const roles = getRoles(token)
-      const admin = roles.some(role => role.toLowerCase() === 'administrador')
       setIsAdmin(admin)
     }
     
@@ -197,20 +196,12 @@ export const NavBarAdmin = () => {
 
         <hr className='separadornavadmin' />
         <div className='opcionesnavadmin'>
-          <button className='opcionnavadmin'>
-            <Settings className='iconoopcionnavadmin' />
-            <span>Configuración</span>
-          </button>
           <button 
             className='opcionnavadmin'
             onClick={() => navigate('/main')}
           >
             <Home className='iconoopcionnavadmin' />
             <span>Pagina Principal</span>
-          </button>
-          <button className='opcionnavadmin salirnavadmin'>
-            <LogOut className='iconoopcionnavadmin' />
-            <span onClick={Logout}>Cerrar Sesión</span>
           </button>
         </div>
       </aside>

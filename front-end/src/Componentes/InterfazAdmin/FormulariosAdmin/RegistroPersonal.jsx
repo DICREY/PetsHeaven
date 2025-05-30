@@ -14,6 +14,8 @@ import { PostData } from '../../Varios/Requests'
 
 // Import styles
 import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/RegistroPersonal.css'
+import HeaderUser from '../../BarrasNavegacion/HeaderUser'
+import Footer from '../../Varios/Footer2'
 
 // Component
 export const ConfiguracionUsuario = ({ URL = '' }) => {
@@ -99,6 +101,7 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
     <div className='contenedorgesusuario'>
       <NavBarAdmin />
       <main className="principalgesusuario">
+        <HeaderUser/>
         <div className="contenedor-regusuario">
           <header className="cabecera-regusuario">
             <div className="titulo-regusuario">
@@ -360,6 +363,7 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
             {activeTab === 'profesional' && <InformacionProfesional register={register} errors={errors} />}
             {activeTab === 'password' && <Contrasena register={register} onSubmit={onSubmit} errors={errors} />}
           </div>
+          <Footer/>
         </div>
       </main>
     </div>

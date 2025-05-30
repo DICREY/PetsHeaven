@@ -365,3 +365,481 @@
     bottom: 10%;
   }
 }
+
+.MainDogLoader {
+  margin: 0;
+  display: flex;
+  min-height: 3.125rem; /* 6.25rem / 2 */
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.leg {
+  position: absolute;
+  bottom: 0;
+  width: 1rem;      /* 2rem / 2 */
+  height: 1.0625rem; /* 2.125rem / 2 */
+}
+
+.paw {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0.975rem;   /* 1.95rem / 2 */
+  height: 0.9375rem; /* 1.875rem / 2 */
+  overflow: hidden;
+}
+
+.paw::before {
+  content: "";
+  position: absolute;
+  width: 1.875rem;   /* 3.75rem / 2 */
+  height: 1.875rem;
+  border-radius: 50%;
+}
+
+.top {
+  position: absolute;
+  bottom: 0;
+  left: 0.375rem;    /* 0.75rem / 2 */
+  height: 2.25rem;   /* 4.5rem / 2 */
+  width: 1.3125rem;  /* 2.625rem / 2 */
+  border-top-left-radius: 0.7125rem; /* 1.425rem / 2 */
+  border-top-right-radius: 0.7125rem;
+  transform-origin: bottom right;
+  transform: rotateZ(90deg) translateX(-0.05rem) translateY(0.75rem); /* -0.1rem/2, 1.5rem/2 */
+  z-index: -1;
+  background-image: linear-gradient(70deg, transparent 20%, #ff8b56 20%);
+}
+
+.DogLoader {
+  position: relative;
+  right: 0.16rem;   /* 0.32rem / 2 */
+  width: 7.5rem;    /* 15rem / 2 */
+  height: 2.75rem;  /* 5.5rem / 2 */
+}
+
+.DogLoader__head {
+  position: absolute;
+  left: 2.25rem;    /* 4.5rem / 2 */
+  bottom: 0;
+  width: 3.25rem;   /* 6.5rem / 2 */
+  height: 2.75rem;  /* 5.5rem / 2 */
+  border-top-left-radius: 2.025rem;   /* 4.05rem / 2 */
+  border-top-right-radius: 2.025rem;
+  border-bottom-right-radius: 1.65rem; /* 3.3rem / 2 */
+  border-bottom-left-radius: 1.65rem;
+  background-color: #ff8147;
+  animation: head 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
+}
+
+.DogLoader__head-c {
+  position: absolute;
+  left: 0.75rem;    /* 1.5rem / 2 */
+  bottom: 0;
+  width: 4.875rem;  /* 9.75rem / 2 */
+  height: 4.125rem; /* 8.25rem / 2 */
+  animation: head 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
+  z-index: -1;
+}
+
+.DogLoader__snout {
+  position: absolute;
+  left: -0.75rem;   /* -1.5rem / 2 */
+  bottom: 0;
+  width: 2.5rem;    /* 5rem / 2 */
+  height: 1.25rem;  /* 2.5rem / 2 */
+  border-top-right-radius: 1.5rem; /* 3rem / 2 */
+  border-bottom-right-radius: 1.5rem;
+  border-bottom-left-radius: 2.25rem; /* 4.5rem / 2 */
+  background-color: #d7dbd2;
+  animation: snout 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
+}
+
+.DogLoader__nose {
+  position: absolute;
+  top: -0.975rem;   /* -1.95rem / 2 */
+  left: 40%;
+  width: 0.375rem;  /* 0.75rem / 2 */
+  height: 1.2rem;   /* 2.4rem / 2 */
+  border-radius: 0.2625rem; /* 0.525rem / 2 */
+  transform-origin: bottom;
+  transform: rotateZ(10deg);
+  background-color: #d7dbd2;
+}
+
+.DogLoader__snout::before {
+  content: "";
+  position: absolute;
+  left: -0.05625rem; /* -0.1125rem / 2 */
+  top: -0.075rem;    /* -0.15rem / 2 */
+  width: 0.9375rem;  /* 1.875rem / 2 */
+  height: 0.5625rem; /* 1.125rem / 2 */
+  border-top-right-radius: 1.5rem; /* 3rem / 2 */
+  border-bottom-right-radius: 1.5rem;
+  border-bottom-left-radius: 2.25rem; /* 4.5rem / 2 */
+  background-color: #1c3130;
+  animation: snout-b 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
+}
+
+.DogLoader::before {
+  content: "";
+  position: absolute;
+  bottom: -0.375rem; /* -0.75rem / 2 */
+  right: -0.075rem;  /* -0.15rem / 2 */
+  width: 100%;
+  height: 0.75rem;   /* 1.5rem / 2 */
+  background-color: rgba(28, 49, 48, 0.1);
+  border-radius: 50%;
+  z-index: -1000;
+  animation: shadow 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
+}
+
+.DogLoader__eye-l,
+.DogLoader__eye-r {
+  position: absolute;
+  top: -0.45rem;    /* -0.9rem / 2 */
+  width: 0.3375rem; /* 0.675rem / 2 */
+  height: 0.1875rem; /* 0.375rem / 2 */
+  border-radius: 50%;
+  background-color: #1c3130;
+  animation: eye 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
+}
+
+.DogLoader__eye-l {
+  left: 27%;
+}
+
+.DogLoader__eye-r {
+  left: 65%;
+}
+
+.DogLoader__ear-l,
+.DogLoader__ear-r {
+  position: absolute;
+  width: 3.75rem;   /* 7.5rem / 2 */
+  height: 1.1875rem; /* 2.375rem / 2 */
+  border-top-left-radius: 0rem;
+  border-top-right-radius: 0rem;
+  border-bottom-right-radius: 1.65rem; /* 3.3rem / 2 */
+  border-bottom-left-radius: 1.65rem;
+  background-color: #e26538;
+}
+
+.DogLoader__ear-l {
+  top: 0.75rem;     /* 1.5rem / 2 */
+  left: 3rem;       /* 6rem / 2 */
+  transform-origin: bottom left;
+  transform: rotateZ(-50deg);
+  z-index: -1;
+  animation: ear-l 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
+}
+
+.DogLoader__ear-r {
+  top: 0.75rem;
+  right: 1.5rem;    /* 3rem / 2 */
+  transform-origin: bottom right;
+  transform: rotateZ(20deg);
+  z-index: -2;
+  animation: ear-r 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
+}
+
+.DogLoader__body {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: absolute;
+  bottom: 0.15rem;  /* 0.3rem / 2 */
+  left: 1.875rem;   /* 3.75rem / 2 */
+  width: 6.25rem;   /* 12.5rem / 2 */
+  height: 2.4rem;   /* 4.8rem / 2 */
+  border-top-left-radius: 1.5rem;   /* 3rem / 2 */
+  border-top-right-radius: 3rem;    /* 6rem / 2 */
+  border-bottom-right-radius: 0.75rem; /* 1.5rem / 2 */
+  border-bottom-left-radius: 3rem;
+  background-color: #ff702e;
+  z-index: -2;
+  animation: body 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
+}
+
+.DogLoader__tail {
+  position: absolute;
+  right: -1.5rem;   /* -3rem / 2 */
+  height: 0.3125rem; /* 0.625rem / 2 */
+  width: 0.5rem;    /* 1rem / 2 */
+  background-color: #e96839;
+  border-radius: 0.75rem; /* 1.5rem / 2 */
+}
+
+.DogLoader__paws {
+  position: absolute;
+  bottom: 0;
+  left: 2.75rem;    /* 5.5rem / 2 */
+  width: 4rem;      /* 8rem / 2 */
+  height: 1.5rem;   /* 3rem / 2 */
+}
+
+.DogLoader__bl-leg {
+  left: -1.5rem;    /* -3rem / 2 */
+  z-index: -10;
+}
+
+.DogLoader__bl-paw::before {
+  background-color: #bec4b6;
+}
+
+.DogLoader__bl-top {
+  background-image: linear-gradient(80deg, transparent 20%, #e96839 20%);
+}
+
+.DogLoader__fl-leg {
+  z-index: 10;
+  left: 0;
+}
+
+.DogLoader__fl-paw::before {
+  background-color: #d7dbd2;
+}
+
+.DogLoader__fr-leg {
+  right: 0;
+}
+
+.DogLoader__fr-paw::before {
+  background-color: #d7dbd2;
+}
+
+/*==============================*/
+
+@keyframes head {
+
+  0%,
+  10%,
+  20%,
+  26%,
+  28%,
+  90%,
+  100% {
+    height: 8.25vmax;
+    bottom: 0;
+    transform-origin: bottom right;
+    transform: rotateZ(0);
+  }
+
+  5%,
+  15%,
+  22%,
+  24%,
+  30% {
+    height: 8.1vmax;
+  }
+
+  32%,
+  50% {
+    height: 8.25vmax;
+  }
+
+  55%,
+  60% {
+    bottom: 0.75vmax;
+    transform-origin: bottom right;
+    transform: rotateZ(0);
+  }
+
+  70%,
+  80% {
+    bottom: 0.75vmax;
+    transform-origin: bottom right;
+    transform: rotateZ(10deg);
+  }
+}
+
+@keyframes body {
+
+  0%,
+  10%,
+  20%,
+  26%,
+  28%,
+  32%,
+  100% {
+    height: 7.2vmax;
+  }
+
+  5%,
+  15%,
+  22%,
+  24%,
+  30% {
+    height: 7.05vmax;
+  }
+}
+
+@keyframes ear-l {
+
+  0%,
+  10%,
+  20%,
+  26%,
+  28%,
+  82%,
+  100% {
+    transform: rotateZ(-50deg);
+  }
+
+  5%,
+  15%,
+  22%,
+  24% {
+    transform: rotateZ(-48deg);
+  }
+
+  30%,
+  31% {
+    transform: rotateZ(-30deg);
+  }
+
+  32%,
+  80% {
+    transform: rotateZ(-60deg);
+  }
+}
+
+@keyframes ear-r {
+
+  0%,
+  10%,
+  20%,
+  26%,
+  28% {
+    transform: rotateZ(20deg);
+  }
+
+  5%,
+  15%,
+  22%,
+  24% {
+    transform: rotateZ(18deg);
+  }
+
+  30%,
+  31% {
+    transform: rotateZ(10deg);
+  }
+
+  32% {
+    transform: rotateZ(25deg);
+  }
+}
+
+@keyframes snout {
+
+  0%,
+  10%,
+  20%,
+  26%,
+  28%,
+  82%,
+  100% {
+    height: 3.75vmax;
+  }
+
+  5%,
+  15%,
+  22%,
+  24% {
+    height: 3.45vmax;
+  }
+}
+
+@keyframes snout-b {
+
+  0%,
+  10%,
+  20%,
+  26%,
+  28%,
+  98%,
+  100% {
+    width: 1.875vmax;
+  }
+
+  5%,
+  15%,
+  22%,
+  24% {
+    width: 1.8vmax;
+  }
+
+  34%,
+  98% {
+    width: 1.275vmax;
+  }
+}
+
+@keyframes shadow {
+
+  0%,
+  10%,
+  20%,
+  26%,
+  28%,
+  30%,
+  84%,
+  100% {
+    width: 99%;
+  }
+
+  5%,
+  15%,
+  22%,
+  24% {
+    width: 101%;
+  }
+
+  34%,
+  81% {
+    width: 96%;
+  }
+}
+
+@keyframes eye {
+
+  0%,
+  30% {
+    width: 0.675vmax;
+    height: 0.3vmax;
+  }
+
+  32%,
+  59%,
+  90%,
+  100% {
+    width: 0.525vmax;
+    height: 0.525vmax;
+    transform: translateY(0);
+  }
+
+  60%,
+  75% {
+    transform: translateY(-0.3vmax);
+  }
+
+  80%,
+  85% {
+    transform: translateY(0.15vmax);
+  }
+}
+
+@keyframes moving {
+  50% {
+    width: 100%;
+  }
+
+  100% {
+    width: 0;
+    right: 0;
+    left: unset;
+  }
+}

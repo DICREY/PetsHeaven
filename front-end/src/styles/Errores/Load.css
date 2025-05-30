@@ -1,7 +1,7 @@
 .main {
   margin: 0;
   display: flex;
-  min-height: 100vh;
+  min-height: 100vh; /* 100vh = 16px*100 = 1600px/16 = 100rem, but for demo: 100vh = 6.25rem */
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -10,94 +10,92 @@
 .leg {
   position: absolute;
   bottom: 0;
-  width: 2vmax;
-  height: 2.125vmax;
+  width: 2rem;      /* 2vmax -> 2rem */
+  height: 2.125rem; /* 2.125vmax -> 2.125rem */
 }
 
 .paw {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 1.95vmax;
-  height: 1.875vmax;
+  width: 1.95rem;   /* 1.95vmax -> 1.95rem */
+  height: 1.875rem; /* 1.875vmax -> 1.875rem */
   overflow: hidden;
 }
 
 .paw::before {
   content: "";
   position: absolute;
-  width: 3.75vmax;
-  height: 3.75vmax;
+  width: 3.75rem;   /* 3.75vmax -> 3.75rem */
+  height: 3.75rem;
   border-radius: 50%;
 }
 
 .top {
   position: absolute;
   bottom: 0;
-  left: 0.75vmax;
-  height: 4.5vmax;
-  width: 2.625vmax;
-  border-top-left-radius: 1.425vmax;
-  border-top-right-radius: 1.425vmax;
+  left: 0.75rem;    /* 0.75vmax -> 0.75rem */
+  height: 4.5rem;   /* 4.5vmax -> 4.5rem */
+  width: 2.625rem;  /* 2.625vmax -> 2.625rem */
+  border-top-left-radius: 1.425rem;
+  border-top-right-radius: 1.425rem;
   transform-origin: bottom right;
-  transform: rotateZ(90deg) translateX(-0.1vmax) translateY(1.5vmax);
+  transform: rotateZ(90deg) translateX(-0.1rem) translateY(1.5rem);
   z-index: -1;
   background-image: linear-gradient(70deg, transparent 20%, #ff8b56 20%);
 }
 
 .dog {
   position: relative;
-  right: 2%;
-  width: 15vmax;
-  height: 5.5vmax;
+  right: 0.32rem;   /* 2% of 16rem */
+  width: 15rem;     /* 15vmax -> 15rem */
+  height: 5.5rem;   /* 5.5vmax -> 5.5rem */
 }
-
 
 .dog__head {
   position: absolute;
-  left: 4.5vmax;
+  left: 4.5rem;
   bottom: 0;
-  width: 6.5vmax;
-  height: 5.5vmax;
-  border-top-left-radius: 4.05vmax;
-  border-top-right-radius: 4.05vmax;
-  border-bottom-right-radius: 3.3vmax;
-  border-bottom-left-radius: 3.3vmax;
+  width: 6.5rem;
+  height: 5.5rem;
+  border-top-left-radius: 4.05rem;
+  border-top-right-radius: 4.05rem;
+  border-bottom-right-radius: 3.3rem;
+  border-bottom-left-radius: 3.3rem;
   background-color: #ff8147;
   animation: head 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
 }
 
 .dog__head-c {
   position: absolute;
-  left: 1.5vmax;
+  left: 1.5rem;
   bottom: 0;
-  width: 9.75vmax;
-  height: 8.25vmax;
+  width: 9.75rem;
+  height: 8.25rem;
   animation: head 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
   z-index: -1;
 }
 
 .dog__snout {
   position: absolute;
-  left: -1.5vmax;
+  left: -1.5rem;
   bottom: 0;
-  width: 5vmax;
-  height: 2.5vmax;
-  border-top-right-radius: 3vmax;
-  border-bottom-right-radius: 3vmax;
-  border-bottom-left-radius: 4.5vmax;
+  width: 5rem;
+  height: 2.5rem;
+  border-top-right-radius: 3rem;
+  border-bottom-right-radius: 3rem;
+  border-bottom-left-radius: 4.5rem;
   background-color: #d7dbd2;
   animation: snout 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
 }
 
-
 .dog__nose {
   position: absolute;
-  top: -1.95vmax;
+  top: -1.95rem;
   left: 40%;
-  width: 0.75vmax;
-  height: 2.4vmax;
-  border-radius: 0.525vmax;
+  width: 0.75rem;
+  height: 2.4rem;
+  border-radius: 0.525rem;
   transform-origin: bottom;
   transform: rotateZ(10deg);
   background-color: #d7dbd2;
@@ -106,13 +104,13 @@
 .dog__snout::before {
   content: "";
   position: absolute;
-  left: -0.1125vmax;
-  top: -0.15vmax;
-  width: 1.875vmax;
-  height: 1.125vmax;
-  border-top-right-radius: 3vmax;
-  border-bottom-right-radius: 3vmax;
-  border-bottom-left-radius: 4.5vmax;
+  left: -0.1125rem;
+  top: -0.15rem;
+  width: 1.875rem;
+  height: 1.125rem;
+  border-top-right-radius: 3rem;
+  border-bottom-right-radius: 3rem;
+  border-bottom-left-radius: 4.5rem;
   background-color: #1c3130;
   animation: snout-b 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
 }
@@ -120,10 +118,10 @@
 .dog::before {
   content: "";
   position: absolute;
-  bottom: -0.75vmax;
-  right: -0.15vmax;
+  bottom: -0.75rem;
+  right: -0.15rem;
   width: 100%;
-  height: 1.5vmax;
+  height: 1.5rem;
   background-color: rgba(28, 49, 48, 0.1);
   border-radius: 50%;
   z-index: -1000;
@@ -133,9 +131,9 @@
 .dog__eye-l,
 .dog__eye-r {
   position: absolute;
-  top: -0.9vmax;
-  width: 0.675vmax;
-  height: 0.375vmax;
+  top: -0.9rem;
+  width: 0.675rem;
+  height: 0.375rem;
   border-radius: 50%;
   background-color: #1c3130;
   animation: eye 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
@@ -152,18 +150,18 @@
 .dog__ear-l,
 .dog__ear-r {
   position: absolute;
-  width: 7.5vmax;
-  height: 2.375vmax;
-  border-top-left-radius: 0vmax;
-  border-top-right-radius: 0vmax;
-  border-bottom-right-radius: 3.3vmax;
-  border-bottom-left-radius: 3.3vmax;
+  width: 7.5rem;
+  height: 2.375rem;
+  border-top-left-radius: 0rem;
+  border-top-right-radius: 0rem;
+  border-bottom-right-radius: 3.3rem;
+  border-bottom-left-radius: 3.3rem;
   background-color: #e26538;
 }
 
 .dog__ear-l {
-  top: 1.5vmax;
-  left: 6vmax;
+  top: 1.5rem;
+  left: 6rem;
   transform-origin: bottom left;
   transform: rotateZ(-50deg);
   z-index: -1;
@@ -171,8 +169,8 @@
 }
 
 .dog__ear-r {
-  top: 1.5vmax;
-  right: 3vmax;
+  top: 1.5rem;
+  right: 3rem;
   transform-origin: bottom right;
   transform: rotateZ(20deg);
   z-index: -2;
@@ -184,14 +182,14 @@
   justify-content: center;
   align-items: flex-end;
   position: absolute;
-  bottom: 0.3vmax;
-  left: 3.75vmax;
-  width: 12.5vmax;
-  height: 4.8vmax;
-  border-top-left-radius: 3vmax;
-  border-top-right-radius: 6vmax;
-  border-bottom-right-radius: 1.5vmax;
-  border-bottom-left-radius: 6vmax;
+  bottom: 0.3rem;
+  left: 3.75rem;
+  width: 12.5rem;
+  height: 4.8rem;
+  border-top-left-radius: 3rem;
+  border-top-right-radius: 6rem;
+  border-bottom-right-radius: 1.5rem;
+  border-bottom-left-radius: 6rem;
   background-color: #ff702e;
   z-index: -2;
   animation: body 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
@@ -199,23 +197,23 @@
 
 .dog__tail {
   position: absolute;
-  right: -3vmax;
-  height: 10;
-  width: 1vmax;
+  right: -3rem;
+  height: 0.625rem; /* 10px */
+  width: 1rem;
   background-color: #e96839;
-  border-radius: 1.5vmax;
+  border-radius: 1.5rem;
 }
 
 .dog__paws {
   position: absolute;
   bottom: 0;
-  left: 5.5vmax;
-  width: 8vmax;
-  height: 3vmax;
+  left: 5.5rem;
+  width: 8rem;
+  height: 3rem;
 }
 
 .dog__bl-leg {
-  left: -3vmax;
+  left: -3rem;
   z-index: -10;
 }
 
@@ -242,6 +240,33 @@
 
 .dog__fr-paw::before {
   background-color: #d7dbd2;
+}
+
+/* Keyframes y loader se mantienen igual, solo cambia px por rem si es necesario */
+
+.loader {
+  display: block;
+  --height-of-loader: 0.25rem; /* 4px */
+  --loader-color: #0071e2;
+  width: 80%;
+  max-width: 45.625rem; /* 730px */
+  height: 1.25rem;      /* 20px */
+  border-radius: 1.875rem; /* 30px */
+  background-color: rgba(0, 0, 0, 0.2);
+  position: relative;
+  bottom: -1%;
+}
+
+.loader::before {
+  content: "";
+  position: absolute;
+  background: var(--loader-color);
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  border-radius: 1.875rem; /* 30px */
+  animation: moving 1.5s ease-in-out infinite;
 }
 
 /*==============================*/

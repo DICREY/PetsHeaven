@@ -12,6 +12,8 @@ import { errorStatusHandler, formatDate, searchFilter } from '../Varios/Util'
 
 // Import styles 
 import '../../../src/styles/InterfazAdmin/Consultorio.css'
+import HeaderUser from '../BarrasNavegacion/HeaderUser'
+import Footer from '../Varios/Footer2'
 
 export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   // Dynamic vars 
@@ -72,7 +74,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
           const message = errorStatusHandler(err.status)
           setNotify({
             title: 'Error',
-            message: `${message}`,    
+            message: `${message}`,
             close: setNotify
           })
        } else console.log(err)
@@ -203,8 +205,8 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   return (
     <main className='contenedoradminhome'>
       <NavBarAdmin />
-
       <div className='principaladminhome'>
+      <HeaderUser/>
         <article className='tarjetaadminhome' aria-labelledby='lista-usuarios-titulo'>
           <div className='contenidoadminhome'>
             <header className='encabezadoadminhome'>
@@ -279,6 +281,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
             /> 
           </div>
         </article>
+        <Footer/>
       </div>
 
       {notify && (

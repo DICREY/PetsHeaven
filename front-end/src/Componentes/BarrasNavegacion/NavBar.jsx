@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 
 // Imports 
-import { Logout, getRoles } from '../Varios/Util'
+import { Logout, decodeJWT } from '../Varios/Util'
 
 // Import styles
 import '../../../src/styles/BarrasNavegacion/NavBar.css'
@@ -44,7 +44,7 @@ export const NavBar = () => {
   useEffect(() => {
     const token = localStorage.getItem('token')
     if(token){
-      const roles = getRoles(token)
+      const roles = decodeJWT(token).roles.split(',')
       setIsAutenticate(true) 
 
       if(roles.includes('Administrador') || roles.includes('Veterinario')) {

@@ -1,19 +1,20 @@
-/* Contenedor principal */
+@import url('../vars.css');
+@import url('../global.css');
 
-#main-container-calendar{
+/* Contenedor principal */
+#main-container-calendar {
   flex-direction: column;
 }
 
 .calendar-container {
   display: flex;
-  flex-direction: row;
+  /* flex-direction: column; */
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   padding: 0;
   margin: 0;
-  overflow: hidden;
-  background-color: #f8fafc;
-  position: relative;
+  background-color: var(--gray-50);
+  font-family: var(--font-general);
 }
 
 /* Controles del calendario */
@@ -21,42 +22,81 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-  background-color: white;
-  border-bottom: 1px solid #e2e8f0;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  padding: 0.625rem 1.25rem;
+  background-color: var(--white);
+  border-bottom: 0.0625rem solid var(--gray-200);
+  box-shadow: var(--shadow-sm);
 }
 
+.fc-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: white;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.fc-toolbar-title {
+  font-size: 1.25rem;
+  color: var(--gray-800);
+  font-weight: 600;
+}
+
+.fc-toolbar .fc-button, 
+.fc-toolbar .fc-button-primary {
+  background-color: var(--azulturquesa);
+  color: var(--white);
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  margin: 0 0.125rem;
+  padding: 0.375rem 0.75rem;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  font-size: 0.875rem;
+}
+
+.fc-toolbar .fc-button:hover, 
+.fc-toolbar .fc-button-primary:hover {
+  background-color: var(--verdeaguamarina);
+  transform: translateY(-0.0625rem);
+}
+
+.fc-toolbar .fc-button.fc-button-active {
+  background-color: var(--verdeaguamarina);
+  box-shadow: inset 0 0.125rem 0.25rem rgba(0,0,0,0.1);
+}
 
 /* Botones de vista */
 .view-buttons {
   display: flex;
-  gap: 8px;
-  padding: 10px 20px;
-  background-color: white;
-  border-bottom: 1px solid #e2e8f0;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background-color: var(--white);
+  border-bottom: 0.0625rem solid var(--gray-200);
 }
 
 .view-buttons button {
-  padding: 8px 16px;
-  background-color: #f0fdfa;
-  border: 1px solid #38b2ac;
-  border-radius: 6px;
-  color: #38b2ac;
+  padding: 0.5rem 1rem;
+  background-color: var(--gray-50);
+  border: 0.0625rem solid var(--azulturquesa);
+  border-radius: var(--border-radius);
+  color: var(--azulturquesa);
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
 }
 
 .view-buttons button:hover {
-  background-color: #ccfbf1;
+  background-color: var(--azulclaro);
 }
 
 .view-buttons button.active {
-  background-color: #38b2ac;
-  color: white;
+  background-color: var(--azulturquesa);
+  color: var(--white);
 }
 
 /* Estilos del calendario */
@@ -64,51 +104,84 @@
   flex: 1;
   min-height: 0;
   margin: 0;
-  padding: 0 20px 20px 20px;
-  background-color: white;
+  padding: 0 1.25rem 1.25rem 1.25rem;
+  background-color: var(--white);
+  font-size: var(--font-size);
+}
+
+.fc-header-toolbar {
+  margin-bottom: 0.625rem;
+}
+
+.fc-col-header-cell {
+  background-color: var(--gray-100);
+  color: var(--gray-800);
+  font-weight: 600;
+  padding: 0.5rem 0;
+}
+
+.fc-daygrid-day {
+  border-color: var(--gray-200) !important;
+}
+
+.fc-day-today {
+  background-color: var(--primary-light) !important;
 }
 
 /* Eventos */
 .fc .fc-event {
   border: none !important;
-  border-radius: 6px !important;
-  padding: 4px 6px !important;
-  margin: 2px 4px !important;
+  border-radius: var(--border-radius) !important;
+  padding: 0.25rem 0.375rem !important;
+  margin: 0.125rem 0.25rem !important;
   font-size: 0.85rem !important;
   cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: var(--shadow-sm) !important;
+  font-weight: 500;
 }
 
 .fc .fc-event:hover {
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: var(--shadow-md) !important;
+  transform: translateY(-0.0625rem);
 }
 
 /* Categorías de eventos */
 .fc .fc-event.Vacunación {
-  background-color: #a5f3fc !important;
-  color: #0e7490 !important;
-  border-left: 4px solid #06b6d4 !important;
+  background-color: var(--azulclaro) !important;
+  color: var(--verdeaguamarina) !important;
+  border-left: 0.25rem solid var(--azulturquesa) !important;
 }
 
 .fc .fc-event.emergencia {
   background-color: #fecaca !important;
-  color: #991b1b !important;
-  border-left: 4px solid #ef4444 !important;
+  color: var(--red) !important;
+  border-left: 0.25rem solid var(--red) !important;
 }
 
 .fc .fc-event.Cirugía {
   background-color: #eee895 !important;
-  color: #dc9f6a !important;
-  border-left: 4px solid #7b6111 !important;
+  color: #7b6111 !important;
+  border-left: 0.25rem solid #7b6111 !important;
 }
 
 .fc .fc-event.Consulta.General {
-  background-color: #c7d2fe !important;
-  color: #4c1d95 !important;
-  border-left: 4px solid #6366f1 !important;
+  background-color: var(--purple-1) !important;
+  color: var(--black) !important;
+  border-left: 0.25rem solid var(--purple-2) !important;
+}
+
+/* Botón de ver más */
+.fc-daygrid-more-link {
+  background-color: var(--gray-300);
+  color: var(--gray-700);
+  margin-left: 0.125rem;
+  border-radius: 0.1875rem;
+  font-size: 0.75rem;
+  padding: 0.125rem 0.25rem;
 }
 
 /* Modal personalizado */
+/* Estilos para los modales responsivos */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -120,168 +193,261 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  padding: 1rem;
+  overflow-y: auto;
 }
 
 .modal-content {
-  background-color: white;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 500px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  box-shadow: var(--shadow-lg);
   overflow: hidden;
-  animation: modalFadeIn 0.3s ease-out;
-}
-
-@keyframes modalFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  display: flex;
+  flex-direction: column;
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
-  background-color: #38b2ac;
-  color: white;
+  padding: 1rem 1.5rem;
+  background-color: var(--azulturquesa);
+  color: var(--white);
+  position: relative;
 }
 
 .modal-header h3 {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
 .modal-close-btn {
   background: none;
   border: none;
-  color: white;
+  color: var(--white);
   font-size: 1.5rem;
   cursor: pointer;
-  padding: 0 5px;
+  padding: 0.5rem;
+  margin-left: 1rem;
+  line-height: 1;
 }
 
 .modal-body {
-  padding: 20px;
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex-grow: 1;
 }
 
-/* Formularios */
-.form-group {
-  margin-bottom: 15px;
+/* Estructura del formulario */
+.form-columns {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.form-column {
+  flex: 1;
+  min-width: 300px;
 }
 
 .form-row {
   display: flex;
-  gap: 15px;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
 }
 
 .form-row .form-group {
   flex: 1;
+  min-width: 150px;
+}
+
+/* Elementos del formulario */
+.form-group {
+  margin-bottom: 1.25rem;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 0.5rem;
   font-weight: 500;
-  color: #334155;
+  color: var(--gray-800);
+  font-size: 0.875rem;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  font-size: 0.9rem;
+  padding: 0.75rem;
+  border: 1px solid var(--gray-300);
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--azulturquesa);
+  box-shadow: 0 0 0 2px rgba(72, 187, 180, 0.2);
 }
 
 .form-group textarea {
-  min-height: 80px;
+  min-height: 100px;
   resize: vertical;
+}
+
+/* Autocompletado de pacientes */
+.paciente-autocomplete {
+  position: relative;
+}
+
+.paciente-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid var(--gray-300);
+  border-radius: 0.375rem;
+  z-index: 10;
+  box-shadow: var(--shadow-md);
+}
+
+.dropdown-item {
+  padding: 0.75rem;
+  cursor: pointer;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.dropdown-item:hover {
+  background-color: var(--gray-50);
 }
 
 /* Footer del modal */
 .modal-footer {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
-  padding: 15px 20px;
-  border-top: 1px solid #e2e8f0;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--gray-200);
+  flex-wrap: wrap;
 }
 
 .modal-btn {
-  padding: 8px 16px;
-  border-radius: 6px;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--border-radius);
   border: none;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  min-width: 120px;
+  text-align: center;
 }
 
 .modal-btn-close {
-  background-color: #e2e8f0;
-  color: #334155;
+  background-color: var(--gray-200);
+  color: var(--gray-800);
 }
 
 .modal-btn-close:hover {
-  background-color: #cbd5e1;
-}
-
-.modal-btn-delete {
-  background-color: #fecaca;
-  color: #991b1b;
-}
-
-.modal-btn-delete:hover {
-  background-color: #fca5a5;
+  background-color: var(--gray-300);
 }
 
 .modal-btn-confirm {
-  background-color: #38b2ac;
-  color: white;
+  background-color: var(--azulturquesa);
+  color: var(--white);
 }
 
 .modal-btn-confirm:hover {
-  background-color: #2d968f;
+  background-color: var(--verdeaguamarina);
 }
 
-/* Responsive */
+.modal-btn-delete {
+  background-color: var(--red);
+  color: var(--white);
+  margin-right: auto;
+}
+
+.modal-btn-delete:hover {
+  background-color: #dc2626;
+}
+
+/* Media Queries para móviles */
 @media (max-width: 768px) {
-  .view-buttons {
-    flex-wrap: wrap;
-    padding: 8px;
-  }
-  
-  .view-buttons button {
-    flex: 1 0 45%;
-    padding: 6px 8px;
-    font-size: 0.8rem;
-  }
-  
-  .fc {
-    padding: 0 8px 8px 8px;
-  }
-  
   .modal-content {
-    width: 95%;
+    max-height: 95vh;
+    margin: 1rem;
+  }
+  
+  .modal-header {
+    padding: 0.75rem 1rem;
+  }
+  
+  .modal-header h3 {
+    font-size: 1.1rem;
+  }
+  
+  .modal-close-btn {
+    font-size: 1.25rem;
+    padding: 0.25rem;
+  }
+  
+  .modal-body {
+    padding: 1rem;
+  }
+  
+  .form-column {
+    min-width: 100%;
   }
   
   .form-row {
     flex-direction: column;
-    gap: 10px;
+    gap: 0.75rem;
+  }
+  
+  .form-row .form-group {
+    min-width: 100%;
   }
   
   .modal-footer {
-    flex-wrap: wrap;
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+    padding: 1rem;
   }
   
-  .modal-footer .modal-btn {
-    flex: 1 0 100%;
+  .modal-btn {
+    width: 100%;
+    padding: 0.75rem;
+  }
+  
+  .modal-btn-delete {
+    margin-right: 0;
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-overlay {
+    padding: 0.5rem;
+  }
+  
+  .modal-content {
+    max-height: 98vh;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 0.65rem;
   }
 }

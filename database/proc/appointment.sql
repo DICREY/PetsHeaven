@@ -1,7 +1,9 @@
--- Active: 1746041048559@@127.0.0.1@3306@pets_heaven
+-- Active: 1747352860830@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchAllAppointments()
 BEGIN 
     SELECT 
+        c.id_cit,
+        c.mas_cit,
         c.fec_reg_cit,
         c.fec_cit,
         c.hor_ini_cit,
@@ -12,7 +14,7 @@ BEGIN
         s.des_ser,
         m.nom_mas,
         m.esp_mas,
-        m.fot_mas,    
+        m.fot_mas,
         p.nom_per,
         p.ape_per,
         p.cel_per,
@@ -121,14 +123,15 @@ CREATE PROCEDURE pets_heaven.UpdateAppointmentDate(
     IN p_id_mas INT,
     IN p_new_date DATE,
     IN p_new_hor_ini TIME,
-    IN p_new_hor_fin TIME
+    IN p_new_hor_fin TIME,
+    IN p_new_lugar VARCHAR(100)
 )
 BEGIN
     UPDATE pets_heaven.citas
     SET fec_cit = p_new_date,
         hor_ini_cit = p_new_hor_ini,
-        hor_fin_cit = p_new_hor_fin
+        hor_fin_cit = p_new_hor_fin,
+        lug_ate_cit = p_new_lugar
     WHERE id_cit = p_id_cit AND mas_cit = p_id_mas;
 END //
-
 

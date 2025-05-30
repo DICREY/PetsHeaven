@@ -7,7 +7,8 @@ const { hash } = require('bcrypt')
 // Imports
 const Global = require('../services/Global.services')
 const People = require('../services/People.services')
-const { limiterLog } = require('../middleware/varios.handler')
+const { limiterLog, cookiesOptions, cookiesOptionsLog } = require('../middleware/varios.handler')
+const { authenticateJWT } = require('../middleware/validator.handler')
 
 // Env vars
 const secret = process.env.JWT_SECRET
@@ -50,6 +51,14 @@ Route.post('/login',limiterLog, async (req,res) => {
             return res.status(401).json({ message: 'Credenciales inválidas' })
         }
         const token = jwt.sign(
+            {   
+                names: user.nom_per,
+                lastNames: user.ape_per,
+            },
+            secret,
+            { expiresIn: '8h' }
+        )
+        const tokenInfo = jwt.sign(
             { 
                 names: user.nom_per,
                 lastNames: user.ape_per,
@@ -59,9 +68,18 @@ Route.post('/login',limiterLog, async (req,res) => {
             secret,
             { expiresIn: '8h' }
         )
-        res.status(200).json({ token: token })
+
+        res.cookie('token', token, cookiesOptions)
+
+        if (user.roles.includes('Administrador')) res.cookie('Nikola', 'Que miras', cookiesOptions)
+
+        if (user.roles.includes('Veterinario')) res.cookie('Marie', 'Que miras', cookiesOptions)
+
+        res.status(200).json({ token: tokenInfo })
+        
 
     } catch (err) {
+        console.log(err)
         if (err.status) return res.status(err.status).json({ message: err.message })
 
         res.status(500).json({ message: err })
@@ -87,6 +105,10 @@ Route.post('/register', async (req,res) => {
     }
 })
 
+Route.get('/cookie', authenticateJWT,(req, res) => {
+    const expirationDate = new Date()
+    expirationDate.setDate(expirationDate.getDate() + 30)
+})
 
 // Export 
 module.exports = Route
