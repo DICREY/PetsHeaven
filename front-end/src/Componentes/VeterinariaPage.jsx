@@ -4,8 +4,8 @@ import { GetDataGlobal } from './Varios/Requests'
 import { diapositivas, promociones, testimonios } from './Varios/varios'
 import { checkImage } from './Varios/Util'
 // import { Loader } from './Errores/Loader'
-import { Load } from './Errores/Load'
-// import { Load2 } from './Errores/Load2'
+// import { Load } from './Errores/Load'
+import { Load2 } from './Errores/Load2'
 import Footer from './Varios/Footer2'
 
 // Librarys 
@@ -159,7 +159,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo}) {
   return (
     <>
     {
-      loading ? (<Load />) : ( 
+      loading ? (<Load2 />) : ( 
 
 
            
