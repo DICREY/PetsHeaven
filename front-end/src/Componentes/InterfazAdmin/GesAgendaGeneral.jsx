@@ -328,7 +328,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                     headerToolbar={{
                         start: "customPrev today customNext",
                         center: "title",
-                        end: "dayGridMonth dayGridWeek dayGridDay listWeek"
+                        end: "dayGridMonth dayGridWeek dayGridDay listYear"
                     }}
                     customButtons={{
                         customPrev: {
