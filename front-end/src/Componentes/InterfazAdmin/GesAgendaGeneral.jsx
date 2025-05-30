@@ -143,10 +143,6 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
 
     // Crear nueva cita en el backend
     const handleCreateEvent = async () => {
-        if (!newEvent.title) {
-            alert('El título es requerido');
-            return;
-        }
         const citaData = {
             fec_reg_cit: new Date().toISOString().split('T')[0],
             fec_cit: newEvent.start.split('T')[0],
@@ -328,7 +324,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                     headerToolbar={{
                         start: "customPrev today customNext",
                         center: "title",
-                        end: "dayGridMonth dayGridWeek dayGridDay listWeek"
+                        end: "dayGridMonth dayGridWeek dayGridDay listYear"
                     }}
                     customButtons={{
                         customPrev: {
@@ -605,6 +601,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                         name="title"
                                         value={selectedEvent?.title || ''}
                                         onChange={handleInputChange}
+                                        disabled="true"
                                     />
                                 </div>
                                 <div className="form-group">
@@ -614,6 +611,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                         name="paciente"
                                         value={selectedEvent?.paciente || ''}
                                         onChange={handleInputChange}
+                                        disabled="true"
                                     />
                                 </div>
                                 <div className="form-group">
@@ -622,12 +620,14 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                         type="text"
                                         name="propietario"
                                         value={selectedEvent?.propietario || ''}
+                                        disabled="true"
                                         onChange={handleInputChange}
                                     />
                                 </div>
                                 <div className="form-group">
                                     <label>Teléfono:</label>
                                     <input
+                                        disabled="true"
                                         type="text"
                                         name="telefono"
                                         value={selectedEvent?.telefono || ''}
