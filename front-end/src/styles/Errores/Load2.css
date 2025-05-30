@@ -1,0 +1,75 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.loader {
+    display: block;
+    --height-of-loader: 4px;
+    --loader-color: #0071e2;
+    width: 80%;
+    max-width: 730px;
+    height: 20px;
+    border-radius: 30px;
+    background-color: rgba(0, 0, 0, 0.2);
+    position: relative;
+    bottom: -1%;
+  
+  }
+  
+  .loader::before {
+    content: "";
+    position: absolute;
+    background: var(--loader-color);
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    border-radius: 30px;
+    animation: moving 1.5s ease-in-out infinite;
+    ;
+  }
+  
+  @keyframes moving {
+    50% {
+      width: 100%;
+    }
+  
+    100% {
+      width: 0;
+      right: 0;
+      left: unset;
+    }
+  }
+  
+  /* Media query para pantallas más pequeñas */
+  @media (max-width: 600px) {
+    .wheel-and-hamster {
+      bottom: 10%;
+      /* Ajuste para pantallas pequeñas */
+    }
+  
+    .loader {
+      bottom: 12%;
+      /* Ajuste para pantallas pequeñas */
+    }
+  }
