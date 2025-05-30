@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Scissors, Trash2, PenSquare, Plus, Filter, AlertCircle, FileText } from "lucide-react"
 import "../../../styles/InterfazAdmin/Servicios/Cirugia.css"
 
-const CirugiasVeterinaria = () => {
+export const CirugiasVeterinaria = () => {
   const [cirugias, setCirugias] = useState([
     {
       id: "CIR001",
@@ -300,4 +300,3 @@ const CirugiasVeterinaria = () => {
   )
 }
 
-export default CirugiasVeterinaria

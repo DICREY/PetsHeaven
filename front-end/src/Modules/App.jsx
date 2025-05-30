@@ -25,6 +25,9 @@ import VeterinariaPage from '../Componentes/VeterinariaPage'
 import { PerfilPropietario } from '../Componentes/Peoples/PerfilPropietario'
 import { GesAgendaPersonal } from '../Componentes/InterfazAdmin/GesAgendaPersonal'
 import { Services } from '../Componentes/InterfazAdmin/Services'
+import {CirugiasVeterinaria} from "../Componentes/InterfazAdmin/Servicios/Cirugia"
+import {SpaMascotas} from "../Componentes/InterfazAdmin/Servicios/Spa"
+import {VisualizadorVacunas} from "../Componentes/InterfazAdmin/Servicios/Vacuna"
 
 //import Crud personal
 import { ConfiguracionUsuarioCrud } from '../Componentes/InterfazAdmin/CrudPersonal/ConfiguracionUsuarioCrud'
@@ -130,6 +133,9 @@ export default function App () {
           <Route path='actualizar/datos personal' element={
             <AdminRoute children={<ConfiguracionUsuarioCrud userSelect={userSelect} URL={URL} />} />} >
           </Route>
+          {/* <Route path='servicios'>
+
+          </Route> */}
         </Route>
         
         {/* Vet routes */}
@@ -164,6 +170,15 @@ export default function App () {
         </Route>
         <Route path='calendario/usuario' element={
           <VetRoute children={<GesAgendaPersonal URL={URL} />} />} >
+        </Route>
+        <Route path='servicios/cirugia' element={
+          <VetRoute children={<CirugiasVeterinaria URL={URL} />} />} >
+        </Route>
+        <Route path='servicios/vacunas' element={
+          <VetRoute children={<VisualizadorVacunas URL={URL} />} />} >
+        </Route>
+        <Route path='servicios/spa' element={
+          <VetRoute children={<SpaMascotas URL={URL} />} />} >
         </Route>
 
         {/* Public Routes */}

@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { Scissors, Trash2, PenSquare, Plus, Filter, Heart, Droplets, Clock, Sparkles, X } from "lucide-react"
-import "../../../styles/spa.css" // Asegúrate de tener este archivo CSS con los estilos necesarios
+import "../../../styles/InterfazAdmin/Servicios/Spa.css"
 
-const SpaMascotas = () => {
+export const SpaMascotas = () => {
   const [servicios, setServicios] = useState([
     {
       id: "SPA001",
@@ -336,4 +336,3 @@ const SpaMascotas = () => {
   )
 }
 
-export default SpaMascotas
