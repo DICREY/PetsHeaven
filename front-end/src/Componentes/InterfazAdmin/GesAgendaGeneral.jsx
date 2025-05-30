@@ -143,10 +143,6 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
 
     // Crear nueva cita en el backend
     const handleCreateEvent = async () => {
-        if (!newEvent.title) {
-            alert('El título es requerido');
-            return;
-        }
         const citaData = {
             fec_reg_cit: new Date().toISOString().split('T')[0],
             fec_cit: newEvent.start.split('T')[0],
