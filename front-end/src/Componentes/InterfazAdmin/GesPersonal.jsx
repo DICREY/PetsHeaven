@@ -106,7 +106,7 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
               </button>
             </header>
             
-
+ 
             {/* Table  */}
             <GlobalTable 
               subtitle={'Personal vinculado a la veterinaria: Petsheaven'}
