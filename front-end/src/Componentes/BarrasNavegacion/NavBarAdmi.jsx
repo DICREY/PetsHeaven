@@ -63,7 +63,7 @@ export const NavBarAdmin = () => {
   }, [])
 
   return (
-    <>
+    <header className='MainHeader'>
       {/* Botón de menú móvil */}
       <button
         className={`botonmovilnavadmin ${menuMovilAbierto ? 'activonavadmin' : ''}`}
@@ -73,12 +73,8 @@ export const NavBarAdmin = () => {
         {menuMovilAbierto ? <X size={20} /> : <Menu size={20} />}
       </button>
 
-      {menuMovilAbierto && esMovil && <div className='overlaynavadmin' onClick={toggleMenuMovil}></div>}
-
       <aside
-        className={`
-          barranavadmin ${menuMovilAbierto ? 'visiblenavadmin' : 'ocultanavadmin'}
-        `}
+        className={`barranavadmin ${menuMovilAbierto ? 'visiblenavadmin' : 'ocultanavadmin'}`}
       >
         <div className='perfilsuperiornavadmin'>
           <div className='avatarnavadmin'>
@@ -205,6 +201,6 @@ export const NavBarAdmin = () => {
           </button>
         </div>
       </aside>
-    </>
+    </header>
   )
 }

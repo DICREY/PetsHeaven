@@ -69,6 +69,7 @@
   border: none;
   cursor: pointer;
   font-weight: 500;
+  font-size: 1rem;
   color: var(--gray-600);
   transition: all 0.2s;
   border-bottom: 0.1875rem solid transparent; /* 3px */
@@ -143,6 +144,7 @@
   margin-bottom: 0.9375rem; /* 15px */
   border: 0.0625rem solid var(--gray-300); /* 1px */
   border-radius: 0.5rem; /* 8px */
+  font-size: 1rem;
 }
 
 .manual-card h4 {
@@ -167,6 +169,7 @@
   cursor: pointer;
   transition: all 0.2s;
   font-weight: 500;
+  font-size: 1rem;
 }
 
 .download-btn:hover {
