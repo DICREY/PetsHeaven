@@ -69,7 +69,7 @@ Route.post('/login',limiterLog, async (req,res) => {
             { expiresIn: '8h' }
         )
 
-        res.cookie('token', token, cookiesOptions)
+        res.cookie('token', token, cookiesOptionsLog)
 
         if (user.roles.includes('Administrador')) res.cookie('Nikola', 'Que miras', cookiesOptions)
 
@@ -77,9 +77,7 @@ Route.post('/login',limiterLog, async (req,res) => {
 
         res.status(200).json({ token: tokenInfo })
         
-
     } catch (err) {
-        console.log(err)
         if (err.status) return res.status(err.status).json({ message: err.message })
 
         res.status(500).json({ message: err })

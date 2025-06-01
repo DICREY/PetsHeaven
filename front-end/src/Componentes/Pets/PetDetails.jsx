@@ -8,7 +8,7 @@ import { Description } from '../Global/Description'
 import { HistoryTest } from './historyTest'
 import { Notification } from '../Global/Notifys'
 import { DeleteData, ModifyData, PostData } from '../Varios/Requests'
-import { checkImage, getAge, errorStatusHandler,divideList } from '../Varios/Util'
+import { checkImage, getAge, errorStatusHandler, divideList, decodeJWT } from '../Varios/Util'
 import { FormularioConsulta } from '../InterfazAdmin/FormulariosAdmin/Consulta'
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import Footer from '../Varios/Footer2'
@@ -207,7 +207,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
 
         if(token) {
             // Vars
-            const admin = decodeJWT(token).roles.include('Administrador')
+            const admin = decodeJWT(token).roles.includes('Administrador')
 
             admin? setIsAdmin(true): setIsAdmin(false)
         } else navigate('/user/login')

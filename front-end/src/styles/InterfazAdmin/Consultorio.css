@@ -5,7 +5,7 @@
   background-color: #f8fafc;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
-
+botonadminhome
 .principaladminhome {
   flex: 1;
   transition: padding 0.3s ease;
@@ -77,28 +77,6 @@
 .BtnsRegisters {
   display: flex;
   gap: 2rem;
-}
-
-.botonadminhome {
-  background-color: #e0edff;
-  color: #00bcd4;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  transition: all 0.2s ease;
-  border: none;
-  border-radius: 0.375rem;
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.botonadminhome:hover,
-.botonadminhome:focus {
-  background-color: #cce3ff;
-  outline: 2px solid #00bcd4;
 }
 
 .iconoplusadminhome {
@@ -474,9 +452,6 @@
     flex-direction: row;
     align-items: center;
   }
-  .botonadminhome {
-    width: auto;
-  }
   .paginacionadminhome {
     flex-direction: row;
     justify-content: space-between;
@@ -580,7 +555,6 @@ textarea:focus {
 
 /* High contrast mode */
 @media (forced-colors: active) {
-  .botonadminhome,
   .botonbuscaradminhome {
     forced-color-adjust: none;
     border: 2px solid ButtonText;

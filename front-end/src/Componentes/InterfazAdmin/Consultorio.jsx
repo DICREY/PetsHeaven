@@ -220,7 +220,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
 
               <nav className='BtnsRegisters'>
                 <button 
-                  className='botonadminhome' 
+                  className='AddBtn' 
                   onClick={() => navigate('/mascota/registro')}
                   aria-label='Registrar nueva mascota'
                 >
@@ -228,7 +228,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
                   Registrar Mascota
                 </button>
                 <button 
-                  className='botonadminhome' 
+                  className='AddBtn' 
                   onClick={() => navigate('/propietario/registro')}
                   aria-label='Registrar nuevo usuario'
                 >

@@ -6,9 +6,9 @@ font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .principalgesusuario {
-flex: 1;
-padding: 1.5rem;
-transition: padding 0.3s ease;
+  flex: 1;
+  padding: 1.5rem;
+  transition: padding 0.3s ease;
 }
 
 .tarjetagesusuario {

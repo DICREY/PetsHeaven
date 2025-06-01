@@ -35,9 +35,9 @@ const cookiesOptions = {
     maxAge: 30 * 24 * 60 * 60 * 1000, // Alternativa en milisegundos (30 días)
     httpOnly: true, // Seguridad: solo accesible por HTTP
     secure: true, // HTTPS en producción
-    sameSite: 'lax', // Política de same-site
+    sameSite: 'none', // Política de same-site
     domain: 'localhost', // Dominio donde es válida (opcional)
-    signed: true,
+    // signed: false,
     // path: '/' // Ruta donde es válida (opcional)
 }
  

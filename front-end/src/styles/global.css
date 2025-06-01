@@ -112,15 +112,15 @@
 }
 
 .BackBtn {
+  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  padding: 0.5rem 1rem;
+  padding: 0 1rem;
   border: 0.1rem solid #ddd;
   border-radius: 0.3rem;
   background-color: #fff;
   color: #666;
-  cursor: pointer;
   font-size: 0.9rem;
 }
 
@@ -128,7 +128,7 @@
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 1rem;
   border: 0.1rem solid #e74c3c;
   border-radius: 0.3rem;
   background-color: #fff;
@@ -145,7 +145,7 @@
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 1rem;
   border: 0.1rem solid #ddd;
   border-radius: 0.3rem;
   background-color: #00bcd4;
@@ -160,19 +160,42 @@
 }
 
 .AddBtn {
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.3rem;
   padding: 0.5rem 1rem;
-  border: 0.1rem solid #ddd;
-  border-radius: 0.3rem;
-  background-color: #004a53;
-  color: #fff;
-  cursor: pointer;
-  font-size: 0.9rem;
+  color: #00bcd4;
+  font-size: 0.875rem;
   font-weight: 500;
+  border: none;
+  border-radius: 0.375rem;
+  background-color: #e0edff;
+  transition: all 0.2s ease;
 }
 
-.AddBtn:hover {
-  background-color: #0097A7;
+.AddBtn:hover,
+.AddBtn:focus {
+  background-color: #cce3ff;
+  outline: 2px solid #00bcd4;
+}
+
+.botonadminhome {
+  background-color: #e0edff;
+  color: #00bcd4;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  transition: all 0.2s ease;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.botonadminhome:hover,
+.botonadminhome:focus {
+  background-color: #cce3ff;
+  outline: 2px solid #00bcd4;
 }

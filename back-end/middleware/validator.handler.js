@@ -31,7 +31,6 @@ function validatorHeaders (req,res,next) {
 function authenticateJWT(req, res, next) {
     const token = req.signedCookies.token
     // const token = req.headers.authorization?.split(' ')[1]
-    console.log(token)
     
     if (!token) return res.status(401).json({ error: 'Token no proporcionado' })
   

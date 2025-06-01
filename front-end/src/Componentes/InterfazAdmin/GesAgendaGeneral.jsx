@@ -484,7 +484,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                                 name="propietario"
                                                 value={newEvent.propietario}
                                                 onChange={handleInputChange}
-                                                disabled="true"
+                                                disabled
                                             />
                                         </div>
                                         <div className="form-group">
@@ -494,7 +494,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                                 name="telefono"
                                                 value={newEvent.telefono}
                                                 onChange={handleInputChange}
-                                                disabled="true"
+                                                disabled
                                             />
                                         </div>
                                         <div className="form-group">
@@ -601,7 +601,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                         name="title"
                                         value={selectedEvent?.title || ''}
                                         onChange={handleInputChange}
-                                        disabled="true"
+                                        disabled
                                     />
                                 </div>
                                 <div className="form-group">
@@ -611,7 +611,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                         name="paciente"
                                         value={selectedEvent?.paciente || ''}
                                         onChange={handleInputChange}
-                                        disabled="true"
+                                        disabled
                                     />
                                 </div>
                                 <div className="form-group">
@@ -620,14 +620,14 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                         type="text"
                                         name="propietario"
                                         value={selectedEvent?.propietario || ''}
-                                        disabled="true"
+                                        disabled
                                         onChange={handleInputChange}
                                     />
                                 </div>
                                 <div className="form-group">
                                     <label>Teléfono:</label>
                                     <input
-                                        disabled="true"
+                                        disabled
                                         type="text"
                                         name="telefono"
                                         value={selectedEvent?.telefono || ''}

@@ -5,7 +5,6 @@
 #main-container-calendar {
   flex-direction: column;
 }
-
 .calendar-container {
   display: flex;
   /* flex-direction: column; */
