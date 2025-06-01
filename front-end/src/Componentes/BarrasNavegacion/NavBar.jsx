@@ -44,7 +44,7 @@ export const NavBar = () => {
   useEffect(() => {
     const token = localStorage.getItem('token')
     if(token){
-      const roles = decodeJWT(token).roles.split(',')
+      const roles = decodeJWT(token).roles.split(', ')
       setIsAutenticate(true) 
 
       if(roles.includes('Administrador') || roles.includes('Veterinario')) {

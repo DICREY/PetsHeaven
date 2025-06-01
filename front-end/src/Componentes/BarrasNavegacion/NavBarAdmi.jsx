@@ -53,7 +53,7 @@ export const NavBarAdmin = () => {
   useEffect(() => {
     if(token){
       const tokenJWT = decodeJWT(token)
-      const roles = tokenJWT.roles.split(',')
+      const roles = tokenJWT.roles.split(', ')
       const admin = roles.includes('Administrador')
 
       setUser(tokenJWT)

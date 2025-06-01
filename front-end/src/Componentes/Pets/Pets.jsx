@@ -64,7 +64,7 @@ export const Pets = ({URL = '', imgPetDefault = '', setPetSelect }) => {
             // Vars
             const by = decodeJWT(token).names.toLowerCase()
 
-            const admin = decodeJWT(token).roles.include('Administrador')
+            const admin = decodeJWT(token).roles.includes('Administrador')
 
             admin? setIsAdmin(true): setIsAdmin(false)
 
