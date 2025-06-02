@@ -1,15 +1,16 @@
 // Librays
-import Swal from 'sweetalert2'
-import 'sweetalert2/src/sweetalert2.scss'
 import { useNavigate } from 'react-router-dom'
 
+// Imports 
+import { PostData } from './Requests'
+
 //componente de cerrar sesion 
-export const Logout = () => {
+export const Logout = async( ) => {
   const token = localStorage.getItem("token")
-  if (token){
+  
+  if (token) {
     localStorage.setItem('token','')
   }
-  window.location.href = "/user/login"
 }
 
 // Back 
@@ -96,13 +97,6 @@ export const decodeJWT = (token = "") => {
     console.error("Error decodificando el token:", error)
     return null
   }
-}
-
-export const getRoles = () => {
-  const rol1 = getCookie('Nikola')?'Administrador---':''
-  const rol2 = getCookie('Marie')?'Veterinario---':''
-  const roles = `${rol1}${rol2}Usuario`
-  return roles.split('---')
 }
 
 export const getName = (token = "") => {
@@ -197,7 +191,7 @@ export const errorStatusHandler = (status) => {
         break
 
       case 429: 
-        message = 'Demasiados intentos espera 3 minutos'
+        message = 'Demasiados intentos espera un momento'
         break
 
       case 498: 
@@ -212,26 +206,6 @@ export const errorStatusHandler = (status) => {
     return message
   }
   return returnMessage(status)
-}
-
-export const loadingAlert = (
-    title = 'Cargando...',
-    message= 'Procesando los datos recibidos',
-    timeOut = true,
-    time = 3000
-  ) => {
-  Swal.fire({
-    title: title,
-    html: message,
-    timer: time,
-    timerProgressBar: true,
-    didOpen: () => {
-      Swal.showLoading()
-    },
-    willClose: () => {
-        clearInterval(timeOut)
-    }
-  })
 }
 
 export const getCookie = (name = '') => {

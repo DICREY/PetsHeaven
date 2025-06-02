@@ -7,13 +7,13 @@ const secret = process.env.JWT_SECRET
 // Handle Validations middlewares
 function validatorHeaders (req,res,next) {
     // Headers
-    const apiKey = req.headers['x-api-key']
+    const apiKey = req.signedCookies? req.signedCookies.__nit: req.headers['x-api-key']
     const contentType = req.headers['accept']
     const userAgent = req.headers['user-agent']
-    const user = req.headers['user']
+    const user = req.signedCookies? req.signedCookies.__userName: 'Unknow User'
 
     // Validation
-    if (!apiKey || apiKey !== 'pets_heaven_vite' ) {
+    if (!apiKey || apiKey !== secret ) {
         return res.status(498).json({ error: 'Usuario no autorizado' })
     }
     if (!contentType ) {
@@ -29,35 +29,30 @@ function validatorHeaders (req,res,next) {
 
 // Middleware de validación
 function authenticateJWT(req, res, next) {
-    const token = req.signedCookies.token
-    // const token = req.headers.authorization?.split(' ')[1]
+    const token = req.signedCookies?.__cred
     
     if (!token) return res.status(401).json({ error: 'Token no proporcionado' })
   
     jwt.verify(token, secret, (err, decoded) => {
-        if (err) {
-            return res.status(403).json({ error: 'Token inválido o expirado' })
-        }
+        if (err) return res.status(403).json({ error: 'Token inválido o expirado' })
         
         req.user = decoded // Almacena datos del usuario en la request
         next()
     })
 }
 
-function ValidatorRol(requireRol = "") {
+function ValidatorRol(requireRol = '') {
     return (req,res,next) => {
-        const rolesHeader = req.headers['roles']
+        const rolesHeader = req.signedCookies?.__user
         // Verificación más robusta del header
         if (!rolesHeader || typeof rolesHeader !== 'string') {
             return res.status(403).json({ message: 'Roles perdidos o invalidos' })
         }
       
-        const roles = rolesHeader.split(",").map(role => role.trim())
+        const roles = rolesHeader.split(',').map(role => role.trim())
         
         // Comparación case-insensitive
-        const isAdmin = roles.some(role => 
-            role.toLowerCase() === requireRol
-        )
+        const isAdmin = roles.some(role => role.toLowerCase() === requireRol.toLowerCase())
         
         // Manejo de acceso
         if (!isAdmin) return res.status(401).json({ message: 'No tienes permisos para esta acción' })

@@ -5,14 +5,14 @@ import { Link, useNavigate } from 'react-router'
 
 // Imports 
 import { login } from '../Varios/Requests'
-import { errorStatusHandler, formatoTiempo, checkImage, Logout, decodeJWT, getName } from '../Varios/Util'
+import { errorStatusHandler, formatoTiempo, checkImage, Logout, getName } from '../Varios/Util'
 
 // Import styles
 import '../../../src/styles/Formularios/login.css'
 import { Notification } from '../Global/Notifys'
 
 // Main component 
-export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
+export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = '', setRoles = null }) => {
   // Dynamic Vars 
   const [verPassword, setVerPassword] =  useState(false)
   const [waitTime, setWaitTime] =  useState(false)
@@ -73,7 +73,8 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
           message: `Hola, ${getName(token)} Feliz día`,
           close: setNotify
         })
-        const roles = decodeJWT(token).roles.split(',')
+        const roles = log.roles.split(', ')
+        setRoles(roles)
 
         arriveTo = arriveTo? arriveTo: useRoleRedirect(roles)
         
@@ -82,7 +83,7 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
             navigate(arriveTo)
           },2000)
         } 
-      } else console.log(log)
+      }
     } catch (err) {
       setNotify(null)
       if(err.status) {
@@ -130,7 +131,7 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = ''}) => {
   // Resetear a 20 cuando waitTime cambia a true
   useEffect(() => {
     if (waitTime) {
-      setTime(10)
+      setTime(20)
     }
   }, [waitTime])
 

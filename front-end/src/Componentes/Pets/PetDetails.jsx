@@ -8,7 +8,7 @@ import { Description } from '../Global/Description'
 import { HistoryTest } from './historyTest'
 import { Notification } from '../Global/Notifys'
 import { DeleteData, ModifyData, PostData } from '../Varios/Requests'
-import { checkImage, getAge, errorStatusHandler,divideList } from '../Varios/Util'
+import { checkImage, getAge, errorStatusHandler, divideList, decodeJWT } from '../Varios/Util'
 import { FormularioConsulta } from '../InterfazAdmin/FormulariosAdmin/Consulta'
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import Footer from '../Varios/Footer2'
@@ -18,7 +18,7 @@ import '../../../src/styles/Pets/petDetails.css'
 import HeaderUser from '../BarrasNavegacion/HeaderUser'
 
 // Main component
-export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Generales'}) => {
+export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Generales'}, roles = ['Usuario']) => {
     // Dynamic vars
     const [isAdmin,setIsAdmin] = useState(false)
     const [isEditing,setIsEditing] = useState(false)
@@ -93,7 +93,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
         try {
             const token = localStorage.getItem('token')
             if (token) {
-                const data = await PostData(`${mainURL}/history`, token,{
+                const data = await PostData(`${mainURL}/history`, {
                     firstData: datas.nom_mas,
                     secondData: datas.doc_per
                 })
@@ -123,9 +123,8 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
         })
         try {
             const token = localStorage.getItem('token')
-            console.log(modPet)
             if (token) {
-                const mod = await ModifyData(`${mainURL}/modify`, token, modPet )
+                const mod = await ModifyData(`${mainURL}/modify`, modPet)
                 setNotify(null)
                 if (mod.data.modify) setNotify({
                     title: 'Modificación exitosa',
@@ -158,10 +157,10 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
         })
         try {
             if(token) {
-                const admin = decodeJWT(token).roles.include('Administrador')
+                const admin = decodeJWT(token).roles.includes('Administrador')
                 if (admin) {
                     
-                    const deleted = await DeleteData(deleteURL,token,{
+                    const deleted = await DeleteData(deleteURL,{
                         nom_mas: datas.nom_mas,
                         doc_per: datas.doc_per
                     })
@@ -207,7 +206,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
 
         if(token) {
             // Vars
-            const admin = decodeJWT(token).roles.include('Administrador')
+            const admin = decodeJWT(token).roles.includes('Administrador')
 
             admin? setIsAdmin(true): setIsAdmin(false)
         } else navigate('/user/login')

@@ -17,7 +17,7 @@ import HeaderUser from "../BarrasNavegacion/HeaderUser"
 import Footer from "../Varios/Footer2"
 
 // Component
-export function GesPersonal({ setUserSelect, URL = "" }) {
+export function GesPersonal({ setUserSelect, URL = "", roles = ['Usuario'] }) {
   // Dynamic vars
   const mainUrl = `${URL}/staff/all`
   const [users,setUsers] = useState([])
@@ -34,7 +34,7 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
     const token = localStorage.getItem("token")
     try {
       if (token){
-        const data = await GetData(mainUrl,token)
+        const data = await GetData(mainUrl)
         setNotify(null)
         setHeaders({
           'Nombres': 'nom_per',
@@ -90,7 +90,8 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
 
   return (
     <main className="contenedorgesusuario">
-      <NavBarAdmin />
+      <NavBarAdmin roles={roles} />
+
       <section className="principalgesusuario">
       <HeaderUser/>
         <section className="tarjetagesusuario">
@@ -100,13 +101,13 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
                 <h1 className="textogesusuario">Gestión de personal</h1>
                 <span className="subtitulogesusuario">/ Administración</span>
               </div>
-              <button className="botonadminhome" onClick={() => window.location.href = "/admin/usuario/registro"}>
+              <button className="AddBtn" onClick={() => window.location.href = "/admin/usuario/registro"}>
                 <Plus size={16} className="iconoplusadminhome" />
                 Registrar personal
               </button>
             </header>
             
-
+ 
             {/* Table  */}
             <GlobalTable 
               subtitle={'Personal vinculado a la veterinaria: Petsheaven'}

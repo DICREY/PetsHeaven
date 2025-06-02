@@ -24,7 +24,7 @@ function joinDateTime(date, time) {
 }
 
 // Component 
-export const GesAgendaPersonal = ({ URL = 'http://localhost:3000' }) => {
+export const GesAgendaPersonal = ({ URL = 'http://localhost:3000', roles = ['Usuario'] }) => {
     // Dynamic vars 
     const [events, setEvents] = useState([])
     const [notify, setNotify] = useState(null)
@@ -63,7 +63,7 @@ export const GesAgendaPersonal = ({ URL = 'http://localhost:3000' }) => {
             const token = localStorage.getItem("token")
             try {
                 if (token) {
-                    const data = await GetData(`${mainUrl}/general`, token)
+                    const data = await GetData(`${mainUrl}/general`)
                     setNotify(null)
 
                     if (data) {
@@ -214,7 +214,7 @@ export const GesAgendaPersonal = ({ URL = 'http://localhost:3000' }) => {
 
     return (
         <main className="calendar-container">
-            <NavBarAdmin />
+            <NavBarAdmin roles={roles} />
             <main className='calendar-container' id='main-container-calendar'>
             <HeaderUser/>
                 <input

@@ -9,8 +9,9 @@ import RolPrivilegios from './RolPrivilegios'
 import InformacionProfesional from './InformacionProfesional'
 import Contrasena from './Contrasena'
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
-import { formatDate, errorStatusHandler, loadingAlert, LegalAge } from '../../Varios/Util'
+import { errorStatusHandler, LegalAge } from '../../Varios/Util'
 import { PostData } from '../../Varios/Requests'
+import { Notification } from '../../Global/Notifys'
 
 // Import styles
 import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/RegistroPersonal.css'
@@ -22,6 +23,7 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
   // Dynamic vars
   const [activeTab, setActiveTab] = useState('personal')
   const [profileImage, setProfileImage] = useState(null)
+  const [notify, setNotify] = useState(null)
   const profileInputRef = useRef(null)
   const {
     register,
@@ -70,23 +72,29 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
       fot_vet: "no-registrado",
     }
     try {
+      setNotify({
+        title: 'Cargando',
+        message: 'Registrando usuario...',
+        load: 1
+      })
       const token = localStorage.getItem('token')
       if (token) {
-        loadingAlert('Validando...')
-        const created = await PostData(`${mainUrl}/register`, token, datas)
-        created.ok && swal({
-          icon: 'success',
+        const created = await PostData(`${mainUrl}/register`, datas)
+        setNotify(null)
+        created.created && setNotify({
           title: 'Registrado',
-          text: 'Ha sido registrado correctamente',
+          message: 'Ha sido registrado correctamente',
+          close: setNotify,
         })
       }
     } catch (err) {
+      setNotify(null)
       if (err.status) {
         const message = errorStatusHandler(err.status)
-        swal({
+        setNotify({
           title: 'Error',
-          text: `${message}`,
-          icon: 'warning',
+          message: `${message}`,
+          close: setNotify,
         })
       } else console.log(err)
     }
@@ -366,6 +374,11 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
           <Footer/>
         </div>
       </main>
+      {notify && (
+        <Notification 
+          {...notify}
+        />
+      )}
     </div>
   )
 }

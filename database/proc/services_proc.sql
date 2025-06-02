@@ -118,3 +118,4 @@ END //
 /* CALL `SearchServices`(); */
 /* CALL `SearchServicesBy`('Cirugía'); */
 /* DROP PROCEDURE pets_heaven.SearchServices; */
+/* DROP PROCEDURE pets_heaven.`SearchServicesBy`; */

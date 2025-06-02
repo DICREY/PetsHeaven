@@ -15,7 +15,7 @@ import Footer from '../Varios/Footer2'
 // Import styles 
 import '../../../src/styles/InterfazAdmin/Consultorio.css'
 
-export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
+export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect, roles = ['Usuario'] }) {
   // Dynamic vars 
   const [datas, setDatas] = useState([])
   const [petsDataAlmc, setPetsDataAlmc] = useState([])
@@ -35,7 +35,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
     const token = localStorage.getItem('token')
     try {
       if (token) {
-        const data = await GetData(`${mainUrl}/all`, token)
+        const data = await GetData(`${mainUrl}/all`)
         setNotify(null)
 
         if (data) formatDatas(data)
@@ -64,7 +64,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
     const token = localStorage.getItem('token')
       try {
         if(token) {
-          const pets = await GetData(`${URL}/pet/all`,token)  
+          const pets = await GetData(`${URL}/pet/all`)
           setNotify(null)
           setPetsDataAlmc(pets)
         } else navigate('/user/login')
@@ -204,7 +204,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
 
   return (
     <main className='contenedoradminhome'>
-      <NavBarAdmin />
+      <NavBarAdmin roles={roles} />
       <section className='principaladminhome'>
       <HeaderUser />
         <article className='tarjetaadminhome' aria-labelledby='lista-usuarios-titulo'>
@@ -220,7 +220,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
 
               <nav className='BtnsRegisters'>
                 <button 
-                  className='botonadminhome' 
+                  className='AddBtn' 
                   onClick={() => navigate('/mascota/registro')}
                   aria-label='Registrar nueva mascota'
                 >
@@ -228,7 +228,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
                   Registrar Mascota
                 </button>
                 <button 
-                  className='botonadminhome' 
+                  className='AddBtn' 
                   onClick={() => navigate('/propietario/registro')}
                   aria-label='Registrar nuevo usuario'
                 >

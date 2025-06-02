@@ -20,12 +20,12 @@ const Route = Router()
 Route.get('/services', async (req,res) => {
     // Vars
     const global = new Global()
-    const services = await global.SearchServices()
-
-    // Verify if exist 
-    if (!services.result) res.status(404).json({ message: "servicios no encontrados" })
-
     try {
+        const services = await global.SearchServices()
+
+        // Verify if exist 
+        if (!services.result) res.status(404).json({ message: "servicios no encontrados" })
+
         res.status(200).json(services)
     } catch (err) {
         if (err.status) return res.status(err.status).json({ message: err.message })
@@ -33,7 +33,7 @@ Route.get('/services', async (req,res) => {
     }
 })
 
-Route.post('/login',limiterLog, async (req,res) => {
+Route.post('/login', limiterLog, async (req,res) => {
     // Vars
     const { firstData, secondData } = req.body
     const global = new Global(firstData)
@@ -47,36 +47,26 @@ Route.post('/login',limiterLog, async (req,res) => {
         // Verify
         const coincide = await compare(secondData, user.cont_per)
 
-        if (!coincide) {
-            return res.status(401).json({ message: 'Credenciales inválidas' })
-        }
+        if (!coincide) return res.status(401).json({ message: 'Credenciales inválidas' })
         const token = jwt.sign(
             {   
                 names: user.nom_per,
                 lastNames: user.ape_per,
-            },
-            secret,
-            { expiresIn: '8h' }
-        )
-        const tokenInfo = jwt.sign(
-            { 
-                names: user.nom_per,
-                lastNames: user.ape_per,
-                roles: user.roles,
                 img: user.fot_roles.split(',')[0]
             },
             secret,
             { expiresIn: '8h' }
         )
 
-        res.cookie('token', token, cookiesOptions)
+        res.cookie('__cred', token, cookiesOptionsLog)
+        res.cookie('__nit', secret, cookiesOptionsLog)
 
-        if (user.roles.includes('Administrador')) res.cookie('Nikola', 'Que miras', cookiesOptions)
+        if (user.roles) res.cookie('__user', user.roles, cookiesOptionsLog)
+        if (user.nom_per && user.ape_per) res.cookie('__userName', `${user.nom_per} ${user.ape_per}`, cookiesOptionsLog)
+        // if (user.roles.includes('Administrador')) res.cookie('Administrador', 'Que miras', cookiesOptions)
+        // if (user.roles.includes('Veterinario')) res.cookie('Veterinario', 'Que miras', cookiesOptions)
 
-        if (user.roles.includes('Veterinario')) res.cookie('Marie', 'Que miras', cookiesOptions)
-
-        res.status(200).json({ token: tokenInfo })
-        
+        res.status(200).json({ token: token, roles: user.roles })
 
     } catch (err) {
         if (err.status) return res.status(err.status).json({ message: err.message })
@@ -114,10 +104,19 @@ Route.post('/cookie', authenticateJWT,(req, res) => {
 
 Route.post('/check-cookie', authenticateJWT,(req, res) => {
     const { name } = req.body
-    const cookie = req.cookies[name]
+    const cookie = req.signedCookies.name
     console.log(name)
 
     return res.status(200).json({ message: cookie })
+})
+
+Route.post('/clear-cookies', authenticateJWT,(req, res) => {
+    res.clearCookie('__cred', cookiesOptions)
+    res.clearCookie('__user', cookiesOptions)
+    res.clearCookie('__xApiKey', cookiesOptions)
+    res.clearCookie('__userName', cookiesOptions)
+
+    return res.status(200).json({ message: 'Cookies eliminadas' })
 })
 
 // Export 

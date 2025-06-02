@@ -533,7 +533,7 @@
 
 /* Media query para pantallas más pequeñas */
 @media (max-width: 600px) {
-  .wheel-and-hamster {
+  .dog {
     bottom: 10%;
     /* Ajuste para pantallas pequeñas */
   }

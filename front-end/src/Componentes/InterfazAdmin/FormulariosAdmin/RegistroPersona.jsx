@@ -7,7 +7,8 @@ import { useForm } from 'react-hook-form'
 // Imports
 import Contrasena from './Contrasena'
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
-import { errorStatusHandler, LegalAge, loadingAlert } from '../../Varios/Util'
+import { errorStatusHandler, LegalAge } from '../../Varios/Util'
+import { Notification } from '../../Global/Notifys'
 import { PostData } from '../../Varios/Requests'
 
 // Import styles
@@ -15,10 +16,11 @@ import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/RegistroPersonal.cs
 import HeaderUser from '../../BarrasNavegacion/HeaderUser'
 import Footer from '../../Varios/Footer2'
 
-export const RegistroPro = ({ URL = '' }) => {
+export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
   // Dynamic vars
   const [activeTab, setActiveTab] = useState('personal')
   const [profileImage, setProfileImage] = useState(null)
+  const [notify, setNotify] = useState(null)
   const profileInputRef = useRef(null)
   const doc = useRef(null)
   const {
@@ -62,24 +64,30 @@ export const RegistroPro = ({ URL = '' }) => {
     }    
 
     try {
+      setNotify({
+        title: 'Cargando',
+        message: 'Por favor, espere mientras se registra el usuario.',
+        load: 1
+      })
       const token = localStorage.getItem('token')
       if (token) {
-        loadingAlert('Validando...')
-        const created = await PostData(`${mainUrl}/register`, token, datas)
-        created.data.created && swal({
-          icon: 'success',
+        const created = await PostData(`${mainUrl}/register`, datas)
+        setNotify(null)
+        created.data.created && setNotify({
           title: 'Registrado',
-          text: 'Ha sido registrado correctamente',
+          message: 'Ha sido registrado correctamente',
+          close: setNotify
         })
         console.log(created)
       }
     } catch (err) {
+      setNotify(null)
       if (err.status) {
         const message = errorStatusHandler(err.status)
-        swal({
+        setNotify({
           title: 'Error',
-          text: `${message}`,
-          icon: 'warning',
+          message: `${message}`,    
+          close: setNotify
         })
       } else console.log(err)
     }
@@ -92,10 +100,10 @@ export const RegistroPro = ({ URL = '' }) => {
   },[])
 
   return (
-    <div className='contenedorgesusuario'>
-      <NavBarAdmin />
+    <main className='contenedorgesusuario'>
+      <NavBarAdmin roles={roles} />
       <main className='principalgesusuario'>
-        <HeaderUser/>
+        <HeaderUser />
         <div className='contenedor-regusuario'>
           <div className='cabecera-regusuario'>
             <div className='titulo-regusuario'>
@@ -365,6 +373,11 @@ export const RegistroPro = ({ URL = '' }) => {
           <Footer/>
         </div>
       </main>
-    </div>
+      {notify && (
+        <Notification 
+          {...notify}
+        />
+      )}
+    </main>
   )
 }

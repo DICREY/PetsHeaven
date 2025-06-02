@@ -13,7 +13,7 @@ import HeaderUser from '../BarrasNavegacion/HeaderUser'
 import Footer from '../Varios/Footer2'
 
 // Component 
-export const Services = ({ URL = '', imgDefault = '', currentTab = null }) => {
+export const Services = ({ URL = '', imgDefault = '', currentTab = null, roles = ['Usuario'] }) => {
     // Dynamic vars 
     const [datas, setDatas] = useState([])
     const [notify, setNotify] = useState(null)
@@ -38,7 +38,7 @@ export const Services = ({ URL = '', imgDefault = '', currentTab = null }) => {
         const reqUrl = `${mainUrl}/all/${currentTab}`
         try {
           if (token) {
-            const data = await GetData(reqUrl, token)
+            const data = await GetData(reqUrl, token, roles)
             setNotify(null)
     
             if (data) setDatas(data)
@@ -72,7 +72,7 @@ export const Services = ({ URL = '', imgDefault = '', currentTab = null }) => {
 
     return (
         <main className='contenedoradminhome'>
-        <NavBarAdmin />
+        <NavBarAdmin roles={roles} />
 
           <section className='principaladminhome'>
             <HeaderUser />

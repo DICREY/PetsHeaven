@@ -25,9 +25,13 @@ import VeterinariaPage from '../Componentes/VeterinariaPage'
 import { PerfilPropietario } from '../Componentes/Peoples/PerfilPropietario'
 import { GesAgendaPersonal } from '../Componentes/InterfazAdmin/GesAgendaPersonal'
 import { Services } from '../Componentes/InterfazAdmin/Services'
+import {CirugiasVeterinaria} from "../Componentes/InterfazAdmin/Servicios/Cirugia"
+import {SpaMascotas} from "../Componentes/InterfazAdmin/Servicios/Spa"
+import {VisualizadorVacunas} from "../Componentes/InterfazAdmin/Servicios/Vacuna"
 
 //import Crud personal
 import { ConfiguracionUsuarioCrud } from '../Componentes/InterfazAdmin/CrudPersonal/ConfiguracionUsuarioCrud'
+import { PostData } from '../Componentes/Varios/Requests'
 
 // Main Component
 export default function App () {
@@ -37,6 +41,7 @@ export default function App () {
   const [owner,setOwner] = useState(false)
   const [arriveTo,setArriveTo] = useState('')
   const [petDetailTab,setPetDetailTab] = useState('Datos Generales')
+  const [roles,setRoles] = useState(['Usuario'])
   const [currentTab,setCurrentTab] = useState('Vacunas')
 
   // Vars 
@@ -58,27 +63,33 @@ export default function App () {
     const token = localStorage.getItem('token')
 
     if (token) {
-      const vet = decodeJWT(token).roles.split(', ').includes('Veterinario')
-      return vet? children : <Navigate to='/user/login' />
+      if(roles){
+        const vet = roles.includes('Veterinario')
+        return vet? children : <Navigate to='/user/login' />
+      }
     }
 
     return <Navigate to='/user/login' />
   }
 
-  const AdminRoute = ({ children }) => {
+  const AdminRoute = async ({ children }) => {
     // Vars
     const token = localStorage.getItem('token')
-    const admin = decodeJWT(token).roles.split(', ').includes('Administrador')
-
-    if (token) {
-      return admin? children :<Navigate to='/user/login' />
-    }
+    
+    const admin = roles.includes('Administrador')
+    if (token) return admin? children :<Navigate to='/user/login' />
 
     return <Navigate to='/user/login' />
   }
 
   const MainRoute = () => {
     window.location.replace('/main')
+  }
+
+  const checkCookie = async () => {
+    const cookie = await PostData(`${URL}/global/check-cookie`, { name: '__cred' })
+    console.log(cookie)
+    setRoles(cookie)
   }
 
   useEffect(() => {
@@ -92,6 +103,10 @@ export default function App () {
     }
   },[isInactive])
 
+  // useEffect(() => {
+  //   checkCookie()
+  // }, [roles])
+
   return (
     // Define Routes
     <BrowserRouter>
@@ -101,6 +116,7 @@ export default function App () {
           <PrivateRoute children={<Pets 
             setPetSelect={setPetSelect}
             URL={URL}
+            roles={roles}
             imgPetDefault={imgPetDefault}
             imgUserDefault={imgUserDefault} 
           />}/>}>
@@ -108,6 +124,7 @@ export default function App () {
         <Route path='/pets/details' element={
           <PrivateRoute children={<PetDetails
             tab={petDetailTab}
+            roles={roles}
             datas={petSelect}
             imgPetDefault={imgPetDefault}
             URL={URL}
@@ -115,50 +132,35 @@ export default function App () {
         </Route>
         <Route path='/services' element={
           <PrivateRoute children={<Services URL={URL}
-            imgDefault={imgServiceDefault} />}/>}>
-        </Route>
-        <Route path='/services/vacunas' element={
-          <PrivateRoute children={<Services URL={URL} currentTab={'Vacunación'}
-            imgDefault={imgServiceDefault} />}/>}>
-        </Route>
-        <Route path='/services/cirugia' element={
-          <PrivateRoute children={<Services URL={URL} currentTab={'Cirugía'}
-            imgDefault={imgServiceDefault} />}/>}>
-        </Route>
-        <Route path='/services/laboratorio' element={
-          <PrivateRoute children={<Services URL={URL} currentTab={'Consulta General'}
-            imgDefault={imgServiceDefault} />}/>}>
-        </Route>
-        <Route path='/services/spa' element={
-          <PrivateRoute children={<Services URL={URL} currentTab={'Spa y Baño'}
-            imgDefault={imgServiceDefault} />}/>}>
+            imgDefault={imgServiceDefault} roles={roles} />}/>}>
         </Route>
 
         {/* Admin routes  */}
         <Route path='/admin' element={<MainAdmin />} >
           <Route path='gestion/usuarios' element={
-            <AdminRoute children={<GesPersonal setUserSelect={setUserSelect} URL={URL} />} />} >
+            <AdminRoute children={<GesPersonal setUserSelect={setUserSelect} URL={URL} roles={roles} />} />} >
           </Route>
           <Route path='usuario/registro' element={
-            <AdminRoute children={<ConfiguracionUsuario URL={URL} />} />} >
+            <AdminRoute children={<ConfiguracionUsuario URL={URL} roles={roles} />} />} >
           </Route>
           <Route path='actualizar/datos personal' element={
-            <AdminRoute children={<ConfiguracionUsuarioCrud userSelect={userSelect} URL={URL} />} />} >
+            <AdminRoute children={<ConfiguracionUsuarioCrud userSelect={userSelect} URL={URL} roles={roles} />} />} >
           </Route>
         </Route>
         
         {/* Vet routes */}
         <Route path='mascota/registro' element={
-          <VetRoute children={<FormularioRegMascotas URL={URL} imgDefault={imgPetDefault} />} />} >
-        </Route>
+          <VetRoute children={<FormularioRegMascotas URL={URL} imgDefault={imgPetDefault} roles={roles} />} />
+        } />
         <Route path='propietario/registro' element={
-          <VetRoute children={<RegistroPro URL={URL} imgDefault={imgUserDefault} />} />}>
+          <VetRoute children={<RegistroPro URL={URL} imgDefault={imgUserDefault} roles={roles} />} />}>
         </Route>
         <Route path='consultorio' element={
           <VetRoute children={<HomeAdmin 
             setOwner={setOwner} 
             setUserSelect={setUserSelect} 
             setPetSelect={setPetSelect}
+            roles={roles}
             URL={URL}
           />} />}>  
         </Route>
@@ -167,6 +169,7 @@ export default function App () {
           <PerfilPropietario 
             setPetDetailTab={setPetDetailTab}
             owner={owner} 
+            roles={roles}
             userSelect={userSelect}
             imgPetDefault={imgPetDefault} 
             imgUserDefault={imgUserDefault} 
@@ -175,16 +178,29 @@ export default function App () {
           />} />} >
         </Route>
         <Route path='calendario/general' element={
-          <VetRoute children={<GesAgendaGeneral URL={URL} />} />} >
+          <VetRoute children={<GesAgendaGeneral URL={URL} roles={roles} />} />} >
         </Route>
         <Route path='calendario/usuario' element={
-          <VetRoute children={<GesAgendaPersonal URL={URL} />} />} >
-        </Route>
+          <VetRoute children={<GesAgendaPersonal URL={URL} roles={roles} />} />
+        } />
+        <Route path='servicios/cirugia' element={
+          <VetRoute children={<CirugiasVeterinaria URL={URL} roles={roles} />} />
+        } />
+        <Route path='servicios/vacunas' element={
+          <VetRoute children={<VisualizadorVacunas URL={URL} roles={roles} />} />
+        } />
+        <Route path='servicios/spa' element={
+          <VetRoute children={<SpaMascotas URL={URL} roles={roles} />} />
+        } />
 
         {/* Public Routes */}
         <Route path='/' element={<MainRoute />} />
         <Route path='main' element={<VeterinariaPage URL={URL} setArriveTo={setArriveTo} />} />
-        <Route path='user/login' element={<LoginForm URL={URL} imgDefault={imgUserDefault} arriveTo={arriveTo} />} />
+        <Route path='user/login' element={
+          <LoginForm
+            URL={URL} imgDefault={imgUserDefault} 
+            arriveTo={arriveTo} setRoles={setRoles}
+          />} />
         <Route path='user/register' element={<Registro URL={URL} imgDefault={imgUserDefault} />} />
         <Route path='user/recuperar' element={<ForgotPassword />} />
         <Route path='internal' element={<ErrorInternalServer />} />

@@ -5,9 +5,10 @@ import { User, PawPrint, ArrowLeft, Trash2, Edit, Save, X, Calendar } from 'luci
 
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
-import { loadingAlert, getRoles, formatDate, getAge, errorStatusHandler, checkImage } from '../Varios/Util'
-import { Description } from '../Global/Description'
+import { formatDate, getAge, errorStatusHandler, checkImage } from '../Varios/Util'
 import { DeleteData, ModifyData } from '../Varios/Requests'
+import { Description } from '../Global/Description'
+import { Notification } from '../Global/Notifys'
 
 // Import styles 
 import '../../../src/styles/InterfazAdmin/PerfilPropietario.css'
@@ -22,6 +23,7 @@ export const PerfilPropietario = ({
     imgPetDefault = '', 
     imgUserDefault = '',
     setPetDetailTab,
+    roles = ['Usuario'],
     setPetSelect }) => {
   // Vars dynamic
   const [isEditing, setIsEditing] = useState(false)
@@ -29,6 +31,7 @@ export const PerfilPropietario = ({
   const [activeTab, setActiveTab] = useState('propietario')
   const [petsData,setPetsData] = useState([])
   const [formData, setFormData] = useState({})
+  const [notify, setNotify] = useState(null)
   const [userData,setUserData] = useState({})
   const [modPro,setModPro] = useState({})
 
@@ -74,26 +77,32 @@ export const PerfilPropietario = ({
   }
 
   const handleSaveEdit = async () => {
+    setNotify({
+      title: 'Guardando...',
+      message: 'Por favor, espere mientras se guardan los cambios.',
+      load: 1
+    })
     setIsEditing(false)
+    // Vars 
     const token = localStorage.getItem('token')
     try {
       if (token) {
-        loadingAlert('Validando...',)
-        const mod = await ModifyData(`${mainUrl}/modify`, token, modPro)
-        console.log(mod)
-        mod.modified & swal({
-          icon: 'success',
+        const mod = await ModifyData(`${mainUrl}/modify`, modPro)
+        setNotify(null)
+        mod.modified & setNotify({
           title: 'Modificado',
-          text: 'Los datos del usuario han sido modificados',
+          message: 'Los datos del usuario han sido modificados',
+          close: setNotify
         })
       }
     } catch (err) {
+      setNotify(null)
       if(err.status) {
         const message = errorStatusHandler(err.status)
-        swal({
+        setNotify({
           title: 'Error',
-          text: `${message}`,
-          icon: 'warning',
+          message: `${message}`,
+          close: setNotify
         })
       } else console.log(err)
     }
@@ -110,30 +119,32 @@ export const PerfilPropietario = ({
   const handleDeleteClick = async () => {
     // Vars
     const token = localStorage.getItem('token')
+    setNotify({
+      title: 'Desactivando...',
+      message: 'Por favor, espere mientras se desactiva al usuario.',
+      load: 1
+    })
     try {
       if(token) {
-        const roles = getRoles(token)
         const admin = roles.some(role => role.toLowerCase() === 'administrador')
         if (admin) {
-          loadingAlert('Validando...')
-          const deleted = await DeleteData(`${mainUrl}/delete`,token,{
-            doc: userData.doc_per
-          })
-  
-          deleted.deleted & swal({
-            icon: 'success',
+          const deleted = await DeleteData(`${mainUrl}/delete`, { doc: userData.doc_per})
+          setNotify(null)
+          deleted.deleted & setNotify({
             title: 'Desactivada',
-            text: 'La persona ha sido desactivada correctamente.',
+            message: 'La persona ha sido desactivada correctamente.',
+            close: setNotify
           })
         }
       } else navigate('/user/login')
     } catch (err) {
+      setNotify(null)
       if(err.status) {
         const message = errorStatusHandler(err.status)
-        swal({
-          icon: 'error',
+        setNotify({
           title: 'Error',
-          text: message
+          message: message,
+          close: setNotify
         })
       } else console.log(err)
     }
@@ -178,7 +189,6 @@ export const PerfilPropietario = ({
 
     if(token) {
       // Vars
-      const roles =  getRoles(token)
       const admin = roles.some(role => role.toLowerCase() === 'administrador')
 
       admin?setIsAdmin(true):setIsAdmin(false)
@@ -187,7 +197,7 @@ export const PerfilPropietario = ({
 
   return (
     <main className='contenedorpageProps'>
-      <NavBarAdmin />
+      <NavBarAdmin roles={roles} />
       <div className='principalpageProp'>
       <HeaderUser/> 
         <div className='contenedorProps'>
@@ -314,6 +324,11 @@ export const PerfilPropietario = ({
       </div>
       <Footer/>
       </div>      
+      {notify && (
+        <Notification 
+          {...notify}
+        />
+      )}
     </main> 
   )
 }

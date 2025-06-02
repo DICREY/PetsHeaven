@@ -1,22 +1,22 @@
 .contenedorgesusuario {
-display: flex;
-min-height: 100vh;
-background-color: #f8fafc;
-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  background-color: #f8fafc;
 }
 
 .principalgesusuario {
-flex: 1;
-padding: 1.5rem;
-transition: padding 0.3s ease;
+  flex: 1;
+  padding: 1.5rem;
+  height: 100vh;
+  overflow: auto;
+  transition: padding 0.3s ease;
 }
 
 .tarjetagesusuario {
-width: 100%;
-background-color: white;
-border-radius: 0.5rem;
-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-transition: all 0.3s ease;
+  width: 100%;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
 .contenidogesusuario {

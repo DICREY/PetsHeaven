@@ -13,7 +13,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 // Main component
-export const Pets = ({URL = '', imgPetDefault = '', setPetSelect }) => {
+export const Pets = ({URL = '', imgPetDefault = '', setPetSelect, roles = ['Usuario'] }) => {
     // Dynamic Vars
     const [petsData, setPetsData] = useState([])
     const [loading, setLoading] = useState(false)
@@ -37,8 +37,7 @@ export const Pets = ({URL = '', imgPetDefault = '', setPetSelect }) => {
             load: 1
         })
         try {
-            const pets = await GetData(url,token)
-
+            const pets = await GetData(url)
             setNotify(null)
             setPetsData(pets)
             setfound(true)
@@ -64,7 +63,7 @@ export const Pets = ({URL = '', imgPetDefault = '', setPetSelect }) => {
             // Vars
             const by = decodeJWT(token).names.toLowerCase()
 
-            const admin = decodeJWT(token).roles.include('Administrador')
+            const admin = roles.includes('Administrador')
 
             admin? setIsAdmin(true): setIsAdmin(false)
 

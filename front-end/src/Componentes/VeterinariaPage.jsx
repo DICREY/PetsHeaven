@@ -3,8 +3,9 @@ import { NavBar } from './BarrasNavegacion/NavBar'
 import { GetDataGlobal } from './Varios/Requests'
 import { diapositivas, promociones, testimonios } from './Varios/varios'
 import { checkImage } from './Varios/Util'
-import { Loader } from './Errores/Loader'
-import { Load } from './Errores/Load'
+// import { Loader } from './Errores/Loader'
+// import { Load } from './Errores/Load'
+import { Load2 } from './Errores/Load2'
 import Footer from './Varios/Footer2'
 
 // Librarys 
@@ -59,7 +60,7 @@ const itemVariants = {
   }
 };
 
-export default function VeterinariaPage({ URL = '', setArriveTo}) {
+export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuario'] }) {
   // Dynamic vars
   const mainUrl = `${URL}/global/services`
   const [diaActual, setDiaActual] = useState(0)
@@ -158,9 +159,10 @@ export default function VeterinariaPage({ URL = '', setArriveTo}) {
   return (
     <>
     {
-      loading ? (<Load />) : (
+      loading ? (<Load2 />) : ( 
+           
         <div className='pagina'>
-          <NavBar />
+          <NavBar roles={roles} />
 
           {/* COMPONENTE: Carrusel */}
           <motion.section 
@@ -249,9 +251,9 @@ export default function VeterinariaPage({ URL = '', setArriveTo}) {
                 whileInView='visible'
                 viewport={{ once: true }}
               >
-                {serData.map(i => (
+                {serData?.map(i => (
                   <motion.div 
-                    key={i.img_ser} 
+                    key={i.img_cat} 
                     onClick={() => {
                       setArriveTo('/calendario/general')
                       navigate('/user/login')
@@ -261,17 +263,17 @@ export default function VeterinariaPage({ URL = '', setArriveTo}) {
                     whileHover={{ scale: 1.03 }}
                   >
                     <div className='imagen-servicio'>
-                      {checkImage(i.img_ser,
-                        i.nom_ser === 'Consulta General' ? 'Veterinario revisando a un gato durante una consulta general' :
-                        i.nom_ser === 'Vacunación' ? 'Veterinario aplicando vacuna a un cachorro' :
-                        i.nom_ser === 'Cirugía' ? 'Veterinarios realizando una cirugía a una mascota en quirófano' :
-                        i.nom_ser === 'Emergencias 24h' ? 'Atención veterinaria de emergencia a un perro por dos profesionales' :
-                        i.nom_ser === 'Spa y Baño' ? 'Perro pequeño recibiendo baño con espuma en una clínica veterinaria' :
-                        `Imagen representativa del servicio ${i.nom_ser}`,
+                      {checkImage(i.img_cat,
+                        i.nom_cat === 'Consulta General' ? 'Veterinario revisando a un gato durante una consulta general' :
+                        i.nom_cat === 'Vacunación' ? 'Veterinario aplicando vacuna a un cachorro' :
+                        i.nom_cat === 'Cirugía' ? 'Veterinarios realizando una cirugía a una mascota en quirófano' :
+                        i.nom_cat === 'Emergencias 24h' ? 'Atención veterinaria de emergencia a un perro por dos profesionales' :
+                        i.nom_cat === 'Spa y Baño' ? 'Perro pequeño recibiendo baño con espuma en una clínica veterinaria' :
+                        `Imagen representativa del servicio ${i.nom_cat}`,
                         imgDefault,'img-servicio')}
                     </div>
                     <div className='contenido-servicio'>
-                      <h3 className='titulo-servicio'>{i.nom_ser}</h3>
+                      <h3 className='titulo-servicio'>{i.nom_cat}</h3>
                       <p className='descripcion-servicio'>{i.des_ser}</p>
                     </div>
                   </motion.div>
@@ -298,7 +300,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo}) {
                 whileInView='visible'
                 viewport={{ once: true }}
               >
-                {promociones.map((promocion, indice) => (
+                {promociones?.map((promocion, indice) => (
                   <motion.div 
                     key={indice} 
                     className='tarjeta-promocion'
@@ -339,7 +341,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo}) {
             <div className='contenedor'>
               <h2 className='titulo-seccion titulo-centrado'>Testimonios</h2>
               <div className='carrusel-test'>
-                {gruposTest.map((grupo, indice) => (
+                {gruposTest?.map((grupo, indice) => (
                   <div key={indice} className={`slide-test ${indice === testActual ? 'activo' : 'inactivo'}`}>
                     <motion.div 
                       className='grid-test'
@@ -373,7 +375,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo}) {
                 ))}
 
                 <div className='indicadores-test'>
-                  {gruposTest.map((_, indice) => (
+                  {gruposTest?.map((_, indice) => (
                     <button
                       key={indice}
                       onClick={() => setTestActual(indice)}

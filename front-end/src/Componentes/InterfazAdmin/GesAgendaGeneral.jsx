@@ -6,7 +6,6 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import listPlugin from '@fullcalendar/list'
 import esLocale from "@fullcalendar/core/locales/es"
-import axios from 'axios'
 
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
@@ -27,7 +26,7 @@ function joinDateTime(date, time) {
 }
 
 // Component 
-export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
+export const GesAgendaGeneral = ({ URL = 'http://localhost:3000', roles = ['Usuario'] }) => {
     // Dynamic vars 
     const [events, setEvents] = useState([])
     const [notify, setNotify] = useState(null)
@@ -36,11 +35,11 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     const [showCreateModal, setShowCreateModal] = useState(false) //Mostrar el pop up de creacion de Cita
     const [selectedEvent, setSelectedEvent] = useState(null)
     const [selectedDate, setSelectedDate] = useState('')
-    const [lugar, setLugar] = useState('Consultorio');
+    const [lugar, setLugar] = useState('Consultorio')
     const calendarRef = useRef(null)
-    const [allPacientes, setAllPacientes] = useState([]); // Todos los pacientes
-    const [filteredPacientes, setFilteredPacientes] = useState([]); // Resultados filtrados
-    const [showPacientesDropdown, setShowPacientesDropdown] = useState(false); // Controlar dropdown
+    const [allPacientes, setAllPacientes] = useState([]) // Todos los pacientes
+    const [filteredPacientes, setFilteredPacientes] = useState([]) // Resultados filtrados
+    const [showPacientesDropdown, setShowPacientesDropdown] = useState(false) // Controlar dropdown
     const [newEvent, setNewEvent] = useState({
         title: '',
         start: '',
@@ -54,22 +53,22 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
         estado: 'PENDIENTE',
         mas_cit: '' 
     })
-    const createModalRef = useRef(null);
-    const eventModalRef = useRef(null);
+    const createModalRef = useRef(null)
+    const eventModalRef = useRef(null)
 
     // Cerrar modal al hacer clic fuera
     useEffect(() => {
         function handleClickOutside(event) {
             if (showCreateModal && createModalRef.current && !createModalRef.current.contains(event.target)) {
-                setShowCreateModal(false);
+                setShowCreateModal(false)
             }
             if (showEventModal && eventModalRef.current && !eventModalRef.current.contains(event.target)) {
-                setShowEventModal(false);
+                setShowEventModal(false)
             }
         }
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [showCreateModal, showEventModal]);
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [showCreateModal, showEventModal])
 
 
     // Vars 
@@ -102,19 +101,18 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
 
 
     const fetchPacientes = async () => {
-        const token = localStorage.getItem("token");
         try {
-            const data = await GetData(`${URL}/pet/all`, token); // Ajusta el endpoint
-            if (data) setAllPacientes(data);
+            const data = await GetData(`${URL}/pet/all`)
+            if (data) setAllPacientes(data)
         } catch (err) {
-            console.error("Error al cargar pacientes:", err);
+            console.error("Error al cargar pacientes:", err)
         }
-    };
+    }
 
     // Crear citas
     const handleDateClick = (arg) => {
-        setSelectedDate(arg.dateStr);
-        fetchPacientes(); // Cargar pacientes cuando se abre el modal
+        setSelectedDate(arg.dateStr)
+        fetchPacientes() // Cargar pacientes cuando se abre el modal
         setNewEvent({
             title: '',
             start: `${arg.dateStr}T09:00:00`,
@@ -126,9 +124,9 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
             lug_ate_cit: 'Consultorio',
             telefono: '',
             estado: 'PENDIENTE'
-        });
-        setShowCreateModal(true);
-    };
+        })
+        setShowCreateModal(true)
+    }
 
     // Mostrar detalles de la cita
     const handleEventClick = (info) => {
@@ -144,36 +142,20 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
 
     // Crear nueva cita en el backend
     const handleCreateEvent = async () => {
-        if (!newEvent.title) {
-            alert('El título es requerido')
-            return
+        const citaData = {
+            fec_reg_cit: new Date().toISOString().split('T')[0],
+            fec_cit: newEvent.start.split('T')[0],
+            hor_ini_cit: newEvent.start.split('T')[1],
+            hor_fin_cit: newEvent.end.split('T')[1],
+            lug_ate_cit: lugar,
+            ser_cit: 1,
+            vet_cit: 1,
+            mas_cit: newEvent.mas_cit,
+            estado: 'PENDIENTE'
         }
-
-        const token = localStorage.getItem("token")
-        console.log(token)
         try {
-            const citaData = {
-                fec_reg_cit: new Date().toISOString().split('T')[0],
-                fec_cit: newEvent.start.split('T')[0],
-                hor_ini_cit: newEvent.start.split('T')[1],
-                hor_fin_cit: newEvent.end.split('T')[1],
-                lug_ate_cit: lugar,
-                ser_cit: 1,
-                vet_cit: 1, 
-                mas_cit: newEvent.mas_cit, 
-                estado: 'PENDIENTE'
-            }
-            await axios.post(`${mainUrl}/register`, citaData, {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            'x-api-key': 'pets_heaven_vite',
-                            'user': 'admin', 
-                            'roles': 'Administrador', 
-                            'accept': 'application/json'
-                        }
-                    });
+            await PostData(`${mainUrl}/register`, citaData)
             setShowCreateModal(false)
-            // Refresca las citas
             fetchAppointments()
         } catch (err) {
             alert('Error al crear la cita')
@@ -182,26 +164,35 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
 
     // Actualizar cita existente en el backend
     const handleUpdateEvent = async () => {
-        const token = localStorage.getItem("token")
+        // Verificar fecha
+        const eventDate = new Date(selectedEvent.start)
+        const today = new Date()
+        today.setHours(0, 0, 0, 0) // Eliminar la parte de la hora para comparar solo fechas
+        
+        if (eventDate < today) {
+            Alert.alert(
+            'Fecha inválida',
+            'No puedes agendar citas en fechas pasadas',
+            [{ text: 'OK' }]
+            )
+            return
+        }
+        const citaData = {
+            id_cit: selectedEvent.id,
+            mas_cit: selectedEvent.mas_cit,
+            fec_cit: typeof selectedEvent.start === "string"
+                ? selectedEvent.start.split('T')[0]
+                : selectedEvent.start.toISOString().split('T')[0],
+            hor_ini_cit: typeof selectedEvent.start === "string"
+                ? selectedEvent.start.split('T')[1]
+                : selectedEvent.start.toISOString().split('T')[1],
+            hor_fin_cit: typeof selectedEvent.end === "string"
+                ? selectedEvent.end.split('T')[1]
+                : selectedEvent.end.toISOString().split('T')[1],
+            lug_ate_cit: selectedEvent.lug_ate_cit || "Consultorio"
+        }
         try {
-            const citaData = {
-                id_cit: selectedEvent.id,
-                mas_cit: selectedEvent.mas_cit, 
-                fec_cit: typeof selectedEvent.start === "string" ? selectedEvent.start.split('T')[0] : selectedEvent.start.toISOString().split('T')[0],
-                hor_ini_cit: typeof selectedEvent.start === "string" ? selectedEvent.start.split('T')[1] : selectedEvent.start.toISOString().split('T')[1],
-                hor_fin_cit: typeof selectedEvent.end === "string" ? selectedEvent.end.split('T')[1] : selectedEvent.end.toISOString().split('T')[1],
-                lug_ate_cit: "Consultorio"
-            }
-            console.log(citaData)
-            await axios.put(`${mainUrl}/modify`, citaData, {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            'x-api-key': 'pets_heaven_vite',
-                            'user': 'admin', 
-                            'roles': 'Administrador', 
-                            'accept': 'application/json'
-                        }
-                    })
+            await ModifyData(`${mainUrl}/modify`, citaData)
             setShowEventModal(false)
             fetchAppointments()
         } catch (err) {
@@ -220,13 +211,12 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     // Cancelar cita en el backend
     const handleDeleteEvent = async () => {
         if (!window.confirm(`¿Eliminar la cita "${selectedEvent.title}"?`)) return
-        const token = localStorage.getItem("token")
         try {
             const citaData = {
                 id_cit: selectedEvent.id,
-                mas_cit: 1 // Ajusta según tu lógica
+                mas_cit: selectedEvent.mas_cit
             }
-            await ModifyData(`${mainUrl}/cancel`, citaData, token)
+            await ModifyData(`${mainUrl}/cancel`, citaData)
             setShowEventModal(false)
             fetchAppointments()
         } catch (err) {
@@ -253,14 +243,13 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     }
 
     const fetchAppointments = async () => {
-        const token = localStorage.getItem("token")
         setNotify({
             title: 'Cargando',
             message: 'Cargando citas, por favor espere...',
             load: 1
         })
         try {
-            let data = await GetData(`${mainUrl}/general`, token)
+            let data = await GetData(`${mainUrl}/general`)
             setNotify(null)
             // Normaliza la respuesta a array
             if (data && !Array.isArray(data)) {
@@ -299,11 +288,15 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
         }
     }
 
+    const validatePatientName = (input) => {
+        // Expresión regular que solo permite letras, espacios y algunos caracteres especiales comunes en nombres
+        return input.replace(/[0-9]/g, '')
+    }
 
 
     return (
         <main className="calendar-container">
-            <NavBarAdmin />
+            <NavBarAdmin roles={roles} />
             <main className='calendar-container' id='main-container-calendar'>
             <HeaderUser openHelp={() => setTabHelp(true)}/>
 
@@ -326,7 +319,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                     headerToolbar={{
                         start: "customPrev today customNext",
                         center: "title",
-                        end: "dayGridMonth dayGridWeek dayGridDay listWeek"
+                        end: "dayGridMonth dayGridWeek dayGridDay listYear"
                     }}
                     customButtons={{
                         customPrev: {
@@ -425,15 +418,6 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                 <div className="form-columns">
                                     <div className="form-column">
                                         <div className="form-group">
-                                            <label>Título:</label>
-                                            <input
-                                                type="text"
-                                                name="title"
-                                                value={newEvent.title}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
-                                        <div className="form-group">
                                             <label>Paciente:</label>
                                             <div className="paciente-autocomplete">
                                                 <input
@@ -441,17 +425,26 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                                     name="paciente"
                                                     value={newEvent.paciente}
                                                     onChange={(e) => {
-                                                        const value = e.target.value;
-                                                        setNewEvent({ ...newEvent, paciente: value });
-                                                        searchFilter(
-                                                            value,
-                                                            allPacientes,
-                                                            ['nom_mas', 'nom_per', 'ape_per'], // Campos a buscar
-                                                            setFilteredPacientes
-                                                        );
-                                                        setShowPacientesDropdown(value.length > 0);
+                                                        const value = e.target.value
+                                                        // Filtramos los números antes de actualizar el estado
+                                                        const filteredValue = validatePatientName(value)
+                                                        if (filteredValue === value || value.length < newEvent.paciente.length){
+                                                            setNewEvent({ ...newEvent, paciente: value })
+                                                            searchFilter(
+                                                                value,
+                                                                allPacientes,
+                                                                ['nom_mas', 'nom_per', 'ape_per'], // Campos a buscar
+                                                                setFilteredPacientes
+                                                            )
+                                                            setShowPacientesDropdown(value.length > 0)
+                                                        }
                                                     }}
                                                     onFocus={() => setShowPacientesDropdown(newEvent.paciente.length > 0)}
+                                                     onKeyDown={(e) => {
+                                                        // Bloquear teclas numéricas directamente
+                                                        if (e.key >= '0' && e.key <= '9') {
+                                                        e.preventDefault()
+                                                        }}}
                                                 />
                                                 {showPacientesDropdown && filteredPacientes.length > 0 && (
                                                     <div className="paciente-dropdown">
@@ -468,8 +461,8 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                                                         mas_cit: paciente.id_mas
                                                                     },
                                                                     console.log(paciente.id_mas)
-                                                                    );
-                                                                    setShowPacientesDropdown(false);
+                                                                    )
+                                                                    setShowPacientesDropdown(false)
                                                                 }}
                                                             >
                                                                 {paciente.nom_mas} ({paciente.nom_per} {paciente.ape_per})
@@ -486,6 +479,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                                 name="propietario"
                                                 value={newEvent.propietario}
                                                 onChange={handleInputChange}
+                                                disabled
                                             />
                                         </div>
                                         <div className="form-group">
@@ -495,6 +489,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                                 name="telefono"
                                                 value={newEvent.telefono}
                                                 onChange={handleInputChange}
+                                                disabled
                                             />
                                         </div>
                                         <div className="form-group">
@@ -601,6 +596,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                         name="title"
                                         value={selectedEvent?.title || ''}
                                         onChange={handleInputChange}
+                                        disabled
                                     />
                                 </div>
                                 <div className="form-group">
@@ -610,6 +606,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                         name="paciente"
                                         value={selectedEvent?.paciente || ''}
                                         onChange={handleInputChange}
+                                        disabled
                                     />
                                 </div>
                                 <div className="form-group">
@@ -618,12 +615,14 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                         type="text"
                                         name="propietario"
                                         value={selectedEvent?.propietario || ''}
+                                        disabled
                                         onChange={handleInputChange}
                                     />
                                 </div>
                                 <div className="form-group">
                                     <label>Teléfono:</label>
                                     <input
+                                        disabled
                                         type="text"
                                         name="telefono"
                                         value={selectedEvent?.telefono || ''}
@@ -638,23 +637,36 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                             ? selectedEvent.start.split('T')[0]
                                             : selectedEvent.start.toISOString().split('T')[0])
                                             : ''}
+                                        min={new Date().toISOString().split('T')[0]} // Establece la fecha mínima como hoy
                                         onChange={e => {
-                                            const date = e.target.value;
+
+                                            const selectedDate = e.target.value
+                                            const today = new Date().toISOString().split('T')[0]
+                                            
+                                            if (selectedDate < today) {
+                                                Alert.alert(
+                                                'Fecha inválida',
+                                                'No puedes agendar citas en fechas pasadas',
+                                                [{ text: 'OK' }]
+                                                )
+                                                return
+                                            }
+
                                             const startTime = selectedEvent?.start
                                                 ? (typeof selectedEvent.start === "string"
                                                     ? selectedEvent.start.split('T')[1].substring(0, 5)
                                                     : selectedEvent.start.toISOString().split('T')[1].substring(0, 5))
-                                                : '09:00';
+                                                : '09:00'
                                             const endTime = selectedEvent?.end
                                                 ? (typeof selectedEvent.end === "string"
                                                     ? selectedEvent.end.split('T')[1].substring(0, 5)
                                                     : selectedEvent.end.toISOString().split('T')[1].substring(0, 5))
-                                                : '10:00';
+                                                : '10:00'
                                             setSelectedEvent({
                                                 ...selectedEvent,
-                                                start: `${date}T${startTime}:00`,
-                                                end: `${date}T${endTime}:00`
-                                            });
+                                                start: `${selectedDate}T${startTime}:00`,
+                                                end: `${selectedDate}T${endTime}:00`
+                                            })
                                         }}
                                     />
                                 </div>
@@ -670,16 +682,16 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                                     : selectedEvent.start.toISOString().split('T')[1].substring(0, 5))
                                                 : ''}
                                             onChange={e => {
-                                                const time = e.target.value;
+                                                const time = e.target.value
                                                 const date = selectedEvent?.start
                                                     ? (typeof selectedEvent.start === "string"
                                                         ? selectedEvent.start.split('T')[0]
                                                         : selectedEvent.start.toISOString().split('T')[0])
-                                                    : '';
+                                                    : ''
                                                 setSelectedEvent({
                                                     ...selectedEvent,
                                                     start: `${date}T${time}:00`
-                                                });
+                                                })
                                             }}
                                         />
                                     </div>
@@ -694,16 +706,16 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
                                                     : selectedEvent.end.toISOString().split('T')[1].substring(0, 5))
                                                 : ''}
                                             onChange={e => {
-                                                const time = e.target.value;
+                                                const time = e.target.value
                                                 const date = selectedEvent?.end
                                                     ? (typeof selectedEvent.end === "string"
                                                         ? selectedEvent.end.split('T')[0]
                                                         : selectedEvent.end.toISOString().split('T')[0])
-                                                    : '';
+                                                    : ''
                                                 setSelectedEvent({
                                                     ...selectedEvent,
                                                     end: `${date}T${time}:00`
-                                                });
+                                                })
                                             }}
                                         />
                                     </div>

@@ -1,0 +1,137 @@
+.loade {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+.wrapper {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .wrapper {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .catContainer {
+      width: 100%;
+      height: fit-content;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .catbody {
+        width: 130px;
+    }
+
+  .tail {
+    position: absolute;
+    width: 30px;
+    top: 50%;
+    animation: tail 0.5s ease-in infinite alternate-reverse;
+    transform-origin: top;
+  }
+  @keyframes tail {
+    0% {
+      transform: rotateZ(60deg);
+    }
+    50% {
+      transform: rotateZ(0deg);
+    }
+    100% {
+      transform: rotateZ(-20deg);
+    }
+  }
+  .text {
+    display: flex;
+    flex-direction: column;
+    width: 50px;
+    position: absolute;
+    margin: 0px 0px 100px 120px;
+  }
+  .zzz {
+    color: rgb(0, 0, 0);
+    font-weight: 700;
+    font-size: 15px;
+    animation: zzz 2s linear infinite;
+  }
+  .bigzzz {
+    color: black;
+    font-weight: 700;
+    font-size: 25px;
+    margin-left: 10px;
+    animation: zzz 2.3s linear infinite;
+  }
+  @keyframes zzz {
+    0% {
+      color: transparent;
+    }
+    50% {
+      color: black;
+    }
+    100% {
+      color: transparent;
+    }
+  }
+  
+.loader {
+    display: block;
+    --height-of-loader: 4px;
+    --loader-color: #0071e2;
+    width: 80%;
+    max-width: 730px;
+    height: 20px;
+    border-radius: 30px;
+    background-color: rgba(0, 0, 0, 0.2);
+    position: relative;
+    bottom: -1%;
+    z-index: -1;
+  }
+  
+  .loader::before {
+    content: "";
+    position: absolute;
+    background: var(--loader-color);
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    border-radius: 30px;
+    animation: moving 1.5s ease-in-out infinite;
+    ;
+  }
+  
+  @keyframes moving {
+    50% {
+      width: 100%;
+    }
+  
+    100% {
+      width: 0;
+      right: 0;
+      left: unset;
+    }
+  }
+  
+  /* Media query para pantallas más pequeñas */
+  @media (max-width: 600px) {
+    .catContainer {
+      bottom: 10%;
+      /* Ajuste para pantallas pequeñas */
+    }
+  
+    .loader {
+      bottom: 12%;
+      /* Ajuste para pantallas pequeñas */
+    }
+  }

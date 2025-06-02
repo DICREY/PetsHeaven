@@ -10,7 +10,7 @@ import { Logout, checkImage, decodeJWT, getRoles } from '../Varios/Util'
 // Import styles
 import '../../../src/styles/BarrasNavegacion/NavBarAdmin.css'
 
-export const NavBarAdmin = () => {
+export const NavBarAdmin = ({ roles = ['Usuario'] }) => {
   // Dynamic vars 
   const [serviciosAbierto, setServiciosAbierto] = useState(false)
   const [agendaAbierta, setAgendaAbierta] = useState(false)
@@ -53,7 +53,6 @@ export const NavBarAdmin = () => {
   useEffect(() => {
     if(token){
       const tokenJWT = decodeJWT(token)
-      const roles = tokenJWT.roles.split(',')
       const admin = roles.includes('Administrador')
 
       setUser(tokenJWT)
@@ -63,7 +62,7 @@ export const NavBarAdmin = () => {
   }, [])
 
   return (
-    <>
+    <header className='MainHeader'>
       {/* Botón de menú móvil */}
       <button
         className={`botonmovilnavadmin ${menuMovilAbierto ? 'activonavadmin' : ''}`}
@@ -73,12 +72,8 @@ export const NavBarAdmin = () => {
         {menuMovilAbierto ? <X size={20} /> : <Menu size={20} />}
       </button>
 
-      {menuMovilAbierto && esMovil && <div className='overlaynavadmin' onClick={toggleMenuMovil}></div>}
-
       <aside
-        className={`
-          barranavadmin ${menuMovilAbierto ? 'visiblenavadmin' : 'ocultanavadmin'}
-        `}
+        className={`barranavadmin ${menuMovilAbierto ? 'visiblenavadmin' : 'ocultanavadmin'}`}
       >
         <div className='perfilsuperiornavadmin'>
           <div className='avatarnavadmin'>
@@ -205,6 +200,6 @@ export const NavBarAdmin = () => {
           </button>
         </div>
       </aside>
-    </>
+    </header>
   )
 }

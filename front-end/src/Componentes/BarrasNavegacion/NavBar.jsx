@@ -9,7 +9,7 @@ import { Logout, decodeJWT } from '../Varios/Util'
 import '../../../src/styles/BarrasNavegacion/NavBar.css'
 
 // Main component 
-export const NavBar = () => {
+export const NavBar = ({ roles = ['Usuario'] }) => {
   // Vars 
   const [menuAbierto, setMenuAbierto] = useState(false)
   const [isAutenticate, setIsAutenticate] = useState(false)
@@ -44,7 +44,6 @@ export const NavBar = () => {
   useEffect(() => {
     const token = localStorage.getItem('token')
     if(token){
-      const roles = decodeJWT(token).roles.split(',')
       setIsAutenticate(true) 
 
       if(roles.includes('Administrador') || roles.includes('Veterinario')) {

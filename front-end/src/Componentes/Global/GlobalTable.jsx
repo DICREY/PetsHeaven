@@ -210,7 +210,7 @@ export class GlobalTable extends Component {
                         onClick={() => this.onWatch(item)} 
                         aria-label={`Ver detalles de ${item.nom_per}`}
                       >
-                        <FileText size={18} aria-hidden='true' />
+                        <FileText size='1.1rem' aria-hidden='true' />
                       </button>  
                     </td>
                   </tr>
