@@ -8,7 +8,7 @@ import '../../../src/styles/Errores/SmallLoader.css'
 export const SmallLoader = () => {
   const random = Math.floor(Math.random() * 2) + 1 // Randomly choose between 1 and 2
   if (random === 1) {
-    return <SmallLoaderDog />
+    return <SmallLoaderHamster />
   }
   if (random === 2) {
     return <SmallLoaderDog />

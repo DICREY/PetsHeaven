@@ -5,7 +5,7 @@ import { diapositivas, promociones, testimonios } from './Varios/varios'
 import { checkImage } from './Varios/Util'
 // import { Loader } from './Errores/Loader'
 // import { Load } from './Errores/Load'
-import { Load2 } from './Errores/Load2'
+import { Loader } from './Errores/Loader'
 import Footer from './Varios/Footer2'
 
 // Librarys 
@@ -159,9 +159,9 @@ export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuar
   return (
     <>
     {
-      loading ? (<Load2 />) : ( 
+      loading ? (<Loader />) : ( 
            
-        <div className='pagina'>
+        <main className='pagina'>
           <NavBar roles={roles} />
 
           {/* COMPONENTE: Carrusel */}
@@ -171,7 +171,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuar
             animate='visible'
             variants={fadeIn}
           >
-            {diapositivas.map((dia, indice) => (
+            {diapositivas?.map((dia, indice) => (
               <div key={indice} className={`dia-carrusel ${indice === diaActual ? 'activo' : ''}`}>
                 {checkImage(
                   dia.imagen,
@@ -182,7 +182,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuar
               </div> 
             ))}
             <div className='indicadores'>
-              {diapositivas.map((_, indice) => (
+              {diapositivas?.map((_, indice) => (
                 <button
                   key={indice}
                   onClick={() => setDiaActual(indice)}
@@ -242,7 +242,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuar
             viewport={{ once: true }}
             variants={containerVariants}
           >
-            <div className='contenedor'>
+            <section className='contenedor'>
               <h2 className='titulo-seccion titulo-centrado'>Nuestros Servicios</h2>
               <motion.div 
                 className='grid-servicios'
@@ -279,7 +279,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuar
                   </motion.div>
                 ))}
               </motion.div>
-            </div>
+            </section>
           </motion.section>
 
           {/* COMPONENTE: Promociones */}
@@ -291,7 +291,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuar
             viewport={{ once: true }}
             variants={containerVariants}
           >
-            <div className='contenedor'>
+            <section className='contenedor'>
               <h2 className='titulo-seccion titulo-centrado'>Promociones Especiales</h2>
               <motion.div 
                 className='grid-promociones'
@@ -326,7 +326,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuar
                   </motion.div>
                 ))}
               </motion.div>
-            </div>
+            </section>
           </motion.section>
 
           {/* COMPONENTE: Testimonios */}
@@ -338,7 +338,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuar
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <div className='contenedor'>
+            <section className='contenedor'>
               <h2 className='titulo-seccion titulo-centrado'>Testimonios</h2>
               <div className='carrusel-test'>
                 {gruposTest?.map((grupo, indice) => (
@@ -385,7 +385,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuar
                   ))}
                 </div>
               </div>
-            </div>
+            </section>
           </motion.section>
 
           {/* COMPONENTE: Contacto */}
@@ -397,7 +397,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuar
             viewport={{ once: true }}
             variants={containerVariants}
           >
-            <div className='contenedor'>
+            <section className='contenedor'>
               <motion.div 
                 className='grid-contacto'
                 variants={staggerContainer}
@@ -498,7 +498,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuar
                   ></iframe>
                 </aside>
               </motion.div>
-            </div>
+            </section>
           </motion.section> 
           
           {/* Botón para subir */}
@@ -515,7 +515,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuar
             <ChevronUp className='icono-subir' />
           </motion.button> 
           <Footer/>
-        </div>
+        </main>
       )
     }
     </>

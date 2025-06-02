@@ -1,11 +1,25 @@
 // Librarys 
 import React from 'react'
 
+// Imports 
+import { LoadDog } from './LoadDog'
+
 // Import styles
 import '../../../src/styles/Errores/Loader.css'
 
 // Component 
 export const Loader = () => {
+  const random = Math.floor(Math.random() * 2) + 1 // Randomly choose between 1 and 2
+  if (random === 1) {
+    return <LoadHamster />
+  }
+  if (random === 2) {
+    return <LoadDog />
+  }
+}
+
+// Component 
+export const LoadHamster = () => {
   return (
     <main className='main-container-loader'>
       <div
