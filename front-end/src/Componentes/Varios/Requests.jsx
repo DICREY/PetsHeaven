@@ -39,8 +39,8 @@ export async function PostData(URL = '', datas = {}) {
     try {
         const response = await axios.post( URL, {...datas}, { 
             headers: {
-                    'x-api-key': 'pets_heaven_vite'
-                },
+                'x-api-key': 'pets_heaven_vite'
+            },
             withCredentials: true} )
   
         // Manejar diferentes códigos de estado
@@ -108,7 +108,7 @@ export async function DeleteData(URL = '', datas = {}) {
     }
 }
 
-export async function login(url = '', first = '', second = '') {
+export async function Login(url = '', first = '', second = '') {
     try {
         const response = await axios.post(
             url, 
@@ -123,12 +123,9 @@ export async function login(url = '', first = '', second = '') {
                 withCredentials: true }
         )
   
-        if (response.statusText !== 'OK') {
-            throw response
-        }
+        if (response.statusText !== 'OK') throw response
   
         const data = response.data
-        localStorage.setItem('token',data.token)
 
         return data
   

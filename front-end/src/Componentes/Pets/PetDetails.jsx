@@ -1,5 +1,5 @@
 // Librarys 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { ArrowLeft, Trash2, Edit, Save, X, FilePlus } from 'lucide-react'
 import { useNavigate } from 'react-router'
         
@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router'
 import { Description } from '../Global/Description'
 import { HistoryTest } from './historyTest'
 import { Notification } from '../Global/Notifys'
+import { AuthContext } from '../../Contexts/Contexts'
 import { DeleteData, ModifyData, PostData } from '../Varios/Requests'
 import { checkImage, getAge, errorStatusHandler, divideList, decodeJWT } from '../Varios/Util'
 import { FormularioConsulta } from '../InterfazAdmin/FormulariosAdmin/Consulta'
@@ -18,7 +19,7 @@ import '../../../src/styles/Pets/petDetails.css'
 import HeaderUser from '../BarrasNavegacion/HeaderUser'
 
 // Main component
-export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Generales'}, roles = ['Usuario']) => {
+export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Generales'}) => {
     // Dynamic vars
     const [isAdmin,setIsAdmin] = useState(false)
     const [isEditing,setIsEditing] = useState(false)
@@ -31,6 +32,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
     const [showMedicHistory,setShowMedicHistory] = useState(false)
     const [consult,setConsult] = useState(false)
     const [notify, setNotify] = useState(null)
+    const { roles } = useContext(AuthContext)
     const headers = {
         Nombre: 'nom_mas',
         Especie: 'esp_mas',
@@ -91,16 +93,13 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
     // Get pets history
     const getHistory = async () => {
         try {
-            const token = localStorage.getItem('token')
-            if (token) {
-                const data = await PostData(`${mainURL}/history`, {
-                    firstData: datas.nom_mas,
-                    secondData: datas.doc_per
-                })
-                if (data.data.result) {
-                    setAppointment(divideList(data.data.result.citas,6))
-                    setAppointmentAlmc(data.data.result.citas)
-                }
+            const data = await PostData(`${mainURL}/history`, {
+                firstData: datas.nom_mas,
+                secondData: datas.doc_per
+            })
+            if (data.data.result) {
+                setAppointment(divideList(data.data.result.citas,6))
+                setAppointmentAlmc(data.data.result.citas)
             }
         } catch (err) {
             if(err.status) {
@@ -122,16 +121,13 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
             load:1
         })
         try {
-            const token = localStorage.getItem('token')
-            if (token) {
-                const mod = await ModifyData(`${mainURL}/modify`, modPet)
-                setNotify(null)
-                if (mod.data.modify) setNotify({
-                    title: 'Modificación exitosa',
-                    message: 'Los datos de la mascota han sido modificados exitosamente',
-                    close: setNotify
-                })
-            }
+            const mod = await ModifyData(`${mainURL}/modify`, modPet)
+            setNotify(null)
+            if (mod.data.modify) setNotify({
+                title: 'Modificación exitosa',
+                message: 'Los datos de la mascota han sido modificados exitosamente',
+                close: setNotify
+            })
         } catch (err) {
             setNotify(null)
             if(err.status) {
@@ -149,29 +145,25 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
     const deletePet = async () => {
         // Vars
         const deleteURL = `${mainURL}/delete`
-        const token = localStorage.getItem('token')
         setNotify({
             title: 'Validando...',
             message: 'Verificando datos proporcionados',
             load:1
         })
         try {
-            if(token) {
-                const admin = decodeJWT(token).roles.includes('Administrador')
-                if (admin) {
-                    
-                    const deleted = await DeleteData(deleteURL,{
-                        nom_mas: datas.nom_mas,
-                        doc_per: datas.doc_per
-                    })
-                    setNotify(null)
-                    if (deleted.data.deleted) setNotify({
-                        title: 'Mascota Desactivada',
-                        message: 'La mascota ha sido desactivada correctamente.',
-                        close: setNotify
-                    })
-                }
-            } else navigate('/user/login')
+            const admin = roles.includes('Administrador')
+            if (admin) {
+                const deleted = await DeleteData(deleteURL,{
+                    nom_mas: datas.nom_mas,
+                    doc_per: datas.doc_per
+                })
+                setNotify(null)
+                if (deleted.data.deleted) setNotify({
+                    title: 'Mascota Desactivada',
+                    message: 'La mascota ha sido desactivada correctamente.',
+                    close: setNotify
+                })
+            }
         } catch (err) {
             setNotify(null)
             if (err.status) {
@@ -197,19 +189,13 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
 
     // Effects 
     useEffect(() => {
-        // Vars
-        const token = localStorage.getItem('token')
-
         if (!datas) navigate(-1)
         
         getHistory()
 
-        if(token) {
-            // Vars
-            const admin = decodeJWT(token).roles.includes('Administrador')
-
-            admin? setIsAdmin(true): setIsAdmin(false)
-        } else navigate('/user/login')
+        // Vars
+        const admin = roles.includes('Administrador')
+        admin? setIsAdmin(true): setIsAdmin(false)
     }, [])
     
     return (

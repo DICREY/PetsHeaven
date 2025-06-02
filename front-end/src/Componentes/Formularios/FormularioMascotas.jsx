@@ -50,22 +50,17 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
       load:1
     })
     try {
-      const token = localStorage.getItem('token')
-      
-      if (token) {
-        formData.fec_nac_mas = formatDate(formData.fec_nac_mas)
+      formData.fec_nac_mas = formatDate(formData.fec_nac_mas)
 
-        const created = await PostData(`${mainURL}/register`, token, formData)
+      const created = await PostData(`${mainURL}/register`, formData)
 
-        setNotify(null)
+      setNotify(null)
 
-        if(created.status === 201) setNotify({
-          title: 'Registro Exitoso',
-          message: 'La mascota ha sido registrada con exito',
-          time: 2000,
-          btnClose:1
-        })
-      }
+      if(created.status === 201) setNotify({
+        title: 'Registro Exitoso',
+        message: 'La mascota ha sido registrada con exito',
+        close: setNotify,
+      })
     } catch (err) {
       setNotify(null)
       if(err.status) {
@@ -73,8 +68,7 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
         setNotify({
           title: 'Error',
           message: `${message}`,
-          time: 2000,
-          btnClose:1
+          close: setNotify
         })
       } else console.log(err)
     }

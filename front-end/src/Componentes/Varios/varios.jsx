@@ -3,7 +3,7 @@ export const diapositivas = [
     {
         imagen: "https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Carrucel/carru1.png",
         titulo: "",
-        descripcion: "",
+        descripcion: "",    
         alt: "Imagen con fondo anaranjado que muestra a un perro de raza grande con expresión amigable a la izquierda y a un gato de pelaje claro mirando al frente a la derecha. En el centro se encuentra el logo de PetsHeaven con el texto Clínica Veterinaria. En letras grandes y blancas se lee el mensaje Agendá tu consulta veterinaria acompañado de un ícono de teléfono y el número 3224523961.",
     },
     {

@@ -1,24 +1,25 @@
 // Librarys 
-import React,{ useEffect, useState } from 'react'
+import React,{ useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router'
 
 // Imports 
-import { login } from '../Varios/Requests'
-import { errorStatusHandler, formatoTiempo, checkImage, Logout, getName } from '../Varios/Util'
+import { errorStatusHandler, formatoTiempo, checkImage, getName } from '../Varios/Util'
+import { AuthContext } from '../../Contexts/Contexts'
 
 // Import styles
 import '../../../src/styles/Formularios/login.css'
 import { Notification } from '../Global/Notifys'
 
 // Main component 
-export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = '', setRoles = null }) => {
+export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = '' }) => {
   // Dynamic Vars 
   const [verPassword, setVerPassword] =  useState(false)
   const [waitTime, setWaitTime] =  useState(false)
   const [time, setTime] = useState()
   const [notify, setNotify] = useState(null)
-  
+  const { user, roles, loading, login, logout } = useContext(AuthContext)
+
   // Vars 
   const imagenFondo = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Fondos/fondo.png' 
   const logoUrl = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/5.png'
@@ -67,22 +68,18 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = '', setRoles =
       const log = await login(url,firstData,secondData)
       setNotify(null)
       if (log) {
-        const token = localStorage.getItem('token')
         setNotify({
           title: 'Bienvenido',
-          message: `Hola, ${getName(token)} Feliz día`,
+          message: `Hola, ${log.names} ${log.lastNames} Feliz día`,
           close: setNotify
         })
-        const roles = log.roles.split(', ')
-        setRoles(roles)
 
-        arriveTo = arriveTo? arriveTo: useRoleRedirect(roles)
+        arriveTo = arriveTo? arriveTo: useRoleRedirect(log.roles?.split(', '))
+
+        setTimeout(() => {
+          navigate(arriveTo)
+        },2000)
         
-        if(token){ 
-          setTimeout(() => {
-            navigate(arriveTo)
-          },2000)
-        } 
       }
     } catch (err) {
       setNotify(null)
@@ -107,7 +104,7 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = '', setRoles =
 
   useEffect(() => {
     let intervalo = null
-    if (localStorage.getItem('token')) Logout()
+    if (user || roles) logout()
     
     if (waitTime) {
       // Inicia el contador
@@ -320,6 +317,13 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = '', setRoles =
       {notify && (
         <Notification 
           {...notify}
+        />)
+      }
+      {loading && (
+        <Notification 
+          title='Cargando...'
+          message='Por favor, espere un momento'
+          load={true}
         />)
       }
     </div>

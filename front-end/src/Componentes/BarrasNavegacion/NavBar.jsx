@@ -1,21 +1,22 @@
 // Librarys 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 
 // Imports 
-import { Logout, decodeJWT } from '../Varios/Util'
+import { AuthContext } from '../../Contexts/Contexts'
 
 // Import styles
 import '../../../src/styles/BarrasNavegacion/NavBar.css'
 
 // Main component 
-export const NavBar = ({ roles = ['Usuario'] }) => {
+export const NavBar = () => {
   // Vars 
   const [menuAbierto, setMenuAbierto] = useState(false)
   const [isAutenticate, setIsAutenticate] = useState(false)
   const [petsUrl, setPetsUrl] = useState('/user/pets')
   const [isAdmin, setIsAdmin] = useState(false)
   const refNav = useRef(null)
+  const { roles, logout } = useContext(AuthContext)
   
   // Función para manejar el scroll a secciones
   const irASeccion = (e, id) => {
@@ -42,8 +43,7 @@ export const NavBar = ({ roles = ['Usuario'] }) => {
   }
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    if(token){
+    if(user){
       setIsAutenticate(true) 
 
       if(roles.includes('Administrador') || roles.includes('Veterinario')) {
@@ -107,7 +107,7 @@ export const NavBar = ({ roles = ['Usuario'] }) => {
         {
           isAutenticate ? (
             <div className='botones-escritorio'>
-              <a href='/main' className='boton-login-nav' onClick={Logout}>Cerrar Sesión</a>
+              <a href='/main' className='boton-login-nav' onClick={logout}>Cerrar Sesión</a>
             </div>
           ) : (
             <div className='botones-escritorio'>
@@ -150,7 +150,7 @@ export const NavBar = ({ roles = ['Usuario'] }) => {
           {
             isAutenticate ? (
               <div className='botones-movil'>
-                <a href='/main' className='boton-login-movil-nav' onClick={Logout}>Cerrar Sesión</a>
+                <a href='/main' className='boton-login-movil-nav' onClick={logout}>Cerrar Sesión</a>
               </div>
             ) : (
               <div className='botones-movil'>

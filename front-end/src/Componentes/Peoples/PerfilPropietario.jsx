@@ -83,18 +83,14 @@ export const PerfilPropietario = ({
       load: 1
     })
     setIsEditing(false)
-    // Vars 
-    const token = localStorage.getItem('token')
     try {
-      if (token) {
-        const mod = await ModifyData(`${mainUrl}/modify`, modPro)
-        setNotify(null)
-        mod.modified & setNotify({
-          title: 'Modificado',
-          message: 'Los datos del usuario han sido modificados',
-          close: setNotify
-        })
-      }
+      const mod = await ModifyData(`${mainUrl}/modify`, modPro)
+      setNotify(null)
+      mod.modified & setNotify({
+        title: 'Modificado',
+        message: 'Los datos del usuario han sido modificados',
+        close: setNotify
+      })
     } catch (err) {
       setNotify(null)
       if(err.status) {
@@ -118,25 +114,22 @@ export const PerfilPropietario = ({
 
   const handleDeleteClick = async () => {
     // Vars
-    const token = localStorage.getItem('token')
     setNotify({
       title: 'Desactivando...',
       message: 'Por favor, espere mientras se desactiva al usuario.',
       load: 1
     })
     try {
-      if(token) {
-        const admin = roles.some(role => role.toLowerCase() === 'administrador')
-        if (admin) {
-          const deleted = await DeleteData(`${mainUrl}/delete`, { doc: userData.doc_per})
-          setNotify(null)
-          deleted.deleted & setNotify({
-            title: 'Desactivada',
-            message: 'La persona ha sido desactivada correctamente.',
-            close: setNotify
-          })
-        }
-      } else navigate('/user/login')
+      const admin = roles.some(role => role.toLowerCase() === 'administrador')
+      if (admin) {
+        const deleted = await DeleteData(`${mainUrl}/delete`, { doc: userData.doc_per})
+        setNotify(null)
+        deleted.deleted & setNotify({
+          title: 'Desactivada',
+          message: 'La persona ha sido desactivada correctamente.',
+          close: setNotify
+        })
+      }
     } catch (err) {
       setNotify(null)
       if(err.status) {
@@ -181,23 +174,19 @@ export const PerfilPropietario = ({
 
   useEffect(() => {
     // Vars
-    const token = localStorage.getItem('token')
 
     if (!userSelect) navigate('/consultorio')
     setUserData(userSelect)
     setFormData(userSelect)
 
-    if(token) {
-      // Vars
-      const admin = roles.some(role => role.toLowerCase() === 'administrador')
+    const admin = roles.some(role => role.toLowerCase() === 'administrador')
 
-      admin?setIsAdmin(true):setIsAdmin(false)
-    } else navigate('/user/login')
+    admin?setIsAdmin(true):setIsAdmin(false)
   },[])
 
   return (
     <main className='contenedorpageProps'>
-      <NavBarAdmin roles={roles} />
+      <NavBarAdmin />
       <div className='principalpageProp'>
       <HeaderUser/> 
         <div className='contenedorProps'>

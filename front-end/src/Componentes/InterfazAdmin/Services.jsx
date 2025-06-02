@@ -11,12 +11,14 @@ import { GetData } from '../Varios/Requests'
 import { errorStatusHandler, searchFilter } from '../Varios/Util'
 import HeaderUser from '../BarrasNavegacion/HeaderUser'
 import Footer from '../Varios/Footer2'
+import { AuthContext } from '../../Contexts/Contexts'
 
 // Component 
-export const Services = ({ URL = '', imgDefault = '', currentTab = null, roles = ['Usuario'] }) => {
+export const Services = ({ URL = '', imgDefault = '', currentTab = null }) => {
     // Dynamic vars 
     const [datas, setDatas] = useState([])
     const [notify, setNotify] = useState(null)
+    const { roles } = useContext(AuthContext)
     
     // Vars 
     const mainUrl = `${URL}/service`
@@ -34,15 +36,12 @@ export const Services = ({ URL = '', imgDefault = '', currentTab = null, roles =
           message:'Obteniendo datos',
           load: 1
         })
-        const token = localStorage.getItem('token')
         const reqUrl = `${mainUrl}/all/${currentTab}`
         try {
-          if (token) {
-            const data = await GetData(reqUrl, token, roles)
-            setNotify(null)
-    
-            if (data) setDatas(data)
-          } else navigate('/user/login')
+          const data = await GetData(reqUrl)
+          setNotify(null)
+  
+          if (data) setDatas(data)
         } catch (err) {
           setNotify(null)
           if (err.status) {
@@ -72,7 +71,7 @@ export const Services = ({ URL = '', imgDefault = '', currentTab = null, roles =
 
     return (
         <main className='contenedoradminhome'>
-        <NavBarAdmin roles={roles} />
+        <NavBarAdmin />
 
           <section className='principaladminhome'>
             <HeaderUser />

@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router'
 
 // Imports 
 import { Register } from '../Varios/Requests'
-import { checkImage, LegalAge } from '../Varios/Util'
+import { checkImage, LegalAge, errorStatusHandler } from '../Varios/Util'
 import { Notification } from '../Global/Notifys'
 
 // Import styles
@@ -222,13 +222,23 @@ const Registro = ({ URL = '', imgDefault = '' }) => {
       const send = await Register(mainUrl,data)
       setNotify(false)
       if (send.data.created) {
-        console.log('registrado')
-        setTimeout(() => navigate('/user/login'),2000)
+        setNotify({
+          title: 'Registro exitoso',
+          message: 'Tu cuenta ha sido creada correctamente. Serás redirigido a la página de inicio de sesión.',
+          close: setNotify,
+        })
+
+        setTimeout(() => navigate('/user/login'), 2000)
       }
     } catch (error) {
       setNotify(false)
       if (error.status) {
-        console.log(error.status)
+        const message = errorStatusHandler(error.status)
+        setNotify({
+          title: 'Error',
+          message: `${message}`,
+          close: setNotify
+        })
       } else console.log(error)
     }
 

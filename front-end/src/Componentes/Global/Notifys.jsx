@@ -1,10 +1,10 @@
 // Librarys 
-import React, { createContext, useContext, useEffect, useState } from "react"
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 
 // Imports
 import { checkImage } from '../Varios/Util'
-import { SmallLoader } from '../Errores/SmallLoader'
+import { SmallLoader } from '../Loaders/SmallLoader'
 
 // Import styles 
 import '../../styles/Global/notifys.css'
@@ -20,7 +20,8 @@ export const Notification = ({
     imgDefault = 'https://github.com/Mogom/Imagenes_PetsHeaven/blob/main/Defaults/NotifyCat.jpg?raw=true',
     load = false,
     time = 4000,
-    close = null
+    close = null,
+    select = null
 }) => {
     // Dynamic vars
     const [isOpen,setIsOpen] = useState(true)
@@ -36,34 +37,43 @@ export const Notification = ({
     return (
         <>
             {isOpen && (
-                <section className="LoadingNotification">
-                    <article className="LoadingContent">
-                        <aside className="LoadingPaw">
-                            {load && ( <SmallLoader /> )}
-                        </aside> 
-                        {/* <aside className="LoadingPawImg">
-                            {checkImage(
-                                img,
-                                'ganzo antropomorfico con traje formal negro con una lupa antigua en la pata derecha y la cabeza inclinada 40grados a la izquierda',
-                                imgDefault,
-                                'LoadingImg'
-                            )} 
-                        </aside> */}
-                        <aside className="LoadingText">
+                <section className='LoadingNotification'>
+                    <article className='LoadingContent'>
+                        {load?(
+                            <aside className='LoadingPaw'>
+                                <SmallLoader /> 
+                            </aside> 
+                        ):(
+                            <aside className='LoadingPawImg'>
+                                {checkImage(
+                                    img,
+                                    'ganzo antropomorfico con traje formal negro con una lupa antigua en la pata derecha y la cabeza inclinada 40grados a la izquierda',
+                                    imgDefault,
+                                    'LoadingImg'
+                                )} 
+                            </aside>
+                        )}
+                        <aside className='LoadingText'>
                             <p>{title}</p>
-                            <p className="LoadingSubText">{message}</p>
+                            <p className='LoadingSubText'>{message}</p>
                         </aside>
                         {load && (
-                            <aside className="LoadingBar">
-                                <div className="LoadingProgress"></div>
+                            <aside className='LoadingBar'>
+                                <div className='LoadingProgress'></div>
                             </aside>
                         )}
                         {close && (
-                            <aside className="LoadingContainer">
+                            <aside className='LoadingContainer'>
                                 <button
-                                    className="DeleteBtn"
+                                    className='DeleteBtn'
                                     onClick={() => close(null)}
                                 >Cerrar</button>
+                            </aside>
+                        )}
+                        {select && (
+                            <aside className='LoadingSelect'>
+                                <button className='DeleteBtn' onClick={select}>Cancelar</button>
+                                <button className='AddBtn'>Aceptar</button>
                             </aside>
                         )}
                     </article>
@@ -94,9 +104,9 @@ const Load = ({
     }, [time, onClose])
 
     return ReactDOM.createPortal(
-        <section className="LoadingNotification">
-            <article className="LoadingContent">
-                <aside className="LoadingPaw">
+        <section className='LoadingNotification'>
+            <article className='LoadingContent'>
+                <aside className='LoadingPaw'>
                     {checkImage(
                         img,
                         'ganzo antropomorfico con traje formal negro con una lupa antigua en la pata derecha y la cabeza inclinada 40grados a la izquierda',
@@ -104,18 +114,18 @@ const Load = ({
                         'LoadingImg'
                     )}
                 </aside>
-                <aside className="LoadingText">
+                <aside className='LoadingText'>
                     <p>{title}</p>
-                    <p className="LoadingSubText">{message}</p>
+                    <p className='LoadingSubText'>{message}</p>
                 </aside>
                 {load && (
-                    <aside className="LoadingBar">
-                        <div className="LoadingProgress"></div>
+                    <aside className='LoadingBar'>
+                        <div className='LoadingProgress'></div>
                     </aside>
                 )}
                 {btnClose && (
                     <button
-                        className=""
+                        className=''
                         onClick={() => setIsOpen(false)}
                     >Close</button>
                 )}

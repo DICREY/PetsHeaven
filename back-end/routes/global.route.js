@@ -52,6 +52,7 @@ Route.post('/login', limiterLog, async (req,res) => {
             {   
                 names: user.nom_per,
                 lastNames: user.ape_per,
+                roles: user.roles,
                 img: user.fot_roles.split(',')[0]
             },
             secret,
@@ -63,10 +64,8 @@ Route.post('/login', limiterLog, async (req,res) => {
 
         if (user.roles) res.cookie('__user', user.roles, cookiesOptionsLog)
         if (user.nom_per && user.ape_per) res.cookie('__userName', `${user.nom_per} ${user.ape_per}`, cookiesOptionsLog)
-        // if (user.roles.includes('Administrador')) res.cookie('Administrador', 'Que miras', cookiesOptions)
-        // if (user.roles.includes('Veterinario')) res.cookie('Veterinario', 'Que miras', cookiesOptions)
 
-        res.status(200).json({ token: token, roles: user.roles })
+        res.status(200).json({ token: token })
 
     } catch (err) {
         if (err.status) return res.status(err.status).json({ message: err.message })
@@ -104,10 +103,11 @@ Route.post('/cookie', authenticateJWT,(req, res) => {
 
 Route.post('/check-cookie', authenticateJWT,(req, res) => {
     const { name } = req.body
-    const cookie = req.signedCookies.name
-    console.log(name)
+    const cookie = req.signedCookies[name] || req.cookies[name]
 
-    return res.status(200).json({ message: cookie })
+    if (!cookie) return res.status(404).json({ message: 'Cookie no encontrada' })
+    
+    return res.status(200).json({ data: cookie })
 })
 
 Route.post('/clear-cookies', authenticateJWT,(req, res) => {

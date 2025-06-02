@@ -23,7 +23,7 @@ export const ErrorInternalServer = () => {
         </div>
         
         <Link to="/main" className="pet-home-button">
-          <i className="fas fa-bone"></i> Volver al hogar
+          <i className="fas fa-bone"></i> Volver atrás
         </Link>
       </div>
     </section>

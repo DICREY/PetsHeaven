@@ -1,21 +1,23 @@
 // Librarys 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { Plus, FileText, User, PawPrint } from 'lucide-react'
 
 // Imports 
-import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GlobalTable } from '../Global/GlobalTable'
 import { Notification } from '../Global/Notifys'
 import { GetData } from '../Varios/Requests'
 import { errorStatusHandler, formatDate, searchFilter } from '../Varios/Util'
+import { AuthContext } from '../../Contexts/Contexts'
+
+import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import HeaderUser from '../BarrasNavegacion/HeaderUser'
 import Footer from '../Varios/Footer2'
 
 // Import styles 
 import '../../../src/styles/InterfazAdmin/Consultorio.css'
 
-export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect, roles = ['Usuario'] }) {
+export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   // Dynamic vars 
   const [datas, setDatas] = useState([])
   const [petsDataAlmc, setPetsDataAlmc] = useState([])
@@ -23,6 +25,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect, rol
   const [headers, setHeaders] = useState({})
   const [notify, setNotify] = useState(null)
   let didFetch = useRef(false)
+  const { roles } = useContext(AuthContext)
   
   // Vars 
   const mainUrl = `${URL}/owner`
@@ -32,20 +35,17 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect, rol
 
   // Functions
   const GetDataOwners = async () => {
-    const token = localStorage.getItem('token')
     try {
-      if (token) {
-        const data = await GetData(`${mainUrl}/all`)
-        setNotify(null)
+      const data = await GetData(`${mainUrl}/all`)
+      setNotify(null)
 
-        if (data) formatDatas(data)
-        setHeaders({
-          'Nombres': 'nom_per',
-          'Documento': 'doc_per',
-          'Celular': 'cel_per',
-          'Mascotas': 'mascotas'
-        })
-      } else navigate('/user/login')
+      if (data) formatDatas(data)
+      setHeaders({
+        'Nombres': 'nom_per',
+        'Documento': 'doc_per',
+        'Celular': 'cel_per',
+        'Mascotas': 'mascotas'
+      })
     } catch (err) {
       setNotify(null)
       if (err.status) {
@@ -61,28 +61,25 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect, rol
 
   // fetch para traer datos
   const getPets = async () => {
-    const token = localStorage.getItem('token')
-      try {
-        if(token) {
-          const pets = await GetData(`${URL}/pet/all`)
-          setNotify(null)
-          setPetsDataAlmc(pets)
-        } else navigate('/user/login')
-      } catch (err) {
-        setNotify(null)
-        if (err.status) {
-          const message = errorStatusHandler(err.status)
-          setNotify({
-            title: 'Error',
-            message: `${message}`,
-            close: setNotify
-          })
-       } else console.log(err)
-      }
+    try {
+      const pets = await GetData(`${URL}/pet/all`)
+      setNotify(null)
+      setPetsDataAlmc(pets)    
+    } catch (err) {
+      setNotify(null)
+      if (err.status) {
+        const message = errorStatusHandler(err.status)
+        setNotify({
+          title: 'Error',
+          message: `${message}`,
+          close: setNotify
+        })
+      } else console.log(err)
+    }
   }
 
   const formatDatas = (data) => {
-    const formattedData = data.map((item) => {
+    const formattedData = data?.map((item) => {
       if (!item.mascotas || typeof item.mascotas !== 'string') {
         return { ...item, mascotas: [] }
       }
@@ -204,7 +201,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect, rol
 
   return (
     <main className='contenedoradminhome'>
-      <NavBarAdmin roles={roles} />
+      <NavBarAdmin />
       <section className='principaladminhome'>
       <HeaderUser />
         <article className='tarjetaadminhome' aria-labelledby='lista-usuarios-titulo'>

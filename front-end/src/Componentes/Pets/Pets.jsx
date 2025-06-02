@@ -1,19 +1,20 @@
+// Librarys 
+import React, { useState, useEffect, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 // Imports
 import { GetData } from '../Varios/Requests'
-import { decodeJWT, errorStatusHandler, checkImage } from '../Varios/Util'
+import { errorStatusHandler, checkImage } from '../Varios/Util'
 import { Notification } from '../Global/Notifys'
-import { Loader } from '../Errores/Loader'
+import { Loader } from '../Loaders/Loader'
 import { NotFound } from '../Errores/NotFound'
+import { AuthContext } from '../../Contexts/Contexts'
 
 // Import Styles 
 import '../../../src/styles/Pets/pets.css'
 
-// Librarys 
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-
 // Main component
-export const Pets = ({URL = '', imgPetDefault = '', setPetSelect, roles = ['Usuario'] }) => {
+export const Pets = ({URL = '', imgPetDefault = '', setPetSelect }) => {
     // Dynamic Vars
     const [petsData, setPetsData] = useState([])
     const [loading, setLoading] = useState(false)
@@ -21,6 +22,7 @@ export const Pets = ({URL = '', imgPetDefault = '', setPetSelect, roles = ['Usua
     const [found,setfound] = useState(false)
     const [isAdmin,setIsAdmin] = useState(false)
     const [notify, setNotify] = useState(null)
+    const { roles, user } = useContext(AuthContext)
     
     // Vars 
     const mainURL = `${URL}/pet`
@@ -28,9 +30,8 @@ export const Pets = ({URL = '', imgPetDefault = '', setPetSelect, roles = ['Usua
     const navigate = useNavigate()
 
     // fetch para traer datos
-    const fetchData = async (url = '', token = '') => {
+    const fetchData = async (url = '') => {
         setfound(false)
-
         setNotify({
             title: 'Cargando...',
             message: 'Obteniendo datos',
@@ -58,19 +59,16 @@ export const Pets = ({URL = '', imgPetDefault = '', setPetSelect, roles = ['Usua
     // Ejecutar el fetch para traer datos
     useEffect(() => {
         // Vars
-        const token = localStorage.getItem('token')
-        if(token) {
-            // Vars
-            const by = decodeJWT(token).names.toLowerCase()
+        const by = user.names?.split(' ')[0].toLowerCase()
 
-            const admin = roles.includes('Administrador')
+        const admin = roles.includes('Administrador')
 
-            admin? setIsAdmin(true): setIsAdmin(false)
+        admin? setIsAdmin(true): setIsAdmin(false)
 
-            const newUrl = admin? `${mainURL}/all`: `${mainURL}/all:${by}`
+        const newUrl = admin? `${mainURL}/all`: `${mainURL}/all:${by}`
 
-            fetchData(newUrl,token)
-        } else navigate('/user/login')
+        fetchData(newUrl)
+
     }, [])
 
     return (

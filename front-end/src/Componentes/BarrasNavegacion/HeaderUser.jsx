@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { User, HelpCircle, LogOut } from 'lucide-react'
 
 // Imports 
-import { Logout } from '../Varios/Util'
 import { TabHelp } from '../Global/TabHelp'
+import { AuthContext } from '../../Contexts/Contexts'
 
 // Import styles
 import styles from '../../styles/BarrasNavegacion/HeaderUser.module.css'
@@ -12,6 +12,7 @@ import '../../styles/global.css'
 // Component 
 export default function HeaderUser() {
   const [tabHelp,setTabHelp] = useState()
+  const { logout } = React.useContext(AuthContext)
 
   const handleProfile = () => {
     // Lógica para ir al perfil
@@ -49,7 +50,7 @@ export default function HeaderUser() {
         </button>
         
         <button 
-          onClick={Logout}
+          onClick={logout}
           className='DeleteBtn'
           aria-label="Cerrar sesión"
         >

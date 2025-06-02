@@ -5,7 +5,7 @@ import { diapositivas, promociones, testimonios } from './Varios/varios'
 import { checkImage } from './Varios/Util'
 // import { Loader } from './Errores/Loader'
 // import { Load } from './Errores/Load'
-import { Loader } from './Errores/Loader'
+import { Loader } from './Loaders/Loader'
 import Footer from './Varios/Footer2'
 
 // Librarys 
@@ -172,7 +172,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuar
             variants={fadeIn}
           >
             {diapositivas?.map((dia, indice) => (
-              <div key={indice} className={`dia-carrusel ${indice === diaActual ? 'activo' : ''}`}>
+              <div key={indice + 988} className={`dia-carrusel ${indice === diaActual ? 'activo' : ''}`}>
                 {checkImage(
                   dia.imagen,
                   dia.alt || 'Imagen del carrusel de PetsHeaven',
@@ -184,7 +184,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuar
             <div className='indicadores'>
               {diapositivas?.map((_, indice) => (
                 <button
-                  key={indice}
+                  key={indice + 98}
                   onClick={() => setDiaActual(indice)}
                   className={`indicador ${indice === diaActual ? 'activo' : ''}`}
                   aria-label={`Ir a diapositiva ${indice + 1}`}
@@ -302,7 +302,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuar
               >
                 {promociones?.map((promocion, indice) => (
                   <motion.div 
-                    key={indice} 
+                    key={indice + 78} 
                     className='tarjeta-promocion'
                     variants={itemVariants}
                     whileHover={{ scale: 1.02 }}

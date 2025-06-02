@@ -214,7 +214,7 @@ export const GesAgendaPersonal = ({ URL = 'http://localhost:3000', roles = ['Usu
 
     return (
         <main className="calendar-container">
-            <NavBarAdmin roles={roles} />
+            <NavBarAdmin />
             <main className='calendar-container' id='main-container-calendar'>
             <HeaderUser/>
                 <input

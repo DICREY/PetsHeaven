@@ -296,7 +296,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000', roles = ['Usua
 
     return (
         <main className="calendar-container">
-            <NavBarAdmin roles={roles} />
+            <NavBarAdmin />
             <main className='calendar-container' id='main-container-calendar'>
             <HeaderUser openHelp={() => setTabHelp(true)}/>
 

@@ -17,7 +17,7 @@ import HeaderUser from "../BarrasNavegacion/HeaderUser"
 import Footer from "../Varios/Footer2"
 
 // Component
-export function GesPersonal({ setUserSelect, URL = "", roles = ['Usuario'] }) {
+export function GesPersonal({ setUserSelect, URL = "" }) {
   // Dynamic vars
   const mainUrl = `${URL}/staff/all`
   const [users,setUsers] = useState([])
@@ -31,24 +31,21 @@ export function GesPersonal({ setUserSelect, URL = "", roles = ['Usuario'] }) {
 
   // Functions
   const GetUsers = async () => {
-    const token = localStorage.getItem("token")
     try {
-      if (token){
-        const data = await GetData(mainUrl)
-        setNotify(null)
-        setHeaders({
-          'Nombres': 'nom_per',
-          'Apellidos': 'ape_per',
-          'T. Doc': 'tip_doc_per',
-          'Documento': 'doc_per',
-          'Direccion': 'dir_per',
-          'Celular': 'cel_per',
-          'Correo': 'email_per'
-        })
-        setUsersAlmac(data)
-        setUsers(divideList(data,4))
-        setLoading(false)
-      } else navigate('/user/login')
+      const data = await GetData(mainUrl)
+      setNotify(null)
+      setHeaders({
+        'Nombres': 'nom_per',
+        'Apellidos': 'ape_per',
+        'T. Doc': 'tip_doc_per',
+        'Documento': 'doc_per',
+        'Direccion': 'dir_per',
+        'Celular': 'cel_per',
+        'Correo': 'email_per'
+      })
+      setUsersAlmac(data)
+      setUsers(divideList(data,4))
+      setLoading(false)
     } catch (err) {
       setNotify(null)
       if (err.status) {
@@ -90,7 +87,7 @@ export function GesPersonal({ setUserSelect, URL = "", roles = ['Usuario'] }) {
 
   return (
     <main className="contenedorgesusuario">
-      <NavBarAdmin roles={roles} />
+      <NavBarAdmin />
 
       <section className="principalgesusuario">
       <HeaderUser/>

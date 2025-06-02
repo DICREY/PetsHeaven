@@ -18,7 +18,7 @@ export const NotFound = () => {
             onClick={() => navigate(-1)} 
             className="pet-home-button"
           >
-            <i className="fas fa-bone"></i> Volver al hogar
+            <i className="fas fa-bone"></i> Volver atrás
           </button>
         </div>
       </section>
