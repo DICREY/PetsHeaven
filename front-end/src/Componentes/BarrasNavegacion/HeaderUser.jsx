@@ -50,7 +50,6 @@ export default function HeaderUser() {
         
         <button 
           onClick={Logout}
-          // className={`${styles.navButton} ${styles.logoutButton}`}
           className='DeleteBtn'
           aria-label="Cerrar sesión"
         >

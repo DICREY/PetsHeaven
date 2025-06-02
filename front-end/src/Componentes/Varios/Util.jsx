@@ -8,9 +8,9 @@ import { PostData } from './Requests'
 export const Logout = async( ) => {
   const token = localStorage.getItem("token")
   
-  if (token) {
-    localStorage.setItem('token','')
-  }
+  if (token) localStorage.setItem('token','')
+
+  window.location.href = '/user/login'
 }
 
 // Back 
