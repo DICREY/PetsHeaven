@@ -101,11 +101,7 @@ bun add -D sass-embedded react-scripts
 
 ## ⌨️ Development
 
-Use [opensumi.run](https://opensumi.run), a free online pure front-end dev environment.
-
-[![opensumi.run](https://custom-icon-badges.demolab.com/badge/opensumi-run-blue.svg?logo=opensumi)](https://opensumi.run/ide/ant-design/ant-design)
-
-Or clone locally:
+clone locally:
 
 ```bash
 $ git clone https://github.com/DICREY/PetsHeaven.git
@@ -145,7 +141,7 @@ $ npm run dev || $ yarn dev
     </td>
 </tr>
 <tr>
-    <td>
+    <td rowspan='2'>
         <p style="color:#00BCD4; font-weight:bold;">Kevin Palacios</p>
         <p style="color:#00BCD4; font-weight:bold;">Cristian Arrieta</p>
     </td>
