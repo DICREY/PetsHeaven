@@ -138,8 +138,6 @@ $ npm run dev || $ yarn dev
   <td rowspan="1">
     <p style="color:#00BCD4; font-weight:bold;">Violeta Rojas</p>
     <p style="color:#00BCD4; font-weight:bold;">Julian Velez</p>
-  </td>
-  <td rowspan="1">
     <p style="color:#00BCD4; font-weight:bold;">Kevin Palacios</p>
     <p style="color:#00BCD4; font-weight:bold;">Cristian Arrieta</p>
   </td>
