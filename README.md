@@ -138,20 +138,11 @@ $ npm run dev || $ yarn dev
   <td rowspan="2">
     <p style="color:#00BCD4; font-weight:bold;">Violeta Rojas</p>
     <p style="color:#00BCD4; font-weight:bold;">Julian Velez</p>
-  </td>
-</tr>
-<tr>
-  <td rowspan="1">
     <p style="color:#00BCD4; font-weight:bold;">Kevin Palacios</p>
     <p style="color:#00BCD4; font-weight:bold;">Cristian Arrieta</p>
   </td>
 </tr>
 </table>
-
-
-<a href="https://openomy.app/github/ant-design/ant-design" target="_blank" style="display: block; width: 100%;" align="center">
-  <img src="https://openomy.app/svg?repo=ant-design/ant-design&chart=bubble&latestMonth=3" target="_blank" alt="Contribution Leaderboard" style="display: block; width: 100%;" />
-</a>
 
 Let's build a better antd together.
 
