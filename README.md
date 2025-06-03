@@ -6,7 +6,7 @@
 
 Description
 
-English · Español · 中文
+[English] · [Español] · [中文]
 
 
 </div>
