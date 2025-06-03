@@ -141,7 +141,7 @@ $ npm run dev || $ yarn dev
     </td>
 </tr>
 <tr>
-    <td rowspan='2'>
+    <td rowspan="2">
         <p style="color:#00BCD4; font-weight:bold;">Kevin Palacios</p>
         <p style="color:#00BCD4; font-weight:bold;">Cristian Arrieta</p>
     </td>
