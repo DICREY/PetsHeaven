@@ -33,6 +33,26 @@ Route.get('/services', async (req,res) => {
     }
 })
 
+
+Route.post('/register', async (req,res) => {
+    // Vars 
+    const user = new People()
+    const saltRounds = 15
+    const body = req.body
+    
+    try {
+        // Verifiy if exist
+        const find = await user.findBy(toString(body.numeroDocumento))
+        if (find.result[0][0].nom_per) res.status(302).json({ message: "Usuario ya existe" })
+            
+        const create = await user.create({hash_pass: await hash(body.password,saltRounds), ...body})
+        res.status(201).json(create)
+    } catch(err) {
+        if(err.status) return res.status(err.status).json({message: err.message})
+        res.status(500).json({ message: err })
+    }
+})
+
 Route.post('/login', limiterLog, async (req,res) => {
     // Vars
     const { firstData, secondData } = req.body
@@ -74,25 +94,6 @@ Route.post('/login', limiterLog, async (req,res) => {
     }
 })
 
-Route.post('/register', async (req,res) => {
-    // Vars 
-    const user = new People()
-    const saltRounds = 15
-    const body = req.body
-    
-    try {
-        // Verifiy if exist
-        const find = await user.findBy(toString(body.numeroDocumento))
-        if (find.result[0][0].nom_per) res.status(302).json({ message: "Usuario ya existe" })
-
-        const create = await user.create({hash_pass: await hash(body.password,saltRounds), ...body})
-        res.status(201).json(create)
-    } catch(err) {
-        if(err.status) return res.status(err.status).json({message: err.message})
-        res.status(500).json({ message: err })
-    }
-})
-
 Route.post('/cookie', authenticateJWT,(req, res) => {
     const { name, value } = req.body
     
@@ -112,8 +113,8 @@ Route.post('/check-cookie', authenticateJWT,(req, res) => {
 
 Route.post('/clear-cookies', authenticateJWT,(req, res) => {
     res.clearCookie('__cred', cookiesOptions)
+    res.clearCookie('__nit', cookiesOptions)
     res.clearCookie('__user', cookiesOptions)
-    res.clearCookie('__xApiKey', cookiesOptions)
     res.clearCookie('__userName', cookiesOptions)
 
     return res.status(200).json({ message: 'Cookies eliminadas' })

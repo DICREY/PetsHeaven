@@ -19,7 +19,6 @@ import { Pets } from '../Componentes/Pets/Pets'
 import { PetDetails } from '../Componentes/Pets/PetDetails'
 import { NotFound } from '../Componentes/Errores/NotFound'
 import { ErrorInternalServer } from '../Componentes/Errores/ErrorInternalServer'
-import { Logout } from '../Componentes/Varios/Util'
 import { useInactivityDetector } from '../Componentes/Varios/InactiveDectetor'
 import VeterinariaPage from '../Componentes/VeterinariaPage'
 import { PerfilPropietario } from '../Componentes/Peoples/PerfilPropietario'
@@ -73,7 +72,7 @@ export default function App () {
     return <Navigate to='/user/login' />
   }
 
-  const AdminRoute = async ({ children }) => {
+  const AdminRoute = ({ children }) => {
     const { roles } = useContext(AuthContext)
     if(roles) {
       const admin = roles.includes('Administrador')
@@ -95,7 +94,7 @@ export default function App () {
         select: () => setInactive(true),
       })
       if (inactive) {
-        Logout()
+        return <Navigate to='/user/login' />
       }
     }
   },[isInactive])

@@ -1,10 +1,10 @@
 // Librarys 
-import React,{ useContext, useEffect, useState } from 'react'
+import React,{ use, useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router'
 
 // Imports 
-import { errorStatusHandler, formatoTiempo, checkImage, getName } from '../Varios/Util'
+import { errorStatusHandler, formatoTiempo, checkImage, useRoleRedirect } from '../Varios/Util'
 import { AuthContext } from '../../Contexts/Contexts'
 
 // Import styles
@@ -18,7 +18,7 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = '' }) => {
   const [waitTime, setWaitTime] =  useState(false)
   const [time, setTime] = useState()
   const [notify, setNotify] = useState(null)
-  const { user, roles, loading, login, logout } = useContext(AuthContext)
+  const { log, login, logout } = useContext(AuthContext)
 
   // Vars 
   const imagenFondo = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Fondos/fondo.png' 
@@ -34,23 +34,6 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = '' }) => {
     mode: 'onChange',
   })
 
-  const useRoleRedirect = (roles = []) => {
-    const roleRoutes = {
-      'Administrador': '/admin/gestion/usuarios',
-      'Veterinario': '/gestion/mascotas',
-      'default': '/user/pets'
-    }
-    
-    // Determinar la ruta basada en jerarquía de roles
-    const path = roles.includes('Administrador') 
-    ? roleRoutes['Administrador']
-    : roles.includes('Veterinario') 
-    ? roleRoutes['Veterinario']
-    : roleRoutes['default']
-
-    return path
-  }
-
   // Manejador de envío del formulario
   const onSubmit = async (datas) => {
     // Vars
@@ -65,21 +48,20 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = '' }) => {
     })
     
     try {
-      const log = await login(url,firstData,secondData)
+      const logg = await login(url,firstData,secondData)
       setNotify(null)
-      if (log) {
+      if (logg) {
         setNotify({
           title: 'Bienvenido',
-          message: `Hola, ${log.names} ${log.lastNames} Feliz día`,
+          message: `Hola, ${logg.data?.names} ${logg.data?.lastNames} Feliz día`,
           close: setNotify
         })
 
-        arriveTo = arriveTo? arriveTo: useRoleRedirect(log.roles?.split(', '))
+        arriveTo = arriveTo? arriveTo: useRoleRedirect(logg.data?.roles?.split(', '))
 
         setTimeout(() => {
           navigate(arriveTo)
         },2000)
-        
       }
     } catch (err) {
       setNotify(null)
@@ -104,7 +86,6 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = '' }) => {
 
   useEffect(() => {
     let intervalo = null
-    if (user || roles) logout()
     
     if (waitTime) {
       // Inicia el contador
@@ -132,9 +113,13 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = '' }) => {
     }
   }, [waitTime])
 
+  useEffect(() => {
+    if (log) logout
+  },[log])
+
   return (
-    <div className='login-container'>
-      <div className='login-formulario-container'>
+    <main className='login-container'>
+      <section className='login-formulario-container'>
         <div 
           className='contenedor-logo-externo-login'
           onClick={() => navigate('/main')}>
@@ -147,15 +132,15 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = '' }) => {
         </div>
 
         {/* Contenedor del formulario */}
-        <div className='formulario-card-login'>
-          <div className='contenido-formulario-login'>
-            <div className='encabezado-formulario-login'>
+        <section className='formulario-card-login'>
+          <section className='contenido-formulario-login'>
+            <header className='encabezado-formulario-login'>
               <h2 className='titulo-formulario-login'>Iniciar Sesión</h2>
               <p className='subtitulo-formulario-login'>Ingresa tus credenciales para acceder</p>
-            </div>
+            </header>
 
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className='contenido-paso-login'>
+              <section className='contenido-paso-login'>
               <div className='grupo-campo-login'>
                 <label className='label' htmlFor="docEmail">
                   Email <span className='obligatorio-login'>*</span>
@@ -298,35 +283,28 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = '' }) => {
                   ¿No tienes una cuenta?
                 </Link>
               </div>
-              </div>
+              </section>
             </form>
-          </div>
-        </div>
-      </div>
+          </section>
+        </section>
+      </section>
 
       {/* Sección derecha - Imagen y cita */}
-      <div className='login-imagen-container'>
-        <div className='imagen-fondo-contenedor-login'>
+      <section className='login-imagen-container'>
+        <picture className='imagen-fondo-contenedor-login'>
           <img src={imagenFondo || '/placeholder.svg'} alt='Una veterinaria sostiene con cuidado la pata de un perro tipo Border Collie mientras le colocan una inyección intravenosa. La persona lleva puesto un uniforme azul y guantes médicos, y tiene dos trenzas largas. El perro está recostado sobre una mesa blanca, mirando directamente a la cámara con expresión tranquila.' className='imagen-fondo-login' />
-        </div>
-        <div className='contenedor-cita-login'>
+        </picture>
+        <aside className='contenedor-cita-login'>
           <h2 className='texto-cita-login'>'El amor por los animales es el reflejo de nuestra humanidad'</h2>
           <p className='subtexto-cita-login'>En PetsHeaven cuidamos de quienes más amas</p>
-        </div>
-      </div>
+        </aside>
+      </section>
       {notify && (
         <Notification 
           {...notify}
         />)
       }
-      {loading && (
-        <Notification 
-          title='Cargando...'
-          message='Por favor, espere un momento'
-          load={true}
-        />)
-      }
-    </div>
+    </main>
   )
 }
 

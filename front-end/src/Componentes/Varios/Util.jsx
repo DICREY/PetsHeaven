@@ -1,16 +1,24 @@
 // Librays
 import { useNavigate } from 'react-router-dom'
 
-// Imports 
-import { PostData } from './Requests'
 
-//componente de cerrar sesion 
-export const Logout = async( ) => {
-  const token = localStorage.getItem("token")
+
+// Utilidades
+export const useRoleRedirect = (roles = []) => {
+  const roleRoutes = {
+    'Administrador': '/admin/gestion/usuarios',
+    'Veterinario': '/gestion/mascotas',
+    'default': '/user/pets'
+  }
   
-  if (token) localStorage.setItem('token','')
+  // Determinar la ruta basada en jerarquía de roles
+  const path = roles.includes('Administrador') 
+  ? roleRoutes['Administrador']
+  : roles.includes('Veterinario') 
+  ? roleRoutes['Veterinario']
+  : roleRoutes['default']
 
-  window.location.href = '/user/login'
+  return path
 }
 
 // Back 

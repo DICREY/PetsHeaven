@@ -1,14 +1,15 @@
 // Librarys 
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 import { Plus} from "lucide-react"
 
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GetData } from '../Varios/Requests'
-import { divideList, errorStatusHandler, Logout } from '../Varios/Util'
+import { divideList, errorStatusHandler } from '../Varios/Util'
 import { GlobalTable } from '../Global/GlobalTable'
 import { Notification } from '../Global/Notifys'
+import { AuthContext } from '../../Contexts/Contexts'
 // import { Loader } from '../Errores/Loader'
 
 // Import styles 
@@ -22,9 +23,9 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
   const mainUrl = `${URL}/staff/all`
   const [users,setUsers] = useState([])
   const [usersAlmac,setUsersAlmac] = useState([])
-  const [loading,setLoading] = useState(true)
   const [headers,setHeaders] = useState([])
   const [notify, setNotify] = useState(null)
+  const { logout } = useContext(AuthContext)
 
   // Vars 
   const navigate = useNavigate()
@@ -44,8 +45,7 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
         'Correo': 'email_per'
       })
       setUsersAlmac(data)
-      setUsers(divideList(data,4))
-      setLoading(false)
+      setUsers(divideList(data,4))      
     } catch (err) {
       setNotify(null)
       if (err.status) {
@@ -57,7 +57,7 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
         })
         if(err.status === 403) {
           setTimeout(() => {
-            Logout()
+            logout()
           }, 2000)
         }
       } else console.log(err)
@@ -125,6 +125,7 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
           {...notify}
         />
       )}
+
       <Outlet />
     </main>
   )

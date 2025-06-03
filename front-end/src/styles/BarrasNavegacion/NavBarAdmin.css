@@ -194,6 +194,9 @@
   overflow: hidden;
   transition: max-height 0.3s ease;
 }
+.subenlacenavadmin.active  .botonnavadmin{
+    background: var(--gray-200);
+}
 
 .submenunavadmin.abiertonavadmin {
   max-height: 12rem;

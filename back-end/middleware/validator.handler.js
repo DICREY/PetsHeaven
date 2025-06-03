@@ -31,7 +31,7 @@ function validatorHeaders (req,res,next) {
 function authenticateJWT(req, res, next) {
     const token = req.signedCookies?.__cred
     
-    if (!token) return res.status(401).json({ error: 'Token no proporcionado' })
+    if (!token) return res.status(403).json({ error: 'Token no proporcionado' })
   
     jwt.verify(token, secret, (err, decoded) => {
         if (err) return res.status(403).json({ error: 'Token inválido o expirado' })

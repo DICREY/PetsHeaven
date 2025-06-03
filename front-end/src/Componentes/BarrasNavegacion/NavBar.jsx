@@ -16,7 +16,7 @@ export const NavBar = () => {
   const [petsUrl, setPetsUrl] = useState('/user/pets')
   const [isAdmin, setIsAdmin] = useState(false)
   const refNav = useRef(null)
-  const { roles, logout } = useContext(AuthContext)
+  const { user, roles, logout } = useContext(AuthContext)
   
   // Función para manejar el scroll a secciones
   const irASeccion = (e, id) => {
@@ -46,7 +46,7 @@ export const NavBar = () => {
     if(user){
       setIsAutenticate(true) 
 
-      if(roles.includes('Administrador') || roles.includes('Veterinario')) {
+      if(roles?.includes('Administrador') || roles?.includes('Veterinario')) {
         setPetsUrl('/consultorio')
         setIsAdmin(true)
       } else {

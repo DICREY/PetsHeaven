@@ -22,7 +22,7 @@ const limiterLog = rateLimit({
 })
 
 const cookiesOptionsLog = {
-    maxAge: 8 * 60 * 60 * 1000, // Alternativa en milisegundos (8 horas)
+    maxAge: 30 * 24 * 60 * 60 * 1000, // Alternativa en milisegundos (30 días)
     httpOnly: true, // Seguridad: solo accesible por HTTP
     secure: true, // HTTPS en producción
     sameSite: 'strict', // Política de same-site

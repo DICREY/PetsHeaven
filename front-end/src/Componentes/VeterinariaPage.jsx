@@ -3,20 +3,18 @@ import { NavBar } from './BarrasNavegacion/NavBar'
 import { GetDataGlobal } from './Varios/Requests'
 import { diapositivas, promociones, testimonios } from './Varios/varios'
 import { checkImage } from './Varios/Util'
-// import { Loader } from './Errores/Loader'
-// import { Load } from './Errores/Load'
 import { Loader } from './Loaders/Loader'
 import Footer from './Varios/Footer2'
+import { AuthContext } from '../Contexts/Contexts'
 
 // Librarys 
-import React,{ useState, useEffect} from 'react'
+import React,{ useState, useEffect, useContext} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MapPin, Star, Phone, Mail, Clock, ChevronUp, Instagram, Facebook, Loader2 } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 // Import styles
 import '../../src/styles/VeterinariaPage.css'
-import HeaderUser from './BarrasNavegacion/HeaderUser'
 
 // Animaciones
 const containerVariants = {
@@ -69,6 +67,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuar
   const [gruposTest, setGruposTest] = useState([])
   const [serData, setSerData] = useState([])
   const [loading,setLoading] = useState(true)
+  const { log } = useContext(AuthContext)
 
   // Vars
   const navigate = useNavigate()

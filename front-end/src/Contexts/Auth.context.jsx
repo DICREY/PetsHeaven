@@ -1,57 +1,70 @@
 // Librarys 
-import React, { createContext, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // Imports 
-import { decodeJWT } from '../Componentes/Varios/Util' // Assuming you have a utility to decode JWT
+import { decodeJWT, useRoleRedirect } from '../Componentes/Varios/Util'
 import { Login, PostData } from '../Componentes/Varios/Requests'
 import { AuthContext } from './Contexts'
+import { Notification } from '../Componentes/Global/Notifys'
 
 // Component
 export const AuthProvider = ({ children }) => {
     // Dynamic vars
     const [ user, setUser ] = useState(null)
     const [ roles, setRoles ] = useState(null)
-    const [ loading, setLoading ] = useState(true)
+    const [ log, setLog ] = useState(null)
+    const [ notify, setNotify ] = useState({
+        title: 'Cargando...',
+        message: 'Obteniendo datos',
+        load: 1
+    })
 
     // Functions
     // Iniciar sesion 
     const login = async (url = '', firstData, secondData) => {
-        try {
-            setLoading(true)
+        try {            
             const response = await Login(url, firstData, secondData)
             if (response) {
                 const userData = decodeJWT(response.token)
                 setUser(userData)
-                setLoading(false)
-                return userData
+                setRoles(userData.roles?.split(', ') || ['Usuario'])
+                setLog(true)
+                setNotify({
+                    title: 'Bienvenido',
+                    message: `Hola, ${userData.names} ${userData.lastNames} Feliz día`
+                })
+                
+                const arriveTo = useRoleRedirect(userData.roles?.split(', '))
+                
+                setTimeout(() => {
+                    window.location.href = arriveTo
+                },2000)
+
+                return {data: userData, logged: 1}
             }
-            setLoading(false)
+            setNotify(null)
             return response
-        } catch (error) {
-            setLoading(false)
-            throw error
+        } catch (err) {
+            setNotify(null)
+            throw err 
         }
     }
 
     // Cerrar sesion 
-    const logout = () => {
-        const clear = async () => {
-            try {
-                const check = await PostData('http://localhost:3000/global/clear-cookies', {})
-                if (check) {
-                    setUser(null)
-                    setRoles(null)
-                    setLoading(false)
-                    window.location.href = '/user/login'
-                }
-            } catch (err) {
+    const logout = async () => {
+        try {
+            const check = await PostData('http://localhost:3000/global/clear-cookies', {})
+            if (check) {
                 setUser(null)
-                setLoading(false)
-            } finally {
-                setLoading(false)
+                setRoles(null)
+                setLog(false)
+                setNotify(null)
+                window.location.href = '/user/login'
             }
+        } catch (err) {
+            setUser(null)
+            setNotify(null)
         }
-        clear()
     }
 
     // Verificar sesión al cargar
@@ -63,19 +76,24 @@ export const AuthProvider = ({ children }) => {
                     const userData = decodeJWT(check.data.data)
                     setUser(userData)
                     setRoles(userData.roles?.split(', ') || ['Usuario'])
+                    setLog(true)
+                    setNotify(null)
                 }
+                setNotify(null)
             } catch (err) {
+                setNotify(null)
                 setUser(null)
-            } finally {
-                setLoading(false)
+                if(err.status === 403) setLog(false)
             }
         }
-        if(!user || !roles ) checkAuth()
-    }, [])
+        if(!log) checkAuth()
+    }, [log])
 
     return (
-        <AuthContext.Provider value={{ user, roles, loading, login, logout }}>
-            {children}
+        <AuthContext.Provider value={{ user, roles, log, login, logout }}>
+            {notify ? <Notification
+                {...notify}
+             /> : children}
         </AuthContext.Provider>
     )
 }
