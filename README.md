@@ -52,12 +52,11 @@
 
 ## ✨ Features
 
-- 🌈 Enterprise-class UI designed for web applications.
+- 🌈 UI designed web applications.
 - 📦 A set of high-quality React components out of the box.
-- 🛡 Written in TypeScript with predictable static types.
 - ⚙️ Whole package of design resources and development tools.
 - 🌍 Internationalization support for dozens of languages.
-- 🎨 Powerful theme customization based on CSS-in-JS.
+- 🎨 Powerful clean theme.
 
 ## 🖥 Environment Support
 
@@ -72,56 +71,33 @@
 ## 📦 Install
 
 ```bash
-npm install antd
+npm i react react-dom react-hook-form boxicons react-router react-router-dom lucide-react @supabase/supabase-js @emailjs/browser sweetalert sweetalert2 framer-motion
+npm i @fullcalendar/core @fullcalendar/react @fullcalendar/daygrid @fullcalendar/interaction @fullcalendar/timegrid @fullcalendar/list axios
+npm i -D sass-embedded react-scripts
 ```
 
 ```bash
-yarn add antd
+yarn add react react-dom react-hook-form boxicons react-router react-router-dom lucide-react @supabase/supabase-js @emailjs/browser sweetalert sweetalert2 framer-motion
+yarn add @fullcalendar/core @fullcalendar/react @fullcalendar/daygrid @fullcalendar/interaction @fullcalendar/timegrid @fullcalendar/list axios
+yarn add -D sass-embedded react-scripts
 ```
 
 ```bash
-pnpm add antd
+pnpm add react react-dom react-hook-form boxicons react-router react-router-dom lucide-react @supabase/supabase-js @emailjs/browser sweetalert sweetalert2 framer-motion
+pnpm add @fullcalendar/core @fullcalendar/react @fullcalendar/daygrid @fullcalendar/interaction @fullcalendar/timegrid @fullcalendar/list axios
+pnpm add -D sass-embedded react-scripts
 ```
 
 ```bash
-bun add antd
+bun add react react-dom react-hook-form boxicons react-router react-router-dom lucide-react @supabase/supabase-js @emailjs/browser sweetalert sweetalert2 framer-motion
+bun add @fullcalendar/core @fullcalendar/react @fullcalendar/daygrid @fullcalendar/interaction @fullcalendar/timegrid @fullcalendar/list axios
+bun add -D sass-embedded react-scripts
 ```
 
-## 🔨 Usage
-
-```tsx
-import { Button, DatePicker } from 'antd';
-
-export default () => (
-  <>
-    <Button type="primary">PRESS ME</Button>
-    <DatePicker placeholder="select date" />
-  </>
-);
-```
 
 ## 🔗 Links
 
-- [Home page](https://ant.design/)
-- [Components Overview](https://ant.design/components/overview)
-- [Change Log](CHANGELOG.en-US.md)
-- [rc-components](https://react-component.github.io/)
-- [🆕 Ant Design X](https://x.ant.design/index-cn)
-- [Ant Design Pro](https://pro.ant.design/)
-- [Pro Components](https://procomponents.ant.design)
-- [Ant Design Mobile](https://mobile.ant.design)
-- [Ant Design Mini](https://mini.ant.design)
-- [Ant Design Charts](https://charts.ant.design)
-- [Ant Design Web3](https://web3.ant.design)
-- [Landing Pages](https://landing.ant.design)
-- [Ant Motion](https://motion.ant.design)
-- [Scaffold Market](https://scaffold.ant.design)
-- [Developer Instruction](https://github.com/ant-design/ant-design/wiki/Development)
-- [Versioning Release Note](https://github.com/ant-design/ant-design/wiki/%E8%BD%AE%E5%80%BC%E8%A7%84%E5%88%99%E5%92%8C%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83%E6%B5%81%E7%A8%8B)
-- [FAQ](https://ant.design/docs/react/faq)
-- [Online Playground](https://u.ant.design/reproduce) for bug reports
-- [Customize Theme](https://ant.design/docs/react/customize-theme)
-- [How to Apply for Being A Collaborator](https://github.com/ant-design/ant-design/wiki/Collaborators#how-to-apply-for-being-a-collaborator)
+## #Empty
 
 ## ⌨️ Development
 
@@ -132,10 +108,10 @@ Use [opensumi.run](https://opensumi.run), a free online pure front-end dev envir
 Or clone locally:
 
 ```bash
-$ git clone git@github.com:ant-design/ant-design.git
-$ cd ant-design
-$ npm install
-$ npm start
+$ git clone https://github.com/DICREY/PetsHeaven.git
+$ cd PetsHeaven
+$ npm install || $ yarn
+$ npm run dev || $ yarn dev
 ```
 
 ## 🤝 Contributing [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com)
