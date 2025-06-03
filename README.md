@@ -116,35 +116,35 @@ $ npm run dev || $ yarn dev
 <tr>
   
   <td rowspan="2">
-    <a href="https://next.ossinsight.io/widgets/official/compose-last-28-days-stats?repo_id=34526884" target="_blank" style="display: block" align="center">
+    <a href="https://next.ossinsight.io/widgets/official/compose-recent-active-contributors?limit=30&repo_id=942340604" target="_blank" style="display: block" align="center">
       <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://next.ossinsight.io/widgets/official/compose-last-28-days-stats/thumbnail.png?repo_id=34526884&image_size=auto&color_scheme=dark" width="655" height="auto">
-        <img alt="Performance Stats of ant-design/ant-design - Last 28 days" src="https://next.ossinsight.io/widgets/official/compose-last-28-days-stats/thumbnail.png?repo_id=34526884&image_size=auto&color_scheme=light" width="655" height="auto">
+        <source media="(prefers-color-scheme: dark)" srcset="https://next.ossinsight.io/widgets/official/compose-recent-active-contributors/thumbnail.png?limit=30&repo_id=942340604&image_size=auto&color_scheme=dark" width="655" height="auto">
+        <img alt="Active Contributors of DICREY/PetsHeaven - Last 28 days" src="https://next.ossinsight.io/widgets/official/compose-recent-active-contributors/thumbnail.png?limit=30&repo_id=942340604&image_size=auto&color_scheme=light" width="655" height="auto">
       </picture>
     </a>
   </td>
 </tr>
 <tr>
-  <td>
-    <a href="https://next.ossinsight.io/widgets/official/compose-org-active-contributors?period=past_28_days&activity=new&owner_id=12101536&repo_ids=34526884" target="_blank" style="display: block" align="center">
+  <td rowspan="1">
+    <a href="https://next.ossinsight.io/widgets/official/compose-recent-top-contributors?repo_id=942340604" target="_blank" style="display: block" align="center">
       <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://next.ossinsight.io/widgets/official/compose-org-active-contributors/thumbnail.png?period=past_28_days&activity=new&owner_id=12101536&repo_ids=34526884&image_size=2x3&color_scheme=dark" width="273" height="auto">
-        <img alt="New participants of ant-design - past 28 days" src="https://next.ossinsight.io/widgets/official/compose-org-active-contributors/thumbnail.png?period=past_28_days&activity=new&owner_id=12101536&repo_ids=34526884&image_size=2x3&color_scheme=light" width="273" height="auto">
+        <source media="(prefers-color-scheme: dark)" srcset="https://next.ossinsight.io/widgets/official/compose-recent-top-contributors/thumbnail.png?repo_id=942340604&image_size=auto&color_scheme=dark" width="373" height="auto">
+        <img alt="Top Contributors of DICREY/PetsHeaven - Last 28 days" src="https://next.ossinsight.io/widgets/official/compose-recent-top-contributors/thumbnail.png?repo_id=942340604&image_size=auto&color_scheme=light" width="373" height="auto">
       </picture>
     </a>
   </td>
 </tr>
 <tr>
-    <td>
-        <p style="color:#00BCD4; font-weight:bold;">Violeta Rojas</p>
-        <p style="color:#00BCD4; font-weight:bold;">Julian Velez</p>
-    </td>
+  <td rowspan="2">
+    <p style="color:#00BCD4; font-weight:bold;">Violeta Rojas</p>
+    <p style="color:#00BCD4; font-weight:bold;">Julian Velez</p>
+  </td>
 </tr>
 <tr>
-    <td rowspan="2">
-        <p style="color:#00BCD4; font-weight:bold;">Kevin Palacios</p>
-        <p style="color:#00BCD4; font-weight:bold;">Cristian Arrieta</p>
-    </td>
+  <td rowspan="1">
+    <p style="color:#00BCD4; font-weight:bold;">Kevin Palacios</p>
+    <p style="color:#00BCD4; font-weight:bold;">Cristian Arrieta</p>
+  </td>
 </tr>
 </table>
 
