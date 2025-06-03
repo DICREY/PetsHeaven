@@ -4,9 +4,9 @@
 
 <h1>The Four</h1>
 
-'description'.
+Description
 
-[Changelog](./CHANGELOG.en-US.md) · [Report Bug][github-issues-url] · [Request Feature][github-issues-url] · English · [中文](./README-zh_CN.md)
+English · Español · 中文
 
 
 </div>
