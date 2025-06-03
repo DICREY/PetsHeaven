@@ -125,7 +125,7 @@ $ npm run dev || $ yarn dev
   </td>
 </tr>
 <tr>
-  <td rowspan="1">
+  <td rowspan="2">
     <a href="https://next.ossinsight.io/widgets/official/compose-recent-top-contributors?repo_id=942340604" target="_blank" style="display: block" align="center">
       <picture>
         <source media="(prefers-color-scheme: dark)" srcset="https://next.ossinsight.io/widgets/official/compose-recent-top-contributors/thumbnail.png?repo_id=942340604&image_size=auto&color_scheme=dark" width="373" height="auto">
@@ -135,9 +135,11 @@ $ npm run dev || $ yarn dev
   </td>
 </tr>
 <tr>
-  <td rowspan="2">
+  <td rowspan="1">
     <p style="color:#00BCD4; font-weight:bold;">Violeta Rojas</p>
     <p style="color:#00BCD4; font-weight:bold;">Julian Velez</p>
+  </td>
+  <td rowspan="1">
     <p style="color:#00BCD4; font-weight:bold;">Kevin Palacios</p>
     <p style="color:#00BCD4; font-weight:bold;">Cristian Arrieta</p>
   </td>
