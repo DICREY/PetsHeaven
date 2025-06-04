@@ -4,6 +4,7 @@ import React from 'react'
 // Import styles
 import '../../../src/styles/Errores/SmallLoader.css'
 import '../../../src/styles/Loaders/HamsterLoader.css'
+import '../../../src/styles/Loaders/DogLoader.css'
 
 // Component
 export const SmallLoader = () => {
@@ -15,7 +16,7 @@ export const SmallLoader = () => {
     return <SmallLoaderCat />
   }
   if(random=== 3){
-    return <SmallLoaderCat/>
+    return <SmallLoaderDog/>
   }
 }
 
@@ -48,47 +49,47 @@ const SmallLoaderHamster = () => {
   )
 }
 
-// const SmallLoaderDog = () => {
-//   return (
-//     <main className='MainDogLoader'>
-//       <section className="DogLoader">
-//         <div className="DogLoader__paws">
-//           <div className="DogLoader__bl-leg leg">
-//             <div className="DogLoader__bl-paw paw"></div>
-//             <div className="DogLoader__bl-top top"></div>
-//           </div>
-//           <div className="DogLoader__fl-leg leg">
-//             <div className="DogLoader__fl-paw paw"></div>
-//             <div className="DogLoader__fl-top top"></div>
-//           </div>
-//           <div className="DogLoader__fr-leg leg">
-//             <div className="DogLoader__fr-paw paw"></div>
-//             <div className="DogLoader__fr-top top"></div>
-//           </div>
-//         </div>
+const SmallLoaderDog = () => {
+  return (
+    <main className='MainDogLoader'>
+      <section className="DogLoader">
+        <div className="DogLoader__paws">
+          <div className="DogLoader__bl-leg leg">
+            <div className="DogLoader__bl-paw paw"></div>
+            <div className="DogLoader__bl-top top"></div>
+          </div>
+          <div className="DogLoader__fl-leg leg">
+            <div className="DogLoader__fl-paw paw"></div>
+            <div className="DogLoader__fl-top top"></div>
+          </div>
+          <div className="DogLoader__fr-leg leg">
+            <div className="DogLoader__fr-paw paw"></div>
+            <div className="DogLoader__fr-top top"></div>
+          </div>
+        </div>
 
-//         <div className="DogLoader__body">
-//           <div className="DogLoader__tail"></div>
-//         </div>
+        <div className="DogLoader__body">
+          <div className="DogLoader__tail"></div>
+        </div>
 
-//         <div className="DogLoader__head">
-//           <div className="DogLoader__snout">
-//             <div className="DogLoader__nose"></div>
-//             <div className="DogLoader__eyes">
-//               <div className="DogLoader__eye-l"></div>
-//               <div className="DogLoader__eye-r"></div>
-//             </div>
-//           </div>
-//         </div>
+        <div className="DogLoader__head">
+          <div className="DogLoader__snout">
+            <div className="DogLoader__nose"></div>
+            <div className="DogLoader__eyes">
+              <div className="DogLoader__eye-l"></div>
+              <div className="DogLoader__eye-r"></div>
+            </div>
+          </div>
+        </div>
 
-//         <div className="DogLoader__head-c">
-//           <div className="DogLoader__ear-l"></div>
-//           <div className="DogLoader__ear-r"></div>
-//         </div>
-//       </section>
-//     </main>
-//   )
-// }
+        <div className="DogLoader__head-c">
+          <div className="DogLoader__ear-l"></div>
+          <div className="DogLoader__ear-r"></div>
+        </div>
+      </section>
+    </main>
+  )
+}
 const SmallLoaderCat=()=>{
   return(
     <main className="MainCatLoader">
