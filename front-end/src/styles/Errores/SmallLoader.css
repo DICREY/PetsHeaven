@@ -365,6 +365,7 @@
     bottom: 10%;
   }
 }
+/* -------------------------------------------------DOG------------------------------------------------------- */
 
 .MainDogLoader {
   margin: 0;
@@ -379,74 +380,72 @@
 .leg {
   position: absolute;
   bottom: 0;
-  /* Usamos clamp para un ancho y alto fluido */
-  width: clamp(0.5rem, 2vw, 1rem);
-  height: clamp(0.7rem, 2.5vw, 1.0625rem);
-  max-width: 8rem; /* Mantenemos estos max para asegurar que no crezcan demasiado */
+  width: 1rem;
+  height: 1.0625rem;
+  max-width: 8rem;
   max-height: 8rem;
 }
-
 .paw {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: clamp(1rem, 3.5vw, 1.975rem);
-  height: clamp(0.5rem, 2vw, 0.9375rem);
+  width: 1.975rem;
+  height: 0.9375rem;
   overflow: hidden;
 }
-
 .paw::before {
   content: "";
   position: absolute;
-  width: clamp(1rem, 3.5vw, 1.875rem);
-  height: clamp(1rem, 3.5vw, 1.875rem);
+  width: 1.875rem;
+  height: 1.875rem;
   border-radius: 50%;
 }
 
 .DogLoader {
   position: relative;
-  right: clamp(0.5rem, 2vw, 1.16rem);
-  width: clamp(4rem, 15vw, 7.5rem);
-  height: clamp(4.5rem, 17vw, 8.75rem);
+  right: 0.8rem;
+  width: 7.5rem;
+  height: 8.75rem;
   max-height: 8rem;
   max-width: 8rem;
 }
 
+
 .DogLoader__head {
   position: absolute;
-  left: clamp(1rem, 4vw, 2.25rem);
+  left: 2.25rem;
   bottom: 0;
-  width: clamp(1.5rem, 6vw, 3.25rem);
-  height: clamp(2rem, 7vw, 3.5rem);
-  border-top-left-radius: clamp(1rem, 3.5vw, 2.025rem);
-  border-top-right-radius: clamp(1rem, 3.5vw, 2.025rem);
-  border-bottom-right-radius: clamp(0.8rem, 3vw, 1.65rem);
-  border-bottom-left-radius: clamp(0.8rem, 3vw, 1.65rem);
+  width: 3.25rem;
+  height: 4.5rem;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  border-bottom-right-radius: 1.65rem;
+  border-bottom-left-radius: 1.65rem;
   background-color: #ff8147;
-  animation: head 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
+  animation: head 10s ease-in-out infinite;
 }
 
 .DogLoader__head-c {
   position: absolute;
-  left: clamp(0.3rem, 1.5vw, 0.75rem);
+  left: 0.75rem;
   bottom: 0;
-  width: clamp(2.5rem, 9vw, 4.875rem);
-  height: clamp(2rem, 8vw, 4.125rem);
-  animation: head 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
+  width: 4.875rem;
+  height: 4.125rem;
+  animation: head 10s ease-in-out infinite;
   z-index: -1;
 }
 
 .DogLoader__snout {
   position: absolute;
-  left: clamp(-0.5rem, -1.5vw, -0.75rem);
+  left: -0.75rem;
   bottom: 0;
-  width: clamp(1rem, 4.5vw, 2.5rem);
-  height: clamp(0.5rem, 2.5vw, 1.25rem);
-  border-top-right-radius: clamp(0.75rem, 2.5vw, 1.5rem);
-  border-bottom-right-radius: clamp(0.75rem, 2.5vw, 1.5rem);
-  border-bottom-left-radius: clamp(1rem, 4vw, 2.25rem);
+  width: 2.5rem;
+  height: 1.25rem;
+  border-top-right-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem;
+  border-bottom-left-radius: 2.25rem;
   background-color: #d7dbd2;
-  animation: snout 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
+  animation: snout 10s ease-in-out infinite;
 }
 
 .DogLoader__nose {
@@ -492,50 +491,49 @@
 .DogLoader__eye-l,
 .DogLoader__eye-r {
   position: absolute;
-  top: clamp(-0.2rem, -0.7vw, -0.45rem);
-  width: clamp(0.15rem, 0.5vw, 0.3375rem);
-  height: clamp(0.08rem, 0.3vw, 0.1875rem);
+  top: -0.45rem;
+  width: 0.3375rem;
+  height: 0.1875rem;
   border-radius: 50%;
   background-color: #1c3130;
-  animation: eye 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
+  animation: eye 10s ease-in-out infinite;
 }
 
 .DogLoader__eye-l {
-  left: 27%; /* El porcentaje está bien aquí */
+  left: 27%; 
 }
 
 .DogLoader__eye-r {
-  left: 65%; /* El porcentaje está bien aquí */
+  left: 65%; 
 }
 
 .DogLoader__ear-l,
 .DogLoader__ear-r {
   position: absolute;
-  width: clamp(1.8rem, 7vw, 3.75rem);
-  height: clamp(0.6rem, 2.2vw, 1.1875rem);
+  width: 3.75rem;
+  height: 1.1875rem;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  border-bottom-right-radius: clamp(0.8rem, 3vw, 1.65rem);
-  border-bottom-left-radius: clamp(0.8rem, 3vw, 1.65rem);
+  border-bottom-right-radius: 1.65rem;
+  border-bottom-left-radius: 1.65rem;
   background-color: #e26538;
 }
-
 .DogLoader__ear-l {
-  top: clamp(0.3rem, 1.5vw, 0.75rem);
-  left: clamp(1.5rem, 5.5vw, 3rem);
+  top: 0.75rem;
+  left: 3rem;
   transform-origin: bottom left;
   transform: rotateZ(-50deg);
   z-index: -1;
-  animation: ear-l 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
+  animation: ear-l 10s ease-in-out infinite;
 }
 
 .DogLoader__ear-r {
-  top: clamp(0.3rem, 1.5vw, 0.75rem);
-  right: clamp(0.7rem, 2.5vw, 1.5rem);
+  top: 0.75rem;
+  right: 1.5rem;
   transform-origin: bottom right;
   transform: rotateZ(20deg);
   z-index: -2;
-  animation: ear-r 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
+  animation: ear-r 10s ease-in-out infinite;
 }
 
 .DogLoader__body {
@@ -543,38 +541,38 @@
   justify-content: center;
   align-items: flex-end;
   position: absolute;
-  bottom: clamp(0.05rem, 0.1vw, 0.15rem);
-  left: clamp(1rem, 4vw, 2.175rem);
-  width: clamp(3rem, 10vw, 7.25rem);
-  height: clamp(0.7rem, 2.5vw, 1.4rem);
-  border-top-left-radius: clamp(0.75rem, 2.5vw, 1.5rem);
-  border-top-right-radius: clamp(1.5rem, 5vw, 3rem);
-  border-bottom-right-radius: clamp(0.3rem, 1.5vw, 0.75rem);
-  border-bottom-left-radius: clamp(1.5rem, 5vw, 3rem);
+  bottom: 0.15rem;
+  left: 2.175rem;
+  width: 7.25rem;
+  height: 1.4rem;
+  border-top-left-radius: 1.5rem;
+  border-top-right-radius: 3rem;
+  border-bottom-right-radius: 0.75rem;
+  border-bottom-left-radius: 3rem;
   background-color: #ff702e;
   z-index: -2;
-  animation: body 10s cubic-bezier(0.3, 0.41, 0.18, 1.01) infinite;
+  animation: body 10s ease-in-out infinite;
 }
 
 .DogLoader__tail {
   position: absolute;
-  right: clamp(-0.75rem, -2.5vw, -1.5rem);
-  height: clamp(0.15rem, 0.5vw, 0.3125rem);
-  width: clamp(1rem, 4.5vw, 2.5rem);
+  right: -1.5rem;
+  height: 0.3125rem;
+  width: 2.5rem;
   background-color: #e96839;
-  border-radius: clamp(0.3rem, 1.5vw, 0.75rem);
+  border-radius: 0.75rem;
 }
 
 .DogLoader__paws {
   position: absolute;
   bottom: 0;
-  left: clamp(1rem, 5vw, 2.75rem);
-  width: clamp(1.5rem, 6vw, 3rem);
-  height: clamp(0.75rem, 3vw, 1.5rem);
+  left: 2.75rem;
+  width: 3rem;
+  height: 1.5rem;
 }
 
 .DogLoader__bl-leg {
-  left: clamp(-0.75rem, -2.5vw, -1.5rem);
+  left: -1.5rem;
   z-index: -1;
 }
 
@@ -832,8 +830,12 @@
 
 @media (max-width: 600px) {
   .DogLoader {
-    /* Ajustes para tabletas si el clamp no es suficiente */
-    right: clamp(0.8rem, 1.5vw, 1rem);
+    bottom: 10%;
+    right: 0.8rem;
+  }
+
+  .DogLoader__head {
+    left: 1.5rem;
   }
 }
 
@@ -846,4 +848,91 @@
   .DogLoader__head {
     left: clamp(0.8rem, 3vw, 1.5rem);
   }
+}
+
+/* -------------------------------------------------CAT------------------------------------------------------- */
+
+.MainCatLoader {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.CatLoader {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.CatContainer {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .CatLoader_Body {
+      width: 130px;
+  }
+
+.CatLoader_Tail {
+  position: absolute;
+  width: 30px;
+  top: 50%;
+  animation: tail 0.5s ease-in infinite alternate-reverse;
+  transform-origin: top;
+}
+@keyframes tail {
+  0% {
+    transform: rotateZ(30deg);
+  }
+  100% {
+    transform: rotateZ(-30deg);
+  }
+}
+.CatLoader_Text {
+  display: flex;
+  flex-direction: column;
+  width: 50px;
+  position: absolute;
+  margin: 0px 0px 100px 120px;
+}
+.CatLoader_zzz {
+  color: rgb(0, 0, 0);
+  font-weight: 700;
+  font-size: 15px;
+  animation: zzz 2s linear infinite;
+}
+.CatLoader_Bigzzz {
+  color: black;
+  font-weight: 700;
+  font-size: 25px;
+  margin-left: 10px;
+  animation: zzz 2.3s linear infinite;
+}
+@keyframes CarLoader_zzz {
+  0% {
+    color: transparent;
+  }
+  50% {
+    color: black;
+  }
+  100% {
+    color: transparent;
+  }
+}
+
+
+/* Media query para pantallas más pequeñas */
+@media (max-width: 600px) {
+  .CatContainer {
+    bottom: 10%;
+    /* Ajuste para pantallas pequeñas */
+  }
+
 }
