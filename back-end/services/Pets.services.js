@@ -245,7 +245,7 @@ class Pet {
                     message: "Not found",
                     status: 404
                 })
-                setTimeout(() => {
+                if(result) setTimeout(() => {
                     res({
                         message: "History found",
                         result: format(result[0])[0],
