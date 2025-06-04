@@ -7,6 +7,7 @@ import { formatDate, divideList,getAge } from '../Varios/Util'
 
 // Import Styles 
 import '../../../src/styles/Global/GlobalTable.css'
+import styles from '../../../src/styles/global.module.css'
 
 export class GlobalTable extends Component {
     constructor(props) {
@@ -210,7 +211,7 @@ export class GlobalTable extends Component {
                         onClick={() => this.onWatch(item)} 
                         aria-label={`Ver detalles de ${item.nom_per}`}
                       >
-                        <FileText size='1.1rem' aria-hidden='true' />
+                        <FileText className='Icon' aria-hidden='true' />
                       </button>  
                     </td>
                   </tr>
