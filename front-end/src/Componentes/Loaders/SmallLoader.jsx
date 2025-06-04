@@ -3,6 +3,8 @@ import React from 'react'
 
 // Import styles
 import '../../../src/styles/Errores/SmallLoader.css'
+import '../../../src/styles/Loaders/HamsterLoader.css'
+import '../../../src/styles/Loaders/DogLoader.css'
 
 // Component
 export const SmallLoader = () => {
@@ -11,10 +13,10 @@ export const SmallLoader = () => {
     return <SmallLoaderHamster />
   }
   if (random === 2) {
-    return <SmallLoaderDog />
+    return <SmallLoaderCat />
   }
   if(random=== 3){
-    return <SmallLoaderCat/>
+    return <SmallLoaderDog/>
   }
 }
 
