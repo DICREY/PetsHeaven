@@ -1,4 +1,4 @@
--- Active: 1747081666433@@127.0.0.1@3306@pets_heaven
+-- Active: 1746041048559@@127.0.0.1@3306@pets_heaven
 INSERT INTO pets_heaven.roles (nom_rol,fot_rol) VALUES
 ('Administrador','https://imgs.search.brave.com/JheS1cTjYH1Y1E7rp1FADfQDL9uXw20FxZAFfjZwEaY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy9k/L2Q0L04uVGVzbGEu/SlBH'),
 ('Veterinario','https://imgs.search.brave.com/rL6dnhwCDXLvz02lsRs2QjVj1F8o-8D0o4pTYhmHah8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy90/aHVtYi9jL2M4L01h/cmllX0N1cmllX2Mu/XzE5MjBzLmpwZy81/MTJweC1NYXJpZV9D/dXJpZV9jLl8xOTIw/cy5qcGc'),
@@ -84,6 +84,18 @@ INSERT INTO pets_heaven.servicios (cat_ser, nom_ser, pre_ser, des_ser, tec_des_s
 (3, 'Cirugía', 200.00, 'Procedimientos quirúrgicos realizados por especialistas con equipos de última generación.', 'Evaluación pre-quirúrgica, anestesia monitorizada, equipo esterilizado, recuperación asistida.'),
 (4, 'Urgencias', 80.00, 'Atención inmediata para situaciones urgentes a cualquier hora del día.', 'Equipo de emergencias disponible 24/7, unidad de cuidados intensivos, monitoreo constante.'),
 (5, 'Estética y Bienestar', 45.00, 'Servicio completo de baño, corte de pelo, limpieza de oídos y corte de uñas para tu mascota.', 'Baño con productos hipoalergénicos, secado profesional, corte según raza, cuidado de uñas y oídos.');
+
+INSERT INTO pets_heaven.cirugias (fec_cir, nom_cir, res_cir, com_cir, obv_cir, ser_cir) VALUES
+('2025-01-10', 'Castración canina', 'Exito total', 'Sin complicaciones', 'Recuperación rápida', 3),
+('2025-01-15', 'Limpieza dental felina', 'Mejora notable', 'Sangrado leve', 'Paciente muy calmado', 3),
+('2025-02-05', 'Resección tumor mamario', 'Tumor extirpado completamente', 'Inflamación postquirúrgica', 'Controlar antibióticos', 3),
+('2025-02-20', 'Cirugía de fractura', 'Fractura estabilizada', 'Inflamación leve', 'Reposo absoluto', 3),
+('2025-03-01', 'Laparotomía exploratoria', 'Diagnóstico confirmado', 'Adherencias internas', 'Monitorear signos vitales', 3),
+('2025-03-10', 'Extracción de cuerpo extraño', 'Objeto retirado sin daño', 'Infección leve', 'Administrar antibióticos', 3),
+('2025-03-15', 'Castración felina', 'Procedimiento exitoso', 'Sin complicaciones', 'Paciente con buena recuperación', 3),
+('2025-04-01', 'Cirugía de luxación patelar', 'Luxación corregida', 'Inflamación y dolor moderado', 'Reposo y fisioterapia', 3),
+('2025-04-12', 'Orquiectomía canina', 'Sin complicaciones', 'Pequeña infección en la herida', 'Control antibiótico', 3),
+('2025-04-20', 'Cierre de herida traumática', 'Herida cerrada correctamente', 'Ligera inflamación', 'Mantener limpieza diaria', 3);
 
 INSERT INTO pets_heaven.mascotas 
 (nom_mas, esp_mas, col_mas, raz_mas, ali_mas, fec_nac_mas, pes_mas, gen_mas, id_pro_mas, est_rep_mas, fot_mas) VALUES
