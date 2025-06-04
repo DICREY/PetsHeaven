@@ -1,4 +1,4 @@
--- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
+-- Active: 1747081666433@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.RegistPets(
     IN p_nom_mas VARCHAR(100),
     IN p_esp_mas VARCHAR(100),
@@ -288,7 +288,7 @@ BEGIN
                     p.ape_per,
                     v.especialidad,
                     cv.nom_cat,
-                    s.img_ser,
+                    cs.img_cat,
                     v.fot_vet
                 ) 
                 SEPARATOR '; '
@@ -305,6 +305,8 @@ BEGIN
                 otorgar_categoria_vet otv ON otv.id_per = ct.vet_cit
             JOIN
                 categorias_veterinario cv ON otv.id_cat = cv.id_cat
+            JOIN
+                categorias_ser cs ON s.cat_ser = cs.id_cat
             WHERE 
                 ct.estado = "REALIZADO"
         ) AS citas 
