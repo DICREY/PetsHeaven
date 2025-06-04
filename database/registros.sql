@@ -83,19 +83,31 @@ INSERT INTO pets_heaven.servicios (cat_ser, nom_ser, pre_ser, des_ser, tec_des_s
 (2, 'Medicina Preventiva', 35.00, 'Programa completo de vacunación para prevenir enfermedades comunes.', 'Aplicación de vacunas según calendario, control de temperatura, seguimiento post-vacunación.'),
 (3, 'Cirugía', 200.00, 'Procedimientos quirúrgicos realizados por especialistas con equipos de última generación.', 'Evaluación pre-quirúrgica, anestesia monitorizada, equipo esterilizado, recuperación asistida.'),
 (4, 'Urgencias', 80.00, 'Atención inmediata para situaciones urgentes a cualquier hora del día.', 'Equipo de emergencias disponible 24/7, unidad de cuidados intensivos, monitoreo constante.'),
-(5, 'Estética y Bienestar', 45.00, 'Servicio completo de baño, corte de pelo, limpieza de oídos y corte de uñas para tu mascota.', 'Baño con productos hipoalergénicos, secado profesional, corte según raza, cuidado de uñas y oídos.');
+(5, 'Estética y Bienestar', 45.00, 'Servicio completo de baño, corte de pelo, limpieza de oídos y corte de uñas para tu mascota.', 'Baño con productos hipoalergénicos, secado profesional, corte según raza, cuidado de uñas y oídos.')
+(3, 'Castración de perro macho', 150.00, 'Castración quirúrgica para perros machos.', 'Anestesia general, procedimiento estéril, recuperación asistida.'),
+(3, 'Limpieza dental felina', 80.00, 'Limpieza y cuidado dental para gatos.', 'Limpieza con ultrasonido, pulido dental, anestesia ligera.'),
+(3, 'Resección tumor mamario', 300.00, 'Cirugía para extirpación de tumores mamarios.', 'Anestesia general, cuidado postquirúrgico, control del dolor.'),
+(3, 'Fijación de fractura', 350.00, 'Procedimiento para estabilización de fracturas óseas.', 'Uso de placas y tornillos, anestesia general, fisioterapia postquirúrgica.'),
+(3, 'Laparotomía exploratoria', 400.00, 'Cirugía abdominal para diagnóstico y tratamiento.', 'Anestesia general, monitorización, cuidados intensivos.'),
+(3, 'Extracción cuerpo extraño gastrointestinal', 250.00, 'Cirugía para extracción de objetos ingeridos.', 'Anestesia general, cuidado postoperatorio.'),
+(3, 'Castración de gato macho', 120.00, 'Castración quirúrgica para gatos machos.', 'Anestesia general, procedimiento estéril, recuperación rápida.'),
+(3, 'Corrección de luxación patelar', 280.00, 'Cirugía para corregir luxación en rodilla.', 'Anestesia general, inmovilización y fisioterapia.'),
+(3, 'Orquiectomía en perro macho', 150.00, 'Extirpación de testículos en perros.', 'Anestesia general, cuidado postquirúrgico.'),
+(3, 'Cierre herida traumática', 100.00, 'Cierre quirúrgico de heridas traumáticas.', 'Sutura estéril, limpieza profunda, seguimiento postoperatorio.');
 
-INSERT INTO pets_heaven.cirugias (fec_cir, nom_cir, res_cir, com_cir, obv_cir, ser_cir) VALUES
-('2025-01-10', 'Castración canina', 'Exito total', 'Sin complicaciones', 'Recuperación rápida', 3),
-('2025-01-15', 'Limpieza dental felina', 'Mejora notable', 'Sangrado leve', 'Paciente muy calmado', 3),
-('2025-02-05', 'Resección tumor mamario', 'Tumor extirpado completamente', 'Inflamación postquirúrgica', 'Controlar antibióticos', 3),
-('2025-02-20', 'Cirugía de fractura', 'Fractura estabilizada', 'Inflamación leve', 'Reposo absoluto', 3),
-('2025-03-01', 'Laparotomía exploratoria', 'Diagnóstico confirmado', 'Adherencias internas', 'Monitorear signos vitales', 3),
-('2025-03-10', 'Extracción de cuerpo extraño', 'Objeto retirado sin daño', 'Infección leve', 'Administrar antibióticos', 3),
-('2025-03-15', 'Castración felina', 'Procedimiento exitoso', 'Sin complicaciones', 'Paciente con buena recuperación', 3),
-('2025-04-01', 'Cirugía de luxación patelar', 'Luxación corregida', 'Inflamación y dolor moderado', 'Reposo y fisioterapia', 3),
-('2025-04-12', 'Orquiectomía canina', 'Sin complicaciones', 'Pequeña infección en la herida', 'Control antibiótico', 3),
-('2025-04-20', 'Cierre de herida traumática', 'Herida cerrada correctamente', 'Ligera inflamación', 'Mantener limpieza diaria', 3);
+
+INSERT INTO pets_heaven.cirugias (fec_cir, des_cir, res_cir, com_cir, obv_cir, ser_cir) VALUES
+('2025-01-10', 'Castración de perro macho', 'Éxito total', 'Sin complicaciones', 'Recuperación rápida', 6),
+('2025-01-15', 'Limpieza dental para gato', 'Mejora notable', 'Sangrado leve', 'Paciente muy calmado', 7),
+('2025-02-05', 'Resección de tumor mamario', 'Tumor extirpado completamente', 'Inflamación postquirúrgica', 'Controlar antibióticos', 8),
+('2025-02-20', 'Fijación de fractura en pata', 'Fractura estabilizada', 'Inflamación leve', 'Reposo absoluto', 9),
+('2025-03-01', 'Laparotomía exploratoria abdominal', 'Diagnóstico confirmado', 'Adherencias internas', 'Monitorear signos vitales', 10),
+('2025-03-10', 'Extracción de cuerpo extraño gastrointestinal', 'Objeto retirado sin daño', 'Infección leve', 'Administrar antibióticos', 11),
+('2025-03-15', 'Castración de gato macho', 'Procedimiento exitoso', 'Sin complicaciones', 'Paciente con buena recuperación', 12),
+('2025-04-01', 'Corrección quirúrgica de luxación patelar', 'Luxación corregida', 'Inflamación y dolor moderado', 'Reposo y fisioterapia', 13),
+('2025-04-12', 'Orquiectomía en perro macho', 'Sin complicaciones', 'Pequeña infección en la herida', 'Control antibiótico', 14),
+('2025-04-20', 'Cierre quirúrgico de herida traumática', 'Herida cerrada correctamente', 'Ligera inflamación', 'Mantener limpieza diaria', 15);
+
 
 INSERT INTO pets_heaven.mascotas 
 (nom_mas, esp_mas, col_mas, raz_mas, ali_mas, fec_nac_mas, pes_mas, gen_mas, id_pro_mas, est_rep_mas, fot_mas) VALUES

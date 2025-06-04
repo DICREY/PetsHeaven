@@ -115,13 +115,6 @@ BEGIN
     LIMIT 1000;
 END //
 
-/* CREATE PROCEDURE pets_heaven.SearchCirugias(
-
-)
-BEGIN
-
-END // */
-
 
 /* CALL `SearchServices`(); */
 CALL `SearchServicesBy`('Cirugía');
