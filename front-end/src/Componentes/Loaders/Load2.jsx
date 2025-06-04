@@ -36,7 +36,6 @@ export const Load2 = () => {
           </div>
         </div>
       </div>
-      <div className="loader"></div>
     </main>
   )
 }
