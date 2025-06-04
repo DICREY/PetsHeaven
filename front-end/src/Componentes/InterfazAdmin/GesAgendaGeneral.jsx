@@ -1,5 +1,5 @@
 // Librarys 
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useContext } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -14,6 +14,7 @@ import { errorStatusHandler } from '../Varios/Util'
 import { Notification } from '../Global/Notifys'
 import { searchFilter } from '../Varios/Util'
 import HeaderUser from '../BarrasNavegacion/HeaderUser'
+import { AuthContext } from '../../Contexts/Contexts'
 
 // Import styles 
 import "../../styles/InterfazAdmin/GesAgendaGeneral.css"
@@ -26,7 +27,7 @@ function joinDateTime(date, time) {
 }
 
 // Component 
-export const GesAgendaGeneral = ({ URL = 'http://localhost:3000', roles = ['Usuario'] }) => {
+export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     // Dynamic vars 
     const [events, setEvents] = useState([])
     const [notify, setNotify] = useState(null)
@@ -40,6 +41,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000', roles = ['Usua
     const [allPacientes, setAllPacientes] = useState([]) // Todos los pacientes
     const [filteredPacientes, setFilteredPacientes] = useState([]) // Resultados filtrados
     const [showPacientesDropdown, setShowPacientesDropdown] = useState(false) // Controlar dropdown
+    // const [ log, user, roles ] = useContext(AuthContext)
     const [newEvent, setNewEvent] = useState({
         title: '',
         start: '',

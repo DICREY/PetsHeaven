@@ -1,3 +1,4 @@
+-- Active: 1746041048559@@127.0.0.1@3306@pets_heaven
 -- Active: 1746043677643@@127.0.0.1@3306@pets_heaven
 DROP DATABASE IF EXISTS pets_heaven;
 CREATE DATABASE IF NOT EXISTS pets_heaven;
@@ -105,12 +106,11 @@ CREATE TABLE pets_heaven.servicios(
 CREATE TABLE pets_heaven.cirugias(
     id_cir INT AUTO_INCREMENT PRIMARY KEY,
     fec_cir DATE DEFAULT(NOW()) NOT NULL,
+    des_cir VARCHAR (100) NOT NULL,
     res_cir VARCHAR(200),   # Resultados
     com_cir VARCHAR(200),   # complicacions
     obv_cir TEXT DEFAULT("No-Registrado") NOT NULL,  # Observaciones
-    ser_cir INT NOT NULL,INDEX(ser_cir), FOREIGN KEY(ser_cir) REFERENCES servicios(id_ser) ON DELETE CASCADE ON UPDATE CASCADE,
-    vet_cir INT NOT NULL,INDEX(vet_cir),FOREIGN KEY(vet_cir) REFERENCES veterinarios(id_vet) ON DELETE CASCADE ON UPDATE CASCADE,
-    mas_cir INT NOT NULL,INDEX(mas_cir),FOREIGN KEY(mas_cir) REFERENCES mascotas(id_mas) ON DELETE CASCADE ON UPDATE CASCADE
+    ser_cir INT NOT NULL,INDEX(ser_cir), FOREIGN KEY(ser_cir) REFERENCES servicios(id_ser) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE pets_heaven.vacunas (

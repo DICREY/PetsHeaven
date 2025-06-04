@@ -1,4 +1,4 @@
--- Active: 1746043677643@@127.0.0.1@3306@pets_heaven
+-- Active: 1746041048559@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchServices()
 BEGIN
     SELECT
@@ -115,7 +115,8 @@ BEGIN
     LIMIT 1000;
 END //
 
+
 /* CALL `SearchServices`(); */
-/* CALL `SearchServicesBy`('Cirugía'); */
+CALL `SearchServicesBy`('Cirugía');
 /* DROP PROCEDURE pets_heaven.SearchServices; */
 /* DROP PROCEDURE pets_heaven.`SearchServicesBy`; */

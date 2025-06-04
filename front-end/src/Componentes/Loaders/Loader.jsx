@@ -3,6 +3,7 @@ import React from 'react'
 
 // Imports 
 import { LoadDog } from './LoadDog'
+import { LoadCat } from './Load2'
 
 // Import styles
 import '../../../src/styles/Errores/Loader.css'
@@ -15,6 +16,9 @@ export const Loader = () => {
   }
   if (random === 2) {
     return <LoadDog />
+  }
+  if (random === 3) {
+    return <LoadCat />
   }
 }
 

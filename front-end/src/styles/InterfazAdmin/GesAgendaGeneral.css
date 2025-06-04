@@ -145,13 +145,13 @@
 }
 
 /* Categorías de eventos */
-.fc .fc-event.Vacunación {
+.fc .fc-event.Consulta.Preventiva {
   background-color: var(--azulclaro) !important;
   color: var(--verdeaguamarina) !important;
   border-left: 0.25rem solid var(--azulturquesa) !important;
 }
 
-.fc .fc-event.emergencia {
+.fc .fc-event.Urgencias {
   background-color: #fecaca !important;
   color: var(--red) !important;
   border-left: 0.25rem solid var(--red) !important;
@@ -163,7 +163,7 @@
   border-left: 0.25rem solid #7b6111 !important;
 }
 
-.fc .fc-event.Consulta.General {
+.fc .fc-event.Medicina.Preventiva {
   background-color: var(--purple-1) !important;
   color: var(--black) !important;
   border-left: 0.25rem solid var(--purple-2) !important;

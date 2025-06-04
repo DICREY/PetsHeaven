@@ -42,7 +42,8 @@ export default function HeaderUser() {
         
         <button 
           onClick={handleProfile} 
-          className={`${styles.navButton} ${styles.profileButton}`}
+          // className={`${styles.navButton} ${styles.profileButton}`}
+          className='EditBtn'
           aria-label="Perfil"
         >
           <User size={20} className={styles.icon} />
