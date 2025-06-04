@@ -1,7 +1,7 @@
 import React from 'react'
 import '../../../src/styles/Errores/Load2.css'
 
-export const Load2 = () => {
+export const LoadCat = () => {
   return (
     <main className="loade">
       <div className="wrapper">
