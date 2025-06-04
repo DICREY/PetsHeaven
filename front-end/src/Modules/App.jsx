@@ -51,7 +51,7 @@ export default function App () {
   const imgUserDefault = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/default_veterinario.png'
   const imgServiceDefault = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/default_veterinario.png'
   const URL = 'http://localhost:3000'
-  const isInactive = useInactivityDetector(20 * 1000)
+  // const isInactive = useInactivityDetector(5 * 1000)
   
   // Route types
   const PrivateRoute = ({ children }) => {
@@ -86,18 +86,18 @@ export default function App () {
     window.location.replace('/main')
   }
 
-  useEffect(() => {
-    if (isInactive) {
-      setNotify({
-        title: 'Sesión Inactiva',
-        message: 'Tu sesión ha estado inactiva por un tiempo prolongado. ¿Deseas continuar?',
-        select: () => setInactive(true),
-      })
-      if (inactive) {
-        return <Navigate to='/user/login' />
-      }
-    }
-  },[isInactive])
+  // useEffect(() => {
+  //   if (isInactive) {
+  //     setNotify({
+  //       title: 'Sesión Inactiva',
+  //       message: 'Tu sesión ha estado inactiva por un tiempo prolongado. ¿Deseas continuar?',
+  //       select: () => setInactive(true),
+  //     })
+  //     if (inactive) {
+  //       return <Navigate to='/user/login' />
+  //     }
+  //   }
+  // },[isInactive])
 
   return (
     // Define Routes
