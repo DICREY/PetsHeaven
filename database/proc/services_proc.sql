@@ -115,6 +115,8 @@ BEGIN
     LIMIT 1000;
 END //
 
+CREATE PROCEDURE pets_heaven.SearchServicesBy()
+
 /* CALL `SearchServices`(); */
 CALL `SearchServicesBy`('Cirugía');
 /* DROP PROCEDURE pets_heaven.SearchServices; */
