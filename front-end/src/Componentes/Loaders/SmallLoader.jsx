@@ -3,6 +3,7 @@ import React from 'react'
 
 // Import styles
 import '../../../src/styles/Errores/SmallLoader.css'
+import '../../../src/styles/Loaders/HamsterLoader.css'
 
 // Component
 export const SmallLoader = () => {

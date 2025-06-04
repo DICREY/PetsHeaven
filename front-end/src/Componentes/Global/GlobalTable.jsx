@@ -7,7 +7,6 @@ import { formatDate, divideList,getAge } from '../Varios/Util'
 
 // Import Styles 
 import '../../../src/styles/Global/GlobalTable.css'
-import styles from '../../../src/styles/global.module.css'
 
 export class GlobalTable extends Component {
     constructor(props) {
