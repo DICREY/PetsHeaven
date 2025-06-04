@@ -9,7 +9,7 @@ import '../../../src/styles/Loaders/HamsterLoader.css'
 export const SmallLoader = () => {
   const random = Math.floor(Math.random() * 3) + 1 // Randomly choose between 1 and 3
   if (random === 1) {
-    return <SmallLoaderCat />
+    return <SmallLoaderHamster />
   }
   if (random === 2) {
     return <SmallLoaderCat />
@@ -19,34 +19,34 @@ export const SmallLoader = () => {
   }
 }
 
-// const SmallLoaderHamster = () => {
-//   return (
-//     <main className='MainContainerSmallLoader'>
-//       <section
-//         aria-label='Orange and tan Hamster running in a metal wheel'
-//         role='img'
-//         className='WheelAndHamsterSmallLoader'
-//       >
-//         <div className='WheelSmallLoader'></div>
-//         <div className='HamsterSmallLoader'>
-//           <div className='Hamster__bodySmallLoader'>
-//             <div className='Hamster__headSmallLoader'>
-//               <div className='Hamster__earSmallLoader'></div>
-//               <div className='Hamster__eyeSmallLoader'></div>
-//               <div className='Hamster__noseSmallLoader'></div>
-//             </div>
-//             <div className='Hamster__limbSmallLoader Hamster__limb--frSmallLoader'></div>
-//             <div className='Hamster__limbSmallLoader Hamster__limb--flSmallLoader'></div>
-//             <div className='Hamster__limbSmallLoader Hamster__limb--brSmallLoader'></div>
-//             <div className='Hamster__limbSmallLoader Hamster__limb--blSmallLoader'></div>
-//             <div className='Hamster__tailSmallLoader'></div>
-//           </div>
-//         </div>
-//         <div className='SpokeSmallLoader'></div>
-//       </section>
-//     </main>
-//   )
-// }
+const SmallLoaderHamster = () => {
+  return (
+    <main className='MainContainerSmallLoader'>
+      <section
+        aria-label='Orange and tan Hamster running in a metal wheel'
+        role='img'
+        className='WheelAndHamsterSmallLoader'
+      >
+        <div className='WheelSmallLoader'></div>
+        <div className='HamsterSmallLoader'>
+          <div className='Hamster__bodySmallLoader'>
+            <div className='Hamster__headSmallLoader'>
+              <div className='Hamster__earSmallLoader'></div>
+              <div className='Hamster__eyeSmallLoader'></div>
+              <div className='Hamster__noseSmallLoader'></div>
+            </div>
+            <div className='Hamster__limbSmallLoader Hamster__limb--frSmallLoader'></div>
+            <div className='Hamster__limbSmallLoader Hamster__limb--flSmallLoader'></div>
+            <div className='Hamster__limbSmallLoader Hamster__limb--brSmallLoader'></div>
+            <div className='Hamster__limbSmallLoader Hamster__limb--blSmallLoader'></div>
+            <div className='Hamster__tailSmallLoader'></div>
+          </div>
+        </div>
+        <div className='SpokeSmallLoader'></div>
+      </section>
+    </main>
+  )
+}
 
 // const SmallLoaderDog = () => {
 //   return (
