@@ -41,7 +41,7 @@ export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
     const [allPacientes, setAllPacientes] = useState([]) // Todos los pacientes
     const [filteredPacientes, setFilteredPacientes] = useState([]) // Resultados filtrados
     const [showPacientesDropdown, setShowPacientesDropdown] = useState(false) // Controlar dropdown
-    const [ log, user, roles ] = useContext(AuthContext)
+    // const [ log, user, roles ] = useContext(AuthContext)
     const [newEvent, setNewEvent] = useState({
         title: '',
         start: '',
