@@ -1,11 +1,28 @@
-import { useState } from "react"
+// Librarys
+import { useState, useRef, useEffect} from "react"
 import { Trash2, PenSquare, Plus, Filter, AlertCircle, FileText,Activity } from "lucide-react"
+
+// Imports
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
 import HeaderUser from '../../BarrasNavegacion/HeaderUser'
+import { errorStatusHandler } from '../../Varios/Util'
+import { Notification } from '../../Global/Notifys'
 import Footer from '../../Varios/Footer2'
+import { GetData } from "../../Varios/Requests"
+
+
+// Style
 import "../../../styles/InterfazAdmin/Servicios/Cirugia.css"
 
 export const CirugiasVeterinaria = ({ roles = ['Usuario'] }) => {
+
+  // Vars 
+  const URL = "http://localhost:3000"
+  const didFetch = useRef(false)
+  const mainUrl = `${URL}/service`
+  const [notify, setNotify] = useState(null)
+
+  
   const [cirugias, setCirugias] = useState([
     {
       id: "CIR001",
@@ -44,7 +61,7 @@ export const CirugiasVeterinaria = ({ roles = ['Usuario'] }) => {
       disponible: true,
     },
   ])
-
+  
   const [mostrarFormulario, setMostrarFormulario] = useState(false)
   const [cirugiaEditando, setCirugiaEditando] = useState(null)
   const [nuevaCirugia, setNuevaCirugia] = useState({
@@ -57,6 +74,61 @@ export const CirugiasVeterinaria = ({ roles = ['Usuario'] }) => {
     disponible: true,
   })
 
+
+  // Functions    
+  useEffect(() => {
+      if (didFetch.current) return
+      didFetch.current = true
+      fetchCirugias()
+  }, [])
+  
+  const fetchCirugias = async () => {
+    setNotify({
+        title: 'Cargando',
+        message: 'Cargando cirugias, por favor espere...',
+        load: 1
+    })
+    try {
+      const byValue = "Cirugía"
+      let data = await GetData(`${mainUrl}/all/${encodeURIComponent(byValue)}`,)
+      setNotify(null)
+      // Normaliza la respuesta a array
+      if (data && !Array.isArray(data)) {
+          data = [data]
+      }
+      if (data) {
+          console.log(data)
+          // const mappedEvents = data.map(event => ({
+          //     id: event.id_cit,
+          //     mas_cit: event.mas_cit,
+          //     title: event.nom_ser,
+          //     start: joinDateTime(event.fec_cit, event.hor_ini_cit),
+          //     end: joinDateTime(event.fec_cit, event.hor_fin_cit),
+          //     description: event.des_ser,
+          //     category: event.nom_ser || 'vacuna',
+          //     paciente: event.nom_mas,
+          //     propietario: `${event.nom_per} ${event.ape_per}`,
+          //     lug_ate_cit: event.lug_ate_cit || 'Consultorio',
+          //     telefono: event.cel_per,
+          //     estado: event.estado,
+          //     fotoMascota: event.fot_mas
+          // }))
+      }
+    } catch (err) {
+      setNotify(null)
+      if (err.status) {
+          const message = errorStatusHandler(err.status)
+          setNotify({
+              title: 'Error',
+              message: `${message}`,
+              close: setNotify
+          })
+      } 
+      else console.error(err)
+      // Manejo de error
+    }
+  }
+
   const manejarCambioFormulario = (e) => {
     const { name, value, type, checked } = e.target
     setNuevaCirugia((prev) => ({
@@ -64,7 +136,7 @@ export const CirugiasVeterinaria = ({ roles = ['Usuario'] }) => {
       [name]: type === "checkbox" ? checked : value,
     }))
   }
-
+  
   const agregarCirugia = (e) => {
     e.preventDefault()
     if (cirugiaEditando) {
