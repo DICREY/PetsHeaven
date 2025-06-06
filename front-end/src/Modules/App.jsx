@@ -193,6 +193,7 @@ export default function App () {
           <Route path='user/register' element={<Registro URL={URL} imgDefault={imgUserDefault} />} />
           <Route path='user/recuperar' element={<ForgotPassword />} />
           <Route path='internal' element={<ErrorInternalServer />} />
+          <Route path='/politica-cookies' element={<ErrorInternalServer />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </BrowserRouter>

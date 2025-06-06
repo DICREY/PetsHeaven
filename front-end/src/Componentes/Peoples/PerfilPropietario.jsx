@@ -187,132 +187,134 @@ export const PerfilPropietario = ({
   return (
     <main className='contenedorpageProps'>
       <NavBarAdmin />
-      <div className='principalpageProp'>
+      <main className='principalpageProp'>
       <HeaderUser/> 
-        <div className='contenedorProps'>
-        
-        <header className='cabeceraProps'>
-          <h1 className='tituloProps'>
-            Configuración de usuario <span className='subtituloProps'> | Creación</span>
-          </h1>
-          <div className='botonesAccionProps'>
-            <button className='BackBtn' onClick={() => navigate(-1)}>
-              <ArrowLeft size={18} />
-              <span>Atrás</span>
-            </button>
 
-            {/* Botones de Eliminar y Editar solo cuando estamos en la pestaña de Propietario */}
-            {activeTab === 'propietario' && (
-              <>
-                {isEditing ? (
+        <section className='tarjetagesusuario'>
+          <section className='contenedorProps'>
+            <header className='cabeceraProps'>
+              <h1 className='tituloProps'>
+                Configuración de usuario <span className='subtituloProps'> | Creación</span>
+              </h1>
+              <div className='botonesAccionProps'>
+                <button className='BackBtn' onClick={() => navigate(-1)}>
+                  <ArrowLeft className='icon' />
+                  <span>Atrás</span>
+                </button>
+
+                {/* Botones de Eliminar y Editar solo cuando estamos en la pestaña de Propietario */}
+                {activeTab === 'propietario' && (
                   <>
-                    <button className='botonCancelarProps' onClick={handleCancelEdit}>
-                      <X size={18} />
-                      <span>Cancelar</span>
-                    </button>
-                    <button className='botonGuardarProps' onClick={handleSaveEdit}>
-                      <Save size={18} />
-                      <span>Guardar</span>
-                    </button>
-                  </>
-                ) : (
-                  <button className='EditBtn' onClick={handleEditClick}>
-                    <Edit size={18} />
-                    <span>Editar</span>
-                  </button>
-                )}
-                {isAdmin && !isEditing && (
-                  <button className='DeleteBtn' onClick={handleDeleteClick}>
-                    <Trash2 size={18} />
-                    <span>Desactivar</span>
-                  </button>)
-                }
-              </>
-            )}
-          </div>
-        </header>
-
-        {
-          owner && (
-            <nav className='pestanasProps'>
-              <button
-                className={`pestanaProps ${activeTab === 'propietario' ? 'activaProps' : ''}`}
-                onClick={() => handleTabChange('propietario')}
-              >
-                <User size={18} />
-                <span>Usuario</span>
-              </button>
-              <button
-                className={`pestanaProps ${activeTab === 'mascotas' ? 'activaProps' : ''}`}
-                onClick={() => handleTabChange('mascotas')}
-              >
-                <PawPrint size={18} />
-                <span>Mascotas</span>
-              </button>
-            </nav>
-          )
-        }
-
-        <section className='contenidoProps'>
-          {activeTab === 'propietario' && (
-            <Description
-              handleChange={handleChange} 
-              headers={headers}
-              datas={userSelect}
-              imgDefault={imgDefault}
-              navigate={navigate}
-              isEditing={isEditing}
-              disabled={['doc_per', 'tip_doc_per']}
-            />
-          )}
-
-          {activeTab === 'mascotas' && (
-            <section className='mascotasContenedorProps'>
-              <div className='mascotasGrillaProps'>
-                {petsData?.map((mascota, index) => (
-                  <article key={index + 1293} className='mascotaTarjetaProps'>
-                    <section className='mascotaImagenProps'>
-                      {checkImage(
-                        mascota.fot_mas,
-                        `${mascota.esp_mas} de raza ${mascota.raz_mas} color ${mascota.col_mas} con nombre ${mascota.nom_mas}`,
-                        imgDefaultPet
-                      )}
-                    </section>
-                    <section className='mascotaInfoProps'>
-                      <h3 className='mascotaNombreProps'>{mascota.nom_mas}</h3>
-                      <div className='mascotaDetallesProps'>
-                        <div className='mascotaDetalleProps'>
-                          <span className='mascotaEtiquetaProps'>Especie:</span> {mascota.esp_mas}
-                        </div>
-                        <div className='mascotaDetalleProps'>
-                          <span className='mascotaEtiquetaProps'>Raza:</span> {mascota.raz_mas}
-                        </div>
-                        <div className='mascotaDetalleProps'>
-                          <span className='mascotaEtiquetaProps'>Edad:</span> {getAge(mascota.fec_nac_mas)}
-                           {' Años'}
-                        </div>
-                        <div className='mascotaDetalleProps'>
-                          <span className='mascotaEtiquetaProps'>Género:</span> {mascota.gen_mas}
-                        </div>
-                      </div>
-                      <div className='mascotaAccionesProps'>
-                        <button className='botonHistorialProps' onClick={() => verHistorial(mascota)}>
-                          <Calendar size={16} />
-                          <span>Ver historial</span>
+                    {isEditing ? (
+                      <>
+                        <button className='DeleteBtn' onClick={handleCancelEdit}>
+                          <X className='icon' />
+                          <span>Cancelar</span>
                         </button>
-                      </div>
-                    </section>
-                  </article>
-                ))}
+                        <button className='AddBtn' onClick={handleSaveEdit}>
+                          <Save className='icon' />
+                          <span>Guardar</span>
+                        </button>
+                      </>
+                    ) : (
+                      <button className='EditBtn' onClick={handleEditClick}>
+                        <Edit className='icon' />
+                        <span>Editar</span>
+                      </button>
+                    )}
+                    {isAdmin && !isEditing && (
+                      <button className='DeleteBtn' onClick={handleDeleteClick}>
+                        <Trash2 className='icon' />
+                        <span>Desactivar</span>
+                      </button>)
+                    }
+                  </>
+                )}
               </div>
+            </header>
 
-              {petsData?.length === 0 && <div className='sinResultadosProps'>No hay mascotas vinculadas</div>}
+            {
+              owner && (
+                <nav className='pestanasProps'>
+                  <button
+                    className={`pestanaProps ${activeTab === 'propietario' ? 'activaProps' : ''}`}
+                    onClick={() => handleTabChange('propietario')}
+                  >
+                    <User className='icon' />
+                    <span>Usuario</span>
+                  </button>
+                  <button
+                    className={`pestanaProps ${activeTab === 'mascotas' ? 'activaProps' : ''}`}
+                    onClick={() => handleTabChange('mascotas')}
+                  >
+                    <PawPrint className='icon' />
+                    <span>Mascotas</span>
+                  </button>
+                </nav>
+              )
+            }
+
+              <section className='contenidoProps'>
+                {activeTab === 'propietario' && (
+                  <Description
+                    handleChange={handleChange} 
+                    headers={headers}
+                    datas={userSelect}
+                    imgDefault={imgDefault}
+                    navigate={navigate}
+                    isEditing={isEditing}
+                    disabled={['doc_per', 'tip_doc_per']}
+                  />
+                )}
+
+              {activeTab === 'mascotas' && (
+                <section className='mascotasContenedorProps'>
+                  <div className='mascotasGrillaProps'>
+                    {petsData?.map((mascota, index) => (
+                      <article key={index + 1293} className='mascotaTarjetaProps'>
+                        <section className='mascotaImagenProps'>
+                          {checkImage(
+                            mascota.fot_mas,
+                            `${mascota.esp_mas} de raza ${mascota.raz_mas} color ${mascota.col_mas} con nombre ${mascota.nom_mas}`,
+                            imgDefaultPet
+                          )}
+                        </section>
+                        <section className='mascotaInfoProps'>
+                          <h3 className='mascotaNombreProps'>{mascota.nom_mas}</h3>
+                          <div className='mascotaDetallesProps'>
+                            <div className='mascotaDetalleProps'>
+                              <span className='mascotaEtiquetaProps'>Especie:</span> {mascota.esp_mas}
+                            </div>
+                            <div className='mascotaDetalleProps'>
+                              <span className='mascotaEtiquetaProps'>Raza:</span> {mascota.raz_mas}
+                            </div>
+                            <div className='mascotaDetalleProps'>
+                              <span className='mascotaEtiquetaProps'>Edad:</span> {getAge(mascota.fec_nac_mas)}
+                              {' Años'}
+                            </div>
+                            <div className='mascotaDetalleProps'>
+                              <span className='mascotaEtiquetaProps'>Género:</span> {mascota.gen_mas}
+                            </div>
+                          </div>
+                          <div className='mascotaAccionesProps'>
+                            <button className='botonHistorialProps' onClick={() => verHistorial(mascota)}>
+                              <Calendar size={16} />
+                              <span>Ver historial</span>
+                            </button>
+                          </div>
+                        </section>
+                      </article>
+                    ))}
+                  </div>
+
+                  {petsData?.length === 0 && <div className='sinResultadosProps'>No hay mascotas vinculadas</div>}
+                </section>
+              )}
             </section>
-          )}
+          </section>
         </section>
-      </div>
       <Footer/>
-      </div>      
+      </main>      
       {notify && (
         <Notification 
           {...notify}

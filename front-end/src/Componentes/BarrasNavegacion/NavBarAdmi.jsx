@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import React, { useState, useEffect, useContext } from 'react'
-import { Settings, Users, Headset, ChevronDown, Syringe, Bath, Scissors, Cat, Calendar, LogOut, Menu, X,
+import { Settings, Users, Headset, ChevronDown, Syringe, Bath, Scissors, Calendar, Menu, X,
   Stethoscope, CalendarRange, CalendarClock, FlaskRoundIcon as Flask, 
   Home} from 'lucide-react'
 
@@ -69,21 +69,20 @@ export const NavBarAdmin = () => {
       <aside
         className={`barranavadmin ${menuMovilAbierto ? 'visiblenavadmin' : 'ocultanavadmin'}`}
       >
-        <div className='perfilsuperiornavadmin'>
-          <div className='avatarnavadmin'>
+        <header className='perfilsuperiornavadmin'>
+          <picture className='avatarnavadmin'>
             {checkImage(
               user.img,
               `${user.names} ${user.lastNames}`,
               imgDefault,
               'inicialnavadmin'
               )}
-          </div>
+          </picture>
           <div className='nombrenavadmin'>
             {user.names} {user.lastNames}
           </div>
-        </div>
+        </header>
         <hr className='separadornavadmin' />
-
  
         <nav className='menunavadmin'>
           <ul className='listanavadmin'>

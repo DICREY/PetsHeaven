@@ -86,10 +86,10 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
 
 
   return (
-    <main className="contenedorgesusuario">
+    <main className="contenedoradminhome">
       <NavBarAdmin />
 
-      <section className="principalgesusuario">
+      <section className="principaladminhome">
       <HeaderUser/>
         <section className="tarjetagesusuario">
           <div className="contenidogesusuario">
