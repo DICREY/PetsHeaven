@@ -6,10 +6,10 @@ import { checkImage } from './Varios/Util'
 import { Loader } from './Loaders/Loader'
 import Footer from './Varios/Footer2'
 import { CookieConsent } from './Global/Cookies'
-import { AuthContext } from '../Contexts/Contexts'
+// import { AuthContext } from '../Contexts/Contexts'
 
 // Librarys 
-import React,{ useState, useEffect, useContext} from 'react'
+import React,{ useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MapPin, Star, Phone, Mail, Clock, ChevronUp, Instagram, Facebook } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -59,7 +59,7 @@ const itemVariants = {
   }
 };
 
-export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuario'] }) {
+export default function VeterinariaPage({ URL = '', setArriveTo }) {
   // Dynamic vars
   const mainUrl = `${URL}/global/services`
   const [diaActual, setDiaActual] = useState(0)
@@ -68,7 +68,6 @@ export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuar
   const [gruposTest, setGruposTest] = useState([])
   const [serData, setSerData] = useState([])
   const [loading,setLoading] = useState(true)
-  const { log } = useContext(AuthContext)
 
   // Vars
   const navigate = useNavigate()
@@ -274,7 +273,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuar
                     </div>
                     <div className='contenido-servicio'>
                       <h3 className='titulo-servicio'>{i.nom_cat}</h3>
-                      <p className='descripcion-servicio'>{i.des_ser}</p>
+                      <p className='descripcion-servicio'>{i.tec_des_cat}</p>
                     </div>
                   </motion.div>
                 ))}

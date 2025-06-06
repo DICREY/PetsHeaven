@@ -1,4 +1,17 @@
--- Active: 1747352860830@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
+CREATE PROCEDURE pets_heaven.SearchCatServices()
+BEGIN
+    SELECT
+        c.nom_cat,
+        c.img_cat,
+        c.tec_des_cat
+    FROM
+        categorias_ser c
+    WHERE
+        c.estado = 1
+    ORDER BY c.nom_cat
+    LIMIT 1000;
+END //
 CREATE PROCEDURE pets_heaven.SearchServices()
 BEGIN
     SELECT
@@ -119,6 +132,7 @@ END //
 
 
 /* CALL `SearchServices`(); */
-CALL pets_heaven.`SearchServicesBy`('Cirugía');
+/* CALL pets_heaven.`SearchServicesBy`('Cirugía'); */
 /* DROP PROCEDURE pets_heaven.SearchServices; */
 /* DROP PROCEDURE pets_heaven.`SearchServicesBy`; */
+/* CALL `SearchCatServices`(); */

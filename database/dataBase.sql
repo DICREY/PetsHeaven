@@ -1,4 +1,4 @@
--- Active: 1747352860830@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 -- Active: 1746043677643@@127.0.0.1@3306@pets_heaven
 DROP DATABASE IF EXISTS pets_heaven;
 CREATE DATABASE IF NOT EXISTS pets_heaven;
@@ -91,6 +91,7 @@ CREATE TABLE pets_heaven.categorias_ser(
     id_cat INT AUTO_INCREMENT PRIMARY KEY,
     nom_cat VARCHAR(100) NOT NULL,INDEX(nom_cat),
     img_cat TEXT DEFAULT('No-Registrado') NOT NULL,
+    tec_des_cat TEXT NOT NULL,
     estado BOOLEAN DEFAULT(1) NOT NULL
 );
 
