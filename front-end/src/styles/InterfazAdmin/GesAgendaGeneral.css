@@ -1,6 +1,3 @@
-@import url('../vars.css');
-@import url('../global.css');
-
 /* Contenedor principal */
 #main-container-calendar {
   flex-direction: column;

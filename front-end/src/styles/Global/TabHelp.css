@@ -5,33 +5,33 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
+  backdrop-filter: blur(0.1875rem);
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 2000;
-  backdrop-filter: blur(0.1875rem); /* 3px */
 }
 
 .help-window {
   background-color: var(--white);
-  border-radius: 0.75rem; /* 12px */
+  border-radius: 0.75rem;
   width: 90%;
-  max-width: 37.5rem; /* 600px */
+  max-width: 37.5rem;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.1); /* 4px 20px */
+  box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.1);
   animation: fadeIn 0.3s ease-out;
 }
 
 /* Encabezado */
 .help-header {
-  padding: 1.25rem; /* 20px */
-  border-bottom: 0.0625rem solid var(--gray-300); /* 1px */
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
+  padding: 1.25rem;
+  border-bottom: 0.0625rem solid var(--gray-300);
 }
 
 .help-header h2 {
@@ -40,7 +40,7 @@
   font-size: 1.5rem;
   display: flex;
   align-items: center;
-  gap: 0.625rem; /* 10px */
+  gap: 0.625rem;
 }
 
 .close-btn {
@@ -96,7 +96,7 @@
   margin-top: 0;
   color: var(--verdeaguamarina);
   font-size: 1.3rem;
-  margin-bottom: 1.25rem; /* 20px */
+  margin-bottom: 1.25rem;
 }
 
 .contact-card {

@@ -3,8 +3,8 @@
 
 /* Dynamic class */
 .text {
-    font-weight: bold;
-    font-size: var(--font-size);
+  font-weight: bold;
+  font-size: var(--font-size);
 }
 .i-back{
     position: fixed;
@@ -206,4 +206,10 @@
 .botonadminhome:focus {
   background-color: #cce3ff;
   outline: 2px solid #00bcd4;
+}
+
+.icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
 }

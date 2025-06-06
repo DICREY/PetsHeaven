@@ -32,11 +32,10 @@ export default function HeaderUser() {
       <nav className={styles.navLinks}>
         <button 
           onClick={handleHelp} 
-          // className={`${styles.navButton} ${styles.helpButton}`}
           className='BackBtn'
           aria-label="Ayuda"
         >
-          <HelpCircle size={20} className={styles.icon} />
+          <HelpCircle className={styles.icon} />
           <span>Ayuda</span>
         </button>
         
@@ -46,7 +45,7 @@ export default function HeaderUser() {
           className='EditBtn'
           aria-label="Perfil"
         >
-          <User size={20} className={styles.icon} />
+          <User className={styles.icon} />
           <span>Perfil</span>
         </button>
         
@@ -55,7 +54,7 @@ export default function HeaderUser() {
           className='DeleteBtn'
           aria-label="Cerrar sesión"
         >
-          <LogOut size={20} className={styles.icon} />
+          <LogOut className={styles.icon} />
           <span>Cerrar sesión</span>
         </button>
       </nav>

@@ -11,7 +11,6 @@
 .leg {
   position: absolute;
   bottom: 0;
-  /* Usamos clamp para un ancho y alto fluido */
   width: clamp(0.5rem, 2vw, 1rem);
   height: clamp(0.7rem, 2.5vw, 1.0625rem);
   max-width: 8rem; /* Mantenemos estos max para asegurar que no crezcan demasiado */

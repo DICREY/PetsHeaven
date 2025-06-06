@@ -1,19 +1,19 @@
 /* Estilos generales del footer */
 .footer {
-  background-color: white;
+  position: relative;
+  bottom: 0;
   width: 100%;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--gray-300);
+  background-color: var(--white);
 }
 
 .contenedor-footer {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  position: relative;
+  padding: 1rem;
 }
 
 /* Logo y derechos */
@@ -23,11 +23,14 @@
   align-items: center;
   text-align: center;
   gap: 0.5rem;
+  font-size: 0.9rem;
 }
 
 .logo-footer {
-  width: 40px;
-  height: 40px;
+  width: 4rem;
+  height: 4rem;
+  object-fit: cover;
+  object-position: center;
 }
 
 .texto-footer {
@@ -54,45 +57,12 @@
   color: #00bcd4;
 }
 
-/* ===== RESPONSIVE: MÓVIL PEQUEÑO (< 480px) ===== */
-@media (max-width: 479px) {
-  .contenedor-footer {
-    padding: 0.75rem;
-  }
-
-  .logo-footer {
-    width: 35px;
-    height: 35px;
-  }
-
-  .texto-footer {
-    font-size: 0.7rem;
-  }
-
-  .enlace-footer {
-    font-size: 0.8rem;
-  }
-}
-
-/* ===== RESPONSIVE: MÓVIL (480px - 767px) ===== */
-@media (min-width: 480px) and (max-width: 767px) {
-  .logo-footer {
-    width: 38px;
-    height: 38px;
-  }
-
-  .texto-footer {
-    font-size: 0.75rem;
-  }
-}
-
 /* ===== RESPONSIVE: TABLET (768px - 1023px) ===== */
 @media (min-width: 768px) and (max-width: 1023px) {
   .contenedor-footer {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
   }
 
   .logo-derechos {
@@ -113,7 +83,6 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 3rem;
   }
 
   .logo-derechos {
@@ -126,19 +95,6 @@
     flex-direction: row;
     gap: 2rem;
   }
-
-  .logo-footer {
-    width: 42px;
-    height: 42px;
-  }
-
-  .texto-footer {
-    font-size: 0.875rem;
-  }
-
-  .enlace-footer {
-    font-size: 0.9rem;
-  }
 }
 
 /* ===== RESPONSIVE: ESCRITORIO Y SUPERIOR (>= 1200px) ===== */
@@ -147,7 +103,6 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 1.25rem 2rem;
   }
 
   .logo-derechos {
@@ -160,41 +115,8 @@
     flex-direction: row;
     gap: 2.5rem;
   }
-
-  .logo-footer {
-    width: 45px;
-    height: 45px;
-  }
-
-  .texto-footer {
-    font-size: 0.875rem;
-  }
-
-  .enlace-footer {
-    font-size: 0.9rem;
-  }
 }
 
-/* ===== RESPONSIVE: ESCRITORIO GRANDE (>= 1536px) ===== */
-@media (min-width: 1536px) {
-  .contenedor-footer {
-    max-width: 1400px;
-    padding: 1.5rem 2rem;
-  }
-
-  .logo-footer {
-    width: 48px;
-    height: 48px;
-  }
-
-  .texto-footer {
-    font-size: 0.9rem;
-  }
-
-  .enlace-footer {
-    font-size: 0.95rem;
-  }
-}
 
 /* Estilos para impresión */
 @media print {

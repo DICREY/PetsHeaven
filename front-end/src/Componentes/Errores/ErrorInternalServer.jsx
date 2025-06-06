@@ -1,31 +1,31 @@
 // Librarys 
 import React from 'react'
-import { Link } from 'react-router'
+import { useNavigate } from 'react-router'
 
 // Import styles 
 import '../../../src/styles/Errores/notfound.css'
   
 // Component
 export const ErrorInternalServer = () => {
+  // Vars 
+  const navigate = useNavigate()
+
   return (
-    <section className="notfound-container">
-      <div className="pet-glitch-container">
-        <h1 className="title-num glitch" data-text="404">500</h1>
-        <h2 className="sub-title">¡Error interno del server!</h2>
-        <p className="text">
-          La página que buscas se fue de paseo con las mascotas.
+    <main className="body">
+      <section className="parent">
+        <picture className="imagen"></picture>
+        <p>
+          No eres tu soy yo, solo necesito tiempo para actulizarme
         </p>
-        
-        <div className="pet-elements">
-          <span className="paw-icon">🐾</span>
-          <span className="pet-icon">🐕</span>
-          <span className="pet-icon">🐈</span>
+        <div className="contenedor-button">
+          <button 
+            onClick={() => navigate(-1)} 
+            className="pet-home-button"
+          >
+            <i className="fas fa-bone"></i> Volver atrás
+          </button>
         </div>
-        
-        <Link to="/main" className="pet-home-button">
-          <i className="fas fa-bone"></i> Volver atrás
-        </Link>
-      </div>
-    </section>
+      </section>
+    </main>
   )
 }

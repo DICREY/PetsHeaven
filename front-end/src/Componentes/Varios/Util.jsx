@@ -163,7 +163,7 @@ export const errorStatusHandler = (status) => {
   const returnMessage = (errStatus) => {
     let message = 'Error interno'
     
-    if (errStatus >= 500) return 'Error en el sistema. Intente nuevamente más tarde'
+    if (errStatus >= 500) return 'No eres tu soy yo, solo necesito tiempo para actualizar'
     
     switch (errStatus) {
       case 302:

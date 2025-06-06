@@ -20,7 +20,7 @@ export default function Footer() {
           <a href='#' className='enlace-footer'>
             Términos de Servicio
           </a>
-          <a href='#' className='enlace-footer'>
+          <a href='/politica-cookies' className='enlace-footer'>
             Cookies
           </a>
         </div>
