@@ -11,7 +11,7 @@ import { AuthContext } from '../../Contexts/Contexts'
 // Import styles
 import '../../../src/styles/BarrasNavegacion/NavBarAdmin.css'
 
-export const NavBarAdmin = ( ) => {
+export const NavBarAdmin = () => {
   // Dynamic vars 
   const [serviciosAbierto, setServiciosAbierto] = useState(false)
   const [agendaAbierta, setAgendaAbierta] = useState(false)

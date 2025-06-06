@@ -5,12 +5,13 @@ import { diapositivas, promociones, testimonios } from './Varios/varios'
 import { checkImage } from './Varios/Util'
 import { Loader } from './Loaders/Loader'
 import Footer from './Varios/Footer2'
+import { CookieConsent } from './Global/Cookies'
 import { AuthContext } from '../Contexts/Contexts'
 
 // Librarys 
 import React,{ useState, useEffect, useContext} from 'react'
 import { useNavigate } from 'react-router-dom'
-import { MapPin, Star, Phone, Mail, Clock, ChevronUp, Instagram, Facebook, Loader2 } from 'lucide-react'
+import { MapPin, Star, Phone, Mail, Clock, ChevronUp, Instagram, Facebook } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 // Import styles
@@ -161,7 +162,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuar
       loading ? (<Loader />) : ( 
            
         <main className='pagina'>
-          <NavBar roles={roles} />
+          <NavBar />
 
           {/* COMPONENTE: Carrusel */}
           <motion.section 
@@ -514,6 +515,9 @@ export default function VeterinariaPage({ URL = '', setArriveTo, roles = ['Usuar
             <ChevronUp className='icono-subir' />
           </motion.button> 
           <Footer/>
+
+          <CookieConsent />
+          
         </main>
       )
     }
