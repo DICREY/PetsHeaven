@@ -24,42 +24,42 @@ export const CirugiasVeterinaria = ({ roles = ['Usuario'] }) => {
 
   
   const [cirugias, setCirugias] = useState([
-    {
-      id: "CIR001",
-      nombre: "Esterilización",
-      descripcion: "Procedimiento quirúrgico para prevenir la reproducción en mascotas.",
-      complicaciones: "Sangrado, infección, reacción a anestesia",
-      recomendaciones: "Ayuno de 12 horas previo. Reposo post-operatorio de 7-10 días.",
-      precio: 150000,
-      disponible: true,
-    },
-    { 
-      id: "CIR002",
-      nombre: "Extracción Dental",
-      descripcion: "Remoción de piezas dentales dañadas o infectadas.",
-      complicaciones: "Sangrado, dolor post-operatorio, infección",
-      recomendaciones: "Dieta blanda por 3-5 días. Antibióticos según prescripción.",
-      precio: 80000,
-      disponible: true,
-    },
-    {
-      id: "CIR003",
-      nombre: "Cirugía de Cataratas",
-      descripcion: "Procedimiento para restaurar la visión en casos de cataratas.",
-      complicaciones: "Infección ocular, rechazo del implante, ceguera",
-      recomendaciones: "Collar isabelino por 2 semanas. Gotas oftálmicas diarias.",
-      precio: 450000,
-      disponible: false,
-    },
-    {
-      id: "CIR004",
-      nombre: "Reparación de Fractura",
-      descripcion: "Cirugía ortopédica para reparar huesos fracturados.",
-      complicaciones: "Infección ósea, rechazo de implantes, cojera permanente",
-      recomendaciones: "Reposo absoluto 4-6 semanas. Fisioterapia posterior.",
-      precio: 320000,
-      disponible: true,
-    },
+    // {
+    //   id: "CIR001",
+    //   nombre: "Esterilización",
+    //   descripcion: "Procedimiento quirúrgico para prevenir la reproducción en mascotas.",
+    //   complicaciones: "Sangrado, infección, reacción a anestesia",
+    //   recomendaciones: "Ayuno de 12 horas previo. Reposo post-operatorio de 7-10 días.",
+    //   precio: 150000,
+    //   disponible: true,
+    // },
+    // { 
+    //   id: "CIR002",
+    //   nombre: "Extracción Dental",
+    //   descripcion: "Remoción de piezas dentales dañadas o infectadas.",
+    //   complicaciones: "Sangrado, dolor post-operatorio, infección",
+    //   recomendaciones: "Dieta blanda por 3-5 días. Antibióticos según prescripción.",
+    //   precio: 80000,
+    //   disponible: true,
+    // },
+    // {
+    //   id: "CIR003",
+    //   nombre: "Cirugía de Cataratas",
+    //   descripcion: "Procedimiento para restaurar la visión en casos de cataratas.",
+    //   complicaciones: "Infección ocular, rechazo del implante, ceguera",
+    //   recomendaciones: "Collar isabelino por 2 semanas. Gotas oftálmicas diarias.",
+    //   precio: 450000,
+    //   disponible: false,
+    // },
+    // {
+    //   id: "CIR004",
+    //   nombre: "Reparación de Fractura",
+    //   descripcion: "Cirugía ortopédica para reparar huesos fracturados.",
+    //   complicaciones: "Infección ósea, rechazo de implantes, cojera permanente",
+    //   recomendaciones: "Reposo absoluto 4-6 semanas. Fisioterapia posterior.",
+    //   precio: 320000,
+    //   disponible: true,
+    // },
   ])
   
   const [mostrarFormulario, setMostrarFormulario] = useState(false)
@@ -97,22 +97,8 @@ export const CirugiasVeterinaria = ({ roles = ['Usuario'] }) => {
           data = [data]
       }
       if (data) {
-          console.log(data)
-          // const mappedEvents = data.map(event => ({
-          //     id: event.id_cit,
-          //     mas_cit: event.mas_cit,
-          //     title: event.nom_ser,
-          //     start: joinDateTime(event.fec_cit, event.hor_ini_cit),
-          //     end: joinDateTime(event.fec_cit, event.hor_fin_cit),
-          //     description: event.des_ser,
-          //     category: event.nom_ser || 'vacuna',
-          //     paciente: event.nom_mas,
-          //     propietario: `${event.nom_per} ${event.ape_per}`,
-          //     lug_ate_cit: event.lug_ate_cit || 'Consultorio',
-          //     telefono: event.cel_per,
-          //     estado: event.estado,
-          //     fotoMascota: event.fot_mas
-          // }))
+          setCirugias(data);
+          console.log(cirugias)
       }
     } catch (err) {
       setNotify(null)
@@ -318,56 +304,56 @@ export const CirugiasVeterinaria = ({ roles = ['Usuario'] }) => {
               )}
 
               <ul className="grid-cirugia" aria-label="Lista de cirugías disponibles">
-                {cirugias.map((cirugia) => (
-                  <li key={cirugia.id}>
+                {cirugias.map((cirugia, idx) => (
+                  <li key={cirugia.id_ser || cirugia.nom_ser || idx}>
                     <article className="tarjeta-cirugia">
                       <header className="header-tarjeta-cirugia">
                         <div className="info-cirugia">
-                          <h3 className="nombre-cirugia">{cirugia.nombre}</h3>
+                          <h3 className="nombre-cirugia">{cirugia.nom_ser}</h3>
                           <span
-                            className={`estado-cirugia ${cirugia.disponible ? "disponible-cirugia" : "no-disponible-cirugia"}`}
+                            className={`estado-cirugia ${cirugia.sta_ser === "DISPONIBLE" ? "disponible-cirugia" : "no-disponible-cirugia"}`}
                           >
-                            {cirugia.disponible ? "Disponible" : "No disponible"}
+                            {cirugia.sta_ser === "DISPONIBLE" ? "Disponible" : "No disponible"}
                           </span>
                         </div>
                         <div className="acciones-cirugia">
                           <button
                             className="boton-eliminar-cirugia"
-                            onClick={() => eliminarCirugia(cirugia.id)}
-                            aria-label={`Eliminar cirugía ${cirugia.nombre}`}
+                            onClick={() => eliminarCirugia(cirugia.id_ser || cirugia.nom_ser)}
+                            aria-label={`Eliminar cirugía ${cirugia.nom_ser}`}
                           >
                             <Trash2 size={18} aria-hidden="true" />
                           </button>
                           <button
                             className="boton-editar-cirugia"
                             onClick={() => editarCirugia(cirugia)}
-                            aria-label={`Editar cirugía ${cirugia.nombre}`}
+                            aria-label={`Editar cirugía ${cirugia.nom_ser}`}
                           >
                             <PenSquare size={18} aria-hidden="true" />
                           </button>
                         </div>
                       </header>
 
-                      <p className="descripcion-tarjeta-cirugia">{cirugia.descripcion}</p>
+                      <p className="descripcion-tarjeta-cirugia">{cirugia.des_ser}</p>
 
                       <section className="detalles-cirugia">
                         <div className="detalle-cirugia">
                           <strong>
                             <AlertCircle size={14} className="icono-detalle-cirugia" aria-hidden="true" /> Complicaciones:
                           </strong>
-                          <p>{cirugia.complicaciones}</p>
+                          <p>{cirugia.com_ser || "No especificadas"}</p>
                         </div>
                         <div className="detalle-cirugia">
                           <strong>
                             <FileText size={14} className="icono-detalle-cirugia" aria-hidden="true" /> Recomendaciones:
                           </strong>
-                          <p>{cirugia.recomendaciones}</p>
+                          <p>{cirugia.tec_des_ser}</p>
                         </div>
                       </section>
 
                       <footer className="footer-tarjeta-cirugia">
-                        <span className="precio-cirugia">Precio: ${cirugia.precio.toLocaleString()}</span>
-                        <span className="id-cirugia">{cirugia.id}</span>
+                        <span className="precio-cirugia">Precio: ${Number(cirugia.pre_ser).toLocaleString()}</span>
+                        <span className="id-cirugia">{cirugia.id_ser || cirugia.nom_ser}</span>
                       </footer>
                     </article>
                   </li>
