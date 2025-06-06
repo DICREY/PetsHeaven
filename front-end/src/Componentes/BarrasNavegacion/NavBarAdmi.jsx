@@ -181,17 +181,6 @@ export const NavBarAdmin = () => {
             }
           </ul>
         </nav>
-
-        <hr className='separadornavadmin' />
-        <div className='opcionesnavadmin'>
-          <button 
-            className='opcionnavadmin'
-            onClick={() => navigate('/main')}
-          >
-            <Home className='iconoopcionnavadmin' />
-            <span>Pagina Principal</span>
-          </button>
-        </div>
       </aside>
     </header>
   )

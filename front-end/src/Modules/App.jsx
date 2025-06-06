@@ -27,6 +27,8 @@ import { Services } from '../Componentes/InterfazAdmin/Services'
 import {CirugiasVeterinaria} from "../Componentes/InterfazAdmin/Servicios/Cirugia"
 import {SpaMascotas} from "../Componentes/InterfazAdmin/Servicios/Spa"
 import {VisualizadorVacunas} from "../Componentes/InterfazAdmin/Servicios/Vacuna"
+import VeterinaryDashboard from '../Componentes/InterfazAdmin/Home'
+import TodasLasNotificaciones from '../Componentes/BarrasNavegacion/Notificaciones'
 
 // Import contexts
 import { AuthProvider } from '../Contexts/Auth.context'
@@ -125,6 +127,10 @@ export default function App () {
             <PrivateRoute children={<Services URL={URL}
             imgDefault={imgServiceDefault} />}/>}>
           </Route>
+          <Route path='notificaciones' element={
+            <PrivateRoute children={<TodasLasNotificaciones URL={URL} />}/>}>
+          </Route>
+
 
           {/* Admin routes  */}
           <Route path='/admin' element={<MainAdmin />} >
@@ -136,6 +142,9 @@ export default function App () {
             </Route>
             <Route path='actualizar/datos personal' element={
               <AdminRoute children={<ConfiguracionUsuarioCrud userSelect={userSelect} URL={URL} />} />} >
+            </Route>
+            <Route path='administracion' element={
+              <AdminRoute children={<VeterinaryDashboard URL={URL} />} />} >
             </Route>
           </Route>
           
