@@ -6,6 +6,7 @@ BEGIN
         s.pre_ser,
         s.des_ser,
         s.tec_des_ser,
+        s.sta_ser,
         c.nom_cat,
         c.img_cat,
         (
@@ -64,6 +65,7 @@ BEGIN
         s.pre_ser,
         s.des_ser,
         s.tec_des_ser,
+        s.sta_ser,
         c.nom_cat,
         c.img_cat,
         (

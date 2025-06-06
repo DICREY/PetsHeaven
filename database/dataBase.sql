@@ -100,6 +100,7 @@ CREATE TABLE pets_heaven.servicios(
     nom_ser VARCHAR(100) NOT NULL,
     pre_ser DECIMAL(10,2) NOT NULL,
     des_ser TEXT NOT NULL,
+    sta_ser ENUM("DISPONIBLE","NO-DISPONIBLE") DEFAULT("DISPONIBLE") NOT NULL, # Estado del servicio
     tec_des_ser TEXT NOT NULL
 );
 
