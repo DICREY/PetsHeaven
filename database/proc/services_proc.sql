@@ -119,6 +119,7 @@ END //
 
 
 /* CALL `SearchServices`(); */
-CALL pets_heaven.`SearchServicesBy`('Cirugía');
+/* CALL pets_heaven.`SearchServicesBy`('Cirugía'); */
 /* DROP PROCEDURE pets_heaven.SearchServices; */
 /* DROP PROCEDURE pets_heaven.`SearchServicesBy`; */
+/* CALL `SearchCatServices`(); */

@@ -13,7 +13,7 @@ class Global {
     async SearchServices() {
         return new Promise((res,rej) => {
             // vars
-            const proc = "CALL SearchServices();"
+            const proc = "CALL SearchCatServices();"
 
             // conect to database
             this.database = new DataBase()
