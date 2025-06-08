@@ -26,6 +26,19 @@ Route.get('/general', ValidatorRol("administrador"), async (req,res) => {
     }
 })
 
+Route.post('/by:by', ValidatorRol("administrador"), async (req,res) => {
+    try {
+        const search = await appoin.findAppointmentsByUser()
+
+        if (!search.result) res.status(404).json({ message: "Citas no encontradas"})
+
+        res.status(200).json(search)
+    } catch (err) {
+        if (err.status) return res.status(err.status).json({message: err.message})
+        res.status(500).json({message: err})
+    }
+})
+
 Route.post('/register', ValidatorRol("administrador"), async (req, res) => {
     try {
         const created = await appoin.registAppointment(req.body)

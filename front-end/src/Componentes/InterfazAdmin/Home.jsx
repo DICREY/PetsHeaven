@@ -1,62 +1,24 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Calendar, Users, Heart, Clock, ExternalLink, Plus } from "lucide-react"
 import { useNavigate } from 'react-router-dom'
 
-import "../../styles/InterfazAdmin/Home.css"
+// Imports
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
-import Header from '../BarrasNavegacion/HeaderUser'
+import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
+import { GetData } from "../Varios/Requests"
+import { Notification } from "../Global/Notifys"
+import { errorStatusHandler } from '../Varios/Util'
 
-export default function VeterinaryDashboard({ onVerTodasNotificaciones }) {
-  
+import "../../styles/InterfazAdmin/Home.css"
+
+export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
+  // Dynamic vars 
+  const [ appoint, setAppoint ] = useState()
+  const [ notify, setNotify ] = useState()
+
+  // Vars 
+  const mainUrl = `${URL}/appointment`
   const navigate = useNavigate()
-
-  const todayAppointments = [
-    {
-      id: 1,
-      time: "09:00",
-      pet: "Max",
-      owner: "Juan Pérez",
-      doctor: "Dr. García",
-      type: "Consulta general",
-      status: "confirmed",
-    },
-    {
-      id: 2,
-      time: "10:30",
-      pet: "Luna",
-      owner: "María García",
-      doctor: "Dra. Rodríguez",
-      type: "Vacunación",
-      status: "confirmed",
-    },
-    {
-      id: 3,
-      time: "11:15",
-      pet: "Rocky",
-      owner: "Carlos López",
-      doctor: "Dr. Martínez",
-      type: "Cirugía menor",
-      status: "pending",
-    },
-    {
-      id: 4,
-      time: "14:00",
-      pet: "Bella",
-      owner: "Ana Martínez",
-      doctor: "Dra. Rodríguez",
-      type: "Control post-operatorio",
-      status: "confirmed",
-    },
-    {
-      id: 5,
-      time: "15:30",
-      pet: "Toby",
-      owner: "Luis Rodríguez",
-      doctor: "Dr. García",
-      type: "Emergencia",
-      status: "urgent",
-    },
-  ]
 
   const stats = [
     { title: "Citas Hoy", value: "12", icon: Calendar, color: "azul" },
@@ -64,15 +26,36 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones }) {
     { title: "Doctores Disponibles", value: "4", icon: Users, color: "morado" },
     { title: "Emergencias", value: "2", icon: Clock, color: "rojo" },
   ]
+  const getAppoint = async () => {
+    try {
+      const data = await GetData(`${mainUrl}/general`)
+      setNotify(null)
+      if (data) setAppoint(data)
+    } catch (err) {
+      setNotify(null)
+      if (err.status) {
+        const message = errorStatusHandler(err.status)
+        setNotify({
+          title: 'Error',
+          message: `${message}`,    
+          close: setNotify
+        })
+      } else console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    getAppoint()
+  },[])
 
   return (
-    <div className="contenedoradminhome">
+    <main className="contenedoradminhome">
       <NavBarAdmin/>
-      <div className="tablero-admin">
+      <main className="tablero-admin">
         
         <main className="contenido-principal-admin">
           {/* Header del dashboard */}
-          <Header/>
+          <HeaderAdmin />
 
           {/* Stats Grid */}
           <section className="estadisticas-grid-admin" aria-label="Estadísticas del día">
@@ -95,13 +78,13 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones }) {
             <article className="tarjeta-citas-admin">
               <header className="cabecera-tarjeta-admin">
                 <h2>Citas de Hoy</h2>
-                <span className="contador-citas-admin" aria-label={`${todayAppointments.length} citas programadas`}>
-                  {todayAppointments.length} citas
+                <span className="contador-citas-admin" aria-label={`${appoint?.length} citas programadas`}>
+                  {appoint?.length} citas
                 </span>
               </header>
 
               <ul className="lista-citas-admin" role="list">
-                {todayAppointments.map((appointment) => (
+                {appoint?.map((appointment) => (
                   <li key={appointment.id} className={`item-cita-admin ${appointment.status}-admin`}>
                     <div className="tiempo-cita-admin">
                       <Clock size={16} aria-hidden="true" />
@@ -135,8 +118,7 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones }) {
                   Nueva Cita
                 </button>
 
-                <a href="#" className="boton-accion-admin sitio-web-admin"
-                  onClick={() => navigate('/main')}>
+                <a href="/main" className="boton-accion-admin sitio-web-admin">
                   <ExternalLink size={20} aria-hidden="true" />
                   Visitar Página Web
                 </a>
@@ -166,8 +148,13 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones }) {
             </aside>
           </section>
         </main>
-      </div>
-    </div>
+      </main>
+      {notify && (
+        <Notification 
+          {...notify}
+        />
+      )}
+    </main>
   )
 }
 

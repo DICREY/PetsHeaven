@@ -13,8 +13,7 @@ import { GetData, PostData, ModifyData } from '../Varios/Requests'
 import { errorStatusHandler } from '../Varios/Util'
 import { Notification } from '../Global/Notifys'
 import { searchFilter } from '../Varios/Util'
-import HeaderUser from '../BarrasNavegacion/HeaderUser'
-import { AuthContext } from '../../Contexts/Contexts'
+import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
 
 // Import styles 
 import "../../styles/InterfazAdmin/GesAgendaGeneral.css"
@@ -300,7 +299,7 @@ return (
     <main className="calendar-container">
         <NavBarAdmin />
         <main className='calendar-container' id='main-container-calendar'>
-        <HeaderUser openHelp={() => setTabHelp(true)}/>
+        <HeaderAdmin openHelp={() => setTabHelp(true)}/>
 
             <FullCalendar
                 // Refencia del calendario, permite acceder a la instancia del componente para manipularlo

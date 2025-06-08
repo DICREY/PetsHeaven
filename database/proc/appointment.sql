@@ -1,4 +1,4 @@
--- Active: 1745625018911@@localhost@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchAllAppointments()
 BEGIN 
     SELECT 
@@ -127,11 +127,31 @@ CREATE PROCEDURE pets_heaven.UpdateAppointmentDate(
     IN p_new_lugar VARCHAR(100)
 )
 BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    SET autocommit = 0;
+
+    START TRANSACTION;
+
     UPDATE pets_heaven.citas
-    SET fec_cit = p_new_date,
+
+    SET
+        fec_cit = p_new_date,
         hor_ini_cit = p_new_hor_ini,
         hor_fin_cit = p_new_hor_fin,
         lug_ate_cit = p_new_lugar
-    WHERE id_cit = p_id_cit AND mas_cit = p_id_mas;
+
+    WHERE
+        id_cit = p_id_cit 
+        AND mas_cit = p_id_mas;
+
+    COMMIT;
+
+    SET autocommit = 1;
 END //
 
+CALL `SearchAppointmentsByUser`('luna');

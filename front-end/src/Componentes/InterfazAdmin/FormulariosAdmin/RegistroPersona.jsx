@@ -1,5 +1,5 @@
 // Librarys
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Pencil, ChevronLeft, User, Lock } from 'lucide-react'
 import { useForm } from 'react-hook-form'
@@ -10,11 +10,13 @@ import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
 import { errorStatusHandler, LegalAge } from '../../Varios/Util'
 import { Notification } from '../../Global/Notifys'
 import { PostData } from '../../Varios/Requests'
+import { HeaderUser } from '../../BarrasNavegacion/HeaderUser'
+import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
+import Footer from '../../Varios/Footer2'
+import { AuthContext } from '../../../Contexts/Contexts'
 
 // Import styles
 import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/RegistroPersonal.css'
-import HeaderUser from '../../BarrasNavegacion/HeaderUser'
-import Footer from '../../Varios/Footer2'
 
 export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
   // Dynamic vars
@@ -34,6 +36,7 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
   const mainUrl = `${URL}/people`
   const navigate = useNavigate()
   const legalDate = LegalAge()
+  const {admin } = useContext(AuthContext)
 
   // Functions
   const handleProfileImageChange = (e) => {
@@ -103,7 +106,7 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
     <main className='contenedorgesusuario'>
       <NavBarAdmin roles={roles} />
       <main className='principalgesusuario'>
-        <HeaderUser />
+        {admin? (<HeaderAdmin />): (<HeaderUser />)}
         <div className='contenedor-regusuario'>
           <div className='cabecera-regusuario'>
             <div className='titulo-regusuario'>

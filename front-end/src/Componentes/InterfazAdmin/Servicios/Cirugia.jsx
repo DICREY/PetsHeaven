@@ -1,28 +1,30 @@
 // Librarys
-import { useState, useRef, useEffect} from "react"
+import { useState, useRef, useEffect, useContext} from "react"
 import { Trash2, PenSquare, Plus, Filter, AlertCircle, FileText,Activity } from "lucide-react"
 
 // Imports
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
-import HeaderUser from '../../BarrasNavegacion/HeaderUser'
+import { HeaderUser } from '../../BarrasNavegacion/HeaderUser'
+import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
 import { errorStatusHandler } from '../../Varios/Util'
 import { Notification } from '../../Global/Notifys'
 import Footer from '../../Varios/Footer2'
 import { GetData } from "../../Varios/Requests"
-
+import { AuthContext } from "../../../Contexts/Contexts"
 
 // Style
 import "../../../styles/InterfazAdmin/Servicios/Cirugia.css"
 
 export const CirugiasVeterinaria = ({ roles = ['Usuario'] }) => {
+  // Dynamic Vars 
+  const [notify, setNotify] = useState(null)
 
   // Vars 
   const URL = "http://localhost:3000"
   const didFetch = useRef(false)
   const mainUrl = `${URL}/service`
-  const [notify, setNotify] = useState(null)
+  const { admin } = useContext(AuthContext)
 
-  
   const [cirugias, setCirugias] = useState([
     // {
     //   id: "CIR001",
@@ -175,7 +177,7 @@ export const CirugiasVeterinaria = ({ roles = ['Usuario'] }) => {
     <main className="maincontenedor-cirugia">
     <NavBarAdmin roles={roles} />
       <div className="principaladminhome">
-      <HeaderUser/>
+      {admin? (<HeaderAdmin />): (<HeaderUser />)}
         <div className="contenedor-cirugia">
         
           <div className="contenedorprincipal-cirugia">

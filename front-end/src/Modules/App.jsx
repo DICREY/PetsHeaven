@@ -45,7 +45,6 @@ export default function App () {
   const [owner,setOwner] = useState(false)
   const [arriveTo,setArriveTo] = useState('')
   const [petDetailTab,setPetDetailTab] = useState('Datos Generales')
-  const [notify, setNotify] = useState(null)
   const [inactive, setInactive] = useState(false)
   
   // Vars 

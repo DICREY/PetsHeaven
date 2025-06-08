@@ -1,15 +1,21 @@
-import {Bell,Clock,AlertCircle,CheckCircle,Calendar,Heart,Users,Search,Trash2,Eye,EyeOff,ArrowLeft} from "lucide-react"
+import React, { useContext } from "react"
+import { Bell,Clock,AlertCircle,CheckCircle,Calendar,Heart,Users,Search,Trash2,Eye,EyeOff,ArrowLeft } from "lucide-react"
 import { useState } from "react"
-import "../../styles/BarrasNavegacion/Notificaciones.css"
-import React from "react"
 
+// Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
-import Header from '../BarrasNavegacion/HeaderUser'
+import { HeaderUser } from '../BarrasNavegacion/HeaderUser'
+import { AuthContext } from "../../Contexts/Contexts"
 
+// Import styles 
+import "../../styles/BarrasNavegacion/Notificaciones.css"
 
+// Component 
 export default function TodasLasNotificaciones({ onVolver }) {
+  // Dynamic vars 
   const [filtroActivo, setFiltroActivo] = useState("todas")
   const [busqueda, setBusqueda] = useState("")
+  const { user } = useContext(AuthContext)
 
   const notificaciones = [
     {
@@ -143,7 +149,7 @@ export default function TodasLasNotificaciones({ onVolver }) {
       <div className="tablero-admin">
         <main className="contenido-principal-admin">
           {/* Header del dashboard - igual que en veterinary */}
-          <Header/>
+          <HeaderUser />
 
           {/* Contenedor unificado para cabecera y controles */}
           <section className="contenedor-cabecera-notificaciones-noti">

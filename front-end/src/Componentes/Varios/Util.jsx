@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 export const useRoleRedirect = (roles = []) => {
   const roleRoutes = {
     'Administrador': '/admin/gestion/usuarios',
-    'Veterinario': '/gestion/mascotas',
+    'Veterinario': '/consultorio',
     'default': '/user/pets'
   }
   
@@ -214,9 +214,4 @@ export const errorStatusHandler = (status) => {
     return message
   }
   return returnMessage(status)
-}
-
-export const getCookie = (name = '') => {
-  const hasToken = document.cookie.split(';').some(item => item.trim().startsWith(`${name}=`));
-  return hasToken
 }

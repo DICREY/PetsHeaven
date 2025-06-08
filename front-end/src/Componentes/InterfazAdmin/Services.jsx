@@ -9,7 +9,7 @@ import { GlobalTable } from '../Global/GlobalTable'
 import { Notification } from '../Global/Notifys'
 import { GetData } from '../Varios/Requests'
 import { errorStatusHandler, searchFilter } from '../Varios/Util'
-import HeaderUser from '../BarrasNavegacion/HeaderUser'
+import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
 import Footer from '../Varios/Footer2'
 import { AuthContext } from '../../Contexts/Contexts'
 
@@ -74,7 +74,7 @@ export const Services = ({ URL = '', imgDefault = '', currentTab = null }) => {
         <NavBarAdmin />
 
           <section className='principaladminhome'>
-            <HeaderUser />
+            <HeaderAdmin />
             <article className='tarjetaadminhome' aria-labelledby='lista-usuarios-titulo'>
               <article className='contenidoadminhome'>
                 <header className='encabezadoadminhome'>

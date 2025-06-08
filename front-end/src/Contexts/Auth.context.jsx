@@ -13,6 +13,7 @@ export const AuthProvider = ({ children }) => {
     const [ user, setUser ] = useState(null)
     const [ roles, setRoles ] = useState(null)
     const [ log, setLog ] = useState(null)
+    const [ admin, setAdmin ] = useState(false)
     const [ notify, setNotify ] = useState({
         title: 'Cargando...',
         message: 'Obteniendo datos',
@@ -28,6 +29,8 @@ export const AuthProvider = ({ children }) => {
                 const userData = decodeJWT(response.token)
                 setUser(userData)
                 setRoles(userData.roles?.split(', ') || ['Usuario'])
+                setAdmin(userData.roles?.split(', ').includes('Administrador'))
+
                 setLog(true)
                 setNotify({
                     title: 'Bienvenido',
@@ -53,7 +56,7 @@ export const AuthProvider = ({ children }) => {
     // Cerrar sesion 
     const logout = async () => {
         try {
-            const check = await PostData('http://localhost:3000/global/clear-cookies', {})
+            const check = await PostData('http://localhost:3000/cookie/clear-cookies', {})
             if (check) {
                 setUser(null)
                 setRoles(null)
@@ -71,11 +74,12 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const check = await PostData('http://localhost:3000/global/check-cookie', { name: '__cred' })
+                const check = await PostData('http://localhost:3000/cookie/check-cookie', { name: '__cred' })
                 if (check) {
                     const userData = decodeJWT(check.data.data)
                     setUser(userData)
                     setRoles(userData.roles?.split(', ') || ['Usuario'])
+                    setAdmin(userData.roles?.split(', ').includes('Veterinario'))
                     setLog(true)
                     setNotify(null)
                 }
@@ -90,7 +94,7 @@ export const AuthProvider = ({ children }) => {
     }, [log])
 
     return (
-        <AuthContext.Provider value={{ user, roles, log, login, logout }}>
+        <AuthContext.Provider value={{ admin, user, roles, log, login, logout }}>
             {notify ? <Notification
                 {...notify}
              /> : children}

@@ -1,5 +1,5 @@
 // Librarys 
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useContext } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -11,11 +11,13 @@ import esLocale from "@fullcalendar/core/locales/es"
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GetData } from '../Varios/Requests'
 import { errorStatusHandler } from '../Varios/Util'
+import { AuthContext } from '../../Contexts/Contexts'
+import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
+import { HeaderUser } from '../BarrasNavegacion/HeaderUser'
+import Footer from '../Varios/Footer2'
 
 // Import styles 
 import "../../styles/InterfazAdmin/GesAgendaGeneral.css"
-import HeaderUser from '../BarrasNavegacion/HeaderUser'
-import Footer from '../Varios/Footer2'
 
 // Función para unir fecha y hora en formato ISO
 function joinDateTime(date, time) {
@@ -29,7 +31,6 @@ export const GesAgendaPersonal = ({ URL = 'http://localhost:3000', roles = ['Usu
     const [events, setEvents] = useState([])
     const [notify, setNotify] = useState(null)
     const [mesActual, setMesActual] = useState('')
-    //Vista Actual del usuario
     const [currentView, setCurrentView] = useState('dayGridMonth')
     //Mostrar la descripcion en un pop up de la cita
     const [showEventModal, setShowEventModal] = useState(false)
@@ -37,7 +38,6 @@ export const GesAgendaPersonal = ({ URL = 'http://localhost:3000', roles = ['Usu
     const [showCreateModal, setShowCreateModal] = useState(false)
     const [selectedEvent, setSelectedEvent] = useState(null)
     const [selectedDate, setSelectedDate] = useState('')
-    const calendarRef = useRef(null)
     const [newEvent, setNewEvent] = useState({
         title: '',
         start: '',
@@ -53,7 +53,9 @@ export const GesAgendaPersonal = ({ URL = 'http://localhost:3000', roles = ['Usu
     // Vars 
     const didFetch = useRef(false)
     const dateInputRef = useRef()
+    const calendarRef = useRef(null)
     const mainUrl = `${URL}/appointment`
+    const { admin } = useContext(AuthContext)
 
     // Functions    
     useEffect(() => {
@@ -216,7 +218,7 @@ export const GesAgendaPersonal = ({ URL = 'http://localhost:3000', roles = ['Usu
         <main className="calendar-container">
             <NavBarAdmin />
             <main className='calendar-container' id='main-container-calendar'>
-            <HeaderUser/>
+            {admin? (<HeaderAdmin />): (<HeaderUser />)}
                 <input
                     type="date"
                     ref={dateInputRef}

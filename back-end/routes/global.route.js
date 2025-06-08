@@ -7,7 +7,7 @@ const { hash } = require('bcrypt')
 // Imports
 const Global = require('../services/Global.services')
 const People = require('../services/People.services')
-const { limiterLog, cookiesOptions, cookiesOptionsLog } = require('../middleware/varios.handler')
+const { limiterLog, cookiesOptionsLog } = require('../middleware/varios.handler')
 const { authenticateJWT } = require('../middleware/validator.handler')
 
 // Env vars
@@ -92,32 +92,6 @@ Route.post('/login', limiterLog, async (req,res) => {
 
         res.status(500).json({ message: err })
     }
-})
-
-Route.post('/cookie', authenticateJWT,(req, res) => {
-    const { name, value } = req.body
-    
-    res.cookie( name, value, cookiesOptions)
-
-    res.status(201).json({ message: 'Cookie creada' })
-})
-
-Route.post('/check-cookie', authenticateJWT,(req, res) => {
-    const { name } = req.body
-    const cookie = req.signedCookies[name] || req.cookies[name]
-
-    if (!cookie) return res.status(404).json({ message: 'Cookie no encontrada' })
-    
-    return res.status(200).json({ data: cookie })
-})
-
-Route.post('/clear-cookies', authenticateJWT,(req, res) => {
-    res.clearCookie('__cred', cookiesOptions)
-    res.clearCookie('__nit', cookiesOptions)
-    res.clearCookie('__user', cookiesOptions)
-    res.clearCookie('__userName', cookiesOptions)
-
-    return res.status(200).json({ message: 'Cookies eliminadas' })
 })
 
 // Export 

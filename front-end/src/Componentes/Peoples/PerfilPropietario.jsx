@@ -1,5 +1,5 @@
 // Librarys 
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { User, PawPrint, ArrowLeft, Trash2, Edit, Save, X, Calendar } from 'lucide-react'
 
@@ -9,11 +9,13 @@ import { formatDate, getAge, errorStatusHandler, checkImage } from '../Varios/Ut
 import { DeleteData, ModifyData } from '../Varios/Requests'
 import { Description } from '../Global/Description'
 import { Notification } from '../Global/Notifys'
+import Footer from '../Varios/Footer2'
+import { HeaderUser } from '../BarrasNavegacion/HeaderUser'
+import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
+import { AuthContext } from '../../Contexts/Contexts'
 
 // Import styles 
 import '../../../src/styles/InterfazAdmin/PerfilPropietario.css'
-import Footer from '../Varios/Footer2'
-import HeaderUser from '../BarrasNavegacion/HeaderUser'
 
 // Component 
 export const PerfilPropietario = ({ 
@@ -40,6 +42,7 @@ export const PerfilPropietario = ({
   const imgDefault = imgUserDefault
   const imgDefaultPet = imgPetDefault
   const navigate = useNavigate()
+  const { admin } = useContext(AuthContext)
   const headers = {
     Nombres: 'nom_per',
     Apellidos: 'ape_per',
@@ -188,7 +191,7 @@ export const PerfilPropietario = ({
     <main className='contenedorpageProps'>
       <NavBarAdmin />
       <main className='principalpageProp'>
-      <HeaderUser/> 
+      {admin? (<HeaderAdmin />): (<HeaderUser />)}
 
         <section className='tarjetagesusuario'>
           <section className='contenedorProps'>

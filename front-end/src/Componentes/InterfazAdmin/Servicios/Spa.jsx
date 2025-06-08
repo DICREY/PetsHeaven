@@ -1,8 +1,15 @@
-import { useState } from "react"
-import {Bath ,Scissors, Trash2, PenSquare, Plus, Filter, Heart, Droplets, Clock, Sparkles, X } from "lucide-react"
-import HeaderUser from '../../BarrasNavegacion/HeaderUser'
-import Footer from '../../Varios/Footer2'
+// Librarys 
+import { useContext, useState } from "react"
+import { Bath ,Scissors, Trash2, PenSquare, Plus, Filter, Heart, Droplets, Clock, Sparkles, X } from "lucide-react"
+
+// Imports 
+import { HeaderUser } from '../../BarrasNavegacion/HeaderUser'
+import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
+import Footer from '../../Varios/Footer2'
+import { AuthContext } from "../../../Contexts/Contexts"
+
+// Import styles 
 import "../../../styles/InterfazAdmin/Servicios/Spa.css"
 
 export const SpaMascotas = ({ roles = ['Usuario'] }) => {
@@ -62,6 +69,9 @@ export const SpaMascotas = ({ roles = ['Usuario'] }) => {
     precio: "",
     disponible: true,
   })
+
+  // Vars 
+  const { admin } = useContext(AuthContext)
 
   const manejarCambioFormulario = (e) => {
     const { name, value, type, checked } = e.target
@@ -132,7 +142,7 @@ export const SpaMascotas = ({ roles = ['Usuario'] }) => {
     <div className="maincontenedor-spa">
       <NavBarAdmin roles={roles} />
       <div className="principaladminhome">
-      <HeaderUser/>
+      {admin? (<HeaderAdmin />): (<HeaderUser />)}
         <main className="contenedor-spa">
           <div className="contenedorsecundario-spa">
             <header className="encabezado-spa">

@@ -1,13 +1,20 @@
-import { useState } from "react"
-import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
+// Librarys 
+import { useContext, useState } from "react"
 import {Syringe} from 'lucide-react'
-import HeaderUser from '../../BarrasNavegacion/HeaderUser'
+
+// Imports 
+import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
+import { HeaderUser } from '../../BarrasNavegacion/HeaderUser'
+import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
 import Footer from '../../Varios/Footer2'
+
+// Import styles 
 import "../../../styles/InterfazAdmin/Servicios/Vacuna.css"
+import { AuthContext } from "../../../Contexts/Contexts"
 
-export function VisualizadorVacunas({ roles = ['Usuario'] }) {
-
-    // Datos ficticios UNU
+// Component 
+export function VisualizadorVacunas() {
+  // Datos ficticios UNU
   const [vacunas, setVacunas] = useState([
     {
       id: 1,
@@ -112,6 +119,7 @@ export function VisualizadorVacunas({ roles = ['Usuario'] }) {
   const [filtroAnimal, setFiltroAnimal] = useState("todos")
   const [vacunaDetalle, setVacunaDetalle] = useState(null)
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false)
+  const { admin, roles } = useContext(AuthContext)
 
   const abrirModalAgregar = () => {
     setNuevaVacuna({
@@ -217,7 +225,7 @@ export function VisualizadorVacunas({ roles = ['Usuario'] }) {
     <div className="maincontenedorVacunas">
       <NavBarAdmin roles={roles} />
       <div className="principaladminhome">
-      <HeaderUser/>
+      {admin? (<HeaderAdmin />): (<HeaderUser />)}
         <main className="contenedorPrincipalVacunas">
           <div className="contenedorVacunas">
             <header className="encabezadoVacunas">
