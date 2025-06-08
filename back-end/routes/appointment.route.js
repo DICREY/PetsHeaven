@@ -26,9 +26,10 @@ Route.get('/general', ValidatorRol("administrador"), async (req,res) => {
     }
 })
 
-Route.post('/by:by', ValidatorRol("administrador"), async (req,res) => {
+Route.post('/by', ValidatorRol("veterinario"), async (req,res) => {
     try {
-        const search = await appoin.findAppointmentsByUser()
+        const { by } = req.body
+        const search = await appoin.findAppointmentsByUser(by)
 
         if (!search.result) res.status(404).json({ message: "Citas no encontradas"})
 
@@ -39,7 +40,7 @@ Route.post('/by:by', ValidatorRol("administrador"), async (req,res) => {
     }
 })
 
-Route.post('/register', ValidatorRol("administrador"), async (req, res) => {
+Route.post('/register', ValidatorRol("veterinario"), async (req, res) => {
     try {
         const created = await appoin.registAppointment(req.body)
         if (created.result) return res.status(201).json(created)
@@ -50,7 +51,7 @@ Route.post('/register', ValidatorRol("administrador"), async (req, res) => {
     }
 })
 
-Route.put('/modify', ValidatorRol("administrador"), async (req, res) => {
+Route.put('/modify', ValidatorRol("veterinario"), async (req, res) => {
     try {
         const updated = await appoin.modifyAppointment(req.body)
         if (updated.result) return res.status(200).json(updated)
@@ -61,7 +62,7 @@ Route.put('/modify', ValidatorRol("administrador"), async (req, res) => {
     }
 })
 
-Route.put('/cancel', ValidatorRol("administrador"), async (req, res) => {
+Route.put('/cancel', ValidatorRol("veterinario"), async (req, res) => {
     try {
         const cancelled = await appoin.disableAppointment(req.body)
         if (cancelled.result) return res.status(200).json(cancelled)

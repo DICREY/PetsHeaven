@@ -87,11 +87,11 @@ export const AuthProvider = ({ children }) => {
             } catch (err) {
                 setNotify(null)
                 setUser(null)
-                if(err.status === 403) setLog(false)
+                // if(err.status === 403) setLog(false)
             }
         }
         if(!log) checkAuth()
-    }, [log])
+    }, [!log])
 
     return (
         <AuthContext.Provider value={{ admin, user, roles, log, login, logout }}>

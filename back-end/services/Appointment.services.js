@@ -38,7 +38,7 @@ class Appointment {
     // Get all the appointments by User
     async findAppointmentsByUser(data) {
         return new Promise((res,rej)=> {
-            const procedure = "CALL SearchAllAppointments(?);"
+            const procedure = "CALL SearchAppointmentsByUser(?);"
             const by = data.replace(":","").replace(" ","")
 
             // conect to database

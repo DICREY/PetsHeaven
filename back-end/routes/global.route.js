@@ -6,6 +6,7 @@ const { hash } = require('bcrypt')
 
 // Imports
 const Global = require('../services/Global.services')
+const Services = require('../services/Services.services')
 const People = require('../services/People.services')
 const { limiterLog, cookiesOptionsLog } = require('../middleware/varios.handler')
 const { authenticateJWT } = require('../middleware/validator.handler')
@@ -19,15 +20,16 @@ const Route = Router()
 // Routes
 Route.get('/services', async (req,res) => {
     // Vars
-    const global = new Global()
+    const service = new Services()
     try {
-        const services = await global.SearchServices()
+        const services = await service.FindCategories()
 
         // Verify if exist 
         if (!services.result) res.status(404).json({ message: "servicios no encontrados" })
 
         res.status(200).json(services)
     } catch (err) {
+        console.log(err)
         if (err.status) return res.status(err.status).json({ message: err.message })
         res.status(500).json({ message: err })
     }
@@ -73,6 +75,7 @@ Route.post('/login', limiterLog, async (req,res) => {
                 names: user.nom_per,
                 lastNames: user.ape_per,
                 roles: user.roles,
+                doc: user.doc_per,
                 img: user.fot_roles.split(',')[0]
             },
             secret,

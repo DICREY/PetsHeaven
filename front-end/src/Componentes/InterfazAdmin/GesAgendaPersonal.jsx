@@ -9,7 +9,8 @@ import esLocale from "@fullcalendar/core/locales/es"
 
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
-import { GetData } from '../Varios/Requests'
+import { PostData } from '../Varios/Requests'
+import { Notification } from '../Global/Notifys'
 import { errorStatusHandler } from '../Varios/Util'
 import { AuthContext } from '../../Contexts/Contexts'
 import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
@@ -26,7 +27,7 @@ function joinDateTime(date, time) {
 }
 
 // Component 
-export const GesAgendaPersonal = ({ URL = 'http://localhost:3000', roles = ['Usuario'] }) => {
+export const GesAgendaPersonal = ({ URL = 'http://localhost:3000' }) => {
     // Dynamic vars 
     const [events, setEvents] = useState([])
     const [notify, setNotify] = useState(null)
@@ -55,42 +56,39 @@ export const GesAgendaPersonal = ({ URL = 'http://localhost:3000', roles = ['Usu
     const dateInputRef = useRef()
     const calendarRef = useRef(null)
     const mainUrl = `${URL}/appointment`
-    const { admin } = useContext(AuthContext)
+    const { admin, user } = useContext(AuthContext)
 
     // Functions    
     useEffect(() => {
         if (didFetch.current) return
         didFetch.current = true
         const GetAppointments = async () => {
-            const token = localStorage.getItem("token")
             try {
-                if (token) {
-                    const data = await GetData(`${mainUrl}/general`)
-                    setNotify(null)
+                const data = await PostData(`${mainUrl}/by`,{by: user.doc})
+                setNotify(null)
 
-                    if (data) {
-                        const mappedEvents = data.map(event => ({
-                            title: event.nom_ser,
-                            start: joinDateTime(event.fec_cit, event.hor_ini_cit),
-                            end: joinDateTime(event.fec_cit, event.hor_fin_cit),
-                            description: event.des_ser,
-                            category: event.nom_ser || 'vacuna',
-                            paciente: event.nom_mas,
-                            propietario: `${event.nom_per} ${event.ape_per}`,
-                            telefono: event.cel_per,
-                            estado: event.estado,
-                            fotoMascota: event.fot_mas
-                        }))
-                        setEvents(mappedEvents) 
-                    }
-                } else navigate('/user/login')
+                if (data) {
+                    const mappedEvents = data.map(event => ({
+                        title: event.nom_ser,
+                        start: joinDateTime(event.fec_cit, event.hor_ini_cit),
+                        end: joinDateTime(event.fec_cit, event.hor_fin_cit),
+                        description: event.des_ser,
+                        category: event.nom_ser || 'vacuna',
+                        paciente: event.nom_mas,
+                        propietario: `${event.nom_per} ${event.ape_per}`,
+                        telefono: event.cel_per,
+                        estado: event.estado,
+                        fotoMascota: event.fot_mas
+                    }))
+                    setEvents(mappedEvents) 
+                }
             } catch (err) {
                 setNotify(null)
                 if (err.status) {
                     const message = errorStatusHandler(err.status)
                     setNotify({
                         title: 'Error',
-                        message: `${message}`,    
+                        message: err.status == 404? 'No tienes citas asignadas': message,
                         close: setNotify
                     })
                     if (err.status === 403) {

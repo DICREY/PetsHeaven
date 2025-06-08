@@ -102,7 +102,7 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones }) => {
       <div className="contenido-cabecera-header">
         <div className="izquierda-cabecera-header">
           <h1>Panel de Administración</h1>
-          <p>Bienvenido de vuelta, {user.names} {user.lastNames}</p>
+          <p>Bienvenid@ de vuelta, {user.names} {user.lastNames}</p>
         </div>
 
         <nav className="derecha-cabecera-header" aria-label="Navegación principal">

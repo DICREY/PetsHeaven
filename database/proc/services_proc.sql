@@ -56,6 +56,20 @@ BEGIN
         s.nom_ser
     LIMIT 1000;
 END //
+CREATE PROCEDURE pets_heaven.SearchServicesCat()
+BEGIN
+    SELECT
+        cs.nom_cat,
+        cs.tec_des_cat,
+        cs.img_cat
+    FROM 
+        categorias_ser cs
+    WHERE
+        cs.estado = 1
+    ORDER BY 
+        cs.nom_cat
+    LIMIT 1000;
+END //
 CREATE PROCEDURE pets_heaven.SearchServicesBy(
     IN p_cat_ser VARCHAR(100)
 )

@@ -65,6 +65,7 @@ export const CookieConsent = () => {
                                 disabled
                                 className='switchInput'
                             />
+                            Siempre activas
                             <div className='switchTrack switchTrackOn'></div>
                             <div className='switchDot switchDotOn'></div>
                         </div>

@@ -1,8 +1,6 @@
 // Librays
 import { useNavigate } from 'react-router-dom'
 
-
-
 // Utilidades
 export const useRoleRedirect = (roles = []) => {
   const roleRoutes = {
@@ -163,7 +161,7 @@ export const errorStatusHandler = (status) => {
   const returnMessage = (errStatus) => {
     let message = 'Error interno'
     
-    if (errStatus >= 500) return 'No eres tu soy yo, solo necesito tiempo para actualizar'
+    if (errStatus >= 500) return 'Error del servidor por favor intentelo mas tarde' 
     
     switch (errStatus) {
       case 302:
@@ -175,7 +173,7 @@ export const errorStatusHandler = (status) => {
         break
 
       case 401:
-        message = 'Usuario o contraseña incorrectos'
+        message = 'Usuario no autorizado'
         break
       
       case 403:
