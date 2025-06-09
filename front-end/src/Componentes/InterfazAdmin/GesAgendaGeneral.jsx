@@ -18,6 +18,7 @@ import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
 // Import styles 
 import "../../styles/InterfazAdmin/GesAgendaGeneral.css"
 import Footer from '../Varios/Footer2'
+import { ReqFunction } from '../../Utils/Utils'
 
 // Función para unir fecha y hora en formato ISO
 function joinDateTime(date, time) {
@@ -26,7 +27,7 @@ return `${cleanDate}T${time}`
 }
 
 // Component 
-export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
+export const GesAgendaGeneral = ({ URL = '' }) => {
 // Dynamic vars 
 const [events, setEvents] = useState([])
 const [notify, setNotify] = useState(null)
@@ -102,12 +103,12 @@ const today = new Date().toISOString().split('T')[0] // 'YYYY-MM-DD'
 
 
 const fetchPacientes = async () => {
-    try {
-        const data = await GetData(`${URL}/pet/all`)
-        if (data) setAllPacientes(data)
-    } catch (err) {
-        console.error("Error al cargar pacientes:", err)
-    }
+    await ReqFunction(
+        `${URL}/pet/all`,
+        GetData,
+        setNotify,
+        setAllPacientes
+    )
 }
 
 // Crear citas
@@ -151,7 +152,7 @@ const handleCreateEvent = async () => {
         lug_ate_cit: lugar,
         ser_cit: 1,
         vet_cit: 1,
-        mas_cit: newEvent.mas_cit,
+        mas_cit: newEvent.paciente,
         estado: 'PENDIENTE'
     }
     try {
@@ -283,9 +284,7 @@ const fetchAppointments = async () => {
                 message: `${message}`,
                 close: setNotify
             })
-        } 
-        else console.error(err)
-        // Manejo de error
+        } else console.error(err)
     }
 }
 
