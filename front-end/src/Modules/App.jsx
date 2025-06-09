@@ -29,6 +29,7 @@ import {SpaMascotas} from "../Componentes/InterfazAdmin/Servicios/Spa"
 import {VisualizadorVacunas} from "../Componentes/InterfazAdmin/Servicios/Vacuna"
 import VeterinaryDashboard from '../Componentes/InterfazAdmin/Home'
 import TodasLasNotificaciones from '../Componentes/BarrasNavegacion/Notificaciones'
+import { CookiePolicy } from '../Componentes/Global/CookiesPolicy'
 
 // Import contexts
 import { AuthProvider } from '../Contexts/Auth.context'
@@ -201,7 +202,7 @@ export default function App () {
           <Route path='user/register' element={<Registro URL={URL} imgDefault={imgUserDefault} />} />
           <Route path='user/recuperar' element={<ForgotPassword />} />
           <Route path='internal' element={<ErrorInternalServer />} />
-          <Route path='/politica-cookies' element={<ErrorInternalServer />} />
+          <Route path='/politica-cookies' element={<CookiePolicy />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </BrowserRouter>
