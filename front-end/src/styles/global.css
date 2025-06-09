@@ -30,7 +30,7 @@
 .input {
   padding: 0.6rem;
   border: 0.1rem solid #e0e0e0;
-  border-radius: 0.3rem;
+  border-radius: 0.4rem;
   font-size: 0.9rem;
   transition: border-color 0.2s;
   width: 100%;
@@ -39,7 +39,7 @@
 
 .input:focus {
   outline: none;
-  border-color: #00bcd4;
+  border-color: var(--azulturquesa);
   box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.1);
 }
 
@@ -52,7 +52,7 @@
 }
 .select:focus {
   outline: none;
-  border-color: #00bcd4;
+  border-color: var(--azulturquesa);
   box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.1);
 }
 
@@ -118,11 +118,15 @@
   justify-content: center;
   gap: 0.3rem;
   padding: 0.5rem 1rem;
-  border: 0.1rem solid #ddd;
-  border-radius: 0.3rem;
-  background-color: #fff;
-  color: #666;
+  border: 0.1rem solid var(--gray-300);
+  border-radius: 0.4rem;
+  background-color: var(--white);
+  color: var(--gray-600);
   font-size: 0.9rem;
+  box-shadow: var(--shadow-sm);
+}
+.BackBtn:hover {
+  background-color: var(--gray-100);
 }
 
 .DeleteBtn {
@@ -132,11 +136,12 @@
   gap: 0.3rem;
   padding: 0.5rem 1rem;
   border: 0.1rem solid #e74c3c;
-  border-radius: 0.3rem;
-  background-color: #fff;
+  border-radius: 0.4rem;
+  background-color: var(--white);
   color: #e74c3c;
   cursor: pointer;
   font-size: 0.9rem;
+  box-shadow: var(--shadow-sm);
 }
 
 .DeleteBtn:hover {
@@ -150,16 +155,17 @@
   justify-content: center;
   gap: 0.3rem;
   padding: 0.5rem 1rem;
-  border: 0.1rem solid #ddd;
-  border-radius: 0.3rem;
-  background-color: #00bcd4;
-  color: var(--white);
+  color: var(--gray-100);
   font-size: 0.9rem;
   font-weight: 500;
+  border: 0.1rem solid var(--azulturquesa);
+  border-radius: 0.4rem;
+  background-color: var(--azulturquesa);
+  box-shadow: var(--shadow-sm);
 }
 
 .EditBtn:hover {
-  background-color: #0097A7;
+  background-color: #00b0c4;
 }
 
 .AddBtn {
@@ -168,19 +174,19 @@
   align-items: center;
   justify-content: center;
   padding: 0.5rem 1rem;
-  color: #00bcd4;
+  color: var(--azulturquesa);
   font-size: 0.875rem;
   font-weight: 500;
-  border: none;
+  border: 0.1rem solid var(--gray-300);
   border-radius: 0.375rem;
-  background-color: #e0edff;
+  background-color: var(--gray-100);
+  box-shadow: var(--shadow-sm);
   transition: all 0.2s ease;
 }
 
 .AddBtn:hover,
 .AddBtn:focus {
   background-color: #cce3ff;
-  outline: 2px solid #00bcd4;
 }
 
 .expandBtn {
@@ -189,7 +195,7 @@
 
 .botonadminhome {
   background-color: #e0edff;
-  color: #00bcd4;
+  color: var(--azulturquesa);
   display: flex;
   align-items: center;
   width: 100%;
@@ -205,11 +211,10 @@
 .botonadminhome:hover,
 .botonadminhome:focus {
   background-color: #cce3ff;
-  outline: 2px solid #00bcd4;
 }
 
 .icon {
-  width: 1rem;
-  height: 1rem;
+  width: 1.1rem;
+  height: 1.1rem;
   flex-shrink: 0;
 }

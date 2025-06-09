@@ -27,7 +27,7 @@ function joinDateTime(date, time) {
 }
 
 // Component 
-export const GesAgendaPersonal = ({ URL = 'http://localhost:3000' }) => {
+export const GesAgendaPersonal = ({ URL = '' }) => {
     // Dynamic vars 
     const [events, setEvents] = useState([])
     const [notify, setNotify] = useState(null)
@@ -216,7 +216,7 @@ export const GesAgendaPersonal = ({ URL = 'http://localhost:3000' }) => {
         <main className="calendar-container">
             <NavBarAdmin />
             <main className='calendar-container' id='main-container-calendar'>
-            {admin? (<HeaderAdmin />): (<HeaderUser />)}
+            {admin? (<HeaderAdmin URL={URL} />): (<HeaderUser />)}
                 <input
                     type="date"
                     ref={dateInputRef}

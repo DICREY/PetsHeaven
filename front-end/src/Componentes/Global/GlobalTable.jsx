@@ -1,6 +1,6 @@
 // Librarys 
 import React, { Component } from 'react'
-import { FileText, User } from 'lucide-react'
+import { FileText, User, ChevronRight, ChevronLeft } from 'lucide-react'
 
 // Imports
 import { formatDate, divideList,getAge } from '../Varios/Util'
@@ -227,9 +227,10 @@ export class GlobalTable extends Component {
             <div className='btns-container-paginacion'>
               <button 
                 type='button' 
-                className='btn-paginacion' 
+                className='BackBtn' 
                 onClick={this.prevPage}                  
                 >
+                <ChevronLeft className='icon' />
                 Anterior
               </button>
               <button 
@@ -238,9 +239,12 @@ export class GlobalTable extends Component {
                 >{page}</button>
               <button 
                 type='button' 
-                className='btn-paginacion'
+                className='BackBtn'
                 onClick={this.nextPage}
-              >Siguiente</button>
+              >
+                Siguiente
+                <ChevronRight className='icon' />
+              </button>
             </div>
           </footer>
         </main>

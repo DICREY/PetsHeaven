@@ -12,7 +12,7 @@ import { AuthContext } from "../../../Contexts/Contexts"
 // Import styles 
 import "../../../styles/InterfazAdmin/Servicios/Spa.css"
 
-export const SpaMascotas = ({ roles = ['Usuario'] }) => {
+export const SpaMascotas = ({ URL= '' }) => {
   const [servicios, setServicios] = useState([
     {
       id: "SPA001",
@@ -71,7 +71,7 @@ export const SpaMascotas = ({ roles = ['Usuario'] }) => {
   })
 
   // Vars 
-  const { admin } = useContext(AuthContext)
+  const { admin, roles } = useContext(AuthContext)
 
   const manejarCambioFormulario = (e) => {
     const { name, value, type, checked } = e.target
@@ -140,7 +140,7 @@ export const SpaMascotas = ({ roles = ['Usuario'] }) => {
 
   return (
     <div className="maincontenedor-spa">
-      <NavBarAdmin roles={roles} />
+      <NavBarAdmin />
       <div className="principaladminhome">
       {admin? (<HeaderAdmin />): (<HeaderUser />)}
         <main className="contenedor-spa">

@@ -204,7 +204,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
     <main className='contenedoradminhome'>
       <NavBarAdmin />
       <section className='principaladminhome'>
-        {admin? (<HeaderAdmin />): (<HeaderUser />)}
+        {admin? (<HeaderAdmin URL={URL} />): (<HeaderUser />)}
         <article className='tarjetaadminhome' aria-labelledby='lista-usuarios-titulo'>
           <div className='contenidoadminhome'>
             <header className='encabezadoadminhome'>

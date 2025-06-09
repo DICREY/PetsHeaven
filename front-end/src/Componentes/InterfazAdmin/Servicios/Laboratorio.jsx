@@ -3,7 +3,7 @@ import { useState } from "react"
 import { FlaskConical, Plus, Trash2, Edit, X, Clock, AlertTriangle, FileText, Target } from "lucide-react"
 import "../../../styles/laboratorio.css"
 
-export function ExamenesLaboratorio() {
+export const ExamenesLaboratorio = ({ URL='' }) => {
   const [examenes, setExamenes] = useState([
     {
       id: "LAB001",

@@ -7,13 +7,14 @@ import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
 import { HeaderUser } from '../../BarrasNavegacion/HeaderUser'
 import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
 import Footer from '../../Varios/Footer2'
+import { AuthContext } from "../../../Contexts/Contexts"
+import { Notification } from '../../Global/Notifys'
 
 // Import styles 
 import "../../../styles/InterfazAdmin/Servicios/Vacuna.css"
-import { AuthContext } from "../../../Contexts/Contexts"
 
 // Component 
-export function VisualizadorVacunas() {
+export const VisualizadorVacunas = ({ URL= '' }) => {
   // Datos ficticios UNU
   const [vacunas, setVacunas] = useState([
     {
@@ -119,7 +120,10 @@ export function VisualizadorVacunas() {
   const [filtroAnimal, setFiltroAnimal] = useState("todos")
   const [vacunaDetalle, setVacunaDetalle] = useState(null)
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false)
-  const { admin, roles } = useContext(AuthContext)
+  const [notify, setNotify] = useState()
+
+  // Vars 
+  const { admin } = useContext(AuthContext)
 
   const abrirModalAgregar = () => {
     setNuevaVacuna({
@@ -222,9 +226,9 @@ export function VisualizadorVacunas() {
   }
 
   return (
-    <div className="maincontenedorVacunas">
-      <NavBarAdmin roles={roles} />
-      <div className="principaladminhome">
+    <main className="maincontenedorVacunas">
+      <NavBarAdmin />
+      <main className="principaladminhome">
       {admin? (<HeaderAdmin />): (<HeaderUser />)}
         <main className="contenedorPrincipalVacunas">
           <div className="contenedorVacunas">
@@ -809,7 +813,12 @@ export function VisualizadorVacunas() {
           )}
         </main>
         <Footer/>
-      </div>
-    </div>  
+      </main>
+      {notify && (
+        <Notification 
+          {...notify}
+        />
+      )}
+    </main>
   )
 }

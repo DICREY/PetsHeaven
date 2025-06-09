@@ -1,55 +1,30 @@
 // Librarys 
 import { useState, useEffect, useContext } from "react"
-import { Bell, HelpCircle, LogOut, User, Settings, ChevronDown, Clock, AlertCircle, CheckCircle } from "lucide-react"
+import { Bell, HelpCircle, LogOut, User, Settings, ChevronDown } from "lucide-react"
 import { useNavigate } from 'react-router-dom'
 
 // Imports 
 import { AuthContext } from "../../Contexts/Contexts"
+import { ReqFunction } from "../../Utils/Utils"
+import { PostData } from '../Varios/Requests'
 import { TabHelp } from '../Global/TabHelp'
 
 // import styles 
 import "../../styles/BarrasNavegacion/Header.css"
 
 // Component
-export const HeaderAdmin = ({ onVerTodasNotificaciones }) => {
+export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:3000' }) => {
   // Dynamic Vars 
   const [isProfileOpen, setIsProfileOpen] = useState(false)
   const [ tabHelp,setTabHelp ] = useState()
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
+  const [ appointment,setAppointment ] = useState()
+  const [ notify,setNotify ] = useState()
 
   // Vars 
   const navigate = useNavigate()
   const { user, roles, logout } = useContext(AuthContext)
-
-  const notifications = [
-    {
-      id: 1,
-      type: "appointment",
-      title: "Nueva cita programada",
-      message: "Cita para Max a las 09:00 AM",
-      time: "Hace 5 min",
-      icon: Clock,
-      color: "azul",
-    },
-    {
-      id: 2,
-      type: "emergency",
-      title: "Emergencia atendida",
-      message: "Cirugía de Toby completada exitosamente",
-      time: "Hace 1 hora",
-      icon: AlertCircle,
-      color: "verde",
-    },
-    {
-      id: 3,
-      type: "reminder",
-      title: "Recordatorio de vacuna",
-      message: "Luna necesita vacuna de refuerzo",
-      time: "Hace 2 horas",
-      icon: CheckCircle,
-      color: "naranja",
-    },
-  ]
+  const mainUrl = `${URL}/appointment/by`
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -74,17 +49,17 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones }) => {
   const handleNotificationsClick = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    console.log("Botón de notificaciones clickeado, estado actual:", isNotificationsOpen)
+    // console.log("Botón de notificaciones clickeado, estado actual:", isNotificationsOpen)
     setIsNotificationsOpen(!isNotificationsOpen)
     setIsProfileOpen(false)
-    console.log("Nuevo estado de notificaciones:", !isNotificationsOpen)
+    // console.log("Nuevo estado de notificaciones:", !isNotificationsOpen)
   }
 
   const handleVerTodasClick = (e) => {
     e.preventDefault()
     e.stopPropagation()
     setIsNotificationsOpen(false)
-    console.log("Botón clickeado, función disponible:", typeof onVerTodasNotificaciones)
+    // console.log("Botón clickeado, función disponible:", typeof onVerTodasNotificaciones)
     if (onVerTodasNotificaciones && typeof onVerTodasNotificaciones === "function") {
       onVerTodasNotificaciones()
     } else {
@@ -97,6 +72,16 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones }) => {
     tabHelp? setTabHelp(false): setTabHelp(true)
   }
 
+  useEffect(() => {
+    ReqFunction(
+      mainUrl,
+      PostData,
+      setNotify,
+      setAppointment,
+      { by: user.doc }
+    )
+  },[])
+
   return (
     <header className="cabecera-header">
       <div className="contenido-cabecera-header">
@@ -108,26 +93,26 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones }) => {
         <nav className="derecha-cabecera-header" aria-label="Navegación principal">
           <button 
             type="button"
-            className="BackBtn" 
+            className="BackBtn expandBtn"
             aria-label="Obtener ayuda"
             onClick={handleHelp}
           >
-            <HelpCircle size={20} aria-hidden="true" />
+            <HelpCircle className="icon" aria-hidden="true" />
             <span>Ayuda</span>
           </button>
 
           <div className="contenedor-notificaciones-header">
             <button
               type="button"
-              className="boton-cabecera-header boton-notificacion-header"
+              className="EditBtn"
               onClick={handleNotificationsClick}
               aria-label="Ver notificaciones"
               aria-expanded={isNotificationsOpen}
               aria-haspopup="true"
             >
-              <Bell size={20} aria-hidden="true" />
+              <Bell className="icon" aria-hidden="true" />
               <span className="insignia-notificacion-header" aria-label="3 notificaciones nuevas">
-                3
+                {appointment?.length || 0}
               </span>
             </button>
 
@@ -135,14 +120,14 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones }) => {
               <div className="dropdown-notificaciones-header" role="menu" aria-label="Lista de notificaciones">
                 <header className="cabecera-notificaciones-header">
                   <h2>Notificaciones</h2>
-                  <span className="contador-notificaciones-header">{notifications.length} nuevas</span>
+                  <span className="contador-notificaciones-header">{appointment?.length} nuevas</span>
                 </header>
 
                 <ul className="lista-notificaciones-header" role="list">
-                  {notifications.map((notification) => (
+                  {appointment?.map((notification) => (
                     <li key={notification.id} className="item-notificacion-header" role="menuitem">
                       <div className={`icono-notificacion-header ${notification.color}-header`} aria-hidden="true">
-                        <notification.icon size={16} />
+                        <notification.icon className='icon' />
                       </div>
                       <article className="contenido-notificacion-header">
                         <h3>{notification.title}</h3>
@@ -172,15 +157,14 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones }) => {
               aria-haspopup="true"
             >
               <div className="avatar-perfil-header" aria-hidden="true">
-                <User size={20} />
+                <User className="icon" />
               </div>
               <div className="info-perfil-header">
                 <span className="nombre-perfil-header">Sr@. {user.names} {user.lastNames}</span>
                 <span className="rol-perfil-header">{roles[0]}</span>
               </div>
               <ChevronDown
-                size={16}
-                className={`icono-flecha-header ${isProfileOpen ? "rotado-header" : ""}`}
+                className={`icono-flecha-header icon ${isProfileOpen ? "rotado-header" : ""}`}
                 aria-hidden="true"
               />
             </button>
@@ -188,14 +172,14 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones }) => {
             {isProfileOpen && (
               <div className="dropdown-perfil-header" role="menu" aria-label="Opciones de perfil">
                 <button type="button" className="item-dropdown-header" role="menuitem">
-                  <Settings size={18} aria-hidden="true" />
+                  <Settings className="icon" aria-hidden="true" />
                   <span>Configuración</span>
                 </button>
                 <button type="button" className="item-dropdown-header item-salir-header" 
                   role="menuitem"
                   onClick={logout}
                 >
-                  <LogOut size={18} aria-hidden="true" />
+                  <LogOut className="icon" aria-hidden="true" />
                   <span>Cerrar Sesión</span>
                 </button>
               </div>

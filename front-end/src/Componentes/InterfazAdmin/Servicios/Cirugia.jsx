@@ -15,12 +15,11 @@ import { AuthContext } from "../../../Contexts/Contexts"
 // Style
 import "../../../styles/InterfazAdmin/Servicios/Cirugia.css"
 
-export const CirugiasVeterinaria = ({ roles = ['Usuario'] }) => {
+export const CirugiasVeterinaria = ({ URL= '' }) => {
   // Dynamic Vars 
   const [notify, setNotify] = useState(null)
 
   // Vars 
-  const URL = "http://localhost:3000"
   const didFetch = useRef(false)
   const mainUrl = `${URL}/service`
   const { admin } = useContext(AuthContext)
@@ -175,9 +174,9 @@ export const CirugiasVeterinaria = ({ roles = ['Usuario'] }) => {
 
   return (
     <main className="maincontenedor-cirugia">
-    <NavBarAdmin roles={roles} />
+    <NavBarAdmin />
       <div className="principaladminhome">
-      {admin? (<HeaderAdmin />): (<HeaderUser />)}
+      {admin? (<HeaderAdmin URL={URL} />): (<HeaderUser />)}
         <div className="contenedor-cirugia">
         
           <div className="contenedorprincipal-cirugia">
