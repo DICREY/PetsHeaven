@@ -188,6 +188,6 @@ BEGIN
     SET autocommit = 1;
 END //
 
-CALL `SearchAppointmentsByUser`('perro');
+/* CALL `SearchAppointmentsByUser`('perro'); */
 /* DROP PROCEDURE SearchAppointmentsByUser; */
 /* DROP PROCEDURE RegistAppointment; */

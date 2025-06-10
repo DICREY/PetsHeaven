@@ -5,13 +5,7 @@ CREATE DATABASE IF NOT EXISTS pets_heaven;
 /* USERS  */
 CREATE TABLE pets_heaven.roles(
     id_rol INT AUTO_INCREMENT PRIMARY KEY,
-    nom_rol VARCHAR(100) NOT NULL,
-    fot_rol TEXT DEFAULT("https://imgs.search.brave.com/rL6dnhwCDXLvz02lsRs2QjVj1F8o-8D0o4pTYhmHah8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy90/aHVtYi9jL2M4L01h/cmllX0N1cmllX2Mu/XzE5MjBzLmpwZy81/MTJweC1NYXJpZV9D/dXJpZV9jLl8xOTIw/cy5qcGc") NOT NULL
-);
-
-CREATE TABLE pets_heaven.permisos(
-    id_pem INT AUTO_INCREMENT PRIMARY KEY,
-    nom_pem VARCHAR(100) NOT NULL
+    nom_rol VARCHAR(100) NOT NULL
 );
 
 /* DIVIDIR USUARIOS EN DOS TABLAS USUARIOS Y PERSONAS LOS USUARIOS TENDRAN LA INFORMACION RELEVANTE CON LA AUTENTICACION Y LAS PERSONAS EL RESTO DE INFORMACION */
@@ -29,6 +23,7 @@ CREATE TABLE pets_heaven.personas(
     cont_per VARCHAR(255) NOT NULL,
     gen_per VARCHAR(100) NOT NULL,
     estado BOOLEAN DEFAULT(1) NOT NULL,
+    fot_per TEXT DEFAULT("No-registrado") NOT NULL,
     fec_cre_per DATE DEFAULT(NOW()) NOT NULL
 );
 
@@ -37,13 +32,6 @@ CREATE TABLE pets_heaven.otorgar_roles(
     id_per INT NOT NULL,INDEX(id_per),FOREIGN KEY(id_per) REFERENCES personas(id_per) ON DELETE CASCADE ON UPDATE CASCADE,
     fec_oto DATE DEFAULT(NOW()) NOT NULL,
     PRIMARY KEY(id_rol,id_per)
-);
-
-CREATE TABLE pets_heaven.otorgar_permisos(
-    id_pem INT NOT NULL,INDEX(id_pem),FOREIGN KEY(id_pem) REFERENCES permisos(id_pem) ON DELETE CASCADE ON UPDATE CASCADE,
-    id_per INT NOT NULL,INDEX(id_per),FOREIGN KEY(id_per) REFERENCES personas(id_per) ON DELETE CASCADE ON UPDATE CASCADE,
-    fec_oto DATE DEFAULT(NOW()) NOT NULL,
-    PRIMARY KEY(id_pem,id_per)
 );
 
 CREATE TABLE pets_heaven.categorias_veterinario(

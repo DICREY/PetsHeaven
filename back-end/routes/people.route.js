@@ -81,6 +81,7 @@ Route.put('/modify', ValidatorRol("administrador"), async (req,res) => {
     // Vars 
     const { body } = req
     const saltRounds = 15
+    console.log(body)
         
     try {
         // Verifiy if exist

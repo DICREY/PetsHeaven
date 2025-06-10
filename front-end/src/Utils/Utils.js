@@ -1,18 +1,15 @@
-import { compressImageFromUrl } from './compressor'
+// import { compressImageFromUrl } from './compressor'
 // Imports 
 import { errorStatusHandler } from '../Componentes/Varios/Util'
 
 // Verify if load img
 export const checkImage = (src = '', alt, imgDefault = '', className = '') => {
-    const imgComp = compressImageFromUrl(src)
     const img = new Image()
-    let srcMod = imgComp? imgComp: imgDefault
+    let srcMod = src? src: imgDefault
 
-    img.crossOrigin = 'Anonymous';
-    img.src = srcMod
-    img.onerror = () => srcMod = imgDefault
-
-    return <img
+    img.src = src
+    img.onerror = () => <p>No se pudo</p>
+    img.onload = () => <img
         className={`${className}`}
         src={srcMod}
         alt={alt || "No Registrado"}

@@ -84,11 +84,11 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
               </header>
 
               <ul className="lista-citas-admin" role="list">
-                {appoint?.map((appointment) => (
-                  <li key={appointment.id} className={`item-cita-admin ${appointment.status}-admin`}>
+                {appoint?.map((appointment, index) => (
+                  <li key={index + 123123} className={`item-cita-admin ${appointment.estado}-admin`}>
                     <div className="tiempo-cita-admin">
-                      <Clock size={16} aria-hidden="true" />
-                      <time>{appointment.time}</time>
+                      <Clock className="icon" aria-hidden="true" />
+                      <time>{appointment.hor_ini_cit}</time>
                     </div>
 
                     <div className="detalles-cita-admin">
@@ -98,10 +98,10 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
                       <span className="tipo-cita-admin">{appointment.type}</span>
                     </div>
 
-                    <div className={`insignia-estado-admin ${appointment.status}-admin`} role="status">
-                      {appointment.status === "confirmed" && "Confirmada"}
-                      {appointment.status === "pending" && "Pendiente"}
-                      {appointment.status === "urgent" && "Urgente"}
+                    <div className={`insignia-estado-admin ${appointment.estado}-admin`} role="status">
+                      {appointment.estado === "confirmed" && "Confirmada"}
+                      {appointment.estado === "pending" && "Pendiente"}
+                      {appointment.estado === "urgent" && "Urgente"}
                     </div>
                   </li>
                 ))}
@@ -114,12 +114,12 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
 
               <nav className="acciones-rapidas-admin" aria-label="Acciones rápidas">
                 <button type="button" className="boton-accion-admin primario-admin">
-                  <Plus size={20} aria-hidden="true" />
+                  <Plus className="icon" aria-hidden="true" />
                   Nueva Cita
                 </button>
 
                 <a href="/main" className="boton-accion-admin sitio-web-admin">
-                  <ExternalLink size={20} aria-hidden="true" />
+                  <ExternalLink className="icon" aria-hidden="true" />
                   Visitar Página Web
                 </a>
               </nav>

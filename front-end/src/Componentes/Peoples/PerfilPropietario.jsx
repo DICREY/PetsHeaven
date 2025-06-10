@@ -38,7 +38,7 @@ export const PerfilPropietario = ({
   const [modPro,setModPro] = useState({})
 
   // Vars 
-  const mainUrl = `${URL}/owner`
+  const mainUrl = `${URL}/people`
   const imgDefault = imgUserDefault
   const imgDefaultPet = imgPetDefault
   const navigate = useNavigate()

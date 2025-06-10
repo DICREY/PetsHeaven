@@ -9,7 +9,7 @@ import { HistoryTest } from './historyTest'
 import { Notification } from '../Global/Notifys'
 import { AuthContext } from '../../Contexts/Contexts'
 import { DeleteData, ModifyData, PostData } from '../Varios/Requests'
-import { checkImage, getAge, errorStatusHandler, divideList, decodeJWT } from '../Varios/Util'
+import { checkImage, getAge, errorStatusHandler, divideList } from '../Varios/Util'
 import { FormularioConsulta } from '../InterfazAdmin/FormulariosAdmin/Consulta'
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import Footer from '../Varios/Footer2'
@@ -380,9 +380,9 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
                                     </section>
                                 )}    
                             </section>
-                            <Footer />
                         </div>
                     </div>
+                    <Footer />
                     {showMedicHistory && (
                         <HistoryTest 
                             appointmentData={mHSelected}
