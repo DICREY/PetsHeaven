@@ -93,9 +93,9 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
 
                     <div className="detalles-cita-admin">
                       <h3>{appointment.pet}</h3>
-                      <p>Dueño: {appointment.owner}</p>
-                      <p>Doctor: {appointment.doctor}</p>
-                      <span className="tipo-cita-admin">{appointment.type}</span>
+                      <p>Dueño: {appointment.prop_nom_per} {appointment.prop_ape_per}</p>
+                      <p>Doctor: {appointment.vet_nom_per} {appointment.vet_ape_per}</p>
+                      <span className="tipo-cita-admin">{appointment.nom_cat}</span>
                     </div>
 
                     <div className={`insignia-estado-admin ${appointment.estado}-admin`} role="status">
@@ -128,6 +128,7 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
               <section className="actividad-reciente-admin">
                 <h3>Actividad Reciente</h3>
                 <ul className="lista-actividad-admin" role="list">
+                  {/* {appointCurrent?.map(app, index) => } */}
                   <li className="item-actividad-admin">
                     <div className="punto-actividad-admin verde-admin" aria-hidden="true"></div>
                     <p>Nueva cita programada para Max</p>
