@@ -67,7 +67,7 @@ Route.post('/register', async (req,res) => {
         const find = await people.findBy(toString(body.numeroDocumento))
         if (find.result[0][0].nom_per) res.status(302).json({ message: "Usuario ya existe" })
 
-        const create = await people.create({hash_pass: await hash(body.password,saltRounds), ...body})
+        const create = await people.create({ hash_pass: await hash(body.password,saltRounds), ...body })
         res.status(201).json(create)
 
     } catch(err) {

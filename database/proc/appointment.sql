@@ -89,12 +89,16 @@ CREATE PROCEDURE pets_heaven.RegistAppointment(
     IN p_hor_ini TIME,
     IN p_hor_fin TIME,
     IN p_lugar VARCHAR(100),
-    IN p_ser INT,
-    IN p_vet INT,
-    IN p_mas INT,
+    IN p_ser VARCHAR(100),
+    IN p_vet VARCHAR(100),
+    IN p_mas VARCHAR(100),
     IN p_status VARCHAR(25)
 )
 BEGIN
+    DECLARE p_id_ser INT;
+    DECLARE p_id_vet INT;
+    DECLARE p_id_mas INT;
+
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
@@ -104,10 +108,16 @@ BEGIN
     SET autocommit = 0;
     START TRANSACTION;
 
+    SELECT id_cat INTO p_id_ser FROM categorias_ser WHERE nom_cat LIKE p_ser;
+
+    SELECT id_per INTO p_id_vet FROM personas WHERE doc_per LIKE p_vet;
+
+    SELECT id_mas INTO p_id_mas FROM mascotas WHERE nom_mas LIKE p_mas;
+
     INSERT INTO pets_heaven.citas (
         fec_reg_cit, fec_cit, hor_ini_cit, hor_fin_cit, lug_ate_cit, ser_cit, vet_cit, mas_cit, estado
     ) VALUES (
-        p_reg_date, p_date, p_hor_ini, p_hor_fin, p_lugar, p_ser, p_vet, p_mas, p_status
+        p_reg_date, p_date, p_hor_ini, p_hor_fin, p_lugar, p_id_ser, p_id_vet, p_id_mas, p_status
     );
 
     COMMIT;
@@ -119,9 +129,27 @@ CREATE PROCEDURE pets_heaven.CancelAppointment(
     IN p_id_mas INT
 )
 BEGIN
-    UPDATE pets_heaven.citas
-    SET estado = 'CANCELADO'
-    WHERE id_cit = p_id_cit AND mas_cit = p_id_mas;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    SET autocommit = 0;
+
+    START TRANSACTION;
+
+    UPDATE 
+        pets_heaven.citas
+    SET 
+        estado = 'CANCELADO'
+    WHERE 
+        id_cit = p_id_cit 
+        AND mas_cit = p_id_mas;
+
+    COMMIT;
+
+    SET autocommit = 1;
 END //
 
 CREATE PROCEDURE pets_heaven.UpdateAppointmentDate(
@@ -162,3 +190,4 @@ END //
 
 CALL `SearchAppointmentsByUser`('perro');
 /* DROP PROCEDURE SearchAppointmentsByUser; */
+/* DROP PROCEDURE RegistAppointment; */

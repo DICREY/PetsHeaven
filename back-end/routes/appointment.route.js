@@ -45,12 +45,14 @@ Route.post('/by', ValidatorRol("veterinario"), async (req,res) => {
 Route.post('/register', ValidatorRol("veterinario"), async (req, res) => {
     // Vars 
     const data = req.body
+    console.log(data)
     
     try {
         const created = await appoin.registAppointment(data)
         if (created.result) return res.status(201).json(created)
         res.status(500).json({ message: "No se pudo registrar la cita" })
     } catch (err) {
+        console.log(err)
         if (err.status) return res.status(err.status).json({ message: err.message })
         res.status(500).json({ message: err })
     }
