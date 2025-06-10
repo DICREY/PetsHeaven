@@ -1,70 +1,78 @@
-// Librarys
-import { useState, useRef, useEffect, useContext} from "react"
-import { Trash2, PenSquare, Plus, Filter, AlertCircle, FileText,Activity } from "lucide-react"
-
-// Imports
-import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
-import { HeaderUser } from '../../BarrasNavegacion/HeaderUser'
-import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
-import { errorStatusHandler } from '../../Varios/Util'
-import { Notification } from '../../Global/Notifys'
-import Footer from '../../Varios/Footer2'
-import { GetData, PostData, ModifyData } from "../../Varios/Requests"
-import { AuthContext } from "../../../Contexts/Contexts"
-
-// Style
+import { useState } from "react"
+import { Activity, Plus, Trash2, Edit, X, Clock, AlertTriangle, FileText, Target, Timer } from "lucide-react"
+import React from "react"
 import "../../../styles/InterfazAdmin/Servicios/Cirugia.css"
 
-export const CirugiasVeterinaria = ({ URL= '' }) => {
-  // Dynamic Vars 
-  const [notify, setNotify] = useState(null)
-
-  // Vars 
-  const didFetch = useRef(false)
-  const mainUrl = `${URL}/service`
-  const { admin } = useContext(AuthContext)
-
+export function CirugiasVeterinaria() {
   const [cirugias, setCirugias] = useState([
-    // {
-    //   id: "CIR001",
-    //   nombre: "Esterilización",
-    //   descripcion: "Procedimiento quirúrgico para prevenir la reproducción en mascotas.",
-    //   complicaciones: "Sangrado, infección, reacción a anestesia",
-    //   recomendaciones: "Ayuno de 12 horas previo. Reposo post-operatorio de 7-10 días.",
-    //   precio: 150000,
-    //   disponible: true,
-    // },
-    // { 
-    //   id: "CIR002",
-    //   nombre: "Extracción Dental",
-    //   descripcion: "Remoción de piezas dentales dañadas o infectadas.",
-    //   complicaciones: "Sangrado, dolor post-operatorio, infección",
-    //   recomendaciones: "Dieta blanda por 3-5 días. Antibióticos según prescripción.",
-    //   precio: 80000,
-    //   disponible: true,
-    // },
-    // {
-    //   id: "CIR003",
-    //   nombre: "Cirugía de Cataratas",
-    //   descripcion: "Procedimiento para restaurar la visión en casos de cataratas.",
-    //   complicaciones: "Infección ocular, rechazo del implante, ceguera",
-    //   recomendaciones: "Collar isabelino por 2 semanas. Gotas oftálmicas diarias.",
-    //   precio: 450000,
-    //   disponible: false,
-    // },
-    // {
-    //   id: "CIR004",
-    //   nombre: "Reparación de Fractura",
-    //   descripcion: "Cirugía ortopédica para reparar huesos fracturados.",
-    //   complicaciones: "Infección ósea, rechazo de implantes, cojera permanente",
-    //   recomendaciones: "Reposo absoluto 4-6 semanas. Fisioterapia posterior.",
-    //   precio: 320000,
-    //   disponible: true,
-    // },
+    {
+      id: "CIR001",
+      nombre: "Esterilización",
+      descripcion: "Procedimiento quirúrgico para prevenir la reproducción en mascotas.",
+      complicaciones: "Sangrado, infección, reacción a anestesia",
+      recomendaciones: "Ayuno de 12 horas previo. Reposo post-operatorio de 7-10 días.",
+      precio: 150000,
+      disponible: true,
+      duracion: "45-60 minutos",
+      tipoAnimal: "ambos",
+      categoria: "Preventiva",
+      recuperacion: "7-10 días",
+      preparacion: "Ayuno de 12 horas, exámenes prequirúrgicos",
+      anestesia: "General inhalatoria",
+    },
+    {
+      id: "CIR002",
+      nombre: "Extracción Dental",
+      descripcion: "Remoción de piezas dentales dañadas o infectadas.",
+      complicaciones: "Sangrado, dolor post-operatorio, infección",
+      recomendaciones: "Dieta blanda por 3-5 días. Antibióticos según prescripción.",
+      precio: 80000,
+      disponible: true,
+      duracion: "30-45 minutos",
+      tipoAnimal: "ambos",
+      categoria: "Dental",
+      recuperacion: "3-5 días",
+      preparacion: "Ayuno de 8 horas, evaluación dental previa",
+      anestesia: "General o local según caso",
+    },
+    {
+      id: "CIR003",
+      nombre: "Cirugía de Cataratas",
+      descripcion: "Procedimiento para restaurar la visión en casos de cataratas.",
+      complicaciones: "Infección ocular, rechazo del implante, ceguera",
+      recomendaciones: "Collar isabelino por 2 semanas. Gotas oftálmicas diarias.",
+      precio: 450000,
+      disponible: false,
+      duracion: "60-90 minutos",
+      tipoAnimal: "ambos",
+      categoria: "Oftalmológica",
+      recuperacion: "2-3 semanas",
+      preparacion: "Evaluación oftalmológica completa, ayuno de 12 horas",
+      anestesia: "General con monitoreo especializado",
+    },
+    {
+      id: "CIR004",
+      nombre: "Reparación de Fractura",
+      descripcion: "Cirugía ortopédica para reparar huesos fracturados.",
+      complicaciones: "Infección ósea, rechazo de implantes, cojera permanente",
+      recomendaciones: "Reposo absoluto 4-6 semanas. Fisioterapia posterior.",
+      precio: 320000,
+      disponible: true,
+      duracion: "90-120 minutos",
+      tipoAnimal: "ambos",
+      categoria: "Ortopédica",
+      recuperacion: "4-6 semanas",
+      preparacion: "Radiografías, ayuno de 12 horas, estabilización previa",
+      anestesia: "General con analgesia multimodal",
+    },
   ])
-  
+
   const [mostrarFormulario, setMostrarFormulario] = useState(false)
+  const [mostrarDetalle, setMostrarDetalle] = useState(false)
+  const [cirugiaDetalle, setCirugiaDetalle] = useState(null)
   const [cirugiaEditando, setCirugiaEditando] = useState(null)
+  const [modoEdicion, setModoEdicion] = useState(false)
+  const [filtroTipo, setFiltroTipo] = useState("todos")
   const [nuevaCirugia, setNuevaCirugia] = useState({
     id: "",
     nombre: "",
@@ -73,360 +81,495 @@ export const CirugiasVeterinaria = ({ URL= '' }) => {
     recomendaciones: "",
     precio: "",
     disponible: true,
+    duracion: "",
+    tipoAnimal: "ambos",
+    categoria: "Preventiva",
+    recuperacion: "",
+    preparacion: "",
+    anestesia: "",
   })
 
+  const categorias = ["Preventiva", "Dental", "Oftalmológica", "Ortopédica", "Neurológica", "Oncológica", "General"]
 
-  // Functions    
-  useEffect(() => {
-      if (didFetch.current) return
-      didFetch.current = true
-      fetchCirugias()
-  }, [])
-  
-  const fetchCirugias = async () => {
-    setNotify({
-        title: 'Cargando',
-        message: 'Cargando cirugias, por favor espere...',
-        load: 1
-    })
-    try {
-      const byValue = "Cirugía"
-      let data = await GetData(`${mainUrl}/all/${encodeURIComponent(byValue)}`,)
-      setNotify(null)
-      // Normaliza la respuesta a array
-      if (data && !Array.isArray(data)) {
-          data = [data]
-      }
-      if (data) {
-          setCirugias(data);
-        }
-      } catch (err) {
-        setNotify(null)
-        if (err.status) {
-          const message = errorStatusHandler(err.status)
-          setNotify({
-            title: 'Error',
-            message: `${message}`,
-            close: setNotify
-          })
-        } 
-        else console.error(err)
-      // Manejo de error
-    }
+  const formatearPrecio = (precio) => {
+    return new Intl.NumberFormat("es-CO", {
+      style: "currency",
+      currency: "COP",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(precio)
   }
-  
-  const manejarCambioFormulario = (e) => {
-    const { name, value, type, checked } = e.target
-    setNuevaCirugia((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }))
-  }
-  
-  const agregarCirugia = async (e) => {
-    e.preventDefault();
-    try {
-      // Mapea los campos del formulario a los del backend
-      const nueva = {
-        nom_ser: nuevaCirugia.nombre,
-        des_ser: nuevaCirugia.descripcion,
-        com_cir: nuevaCirugia.complicaciones,
-        tec_des_ser: nuevaCirugia.recomendaciones,
-        pre_ser: Number(nuevaCirugia.precio),
-        sta_ser: nuevaCirugia.disponible ? "DISPONIBLE" : "NO DISPONIBLE",
-        tipo_ser: "Cirugía"
-      };
-      await PostData(`${mainUrl}/register`, nueva);
-      setMostrarFormulario(false);
-      setNuevaCirugia({
-        id: "",
-        nombre: "",
-        descripcion: "",
-        complicaciones: "",
-        recomendaciones: "",
-        precio: "",
-        disponible: true,
-      });
-      fetchCirugias();
-    } catch (err) {
-      setNotify({
-        title: 'Error',
-        message: 'No se pudo agregar la cirugía',
-        close: setNotify
-      });
-    }
-  };
 
-  const actualizarCirugia = async (e) => {
-    e.preventDefault();
-    try {
-      const actualizada = {
-        id_ser: cirugiaEditando.id_ser, // Usa el id del backend
-        nom_ser: nuevaCirugia.nombre,
-        des_ser: nuevaCirugia.descripcion,
-        com_cir: nuevaCirugia.complicaciones,
-        tec_des_ser: nuevaCirugia.recomendaciones,
-        pre_ser: Number(nuevaCirugia.precio),
-        sta_ser: nuevaCirugia.disponible ? "DISPONIBLE" : "NO DISPONIBLE",
-        tipo_ser: "Cirugía"
-      };
-      await ModifyData(`${mainUrl}/modify`, actualizada);
-      setMostrarFormulario(false);
-      setCirugiaEditando(null);
-      setNuevaCirugia({
-        id: "",
-        nombre: "",
-        descripcion: "",
-        complicaciones: "",
-        recomendaciones: "",
-        precio: "",
-        disponible: true,
-      });
-      fetchCirugias();
-    } catch (err) {
-      setNotify({
-        title: 'Error',
-        message: 'No se pudo actualizar la cirugía',
-        close: setNotify
-      });
-    }
-  };
+  const cirugiasFiltradas = cirugias.filter((cirugia) => {
+    if (filtroTipo === "todos") return true
+    if (filtroTipo === "disponibles") return cirugia.disponible
+    if (filtroTipo === "no-disponibles") return !cirugia.disponible
+    return cirugia.categoria === filtroTipo
+  })
 
-  const editarCirugia = (cirugia) => {
+  const abrirModalAgregar = () => {
     setNuevaCirugia({
-      id: cirugia.id_ser || "",
-      nombre: cirugia.nom_ser || "",
-      descripcion: cirugia.des_ser || "",
-      complicaciones: cirugia.com_cir || "",
-      recomendaciones: cirugia.tec_des_ser || "",
-      precio: cirugia.pre_ser ? cirugia.pre_ser.toString() : "",
-      disponible: cirugia.sta_ser === "DISPONIBLE"
-    });
-    setCirugiaEditando(cirugia);
-    setMostrarFormulario(true);
-  };
+      id: "",
+      nombre: "",
+      descripcion: "",
+      complicaciones: "",
+      recomendaciones: "",
+      precio: "",
+      disponible: true,
+      duracion: "",
+      tipoAnimal: "ambos",
+      categoria: "Preventiva",
+      recuperacion: "",
+      preparacion: "",
+      anestesia: "",
+    })
+    setModoEdicion(false)
+    setMostrarFormulario(true)
+  }
 
-  const eliminarCirugia = async (id_ser) => {
-    if (!window.confirm("¿Seguro que deseas eliminar esta cirugía?")) return;
-    try {
-      await ModifyData(`${mainUrl}/delete`, { id_ser });
-      fetchCirugias();
-    } catch (err) {
-      setNotify({
-        title: 'Error',
-        message: 'No se pudo eliminar la cirugía',
-        close: setNotify
-      });
+  const abrirModalEditar = (cirugia) => {
+    setNuevaCirugia({ ...cirugia, precio: cirugia.precio.toString() })
+    setCirugiaEditando(cirugia.id)
+    setModoEdicion(true)
+    setMostrarFormulario(true)
+  }
+
+  const abrirModalDetalle = (cirugia) => {
+    setCirugiaDetalle(cirugia)
+    setMostrarDetalle(true)
+  }
+
+  const guardarCirugia = () => {
+    if (nuevaCirugia.nombre && nuevaCirugia.precio > 0) {
+      if (modoEdicion) {
+        setCirugias(
+          cirugias.map((c) =>
+            c.id === cirugiaEditando ? { ...nuevaCirugia, precio: Number(nuevaCirugia.precio) } : c,
+          ),
+        )
+      } else {
+        setCirugias([...cirugias, { ...nuevaCirugia, precio: Number(nuevaCirugia.precio) }])
+      }
+      setMostrarFormulario(false)
     }
-  };
+  }
 
-const cancelarFormulario = () => {
-  setMostrarFormulario(false)
-  setCirugiaEditando(null)
-  setNuevaCirugia({
-    id: "",
-    nombre: "",
-    descripcion: "",
-    complicaciones: "",
-    recomendaciones: "",
-    precio: "",
-    disponible: true,
-  })
-}
+  const eliminarCirugia = (id) => {
+    if (window.confirm("¿Estás seguro de que deseas eliminar esta cirugía?")) {
+      setCirugias(cirugias.filter((c) => c.id !== id))
+    }
+  }
 
-console.log(cirugias)
-return (
-    <main className="maincontenedor-cirugia">
-    <NavBarAdmin />
-      <div className="principaladminhome">
-        <div className="contenedor-cirugia">
-        {admin? (<HeaderAdmin />): (<HeaderUser />)}
-          <div className="contenedorprincipal-cirugia">
-            <header className="encabezado-cirugia">
-              <div className="tituloadminhome">
-                <Activity className="iconoadminhome" aria-hidden='true'/>
-                <h1 className="textoadminhome">Servicios de Cirugía</h1>
-              </div>
-            </header>
+  const cambiarEstado = (id, e) => {
+    e.stopPropagation()
+    setCirugias(
+      cirugias.map((cirugia) => (cirugia.id === id ? { ...cirugia, disponible: !cirugia.disponible } : cirugia)),
+    )
+  }
 
-            <section className="seccion-cirugia">
-              <header className="header-cirugia">
-                <h2 className="subtitulo-cirugia">Cirugías Disponibles</h2>
-                <nav className="controles-cirugia">
-                  <div className="filtro-contenedor-cirugia">
-                    <Filter size={16} className="icono-filtro-cirugia" aria-hidden="true" />
-                    <select className="filtro-cirugia" aria-label="Filtrar cirugías">
-                      <option>Todas las cirugías</option>
-                      <option>Disponibles</option>
-                      <option>No disponibles</option>
-                    </select>
-                  </div>
-                  <button className="boton-agregar-cirugia" onClick={() => setMostrarFormulario(true)}>
-                    <Plus size={18} aria-hidden="true" /> <span>Agregar Cirugía</span>
-                  </button>
-                </nav>
-              </header>
+  const obtenerColorCategoria = (categoria) => {
+    const colores = {
+      Preventiva: "bg-green-100 text-green-700",
+      Dental: "bg-blue-100 text-blue-700",
+      Oftalmológica: "bg-purple-100 text-purple-700",
+      Ortopédica: "bg-orange-100 text-orange-700",
+      Neurológica: "bg-red-100 text-red-700",
+      Oncológica: "bg-pink-100 text-pink-700",
+      General: "bg-gray-100 text-gray-700",
+    }
+    return colores[categoria] || "bg-gray-100 text-gray-700"
+  }
 
-              {mostrarFormulario && (
-                <aside className="overlay-cirugia" role="dialog" aria-modal="true" aria-labelledby="form-title">
-                  <section className="formulario-cirugia">
-                    <h3 id="form-title" className="titulo-formulario-cirugia">
-                      {cirugiaEditando ? "Editar Cirugía" : "Agregar Nueva Cirugía"}
-                    </h3>
-                    <form onSubmit={agregarCirugia}>
-                      <fieldset>
-                        <legend className="sr-only">Información de la cirugía</legend>
-                        <div className="campo-cirugia">
-                          <label htmlFor="id-cirugia">ID Cirugía:</label>
-                          <input
-                            type="text"
-                            id="id-cirugia"
-                            name="id"
-                            value={nuevaCirugia.id}
-                            onChange={manejarCambioFormulario}
-                            required
-                            disabled={cirugiaEditando}
-                          />
-                        </div>
-                        <div className="campo-cirugia">
-                          <label htmlFor="nombre-cirugia">Nombre de la Cirugía:</label>
-                          <input
-                            type="text"
-                            id="nombre-cirugia"
-                            name="nombre"
-                            value={nuevaCirugia.nombre}
-                            onChange={manejarCambioFormulario}
-                            required
-                          />
-                        </div>
-                        <div className="campo-cirugia">
-                          <label htmlFor="descripcion-cirugia">Descripción de la Cirugía:</label>
-                          <textarea
-                            id="descripcion-cirugia"
-                            name="descripcion"
-                            value={nuevaCirugia.descripcion}
-                            onChange={manejarCambioFormulario}
-                            required
-                          />
-                        </div>
-                        <div className="campo-cirugia">
-                          <label htmlFor="complicaciones-cirugia">Complicaciones:</label>
-                          <textarea
-                            id="complicaciones-cirugia"
-                            name="complicaciones"
-                            value={nuevaCirugia.complicaciones}
-                            onChange={manejarCambioFormulario}
-                            required
-                          />
-                        </div>
-                        <div className="campo-cirugia">
-                          <label htmlFor="recomendaciones-cirugia">Recomendaciones Técnicas:</label>
-                          <textarea
-                            id="recomendaciones-cirugia"
-                            name="recomendaciones"
-                            value={nuevaCirugia.recomendaciones}
-                            onChange={manejarCambioFormulario}
-                            required
-                          />
-                        </div>
-                        <div className="campo-cirugia">
-                          <label htmlFor="precio-cirugia">Precio:</label>
-                          <input
-                            type="number"
-                            id="precio-cirugia"
-                            name="precio"
-                            value={nuevaCirugia.precio}
-                            onChange={manejarCambioFormulario}
-                            required
-                          />
-                        </div>
-                        <div className="campo-checkbox-cirugia">
-                          <label htmlFor="disponible-cirugia">
-                            <input
-                              type="checkbox"
-                              id="disponible-cirugia"
-                              name="disponible"
-                              checked={nuevaCirugia.disponible}
-                              onChange={manejarCambioFormulario}
-                            />
-                            Disponible
-                          </label>
-                        </div>
-                      </fieldset>
-                      <div className="botones-formulario-cirugia">
-                        <button type="submit" className="boton-guardar-cirugia">
-                          {cirugiaEditando ? "Actualizar" : "Agregar"}
-                        </button>
-                        <button type="button" className="boton-cancelar-cirugia" onClick={cancelarFormulario}>
-                          Cancelar
-                        </button>
-                      </div>
-                    </form>
-                  </section>
-                </aside>
-              )}
+  return (
+    <div className="contenedor-cirugia">
+      <div className="contenedor-principal-cirugia">
+        {/* Encabezado */}
+        <header className="encabezado-cirugia">
+          <div className="titulo-con-icono-cirugia">
+            <Activity className="icono-titulo-cirugia" />
+            <h1 className="titulo-cirugia">Servicios de Cirugía</h1>
+          </div>
+          <p className="descripcion-cirugia">Gestión completa de procedimientos quirúrgicos veterinarios</p>
+        </header>
 
-              <ul className="grid-cirugia" aria-label="Lista de cirugías disponibles">
-                {cirugias.map((cirugia, idx) => (
-                  <li key={cirugia.id_ser || cirugia.nom_ser || idx}>
-                    <article className="tarjeta-cirugia">
-                      <header className="header-tarjeta-cirugia">
-                        <div className="info-cirugia">
-                          <h3 className="nombre-cirugia">{cirugia.nom_ser}</h3>
-                          <span
-                            className={`estado-cirugia ${cirugia.sta_ser === "DISPONIBLE" ? "disponible-cirugia" : "no-disponible-cirugia"}`}
-                          >
-                            {cirugia.sta_ser === "DISPONIBLE" ? "Disponible" : "No disponible"}
-                          </span>
-                        </div>
-                        <div className="acciones-cirugia">
-                          <button
-                            className="boton-eliminar-cirugia"
-                            onClick={() => eliminarCirugia(cirugia.id_ser || cirugia.nom_ser)}
-                            aria-label={`Eliminar cirugía ${cirugia.nom_ser}`}
-                          >
-                            <Trash2 size={18} aria-hidden="true" />
-                          </button>
-                          <button
-                            className="boton-editar-cirugia"
-                            onClick={() => editarCirugia(cirugia)}
-                            aria-label={`Editar cirugía ${cirugia.nom_ser}`}
-                          >
-                            <PenSquare size={18} aria-hidden="true" />
-                          </button>
-                        </div>
-                      </header>
-
-                      <p className="descripcion-tarjeta-cirugia">{cirugia.des_ser}</p>
-
-                      <section className="detalles-cirugia">
-                        <div className="detalle-cirugia">
-                          <strong>
-                            <AlertCircle size={14} className="icono-detalle-cirugia" aria-hidden="true" /> Complicaciones:
-                          </strong>
-                          <p>{cirugia.com_cir || "No especificadas"}</p>
-                        </div>
-                        <div className="detalle-cirugia">
-                          <strong>
-                            <FileText size={14} className="icono-detalle-cirugia" aria-hidden="true" /> Recomendaciones:
-                          </strong>
-                          <p>{cirugia.tec_des_ser}</p>
-                        </div>
-                      </section>
-
-                      <footer className="footer-tarjeta-cirugia">
-                        <span className="precio-cirugia">Precio: ${Number(cirugia.pre_ser).toLocaleString()}</span>
-                        <span className="id-cirugia">{cirugia.id_ser || cirugia.nom_ser}</span>
-                      </footer>
-                    </article>
-                  </li>
+        {/* Controles */}
+        <div className="controles-cirugia">
+          <h2 className="subtitulo-cirugia">Cirugías Disponibles</h2>
+          <div className="acciones-control-cirugia">
+            <select value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)} className="filtro-cirugia">
+              <option value="todos">Todas las cirugías</option>
+              <option value="disponibles">Disponibles</option>
+              <option value="no-disponibles">No disponibles</option>
+              <optgroup label="Por especialidad">
+                {categorias.map((categoria) => (
+                  <option key={categoria} value={categoria}>
+                    {categoria}
+                  </option>
                 ))}
-              </ul>
-            </section>
+              </optgroup>
+            </select>
+            <button onClick={abrirModalAgregar} className="boton-agregar-cirugia">
+              <Plus size={16} />
+              Agregar Cirugía
+            </button>
           </div>
         </div>
-      </div>
-    </main>
-  )
-}
 
+        {/* Grid de cirugías */}
+        <div className="grid-cirugia">
+          {cirugiasFiltradas.map((cirugia) => (
+            <div
+              key={cirugia.id}
+              className={`tarjeta-cirugia ${!cirugia.disponible ? "no-disponible-cirugia" : ""}`}
+              onClick={() => abrirModalDetalle(cirugia)}
+            >
+              <div className="encabezado-tarjeta-cirugia">
+                <div className="info-principal-cirugia">
+                  <h3 className="nombre-cirugia">{cirugia.nombre}</h3>
+                  <div className="etiquetas-cirugia">
+                    <span className={`categoria-cirugia ${obtenerColorCategoria(cirugia.categoria)}`}>
+                      {cirugia.categoria}
+                    </span>
+                    <span
+                      className={`estado-cirugia ${
+                        cirugia.disponible ? "disponible-cirugia" : "no-disponible-badge-cirugia"
+                      }`}
+                      onClick={(e) => cambiarEstado(cirugia.id, e)}
+                    >
+                      {cirugia.disponible ? "Disponible" : "No disponible"}
+                    </span>
+                  </div>
+                </div>
+                <div className="acciones-cirugia">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      eliminarCirugia(cirugia.id)
+                    }}
+                    className="boton-eliminar-cirugia"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      abrirModalEditar(cirugia)
+                    }}
+                    className="boton-editar-cirugia"
+                  >
+                    <Edit size={16} />
+                  </button>
+                </div>
+              </div>
+
+              <p className="descripcion-tarjeta-cirugia">{cirugia.descripcion}</p>
+
+              <div className="detalles-rapidos-cirugia">
+                <div className="detalle-rapido-cirugia">
+                  <Clock size={14} className="icono-detalle-cirugia" />
+                  <span className="texto-detalle-cirugia">{cirugia.duracion}</span>
+                </div>
+                <div className="detalle-rapido-cirugia">
+                  <Timer size={14} className="icono-detalle-cirugia" />
+                  <span className="texto-detalle-cirugia">Recuperación: {cirugia.recuperacion}</span>
+                </div>
+              </div>
+
+              <div className="footer-tarjeta-cirugia">
+                <span className="precio-cirugia">{formatearPrecio(cirugia.precio)}</span>
+                <span className="id-cirugia">{cirugia.id}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Modal Agregar/Editar */}
+        {mostrarFormulario && (
+          <div className="modal-fondo-cirugia">
+            <div className="modal-cirugia">
+              <div className="modal-encabezado-cirugia">
+                <h3 className="titulo-modal-cirugia">{modoEdicion ? "Editar Cirugía" : "Agregar Nueva Cirugía"}</h3>
+                <button onClick={() => setMostrarFormulario(false)} className="cerrar-modal-cirugia">
+                  <X size={20} />
+                </button>
+              </div>
+              <div className="formulario-cirugia">
+                <div className="seccion-formulario-cirugia">
+                  <h4 className="titulo-seccion-formulario">Información General</h4>
+                  <div className="campos-formulario-cirugia">
+                    <div className="campos-dobles-cirugia">
+                      <div className="campo-cirugia">
+                        <label className="etiqueta-campo-cirugia">ID Cirugía</label>
+                        <input
+                          type="text"
+                          value={nuevaCirugia.id}
+                          onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, id: e.target.value })}
+                          className="input-cirugia"
+                          disabled={modoEdicion}
+                          placeholder="Ej: CIR001"
+                        />
+                      </div>
+                      <div className="campo-cirugia">
+                        <label className="etiqueta-campo-cirugia">Nombre de la Cirugía</label>
+                        <input
+                          type="text"
+                          value={nuevaCirugia.nombre}
+                          onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, nombre: e.target.value })}
+                          className="input-cirugia"
+                          placeholder="Ej: Esterilización"
+                        />
+                      </div>
+                    </div>
+                    <div className="campo-cirugia">
+                      <label className="etiqueta-campo-cirugia">Descripción</label>
+                      <textarea
+                        value={nuevaCirugia.descripcion}
+                        onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, descripcion: e.target.value })}
+                        className="textarea-cirugia"
+                        rows={2}
+                        placeholder="Descripción del procedimiento quirúrgico"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="seccion-formulario-cirugia">
+                  <h4 className="titulo-seccion-formulario">Detalles y Clasificación</h4>
+                  <div className="campos-formulario-cirugia">
+                    <div className="campos-dobles-cirugia">
+                      <div className="campo-cirugia">
+                        <label className="etiqueta-campo-cirugia">Precio (COP)</label>
+                        <input
+                          type="number"
+                          value={nuevaCirugia.precio}
+                          onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, precio: e.target.value })}
+                          className="input-cirugia"
+                          placeholder="Ej: 150000"
+                        />
+                      </div>
+                      <div className="campo-cirugia">
+                        <label className="etiqueta-campo-cirugia">Duración</label>
+                        <input
+                          type="text"
+                          value={nuevaCirugia.duracion}
+                          onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, duracion: e.target.value })}
+                          className="input-cirugia"
+                          placeholder="Ej: 45-60 minutos"
+                        />
+                      </div>
+                    </div>
+                    <div className="campos-dobles-cirugia">
+                      <div className="campo-cirugia">
+                        <label className="etiqueta-campo-cirugia">Tipo de Animal</label>
+                        <select
+                          value={nuevaCirugia.tipoAnimal}
+                          onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, tipoAnimal: e.target.value })}
+                          className="select-cirugia"
+                        >
+                          <option value="perro">Perro</option>
+                          <option value="gato">Gato</option>
+                          <option value="ambos">Ambos</option>
+                        </select>
+                      </div>
+                      <div className="campo-cirugia">
+                        <label className="etiqueta-campo-cirugia">Categoría</label>
+                        <select
+                          value={nuevaCirugia.categoria}
+                          onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, categoria: e.target.value })}
+                          className="select-cirugia"
+                        >
+                          {categorias.map((categoria) => (
+                            <option key={categoria} value={categoria}>
+                              {categoria}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="campos-dobles-cirugia">
+                      <div className="campo-cirugia">
+                        <label className="etiqueta-campo-cirugia">Tiempo de Recuperación</label>
+                        <input
+                          type="text"
+                          value={nuevaCirugia.recuperacion}
+                          onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, recuperacion: e.target.value })}
+                          className="input-cirugia"
+                          placeholder="Ej: 7-10 días"
+                        />
+                      </div>
+                      <div className="campo-cirugia">
+                        <label className="etiqueta-campo-cirugia">Tipo de Anestesia</label>
+                        <input
+                          type="text"
+                          value={nuevaCirugia.anestesia}
+                          onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, anestesia: e.target.value })}
+                          className="input-cirugia"
+                          placeholder="Ej: General inhalatoria"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="seccion-formulario-cirugia">
+                  <h4 className="titulo-seccion-formulario">Información Médica</h4>
+                  <div className="campos-formulario-cirugia">
+                    <div className="campo-cirugia">
+                      <label className="etiqueta-campo-cirugia">Preparación Requerida</label>
+                      <textarea
+                        value={nuevaCirugia.preparacion}
+                        onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, preparacion: e.target.value })}
+                        className="textarea-cirugia"
+                        rows={2}
+                        placeholder="Preparación necesaria antes de la cirugía"
+                      />
+                    </div>
+                    <div className="campo-cirugia">
+                      <label className="etiqueta-campo-cirugia">Complicaciones Posibles</label>
+                      <textarea
+                        value={nuevaCirugia.complicaciones}
+                        onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, complicaciones: e.target.value })}
+                        className="textarea-cirugia"
+                        rows={2}
+                        placeholder="Posibles complicaciones del procedimiento"
+                      />
+                    </div>
+                    <div className="campo-cirugia">
+                      <label className="etiqueta-campo-cirugia">Recomendaciones Post-operatorias</label>
+                      <textarea
+                        value={nuevaCirugia.recomendaciones}
+                        onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, recomendaciones: e.target.value })}
+                        className="textarea-cirugia"
+                        rows={2}
+                        placeholder="Cuidados después de la cirugía"
+                      />
+                    </div>
+                    <div className="campo-checkbox-cirugia">
+                      <input
+                        type="checkbox"
+                        checked={nuevaCirugia.disponible}
+                        onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, disponible: e.target.checked })}
+                        className="checkbox-cirugia"
+                      />
+                      <label className="etiqueta-checkbox-cirugia">Disponible</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="botones-formulario-cirugia">
+                  <button onClick={guardarCirugia} className="boton-guardar-cirugia">
+                    {modoEdicion ? "Actualizar" : "Agregar"}
+                  </button>
+                  <button onClick={() => setMostrarFormulario(false)} className="boton-cancelar-cirugia">
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )
+        }
+
+        {/* Modal Detalle */}
+        {mostrarDetalle && cirugiaDetalle && (
+          <div className="modal-fondo-cirugia">
+            <div className="modal-detalle-cirugia">
+              <div className="modal-encabezado-cirugia">
+                <h3 className="titulo-modal-cirugia">{cirugiaDetalle.nombre}</h3>
+                <button onClick={() => setMostrarDetalle(false)} className="cerrar-modal-cirugia">
+                  <X size={20} />
+                </button>
+              </div>
+              <div className="contenido-detalle-cirugia">
+                {/* Métricas principales */}
+                <div className="metricas-principales-cirugia">
+                  <div className="metrica-cirugia">
+                    <div className="valor-metrica-cirugia">{formatearPrecio(cirugiaDetalle.precio)}</div>
+                    <div className="etiqueta-metrica-cirugia">Precio</div>
+                  </div>
+                  <div className="metrica-cirugia">
+                    <div className="valor-metrica-cirugia">{cirugiaDetalle.duracion}</div>
+                    <div className="etiqueta-metrica-cirugia">Duración</div>
+                  </div>
+                  <div className="metrica-cirugia">
+                    <div className="valor-metrica-cirugia">{cirugiaDetalle.categoria}</div>
+                    <div className="etiqueta-metrica-cirugia">Categoría</div>
+                  </div>
+                  <div className="metrica-cirugia">
+                    <div
+                      className={`valor-metrica-cirugia ${
+                        cirugiaDetalle.disponible ? "texto-verde-cirugia" : "texto-rojo-cirugia"
+                      }`}
+                    >
+                      {cirugiaDetalle.disponible ? "SÍ" : "NO"}
+                    </div>
+                    <div className="etiqueta-metrica-cirugia">Disponible</div>
+                  </div>
+                </div>
+
+                {/* Grid de información */}
+                <div className="grid-detalle-cirugia">
+                  <div className="seccion-detalle-cirugia">
+                    <div className="encabezado-seccion-cirugia">
+                      <FileText size={20} className="icono-seccion-cirugia" />
+                      <h4 className="titulo-seccion-cirugia">Descripción</h4>
+                    </div>
+                    <p className="texto-seccion-cirugia">{cirugiaDetalle.descripcion}</p>
+                  </div>
+
+                  <div className="seccion-detalle-cirugia">
+                    <div className="encabezado-seccion-cirugia">
+                      <Target size={20} className="icono-seccion-cirugia" />
+                      <h4 className="titulo-seccion-cirugia">Preparación</h4>
+                    </div>
+                    <p className="texto-seccion-cirugia">{cirugiaDetalle.preparacion}</p>
+                  </div>
+
+                  <div className="seccion-detalle-cirugia">
+                    <div className="encabezado-seccion-cirugia">
+                      <AlertTriangle size={20} className="icono-seccion-cirugia" />
+                      <h4 className="titulo-seccion-cirugia">Complicaciones</h4>
+                    </div>
+                    <p className="texto-seccion-cirugia">{cirugiaDetalle.complicaciones}</p>
+                  </div>
+
+                  <div className="seccion-detalle-cirugia">
+                    <div className="encabezado-seccion-cirugia">
+                      <Clock size={20} className="icono-seccion-cirugia" />
+                      <h4 className="titulo-seccion-cirugia">Recomendaciones</h4>
+                    </div>
+                    <p className="texto-seccion-cirugia">{cirugiaDetalle.recomendaciones}</p>
+                  </div>
+                </div>
+
+                {/* Información adicional */}
+                <div className="info-adicional-cirugia">
+                  <h4 className="titulo-info-adicional-cirugia">Información Adicional</h4>
+                  <div className="contenedor-info-adicional-cirugia">
+                    <div className="item-info-adicional-cirugia">
+                      <span className="etiqueta-info-adicional-cirugia">Recuperación:</span>
+                      <span className="valor-info-adicional-cirugia">{cirugiaDetalle.recuperacion}</span>
+                    </div>
+                    <div className="item-info-adicional-cirugia">
+                      <span className="etiqueta-info-adicional-cirugia">Anestesia:</span>
+                      <span className="valor-info-adicional-cirugia">{cirugiaDetalle.anestesia}</span>
+                    </div>
+                    <div className="item-info-adicional-cirugia">
+                      <span className="etiqueta-info-adicional-cirugia">Tipo de Animal:</span>
+                      <span className="valor-info-adicional-cirugia">
+                        {cirugiaDetalle.tipoAnimal === "perro"
+                          ? "Perros"
+                          : cirugiaDetalle.tipoAnimal === "gato"
+                            ? "Gatos"
+                            : "Perros y gatos"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>    
+  )}
