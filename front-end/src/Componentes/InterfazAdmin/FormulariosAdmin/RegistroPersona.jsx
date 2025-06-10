@@ -1,5 +1,5 @@
 // Librarys
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Pencil, ChevronLeft, User, Lock } from 'lucide-react'
 import { useForm } from 'react-hook-form'
@@ -10,11 +10,13 @@ import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
 import { errorStatusHandler, LegalAge } from '../../Varios/Util'
 import { Notification } from '../../Global/Notifys'
 import { PostData } from '../../Varios/Requests'
+import { HeaderUser } from '../../BarrasNavegacion/HeaderUser'
+import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
+import Footer from '../../Varios/Footer2'
+import { AuthContext } from '../../../Contexts/Contexts'
 
 // Import styles
 import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/RegistroPersonal.css'
-import HeaderUser from '../../BarrasNavegacion/HeaderUser'
-import Footer from '../../Varios/Footer2'
 
 export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
   // Dynamic vars
@@ -34,6 +36,7 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
   const mainUrl = `${URL}/people`
   const navigate = useNavigate()
   const legalDate = LegalAge()
+  const {admin } = useContext(AuthContext)
 
   // Functions
   const handleProfileImageChange = (e) => {
@@ -69,17 +72,14 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
         message: 'Por favor, espere mientras se registra el usuario.',
         load: 1
       })
-      const token = localStorage.getItem('token')
-      if (token) {
-        const created = await PostData(`${mainUrl}/register`, datas)
-        setNotify(null)
-        created.data.created && setNotify({
-          title: 'Registrado',
-          message: 'Ha sido registrado correctamente',
-          close: setNotify
-        })
+      const created = await PostData(`${mainUrl}/register`, datas)
+      setNotify(null)
+      created.data.created && setNotify({
+        title: 'Registrado',
+        message: 'Ha sido registrado correctamente',
+        close: setNotify
+      })
         console.log(created)
-      }
     } catch (err) {
       setNotify(null)
       if (err.status) {
@@ -103,7 +103,7 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
     <main className='contenedorgesusuario'>
       <NavBarAdmin roles={roles} />
       <main className='principalgesusuario'>
-        <HeaderUser />
+        {admin? (<HeaderAdmin />): (<HeaderUser />)}
         <div className='contenedor-regusuario'>
           <div className='cabecera-regusuario'>
             <div className='titulo-regusuario'>
@@ -127,7 +127,7 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
               className={`tab-regusuario ${activeTab === 'personal' ? 'activo-regusuario' : ''}`}
               onClick={() => setActiveTab('personal')}
             >
-              <User className='icono-regusuario' size={18} />
+              <User className='icon' />
               <span className='texto-tab-regusuario'>Información personal</span>
             </div>
 
@@ -135,7 +135,7 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
               className={`tab-regusuario ${activeTab === 'password' ? 'activo-regusuario' : ''}`}
               onClick={() => setActiveTab('password')}
             >
-              <Lock className='icono-regusuario' size={18} />
+              <Lock className='icon' />
               <span className='texto-tab-regusuario'>Contraseña</span>
             </div>
           </div>

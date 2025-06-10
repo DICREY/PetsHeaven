@@ -10,8 +10,8 @@ import styles from '../../styles/BarrasNavegacion/HeaderUser.module.css'
 import '../../styles/global.css' 
 
 // Component 
-export default function HeaderUser() {
-  const [tabHelp,setTabHelp] = useState()
+export const HeaderUser = () => {
+  const [ tabHelp,setTabHelp ] = useState()
   const { logout } = React.useContext(AuthContext)
 
   const handleProfile = () => {

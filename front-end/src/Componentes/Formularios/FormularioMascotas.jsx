@@ -1,6 +1,6 @@
 // Librarys 
 import { useNavigate } from 'react-router-dom'
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { Pencil, ChevronLeft, User } from 'lucide-react'
 
 // Imports
@@ -11,8 +11,10 @@ import { PostData } from '../Varios/Requests'
 
 // Import styles
 import '../../../src/styles/Formularios/FormularioMascotas.css'
-import HeaderUser from '../BarrasNavegacion/HeaderUser';
+import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin';
+import { HeaderUser } from '../BarrasNavegacion/HeaderUser';
 import Footer from '../Varios/Footer2';
+import { AuthContext } from '../../Contexts/Contexts';
 
 export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
   // Dynamic vars
@@ -26,6 +28,7 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
   const maxDate = new Date().toLocaleDateString('en-CA')
   const navigate = useNavigate()
   const mainURL = `${URL}/pet`
+  const { admin } = useContext(AuthContext)
 
   const handleProfileImageChange = (e) => {
     const file = e.target.files[0]
@@ -78,7 +81,7 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
     <div className='contenedorgesusuario'>
       <NavBarAdmin />
       <main className='principalgesusuario'>
-        <HeaderUser/>
+        {admin? (<HeaderAdmin />): (<HeaderUser />)}
         <main className='contenedor-regusuario'>
           <header className='cabecera-regusuario'>
             <div className='titulo-regusuario'>

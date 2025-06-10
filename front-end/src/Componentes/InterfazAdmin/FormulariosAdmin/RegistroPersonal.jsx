@@ -1,5 +1,5 @@
 // Librarys
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useContext } from 'react'
 import { Pencil, ChevronLeft, User, Shield, FileText, Lock } from 'lucide-react'
 import { useForm } from 'react-hook-form' // Importa useForm
 import { useNavigate } from 'react-router'
@@ -12,11 +12,13 @@ import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
 import { errorStatusHandler, LegalAge } from '../../Varios/Util'
 import { PostData } from '../../Varios/Requests'
 import { Notification } from '../../Global/Notifys'
+import { HeaderUser } from '../../BarrasNavegacion/HeaderUser'
+import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
+import Footer from '../../Varios/Footer2'
 
 // Import styles
 import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/RegistroPersonal.css'
-import HeaderUser from '../../BarrasNavegacion/HeaderUser'
-import Footer from '../../Varios/Footer2'
+import { AuthContext } from '../../../Contexts/Contexts'
 
 // Component
 export const ConfiguracionUsuario = ({ URL = '' }) => {
@@ -37,6 +39,7 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
   const mainUrl = `${URL}/staff`
   const navigate = useNavigate()
   const legalDate = LegalAge()
+  const { admin } = useContext(AuthContext)
 
   // Manejo de la imagen
   const handleProfileImageChange = (e) => {
@@ -109,7 +112,7 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
     <div className='contenedorgesusuario'>
       <NavBarAdmin />
       <main className="principalgesusuario">
-        <HeaderUser/>
+        {admin? (<HeaderAdmin />): (<HeaderUser />)}
         <div className="contenedor-regusuario">
           <header className="cabecera-regusuario">
             <div className="titulo-regusuario">

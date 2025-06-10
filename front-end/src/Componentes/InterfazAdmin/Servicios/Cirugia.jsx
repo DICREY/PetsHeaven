@@ -1,27 +1,68 @@
 // Librarys
-import { useState, useRef, useEffect} from "react"
+import { useState, useRef, useEffect, useContext} from "react"
 import { Trash2, PenSquare, Plus, Filter, AlertCircle, FileText,Activity } from "lucide-react"
 
 // Imports
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
-import HeaderUser from '../../BarrasNavegacion/HeaderUser'
+import { HeaderUser } from '../../BarrasNavegacion/HeaderUser'
+import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
 import { errorStatusHandler } from '../../Varios/Util'
 import { Notification } from '../../Global/Notifys'
 import Footer from '../../Varios/Footer2'
 import { GetData, PostData, ModifyData } from "../../Varios/Requests"
-
+import { AuthContext } from "../../../Contexts/Contexts"
 
 // Style
 import "../../../styles/InterfazAdmin/Servicios/Cirugia.css"
 
-export const CirugiasVeterinaria = ({ roles = ['Usuario'] }) => {
+export const CirugiasVeterinaria = ({ URL= '' }) => {
+  // Dynamic Vars 
+  const [notify, setNotify] = useState(null)
 
   // Vars 
-  const URL = "http://localhost:3000"
   const didFetch = useRef(false)
   const mainUrl = `${URL}/service`
-  const [notify, setNotify] = useState(null)
-  const [cirugias, setCirugias] = useState([])
+  const { admin } = useContext(AuthContext)
+
+  const [cirugias, setCirugias] = useState([
+    // {
+    //   id: "CIR001",
+    //   nombre: "Esterilización",
+    //   descripcion: "Procedimiento quirúrgico para prevenir la reproducción en mascotas.",
+    //   complicaciones: "Sangrado, infección, reacción a anestesia",
+    //   recomendaciones: "Ayuno de 12 horas previo. Reposo post-operatorio de 7-10 días.",
+    //   precio: 150000,
+    //   disponible: true,
+    // },
+    // { 
+    //   id: "CIR002",
+    //   nombre: "Extracción Dental",
+    //   descripcion: "Remoción de piezas dentales dañadas o infectadas.",
+    //   complicaciones: "Sangrado, dolor post-operatorio, infección",
+    //   recomendaciones: "Dieta blanda por 3-5 días. Antibióticos según prescripción.",
+    //   precio: 80000,
+    //   disponible: true,
+    // },
+    // {
+    //   id: "CIR003",
+    //   nombre: "Cirugía de Cataratas",
+    //   descripcion: "Procedimiento para restaurar la visión en casos de cataratas.",
+    //   complicaciones: "Infección ocular, rechazo del implante, ceguera",
+    //   recomendaciones: "Collar isabelino por 2 semanas. Gotas oftálmicas diarias.",
+    //   precio: 450000,
+    //   disponible: false,
+    // },
+    // {
+    //   id: "CIR004",
+    //   nombre: "Reparación de Fractura",
+    //   descripcion: "Cirugía ortopédica para reparar huesos fracturados.",
+    //   complicaciones: "Infección ósea, rechazo de implantes, cojera permanente",
+    //   recomendaciones: "Reposo absoluto 4-6 semanas. Fisioterapia posterior.",
+    //   precio: 320000,
+    //   disponible: true,
+    // },
+  ])
+  
   const [mostrarFormulario, setMostrarFormulario] = useState(false)
   const [cirugiaEditando, setCirugiaEditando] = useState(null)
   const [nuevaCirugia, setNuevaCirugia] = useState({
@@ -196,9 +237,9 @@ const cancelarFormulario = () => {
 console.log(cirugias)
 return (
     <main className="maincontenedor-cirugia">
-    <NavBarAdmin roles={roles} />
+    <NavBarAdmin />
       <div className="principaladminhome">
-      <HeaderUser/>
+      {admin? (<HeaderAdmin URL={URL} />): (<HeaderUser />)}
         <div className="contenedor-cirugia">
         
           <div className="contenedorprincipal-cirugia">

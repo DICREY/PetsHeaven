@@ -11,7 +11,8 @@ import { errorStatusHandler, formatDate, searchFilter } from '../Varios/Util'
 import { AuthContext } from '../../Contexts/Contexts'
 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
-import HeaderUser from '../BarrasNavegacion/HeaderUser'
+import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
+import { HeaderUser } from '../BarrasNavegacion/HeaderUser'
 import Footer from '../Varios/Footer2'
 
 // Import styles 
@@ -25,7 +26,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   const [headers, setHeaders] = useState({})
   const [notify, setNotify] = useState(null)
   let didFetch = useRef(false)
-  const { roles } = useContext(AuthContext)
+  const { admin } = useContext(AuthContext)
   
   // Vars 
   const mainUrl = `${URL}/owner`
@@ -203,7 +204,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
     <main className='contenedoradminhome'>
       <NavBarAdmin />
       <section className='principaladminhome'>
-      <HeaderUser />
+        {admin? (<HeaderAdmin URL={URL} />): (<HeaderUser />)}
         <article className='tarjetaadminhome' aria-labelledby='lista-usuarios-titulo'>
           <div className='contenidoadminhome'>
             <header className='encabezadoadminhome'>

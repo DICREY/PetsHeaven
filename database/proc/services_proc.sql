@@ -1,17 +1,4 @@
 -- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
-CREATE PROCEDURE pets_heaven.SearchCatServices()
-BEGIN
-    SELECT
-        c.nom_cat,
-        c.img_cat,
-        c.tec_des_cat
-    FROM
-        categorias_ser c
-    WHERE
-        c.estado = 1
-    ORDER BY c.nom_cat
-    LIMIT 1000;
-END //
 CREATE PROCEDURE pets_heaven.SearchServices()
 BEGIN
     SELECT
@@ -67,6 +54,20 @@ BEGIN
         c.estado = 1
     ORDER BY 
         s.nom_ser
+    LIMIT 1000;
+END //
+CREATE PROCEDURE pets_heaven.SearchServicesCat()
+BEGIN
+    SELECT
+        cs.nom_cat,
+        cs.tec_des_cat,
+        cs.img_cat
+    FROM 
+        categorias_ser cs
+    WHERE
+        cs.estado = 1
+    ORDER BY 
+        cs.nom_cat
     LIMIT 1000;
 END //
 CREATE PROCEDURE pets_heaven.SearchServicesBy(

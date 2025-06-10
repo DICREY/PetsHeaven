@@ -13,12 +13,12 @@ import { GetData, PostData, ModifyData } from '../Varios/Requests'
 import { errorStatusHandler } from '../Varios/Util'
 import { Notification } from '../Global/Notifys'
 import { searchFilter } from '../Varios/Util'
-import HeaderUser from '../BarrasNavegacion/HeaderUser'
-import { AuthContext } from '../../Contexts/Contexts'
+import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
 
 // Import styles 
 import "../../styles/InterfazAdmin/GesAgendaGeneral.css"
 import Footer from '../Varios/Footer2'
+import { ReqFunction } from '../../Utils/Utils'
 
 // Función para unir fecha y hora en formato ISO
 function joinDateTime(date, time) {
@@ -27,7 +27,7 @@ return `${cleanDate}T${time}`
 }
 
 // Component 
-export const GesAgendaGeneral = ({ URL = 'http://localhost:3000' }) => {
+export const GesAgendaGeneral = ({ URL = '' }) => {
 // Dynamic vars 
 const [events, setEvents] = useState([])
 const [notify, setNotify] = useState(null)
@@ -39,6 +39,7 @@ const [selectedDate, setSelectedDate] = useState('')
 const [lugar, setLugar] = useState('Consultorio')
 const calendarRef = useRef(null)
 const [allPacientes, setAllPacientes] = useState([]) // Todos los pacientes
+const [allVet, setAllVet] = useState([]) // Todos los pacientes
 const [filteredPacientes, setFilteredPacientes] = useState([]) // Resultados filtrados
 const [showPacientesDropdown, setShowPacientesDropdown] = useState(false) // Controlar dropdown
 // const [ log, user, roles ] = useContext(AuthContext)
@@ -50,6 +51,7 @@ const [newEvent, setNewEvent] = useState({
     category: 'consulta',
     paciente: '',
     propietario: '',
+    veterinario: '',
     lug_ate_cit: 'Consultorio',
     telefono: '',
     estado: 'PENDIENTE',
@@ -87,34 +89,28 @@ useEffect(() => {
 //Dia de hoy
 const today = new Date().toISOString().split('T')[0] // 'YYYY-MM-DD'
 
-// const [events, setEvents] = useState([
-//         {
-//             id: '1',
-//             title: 'Vacunación de Perro',
-//             start: '2025-05-22T10:30:00',
-//             end: '2025-05-22T11:00:00',
-//             description: 'Vacunación anual contra la rabia',
-//             category: 'vacuna',
-//             paciente: 'Max (Golden Retriever)',
-//             propietario: 'Juan Pérez',
-//             telefono: '555-1234'
-//         }
-// ])
-
-
 const fetchPacientes = async () => {
-    try {
-        const data = await GetData(`${URL}/pet/all`)
-        if (data) setAllPacientes(data)
-    } catch (err) {
-        console.error("Error al cargar pacientes:", err)
-    }
+    await ReqFunction(
+        `${URL}/pet/all`,
+        GetData,
+        setNotify,
+        setAllPacientes
+    )
+}
+const fetchVet = async () => {
+    await ReqFunction(
+        `${URL}/staff/all`,
+        GetData,
+        setNotify,
+        setAllVet
+    )
 }
 
 // Crear citas
 const handleDateClick = (arg) => {
     setSelectedDate(arg.dateStr)
     fetchPacientes() // Cargar pacientes cuando se abre el modal
+    fetchVet() // Cargar veterinarios cuando se abre el modal
     setNewEvent({
         title: '',
         start: `${arg.dateStr}T09:00:00`,
@@ -123,6 +119,7 @@ const handleDateClick = (arg) => {
         category: 'consulta',
         paciente: '',
         propietario: '',
+        veterinario: '',
         lug_ate_cit: 'Consultorio',
         telefono: '',
         estado: 'PENDIENTE'
@@ -150,9 +147,9 @@ const handleCreateEvent = async () => {
         hor_ini_cit: newEvent.start.split('T')[1],
         hor_fin_cit: newEvent.end.split('T')[1],
         lug_ate_cit: lugar,
-        ser_cit: 1,
-        vet_cit: 1,
-        mas_cit: newEvent.mas_cit,
+        ser_cit: newEvent.category,
+        vet_cit: newEvent.veterinario,
+        mas_cit: newEvent.paciente,
         estado: 'PENDIENTE'
     }
     try {
@@ -284,9 +281,7 @@ const fetchAppointments = async () => {
                 message: `${message}`,
                 close: setNotify
             })
-        } 
-        else console.error(err)
-        // Manejo de error
+        } else console.error(err)
     }
 }
 
@@ -300,7 +295,7 @@ return (
     <main className="calendar-container">
         <NavBarAdmin />
         <main className='calendar-container' id='main-container-calendar'>
-        <HeaderUser openHelp={() => setTabHelp(true)}/>
+        <HeaderAdmin openHelp={() => setTabHelp(true)} URL={URL} />
 
             <FullCalendar
                 // Refencia del calendario, permite acceder a la instancia del componente para manipularlo
@@ -462,7 +457,6 @@ return (
                                                                     telefono: paciente.cel_per || '',
                                                                     mas_cit: paciente.id_mas
                                                                 },
-                                                                console.log(paciente.id_mas)
                                                                 )
                                                                 setShowPacientesDropdown(false)
                                                             }}
@@ -483,6 +477,20 @@ return (
                                             onChange={handleInputChange}
                                             disabled
                                         />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Veterinario:</label>
+                                        <select
+                                            type="text"
+                                            name="veterinario"
+                                            onChange={handleInputChange}
+                                        >
+                                            {allVet?.map((i) => 
+                                                i.roles.split(', ').includes('Veterinario') && (
+                                                    <option value={i.doc_per}>{i.nom_per} {i.ape_per} (Veterinario)</option>
+                                                )
+                                            )}
+                                        </select>
                                     </div>
                                     <div className="form-group">
                                         <label>Teléfono:</label>

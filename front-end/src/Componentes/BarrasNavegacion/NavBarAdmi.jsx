@@ -139,59 +139,45 @@ export const NavBarAdmin = () => {
                 </li>
               </ul>
             </li>
-            {
-              isAdmin && (
-                <li className='itemnavadmin'>
-                  <button className='botonnavadmin' onClick={toggleServicios}>
-                    <div className='contenidobotonnavadmin'>
-                      <Headset className='icononavadmin' />
-                      <span>Servicios</span>
-                    </div>
-                    <ChevronDown className={`flechanavadmin ${serviciosAbierto ? 'girarnavadmin' : ''}`} />
-                  </button>
+            
+            <li className='itemnavadmin'>
+              <button className='botonnavadmin' onClick={toggleServicios}>
+                <div className='contenidobotonnavadmin'>
+                  <Headset className='icononavadmin' />
+                  <span>Servicios</span>
+                </div>
+                <ChevronDown className={`flechanavadmin ${serviciosAbierto ? 'girarnavadmin' : ''}`} />
+              </button>
 
-                  <ul className={`submenunavadmin ${serviciosAbierto ? 'abiertonavadmin' : 'cerradonavadmin'}`}>
-                    <li>
-                      <NavLink to={'/services/vacunas'} className='subenlacenavadmin'>
-                        <Syringe className='iconosubnavadmin' />
-                        <span>Vacunas</span>
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink to={'/services/cirugia'} className='subenlacenavadmin'>
-                        <Scissors className='iconosubnavadmin' />
-                        <span>Cirugía</span>
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink to={'/services/laboratorio'} className='subenlacenavadmin'>
-                        <Flask className='iconosubnavadmin' />
-                        <span>Pruebas Laboratorio</span>
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink to={'/services/spa'} className='subenlacenavadmin'>
-                        <Bath className='iconosubnavadmin' />
-                        <span>Spa</span>
-                      </NavLink>
-                    </li>
-                  </ul>
+              <ul className={`submenunavadmin ${serviciosAbierto ? 'abiertonavadmin' : 'cerradonavadmin'}`}>
+                <li>
+                  <NavLink to={'/services/vacunas'} className='subenlacenavadmin'>
+                    <Syringe className='iconosubnavadmin' />
+                    <span>Vacunas</span>
+                  </NavLink>
                 </li>
-              )
-            }
+                <li>
+                  <NavLink to={'/services/cirugia'} className='subenlacenavadmin'>
+                    <Scissors className='iconosubnavadmin' />
+                    <span>Cirugía</span>
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to={'/services/laboratorio'} className='subenlacenavadmin'>
+                    <Flask className='iconosubnavadmin' />
+                    <span>Pruebas Laboratorio</span>
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to={'/services/spa'} className='subenlacenavadmin'>
+                    <Bath className='iconosubnavadmin' />
+                    <span>Spa</span>
+                  </NavLink>
+                </li>
+              </ul>
+            </li>
           </ul>
         </nav>
-
-        <hr className='separadornavadmin' />
-        <div className='opcionesnavadmin'>
-          <button 
-            className='opcionnavadmin'
-            onClick={() => navigate('/main')}
-          >
-            <Home className='iconoopcionnavadmin' />
-            <span>Pagina Principal</span>
-          </button>
-        </div>
       </aside>
     </header>
   )

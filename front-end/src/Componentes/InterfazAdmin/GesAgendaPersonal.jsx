@@ -1,5 +1,5 @@
 // Librarys 
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useContext } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -9,13 +9,16 @@ import esLocale from "@fullcalendar/core/locales/es"
 
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
-import { GetData } from '../Varios/Requests'
+import { PostData } from '../Varios/Requests'
+import { Notification } from '../Global/Notifys'
 import { errorStatusHandler } from '../Varios/Util'
+import { AuthContext } from '../../Contexts/Contexts'
+import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
+import { HeaderUser } from '../BarrasNavegacion/HeaderUser'
+import Footer from '../Varios/Footer2'
 
 // Import styles 
 import "../../styles/InterfazAdmin/GesAgendaGeneral.css"
-import HeaderUser from '../BarrasNavegacion/HeaderUser'
-import Footer from '../Varios/Footer2'
 
 // Función para unir fecha y hora en formato ISO
 function joinDateTime(date, time) {
@@ -24,12 +27,11 @@ function joinDateTime(date, time) {
 }
 
 // Component 
-export const GesAgendaPersonal = ({ URL = 'http://localhost:3000', roles = ['Usuario'] }) => {
+export const GesAgendaPersonal = ({ URL = '' }) => {
     // Dynamic vars 
     const [events, setEvents] = useState([])
     const [notify, setNotify] = useState(null)
     const [mesActual, setMesActual] = useState('')
-    //Vista Actual del usuario
     const [currentView, setCurrentView] = useState('dayGridMonth')
     //Mostrar la descripcion en un pop up de la cita
     const [showEventModal, setShowEventModal] = useState(false)
@@ -37,7 +39,6 @@ export const GesAgendaPersonal = ({ URL = 'http://localhost:3000', roles = ['Usu
     const [showCreateModal, setShowCreateModal] = useState(false)
     const [selectedEvent, setSelectedEvent] = useState(null)
     const [selectedDate, setSelectedDate] = useState('')
-    const calendarRef = useRef(null)
     const [newEvent, setNewEvent] = useState({
         title: '',
         start: '',
@@ -53,42 +54,41 @@ export const GesAgendaPersonal = ({ URL = 'http://localhost:3000', roles = ['Usu
     // Vars 
     const didFetch = useRef(false)
     const dateInputRef = useRef()
+    const calendarRef = useRef(null)
     const mainUrl = `${URL}/appointment`
+    const { admin, user } = useContext(AuthContext)
 
     // Functions    
     useEffect(() => {
         if (didFetch.current) return
         didFetch.current = true
         const GetAppointments = async () => {
-            const token = localStorage.getItem("token")
             try {
-                if (token) {
-                    const data = await GetData(`${mainUrl}/general`)
-                    setNotify(null)
+                const data = await PostData(`${mainUrl}/by`,{by: user.doc})
+                setNotify(null)
 
-                    if (data) {
-                        const mappedEvents = data.map(event => ({
-                            title: event.nom_ser,
-                            start: joinDateTime(event.fec_cit, event.hor_ini_cit),
-                            end: joinDateTime(event.fec_cit, event.hor_fin_cit),
-                            description: event.des_ser,
-                            category: event.nom_ser || 'vacuna',
-                            paciente: event.nom_mas,
-                            propietario: `${event.nom_per} ${event.ape_per}`,
-                            telefono: event.cel_per,
-                            estado: event.estado,
-                            fotoMascota: event.fot_mas
-                        }))
-                        setEvents(mappedEvents) 
-                    }
-                } else navigate('/user/login')
+                if (data) {
+                    const mappedEvents = data.map(event => ({
+                        title: event.nom_ser,
+                        start: joinDateTime(event.fec_cit, event.hor_ini_cit),
+                        end: joinDateTime(event.fec_cit, event.hor_fin_cit),
+                        description: event.des_ser,
+                        category: event.nom_ser || 'vacuna',
+                        paciente: event.nom_mas,
+                        propietario: `${event.nom_per} ${event.ape_per}`,
+                        telefono: event.cel_per,
+                        estado: event.estado,
+                        fotoMascota: event.fot_mas
+                    }))
+                    setEvents(mappedEvents) 
+                }
             } catch (err) {
                 setNotify(null)
                 if (err.status) {
                     const message = errorStatusHandler(err.status)
                     setNotify({
                         title: 'Error',
-                        message: `${message}`,    
+                        message: err.status == 404? 'No tienes citas asignadas': message,
                         close: setNotify
                     })
                     if (err.status === 403) {
@@ -216,7 +216,7 @@ export const GesAgendaPersonal = ({ URL = 'http://localhost:3000', roles = ['Usu
         <main className="calendar-container">
             <NavBarAdmin />
             <main className='calendar-container' id='main-container-calendar'>
-            <HeaderUser/>
+            {admin? (<HeaderAdmin URL={URL} />): (<HeaderUser />)}
                 <input
                     type="date"
                     ref={dateInputRef}

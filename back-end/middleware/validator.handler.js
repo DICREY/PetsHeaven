@@ -20,7 +20,7 @@ function validatorHeaders (req,res,next) {
         return res.status(400).json({ error: 'Contenido invalido' })
     }
     if (!userAgent || !user ) {
-        return res.status(401).json({ error: 'Usuario invalido' })
+        return res.status(401).json({ error: 'Usuario no autorizado' })
     }
 
     // Next to
@@ -44,9 +44,10 @@ function authenticateJWT(req, res, next) {
 function ValidatorRol(requireRol = '') {
     return (req,res,next) => {
         const rolesHeader = req.signedCookies?.__user
+
         // Verificación más robusta del header
         if (!rolesHeader || typeof rolesHeader !== 'string') {
-            return res.status(403).json({ message: 'Roles perdidos o invalidos' })
+            return res.status(401).json({ message: 'Roles perdidos o invalidos' })
         }
       
         const roles = rolesHeader.split(',').map(role => role.trim())
@@ -55,7 +56,7 @@ function ValidatorRol(requireRol = '') {
         const isAdmin = roles.some(role => role.toLowerCase() === requireRol.toLowerCase())
         
         // Manejo de acceso
-        if (!isAdmin) return res.status(401).json({ message: 'No tienes permisos para esta acción' })
+        if (!isAdmin) return res.status(401).json({ message: 'Usuario no autorizado' })
     
         next()
     }

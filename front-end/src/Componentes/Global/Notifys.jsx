@@ -21,7 +21,8 @@ export const Notification = ({
     load = false,
     time = 4000,
     close = null,
-    select = null
+    firstOption = null,
+    secondOption = null
 }) => {
     // Dynamic vars
     const [isOpen,setIsOpen] = useState(true)
@@ -70,10 +71,16 @@ export const Notification = ({
                                 >Cerrar</button>
                             </aside>
                         )}
-                        {select && (
+                        {firstOption && secondOption && (
                             <aside className='LoadingSelect'>
-                                <button className='DeleteBtn' onClick={select}>Cancelar</button>
-                                <button className='AddBtn'>Aceptar</button>
+                                <button 
+                                    className='DeleteBtn' 
+                                    onClick={firstOption}
+                                >Salir</button>
+                                <button
+                                    className='AddBtn' 
+                                    onClick={secondOption}
+                                >Continuar</button>
                             </aside>
                         )}
                     </article>
@@ -81,89 +88,4 @@ export const Notification = ({
             }
         </>
     )
-}
-
-const Load = ({
-    title = 'Cargando información...',
-    message = 'Por favor espere un momento',
-    img = 'https://github.com/Mogom/Imagenes_PetsHeaven/blob/main/Defaults/NotifyGanzo.jpg?raw=true',
-    imgDefault = 'https://github.com/Mogom/Imagenes_PetsHeaven/blob/main/Defaults/NotifyCat.jpg?raw=true',
-    btnClose = false,
-    load = false,
-    time = 4000,
-    onClose
-}) => {
-
-    useEffect(() => {
-        if (time) {
-            const timer = setTimeout(() => {
-                onClose?.()
-            }, time)
-            return () => clearTimeout(timer)
-        }
-    }, [time, onClose])
-
-    return ReactDOM.createPortal(
-        <section className='LoadingNotification'>
-            <article className='LoadingContent'>
-                <aside className='LoadingPaw'>
-                    {checkImage(
-                        img,
-                        'ganzo antropomorfico con traje formal negro con una lupa antigua en la pata derecha y la cabeza inclinada 40grados a la izquierda',
-                        imgDefault,
-                        'LoadingImg'
-                    )}
-                </aside>
-                <aside className='LoadingText'>
-                    <p>{title}</p>
-                    <p className='LoadingSubText'>{message}</p>
-                </aside>
-                {load && (
-                    <aside className='LoadingBar'>
-                        <div className='LoadingProgress'></div>
-                    </aside>
-                )}
-                {btnClose && (
-                    <button
-                        className=''
-                        onClick={() => setIsOpen(false)}
-                    >Close</button>
-                )}
-            </article>
-        </section>,
-        document.getElementById('notification-root')
-    )
-}
-
-export const NotificationProvider = ({ children }) => {
-    const [notifications, setNotifications] = useState([])
-    // Precargar el componente antes de necesitarlo
-  
-    const showNotification = (props) => {
-        const id = Date.now()
-        setNotifications(prev => [...prev, { ...props, id }])
-        return id
-    }
-    
-    const hideNotification = (id) => setNotifications(prev => prev.filter(n => n.id !== id))
-
-    return (
-        <NotificationContext.Provider value={{ showNotification, hideNotification }}>
-            {children}
-            {notifications.map(notification => (
-                <Load
-                    key={notification.id}
-                    {...notification}
-                    onClose={() => hideNotification(notification.id)}
-                />
-            ))}
-        </NotificationContext.Provider>
-    )
-}
-
-
-export const useNotification = () => {
-    const context = useContext(NotificationContext)
-    if (!context) throw new Error('useNotification must be used within a NotificationProvider')
-    return context
 }

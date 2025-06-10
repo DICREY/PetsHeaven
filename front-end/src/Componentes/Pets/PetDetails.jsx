@@ -9,14 +9,15 @@ import { HistoryTest } from './historyTest'
 import { Notification } from '../Global/Notifys'
 import { AuthContext } from '../../Contexts/Contexts'
 import { DeleteData, ModifyData, PostData } from '../Varios/Requests'
-import { checkImage, getAge, errorStatusHandler, divideList, decodeJWT } from '../Varios/Util'
+import { checkImage, getAge, errorStatusHandler, divideList } from '../Varios/Util'
 import { FormularioConsulta } from '../InterfazAdmin/FormulariosAdmin/Consulta'
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import Footer from '../Varios/Footer2'
 
 // Import styles 
 import '../../../src/styles/Pets/petDetails.css'
-import HeaderUser from '../BarrasNavegacion/HeaderUser'
+import { HeaderUser } from '../BarrasNavegacion/HeaderUser'
+import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
 
 // Main component
 export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Generales'}) => {
@@ -32,7 +33,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
     const [showMedicHistory,setShowMedicHistory] = useState(false)
     const [consult,setConsult] = useState(false)
     const [notify, setNotify] = useState(null)
-    const { roles } = useContext(AuthContext)
+    const { roles, admin } = useContext(AuthContext)
     const headers = {
         Nombre: 'nom_mas',
         Especie: 'esp_mas',
@@ -204,7 +205,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
             <main className='app-container-pet-details'>
                 <NavBarAdmin />
                 <main className='main-content-pet-details'> 
-                    <HeaderUser/>
+                    {admin? (<HeaderAdmin />): (<HeaderUser />)}
                     <div className='pet-modal-overlay-pet-details'>
                         <div className='pet-modal-content-pet-details'>
 
@@ -379,9 +380,9 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '' ,tab = 'Datos Genera
                                     </section>
                                 )}    
                             </section>
-                            <Footer />
                         </div>
                     </div>
+                    <Footer />
                     {showMedicHistory && (
                         <HistoryTest 
                             appointmentData={mHSelected}

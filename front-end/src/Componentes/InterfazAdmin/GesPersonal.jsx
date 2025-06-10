@@ -14,7 +14,7 @@ import { AuthContext } from '../../Contexts/Contexts'
 
 // Import styles 
 import '../../../src/styles/InterfazAdmin/GesPersonal.css'
-import HeaderUser from "../BarrasNavegacion/HeaderUser"
+import { HeaderAdmin } from "../BarrasNavegacion/HeaderAdmin"
 import Footer from "../Varios/Footer2"
 
 // Component
@@ -90,7 +90,7 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
       <NavBarAdmin />
 
       <section className="principaladminhome">
-      <HeaderUser/>
+      <HeaderAdmin URL={URL} />
         <section className="tarjetagesusuario">
           <div className="contenidogesusuario">
             <header className="encabezadogesusuario">

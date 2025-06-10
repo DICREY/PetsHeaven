@@ -1,13 +1,11 @@
 // Librays
 import { useNavigate } from 'react-router-dom'
 
-
-
 // Utilidades
 export const useRoleRedirect = (roles = []) => {
   const roleRoutes = {
     'Administrador': '/admin/gestion/usuarios',
-    'Veterinario': '/gestion/mascotas',
+    'Veterinario': '/consultorio',
     'default': '/user/pets'
   }
   
@@ -62,7 +60,11 @@ export const checkImage = (src = '', alt, imgDefault = '', className = '') => {
   let srcMod = src? src: imgDefault
 
   img.src = srcMod
-  img.onerror = () => srcMod = imgDefault
+  img.onerror = <img
+    className={`${className}`}
+    src={imgDefault}
+    alt={alt || "No Registrado"}
+  />
 
   return <img
     className={`${className}`}
@@ -163,7 +165,7 @@ export const errorStatusHandler = (status) => {
   const returnMessage = (errStatus) => {
     let message = 'Error interno'
     
-    if (errStatus >= 500) return 'No eres tu soy yo, solo necesito tiempo para actualizar'
+    if (errStatus >= 500) return 'Error del servidor por favor intentelo mas tarde' 
     
     switch (errStatus) {
       case 302:
@@ -175,7 +177,7 @@ export const errorStatusHandler = (status) => {
         break
 
       case 401:
-        message = 'Usuario o contraseña incorrectos'
+        message = 'Usuario no autorizado'
         break
       
       case 403:
@@ -214,9 +216,4 @@ export const errorStatusHandler = (status) => {
     return message
   }
   return returnMessage(status)
-}
-
-export const getCookie = (name = '') => {
-  const hasToken = document.cookie.split(';').some(item => item.trim().startsWith(`${name}=`));
-  return hasToken
 }

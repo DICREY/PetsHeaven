@@ -1,13 +1,21 @@
-import { useState } from "react"
-import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
+// Librarys 
+import { useContext, useState } from "react"
 import {Syringe} from 'lucide-react'
-import HeaderUser from '../../BarrasNavegacion/HeaderUser'
+
+// Imports 
+import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
+import { HeaderUser } from '../../BarrasNavegacion/HeaderUser'
+import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
 import Footer from '../../Varios/Footer2'
+import { AuthContext } from "../../../Contexts/Contexts"
+import { Notification } from '../../Global/Notifys'
+
+// Import styles 
 import "../../../styles/InterfazAdmin/Servicios/Vacuna.css"
 
-export function VisualizadorVacunas({ roles = ['Usuario'] }) {
-
-    // Datos ficticios UNU
+// Component 
+export const VisualizadorVacunas = ({ URL= '' }) => {
+  // Datos ficticios UNU
   const [vacunas, setVacunas] = useState([
     {
       id: 1,
@@ -112,6 +120,10 @@ export function VisualizadorVacunas({ roles = ['Usuario'] }) {
   const [filtroAnimal, setFiltroAnimal] = useState("todos")
   const [vacunaDetalle, setVacunaDetalle] = useState(null)
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false)
+  const [notify, setNotify] = useState()
+
+  // Vars 
+  const { admin } = useContext(AuthContext)
 
   const abrirModalAgregar = () => {
     setNuevaVacuna({
@@ -214,10 +226,10 @@ export function VisualizadorVacunas({ roles = ['Usuario'] }) {
   }
 
   return (
-    <div className="maincontenedorVacunas">
-      <NavBarAdmin roles={roles} />
-      <div className="principaladminhome">
-      <HeaderUser/>
+    <main className="maincontenedorVacunas">
+      <NavBarAdmin />
+      <main className="principaladminhome">
+      {admin? (<HeaderAdmin />): (<HeaderUser />)}
         <main className="contenedorPrincipalVacunas">
           <div className="contenedorVacunas">
             <header className="encabezadoVacunas">
@@ -801,7 +813,12 @@ export function VisualizadorVacunas({ roles = ['Usuario'] }) {
           )}
         </main>
         <Footer/>
-      </div>
-    </div>  
+      </main>
+      {notify && (
+        <Notification 
+          {...notify}
+        />
+      )}
+    </main>
   )
 }

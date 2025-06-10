@@ -521,8 +521,7 @@
 
 .detalleVacunaCabecera {
   padding: 1.5rem 2rem;
-  background-color: #f8f9fa;
-  border-bottom: 1px solid var(--color-borde);
+  background-color: #b2ebf2;  
 }
 
 .detalleVacunaID {
