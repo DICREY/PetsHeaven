@@ -141,6 +141,7 @@ const handleEventClick = (info) => {
 
 // Crear nueva cita en el backend
 const handleCreateEvent = async () => {
+    if (!validateEvent(newEvent)) return
     const citaData = {
         fec_reg_cit: new Date().toISOString().split('T')[0],
         fec_cit: newEvent.start.split('T')[0],
@@ -163,6 +164,7 @@ const handleCreateEvent = async () => {
 
 // Actualizar cita existente en el backend
 const handleUpdateEvent = async () => {
+    if (!validateEvent(newEvent)) return
     // Verificar fecha
     const eventDate = new Date(selectedEvent.start)
     const today = new Date()
@@ -264,9 +266,11 @@ const fetchAppointments = async () => {
                 description: event.des_ser,
                 category: event.nom_ser || 'vacuna',
                 paciente: event.nom_mas,
-                propietario: `${event.nom_per} ${event.ape_per}`,
+                propietario: `${event.prop_nom_per} ${event.prop_ape_per}`, 
+                telefonoProp: event.prop_cel_per,
+                veterinario: `${event.vet_nom_per} ${event.vet_ape_per}`,
+                telefonoVet: event.vet_cel_per,
                 lug_ate_cit: event.lug_ate_cit || 'Consultorio',
-                telefono: event.cel_per,
                 estado: event.estado,
                 fotoMascota: event.fot_mas
             }))
@@ -288,6 +292,34 @@ const fetchAppointments = async () => {
 const validatePatientName = (input) => {
     // Expresión regular que solo permite letras, espacios y algunos caracteres especiales comunes en nombres
     return input.replace(/[0-9]/g, '')
+}
+
+const validateEvent = (event) => {
+    if (!event.paciente || !event.mas_cit) {
+        setNotify({ title: 'Error', message: 'Selecciona un paciente válido.' })
+        return false
+    }
+    if (!event.veterinario) {
+        setNotify({ title: 'Error', message: 'Selecciona un veterinario.' })
+        return false
+    }
+    if (!event.start || !event.end) {
+        setNotify({ title: 'Error', message: 'Debes seleccionar fecha y hora.' })
+        return false
+    }
+    if (!event.category) {
+        setNotify({ title: 'Error', message: 'Selecciona el tipo de cita.' })
+        return false
+    }
+    if (!event.lug_ate_cit || event.lug_ate_cit.trim().length < 3) {
+        setNotify({ title: 'Error', message: 'El lugar de atención es obligatorio.' })
+        return false
+    }
+    if (event.description && event.description.length > 255) {
+        setNotify({ title: 'Error', message: 'La descripción es demasiado larga.' })
+        return false
+    }
+    return true
 }
 
 
@@ -476,21 +508,25 @@ return (
                                             value={newEvent.propietario}
                                             onChange={handleInputChange}
                                             disabled
-                                        />
+                                            />
                                     </div>
                                     <div className="form-group">
-                                        <label>Veterinario:</label>
-                                        <select
-                                            type="text"
-                                            name="veterinario"
-                                            onChange={handleInputChange}
-                                        >
-                                            {allVet?.map((i) => 
-                                                i.roles.split(', ').includes('Veterinario') && (
-                                                    <option value={i.doc_per}>{i.nom_per} {i.ape_per} (Veterinario)</option>
-                                                )
-                                            )}
-                                        </select>
+                                    <label>Veterinario:</label>
+                                    <select
+                                        name="veterinario"
+                                        onChange={handleInputChange}
+                                        value={newEvent.veterinario || ''} 
+                                        required 
+                                    >
+                                        <option value="" disabled selected>Selecciona un veterinario</option>
+                                        {allVet?.map((i) => 
+                                        i.roles.split(', ').includes('Veterinario') && (
+                                            <option key={i.doc_per} value={i.doc_per}>
+                                            {i.nom_per} {i.ape_per} (Veterinario)
+                                            </option>
+                                        )
+                                        )}
+                                    </select>
                                     </div>
                                     <div className="form-group">
                                         <label>Teléfono:</label>
@@ -626,7 +662,6 @@ return (
                                     name="propietario"
                                     value={selectedEvent?.propietario || ''}
                                     disabled
-                                    onChange={handleInputChange}
                                 />
                             </div>
                             <div className="form-group">
@@ -635,7 +670,17 @@ return (
                                     disabled
                                     type="text"
                                     name="telefono"
-                                    value={selectedEvent?.telefono || ''}
+                                    value={selectedEvent?.telefonoProp || ''}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Veterinario:</label>
+                                <input
+                                    disabled
+                                    type="text"
+                                    name="veterinario"
+                                    value={selectedEvent?.veterinario || ''}
                                     onChange={handleInputChange}
                                 />
                             </div>
