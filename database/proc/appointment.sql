@@ -69,14 +69,8 @@ BEGIN
     WHERE
         c.estado != 'CANCELADO'
         AND (
-            p.nom_per LIKE p_by
-            OR p.doc_per LIKE p_by
-            OR p.email_per LIKE p_by
-            OR cs.nom_cat LIKE p_by
-            OR s.nom_ser LIKE p_by
-            OR m.nom_mas LIKE p_by
-            OR m.raz_mas LIKE p_by
-            OR m.esp_mas LIKE p_by
+            p.doc_per = p_by
+            OR p.email_per = p_by
         )
     ORDER BY c.fec_cit
     LIMIT 50;
@@ -188,6 +182,6 @@ BEGIN
     SET autocommit = 1;
 END //
 
-/* CALL `SearchAppointmentsByUser`('perro'); */
 /* DROP PROCEDURE SearchAppointmentsByUser; */
 /* DROP PROCEDURE RegistAppointment; */
+/* CALL `SearchAppointmentsByUser`('1298765432'); */

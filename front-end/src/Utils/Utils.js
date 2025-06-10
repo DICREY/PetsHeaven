@@ -27,6 +27,7 @@ export const ReqFunction = async (
         if (ReqFunct && setNotify && set){
             const req = await ReqFunct(URL, data)
             setNotify(null)
+            if (req.data) return set(req.data[0])
             set(req)
         }
     } catch (err) {

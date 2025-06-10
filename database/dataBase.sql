@@ -23,7 +23,7 @@ CREATE TABLE pets_heaven.personas(
     cont_per VARCHAR(255) NOT NULL,
     gen_per VARCHAR(100) NOT NULL,
     estado BOOLEAN DEFAULT(1) NOT NULL,
-    fot_per TEXT DEFAULT("No-registrado") NOT NULL,
+    fot_per TEXT DEFAULT("https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg") NOT NULL,
     fec_cre_per DATE DEFAULT(NOW()) NOT NULL
 );
 

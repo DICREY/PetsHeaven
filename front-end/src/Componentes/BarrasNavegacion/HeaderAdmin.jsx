@@ -124,15 +124,16 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
                 </header>
 
                 <ul className="lista-notificaciones-header" role="list">
-                  {appointment?.map((notification) => (
-                    <li key={notification.id} className="item-notificacion-header" role="menuitem">
-                      <div className={`icono-notificacion-header ${notification.color}-header`} aria-hidden="true">
-                        <notification.icon className='icon' />
+                  {appointment?.map((notification, index) => (
+                    <li key={index + 10992} className="item-notificacion-header" role="menuitem">
+                      <div className={`icono-notificacion-header`} aria-hidden="true">
+                        <Bell className="icon" aria-hidden="true" />
                       </div>
                       <article className="contenido-notificacion-header">
-                        <h3>{notification.title}</h3>
-                        <p>{notification.message}</p>
-                        <time className="tiempo-notificacion-header">{notification.time}</time>
+                        <h3>{notification.nom_cat}</h3>
+                        <h4>{notification.nom_ser}</h4>
+                        <p>{notification.des_ser}</p>
+                        <time className="tiempo-notificacion-header">{notification.hor_ini_cit}</time>
                       </article>
                     </li>
                   ))}

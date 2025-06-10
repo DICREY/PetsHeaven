@@ -30,6 +30,7 @@ import {VisualizadorVacunas} from "../Componentes/InterfazAdmin/Servicios/Vacuna
 import VeterinaryDashboard from '../Componentes/InterfazAdmin/Home'
 import TodasLasNotificaciones from '../Componentes/BarrasNavegacion/Notificaciones'
 import { CookiePolicy } from '../Componentes/Global/CookiesPolicy'
+import { Notification } from '../Componentes/Global/Notifys'
 
 // Import contexts
 import { AuthProvider } from '../Contexts/Auth.context'
@@ -42,18 +43,18 @@ import { ConfiguracionUsuarioCrud } from '../Componentes/InterfazAdmin/CrudPerso
 export default function App () {
   // Dynamic vars 
   const [userSelect,setUserSelect] = useState()
+  const [notify,setNotify] = useState()
   const [petSelect,setPetSelect] = useState()
   const [owner,setOwner] = useState(false)
   const [arriveTo,setArriveTo] = useState('')
   const [petDetailTab,setPetDetailTab] = useState('Datos Generales')
-  const [inactive, setInactive] = useState(false)
   
   // Vars 
   const imgPetDefault = 'https://github.com/Mogom/Imagenes_PetsHeaven/blob/main/Defaults/petImg.default.jpg?raw=true'
   const imgUserDefault = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/default_veterinario.png'
   const imgServiceDefault = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/default_veterinario.png'
   const URL = 'http://localhost:3000'
-  // const isInactive = useInactivityDetector(5 * 1000)
+  const isInactive = useInactivityDetector(10 * 60 * 1000)
   
   // Route types
   const PrivateRoute = ({ children }) => {
@@ -88,18 +89,16 @@ export default function App () {
     window.location.replace('/main')
   }
 
-  // useEffect(() => {
-  //   if (isInactive) {
-  //     setNotify({
-  //       title: 'Sesión Inactiva',
-  //       message: 'Tu sesión ha estado inactiva por un tiempo prolongado. ¿Deseas continuar?',
-  //       select: () => setInactive(true),
-  //     })
-  //     if (inactive) {
-  //       return <Navigate to='/user/login' />
-  //     }
-  //   }
-  // },[isInactive])
+  useEffect(() => {
+    if (isInactive) {
+      setNotify({
+        title: 'Sesión Inactiva',
+        message: 'Tu sesión ha estado inactiva por un tiempo prolongado. ¿Deseas continuar?',
+        firstOption: () => window.location.href = '/user/login',
+        secondOption: () => setNotify(null),
+      })
+    }
+  },[isInactive])
 
   return (
     // Define Routes
@@ -206,6 +205,11 @@ export default function App () {
           <Route path='*' element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+      {notify && (
+        <Notification 
+          {...notify}
+        />
+      )}
     </AuthProvider>
   )
 }

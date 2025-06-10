@@ -142,15 +142,19 @@ VALUES
 
 INSERT INTO pets_heaven.veterinarios (id_vet, especialidad, horarios, fot_vet)
 VALUES
-(1, 'Veterinario Generalista', 'Lunes a Viernes 9:00 - 18:00', 'https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg'),
-(2, 'Cirujano Veterinario', 'Lunes a Viernes 10:00 - 16:00', 'https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg'),
-(3, 'Especialista en Dermatología', 'Martes a Jueves 9:00 - 14:00','https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg');
+(1, 'Generalista', 'Lunes a Viernes 9:00 - 18:00', 'https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg'),
+(2, 'Cirujano', 'Lunes a Viernes 10:00 - 16:00', 'https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg'),
+(3, 'Especialista en Dermatología', 'Martes a Jueves 9:00 - 14:00','https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg'),
+(7, 'Cirujano', 'Lunes a Viernes 10:00 - 16:00', 'https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg'),
+(6, 'Dermatologo', 'Martes a Jueves 9:00 - 14:00','https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg');
 
 INSERT INTO pets_heaven.otorgar_categoria_vet (id_cat,id_per)
 VALUES
 (1,1),
 (2,2),
-(3,3);
+(3,3),
+(2,7),
+(3,6);
 
 INSERT INTO pets_heaven.citas (fec_cit, hor_ini_cit, hor_fin_cit, ser_cit, vet_cit, mas_cit, estado) VALUES
 ('2025-06-16', '09:00:00', '10:00:00', 1, 1, 1, 'REALIZADO'),  -- Lunes, Consulta General
@@ -162,4 +166,7 @@ INSERT INTO pets_heaven.citas (fec_cit, hor_ini_cit, hor_fin_cit, ser_cit, vet_c
 ('2025-06-22', '13:00:00', '14:00:00', 5, 1, 4, 'REALIZADO'),   -- Domingo, Spa y Baño
 ('2025-06-23', '15:30:00', '16:30:00', 1, 1, 4, 'PENDIENTE'),   -- Lunes, Consulta General
 ('2025-06-24', '11:30:00', '12:30:00', 3, 2, 5, 'REALIZADO'),   -- Martes, Cirugía
-('2025-06-25', '17:00:00', '18:00:00', 4, 2, 5, 'PENDIENTE');   -- Miércoles, Emergencias
+('2025-06-25', '17:00:00', '18:00:00', 4, 7, 5, 'PENDIENTE'),   -- Miércoles, Emergencias
+('2025-06-25', '17:00:00', '18:00:00', 5, 6, 5, 'PENDIENTE'),   -- Miércoles, Emergencias
+('2025-06-25', '17:00:00', '18:00:00', 5, 6, 5, 'PENDIENTE'),   -- Miércoles, Emergencias
+('2025-06-25', '17:00:00', '18:00:00', 3, 7, 5, 'PENDIENTE');   -- Miércoles, Emergencias
