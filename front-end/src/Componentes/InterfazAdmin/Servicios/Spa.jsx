@@ -142,8 +142,8 @@ export const SpaMascotas = ({ URL= '' }) => {
     <div className="maincontenedor-spa">
       <NavBarAdmin />
       <div className="principaladminhome">
-      {admin? (<HeaderAdmin />): (<HeaderUser />)}
         <main className="contenedor-spa">
+          {admin? (<HeaderAdmin />): (<HeaderUser />)}
           <div className="contenedorsecundario-spa">
             <header className="encabezado-spa">
               <div className="tituloadminhome">

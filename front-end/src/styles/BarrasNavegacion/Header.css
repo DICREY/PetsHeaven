@@ -1,8 +1,9 @@
 /* Header */
 .cabecera-header {
-  margin-bottom: 1rem;
-  background: var(--white);
-  box-shadow: 0 .1rem .2rem rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   overflow: visible;
   position: relative;
   z-index: 100;

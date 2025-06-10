@@ -239,9 +239,8 @@ return (
     <main className="maincontenedor-cirugia">
     <NavBarAdmin />
       <div className="principaladminhome">
-      {admin? (<HeaderAdmin URL={URL} />): (<HeaderUser />)}
         <div className="contenedor-cirugia">
-        
+        {admin? (<HeaderAdmin />): (<HeaderUser />)}
           <div className="contenedorprincipal-cirugia">
             <header className="encabezado-cirugia">
               <div className="tituloadminhome">
