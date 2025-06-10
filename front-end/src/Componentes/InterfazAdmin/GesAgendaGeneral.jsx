@@ -59,6 +59,7 @@ const [newEvent, setNewEvent] = useState({
 })
 const createModalRef = useRef(null)
 const eventModalRef = useRef(null)
+const [formErrors, setFormErrors] = useState({})
 
 // Cerrar modal al hacer clic fuera
 useEffect(() => {
@@ -141,7 +142,9 @@ const handleEventClick = (info) => {
 
 // Crear nueva cita en el backend
 const handleCreateEvent = async () => {
-    if (!validateEvent(newEvent)) return
+    const errors = validateEventFields(newEvent);
+    setFormErrors(errors);
+    if (Object.keys(errors).length > 0) return;
     const citaData = {
         fec_reg_cit: new Date().toISOString().split('T')[0],
         fec_cit: newEvent.start.split('T')[0],
@@ -164,7 +167,9 @@ const handleCreateEvent = async () => {
 
 // Actualizar cita existente en el backend
 const handleUpdateEvent = async () => {
-    if (!validateEvent(newEvent)) return
+    const errors = validateEventFields(selectedEvent);
+    setFormErrors(errors);
+    if (Object.keys(errors).length > 0) return;
     // Verificar fecha
     const eventDate = new Date(selectedEvent.start)
     const today = new Date()
@@ -294,33 +299,29 @@ const validatePatientName = (input) => {
     return input.replace(/[0-9]/g, '')
 }
 
-const validateEvent = (event) => {
+const validateEventFields = (event) => {
+    const errors = {};
     if (!event.paciente || !event.mas_cit) {
-        setNotify({ title: 'Error', message: 'Selecciona un paciente válido.' })
-        return false
+        errors.paciente = 'Selecciona un paciente válido.';
     }
     if (!event.veterinario) {
-        setNotify({ title: 'Error', message: 'Selecciona un veterinario.' })
-        return false
+        errors.veterinario = 'Selecciona un veterinario.';
     }
     if (!event.start || !event.end) {
-        setNotify({ title: 'Error', message: 'Debes seleccionar fecha y hora.' })
-        return false
+        errors.start = 'Selecciona fecha y hora de inicio.';
+        errors.end = 'Selecciona fecha y hora de fin.';
     }
     if (!event.category) {
-        setNotify({ title: 'Error', message: 'Selecciona el tipo de cita.' })
-        return false
+        errors.category = 'Selecciona el tipo de cita.';
     }
     if (!event.lug_ate_cit || event.lug_ate_cit.trim().length < 3) {
-        setNotify({ title: 'Error', message: 'El lugar de atención es obligatorio.' })
-        return false
+        errors.lug_ate_cit = 'El lugar de atención es obligatorio.';
     }
     if (event.description && event.description.length > 255) {
-        setNotify({ title: 'Error', message: 'La descripción es demasiado larga.' })
-        return false
+        errors.description = 'La descripción es demasiado larga.';
     }
-    return true
-}
+    return errors;
+};
 
 
 return (
@@ -499,6 +500,9 @@ return (
                                                 </div>
                                             )}
                                         </div>
+                                        {formErrors.paciente && (
+                                            <div className="form-error">{formErrors.paciente}</div>
+                                        )}
                                     </div>
                                     <div className="form-group">
                                         <label>Propietario:</label>
@@ -527,6 +531,9 @@ return (
                                         )
                                         )}
                                     </select>
+                                    {formErrors.veterinario && (
+                                        <div className="form-error">{formErrors.veterinario}</div>
+                                    )}
                                     </div>
                                     <div className="form-group">
                                         <label>Teléfono:</label>
@@ -549,6 +556,9 @@ return (
                                             <option value="vacuna">Vacuna</option>
                                             <option value="emergencia">Emergencia</option>
                                         </select>
+                                        {formErrors.category && (
+                                            <div className="form-error">{formErrors.category}</div>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="form-column">
@@ -600,6 +610,9 @@ return (
                                             value={lugar}
                                             onChange={e => setLugar(e.target.value)}
                                         />
+                                        {formErrors.lug_ate_cit && (
+                                            <div className="form-error">{formErrors.lug_ate_cit}</div>
+                                        )}
                                     </div>
                                     <div className="form-group">
                                         <label>Descripción:</label>
@@ -608,6 +621,9 @@ return (
                                             value={newEvent.description}
                                             onChange={handleInputChange}
                                         />
+                                        {formErrors.description && (
+                                            <div className="form-error">{formErrors.description}</div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
