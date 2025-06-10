@@ -13,6 +13,12 @@
   font-family: var(--font-general);
 }
 
+.form-error {
+    color: #e74c3c;
+    font-size: 0.85em;
+    margin-top: 0.25em;
+}
+
 /* Controles del calendario */
 .calendar-controls {
   display: flex;

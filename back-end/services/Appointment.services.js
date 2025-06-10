@@ -81,6 +81,7 @@ class Appointment {
             this.database.conect();
 
             if (this.database) this.database.conection.query(procedure, params, (err, result) => {
+                this.database.conection.end();
                 if (err) rej({ message: err });
                 setTimeout(() => {
                     res({
@@ -90,7 +91,6 @@ class Appointment {
                 }, 500);
             });
 
-            this.database.conection.end();
         });
     }
 

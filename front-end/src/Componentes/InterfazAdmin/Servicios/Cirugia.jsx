@@ -9,7 +9,7 @@ import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
 import { errorStatusHandler } from '../../Varios/Util'
 import { Notification } from '../../Global/Notifys'
 import Footer from '../../Varios/Footer2'
-import { GetData } from "../../Varios/Requests"
+import { GetData, PostData, ModifyData } from "../../Varios/Requests"
 import { AuthContext } from "../../../Contexts/Contexts"
 
 // Style
@@ -99,23 +99,22 @@ export const CirugiasVeterinaria = ({ URL= '' }) => {
       }
       if (data) {
           setCirugias(data);
-          console.log(cirugias)
-      }
-    } catch (err) {
-      setNotify(null)
-      if (err.status) {
+        }
+      } catch (err) {
+        setNotify(null)
+        if (err.status) {
           const message = errorStatusHandler(err.status)
           setNotify({
-              title: 'Error',
-              message: `${message}`,
-              close: setNotify
+            title: 'Error',
+            message: `${message}`,
+            close: setNotify
           })
-      } 
-      else console.error(err)
+        } 
+        else console.error(err)
       // Manejo de error
     }
   }
-
+  
   const manejarCambioFormulario = (e) => {
     const { name, value, type, checked } = e.target
     setNuevaCirugia((prev) => ({
@@ -124,55 +123,119 @@ export const CirugiasVeterinaria = ({ URL= '' }) => {
     }))
   }
   
-  const agregarCirugia = (e) => {
-    e.preventDefault()
-    if (cirugiaEditando) {
-      setCirugias((prev) =>
-        prev.map((cirugia) =>
-          cirugia.id === cirugiaEditando.id ? { ...nuevaCirugia, precio: Number(nuevaCirugia.precio) } : cirugia,
-        ),
-      )
-      setCirugiaEditando(null)
-    } else {
-      setCirugias((prev) => [...prev, { ...nuevaCirugia, precio: Number(nuevaCirugia.precio) }])
+  const agregarCirugia = async (e) => {
+    e.preventDefault();
+    try {
+      // Mapea los campos del formulario a los del backend
+      const nueva = {
+        nom_ser: nuevaCirugia.nombre,
+        des_ser: nuevaCirugia.descripcion,
+        com_cir: nuevaCirugia.complicaciones,
+        tec_des_ser: nuevaCirugia.recomendaciones,
+        pre_ser: Number(nuevaCirugia.precio),
+        sta_ser: nuevaCirugia.disponible ? "DISPONIBLE" : "NO DISPONIBLE",
+        tipo_ser: "Cirugía"
+      };
+      await PostData(`${mainUrl}/register`, nueva);
+      setMostrarFormulario(false);
+      setNuevaCirugia({
+        id: "",
+        nombre: "",
+        descripcion: "",
+        complicaciones: "",
+        recomendaciones: "",
+        precio: "",
+        disponible: true,
+      });
+      fetchCirugias();
+    } catch (err) {
+      setNotify({
+        title: 'Error',
+        message: 'No se pudo agregar la cirugía',
+        close: setNotify
+      });
     }
-    setNuevaCirugia({
-      id: "",
-      nombre: "",
-      descripcion: "",
-      complicaciones: "",
-      recomendaciones: "",
-      precio: "",
-      disponible: true,
-    })
-    setMostrarFormulario(false)
-  }
+  };
+
+  const actualizarCirugia = async (e) => {
+    e.preventDefault();
+    try {
+      const actualizada = {
+        id_ser: cirugiaEditando.id_ser, // Usa el id del backend
+        nom_ser: nuevaCirugia.nombre,
+        des_ser: nuevaCirugia.descripcion,
+        com_cir: nuevaCirugia.complicaciones,
+        tec_des_ser: nuevaCirugia.recomendaciones,
+        pre_ser: Number(nuevaCirugia.precio),
+        sta_ser: nuevaCirugia.disponible ? "DISPONIBLE" : "NO DISPONIBLE",
+        tipo_ser: "Cirugía"
+      };
+      await ModifyData(`${mainUrl}/modify`, actualizada);
+      setMostrarFormulario(false);
+      setCirugiaEditando(null);
+      setNuevaCirugia({
+        id: "",
+        nombre: "",
+        descripcion: "",
+        complicaciones: "",
+        recomendaciones: "",
+        precio: "",
+        disponible: true,
+      });
+      fetchCirugias();
+    } catch (err) {
+      setNotify({
+        title: 'Error',
+        message: 'No se pudo actualizar la cirugía',
+        close: setNotify
+      });
+    }
+  };
 
   const editarCirugia = (cirugia) => {
-    setNuevaCirugia({ ...cirugia, precio: cirugia.precio.toString() })
-    setCirugiaEditando(cirugia)
-    setMostrarFormulario(true)
-  }
-
-  const eliminarCirugia = (id) => {
-    setCirugias((prev) => prev.filter((cirugia) => cirugia.id !== id))
-  }
-
-  const cancelarFormulario = () => {
-    setMostrarFormulario(false)
-    setCirugiaEditando(null)
     setNuevaCirugia({
-      id: "",
-      nombre: "",
-      descripcion: "",
-      complicaciones: "",
-      recomendaciones: "",
-      precio: "",
-      disponible: true,
-    })
-  }
+      id: cirugia.id_ser || "",
+      nombre: cirugia.nom_ser || "",
+      descripcion: cirugia.des_ser || "",
+      complicaciones: cirugia.com_cir || "",
+      recomendaciones: cirugia.tec_des_ser || "",
+      precio: cirugia.pre_ser ? cirugia.pre_ser.toString() : "",
+      disponible: cirugia.sta_ser === "DISPONIBLE"
+    });
+    setCirugiaEditando(cirugia);
+    setMostrarFormulario(true);
+  };
 
-  return (
+  const eliminarCirugia = async (id_ser) => {
+    if (!window.confirm("¿Seguro que deseas eliminar esta cirugía?")) return;
+    try {
+      await ModifyData(`${mainUrl}/delete`, { id_ser });
+      fetchCirugias();
+    } catch (err) {
+      setNotify({
+        title: 'Error',
+        message: 'No se pudo eliminar la cirugía',
+        close: setNotify
+      });
+    }
+  };
+
+const cancelarFormulario = () => {
+  setMostrarFormulario(false)
+  setCirugiaEditando(null)
+  setNuevaCirugia({
+    id: "",
+    nombre: "",
+    descripcion: "",
+    complicaciones: "",
+    recomendaciones: "",
+    precio: "",
+    disponible: true,
+  })
+}
+
+console.log(cirugias)
+return (
     <main className="maincontenedor-cirugia">
     <NavBarAdmin />
       <div className="principaladminhome">
@@ -341,7 +404,7 @@ export const CirugiasVeterinaria = ({ URL= '' }) => {
                           <strong>
                             <AlertCircle size={14} className="icono-detalle-cirugia" aria-hidden="true" /> Complicaciones:
                           </strong>
-                          <p>{cirugia.com_ser || "No especificadas"}</p>
+                          <p>{cirugia.com_cir || "No especificadas"}</p>
                         </div>
                         <div className="detalle-cirugia">
                           <strong>

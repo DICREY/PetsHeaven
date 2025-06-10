@@ -1,4 +1,5 @@
--- Active: 1745625018911@@localhost@3306@pets_heaven
+-- Active: 1747352860830@@127.0.0.1@3306@pets_heaven
+
 CREATE PROCEDURE pets_heaven.SearchAllAppointments()
 BEGIN 
     SELECT 
@@ -15,9 +16,12 @@ BEGIN
         m.nom_mas,
         m.esp_mas,
         m.fot_mas,
-        p.nom_per,
-        p.ape_per,
-        p.cel_per,
+        p_vet.nom_per AS vet_nom_per,
+        p_vet.ape_per AS vet_ape_per,
+        p_vet.cel_per AS vet_cel_per,
+        p_prop.nom_per AS prop_nom_per,
+        p_prop.ape_per AS prop_ape_per,
+        p_prop.cel_per AS prop_cel_per,
         c.estado
     FROM 
         citas c
@@ -28,7 +32,9 @@ BEGIN
     JOIN 
         categorias_ser cs ON cs.id_cat = s.cat_ser
     JOIN 
-        personas p ON p.id_per = c.vet_cit
+        personas p_vet ON p_vet.id_per = c.vet_cit
+    JOIN 
+        personas p_prop ON p_prop.id_per = m.id_pro_mas
     WHERE
         c.estado != 'CANCELADO'
     ORDER BY c.fec_cit
@@ -76,7 +82,6 @@ BEGIN
     LIMIT 50;
 END //
 
-
 CREATE PROCEDURE pets_heaven.RegistAppointment(
     IN p_reg_date DATE,
     IN p_date DATE,
@@ -102,11 +107,22 @@ BEGIN
     SET autocommit = 0;
     START TRANSACTION;
 
-    SELECT id_cat INTO p_id_ser FROM categorias_ser WHERE nom_cat LIKE p_ser;
+    -- Añadir LIMIT 1 a cada consulta
+    SELECT id_cat INTO p_id_ser FROM categorias_ser WHERE nom_cat LIKE CONCAT('%', p_ser, '%') LIMIT 1;
+    IF p_id_ser IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Servicio no encontrado';
+    END IF;
 
-    SELECT id_per INTO p_id_vet FROM personas WHERE doc_per LIKE p_vet;
+    -- Para documentos usar igualdad exacta (no LIKE)
+    SELECT id_per INTO p_id_vet FROM personas WHERE doc_per = p_vet LIMIT 1;
+    IF p_id_vet IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Veterinario no encontrado';
+    END IF;
 
-    SELECT id_mas INTO p_id_mas FROM mascotas WHERE nom_mas LIKE p_mas;
+    SELECT id_mas INTO p_id_mas FROM mascotas WHERE nom_mas LIKE CONCAT('%', p_mas, '%') LIMIT 1;
+    IF p_id_mas IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Mascota no encontrada';
+    END IF;
 
     INSERT INTO pets_heaven.citas (
         fec_reg_cit, fec_cit, hor_ini_cit, hor_fin_cit, lug_ate_cit, ser_cit, vet_cit, mas_cit, estado
