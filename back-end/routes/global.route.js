@@ -43,6 +43,8 @@ Route.post('/register', async (req,res) => {
     const body = req.body
     
     try {
+        if (!body) return res.status(400).json({ message: "Petición no valida"})
+
         // Verifiy if exist
         const find = await user.findBy(toString(body.numeroDocumento))
         if (find.result[0][0].nom_per) res.status(302).json({ message: "Usuario ya existe" })
@@ -61,9 +63,12 @@ Route.post('/login', limiterLog, async (req,res) => {
     const global = new Global(firstData)
     
     try {
+        if (!firstData || !secondData) return res.status(400).json({ message: "Petición no valida"})
+
         // Search in database
         let log = await global.login()
         let user = await log.result[0][0]
+        
 
         if(!user) return res.status(404).json({ message: 'Usuario no encontrado' })
         // Verify

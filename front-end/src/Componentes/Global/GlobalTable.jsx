@@ -173,7 +173,7 @@ export class GlobalTable extends Component {
               </thead>
               <tbody>
                 {info[page-1]?.map((item,index) => (
-                  <tr key={index} onClick={() => this.handleClick(item)} style={{ cursor: 'pointer'}}>
+                  <tr key={index} onClick={() => this.onWatch(item)} style={{ cursor: 'pointer'}}>
                     {headersValues?.map((header, index) => (
                       <td key={index + 170}>
                         {header === listHeader && item[listHeader]? 
@@ -209,8 +209,10 @@ export class GlobalTable extends Component {
                       <button 
                         onClick={() => this.onWatch(item)} 
                         aria-label={`Ver detalles de ${item.nom_per}`}
+                        className='EditBtn'
                       >
-                        <FileText className='Icon' aria-hidden='true' />
+                        <FileText className="icon" aria-hidden='true' />
+                        Descripción
                       </button>  
                     </td>
                   </tr>

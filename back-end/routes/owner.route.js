@@ -44,11 +44,14 @@ Route.put('/modify', ValidatorRol("administrador"), async (req,res) => {
     const { body } = req
     const saltRounds = 15
         
-    // Verifiy if exist
-    const find = await owner.findBy(toString(body.numeroDocumento))
-    if (!find.result) res.status(404).json({ message: "Usuario no encontrado" })
-
+    
     try {
+        if (!body) return res.status(400).json({ message: "Petición no valida"})
+        
+        // Verifiy if exist
+        const find = await owner.findBy(toString(body.numeroDocumento))
+        if (!find.result) res.status(404).json({ message: "Usuario no encontrado" })
+
         const modified = await owner.modify({hash_pass: await hash(body.password,saltRounds), ...body})
         if(modified.modified) return res.status(200).json(modified)
     } catch (err) {

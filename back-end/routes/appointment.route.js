@@ -31,6 +31,8 @@ Route.post('/by', ValidatorRol("veterinario"), async (req,res) => {
     const { by } = req.body
 
     try {
+        if (!by) return res.status(400).json({ message: "Petición no valida"})
+
         const search = await appoin.findAppointmentsByUser(by)
 
         if (!search.result) res.status(404).json({ message: "Citas no encontradas"})
@@ -48,9 +50,13 @@ Route.post('/register', ValidatorRol("veterinario"), async (req, res) => {
     console.log(data)
     
     try {
+        if (!data) return res.status(400).json({ message: "Petición no valida"})
+
         const created = await appoin.registAppointment(data)
         if (created.result) return res.status(201).json(created)
+
         res.status(500).json({ message: "No se pudo registrar la cita" })
+
     } catch (err) {
         console.log(err)
         if (err.status) return res.status(err.status).json({ message: err.message })
@@ -63,8 +69,11 @@ Route.put('/modify', ValidatorRol("veterinario"), async (req, res) => {
     const data = req.body
 
     try {
+        if (!data) return res.status(400).json({ message: "Petición no valida"})
+
         const updated = await appoin.modifyAppointment(data)
         if (updated.result) return res.status(200).json(updated)
+
         res.status(500).json({ message: "No se pudo modificar la cita" })
     } catch (err) {
         if (err.status) return res.status(err.status).json({ message: err.message })
@@ -77,8 +86,11 @@ Route.put('/cancel', ValidatorRol("veterinario"), async (req, res) => {
     const data = req.body
 
     try {
+        if (!data) return res.status(400).json({ message: "Petición no valida"})
+
         const cancelled = await appoin.disableAppointment(data)
         if (cancelled.result) return res.status(200).json(cancelled)
+            
         res.status(500).json({ message: "No se pudo cancelar la cita" })
     } catch (err) {
         if (err.status) return res.status(err.status).json({ message: err.message })

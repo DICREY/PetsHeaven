@@ -67,7 +67,7 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
                   <p>{stat.title}</p>
                 </div>
                 <header className="cabecera-estadistica-admin">
-                  <stat.icon size={24} aria-hidden="true" />
+                  <stat.icon className="icon" aria-hidden="true" />
                   <h2>{stat.value}</h2>
                 </header>
               </article>
