@@ -1,6 +1,6 @@
 // Librarys
 import { useState, useRef, useEffect, useContext, useCallback } from "react";
-import { Trash2, PenSquare, Plus, Filter, AlertCircle, FileText,Activity } from "lucide-react"
+import { Trash2, PenSquare, Plus, Filter, AlertCircle, FileText, Activity } from "lucide-react"
 
 // Imports
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
@@ -15,7 +15,7 @@ import { AuthContext } from "../../../Contexts/Contexts"
 // Style
 import "../../../styles/InterfazAdmin/Servicios/Cirugia.css"
 
-export const CirugiasVeterinaria = ({ URL= '' }) => {
+export const CirugiasVeterinaria = ({ URL = '' }) => {
   // Dynamic Vars 
   const [notify, setNotify] = useState(null)
 
@@ -53,22 +53,22 @@ export const CirugiasVeterinaria = ({ URL= '' }) => {
     resultadoEsperado: "",
     observaciones: ""
   });
-  
+
   const fetchCirugias = useCallback(async () => {
     if (didFetch.current) return;
     didFetch.current = true;
-    
+
     setNotify({
       title: 'Cargando',
       message: 'Cargando cirugias, por favor espere...',
       load: 1
     });
-    
+
     try {
       const byValue = "Cirugía";
       let data = await GetData(`${mainUrl}/all/${encodeURIComponent(byValue)}`);
       setNotify(null);
-      
+
       if (data && !Array.isArray(data)) {
         data = [data];
       }
@@ -89,7 +89,7 @@ export const CirugiasVeterinaria = ({ URL= '' }) => {
       }
     }
   }, [mainUrl]);
-  
+
   // Functions    
   useEffect(() => {
     fetchCirugias();
@@ -103,7 +103,7 @@ export const CirugiasVeterinaria = ({ URL= '' }) => {
       [name]: type === "checkbox" ? checked : value,
     };
   }, []);
-    
+
   const agregarCirugia = useCallback(async (e) => {
     e.preventDefault();
     try {
@@ -120,7 +120,7 @@ export const CirugiasVeterinaria = ({ URL= '' }) => {
         com_cir: formRef.current.complicaciones,
         obv_cir: formRef.current.observaciones
       };
-      
+
       await PostData(`${mainUrl}/register`, nueva);
       setMostrarFormulario(false);
       resetForm();
@@ -147,7 +147,7 @@ export const CirugiasVeterinaria = ({ URL= '' }) => {
         sta_ser: formRef.current.disponible ? "DISPONIBLE" : "NO DISPONIBLE",
         tipo_ser: "Cirugía"
       };
-      
+
       await ModifyData(`${mainUrl}/modify`, actualizada);
       setMostrarFormulario(false);
       setCirugiaEditando(null);
@@ -220,17 +220,16 @@ export const CirugiasVeterinaria = ({ URL= '' }) => {
   }, [resetForm]);
 
 
-console.log(cirugias)
-return (
+  return (
     <main className="maincontenedor-cirugia">
-    <NavBarAdmin />
+      <NavBarAdmin />
       <div className="principaladminhome">
         <div className="contenedor-cirugia">
-        {admin? (<HeaderAdmin />): (<HeaderUser />)}
+          {admin ? (<HeaderAdmin />) : (<HeaderUser />)}
           <div className="contenedorprincipal-cirugia">
             <header className="encabezado-cirugia">
               <div className="tituloadminhome">
-                <Activity className="iconoadminhome" aria-hidden='true'/>
+                <Activity className="iconoadminhome" aria-hidden='true' />
                 <h1 className="textoadminhome">Servicios de Cirugía</h1>
               </div>
             </header>
