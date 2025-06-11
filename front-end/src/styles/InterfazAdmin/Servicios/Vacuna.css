@@ -1080,3 +1080,19 @@ textarea:focus-visible {
     font-size: 1.25rem;
   }
 }
+
+@media (max-width: 480px) {
+  .detalleVacunaIconoPrincipal {
+    width: 48px;
+    height: 48px;
+  }
+
+  .iconoAnimalDetalle {
+    width: 24px;
+    height: 24px;
+  }
+
+  .detalleVacunaTitulo {
+    font-size: 1.25rem;
+  }
+}
