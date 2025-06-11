@@ -1,4 +1,8 @@
+<<<<<<< HEAD:database/proc/user_proc.sql
+-- Active: 1746041048559@@127.0.0.1@3306@pets_heaven
+=======
 -- Active: 1746046445434@@127.0.0.1@3306@pets_heaven
+>>>>>>> 4419bce04118912f0021e7db244e266e7ab3d0a9:database/proc/people_proc.sql
 CREATE PROCEDURE pets_heaven.RegistPeoples(
     IN p_nom_per VARCHAR(100),
     IN p_ape_per VARCHAR(100),
