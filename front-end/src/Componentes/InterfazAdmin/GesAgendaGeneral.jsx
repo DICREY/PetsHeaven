@@ -100,7 +100,7 @@ const fetchPacientes = async () => {
 }
 const fetchVet = async () => {
     await ReqFunction(
-        `${URL}/staff/all`,
+        `${URL}/staff/all/vet`,
         GetData,
         setNotify,
         setAllVet

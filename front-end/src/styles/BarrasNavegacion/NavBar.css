@@ -1,7 +1,4 @@
 :root {
-  --blanco: #ffffff;
-  --azul-turquesa: #00bcd4;
-  --verde-aguamarina: #009688;
   --gris-texto: #333333;
   --gris-claro: rgba(0, 0, 0, 0.05);
   --borde-claro: rgba(0, 0, 0, 0.1);
@@ -12,8 +9,8 @@
   position: sticky;
   top: 0;
   width: 100%;
-  background-color: var(--blanco);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: var(--white);
+  box-shadow: 0 2px .6rem rgba(0, 0, 0, 0.1);
   z-index: 1000;
 }
 
@@ -47,9 +44,8 @@
 .enlace-nav {
   color: var(--gris-texto);
   transition: color 0.3s ease;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 1.1rem;
   padding: 0.5rem 0.75rem;
   border-radius: 0.25rem;
 }
@@ -99,21 +95,20 @@
 .boton-registro-movil-nav {
   display: inline-block;
   text-align: center;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 500;
   border-radius: 0.375rem;
   transition: all 0.3s ease;
   cursor: pointer;
   text-decoration: none;
   white-space: nowrap;
-  min-width: 110px;
+  min-width: 1.6rem;
   font-size: 1rem;
   line-height: 1.5;
 }
 
 .boton-login-nav {
   background-color: var(--azul-turquesa);
-  color: var(--blanco);
+  color: var(--white);
   padding: 0.5rem 1.25rem;
   border: none;
 }
@@ -138,7 +133,7 @@
 /* ===== MENÚ MÓVIL ===== */
 .menu-movil {
   display: none;
-  background-color: var(--blanco);
+  background-color: var(--white);
   border-top: 1px solid var(--borde-claro);
 }
 
@@ -178,7 +173,7 @@
 
 .boton-login-movil-nav {
   background-color: var(--azul-turquesa);
-  color: var(--blanco);
+  color: var(--white);
   padding: 0.75rem;
   width: 100%;
   border: none;
@@ -202,121 +197,18 @@
   color: var(--verde-aguamarina);
 }
 
-/* ===== RESPONSIVE: MÓVIL PEQUEÑO (< 480px) ===== */
-@media (max-width: 479px) {
-  .contenedor-header {
-    padding: 0.5rem;
-  }
-
-  .logo-container {
-    width: 40vw;
-  }
-
-  .logo-img {
-    max-width: 40vw;
-    max-height: 8vh;
-  }
-
-  .enlace-nav-movil {
-    font-size: 0.95rem;
-    padding: 0.6rem 0;
-  }
-
-  .boton-login-movil-nav,
-  .boton-registro-movil-nav {
-    padding: 0.7rem;
-    font-size: 0.95rem;
-    min-width: 100px;
-  }
-}
-
-/* ===== RESPONSIVE: MÓVIL (480px - 767px) ===== */
-@media (min-width: 480px) and (max-width: 767px) {
-  .logo-container {
-    width: 30vw;
-  }
-
-  .logo-img {
-    max-width: 30vw;
-    max-height: 9vh;
-  }
-
-  .enlace-nav-movil {
-    padding: 0.7rem 0;
-  }
-
-  .nav-movil {
-    padding: 0.75rem 1.5rem;
-  }
-
-  .boton-login-movil-nav,
-  .boton-registro-movil-nav {
-    min-width: 120px;
-  }
-}
-
 /* ===== RESPONSIVE: TABLET (768px - 1023px) ===== */
 @media (min-width: 768px) and (max-width: 1023px) {
-  .contenedor-header {
-    padding: 0.75rem 1.5rem;
-  }
-
-  .logo-container {
-    width: 20vw;
-  }
-
-  .logo-img {
-    max-width: 20vw;
-    max-height: 10vh;
-  }
-
-  .nav-movil {
-    padding: 1rem 2rem;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  .enlace-nav-movil {
-    font-size: 1.1rem;
-    padding: 0.85rem 0;
-  }
-
   .botones-movil {
     flex-direction: row;
-    gap: 1rem;
   }
 
-  .boton-login-movil-nav,
-  .boton-registro-movil-nav {
-    width: 50%;
-    min-width: 130px;
-  }
 }
 
 /* ===== RESPONSIVE: ESCRITORIO (>= 1024px) ===== */
 @media (min-width: 1024px) {
-  .contenedor-header {
-    padding: 0.75rem 2rem;
-    max-width: 1200px;
-  }
-
-  .logo-container {
-    width: 15vw;
-    max-width: 180px;
-  }
-
-  .logo-img {
-    max-width: 15vw;
-    max-height: 7vh;
-  }
-
   .nav-escritorio {
     display: flex;
-    gap: 1rem;
-  }
-
-  .enlace-nav {
-    font-size: 1rem;
   }
 
   .contenedor-boton-menu {
@@ -329,59 +221,8 @@
 
   .botones-escritorio {
     display: flex;
-    gap: 1rem;
   }
 
-  .boton-login-nav,
-  .boton-registro-nav {
-    min-width: 120px;
-    padding: 0.6rem 1.25rem;
-  }
-}
-
-/* ===== RESPONSIVE: ESCRITORIO MEDIANO (1280px - 1535px) ===== */
-@media (min-width: 1280px) {
-  .contenedor-header {
-    max-width: 1400px;
-  }
-
-  .nav-escritorio {
-    gap: 1.5rem;
-  }
-
-  .enlace-nav {
-    font-size: 1.1rem;
-  }
-
-  .boton-login-nav,
-  .boton-registro-nav {
-    padding: 0.6rem 1.5rem;
-    font-size: 1.05rem;
-    min-width: 130px;
-  }
-}
-
-/* ===== RESPONSIVE: ESCRITORIO GRANDE (>= 1536px) ===== */
-@media (min-width: 1536px) {
-  .contenedor-header {
-    max-width: 1600px;
-    padding: 1rem 2rem;
-  }
-
-  .nav-escritorio {
-    gap: 2rem;
-  }
-
-  .enlace-nav {
-    font-size: 1.15rem;
-  }
-
-  .boton-login-nav,
-  .boton-registro-nav {
-    padding: 0.7rem 1.75rem;
-    font-size: 1.1rem;
-    min-width: 140px;
-  }
 }
 
 /* ===== MEDIA QUERIES PARA TABLETS CON PANTALLA TÁCTIL ===== */
@@ -397,51 +238,5 @@
 
   .menu-movil.activo {
     display: block;
-  }
-}
-
-/* ===== MONITORES PEQUEÑOS (1024px - 1200px) ===== */
-@media (min-width: 1024px) and (max-width: 1200px) {
-  .botones-escritorio {
-    gap: 0.75rem;
-  }
-
-  .boton-login-nav,
-  .boton-registro-nav {
-    padding: 0.6rem 1rem;
-    min-width: 110px;
-    font-size: 0.95rem;
-  }
-
-  .nav-escritorio {
-    gap: 0.5rem;
-  }
-
-  .enlace-nav {
-    padding: 0.5rem 0.5rem;
-    font-size: 0.95rem;
-  }
-}
-
-/* ===== MONITORES MUY PEQUEÑOS (1024px - 1100px) ===== */
-@media (min-width: 1024px) and (max-width: 1100px) {
-  .botones-escritorio {
-    gap: 0.5rem;
-  }
-
-  .boton-login-nav,
-  .boton-registro-nav {
-    padding: 0.5rem 0.75rem;
-    min-width: 100px;
-    font-size: 0.9rem;
-  }
-
-  .nav-escritorio {
-    gap: 0.25rem;
-  }
-
-  .enlace-nav {
-    padding: 0.4rem 0.4rem;
-    font-size: 0.9rem;
   }
 }

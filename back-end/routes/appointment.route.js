@@ -47,7 +47,6 @@ Route.post('/by', ValidatorRol("veterinario"), async (req,res) => {
 Route.post('/register', ValidatorRol("veterinario"), async (req, res) => {
     // Vars 
     const data = req.body
-    console.log(data)
     
     try {
         if (!data) return res.status(400).json({ message: "Petición no valida"})
@@ -58,7 +57,6 @@ Route.post('/register', ValidatorRol("veterinario"), async (req, res) => {
         res.status(500).json({ message: "No se pudo registrar la cita" })
 
     } catch (err) {
-        console.log(err)
         if (err.status) return res.status(err.status).json({ message: err.message })
         res.status(500).json({ message: err })
     }
@@ -90,7 +88,7 @@ Route.put('/cancel', ValidatorRol("veterinario"), async (req, res) => {
 
         const cancelled = await appoin.disableAppointment(data)
         if (cancelled.result) return res.status(200).json(cancelled)
-            
+
         res.status(500).json({ message: "No se pudo cancelar la cita" })
     } catch (err) {
         if (err.status) return res.status(err.status).json({ message: err.message })

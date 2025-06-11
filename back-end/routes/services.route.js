@@ -28,6 +28,8 @@ Route.get('/all', ValidatorRol("usuario"), async (req,res) => {
 Route.get('/all/:by', ValidatorRol("usuario"), async (req,res) => {
     const { by } = req.params
     try {
+        if (!by) return res.status(400).json({ message: "Petición no valida"})
+
         const serv = await services.findAllBy(by)
         if (!serv.result[0][0]) return res.status(404).json({ message: "Servicios no encontrados" })
 
@@ -39,8 +41,11 @@ Route.get('/all/:by', ValidatorRol("usuario"), async (req,res) => {
 })
 
 Route.post('/register', ValidatorRol("administrador"), async (req, res) => {
+    const data = req.body
     try {
-        const result = await services.registerCirugia(req.body);
+        if (!data) return res.status(400).json({ message: "Petición no valida"})
+
+        const result = await services.registerCirugia(data);
         res.status(201).json({ message: "Cirugía registrada correctamente", result });
     } catch (err) {
         if (err.status) return res.status(err.status).json({ message: err.message });

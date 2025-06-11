@@ -31,6 +31,8 @@ Route.get('/all:by', ValidatorRol("administrador"), async (req,res) => {
     const by = req.params.by
     
     try {
+        if (!by) return res.status(400).json({ message: "Petición no valida"})
+            
         // Verifiy if exists
         const search = await people.findAllBy(by)
         if (!search.result) res.status(404).json({ message: "Usuarios no encontrados"})
@@ -47,6 +49,8 @@ Route.get('/by:by', ValidatorRol("administrador"), async (req,res) => {
     const by = req.params.by
     
     try {
+        if (!by) return res.status(400).json({ message: "Petición no valida"})
+
         // Verifiy if exist
         const search = await people.findBy(by)
         if (!search.result) res.status(404).json({ message: "Usuario no encontrado" })
@@ -63,6 +67,7 @@ Route.post('/register', async (req,res) => {
     const body = req.body
     
     try {
+        if (!body) return res.status(400).json({ message: "Petición no valida"})
         // Verifiy if exist
         const find = await people.findBy(toString(body.numeroDocumento))
         if (find.result[0][0].nom_per) res.status(302).json({ message: "Usuario ya existe" })
@@ -84,6 +89,8 @@ Route.put('/modify', ValidatorRol("administrador"), async (req,res) => {
     console.log(body)
         
     try {
+        if (!body) return res.status(400).json({ message: "Petición no valida"})
+
         // Verifiy if exist
         const find = await people.findBy(toString(body.numeroDocumento))
         if (!find.result) res.status(404).json({ message: "Usuario no encontrado" })
@@ -100,6 +107,7 @@ Route.delete('/delete', ValidatorRol("administrador"), async (req,res) => {
     const { body } = req
         
     try {
+        if (!body) return res.status(400).json({ message: "Petición no valida"})
         // Verifiy if exist
         const find = await people.findBy(toString(body.doc))
         if (!find.result) res.status(404).json({ message: "Usuario no encontrado" })

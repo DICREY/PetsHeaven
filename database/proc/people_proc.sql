@@ -168,20 +168,20 @@ BEGIN
     START TRANSACTION;
 
     UPDATE 
-        personas u
+        personas p
     SET
-        u.nom_per = p_nom_per,
-        u.ape_per = p_ape_per,
-        u.fec_nac_per = p_fec_nac_per,
-        u.tip_doc_per = p_tip_doc_per,
-        u.dir_per = p_dir_per,
-        u.cel_per = p_cel_per,
-        u.cel2_per = p_cel2_per,
-        u.email_per = p_email_per,
-        u.cont_per = p_cont_per,
-        u.gen_per = p_gen_per
+        p.nom_per = p_nom_per,
+        p.ape_per = p_ape_per,
+        p.fec_nac_per = p_fec_nac_per,
+        p.tip_doc_per = p_tip_doc_per,
+        p.dir_per = p_dir_per,
+        p.cel_per = p_cel_per,
+        p.cel2_per = p_cel2_per,
+        p.email_per = p_email_per,
+        p.cont_per = p_cont_per,
+        p.gen_per = p_gen_per
     WHERE
-        u.doc_per = p_doc_per;
+        p.doc_per = p_doc_per;
 
     COMMIT;
     SET autocommit = 1;
@@ -189,55 +189,85 @@ END //
 CREATE PROCEDURE pets_heaven.SearchPeoples()
 BEGIN
     SELECT
-        u.nom_per,
-        u.ape_per,
-        u.fec_nac_per,
-        u.tip_doc_per,
-        u.doc_per,
-        u.dir_per,
-        u.cel_per,
-        u.cel2_per,
-        u.email_per,
-        u.cont_per,
-        u.gen_per,
-        u.fec_cre_per,
+        p.nom_per,
+        p.ape_per,
+        p.fec_nac_per,
+        p.tip_doc_per,
+        p.doc_per,
+        p.dir_per,
+        p.cel_per,
+        p.cel2_per,
+        p.email_per,
+        p.cont_per,
+        p.gen_per,
+        p.fec_cre_per,
         GROUP_CONCAT(r.nom_rol SEPARATOR ', ') AS roles
     FROM 
-        personas u
+        personas p
     JOIN
-        otorgar_roles otr ON otr.id_per = u.id_per
+        otorgar_roles otr ON otr.id_per = p.id_per
     JOIN
         roles r ON otr.id_rol = r.id_rol
     WHERE
-        u.estado = 1
+        p.estado = 1
     GROUP BY 
-        u.id_per
+        p.id_per
+    LIMIT 100;
+END //
+CREATE PROCEDURE pets_heaven.SearchPeoplesVet()
+BEGIN
+    SELECT
+        p.nom_per,
+        p.ape_per,
+        p.fec_nac_per,
+        p.tip_doc_per,
+        p.doc_per,
+        p.dir_per,
+        p.cel_per,
+        p.cel2_per,
+        p.email_per,
+        p.cont_per,
+        p.gen_per,
+        p.fec_cre_per,
+        GROUP_CONCAT(r.nom_rol SEPARATOR ', ') AS roles
+    FROM 
+        veterinarios v
+    JOIN
+        otorgar_roles otr ON otr.id_per = v.id_vet
+    JOIN
+        roles r ON otr.id_rol = r.id_rol
+    JOIN
+        personas p ON v.id_vet = p.id_per
+    WHERE
+        p.estado = 1
+    GROUP BY 
+        p.id_per
     LIMIT 100;
 END //
 CREATE PROCEDURE pets_heaven.SearchAllPeoples()
 BEGIN
     SELECT
-        u.nom_per,
-        u.ape_per,
-        u.fec_nac_per,
-        u.tip_doc_per,
-        u.doc_per,
-        u.dir_per,
-        u.cel_per,
-        u.cel2_per,
-        u.email_per,
-        u.cont_per,
-        u.gen_per,
-        u.fec_cre_per,
+        p.nom_per,
+        p.ape_per,
+        p.fec_nac_per,
+        p.tip_doc_per,
+        p.doc_per,
+        p.dir_per,
+        p.cel_per,
+        p.cel2_per,
+        p.email_per,
+        p.cont_per,
+        p.gen_per,
+        p.fec_cre_per,
         GROUP_CONCAT(r.nom_rol SEPARATOR ', ') AS roles
     FROM 
-        personas u
+        personas p
     JOIN
-        otorgar_roles otr ON otr.id_per = u.id_per
+        otorgar_roles otr ON otr.id_per = p.id_per
     JOIN
         roles r ON otr.id_rol = r.id_rol
     GROUP BY 
-        u.id_per
+        p.id_per
     LIMIT 100;
 END //
 
@@ -246,33 +276,33 @@ CREATE PROCEDURE pets_heaven.SearchPeopleBy(
 )
 BEGIN
     SELECT
-        u.nom_per,
-        u.ape_per,
-        u.fec_nac_per,
-        u.tip_doc_per,
-        u.doc_per,
-        u.dir_per,
-        u.cel_per,
-        u.cel2_per,
-        u.email_per,
-        u.cont_per,
-        u.gen_per,
-        u.fec_cre_per,
+        p.nom_per,
+        p.ape_per,
+        p.fec_nac_per,
+        p.tip_doc_per,
+        p.doc_per,
+        p.dir_per,
+        p.cel_per,
+        p.cel2_per,
+        p.email_per,
+        p.cont_per,
+        p.gen_per,
+        p.fec_cre_per,
         GROUP_CONCAT(r.nom_rol SEPARATOR ', ') AS roles
     FROM 
-        personas u
+        personas p
     JOIN
-        otorgar_roles otr ON otr.id_per = u.id_per
+        otorgar_roles otr ON otr.id_per = p.id_per
     JOIN
         roles r ON otr.id_rol = r.id_rol
     WHERE
-        u.estado = 1
+        p.estado = 1
         AND (
-            u.doc_per = p_by
-            OR u.email_per LIKE p_by
+            p.doc_per = p_by
+            OR p.email_per LIKE p_by
         )
     ORDER BY
-        u.id_per
+        p.id_per
     LIMIT 50;
 END //
 
@@ -281,39 +311,39 @@ CREATE PROCEDURE pets_heaven.SearchPeoplesBy(
 )
 BEGIN
     SELECT
-        u.nom_per,
-        u.ape_per,
-        u.fec_nac_per,
-        u.tip_doc_per,
-        u.doc_per,
-        u.dir_per,
-        u.cel_per,
-        u.cel2_per,
-        u.email_per,
-        u.cont_per,
-        u.gen_per,
-        u.fec_cre_per,
+        p.nom_per,
+        p.ape_per,
+        p.fec_nac_per,
+        p.tip_doc_per,
+        p.doc_per,
+        p.dir_per,
+        p.cel_per,
+        p.cel2_per,
+        p.email_per,
+        p.cont_per,
+        p.gen_per,
+        p.fec_cre_per,
         GROUP_CONCAT(r.nom_rol SEPARATOR ', ') AS roles
     FROM 
-        personas u
+        personas p
     JOIN
-        otorgar_roles otr ON otr.id_per = u.id_per
+        otorgar_roles otr ON otr.id_per = p.id_per
     JOIN
         roles r ON otr.id_rol = r.id_rol
     WHERE
-        u.estado = 1
+        p.estado = 1
         AND (
             r.nom_rol = p_by
-            OR u.nom_per LIKE CONCAT('%',p_by,'%')
-            OR u.ape_per LIKE CONCAT('%',p_by,'%')
-            OR u.doc_per LIKE CONCAT('%',p_by,'%')
-            OR u.email_per LIKE CONCAT('%',p_by,'%')
-            OR u.gen_per LIKE CONCAT('%',p_by,'%')
-            OR u.cel_per LIKE CONCAT('%',p_by,'%')
-            OR u.tip_doc_per LIKE CONCAT('%',p_by,'%')
+            OR p.nom_per LIKE CONCAT('%',p_by,'%')
+            OR p.ape_per LIKE CONCAT('%',p_by,'%')
+            OR p.doc_per LIKE CONCAT('%',p_by,'%')
+            OR p.email_per LIKE CONCAT('%',p_by,'%')
+            OR p.gen_per LIKE CONCAT('%',p_by,'%')
+            OR p.cel_per LIKE CONCAT('%',p_by,'%')
+            OR p.tip_doc_per LIKE CONCAT('%',p_by,'%')
         )
     GROUP BY 
-        u.id_per
+        p.id_per
     LIMIT 100;
 END //
 
@@ -332,17 +362,20 @@ BEGIN
     START TRANSACTION;
 
     UPDATE
-        personas u
+        personas p
     SET 
-        u.estado = 0
+        p.estado = 0
     WHERE
-        u.estado = 1
+        p.estado = 1
         AND (
-            u.doc_per LIKE p_by
-            OR u.email_per LIKE p_by
+            p.doc_per LIKE p_by
+            OR p.email_per LIKE p_by
         );
 
     COMMIT;
 
     SET autocommit = 1;
 END //
+
+/* CALL `SearchPeoplesVet`();
+DROP PROCEDURE `SearchPeoplesVet`; */

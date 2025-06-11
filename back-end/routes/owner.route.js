@@ -31,6 +31,8 @@ Route.get('/all:by', ValidatorRol("veterinario"), async (req,res) => {
     const by = req.params.by
     
     try {
+        if (!by) return res.status(400).json({ message: "Petición no valida"})
+
         const search = await owner.findAllByOwner(by)
         if (!search.result) return res.status(404).json({ message: "Usuarios no encontrados"})
         res.status(200).json(search)
@@ -43,7 +45,6 @@ Route.put('/modify', ValidatorRol("administrador"), async (req,res) => {
     // Vars 
     const { body } = req
     const saltRounds = 15
-        
     
     try {
         if (!body) return res.status(400).json({ message: "Petición no valida"})
@@ -64,6 +65,8 @@ Route.get('/pet:by', ValidatorRol("veterinario"), async (req,res) => {
     const by = req.params.by
 
     try {
+        if (!by) return res.status(400).json({ message: "Petición no valida"})
+
         const search = await owner.findAllByPetOwner(by)
         if (!search.result) return res.status(404).json({ message: "Usuario no encontrado" })
         res.status(200).json(search)
@@ -78,6 +81,7 @@ Route.delete('/delete', ValidatorRol("veterinario"), async (req,res) => {
     const by = req.body
     
     try {
+        if (!by) return res.status(400).json({ message: "Petición no valida"})
         // Verifiy if exist
         const search = await owner.findByOwner(by.doc)
 

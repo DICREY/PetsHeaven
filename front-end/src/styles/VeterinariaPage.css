@@ -24,38 +24,6 @@
   margin-bottom: 1rem;
 }
 
-/* ========== RESPONSIVE CONTAINER ========== */
-@media (max-width: 1536px) {
-  .contenedor {
-    max-width: 1280px;
-  }
-}
-
-@media (max-width: 1280px) {
-  .contenedor {
-    max-width: 1024px;
-  }
-}
-
-@media (max-width: 1024px) {
-  .contenedor {
-    max-width: 768px;
-  }
-}
-
-@media (max-width: 768px) {
-  .contenedor {
-    max-width: 640px;
-  }
-}
-
-@media (max-width: 640px) {
-  .contenedor {
-    max-width: 100%;
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-}
 
 /* ========== CAROUSEL SECTION ========== */
 .carrusel {
@@ -562,14 +530,6 @@
 /* ========== RESPONSIVE MEDIA QUERIES ========== */
 /* Dispositivos móviles pequeños (hasta 360px) */
 @media (max-width: 360px) {
-  .titulo-seccion {
-    font-size: 1.25rem;
-  }
-
-  .carrusel,
-  .dia-carrusel {
-    height: 20vh;
-  }
 
   /* Asegurar que solo muestre 1 testimonio en móviles pequeños */
   .grid-test {
@@ -579,20 +539,6 @@
 
 /* Dispositivos móviles medianos (361px - 480px) */
 @media (min-width: 361px) and (max-width: 480px) {
-  .carrusel,
-  .dia-carrusel {
-    height: 20vh;
-  }
-  
-  .indicadores {
-    top: 22vh;
-    height: 3vh;
-  }
-  
-  .seccion-nosotros {
-    top: 5vh;
-  }
-
   /* 1 testimonio en móviles medianos */
   .grid-test {
     grid-template-columns: 1fr;
@@ -601,11 +547,6 @@
 
 /* Tabletas pequeñas (481px - 640px) */
 @media (min-width: 481px) and (max-width: 640px) {
-  .carrusel,
-  .dia-carrusel {
-    height: 28vh;
-  }
-
   /* 1 testimonio en tabletas pequeñas */
   .grid-test {
     grid-template-columns: 1fr;
@@ -619,11 +560,6 @@
 
 /* Tabletas (641px - 768px) */
 @media (min-width: 641px) and (max-width: 768px) {
-  .carrusel,
-  .dia-carrusel {
-    height: 28vh;
-  }
-
   /* 2 testimonios en tabletas */
   .grid-test {
     grid-template-columns: repeat(2, 1fr);
@@ -637,11 +573,6 @@
 
 /* Portátiles pequeños (769px - 1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
-  .carrusel,
-  .dia-carrusel {
-    height: 28vh;
-  }
-
   /* 3 testimonios en portátiles */
   .grid-test {
     grid-template-columns: repeat(3, 1fr);
@@ -655,11 +586,6 @@
 
 /* Portátiles grandes y monitores pequeños (1025px - 1280px) */
 @media (min-width: 1025px) and (max-width: 1280px) {
-  .carrusel,
-  .dia-carrusel {
-    height: 80vh;
-  }
-
   /* 3 testimonios */
   .grid-test {
     grid-template-columns: repeat(3, 1fr);
@@ -673,52 +599,25 @@
 
 /* Monitores de escritorio (1281px en adelante) */
 @media (min-width: 1281px) {
-  .carrusel,
-  .dia-carrusel {
-    height: 85vh;
-  }
-
   /* 3 testimonios */
   .grid-test {
     grid-template-columns: repeat(3, 1fr);
-    max-width: 1200px;
-    margin: 0 auto;
   }
  
   /* 5 columnas para servicios con más espacio */
   .grid-servicios {
     grid-template-columns: repeat(5, 1fr);
-    gap: 2rem;
-    
   }
 }
 
 /* Ajustes generales para pantallas medianas/grandes */
 @media (min-width: 769px) {
-  .seccion-nosotros,
-  .seccion-servicios,
-  .seccion-promociones,
-  .seccion-test,
-  .seccion-contacto {
-    padding: 4rem 0;
-  }
-
-  .titulo-seccion {
-    font-size: 2.25rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .titulo-contacto {
-    font-size: 2.5rem;
-  }
-
   .grid-promociones {
     grid-template-columns: repeat(3, 1fr);
   }
 
   .contenedor-nosotros {
     flex-direction: row;
-    gap: 3rem;
   }
 
   .imagen-nosotros,
@@ -728,7 +627,6 @@
 
   .grid-contacto {
     grid-template-columns: repeat(2, 1fr);
-    gap: 3rem;
   }
 
   .fila-formulario {

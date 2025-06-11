@@ -103,7 +103,7 @@ class Appointment {
                 data.fec_cit,        
                 data.hor_ini_cit,    
                 data.hor_fin_cit,    
-                data.lug_ate_cit     
+                data.lug_ate_cit
             ];
 
             this.database = new DataBase();
