@@ -166,7 +166,6 @@ CREATE PROCEDURE pets_heaven.RegisterCirugia(
     IN p_des_ser TEXT,
     IN p_sta_ser ENUM("DISPONIBLE","NO-DISPONIBLE"),
     IN p_tec_des_ser TEXT,
-    IN p_fec_cir DATE,
     IN p_des_cir VARCHAR(100),
     IN p_res_cir VARCHAR(200),
     IN p_com_cir VARCHAR(200),
@@ -192,14 +191,12 @@ BEGIN
     SET @last_id_ser = LAST_INSERT_ID();
 
     INSERT INTO cirugias (
-        fec_cir,
         des_cir,
         res_cir,
         com_cir,
         obv_cir,
         ser_cir
     ) VALUES (
-        p_fec_cir,
         p_des_cir,
         p_res_cir,
         p_com_cir,

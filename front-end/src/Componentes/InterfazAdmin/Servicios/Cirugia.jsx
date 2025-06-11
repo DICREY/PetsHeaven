@@ -327,17 +327,6 @@ return (
                           />
                         </div>
                         <div className="campo-cirugia">
-                          <label htmlFor="fecha-cirugia">Fecha de la Cirugía:</label>
-                          <input
-                            type="date"
-                            id="fecha-cirugia"
-                            name="fechaCirugia"
-                            defaultValue={cirugiaEditando ? formRef.current.fechaCirugia : ""}
-                            onChange={manejarCambioFormulario}
-                            required
-                          />
-                        </div>
-                        <div className="campo-cirugia">
                           <label htmlFor="descripcion-breve-cirugia">Descripción Breve:</label>
                           <input
                             type="text"
