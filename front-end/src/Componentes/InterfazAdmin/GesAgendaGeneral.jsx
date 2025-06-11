@@ -328,8 +328,7 @@ return (
     <main className="calendar-container">
         <NavBarAdmin />
         <main className='calendar-container' id='main-container-calendar'>
-        <HeaderAdmin openHelp={() => setTabHelp(true)} URL={URL} />
-
+            <HeaderAdmin openHelp={() => setTabHelp(true)} URL={URL} />
             <FullCalendar
                 // Refencia del calendario, permite acceder a la instancia del componente para manipularlo
                 ref={calendarRef}
@@ -437,6 +436,7 @@ return (
             {/* Popup para crear nueva cita */}
             {showCreateModal && (
                 <aside className="modal-overlay">
+                    
                     <aside className="modal-content">
                         <header className="modal-header">
                             <h3>Nueva Cita</h3>
@@ -835,7 +835,7 @@ return (
                     </aside>
                 </aside>
             )}
-            <Footer/>
+
         </main>
         {notify && (
             <Notification

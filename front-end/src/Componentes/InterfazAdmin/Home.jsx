@@ -55,10 +55,10 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
       <NavBarAdmin/>
       <main className="tablero-admin">
         {/* Header del dashboard */}
-        <HeaderAdmin />
+
         
         <main className="contenido-principal-admin">
-
+          <HeaderAdmin />
           {/* Stats Grid */}
           <section className="estadisticas-grid-admin" aria-label="Estadísticas del día">
             {stats.map((stat, index) => (
