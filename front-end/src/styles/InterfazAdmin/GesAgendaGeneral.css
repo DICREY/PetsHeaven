@@ -130,6 +130,13 @@
   background-color: var(--primary-light) !important;
 }
 
+.fc .fc-toolbar-title,
+.fc-daygrid-day-number,
+.fc-col-header-cell-cushion,
+.fc-daygrid-day-top {
+  text-transform: capitalize;
+}
+
 /* Eventos */
 .fc .fc-event {
   border: none !important;
