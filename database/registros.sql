@@ -1,4 +1,4 @@
--- Active: 1747081666433@@127.0.0.1@3306@pets_heaven
+-- Active: 1746041048559@@127.0.0.1@3306@pets_heaven
 INSERT INTO pets_heaven.roles (nom_rol) VALUES
 ('Administrador'),
 ('Veterinario'),
@@ -80,17 +80,17 @@ INSERT INTO pets_heaven.servicios (cat_ser, nom_ser, pre_ser, des_ser, tec_des_s
 (3, 'Orquiectomía en perro macho', 150.00, 'Extirpación de testículos en perros.', 'Anestesia general, cuidado postquirúrgico.'),
 (3, 'Cierre herida traumática', 100.00, 'Cierre quirúrgico de heridas traumáticas.', 'Sutura estéril, limpieza profunda, seguimiento postoperatorio.');
 
-INSERT INTO pets_heaven.cirugias (fec_cir, des_cir, res_cir, com_cir, obv_cir, ser_cir) VALUES
-('2025-01-10', 'Castración de perro macho', 'Éxito total', 'Sin complicaciones', 'Recuperación rápida', 6),
-('2025-01-15', 'Limpieza dental para gato', 'Mejora notable', 'Sangrado leve', 'Paciente muy calmado', 7),
-('2025-02-05', 'Resección de tumor mamario', 'Tumor extirpado completamente', 'Inflamación postquirúrgica', 'Controlar antibióticos', 8),
-('2025-02-20', 'Fijación de fractura en pata', 'Fractura estabilizada', 'Inflamación leve', 'Reposo absoluto', 9),
-('2025-03-01', 'Laparotomía exploratoria abdominal', 'Diagnóstico confirmado', 'Adherencias internas', 'Monitorear signos vitales', 10),
-('2025-03-10', 'Extracción de cuerpo extraño gastrointestinal', 'Objeto retirado sin daño', 'Infección leve', 'Administrar antibióticos', 11),
-('2025-03-15', 'Castración de gato macho', 'Procedimiento exitoso', 'Sin complicaciones', 'Paciente con buena recuperación', 12),
-('2025-04-01', 'Corrección quirúrgica de luxación patelar', 'Luxación corregida', 'Inflamación y dolor moderado', 'Reposo y fisioterapia', 13),
-('2025-04-12', 'Orquiectomía en perro macho', 'Sin complicaciones', 'Pequeña infección en la herida', 'Control antibiótico', 14),
-('2025-04-20', 'Cierre quirúrgico de herida traumática', 'Herida cerrada correctamente', 'Ligera inflamación', 'Mantener limpieza diaria', 15);
+INSERT INTO pets_heaven.cirugias (des_cir, res_cir, com_cir, obv_cir, ser_cir) VALUES
+('Castración de perro macho', 'Éxito total', 'Sin complicaciones', 'Recuperación rápida', 6),
+('Limpieza dental para gato', 'Mejora notable', 'Sangrado leve', 'Paciente muy calmado', 7),
+('Resección de tumor mamario', 'Tumor extirpado completamente', 'Inflamación postquirúrgica', 'Controlar antibióticos', 8),
+('Fijación de fractura en pata', 'Fractura estabilizada', 'Inflamación leve', 'Reposo absoluto', 9),
+('Laparotomía exploratoria abdominal', 'Diagnóstico confirmado', 'Adherencias internas', 'Monitorear signos vitales', 10),
+('Extracción de cuerpo extraño gastrointestinal', 'Objeto retirado sin daño', 'Infección leve', 'Administrar antibióticos', 11),
+('Castración de gato macho', 'Procedimiento exitoso', 'Sin complicaciones', 'Paciente con buena recuperación', 12),
+('Corrección quirúrgica de luxación patelar', 'Luxación corregida', 'Inflamación y dolor moderado', 'Reposo y fisioterapia', 13),
+('Orquiectomía en perro macho', 'Sin complicaciones', 'Pequeña infección en la herida', 'Control antibiótico', 14),
+('Cierre quirúrgico de herida traumática', 'Herida cerrada correctamente', 'Ligera inflamación', 'Mantener limpieza diaria', 15);
 
 
 INSERT INTO pets_heaven.mascotas 
