@@ -13,6 +13,12 @@
   font-family: var(--font-general);
 }
 
+.form-error {
+    color: #e74c3c;
+    font-size: 0.85em;
+    margin-top: 0.25em;
+}
+
 /* Controles del calendario */
 .calendar-controls {
   display: flex;
@@ -142,7 +148,7 @@
 }
 
 /* Categorías de eventos */
-.fc .fc-event.Consulta.General {
+.fc .fc-event.Medicina.Preventiva {
   background-color: var(--azulclaro) !important;
   color: var(--verdeaguamarina) !important;
   border-left: 0.25rem solid var(--azulturquesa) !important;
@@ -154,13 +160,19 @@
   border-left: 0.25rem solid var(--red) !important;
 }
 
-.fc .fc-event.Cirugía {
+.fc .fc-event.Consulta.Preventiva {
   background-color: #eee895 !important;
   color: #7b6111 !important;
   border-left: 0.25rem solid #7b6111 !important;
 }
 
-.fc .fc-event.Spa {
+.fc .fc-event.Cirugía {
+  background-color: var(--purple-1) !important;
+  color: var(--black) !important;
+  border-left: 0.25rem solid var(--purple-2) !important;
+}
+
+.fc .fc-event.Estética {
   background-color: var(--purple-1) !important;
   color: var(--black) !important;
   border-left: 0.25rem solid var(--purple-2) !important;

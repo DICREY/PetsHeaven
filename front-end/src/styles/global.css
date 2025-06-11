@@ -105,10 +105,10 @@
     transform: translateY(-2px);
 }
 .enlacenavadmin.active{
-    background: var(--gray-200);
+    background: var(--verdeaguamarina-dark); 
 }
 .subenlacenavadmin.active{
-    background: var(--gray-200);
+    background: var(--verdeaguamarina-dark);
 }
 
 .BackBtn {

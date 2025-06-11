@@ -76,7 +76,7 @@ Route.post('/login', limiterLog, async (req,res) => {
                 lastNames: user.ape_per,
                 roles: user.roles,
                 doc: user.doc_per,
-                img: user.fot_roles.split(',')[0]
+                img: user.fot_per
             },
             secret,
             { expiresIn: '8h' }
@@ -91,6 +91,7 @@ Route.post('/login', limiterLog, async (req,res) => {
         res.status(200).json({ token: token })
 
     } catch (err) {
+        console.log(err)
         if (err.status) return res.status(err.status).json({ message: err.message })
 
         res.status(500).json({ message: err })

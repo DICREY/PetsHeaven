@@ -12,6 +12,7 @@ export const AuthProvider = ({ children }) => {
     // Dynamic vars
     const [ user, setUser ] = useState(null)
     const [ roles, setRoles ] = useState(null)
+    const [ mainRol, setMainRol ] = useState(null)
     const [ log, setLog ] = useState(null)
     const [ admin, setAdmin ] = useState(false)
     const [ notify, setNotify ] = useState({
@@ -29,6 +30,7 @@ export const AuthProvider = ({ children }) => {
                 const userData = decodeJWT(response.token)
                 setUser(userData)
                 setRoles(userData.roles?.split(', ') || ['Usuario'])
+                setMainRol(userData.roles?.split(', ')[0] || ['Usuario'])
                 setAdmin(userData.roles?.split(', ').includes('Administrador'))
 
                 setLog(true)
@@ -79,6 +81,7 @@ export const AuthProvider = ({ children }) => {
                     const userData = decodeJWT(check.data.data)
                     setUser(userData)
                     setRoles(userData.roles?.split(', ') || ['Usuario'])
+                    setMainRol(userData.roles?.split(', ')[0] || ['Usuario'])
                     setAdmin(userData.roles?.split(', ').includes('Veterinario'))
                     setLog(true)
                     setNotify(null)
@@ -94,7 +97,7 @@ export const AuthProvider = ({ children }) => {
     }, [!log])
 
     return (
-        <AuthContext.Provider value={{ admin, user, roles, log, login, logout }}>
+        <AuthContext.Provider value={{ admin, mainRol, user, roles, log, login, logout }}>
             {notify ? <Notification
                 {...notify}
              /> : children}

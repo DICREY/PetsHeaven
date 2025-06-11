@@ -35,7 +35,7 @@ Route.post('/by', ValidatorRol("veterinario"), async (req,res) => {
 
         if (!search.result) res.status(404).json({ message: "Citas no encontradas"})
 
-        res.status(200).json(search)
+        res.status(200).json({...search.result})
     } catch (err) {
         if (err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({message: err})
@@ -45,12 +45,14 @@ Route.post('/by', ValidatorRol("veterinario"), async (req,res) => {
 Route.post('/register', ValidatorRol("veterinario"), async (req, res) => {
     // Vars 
     const data = req.body
+    console.log(data)
     
     try {
         const created = await appoin.registAppointment(data)
         if (created.result) return res.status(201).json(created)
         res.status(500).json({ message: "No se pudo registrar la cita" })
     } catch (err) {
+        console.log(err)
         if (err.status) return res.status(err.status).json({ message: err.message })
         res.status(500).json({ message: err })
     }

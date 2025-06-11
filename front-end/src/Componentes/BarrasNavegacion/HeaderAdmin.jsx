@@ -23,7 +23,7 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
 
   // Vars 
   const navigate = useNavigate()
-  const { user, roles, logout } = useContext(AuthContext)
+  const { user, roles, mainRol, logout } = useContext(AuthContext)
   const mainUrl = `${URL}/appointment/by`
 
   useEffect(() => {
@@ -86,7 +86,12 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
     <header className="cabecera-header">
       <div className="contenido-cabecera-header">
         <div className="izquierda-cabecera-header">
-          <h1>Panel de Administración</h1>
+          {mainRol === 'Administrador'? (
+            <h1>Panel de Administración</h1>
+            ):(
+              <h1>Panel Medico</h1>
+            )
+          }
           <p>Bienvenid@ de vuelta, {user.names} {user.lastNames}</p>
         </div>
 
@@ -124,15 +129,16 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
                 </header>
 
                 <ul className="lista-notificaciones-header" role="list">
-                  {appointment?.map((notification) => (
-                    <li key={notification.id} className="item-notificacion-header" role="menuitem">
-                      <div className={`icono-notificacion-header ${notification.color}-header`} aria-hidden="true">
-                        <notification.icon className='icon' />
+                  {appointment?.map((notification, index) => (
+                    <li key={index + 10992} className="item-notificacion-header" role="menuitem">
+                      <div className={`icono-notificacion-header`} aria-hidden="true">
+                        <Bell className="icon" aria-hidden="true" />
                       </div>
                       <article className="contenido-notificacion-header">
-                        <h3>{notification.title}</h3>
-                        <p>{notification.message}</p>
-                        <time className="tiempo-notificacion-header">{notification.time}</time>
+                        <h3>{notification.nom_cat}</h3>
+                        <h4>{notification.nom_ser}</h4>
+                        <p>{notification.des_ser}</p>
+                        <time className="tiempo-notificacion-header">{notification.hor_ini_cit}</time>
                       </article>
                     </li>
                   ))}
@@ -161,7 +167,7 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
               </div>
               <div className="info-perfil-header">
                 <span className="nombre-perfil-header">Sr@. {user.names} {user.lastNames}</span>
-                <span className="rol-perfil-header">{roles[0]}</span>
+                <span className="rol-perfil-header">{mainRol}</span>
               </div>
               <ChevronDown
                 className={`icono-flecha-header icon ${isProfileOpen ? "rotado-header" : ""}`}

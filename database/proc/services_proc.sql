@@ -124,16 +124,84 @@ BEGIN
     JOIN 
         categorias_ser c ON c.id_cat = s.cat_ser 
     WHERE
-        c.estado = 1
-        AND c.nom_cat LIKE p_cat_ser
+        /* c.estado = 1 */
+        c.nom_cat LIKE p_cat_ser
     ORDER BY 
         s.nom_ser
     LIMIT 1000;
 END //
 
 
-/* CALL `SearchServices`(); */
-/* CALL pets_heaven.`SearchServicesBy`('Cirugía'); */
-/* DROP PROCEDURE pets_heaven.SearchServices; */
-/* DROP PROCEDURE pets_heaven.`SearchServicesBy`; */
-/* CALL `SearchCatServices`(); */
+CREATE PROCEDURE pets_heaven.RegisterService(
+    IN p_cat_ser INT,
+    IN p_nom_ser VARCHAR(100),
+    IN p_pre_ser DECIMAL(10,2),
+    IN p_des_ser TEXT,
+    IN p_sta_ser ENUM("DISPONIBLE","NO-DISPONIBLE"),
+    IN p_tec_des_ser TEXT
+)
+BEGIN
+    INSERT INTO servicios (
+        cat_ser,
+        nom_ser,
+        pre_ser,
+        des_ser,
+        sta_ser,
+        tec_des_ser
+    ) VALUES (
+        p_cat_ser,
+        p_nom_ser,
+        p_pre_ser,
+        p_des_ser,
+        p_sta_ser,
+        p_tec_des_ser
+    );
+END //
+
+
+CREATE PROCEDURE pets_heaven.RegisterCirugia(
+    IN p_cat_ser INT,
+    IN p_nom_ser VARCHAR(100),
+    IN p_pre_ser DECIMAL(10,2),
+    IN p_des_ser TEXT,
+    IN p_sta_ser ENUM("DISPONIBLE","NO-DISPONIBLE"),
+    IN p_tec_des_ser TEXT,
+    IN p_des_cir VARCHAR(100),
+    IN p_res_cir VARCHAR(200),
+    IN p_com_cir VARCHAR(200),
+    IN p_obv_cir TEXT
+)
+BEGIN
+    INSERT INTO servicios (
+        cat_ser,
+        nom_ser,
+        pre_ser,
+        des_ser,
+        sta_ser,
+        tec_des_ser
+    ) VALUES (
+        p_cat_ser,
+        p_nom_ser,
+        p_pre_ser,
+        p_des_ser,
+        p_sta_ser,
+        p_tec_des_ser
+    );
+
+    SET @last_id_ser = LAST_INSERT_ID();
+
+    INSERT INTO cirugias (
+        des_cir,
+        res_cir,
+        com_cir,
+        obv_cir,
+        ser_cir
+    ) VALUES (
+        p_des_cir,
+        p_res_cir,
+        p_com_cir,
+        p_obv_cir,
+        @last_id_ser
+    );
+END //
+

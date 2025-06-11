@@ -72,17 +72,14 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
         message: 'Por favor, espere mientras se registra el usuario.',
         load: 1
       })
-      const token = localStorage.getItem('token')
-      if (token) {
-        const created = await PostData(`${mainUrl}/register`, datas)
-        setNotify(null)
-        created.data.created && setNotify({
-          title: 'Registrado',
-          message: 'Ha sido registrado correctamente',
-          close: setNotify
-        })
+      const created = await PostData(`${mainUrl}/register`, datas)
+      setNotify(null)
+      created.data.created && setNotify({
+        title: 'Registrado',
+        message: 'Ha sido registrado correctamente',
+        close: setNotify
+      })
         console.log(created)
-      }
     } catch (err) {
       setNotify(null)
       if (err.status) {
@@ -130,7 +127,7 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
               className={`tab-regusuario ${activeTab === 'personal' ? 'activo-regusuario' : ''}`}
               onClick={() => setActiveTab('personal')}
             >
-              <User className='icono-regusuario' size={18} />
+              <User className='icon' />
               <span className='texto-tab-regusuario'>Información personal</span>
             </div>
 
@@ -138,7 +135,7 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
               className={`tab-regusuario ${activeTab === 'password' ? 'activo-regusuario' : ''}`}
               onClick={() => setActiveTab('password')}
             >
-              <Lock className='icono-regusuario' size={18} />
+              <Lock className='icon' />
               <span className='texto-tab-regusuario'>Contraseña</span>
             </div>
           </div>

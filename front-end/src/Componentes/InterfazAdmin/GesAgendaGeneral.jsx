@@ -39,6 +39,7 @@ const [selectedDate, setSelectedDate] = useState('')
 const [lugar, setLugar] = useState('Consultorio')
 const calendarRef = useRef(null)
 const [allPacientes, setAllPacientes] = useState([]) // Todos los pacientes
+const [allVet, setAllVet] = useState([]) // Todos los pacientes
 const [filteredPacientes, setFilteredPacientes] = useState([]) // Resultados filtrados
 const [showPacientesDropdown, setShowPacientesDropdown] = useState(false) // Controlar dropdown
 // const [ log, user, roles ] = useContext(AuthContext)
@@ -50,6 +51,7 @@ const [newEvent, setNewEvent] = useState({
     category: 'consulta',
     paciente: '',
     propietario: '',
+    veterinario: '',
     lug_ate_cit: 'Consultorio',
     telefono: '',
     estado: 'PENDIENTE',
@@ -57,6 +59,7 @@ const [newEvent, setNewEvent] = useState({
 })
 const createModalRef = useRef(null)
 const eventModalRef = useRef(null)
+const [formErrors, setFormErrors] = useState({})
 
 // Cerrar modal al hacer clic fuera
 useEffect(() => {
@@ -87,21 +90,6 @@ useEffect(() => {
 //Dia de hoy
 const today = new Date().toISOString().split('T')[0] // 'YYYY-MM-DD'
 
-// const [events, setEvents] = useState([
-//         {
-//             id: '1',
-//             title: 'Vacunación de Perro',
-//             start: '2025-05-22T10:30:00',
-//             end: '2025-05-22T11:00:00',
-//             description: 'Vacunación anual contra la rabia',
-//             category: 'vacuna',
-//             paciente: 'Max (Golden Retriever)',
-//             propietario: 'Juan Pérez',
-//             telefono: '555-1234'
-//         }
-// ])
-
-
 const fetchPacientes = async () => {
     await ReqFunction(
         `${URL}/pet/all`,
@@ -110,11 +98,20 @@ const fetchPacientes = async () => {
         setAllPacientes
     )
 }
+const fetchVet = async () => {
+    await ReqFunction(
+        `${URL}/staff/all`,
+        GetData,
+        setNotify,
+        setAllVet
+    )
+}
 
 // Crear citas
 const handleDateClick = (arg) => {
     setSelectedDate(arg.dateStr)
     fetchPacientes() // Cargar pacientes cuando se abre el modal
+    fetchVet() // Cargar veterinarios cuando se abre el modal
     setNewEvent({
         title: '',
         start: `${arg.dateStr}T09:00:00`,
@@ -123,6 +120,7 @@ const handleDateClick = (arg) => {
         category: 'consulta',
         paciente: '',
         propietario: '',
+        veterinario: '',
         lug_ate_cit: 'Consultorio',
         telefono: '',
         estado: 'PENDIENTE'
@@ -144,14 +142,17 @@ const handleEventClick = (info) => {
 
 // Crear nueva cita en el backend
 const handleCreateEvent = async () => {
+    const errors = validateEventFields(newEvent);
+    setFormErrors(errors);
+    if (Object.keys(errors).length > 0) return;
     const citaData = {
         fec_reg_cit: new Date().toISOString().split('T')[0],
         fec_cit: newEvent.start.split('T')[0],
         hor_ini_cit: newEvent.start.split('T')[1],
         hor_fin_cit: newEvent.end.split('T')[1],
         lug_ate_cit: lugar,
-        ser_cit: 1,
-        vet_cit: 1,
+        ser_cit: newEvent.category,
+        vet_cit: newEvent.veterinario,
         mas_cit: newEvent.paciente,
         estado: 'PENDIENTE'
     }
@@ -166,6 +167,9 @@ const handleCreateEvent = async () => {
 
 // Actualizar cita existente en el backend
 const handleUpdateEvent = async () => {
+    const errors = validateEventFields(selectedEvent);
+    setFormErrors(errors);
+    if (Object.keys(errors).length > 0) return;
     // Verificar fecha
     const eventDate = new Date(selectedEvent.start)
     const today = new Date()
@@ -267,9 +271,11 @@ const fetchAppointments = async () => {
                 description: event.des_ser,
                 category: event.nom_ser || 'vacuna',
                 paciente: event.nom_mas,
-                propietario: `${event.nom_per} ${event.ape_per}`,
+                propietario: `${event.prop_nom_per} ${event.prop_ape_per}`, 
+                telefonoProp: event.prop_cel_per,
+                veterinario: `${event.vet_nom_per} ${event.vet_ape_per}`,
+                telefonoVet: event.vet_cel_per,
                 lug_ate_cit: event.lug_ate_cit || 'Consultorio',
-                telefono: event.cel_per,
                 estado: event.estado,
                 fotoMascota: event.fot_mas
             }))
@@ -292,6 +298,30 @@ const validatePatientName = (input) => {
     // Expresión regular que solo permite letras, espacios y algunos caracteres especiales comunes en nombres
     return input.replace(/[0-9]/g, '')
 }
+
+const validateEventFields = (event) => {
+    const errors = {};
+    if (!event.paciente || !event.mas_cit) {
+        errors.paciente = 'Selecciona un paciente válido.';
+    }
+    if (!event.veterinario) {
+        errors.veterinario = 'Selecciona un veterinario.';
+    }
+    if (!event.start || !event.end) {
+        errors.start = 'Selecciona fecha y hora de inicio.';
+        errors.end = 'Selecciona fecha y hora de fin.';
+    }
+    if (!event.category) {
+        errors.category = 'Selecciona el tipo de cita.';
+    }
+    if (!event.lug_ate_cit || event.lug_ate_cit.trim().length < 3) {
+        errors.lug_ate_cit = 'El lugar de atención es obligatorio.';
+    }
+    if (event.description && event.description.length > 255) {
+        errors.description = 'La descripción es demasiado larga.';
+    }
+    return errors;
+};
 
 
 return (
@@ -343,7 +373,7 @@ return (
                 eventClick={handleEventClick}
 
                 // Habilita la edición de los eventos: mover, redimensionar, eliminar
-                editable={true}
+                editable={false}
 
                 // Texto que aparece cuando hay más eventos de los que se pueden mostrar en un día
                 moreLinkText={`Ver más`}
@@ -460,7 +490,6 @@ return (
                                                                     telefono: paciente.cel_per || '',
                                                                     mas_cit: paciente.id_mas
                                                                 },
-                                                                console.log(paciente.id_mas)
                                                                 )
                                                                 setShowPacientesDropdown(false)
                                                             }}
@@ -471,6 +500,9 @@ return (
                                                 </div>
                                             )}
                                         </div>
+                                        {formErrors.paciente && (
+                                            <div className="form-error">{formErrors.paciente}</div>
+                                        )}
                                     </div>
                                     <div className="form-group">
                                         <label>Propietario:</label>
@@ -480,7 +512,28 @@ return (
                                             value={newEvent.propietario}
                                             onChange={handleInputChange}
                                             disabled
-                                        />
+                                            />
+                                    </div>
+                                    <div className="form-group">
+                                    <label>Veterinario:</label>
+                                    <select
+                                        name="veterinario"
+                                        onChange={handleInputChange}
+                                        value={newEvent.veterinario || ''} 
+                                        required 
+                                    >
+                                        <option value="" disabled selected>Selecciona un veterinario</option>
+                                        {allVet?.map((i) => 
+                                        i.roles.split(', ').includes('Veterinario') && (
+                                            <option key={i.doc_per} value={i.doc_per}>
+                                            {i.nom_per} {i.ape_per} (Veterinario)
+                                            </option>
+                                        )
+                                        )}
+                                    </select>
+                                    {formErrors.veterinario && (
+                                        <div className="form-error">{formErrors.veterinario}</div>
+                                    )}
                                     </div>
                                     <div className="form-group">
                                         <label>Teléfono:</label>
@@ -503,6 +556,9 @@ return (
                                             <option value="vacuna">Vacuna</option>
                                             <option value="emergencia">Emergencia</option>
                                         </select>
+                                        {formErrors.category && (
+                                            <div className="form-error">{formErrors.category}</div>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="form-column">
@@ -554,6 +610,9 @@ return (
                                             value={lugar}
                                             onChange={e => setLugar(e.target.value)}
                                         />
+                                        {formErrors.lug_ate_cit && (
+                                            <div className="form-error">{formErrors.lug_ate_cit}</div>
+                                        )}
                                     </div>
                                     <div className="form-group">
                                         <label>Descripción:</label>
@@ -562,6 +621,9 @@ return (
                                             value={newEvent.description}
                                             onChange={handleInputChange}
                                         />
+                                        {formErrors.description && (
+                                            <div className="form-error">{formErrors.description}</div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -616,7 +678,6 @@ return (
                                     name="propietario"
                                     value={selectedEvent?.propietario || ''}
                                     disabled
-                                    onChange={handleInputChange}
                                 />
                             </div>
                             <div className="form-group">
@@ -625,7 +686,17 @@ return (
                                     disabled
                                     type="text"
                                     name="telefono"
-                                    value={selectedEvent?.telefono || ''}
+                                    value={selectedEvent?.telefonoProp || ''}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Veterinario:</label>
+                                <input
+                                    disabled
+                                    type="text"
+                                    name="veterinario"
+                                    value={selectedEvent?.veterinario || ''}
                                     onChange={handleInputChange}
                                 />
                             </div>

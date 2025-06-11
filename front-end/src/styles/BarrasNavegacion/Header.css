@@ -1,10 +1,10 @@
 /* Header */
 .cabecera-header {
-  margin-bottom: 1rem;
+  position: sticky;
+  top: 0;
+  width: 100%;
   background: var(--white);
-  box-shadow: 0 .1rem .2rem rgba(0, 0, 0, 0.1);
-  overflow: visible;
-  position: relative;
+  box-shadow: var(--shadow-sm);
   z-index: 100;
 }
 
@@ -18,7 +18,7 @@
 .izquierda-cabecera-header h1 {
   font-size: 1.875rem;
   font-weight: 700;
-  color: #00BCD4;
+  color: var(--azulturquesa);
   margin-bottom: 0.5rem;
 }
 
@@ -335,7 +335,7 @@
   padding: 0.5rem;
   background: transparent;
   border: none;
-  color: #00BCD4; 
+  color: var(--azulturquesa); 
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;

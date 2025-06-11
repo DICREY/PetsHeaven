@@ -1,5 +1,5 @@
 // Librarys
-import { useState, useRef, useEffect, useContext} from "react"
+import { useState, useRef, useEffect, useContext, useCallback } from "react";
 import { Trash2, PenSquare, Plus, Filter, AlertCircle, FileText,Activity } from "lucide-react"
 
 // Imports
@@ -9,7 +9,7 @@ import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
 import { errorStatusHandler } from '../../Varios/Util'
 import { Notification } from '../../Global/Notifys'
 import Footer from '../../Varios/Footer2'
-import { GetData } from "../../Varios/Requests"
+import { GetData, PostData, ModifyData } from "../../Varios/Requests"
 import { AuthContext } from "../../../Contexts/Contexts"
 
 // Style
@@ -24,48 +24,10 @@ export const CirugiasVeterinaria = ({ URL= '' }) => {
   const mainUrl = `${URL}/service`
   const { admin } = useContext(AuthContext)
 
-  const [cirugias, setCirugias] = useState([
-    // {
-    //   id: "CIR001",
-    //   nombre: "Esterilización",
-    //   descripcion: "Procedimiento quirúrgico para prevenir la reproducción en mascotas.",
-    //   complicaciones: "Sangrado, infección, reacción a anestesia",
-    //   recomendaciones: "Ayuno de 12 horas previo. Reposo post-operatorio de 7-10 días.",
-    //   precio: 150000,
-    //   disponible: true,
-    // },
-    // { 
-    //   id: "CIR002",
-    //   nombre: "Extracción Dental",
-    //   descripcion: "Remoción de piezas dentales dañadas o infectadas.",
-    //   complicaciones: "Sangrado, dolor post-operatorio, infección",
-    //   recomendaciones: "Dieta blanda por 3-5 días. Antibióticos según prescripción.",
-    //   precio: 80000,
-    //   disponible: true,
-    // },
-    // {
-    //   id: "CIR003",
-    //   nombre: "Cirugía de Cataratas",
-    //   descripcion: "Procedimiento para restaurar la visión en casos de cataratas.",
-    //   complicaciones: "Infección ocular, rechazo del implante, ceguera",
-    //   recomendaciones: "Collar isabelino por 2 semanas. Gotas oftálmicas diarias.",
-    //   precio: 450000,
-    //   disponible: false,
-    // },
-    // {
-    //   id: "CIR004",
-    //   nombre: "Reparación de Fractura",
-    //   descripcion: "Cirugía ortopédica para reparar huesos fracturados.",
-    //   complicaciones: "Infección ósea, rechazo de implantes, cojera permanente",
-    //   recomendaciones: "Reposo absoluto 4-6 semanas. Fisioterapia posterior.",
-    //   precio: 320000,
-    //   disponible: true,
-    // },
-  ])
-  
+  const [cirugias, setCirugias] = useState([])
   const [mostrarFormulario, setMostrarFormulario] = useState(false)
   const [cirugiaEditando, setCirugiaEditando] = useState(null)
-  const [nuevaCirugia, setNuevaCirugia] = useState({
+  const formRef = useRef({
     id: "",
     nombre: "",
     descripcion: "",
@@ -73,70 +35,136 @@ export const CirugiasVeterinaria = ({ URL= '' }) => {
     recomendaciones: "",
     precio: "",
     disponible: true,
-  })
-
-
-  // Functions    
-  useEffect(() => {
-      if (didFetch.current) return
-      didFetch.current = true
-      fetchCirugias()
-  }, [])
+    fechaCirugia: "",
+    descripcionBreve: "",
+    resultadoEsperado: "",
+    observaciones: ""
+  });
+  const nuevaCirugia = useRef({
+    id: "",
+    nombre: "",
+    descripcion: "",
+    complicaciones: "",
+    recomendaciones: "",
+    precio: "",
+    disponible: true,
+    fechaCirugia: "",
+    descripcionBreve: "",
+    resultadoEsperado: "",
+    observaciones: ""
+  });
   
-  const fetchCirugias = async () => {
+  const fetchCirugias = useCallback(async () => {
+    if (didFetch.current) return;
+    didFetch.current = true;
+    
     setNotify({
-        title: 'Cargando',
-        message: 'Cargando cirugias, por favor espere...',
-        load: 1
-    })
+      title: 'Cargando',
+      message: 'Cargando cirugias, por favor espere...',
+      load: 1
+    });
+    
     try {
-      const byValue = "Cirugía"
-      let data = await GetData(`${mainUrl}/all/${encodeURIComponent(byValue)}`,)
-      setNotify(null)
-      // Normaliza la respuesta a array
+      const byValue = "Cirugía";
+      let data = await GetData(`${mainUrl}/all/${encodeURIComponent(byValue)}`);
+      setNotify(null);
+      
       if (data && !Array.isArray(data)) {
-          data = [data]
+        data = [data];
       }
       if (data) {
-          setCirugias(data);
-          console.log(cirugias)
+        setCirugias(data);
       }
     } catch (err) {
-      setNotify(null)
+      setNotify(null);
       if (err.status) {
-          const message = errorStatusHandler(err.status)
-          setNotify({
-              title: 'Error',
-              message: `${message}`,
-              close: setNotify
-          })
-      } 
-      else console.error(err)
-      // Manejo de error
+        const message = errorStatusHandler(err.status);
+        setNotify({
+          title: 'Error',
+          message: `${message}`,
+          close: setNotify
+        });
+      } else {
+        console.error(err);
+      }
     }
-  }
-
-  const manejarCambioFormulario = (e) => {
-    const { name, value, type, checked } = e.target
-    setNuevaCirugia((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }))
-  }
+  }, [mainUrl]);
   
-  const agregarCirugia = (e) => {
-    e.preventDefault()
-    if (cirugiaEditando) {
-      setCirugias((prev) =>
-        prev.map((cirugia) =>
-          cirugia.id === cirugiaEditando.id ? { ...nuevaCirugia, precio: Number(nuevaCirugia.precio) } : cirugia,
-        ),
-      )
-      setCirugiaEditando(null)
-    } else {
-      setCirugias((prev) => [...prev, { ...nuevaCirugia, precio: Number(nuevaCirugia.precio) }])
+  // Functions    
+  useEffect(() => {
+    fetchCirugias();
+  }, [fetchCirugias]);
+
+
+  const manejarCambioFormulario = useCallback((e) => {
+    const { name, value, type, checked } = e.target;
+    formRef.current = {
+      ...formRef.current,
+      [name]: type === "checkbox" ? checked : value,
+    };
+  }, []);
+    
+  const agregarCirugia = useCallback(async (e) => {
+    e.preventDefault();
+    try {
+      const nueva = {
+        cat_ser: 3,
+        nom_ser: formRef.current.nombre,
+        pre_ser: Number(formRef.current.precio),
+        des_ser: formRef.current.descripcion,
+        sta_ser: formRef.current.disponible ? "DISPONIBLE" : "NO DISPONIBLE",
+        tec_des_ser: formRef.current.recomendaciones,
+        fec_cir: formRef.current.fechaCirugia,
+        des_cir: formRef.current.descripcionBreve,
+        res_cir: formRef.current.resultadoEsperado,
+        com_cir: formRef.current.complicaciones,
+        obv_cir: formRef.current.observaciones
+      };
+      
+      await PostData(`${mainUrl}/register`, nueva);
+      setMostrarFormulario(false);
+      resetForm();
+      fetchCirugias();
+    } catch (err) {
+      setNotify({
+        title: 'Error',
+        message: 'No se pudo agregar la cirugía',
+        close: setNotify
+      });
     }
-    setNuevaCirugia({
+  }, [mainUrl, fetchCirugias]);
+
+  const actualizarCirugia = useCallback(async (e) => {
+    e.preventDefault();
+    try {
+      const actualizada = {
+        id_ser: cirugiaEditando.id_ser,
+        nom_ser: formRef.current.nombre,
+        des_ser: formRef.current.descripcion,
+        com_cir: formRef.current.complicaciones,
+        tec_des_ser: formRef.current.recomendaciones,
+        pre_ser: Number(formRef.current.precio),
+        sta_ser: formRef.current.disponible ? "DISPONIBLE" : "NO DISPONIBLE",
+        tipo_ser: "Cirugía"
+      };
+      
+      await ModifyData(`${mainUrl}/modify`, actualizada);
+      setMostrarFormulario(false);
+      setCirugiaEditando(null);
+      resetForm();
+      fetchCirugias();
+    } catch (err) {
+      setNotify({
+        title: 'Error',
+        message: 'No se pudo actualizar la cirugía',
+        close: setNotify
+      });
+    }
+  }, [mainUrl, cirugiaEditando, fetchCirugias]);
+
+  // Resetear formulario
+  const resetForm = useCallback(() => {
+    formRef.current = {
       id: "",
       nombre: "",
       descripcion: "",
@@ -144,41 +172,61 @@ export const CirugiasVeterinaria = ({ URL= '' }) => {
       recomendaciones: "",
       precio: "",
       disponible: true,
-    })
-    setMostrarFormulario(false)
-  }
+      fechaCirugia: "",
+      descripcionBreve: "",
+      resultadoEsperado: "",
+      observaciones: ""
+    };
+  }, []);
 
-  const editarCirugia = (cirugia) => {
-    setNuevaCirugia({ ...cirugia, precio: cirugia.precio.toString() })
-    setCirugiaEditando(cirugia)
-    setMostrarFormulario(true)
-  }
+  // Editar cirugía
+  const editarCirugia = useCallback((cirugia) => {
+    formRef.current = {
+      id: cirugia.id_ser || "",
+      nombre: cirugia.nom_ser || "",
+      descripcion: cirugia.des_ser || "",
+      complicaciones: cirugia.com_cir || "",
+      recomendaciones: cirugia.tec_des_ser || "",
+      precio: cirugia.pre_ser ? cirugia.pre_ser.toString() : "",
+      disponible: cirugia.sta_ser === "DISPONIBLE",
+      fechaCirugia: cirugia.fec_cir || "",
+      descripcionBreve: cirugia.des_cir || "",
+      resultadoEsperado: cirugia.res_cir || "",
+      observaciones: cirugia.obv_cir || ""
+    };
+    setCirugiaEditando(cirugia);
+    setMostrarFormulario(true);
+  }, []);
 
-  const eliminarCirugia = (id) => {
-    setCirugias((prev) => prev.filter((cirugia) => cirugia.id !== id))
-  }
+  // Eliminar cirugía
+  const eliminarCirugia = useCallback(async (id_ser) => {
+    if (!window.confirm("¿Seguro que deseas eliminar esta cirugía?")) return;
+    try {
+      await ModifyData(`${mainUrl}/delete`, { id_ser });
+      fetchCirugias();
+    } catch (err) {
+      setNotify({
+        title: 'Error',
+        message: 'No se pudo eliminar la cirugía',
+        close: setNotify
+      });
+    }
+  }, [mainUrl, fetchCirugias]);
 
-  const cancelarFormulario = () => {
-    setMostrarFormulario(false)
-    setCirugiaEditando(null)
-    setNuevaCirugia({
-      id: "",
-      nombre: "",
-      descripcion: "",
-      complicaciones: "",
-      recomendaciones: "",
-      precio: "",
-      disponible: true,
-    })
-  }
+  const cancelarFormulario = useCallback(() => {
+    setMostrarFormulario(false);
+    setCirugiaEditando(null);
+    resetForm();
+  }, [resetForm]);
 
-  return (
+
+console.log(cirugias)
+return (
     <main className="maincontenedor-cirugia">
     <NavBarAdmin />
       <div className="principaladminhome">
-      {admin? (<HeaderAdmin URL={URL} />): (<HeaderUser />)}
         <div className="contenedor-cirugia">
-        
+        {admin? (<HeaderAdmin />): (<HeaderUser />)}
           <div className="contenedorprincipal-cirugia">
             <header className="encabezado-cirugia">
               <div className="tituloadminhome">
@@ -232,7 +280,7 @@ export const CirugiasVeterinaria = ({ URL= '' }) => {
                             type="text"
                             id="nombre-cirugia"
                             name="nombre"
-                            value={nuevaCirugia.nombre}
+                            defaultValue={cirugiaEditando ? formRef.current.nombre : ""}
                             onChange={manejarCambioFormulario}
                             required
                           />
@@ -242,7 +290,7 @@ export const CirugiasVeterinaria = ({ URL= '' }) => {
                           <textarea
                             id="descripcion-cirugia"
                             name="descripcion"
-                            value={nuevaCirugia.descripcion}
+                            defaultValue={cirugiaEditando ? formRef.current.descripcion : ""}
                             onChange={manejarCambioFormulario}
                             required
                           />
@@ -252,7 +300,7 @@ export const CirugiasVeterinaria = ({ URL= '' }) => {
                           <textarea
                             id="complicaciones-cirugia"
                             name="complicaciones"
-                            value={nuevaCirugia.complicaciones}
+                            defaultValue={cirugiaEditando ? formRef.current.complicaciones : ""}
                             onChange={manejarCambioFormulario}
                             required
                           />
@@ -262,7 +310,7 @@ export const CirugiasVeterinaria = ({ URL= '' }) => {
                           <textarea
                             id="recomendaciones-cirugia"
                             name="recomendaciones"
-                            value={nuevaCirugia.recomendaciones}
+                            defaultValue={cirugiaEditando ? formRef.current.recomendaciones : ""}
                             onChange={manejarCambioFormulario}
                             required
                           />
@@ -273,9 +321,40 @@ export const CirugiasVeterinaria = ({ URL= '' }) => {
                             type="number"
                             id="precio-cirugia"
                             name="precio"
-                            value={nuevaCirugia.precio}
+                            defaultValue={cirugiaEditando ? formRef.current.precio : ""}
                             onChange={manejarCambioFormulario}
                             required
+                          />
+                        </div>
+                        <div className="campo-cirugia">
+                          <label htmlFor="descripcion-breve-cirugia">Descripción Breve:</label>
+                          <input
+                            type="text"
+                            id="descripcion-breve-cirugia"
+                            name="descripcionBreve"
+                            defaultValue={cirugiaEditando ? formRef.current.descripcionBreve : ""}
+                            onChange={manejarCambioFormulario}
+                            required
+                          />
+                        </div>
+                        <div className="campo-cirugia">
+                          <label htmlFor="resultado-esperado-cirugia">Resultado Esperado:</label>
+                          <input
+                            type="text"
+                            id="resultado-esperado-cirugia"
+                            name="resultadoEsperado"
+                            defaultValue={cirugiaEditando ? formRef.current.resultadoEsperado : ""}
+                            onChange={manejarCambioFormulario}
+                            required
+                          />
+                        </div>
+                        <div className="campo-cirugia">
+                          <label htmlFor="observaciones-cirugia">Observaciones:</label>
+                          <textarea
+                            id="observaciones-cirugia"
+                            name="observaciones"
+                            defaultValue={cirugiaEditando ? formRef.current.observaciones : ""}
+                            onChange={manejarCambioFormulario}
                           />
                         </div>
                         <div className="campo-checkbox-cirugia">
@@ -284,7 +363,7 @@ export const CirugiasVeterinaria = ({ URL= '' }) => {
                               type="checkbox"
                               id="disponible-cirugia"
                               name="disponible"
-                              checked={nuevaCirugia.disponible}
+                              defaultChecked={cirugiaEditando ? formRef.current.disponible : true}
                               onChange={manejarCambioFormulario}
                             />
                             Disponible
@@ -342,7 +421,7 @@ export const CirugiasVeterinaria = ({ URL= '' }) => {
                           <strong>
                             <AlertCircle size={14} className="icono-detalle-cirugia" aria-hidden="true" /> Complicaciones:
                           </strong>
-                          <p>{cirugia.com_ser || "No especificadas"}</p>
+                          <p>{cirugia.com_cir || "No especificadas"}</p>
                         </div>
                         <div className="detalle-cirugia">
                           <strong>
