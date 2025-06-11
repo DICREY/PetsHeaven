@@ -835,7 +835,6 @@ return (
                     </aside>
                 </aside>
             )}
-            <Footer/>
         </main>
         {notify && (
             <Notification

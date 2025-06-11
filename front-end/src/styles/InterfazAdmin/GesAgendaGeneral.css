@@ -10,8 +10,10 @@
   padding: 0;
   margin: 0;
   background-color: var(--gray-50);
-  font-family: var(--font-general);
+  font-family: var(--font-general); 
 }
+
+
 
 .form-error {
     color: #e74c3c;
@@ -37,12 +39,11 @@
   align-items: center;
   padding: 10px;
   background-color: white;
-  border-bottom: 1px solid #e0e0e0;
 }
 
 .fc-toolbar-title {
   font-size: 1.25rem;
-  color: var(--gray-800);
+  color: var(--azulturquesa);
   font-weight: 600;
 }
 
@@ -105,8 +106,12 @@
 .fc {
   flex: 1;
   min-height: 0;
-  margin: 0;
-  padding: 0 1.25rem 1.25rem 1.25rem;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 0.1rem 0.2rem #0000001f;
+  padding: 0 1rem 1rem 1rem;
   background-color: var(--white);
   font-size: var(--font-size);
 }
@@ -116,7 +121,7 @@
 }
 
 .fc-col-header-cell {
-  background-color: var(--gray-100);
+  background-color: var(--azul-claro);
   color: var(--gray-800);
   font-weight: 600;
   padding: 0.5rem 0;
@@ -140,6 +145,7 @@
   cursor: pointer;
   box-shadow: var(--shadow-sm) !important;
   font-weight: 500;
+  width: 10rem;
 }
 
 .fc .fc-event:hover {
