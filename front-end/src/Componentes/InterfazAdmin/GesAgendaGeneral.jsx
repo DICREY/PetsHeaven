@@ -837,7 +837,6 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
                         </aside>
                     </aside>
                 )}
-                <Footer />
             </main>
             {notify && (
                 <Notification
