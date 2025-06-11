@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Calendar, Users, Heart, Clock, ExternalLink, Plus } from "lucide-react"
 import { useNavigate } from 'react-router-dom'
 
@@ -10,6 +10,7 @@ import { Notification } from "../Global/Notifys"
 import { errorStatusHandler } from '../Varios/Util'
 
 import "../../styles/InterfazAdmin/Home.css"
+import { AuthContext } from "../../Contexts/Contexts"
 
 export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
   // Dynamic vars 
@@ -19,6 +20,7 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
   // Vars 
   const mainUrl = `${URL}/appointment`
   const navigate = useNavigate()
+  const { admin } = useContext(AuthContext)
 
   const stats = [
     { title: "Citas Hoy", value: "12", icon: Calendar, color: "azul" },
@@ -52,22 +54,22 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
     <main className="contenedoradminhome">
       <NavBarAdmin/>
       <main className="tablero-admin">
+        {/* Header del dashboard */}
+        <HeaderAdmin />
         
         <main className="contenido-principal-admin">
-          {/* Header del dashboard */}
-          <HeaderAdmin />
 
           {/* Stats Grid */}
           <section className="estadisticas-grid-admin" aria-label="Estadísticas del día">
             {stats.map((stat, index) => (
               <article key={index} className={`tarjeta-estadistica-admin ${stat.color}-admin`}>
-                <header className="cabecera-estadistica-admin">
-                  <stat.icon size={24} aria-hidden="true" />
-                </header>
                 <div className="contenido-estadistica-admin">
-                  <h2>{stat.value}</h2>
                   <p>{stat.title}</p>
                 </div>
+                <header className="cabecera-estadistica-admin">
+                  <stat.icon size={24} aria-hidden="true" />
+                  <h2>{stat.value}</h2>
+                </header>
               </article>
             ))}
           </section>
@@ -92,16 +94,20 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
                     </div>
 
                     <div className="detalles-cita-admin">
-                      <h3>{appointment.pet}</h3>
-                      <p>Dueño: {appointment.prop_nom_per} {appointment.prop_ape_per}</p>
-                      <p>Doctor: {appointment.vet_nom_per} {appointment.vet_ape_per}</p>
+                      <h3>{appointment.nom_mas}</h3>
+                      <p>Propietario: {appointment.prop_nom_per} {appointment.prop_ape_per}</p>
+                    </div>
+
+                    <div className="detalles-cita-admin">
+                      <p>Veterinario: {appointment.vet_nom_per} {appointment.vet_ape_per}</p>
                       <span className="tipo-cita-admin">{appointment.nom_cat}</span>
                     </div>
 
                     <div className={`insignia-estado-admin ${appointment.estado}-admin`} role="status">
-                      {appointment.estado === "confirmed" && "Confirmada"}
-                      {appointment.estado === "pending" && "Pendiente"}
-                      {appointment.estado === "urgent" && "Urgente"}
+                      {appointment.estado === "REALIZADO" && "Realizada"}
+                      {appointment.estado === "EN-ESPERA" && "En espera"}
+                      {appointment.estado === "PENDIENTE" && "Pendiente"}
+                      {appointment.estado === "CONFIRMADO" && "Confirmada"}
                     </div>
                   </li>
                 ))}
@@ -113,15 +119,18 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
               <h2>Acciones Rápidas</h2>
 
               <nav className="acciones-rapidas-admin" aria-label="Acciones rápidas">
-                <button type="button" className="boton-accion-admin primario-admin">
+                <button type="button" className="AddBtn">
                   <Plus className="icon" aria-hidden="true" />
                   Nueva Cita
                 </button>
 
-                <a href="/main" className="boton-accion-admin sitio-web-admin">
+                <button 
+                  className="EditBtn"
+                  onClick={() => navigate('/main')}
+                >
                   <ExternalLink className="icon" aria-hidden="true" />
                   Visitar Página Web
-                </a>
+                </button>
               </nav>
 
               {/* Recent Activity */}

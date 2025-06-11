@@ -31,6 +31,7 @@ import VeterinaryDashboard from '../Componentes/InterfazAdmin/Home'
 import TodasLasNotificaciones from '../Componentes/BarrasNavegacion/Notificaciones'
 import { CookiePolicy } from '../Componentes/Global/CookiesPolicy'
 import { Notification } from '../Componentes/Global/Notifys'
+import { PanelVeterinario } from '../Componentes/InterfazVeterinario/HomeVeterinario'
 
 // Import contexts
 import { AuthProvider } from '../Contexts/Auth.context'
@@ -130,7 +131,6 @@ export default function App () {
             <PrivateRoute children={<TodasLasNotificaciones URL={URL} />}/>}>
           </Route>
 
-
           {/* Admin routes  */}
           <Route path='/admin' element={<MainAdmin />} >
             <Route path='gestion/usuarios' element={
@@ -150,6 +150,9 @@ export default function App () {
           {/* Vet routes */}
           <Route path='mascota/registro' element={
             <VetRoute children={<FormularioRegMascotas URL={URL} imgDefault={imgPetDefault} />} />
+          } />
+          <Route path='home/staff' element={
+            <VetRoute children={<PanelVeterinario URL={URL} imgDefault={imgUserDefault} />} />
           } />
           <Route path='propietario/registro' element={
             <VetRoute children={<RegistroPro URL={URL} imgDefault={imgUserDefault} />} />}>

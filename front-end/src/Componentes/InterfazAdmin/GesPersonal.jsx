@@ -90,8 +90,9 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
       <NavBarAdmin />
 
       <section className="principaladminhome">
+        <HeaderAdmin URL={URL} />
+        
         <section className="tarjetagesusuario">
-          <HeaderAdmin URL={URL} />
           <div className="contenidogesusuario">
             <header className="encabezadogesusuario">
               <div className="titulogesusuario">

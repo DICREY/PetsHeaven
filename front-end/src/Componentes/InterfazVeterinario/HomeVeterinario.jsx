@@ -1,12 +1,24 @@
-import {Heart,Clock,ExternalLink,Plus,Stethoscope,Activity,FileText,Bell,HelpCircle,LogOut,User,Settings,ChevronDown,AlertCircle,CheckCircle} from "lucide-react"
-import { useState, useEffect } from "react"
-import React from "react"
+// Librarys 
+import React, { useState, useEffect } from "react"
+import { Outlet } from "react-router"
+import { Heart,Clock,ExternalLink,Plus,Stethoscope,Activity,FileText,Bell,HelpCircle,LogOut,User,Settings,ChevronDown,AlertCircle,CheckCircle } from "lucide-react"
+
+// Import
+import { Notification } from '../Global/Notifys'
+import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
+
+// Import styles 
 import "../../styles/InterfazVeterinario/HomeVeterinario.css"
 
-export default function PanelVeterinario() {
+// Component
+export const PanelVeterinario = ({ URL = '', imgDefault = '' }) => {
+  // Dynamic vars 
   const [isProfileOpen, setIsProfileOpen] = useState(false)
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
+  const [notify, setNotify] = useState(null)
 
+  // Vars
+  const mainUrl = `${URL}/staff`
   const notifications = [
     {
       id: 1,
@@ -20,7 +32,7 @@ export default function PanelVeterinario() {
     {
       id: 2,
       type: "emergency",
-      title: "Emergencia atendida",
+      title: "Emergencia atendida", 
       message: "Cirugía de Toby completada exitosamente",
       time: "Hace 1 hora",
       icon: AlertCircle,
@@ -129,107 +141,10 @@ export default function PanelVeterinario() {
   ]
 
   return (
-    <div className="tablero-vet">
+    <main className="tablero-vet">
       <main className="contenido-principal-vet">
         {/* Header del panel veterinario */}
-        <header className="cabecera-vet">
-          <div className="contenido-cabecera-vet">
-            <div className="izquierda-cabecera-vet">
-              <h1>Panel Veterinario</h1>
-              <p>Bienvenido de vuelta, Dr. Martínez</p>
-            </div>
-
-            <nav className="derecha-cabecera-vet" aria-label="Navegación principal">
-              <button type="button" className="boton-cabecera-vet boton-ayuda-vet" aria-label="Obtener ayuda">
-                <HelpCircle size={20} aria-hidden="true" />
-                <span>Ayuda</span>
-              </button>
-
-              <div className="contenedor-notificaciones-vet">
-                <button
-                  type="button"
-                  className="boton-cabecera-vet boton-notificacion-vet"
-                  onClick={handleNotificationsClick}
-                  aria-label="Ver notificaciones"
-                  aria-expanded={isNotificationsOpen}
-                  aria-haspopup="true"
-                >
-                  <Bell size={20} aria-hidden="true" />
-                  <span className="insignia-notificacion-vet" aria-label="3 notificaciones nuevas">
-                    3
-                  </span>
-                </button>
-
-                {isNotificationsOpen && (
-                  <div className="dropdown-notificaciones-vet" role="menu" aria-label="Lista de notificaciones">
-                    <header className="cabecera-notificaciones-vet">
-                      <h2>Notificaciones</h2>
-                      <span className="contador-notificaciones-vet">{notifications.length} nuevas</span>
-                    </header>
-
-                    <ul className="lista-notificaciones-vet" role="list">
-                      {notifications.map((notification) => (
-                        <li key={notification.id} className="item-notificacion-vet" role="menuitem">
-                          <div className={`icono-notificacion-vet ${notification.color}-vet`} aria-hidden="true">
-                            <notification.icon size={16} />
-                          </div>
-                          <article className="contenido-notificacion-vet">
-                            <h3>{notification.title}</h3>
-                            <p>{notification.message}</p>
-                            <time className="tiempo-notificacion-vet">{notification.time}</time>
-                          </article>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <footer className="pie-notificaciones-vet">
-                      <button type="button" className="boton-ver-todas-vet">
-                        Ver todas las notificaciones
-                      </button>
-                    </footer>
-                  </div>
-                )}
-              </div>
-
-              <div className="contenedor-perfil-vet">
-                <button
-                  type="button"
-                  className="boton-cabecera-vet boton-perfil-vet"
-                  onClick={handleProfileClick}
-                  aria-label="Menú de perfil"
-                  aria-expanded={isProfileOpen}
-                  aria-haspopup="true"
-                >
-                  <div className="avatar-perfil-vet" aria-hidden="true">
-                    <User size={20} />
-                  </div>
-                  <div className="info-perfil-vet">
-                    <span className="nombre-perfil-vet">Dr. Martínez</span>
-                    <span className="rol-perfil-vet">Veterinario</span>
-                  </div>
-                  <ChevronDown
-                    size={16}
-                    className={`icono-flecha-vet ${isProfileOpen ? "rotado-vet" : ""}`}
-                    aria-hidden="true"
-                  />
-                </button>
-
-                {isProfileOpen && (
-                  <div className="dropdown-perfil-vet" role="menu" aria-label="Opciones de perfil">
-                    <button type="button" className="item-dropdown-vet" role="menuitem">
-                      <Settings size={18} aria-hidden="true" />
-                      <span>Configuración</span>
-                    </button>
-                    <button type="button" className="item-dropdown-vet item-salir-vet" role="menuitem">
-                      <LogOut size={18} aria-hidden="true" />
-                      <span>Cerrar Sesión</span>
-                    </button>
-                  </div>
-                )}
-              </div>
-            </nav>
-          </div>
-        </header>
+        <HeaderAdmin URL={URL} />
 
         {/* Grid de Estadísticas */}
         <section className="estadisticas-grid-vet" aria-label="Estadísticas del día">
@@ -345,6 +260,13 @@ export default function PanelVeterinario() {
           </aside>
         </section>
       </main>
-    </div>
+      {notify && (
+        <Notification 
+          {...notify}
+        />
+      )}
+
+      <Outlet />
+    </main>
   )
 }

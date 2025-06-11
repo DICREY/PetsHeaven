@@ -23,7 +23,7 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
 
   // Vars 
   const navigate = useNavigate()
-  const { user, roles, logout } = useContext(AuthContext)
+  const { user, roles, mainRol, logout } = useContext(AuthContext)
   const mainUrl = `${URL}/appointment/by`
 
   useEffect(() => {
@@ -86,7 +86,12 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
     <header className="cabecera-header">
       <div className="contenido-cabecera-header">
         <div className="izquierda-cabecera-header">
-          <h1>Panel de Administración</h1>
+          {mainRol === 'Administrador'? (
+            <h1>Panel de Administración</h1>
+            ):(
+              <h1>Panel Medico</h1>
+            )
+          }
           <p>Bienvenid@ de vuelta, {user.names} {user.lastNames}</p>
         </div>
 
