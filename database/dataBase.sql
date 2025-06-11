@@ -1,4 +1,4 @@
--- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
+-- Active: 1746046445434@@127.0.0.1@3306@pets_heaven
 DROP DATABASE IF EXISTS pets_heaven;
 CREATE DATABASE IF NOT EXISTS pets_heaven;
 
@@ -94,7 +94,6 @@ CREATE TABLE pets_heaven.servicios(
 
 CREATE TABLE pets_heaven.cirugias(
     id_cir INT AUTO_INCREMENT PRIMARY KEY,
-    fec_cir DATE DEFAULT(NOW()) NOT NULL,
     des_cir VARCHAR (100) NOT NULL,
     res_cir VARCHAR(200),   # Resultados
     com_cir VARCHAR(200),   # complicacions

@@ -97,7 +97,7 @@ class Services {
 
     async registerCirugia(data) {
         return new Promise((res, rej) => {
-            const proc = "CALL RegisterCirugia(?,?,?,?,?,?,?,?,?,?,?);";
+            const proc = "CALL RegisterCirugia(?,?,?,?,?,?,?,?,?,?);";
             const params = [
                 data.cat_ser,
                 data.nom_ser,
@@ -105,7 +105,6 @@ class Services {
                 data.des_ser,
                 data.sta_ser,
                 data.tec_des_ser,
-                data.fec_cir,
                 data.des_cir,
                 data.res_cir,
                 data.com_cir,
