@@ -15,9 +15,9 @@
 ::selection {
   outline: none;
 }
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   display: none;
-}
+} */
 
 body {
   display: flex;
