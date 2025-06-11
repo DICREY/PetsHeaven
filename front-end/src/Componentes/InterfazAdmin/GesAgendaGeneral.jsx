@@ -373,7 +373,7 @@ return (
                 eventClick={handleEventClick}
 
                 // Habilita la edición de los eventos: mover, redimensionar, eliminar
-                editable={true}
+                editable={false}
 
                 // Texto que aparece cuando hay más eventos de los que se pueden mostrar en un día
                 moreLinkText={`Ver más`}

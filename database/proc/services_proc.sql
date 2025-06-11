@@ -1,4 +1,4 @@
--- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
+-- Active: 1746046445434@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchServices()
 BEGIN
     SELECT
@@ -124,8 +124,8 @@ BEGIN
     JOIN 
         categorias_ser c ON c.id_cat = s.cat_ser 
     WHERE
-        c.estado = 1
-        AND c.nom_cat LIKE p_cat_ser
+        /* c.estado = 1 */
+        c.nom_cat LIKE p_cat_ser
     ORDER BY 
         s.nom_ser
     LIMIT 1000;
