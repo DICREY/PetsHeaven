@@ -1,70 +1,83 @@
-// Librarys 
 import { useNavigate } from 'react-router'
-
-// Import styles 
-import styles from '../../styles/Global/CookiesPolicy.module.css'
 import { ChevronLeft } from 'lucide-react'
+import styles from '../../styles/Global/CookiesPolicy.module.css'
+import Footer from '../Varios/Footer2'
+import { NavBar } from '../BarrasNavegacion/NavBar'
 
-// Component 
+
 export const CookiePolicy = () => {
-    // Vars 
     const navigate = useNavigate()
 
+    const cookies = [
+        {
+            name: '__cred',
+            purpose: 'Mantener la sesión del usuario',
+            duration: '8 horas y/o hasta cerrar el navegador'
+        },
+        {
+            name: '__userName',
+            purpose: 'Identificar al usuario',
+            duration: '8 horas y/o hasta cerrar el navegador'
+        }
+    ]
+
     return (
-        <main className={styles.container}>
-            <span className={styles.headerSpan}>
-                <h1 className={styles.title}>Política de Cookies</h1>
-                <button
-                    type='button'
-                    className='BackBtn'
-                    onClick={() => navigate(-1)}
-                >
-                    <ChevronLeft className='icon' />
-                    Atras
-                </button>
-            </span>
-            <hr />
-        
-            <section className={styles.section}>
-                <h2 className={styles.subtitle}>¿Qué son las cookies?</h2>
-                <p className={styles.paragraph}>
-                Las cookies son pequeños archivos de texto que los sitios web colocan 
-                en su dispositivo para almacenar información sobre su preferencias.
-                </p>
-            </section>
-            
-            <section className={styles.section}>
-                <h2 className={styles.subtitle}>Tipos de cookies que utilizamos</h2>
-                <table className={styles.table}>
-                    <thead>
-                        <tr className={styles.tableHeadRow}>
-                            <th className={styles.th}>Nombre</th>
-                            <th className={styles.th}>Finalidad</th>
-                            <th className={styles.th}>Duración</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr className={styles.tableRow}>
-                            <td className={styles.td}>__cred</td>
-                            <td className={styles.td}>Mantener la sesión del usuario</td>
-                            <td className={styles.td}>8 horas y/o hasta cerrar el navegador</td>
-                        </tr>
-                        <tr className={styles.tableRow}>
-                            <td className={styles.td}>__userName</td>
-                            <td className={styles.td}>Identificar al usuario</td>
-                            <td className={styles.td}>8 horas y/o hasta cerrar el navegador</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-            
-            <section className={styles.section}>
-                <h2 className={styles.subtitle}>Cómo gestionar cookies</h2>
-                <p className={styles.paragraph}>
-                Puede controlar y/o eliminar las cookies como desee. Para más información, 
-                visite <a href="https://www.aboutcookies.org" className={styles.link}>aboutcookies.org</a>.
-                </p>
-            </section>
+        <main className={styles.conta}>
+            <NavBar/>
+            <div className={styles.container}>
+                <span className={styles.headerSpan}>
+                    <h1 className={styles.title}>Política de Cookies</h1>
+                    <button
+                        type='button'
+                        className='BackBtn'
+                        onClick={() => navigate(-1)}
+                        aria-label="Volver atrás"
+                    >
+                        <ChevronLeft className='icon' />
+                        Atrás
+                    </button>
+                </span>
+                
+
+                <section className={styles.section}>
+                    <h2 className={styles.subtitle}>¿Qué son las cookies?</h2>
+                    <p className={styles.paragraph}>
+                        Las cookies son pequeños archivos de texto que los sitios web colocan
+                        en su dispositivo para almacenar información sobre sus preferencias.
+                    </p>
+                </section>
+
+                <section className={styles.section}>
+                    <h2 className={styles.subtitle}>Tipos de cookies que utilizamos</h2>
+                    <table className={styles.table}>
+                        <thead>
+                            <tr className={styles.tableHeadRow}>
+                                <th className={styles.th} scope="col">Nombre</th>
+                                <th className={styles.th} scope="col">Finalidad</th>
+                                <th className={styles.th} scope="col">Duración</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {cookies.map((cookie, index) => (
+                                <tr key={index} className={styles.tableRow}>
+                                    <td className={styles.td}>{cookie.name}</td>
+                                    <td className={styles.td}>{cookie.purpose}</td>
+                                    <td className={styles.td}>{cookie.duration}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </section>
+
+                <section className={styles.section}>
+                    <h2 className={styles.subtitle}>Cómo gestionar cookies</h2>
+                    <p className={styles.paragraph}>
+                        Puede controlar y/o eliminar las cookies como desee. Para más información,
+                        visite <a href="https://www.aboutcookies.org" className={styles.link} target="_blank" rel="noopener noreferrer">aboutcookies.org</a>.
+                    </p>
+                </section>
+            </div>
+            <Footer />
         </main>
     )
 }
