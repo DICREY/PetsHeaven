@@ -94,6 +94,40 @@ class Services {
             this.database.conection.end()
         })
     }
+
+    async registerCirugia(data) {
+        return new Promise((res, rej) => {
+            const proc = "CALL RegisterCirugia(?,?,?,?,?,?,?,?,?,?,?);";
+            const params = [
+                data.cat_ser,
+                data.nom_ser,
+                data.pre_ser,
+                data.des_ser,
+                data.sta_ser,
+                data.tec_des_ser,
+                data.fec_cir,
+                data.des_cir,
+                data.res_cir,
+                data.com_cir,
+                data.obv_cir
+            ];
+
+            this.database = new DataBase();
+            this.database.conect();
+
+            if (this.database) this.database.conection.query(proc, params, (err, result) => {
+                if (err) return rej({ message: err });
+                setTimeout(() => {
+                    res({
+                        message: "Cirugía registrada correctamente",
+                        result: result
+                    });
+                }, 500);
+            });
+
+            this.database.conection.end();
+        });
+    }
 }
 
 module.exports = Services
