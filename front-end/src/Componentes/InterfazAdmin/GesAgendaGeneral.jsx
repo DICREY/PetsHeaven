@@ -405,7 +405,7 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
 
                     // Configuración de las horas de negocio (días y horarios en los que el calendario está disponible)
                     businessHours={{
-                        daysOfWeek: [1, 2, 3, 4, 5, 6], // Lunes a Sábado
+                        daysOfWeek: "",
                         startTime: "06:00",              // Comienza a las 6:00 AM
                         endTime: "24:00"                 // Finaliza a las 6:00 PM
                     }}
