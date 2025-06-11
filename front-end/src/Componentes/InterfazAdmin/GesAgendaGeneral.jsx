@@ -351,6 +351,7 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
                         center: "title",
                         end: "dayGridMonth dayGridWeek dayGridDay listYear"
                     }}
+
                     customButtons={{
                         customPrev: {
                             text: '<',
@@ -414,7 +415,7 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
 
                     views={{
                         dayGridDay: { dayMaxEvents: false }, // Sin límite de eventos en la vista de día
-                        dayGridMonth: { dayMaxEvents: 2 },   // Límite de 2 eventos solo en la vista de mes
+                        dayGridMonth: { dayMaxEvents: 1 },   // Límite de 2 eventos solo en la vista de mes
                         dayGridWeek: { dayMaxEvents: false } // Limite de eventos deshabilitado en semana
                     }}
 
