@@ -109,11 +109,11 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
   })
 
   return (
-    <div className='contenedorgesusuario'>
+    <main className='contenedorgesusuario'>
       <NavBarAdmin />
-      <main className="principalgesusuario">
-        {admin? (<HeaderAdmin />): (<HeaderUser />)}
-        <div className="contenedor-regusuario">
+      <main className="principaladminhome">
+        <HeaderAdmin URL={URL} />
+        <main className="contenedor-regusuario">
           <header className="cabecera-regusuario">
             <div className="titulo-regusuario">
               <h1>Configuración del personal </h1>
@@ -131,7 +131,7 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
             </div>
           </header>
 
-          <div className='tabs-regusuario'>
+          <section className='tabs-regusuario'>
             <div
               className={`tab-regusuario ${activeTab === 'personal' ? 'activo-regusuario' : ''}`}
               onClick={() => setActiveTab('personal')}
@@ -160,9 +160,9 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
               <Lock className='icono-regusuario' size={18} />
               <span className='texto-tab-regusuario'>Contraseña</span>
             </div>
-          </div>
+          </section>
 
-          <div className='contenido-regusuario'>
+          <section className='contenido-regusuario'>
             {activeTab === 'personal' && (
               <div className='form-regusuario'>
                 <h2>Información personal:</h2>
@@ -373,15 +373,15 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
             {activeTab === 'roles' && <RolPrivilegios register={register} errors={errors} />}
             {activeTab === 'profesional' && <InformacionProfesional register={register} errors={errors} />}
             {activeTab === 'password' && <Contrasena register={register} onSubmit={onSubmit} errors={errors} />}
-          </div>
-          <Footer/>
-        </div>
+          </section>
+        </main>
+        <Footer/>
       </main>
       {notify && (
         <Notification 
           {...notify}
         />
       )}
-    </div>
+    </main>
   )
 }

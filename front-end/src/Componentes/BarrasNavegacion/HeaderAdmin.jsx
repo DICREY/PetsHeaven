@@ -167,7 +167,7 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
               </div>
               <div className="info-perfil-header">
                 <span className="nombre-perfil-header">Sr@. {user.names} {user.lastNames}</span>
-                <span className="rol-perfil-header">{roles[0]}</span>
+                <span className="rol-perfil-header">{mainRol}</span>
               </div>
               <ChevronDown
                 className={`icono-flecha-header icon ${isProfileOpen ? "rotado-header" : ""}`}

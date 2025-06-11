@@ -18,14 +18,13 @@ import { AuthContext } from '../../Contexts/Contexts'
 import '../../../src/styles/InterfazAdmin/PerfilPropietario.css'
 
 // Component 
-export const PerfilPropietario = ({ 
+export const PerfilPropietario = ({
     userSelect, 
     owner = false,
     URL = '', 
     imgPetDefault = '', 
     imgUserDefault = '',
     setPetDetailTab,
-    roles = ['Usuario'],
     setPetSelect }) => {
   // Vars dynamic
   const [isEditing, setIsEditing] = useState(false)
@@ -41,8 +40,8 @@ export const PerfilPropietario = ({
   const mainUrl = `${URL}/people`
   const imgDefault = imgUserDefault
   const imgDefaultPet = imgPetDefault
+  const { admin, roles } = useContext(AuthContext)
   const navigate = useNavigate()
-  const { admin } = useContext(AuthContext)
   const headers = {
     Nombres: 'nom_per',
     Apellidos: 'ape_per',
