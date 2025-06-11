@@ -2,26 +2,27 @@
 import { useNavigate } from 'react-router-dom'
 import React, { useState, useRef, useContext } from 'react';
 import { Pencil, ChevronLeft, User } from 'lucide-react'
+import { useForm } from 'react-hook-form'
 
 // Imports
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { formatDate, errorStatusHandler, checkImage } from '../Varios/Util'
 import { Notification } from '../Global/Notifys'
 import { PostData } from '../Varios/Requests'
+import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
+import { HeaderUser } from '../BarrasNavegacion/HeaderUser'
+import Footer from '../Varios/Footer2'
+import { AuthContext } from '../../Contexts/Contexts'
 
 // Import styles
 import '../../../src/styles/Formularios/FormularioMascotas.css'
-import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin';
-import { HeaderUser } from '../BarrasNavegacion/HeaderUser';
-import Footer from '../Varios/Footer2';
-import { AuthContext } from '../../Contexts/Contexts';
 
 export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
   // Dynamic vars
   const [activeTab, setActiveTab] = useState('personal')
-  const [formData, setFormData] = useState({})
   const [profileImage, setProfileImage] = useState(null)
   const [notify, setNotify] = useState(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   // Vars 
   const profileInputRef = useRef(null)
@@ -29,6 +30,22 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
   const navigate = useNavigate()
   const mainURL = `${URL}/pet`
   const { admin } = useContext(AuthContext)
+
+  // Configuración de react-hook-form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    trigger
+  } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      esp_mas: '--',
+      gen_mas: '--',
+      est_rep_mas: '--'
+    }
+  })
 
   const handleProfileImageChange = (e) => {
     const file = e.target.files[0]
@@ -38,32 +55,42 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
         setProfileImage(e.target.result)
       }
       reader.readAsDataURL(file)
+      setValue('imagen_mas', file)
     }
   }
 
-  const handleChange = (e) => {
-    let { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
-  }
-
-  const sendData = async () => {
+  const onSubmit = async (data) => {
+    setIsSubmitting(true)
     setNotify({
       title:'Validando...',
       message:'Verificando datos proporcionados',
-      load:1
+      load: true
     })
+    
     try {
-      formData.fec_nac_mas = formatDate(formData.fec_nac_mas)
+      data.fec_nac_mas = formatDate(data.fec_nac_mas)
+
+      const formData = new FormData()
+      for (const key in data) {
+        if (key === 'imagen_mas' && data[key]) {
+          formData.append('imagen_mas', data[key])
+        } else {
+          formData.append(key, data[key])
+        }
+      }
 
       const created = await PostData(`${mainURL}/register`, formData)
 
       setNotify(null)
 
-      if(created.status === 201) setNotify({
-        title: 'Registro Exitoso',
-        message: 'La mascota ha sido registrada con exito',
-        close: setNotify,
-      })
+      if(created.status === 201) {
+        setNotify({
+          title: 'Registro Exitoso',
+          message: 'La mascota ha sido registrada con éxito',
+          close: setNotify,
+        })
+        setTimeout(() => navigate(-1), 2000)
+      }
     } catch (err) {
       setNotify(null)
       if(err.status) {
@@ -73,7 +100,34 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
           message: `${message}`,
           close: setNotify
         })
-      } else console.log(err)
+      } else {
+        console.log(err)
+        setNotify({
+          title: 'Error',
+          message: 'Ocurrió un error inesperado',
+          close: setNotify
+        })
+      }
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  // Funciones de validación
+  const permitirSoloLetras = (e) => {
+    const charCode = e.which || e.keyCode
+    if (!(charCode >= 65 && charCode <= 90) && 
+        !(charCode >= 97 && charCode <= 122) && 
+        !(charCode === 32) && 
+        !(charCode >= 192 && charCode <= 255)) {
+      e.preventDefault()
+    }
+  }
+
+  const permitirSoloNumeros = (e) => {
+    const charCode = e.which || e.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      e.preventDefault()
     }
   }
 
@@ -95,8 +149,11 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
               </button>
               <button 
                 className='guardar-regusuario'
-                onClick={sendData}
-                >Guardar</button>
+                onClick={handleSubmit(onSubmit)}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Guardando...' : 'Guardar'}
+              </button>
             </address>
           </header>
 
@@ -130,7 +187,11 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
                           imgDefault)
                       }
                     </div>
-                    <button className='editar-regusuario' onClick={() => profileInputRef.current.click()}>
+                    <button 
+                      type="button"
+                      className='editar-regusuario' 
+                      onClick={() => profileInputRef.current.click()}
+                    >
                       <Pencil size={16} />
                     </button>
                     <input
@@ -144,154 +205,275 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
                 </div>
 
                 <div className='grid-regusuario'>
-
                   <div className='grupo-regusuario'>
-                  <label className='etiqueta-regusuario'>Nombre de la mascota</label>
+                    <label className='etiqueta-regusuario'>Nombre de la mascota<span className='obligatorio'>*</span></label>
                     <input 
-                      onChange={handleChange}
+                      {...register('nom_mas', {
+                        required: 'El nombre es obligatorio',
+                        minLength: {
+                          value: 3,
+                          message: 'El nombre debe tener al menos 3 caracteres'
+                        },
+                        maxLength: {
+                          value: 50,
+                          message: 'El nombre no puede exceder los 50 caracteres'
+                        },
+                        pattern: {
+                          value: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
+                          message: 'Solo se permiten letras y espacios'
+                        }
+                      })}
                       type='text' 
-                      name='nom_mas'
                       placeholder='Nombre' 
-                      className='campo-regusuario'
-                      maxLength={50}
-                      minLength={3}
-                      pattern='^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$' 
-                      required 
+                      className={`campo-regusuario ${errors.nom_mas ? 'campo-error' : ''}`}
+                      onKeyPress={permitirSoloLetras}
+                      aria-invalid={!!errors.nom_mas}
+                      aria-describedby={errors.nom_mas ? 'error-nom-mas' : undefined}
                     />
+                    {errors.nom_mas && (
+                      <p id="error-nom-mas" className='mensaje-error' role="alert">
+                        {errors.nom_mas.message}
+                      </p>
+                    )}
                   </div>
 
                   <div className='grupo-regusuario'>
-                    <label className='etiqueta-regusuario'>Especie</label>
-                    <input 
-                      name='esp_mas'
-                      onChange={handleChange}
-                      type='text' 
-                      placeholder='Ej: Felino' 
-                      className='campo-regusuario'
-                      maxLength={50}
-                      minLength={3}
-                      pattern='^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$' 
-                      required 
-                    />
+                    <label className='etiqueta-regusuario'>Especie<span className='obligatorio'>*</span></label>
+                    <select
+                      {...register('esp_mas', {
+                        required: 'La especie es obligatoria',
+                        validate: value => value !== '--' || 'Debes seleccionar una especie'
+                      })}
+                      className={`campo-regusuario ${errors.esp_mas ? 'campo-error' : ''}`}
+                      aria-invalid={!!errors.esp_mas}
+                      aria-describedby={errors.esp_mas ? 'error-esp-mas' : undefined}
+                    >
+                      <option disabled value='--'>Seleccione tipo</option>
+                      <option value='Felino'>Felino</option>
+                      <option value='Canino'>Cánino</option>
+                      <option value='Roedor'>Roedor</option>
+                      <option value='Ave'>Ave</option>
+                      <option value='Reptil'>Reptil</option>
+                      <option value='Otro'>Otro</option>
+                    </select>
+                    {errors.esp_mas && (
+                      <p id="error-esp-mas" className='mensaje-error' role="alert">
+                        {errors.esp_mas.message}
+                      </p>
+                    )}
                   </div>
 
                   <div className='grupo-regusuario'>
-                    <label className='etiqueta-regusuario'>Raza</label>
+                    <label className='etiqueta-regusuario'>Raza<span className='obligatorio'>*</span></label>
                     <input 
-                      onChange={handleChange}
-                      name='raz_mas'
+                      {...register('raz_mas', {
+                        required: 'La raza es obligatoria',
+                        minLength: {
+                          value: 3,
+                          message: 'La raza debe tener al menos 3 caracteres'
+                        },
+                        maxLength: {
+                          value: 50,
+                          message: 'La raza no puede exceder los 50 caracteres'
+                        },
+                        pattern: {
+                          value: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
+                          message: 'Solo se permiten letras y espacios'
+                        }
+                      })}
                       type='text' 
                       placeholder='Ej: Siames' 
-                      className='campo-regusuario'
-                      maxLength={50}
-                      minLength={3}
-                      pattern='^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$' 
-                      required 
-                     />
+                      className={`campo-regusuario ${errors.raz_mas ? 'campo-error' : ''}`}
+                      onKeyPress={permitirSoloLetras}
+                      aria-invalid={!!errors.raz_mas}
+                      aria-describedby={errors.raz_mas ? 'error-raz-mas' : undefined}
+                    />
+                    {errors.raz_mas && (
+                      <p id="error-raz-mas" className='mensaje-error' role="alert">
+                        {errors.raz_mas.message}
+                      </p>
+                    )}
                   </div>
 
                   <div className='grupo-regusuario'>
-                    <label className='etiqueta-regusuario'>Color</label>
+                    <label className='etiqueta-regusuario'>Color<span className='obligatorio'>*</span></label>
                     <input 
-                      onChange={handleChange}
-                      name='col_mas'
+                      {...register('col_mas', {
+                        required: 'El color es obligatorio',
+                        minLength: {
+                          value: 3,
+                          message: 'El color debe tener al menos 3 caracteres'
+                        },
+                        maxLength: {
+                          value: 50,
+                          message: 'El color no puede exceder los 50 caracteres'
+                        },
+                        pattern: {
+                          value: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
+                          message: 'Solo se permiten letras y espacios'
+                        }
+                      })}
                       type='text' 
                       placeholder='Ej: Negro con blanco' 
-                      className='campo-regusuario'
-                      maxLength={50}
-                      minLength={3}
-                      pattern='^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$' 
-                      required 
+                      className={`campo-regusuario ${errors.col_mas ? 'campo-error' : ''}`}
+                      onKeyPress={permitirSoloLetras}
+                      aria-invalid={!!errors.col_mas}
+                      aria-describedby={errors.col_mas ? 'error-col-mas' : undefined}
                     />
+                    {errors.col_mas && (
+                      <p id="error-col-mas" className='mensaje-error' role="alert">
+                        {errors.col_mas.message}
+                      </p>
+                    )}
                   </div>
 
                   <div className='grupo-regusuario'>
-                    <label className='etiqueta-regusuario'>Alimento</label>
+                    <label className='etiqueta-regusuario'>Alimento<span className='obligatorio'>*</span></label>
                     <input
-                      onChange={handleChange}
-                      name='ali_mas'
+                      {...register('ali_mas', {
+                        required: 'El alimento es obligatorio',
+                        minLength: {
+                          value: 3,
+                          message: 'El alimento debe tener al menos 3 caracteres'
+                        },
+                        maxLength: {
+                          value: 50,
+                          message: 'El alimento no puede exceder los 50 caracteres'
+                        }
+                      })}
                       type='text' 
                       placeholder='Ej: Royal Cannin' 
-                      className='campo-regusuario'
-                      maxLength={50}
-                      minLength={3}
-                      pattern='^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$' 
-                      required  
+                      className={`campo-regusuario ${errors.ali_mas ? 'campo-error' : ''}`}
+                      aria-invalid={!!errors.ali_mas}
+                      aria-describedby={errors.ali_mas ? 'error-ali-mas' : undefined}
                     />
+                    {errors.ali_mas && (
+                      <p id="error-ali-mas" className='mensaje-error' role="alert">
+                        {errors.ali_mas.message}
+                      </p>
+                    )}
                   </div>
 
                   <div className='grupo-regusuario'>
-                    <label className='etiqueta-regusuario'>Fecha de nacimiento</label>
+                    <label className='etiqueta-regusuario'>Fecha de nacimiento<span className='obligatorio'>*</span></label>
                     <input 
-                      name='fec_nac_mas'
-                      onChange={handleChange}
+                      {...register('fec_nac_mas', {
+                        required: 'La fecha de nacimiento es obligatoria'
+                      })}
                       type='date'
                       max={maxDate}
-                      className='campo-regusuario'
-                      required  
+                      className={`campo-regusuario ${errors.fec_nac_mas ? 'campo-error' : ''}`}
+                      aria-invalid={!!errors.fec_nac_mas}
+                      aria-describedby={errors.fec_nac_mas ? 'error-fec-nac-mas' : undefined}
                     />
+                    {errors.fec_nac_mas && (
+                      <p id="error-fec-nac-mas" className='mensaje-error' role="alert">
+                        {errors.fec_nac_mas.message}
+                      </p>
+                    )}
                   </div>
 
                   <div className='grupo-regusuario'>
-                    <label className='etiqueta-regusuario'>Peso (kg)</label>
-                    <input type='text' 
-                      name='pes_mas'
-                      onChange={handleChange}
+                    <label className='etiqueta-regusuario'>Peso (kg)<span className='obligatorio'>*</span></label>
+                    <input 
+                      {...register('pes_mas', {
+                        required: 'El peso es obligatorio',
+                        min: {
+                          value: 0.1,
+                          message: 'El peso debe ser mayor a 0'
+                        },
+                        max: {
+                          value: 100,
+                          message: 'El peso no puede exceder los 100 kg'
+                        }
+                      })}
+                      type='number' 
+                      step="0.1"
                       placeholder='Peso (en kg)' 
-                      className='campo-regusuario' 
-                      maxLength={7}
-                      minLength={1}
-                      pattern='^[0-9]+$'
-                      required
+                      className={`campo-regusuario ${errors.pes_mas ? 'campo-error' : ''}`}
+                      onKeyPress={permitirSoloNumeros}
+                      aria-invalid={!!errors.pes_mas}
+                      aria-describedby={errors.pes_mas ? 'error-pes-mas' : undefined}
                     />
+                    {errors.pes_mas && (
+                      <p id="error-pes-mas" className='mensaje-error' role="alert">
+                        {errors.pes_mas.message}
+                      </p>
+                    )}
                   </div>
         
                   <div className='grupo-regusuario'>
-                    <label className='etiqueta-regusuario'>Documento del propietario</label>
-                    <input type='number' 
-                      name='doc_per'
-                      placeholder='Documento, persona encargada de la mascota' 
-                      className='campo-regusuario' 
-                      maxLength={20}
-                      minLength={0}
-                      pattern='^[0-9]+$'
-                      onChange={handleChange}
-                      required
+                    <label className='etiqueta-regusuario'>Documento del propietario<span className='obligatorio'>*</span></label>
+                    <input 
+                      {...register('doc_per', {
+                        required: 'El documento es obligatorio',
+                        minLength: {
+                          value: 6,
+                          message: 'Minimo 6 dígitos'
+                        },
+                        maxLength: {
+                          value: 20,
+                          message: 'Máximo 20 digitos'
+                        },
+                      })}
+                      type='text' 
+                      placeholder='Documento del propietario' 
+                      className={`campo-regusuario ${errors.doc_per ? 'campo-error' : ''}`}
+                      onKeyPress={permitirSoloNumeros}
+                      aria-invalid={!!errors.doc_per}
+                      aria-describedby={errors.doc_per ? 'error-doc-per' : undefined}
                     />
+                    {errors.doc_per && (
+                      <p id="error-doc-per" className='mensaje-error' role="alert">
+                        {errors.doc_per.message}
+                      </p>
+                    )}
                   </div>
 
                   <div className='grupo-regusuario'>
-                    <label className='etiqueta-regusuario'>Sexo de la mascota</label>
+                    <label className='etiqueta-regusuario'>Sexo de la mascota<span className='obligatorio'>*</span></label>
                     <select 
-                      name='gen_mas'
-                      className='campo-regusuario'
-                      defaultValue='--'
-                      required
-                      onChange={handleChange}
-                      >
-                    <option disabled value='--'>Seleccione tipo</option>
-                    <option value='Femenino'>Hembra</option>
-                    <option value='Masculino'>Macho</option>
+                      {...register('gen_mas', {
+                        required: 'El sexo es obligatorio',
+                        validate: value => value !== '--' || 'Debes seleccionar un sexo'
+                      })}
+                      className={`campo-regusuario ${errors.gen_mas ? 'campo-error' : ''}`}
+                      aria-invalid={!!errors.gen_mas}
+                      aria-describedby={errors.gen_mas ? 'error-gen-mas' : undefined}
+                    >
+                      <option disabled value='--'>Seleccione tipo</option>
+                      <option value='Femenino'>Hembra</option>
+                      <option value='Masculino'>Macho</option>
                     </select>
+                    {errors.gen_mas && (
+                      <p id="error-gen-mas" className='mensaje-error' role="alert">
+                        {errors.gen_mas.message}
+                      </p>
+                    )}
                   </div>
                 
-                
                   <div className='grupo-regusuario'>
-                    <label className='etiqueta-regusuario'>Estado reproductivo</label>
-                    <select className='campo-regusuario'
-                      name='est_rep_mas'
-                      defaultValue='--'
-                      required
-                      onChange={handleChange}
-                      >
-                    <option disabled value='--'>Seleccione tipo</option>
-                    <option value='Esterilizado'>Esterilizado</option>
-                    <option value='No esterilizado'>No esterilizado</option>
+                    <label className='etiqueta-regusuario'>Estado reproductivo<span className='obligatorio'>*</span></label>
+                    <select 
+                      {...register('est_rep_mas', {
+                        required: 'El estado reproductivo es obligatorio',
+                        validate: value => value !== '--' || 'Debes seleccionar un estado'
+                      })}
+                      className={`campo-regusuario ${errors.est_rep_mas ? 'campo-error' : ''}`}
+                      aria-invalid={!!errors.est_rep_mas}
+                      aria-describedby={errors.est_rep_mas ? 'error-est-rep-mas' : undefined}
+                    >
+                      <option disabled value='--'>Seleccione tipo</option>
+                      <option value='Esterilizado'>Esterilizado</option>
+                      <option value='No esterilizado'>No esterilizado</option>
                     </select>
+                    {errors.est_rep_mas && (
+                      <p id="error-est-rep-mas" className='mensaje-error' role="alert">
+                        {errors.est_rep_mas.message}
+                      </p>
+                    )}
                   </div>
                 </div>
-
-                
               </section>
             )}
           </section>
