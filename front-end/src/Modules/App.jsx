@@ -32,6 +32,7 @@ import TodasLasNotificaciones from '../Componentes/BarrasNavegacion/Notificacion
 import { CookiePolicy } from '../Componentes/Global/CookiesPolicy'
 import { Notification } from '../Componentes/Global/Notifys'
 import { PanelVeterinario } from '../Componentes/InterfazVeterinario/HomeVeterinario'
+import {ExamenesLaboratorio} from '../Componentes/InterfazAdmin/Servicios/Laboratorio'
 
 // Import contexts
 import { AuthProvider } from '../Contexts/Auth.context'
@@ -191,6 +192,9 @@ export default function App () {
           } />
           <Route path='services/spa' element={
             <VetRoute children={<SpaMascotas URL={URL} />} />
+          } />
+          <Route path='services/laboratorio' element={
+            <VetRoute children={<ExamenesLaboratorio URL={URL} />} />
           } />
 
           {/* Public Routes */}
