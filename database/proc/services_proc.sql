@@ -13,7 +13,6 @@ BEGIN
             SELECT 
                 GROUP_CONCAT(
                     CONCAT_WS('---',
-                        ci.fec_cir,
                         ci.res_cir,
                         ci.com_cir,
                         ci.obv_cir
@@ -86,7 +85,6 @@ BEGIN
             SELECT 
                 GROUP_CONCAT(
                     CONCAT_WS('---',
-                        ci.fec_cir,
                         ci.res_cir,
                         ci.com_cir,
                         ci.obv_cir
@@ -204,4 +202,3 @@ BEGIN
         @last_id_ser
     );
 END //
-
