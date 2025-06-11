@@ -7,8 +7,8 @@
 .contenidogesusuario {
   border-radius: 0.5rem;
   padding: 1.5rem;
-  box-shadow: 0 .1rem .5rem rgba(0, 0, 0, 0.116);
-  border: .1rem solid var(--gray-300);
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   background-color: var(--white);
   transition: all 0.3s ease;
 }

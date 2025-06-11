@@ -38,4 +38,14 @@ Route.get('/all/:by', ValidatorRol("usuario"), async (req,res) => {
     }
 })
 
+Route.post('/register', ValidatorRol("administrador"), async (req, res) => {
+    try {
+        const result = await services.registerCirugia(req.body);
+        res.status(201).json({ message: "Cirugía registrada correctamente", result });
+    } catch (err) {
+        if (err.status) return res.status(err.status).json({ message: err.message });
+        res.status(500).json({ message: err.message || err });
+    }
+})
+
 module.exports = Route

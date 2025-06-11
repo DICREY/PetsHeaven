@@ -201,94 +201,95 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   }, [])
 
   return (
-    <main className='contenedoradminhome'>
-      <NavBarAdmin />
-      <section className='principaladminhome'>
-        {admin? (<HeaderAdmin URL={URL} />): (<HeaderUser />)}
-        <article className='tarjetaadminhome' aria-labelledby='lista-usuarios-titulo'>
-          <div className='contenidoadminhome'>
-            <header className='encabezadoadminhome'>
-              <div className='tituloadminhome'>
-                <FileText className='iconoadminhome' aria-hidden='true' />
-                <h1 id='lista-usuarios-titulo' className='textoadminhome'>Lista de usuarios y mascotas</h1>
-                <div className='decoracionadminhome' aria-hidden='true'>
-                  <PawPrint className='huellaadminhome' />
+      <main className='contenedoradminhome'>
+        <NavBarAdmin /> 
+        <section className='principaladminhome'>
+          <HeaderAdmin />
+          
+          <article className='tarjetaadminhome' aria-labelledby='lista-usuarios-titulo'>
+            <div className='contenidoadminhome'>
+              <header className='encabezadoadminhome'>
+                <div className='tituloadminhome'>
+                  <FileText className='iconoadminhome' aria-hidden='true' />
+                  <h1 id='lista-usuarios-titulo' className='textoadminhome'>Lista de usuarios y mascotas</h1>
+                  <div className='decoracionadminhome' aria-hidden='true'>
+                    <PawPrint className='huellaadminhome' />
+                  </div>
                 </div>
-              </div>
 
-              <nav className='BtnsRegisters'>
-                <button 
-                  className='AddBtn' 
-                  onClick={() => navigate('/mascota/registro')}
-                  aria-label='Registrar nueva mascota'
-                >
-                  <Plus size={16} className='iconoplusadminhome' aria-hidden='true' />
-                  Registrar Mascota
-                </button>
-                <button 
-                  className='AddBtn' 
-                  onClick={() => navigate('/propietario/registro')}
-                  aria-label='Registrar nuevo usuario'
-                >
-                  <Plus size={16} className='iconoplusadminhome' aria-hidden='true' />
-                  Registrar usuario
-                </button>
-              </nav>
-            </header>
+                <nav className='BtnsRegisters'>
+                  <button 
+                    className='AddBtn' 
+                    onClick={() => navigate('/mascota/registro')}
+                    aria-label='Registrar nueva mascota'
+                  >
+                    <Plus size={16} className='iconoplusadminhome' aria-hidden='true' />
+                    Registrar Mascota
+                  </button>
+                  <button 
+                    className='AddBtn' 
+                    onClick={() => navigate('/propietario/registro')}
+                    aria-label='Registrar nuevo usuario'
+                  >
+                    <Plus size={16} className='iconoplusadminhome' aria-hidden='true' />
+                    Registrar usuario
+                  </button>
+                </nav>
+              </header>
 
-            <section className='busquedaadminhome' aria-label='Búsqueda de usuarios y mascotas'>
-              <div className='seccionadminhome'>
-                <label htmlFor='busqueda-usuario' className='etiquetaadminhome'>Usuario</label>
-                <div className='inputcontenedoradminhome'>
-                  <User className='inputiconoadminhome' aria-hidden='true' />
-                  <input
-                    id='busqueda-usuario'
-                    className='campoadminhome'
-                    placeholder='Buscar por identificación o nombre de usuario'
-                    type='search'
-                    aria-label='Buscar usuarios'
-                    onChange={e => handleSearch(e.target.value, datasAlmac, headersSearchUser)}
-                    onFocus={() => handleDataShow(0)}
-                  />
+              <section className='busquedaadminhome' aria-label='Búsqueda de usuarios y mascotas'>
+                <div className='seccionadminhome'>
+                  <label htmlFor='busqueda-usuario' className='etiquetaadminhome'>Usuario</label>
+                  <div className='inputcontenedoradminhome'>
+                    <User className='inputiconoadminhome' aria-hidden='true' />
+                    <input
+                      id='busqueda-usuario'
+                      className='campoadminhome'
+                      placeholder='Buscar por identificación o nombre de usuario'
+                      type='search'
+                      aria-label='Buscar usuarios'
+                      onChange={e => handleSearch(e.target.value, datasAlmac, headersSearchUser)}
+                      onFocus={() => handleDataShow(0)}
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className='seccionadminhome'>
-                <label htmlFor='busqueda-mascota' className='etiquetaadminhome'>Mascota</label>
-                <div className='inputcontenedoradminhome'>
-                  <PawPrint className='inputiconoadminhome' aria-hidden='true' />
-                  <input
-                    id='busqueda-mascota'
-                    className='campoadminhome'
-                    placeholder='Buscar por nombre o identificador de la mascota'
-                    type='search'
-                    aria-label='Buscar mascotas'
-                    onChange={e => handleSearchPets(e.target.value, petsDataAlmc, headersSearchPet)}
-                    onFocus={() => handleDataShow(1)}
-                  />
+                <div className='seccionadminhome'>
+                  <label htmlFor='busqueda-mascota' className='etiquetaadminhome'>Mascota</label>
+                  <div className='inputcontenedoradminhome'>
+                    <PawPrint className='inputiconoadminhome' aria-hidden='true' />
+                    <input
+                      id='busqueda-mascota'
+                      className='campoadminhome'
+                      placeholder='Buscar por nombre o identificador de la mascota'
+                      type='search'
+                      aria-label='Buscar mascotas'
+                      onChange={e => handleSearchPets(e.target.value, petsDataAlmc, headersSearchPet)}
+                      onFocus={() => handleDataShow(1)}
+                    />
+                  </div>
                 </div>
-              </div>
-            </section>
+              </section>
 
-            <GlobalTable 
-              fullData={datas}
-              headersSearch={['nom_per', 'doc_per', 'cel_per']}
-              listHeader={'mascotas'}
-              headers={headers}
-              watch={handleDescription}
-            /> 
-          </div>
-        </article>
-        <Footer/>
-      </section>
+              <GlobalTable 
+                fullData={datas}
+                headersSearch={['nom_per', 'doc_per', 'cel_per']}
+                listHeader={'mascotas'}
+                headers={headers}
+                watch={handleDescription}
+              /> 
+            </div>
+          </article>
+          <Footer/>
+        </section>
 
-      {notify && (
-        <Notification 
-          {...notify}
-        />
-      )}
+        {notify && (
+          <Notification 
+            {...notify}
+          />
+        )}
 
-      <Outlet />
-    </main>
+        <Outlet />
+      </main>
   )
 }

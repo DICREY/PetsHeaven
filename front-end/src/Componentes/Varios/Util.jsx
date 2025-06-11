@@ -60,7 +60,11 @@ export const checkImage = (src = '', alt, imgDefault = '', className = '') => {
   let srcMod = src? src: imgDefault
 
   img.src = srcMod
-  img.onerror = () => srcMod = imgDefault
+  img.onerror = <img
+    className={`${className}`}
+    src={imgDefault}
+    alt={alt || "No Registrado"}
+  />
 
   return <img
     className={`${className}`}

@@ -1,36 +1,33 @@
 /* Estructura principal */
 .app-container-pet-details {
     display: flex;
-    min-height: 100vh;
+    height: 100vh;
 }
 
 /* Contenido principal */
 .main-content-pet-details {
     flex: 1;
-    padding: 0.5rem 1.5rem;
-    max-width: 75rem;
-    margin: 0 auto;
     width: 100%;
+    overflow: auto;
 }
-
 
 /* Modal de mascota (adaptado del código original) */
 .pet-modal-overlay-pet-details {
-    position: relative;
-    background-color: transparent;
-    padding: 0;
     display: block;
+    position: relative;
+    padding: .5rem 1.5rem;
+    background-color: var(--background);
 }
 
 .pet-modal-content-pet-details {
-    background-color: var(--white);
-    border-radius: 0.7rem;
+    padding: 1rem;
     width: 100%;
     max-height: none;
-    overflow-y: visible;
-    box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.11);
-    padding: 2rem;
     gap: 1.5rem;
+    border-radius: 0.7rem;
+    background-color: var(--white);
+    box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.11);
+    overflow-y: visible;
 }
 
 /* Header de mascota */
