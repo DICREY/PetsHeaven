@@ -65,4 +65,38 @@ Route.get('/vacs', ValidatorRol("usuario"), async (req,res) => {
     }
 })
 
+Route.get('/cirs', ValidatorRol("usuario"), async (req,res) => {
+    try {
+        const serv = await services.findCirugies()
+        if (!serv.result[0][0]) return res.status(404).json({ message: "Cirugias no encontradas" })
+
+        res.status(200).json(serv)
+    } catch (err) {
+        if(err.status) return res.status(err.status).json(err.message)
+        res.status(500).json({ message: err })
+    }
+})
+
+Route.put('/disable', ValidatorRol("administrador"), async (req, res) => {
+    // Vars 
+    const { data } = req.body
+    console.log(data)
+
+    try {
+        if (!data) return res.status(400).json({ message: "Petición no valida"})
+        
+        const find = await services.findBy(data)
+        if (!find.result[0][0]) return res.status(404).json({message: "Mascota no encontrada"})
+        
+        const cancelled = await services.DeleteService(data)
+        if (cancelled.result) return res.status(200).json(cancelled)
+
+        res.status(500).json({ message: "No se pudo deshabilitar la cirugia" })
+    } catch (err) {
+        console.log(err)
+        if (err.status) return res.status(err.status).json({ message: err.message })
+        res.status(500).json({ message: err })
+    }
+})
+
 module.exports = Route
