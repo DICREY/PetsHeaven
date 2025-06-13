@@ -1,4 +1,4 @@
--- Active: 1746041048559@@127.0.0.1@3306@pets_heaven
+-- Active: 1747352860830@@127.0.0.1@3306@pets_heaven
 DROP DATABASE IF EXISTS pets_heaven;
 CREATE DATABASE IF NOT EXISTS pets_heaven;
 
@@ -111,6 +111,7 @@ CREATE TABLE pets_heaven.vacunas (
     des_tec_vac TEXT NOT NULL,
     lot_vac VARCHAR(255) NOT NULL,INDEX(cat_vac),
     fec_ven_vac DATE NOT NULL,
+    fre_vac VARCHAR(100) NOT NULL, # Frecuencia de vacunación
     pre_vac DECIMAL(10,2) NOT NULL,
     ser_vac INT NOT NULL,INDEX(ser_vac), FOREIGN KEY(ser_vac) REFERENCES servicios(id_ser) ON DELETE CASCADE ON UPDATE CASCADE
 );

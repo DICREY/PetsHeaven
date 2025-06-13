@@ -53,4 +53,16 @@ Route.post('/register', ValidatorRol("administrador"), async (req, res) => {
     }
 })
 
+Route.get('/vacs', ValidatorRol("usuario"), async (req,res) => {
+    try {
+        const serv = await services.findAllVacunas()
+        if (!serv.result[0][0]) return res.status(404).json({ message: "Vacunas no encontradas" })
+
+        res.status(200).json(serv)
+    } catch (err) {
+        if(err.status) return res.status(err.status).json(err.message)
+        res.status(500).json({ message: err })
+    }
+})
+
 module.exports = Route

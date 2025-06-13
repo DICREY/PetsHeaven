@@ -1,6 +1,6 @@
 // Librarys 
-import { useContext, useState } from "react"
-import {Syringe} from 'lucide-react'
+import { useContext, useState, useEffect, useCallback } from "react"
+import { Syringe } from 'lucide-react'
 
 // Imports 
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
@@ -9,92 +9,15 @@ import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
 import Footer from '../../Varios/Footer2'
 import { AuthContext } from "../../../Contexts/Contexts"
 import { Notification } from '../../Global/Notifys'
+import { GetData } from "../../Varios/Requests"
 
 // Import styles 
 import "../../../styles/InterfazAdmin/Servicios/Vacuna.css"
 
 // Component 
-export const VisualizadorVacunas = ({ URL= '' }) => {
-  // Datos ficticios UNU
-  const [vacunas, setVacunas] = useState([
-    {
-      id: 1,
-      nombre: "Rabia",
-      descripcion: "Vacuna esencial para prevenir la rabia en perros y gatos.",
-      descripcionTecnica: "Vacuna inactivada con virus de la rabia cultivado en células diploides humanas (HDCV).",
-      precio: 85000,
-      frecuencia: "Anual",
-      disponible: true,
-      efectosSecundarios: "Dolor leve en el sitio de inyección, fiebre baja, letargo por 24-48 horas.",
-      dosis: {
-        cachorro: "1 ml subcutáneo a partir de los 3 meses",
-        adulto: "1 ml subcutáneo anual",
-        senior: "1 ml subcutáneo anual, evaluación previa recomendada",
-      },
-      tipoAnimal: "ambos",
-      categoria: "Obligatoria",
-      lote: "RB-2023-45678",
-      fechaVencimiento: "2025-06-30",
-    },
-    {
-      id: 2,
-      nombre: "Parvovirus",
-      descripcion: "Protege contra el parvovirus canino, una enfermedad altamente contagiosa.",
-      descripcionTecnica: "Vacuna con virus vivo modificado (MLV) del parvovirus canino tipo 2b.",
-      precio: 95000,
-      frecuencia: "Cada 3 años",
-      disponible: true,
-      efectosSecundarios: "Fiebre leve, posible diarrea leve transitoria.",
-      dosis: {
-        cachorro: "1 ml subcutáneo a las 6, 9 y 12 semanas",
-        adulto: "1 ml subcutáneo cada 3 años",
-        senior: "1 ml subcutáneo cada 3 años",
-      },
-      tipoAnimal: "perro",
-      categoria: "Esencial",
-      lote: "PV-2023-78945",
-      fechaVencimiento: "2024-12-15",
-    },
-    {
-      id: 3,
-      nombre: "Moquillo",
-      descripcion: "Previene el moquillo canino, una enfermedad viral grave.",
-      descripcionTecnica: "Vacuna con virus vivo modificado (MLV) del virus del moquillo canino cepa Onderstepoort.",
-      precio: 78000,
-      frecuencia: "Anual",
-      disponible: true,
-      efectosSecundarios: "Letargo, posible inflamación en el sitio de inyección.",
-      dosis: {
-        cachorro: "1 ml subcutáneo a las 8, 12 y 16 semanas",
-        adulto: "1 ml subcutáneo anual",
-        senior: "1 ml subcutáneo anual",
-      },
-      tipoAnimal: "perro",
-      categoria: "Esencial",
-      lote: "MQ-2023-36547",
-      fechaVencimiento: "2025-03-22",
-    },
-    {
-      id: 4,
-      nombre: "Leucemia Felina",
-      descripcion: "Vacuna recomendada para gatos con acceso al exterior.",
-      descripcionTecnica: "Vacuna recombinante con proteína p45 del virus de la leucemia felina.",
-      precio: 110000,
-      frecuencia: "Anual",
-      disponible: false,
-      efectosSecundarios: "Pérdida de apetito temporal, posible fiebre leve.",
-      dosis: {
-        cachorro: "1 ml subcutáneo a las 9 y 12 semanas",
-        adulto: "1 ml subcutáneo anual",
-        senior: "1 ml subcutáneo anual, evaluación previa recomendada",
-      },
-      tipoAnimal: "gato",
-      categoria: "Recomendada",
-      lote: "LF-2023-98765",
-      fechaVencimiento: "2024-09-10",
-    },
-  ])
-
+export const VisualizadorVacunas = ({ URL = '' }) => {
+  const mainUrl = `${URL}/service`
+  const [vacunas, setVacunas] = useState([])
   const [nuevaVacuna, setNuevaVacuna] = useState({
     nombre: "",
     descripcion: "",
@@ -113,7 +36,6 @@ export const VisualizadorVacunas = ({ URL= '' }) => {
     lote: "",
     fechaVencimiento: "",
   })
-
   const [vacunaEditando, setVacunaEditando] = useState(null)
   const [modalAbierto, setModalAbierto] = useState(false)
   const [modoEdicion, setModoEdicion] = useState(false)
@@ -225,16 +147,58 @@ export const VisualizadorVacunas = ({ URL= '' }) => {
     }).format(precio)
   }
 
+  // Fetch vacunas 
+  const fetchVacunas = useCallback(async () => {
+    try {
+      let data = await GetData(`${mainUrl}/vacs`)
+      // Si tu backend responde con { result: [[...vacunas]] }
+      const vacunasRaw = Array.isArray(data?.result?.[0]) ? data.result[0] : data
+
+      const vacunasMapeadas = vacunasRaw.map(vacuna => ({
+        id: vacuna.id_vac,
+        nombre: vacuna.nom_vac,
+        descripcion: vacuna.des_vac,
+        descripcionTecnica: vacuna.des_tec_vac || vacuna.servicio_tecnica_descripcion,
+        precio: vacuna.pre_vac || vacuna.servicio_precio,
+        frecuencia: vacuna.fre_vac,
+        tipoAnimal: vacuna.cat_vac || "ambos",
+        dosis: {
+          cachorro: vacuna.dos_rec_vac || "",
+          adulto: vacuna.dos_rec_vac || "",
+          senior: vacuna.dos_rec_vac || "",
+        },
+        efectosSecundarios: vacuna.efe_sec_vac,
+        disponible: vacuna.servicio_estado === "DISPONIBLE",
+        categoria: vacuna.categoria_servicio_nombre || vacuna.cat_vac || "Esencial",
+        lote: vacuna.lot_vac,
+        fechaVencimiento: vacuna.fec_ven_vac,
+      }))
+
+      setVacunas(vacunasMapeadas)
+      console.log("Vacunas cargadas:", vacunasMapeadas)
+    } catch (err) {
+      setNotify({
+        title: 'Error',
+        message: 'No se pudieron cargar las vacunas',
+        close: setNotify
+      })
+    }
+  }, [mainUrl])
+
+  useEffect(() => {
+    fetchVacunas()
+  }, [fetchVacunas])
+
   return (
     <main className="maincontenedorVacunas">
       <NavBarAdmin />
       <main className="principaladminhome">
         <main className="contenedorPrincipalVacunas">
-          {admin? (<HeaderAdmin />): (<HeaderUser />)}
+          {admin ? (<HeaderAdmin />) : (<HeaderUser />)}
           <div className="contenedorVacunas">
             <header className="encabezadoVacunas">
               <div className="tituloadminhome">
-                <Syringe className='iconoadminhome' aria-hidden='true'/>
+                <Syringe className='iconoadminhome' aria-hidden='true' />
                 <h1 className="tituloVacunas">Servicios de Vacunación</h1>
               </div>
             </header>
@@ -283,7 +247,7 @@ export const VisualizadorVacunas = ({ URL= '' }) => {
             <section className="listaVacunas" role="grid" aria-label="Lista de vacunas disponibles">
               {vacunasFiltradas.map((vacuna) => (
                 <article
-                  key={vacuna.id}
+                  key={vacuna.id || vacuna.id_vac}
                   className={`tarjetaVacunas ${!vacuna.disponible ? "noDisponibleVacunas" : ""}`}
                   onClick={() => abrirModalDetalle(vacuna)}
                   role="gridcell"
@@ -431,9 +395,9 @@ export const VisualizadorVacunas = ({ URL= '' }) => {
                 </article>
               ))}
             </section>
-            
+
           </div>
-          
+
           {modalAbierto && (
             <div className="modalFondoVacunas" role="dialog" aria-modal="true" aria-labelledby="modal-title">
               <div className="modalVacunas modalFormularioVacunas">
@@ -623,11 +587,11 @@ export const VisualizadorVacunas = ({ URL= '' }) => {
                   </fieldset>
                 </form>
               </div>
-              
+
             </div>
-            
+
           )}
-        
+
           {modalDetalleAbierto && vacunaDetalle && (
             <div className="modalFondoVacunas" role="dialog" aria-modal="true" aria-labelledby="detalle-title">
               <article className="modalVacunas modalDetalleVacunas">
@@ -778,7 +742,7 @@ export const VisualizadorVacunas = ({ URL= '' }) => {
                       </div>
                     </article>
                   </section>
-                
+
                   <footer className="detalleVacunaMetricas">
                     <dl className="detalleVacunaMetrica">
                       <dt className="detalleVacunaMetricaEtiqueta">Precio</dt>
@@ -812,10 +776,10 @@ export const VisualizadorVacunas = ({ URL= '' }) => {
             </div>
           )}
         </main>
-        <Footer/>
+        <Footer />
       </main>
       {notify && (
-        <Notification 
+        <Notification
           {...notify}
         />
       )}

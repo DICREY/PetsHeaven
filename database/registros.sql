@@ -1,4 +1,4 @@
--- Active: 1746041048559@@127.0.0.1@3306@pets_heaven
+-- Active: 1747352860830@@127.0.0.1@3306@pets_heaven
 INSERT INTO pets_heaven.roles (nom_rol) VALUES
 ('Administrador'),
 ('Veterinario'),
@@ -78,7 +78,18 @@ INSERT INTO pets_heaven.servicios (cat_ser, nom_ser, pre_ser, des_ser, tec_des_s
 (3, 'Castración de gato macho', 120.00, 'Castración quirúrgica para gatos machos.', 'Anestesia general, procedimiento estéril, recuperación rápida.'),
 (3, 'Corrección de luxación patelar', 280.00, 'Cirugía para corregir luxación en rodilla.', 'Anestesia general, inmovilización y fisioterapia.'),
 (3, 'Orquiectomía en perro macho', 150.00, 'Extirpación de testículos en perros.', 'Anestesia general, cuidado postquirúrgico.'),
-(3, 'Cierre herida traumática', 100.00, 'Cierre quirúrgico de heridas traumáticas.', 'Sutura estéril, limpieza profunda, seguimiento postoperatorio.');
+(3, 'Cierre herida traumática', 100.00, 'Cierre quirúrgico de heridas traumáticas.', 'Sutura estéril, limpieza profunda, seguimiento postoperatorio.'),
+(2, 'Vacunación contra Rabia', 45.00, 'Vacuna anual contra la rabia','Administración subcutánea'),
+(2, 'Vacunación contra Moquillo', 60.00, 'Vacuna contra el virus del moquillo canino','Administración subcutánea'),
+(2, 'Vacunación contra Parvovirus', 55.00, 'Vacuna contra parvovirus canino','Inyección intramuscular'),
+(2, 'Vacunación contra Leptospirosis', 50.00, 'Protección contra bacterias dañinas','Inyección subcutánea'),
+(2, 'Vacunación contra Bordetella', 40.00, 'Prevención de tos de las perreras','Administración intranasal'),
+(2, 'Vacunación contra Coronavirus', 48.00, 'Protección contra coronavirus canino','Inyección subcutánea'),
+(2, 'Vacunación contra Hepatitis', 65.00, 'Protección contra adenovirus canino','Inyección intramuscular'),
+(2, 'Vacunación contra Influenza', 52.00, 'Protección contra influenza canina','Inyección subcutánea'),
+(2, 'Vacunación contra Giardia', 38.00, 'Protección contra giardiasis','Inyección subcutánea'),
+(2, 'Vacunación Polivalente V8', 75.00, 'Protección contra 8 enfermedades comunes','Inyección subcutánea');
+
 
 INSERT INTO pets_heaven.cirugias (des_cir, res_cir, com_cir, obv_cir, ser_cir) VALUES
 ('Castración de perro macho', 'Éxito total', 'Sin complicaciones', 'Recuperación rápida', 6),
@@ -91,6 +102,21 @@ INSERT INTO pets_heaven.cirugias (des_cir, res_cir, com_cir, obv_cir, ser_cir) V
 ('Corrección quirúrgica de luxación patelar', 'Luxación corregida', 'Inflamación y dolor moderado', 'Reposo y fisioterapia', 13),
 ('Orquiectomía en perro macho', 'Sin complicaciones', 'Pequeña infección en la herida', 'Control antibiótico', 14),
 ('Cierre quirúrgico de herida traumática', 'Herida cerrada correctamente', 'Ligera inflamación', 'Mantener limpieza diaria', 15);
+
+INSERT INTO pets_heaven.vacunas (
+    nom_vac, efe_sec_vac, cat_vac, dos_rec_vac, des_vac, des_tec_vac, 
+    lot_vac, fec_ven_vac, fre_vac, pre_vac, ser_vac
+) VALUES 
+('Vacuna contra la Rabia', 'Letargo leve, dolor en el lugar de la inyección', 'Rabia', '1 mL', 'Protege contra el virus de la rabia, enfermedad mortal', 'Administrar por vía subcutánea en la región dorsal', 'LOT-RAB-2023', '2024-12-31', 'Anual', 45.00, 16),
+('Vacuna contra el Moquillo', 'Fiebre leve, pérdida de apetito temporal', 'Moquillo', '1 mL', 'Protege contra el virus del moquillo canino', 'Administrar por vía subcutánea', 'LOT-MOQ-2023', '2024-10-15', 'Cada 2-3 años', 60.00, 17),
+('Vacuna contra Parvovirus', 'Hinchazón en el lugar de la inyección', 'Parvovirus', '1 mL', 'Protege contra el parvovirus canino altamente contagioso', 'Inyección intramuscular', 'LOT-PAR-2023', '2024-11-20', 'Anual', 55.00, 18),
+('Vacuna contra Leptospirosis', 'Dolor local, fiebre baja', 'Leptospirosis', '1 mL', 'Protege contra bacterias que causan daño renal y hepático', 'Inyección subcutánea', 'LOT-LEP-2023', '2024-09-30', 'Anual', 50.00, 19),
+('Vacuna contra Bordetella', 'Estornudos leves', 'Tos de las perreras', '0.5 mL', 'Protege contra la bacteria que causa tos de las perreras', 'Administración intranasal', 'LOT-BOR-2023', '2024-08-25', 'Anual', 40.00, 20),
+('Vacuna contra Coronavirus', 'Malestar gastrointestinal leve', 'Coronavirus', '1 mL', 'Protege contra el coronavirus canino', 'Inyección subcutánea', 'LOT-COR-2023', '2025-01-15', 'Anual', 48.00, 21),
+('Vacuna contra Hepatitis', 'Dolor en el lugar de la inyección', 'Hepatitis', '1 mL', 'Protege contra el adenovirus canino tipo 1', 'Inyección intramuscular', 'LOT-HEP-2023', '2024-07-10', 'Cada 3 años', 65.00, 22),
+('Vacuna contra Influenza', 'Letargo temporal', 'Influenza', '1 mL', 'Protege contra los virus de influenza canina', 'Inyección subcutánea', 'LOT-INF-2023', '2024-06-30', 'Anual', 52.00, 23),
+('Vacuna contra Giardia', 'Malestar gastrointestinal', 'Parásitos', '1 mL', 'Protege contra la giardiasis en perros', 'Inyección subcutánea', 'LOT-GIA-2023', '2024-05-20', 'Cada 6 meses', 38.00, 24),
+('Vacuna Polivalente V8', 'Fiebre leve, dolor local', 'Combinada', '1 mL', 'Protege contra 8 enfermedades comunes en perros', 'Inyección subcutánea', 'LOT-V8-2023', '2024-12-15', 'Anual', 75.00, 25);
 
 
 INSERT INTO pets_heaven.mascotas 
@@ -170,3 +196,4 @@ INSERT INTO pets_heaven.citas (fec_cit, hor_ini_cit, hor_fin_cit, ser_cit, vet_c
 ('2025-06-25', '17:00:00', '18:00:00', 5, 6, 5, 'PENDIENTE'),   -- Miércoles, Emergencias
 ('2025-06-25', '17:00:00', '18:00:00', 5, 6, 5, 'PENDIENTE'),   -- Miércoles, Emergencias
 ('2025-06-25', '17:00:00', '18:00:00', 3, 7, 5, 'PENDIENTE');   -- Miércoles, Emergencias
+

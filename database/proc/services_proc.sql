@@ -1,4 +1,4 @@
--- Active: 1746041048559@@127.0.0.1@3306@pets_heaven
+-- Active: 1747352860830@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchServices()
 BEGIN
     SELECT
@@ -35,6 +35,7 @@ BEGIN
                         v.des_vac,
                         v.des_tec_vac,
                         v.lot_vac,
+                        v.fre_vac,
                         v.fec_ven_vac,
                         v.pre_vac
                     ) 
@@ -107,6 +108,7 @@ BEGIN
                         v.des_vac,
                         v.des_tec_vac,
                         v.lot_vac,
+                        v.fre_vac,
                         v.fec_ven_vac,
                         v.pre_vac
                     ) 
@@ -202,3 +204,28 @@ BEGIN
         @last_id_ser
     );
 END //
+
+
+CREATE PROCEDURE pets_heaven.SearchVacunas()
+BEGIN
+    SELECT 
+        v.*,
+        s.id_ser AS servicio_id,
+        s.cat_ser AS servicio_categoria_id,
+        s.nom_ser AS servicio_nombre,
+        s.pre_ser AS servicio_precio,
+        s.des_ser AS servicio_descripcion,
+        s.sta_ser AS servicio_estado,
+        s.tec_des_ser AS servicio_tecnica_descripcion,
+        cs.nom_cat AS categoria_servicio_nombre
+    FROM 
+        vacunas v
+    JOIN 
+        servicios s ON v.ser_vac = s.id_ser
+    JOIN 
+        categorias_ser cs ON s.cat_ser = cs.id_cat
+    ORDER BY 
+        v.nom_vac ASC;
+END //
+
+

@@ -127,6 +127,34 @@ class Services {
             this.database.conection.end();
         });
     }
+
+    async findAllVacunas() {
+        return new Promise((res,rej) => {
+            // vars
+            const proc = "CALL SearchVacunas();"
+
+            // conect to database
+            this.database = new DataBase()
+            this.database.conect()
+
+            if (this.database) this.database.conection.query(proc,(err,result) => {
+                if(err) rej({ message: err })
+                if(!result || !result[0][0]) rej({
+                    message: "Not found",
+                    status: 404
+                })
+                setTimeout(() => {
+                    res({
+                        message: "Vacunas found",
+                        result: result
+                    })
+                },1000)
+            })
+
+            // close conection 
+            this.database.conection.end()
+        })
+    }
 }
 
 module.exports = Services
