@@ -65,8 +65,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
     });
 
     try {
-      const byValue = "Cirugía";
-      let data = await GetData(`${mainUrl}/all/${encodeURIComponent(byValue)}`);
+      let data = await GetData(`${mainUrl}/cirs`);
       setNotify(null);
 
       if (data && !Array.isArray(data)) {
@@ -202,7 +201,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
   const eliminarCirugia = useCallback(async (id_ser) => {
     if (!window.confirm("¿Seguro que deseas eliminar esta cirugía?")) return;
     try {
-      await ModifyData(`${mainUrl}/delete`, { id_ser });
+      await ModifyData(`${mainUrl}/disable`, {data: id_ser});
       fetchCirugias();
     } catch (err) {
       setNotify({

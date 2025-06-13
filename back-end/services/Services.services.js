@@ -66,6 +66,34 @@ class Services {
         })
     }
 
+    async findBy(data) {
+        return new Promise((res,rej) => {
+            // vars
+            const proc = "CALL SearchService(?)"
+
+            // conect to database
+            this.database = new DataBase()
+            this.database.conect()
+            
+            if (this.database) this.database.conection.query(proc,[data],(err,result) => {
+                if(err) rej({ message: err })
+                if(!result || !result[0][0]) rej({
+                    message: "Not found",
+                    status: 404
+                })
+                setTimeout(() => {
+                    res({
+                        message: "Pets found",
+                        result: result
+                    })
+                },1000)
+            })
+
+            // close conection 
+            this.database.conection.end()
+        })
+    }
+
     // function to find all the services
     async FindCategories() {
         return new Promise((res,rej) => {
@@ -85,6 +113,34 @@ class Services {
                 setTimeout(() => {
                     res({
                         message: "Services found",
+                        result: result
+                    })
+                },1000)
+            })
+
+            // close conection 
+            this.database.conection.end()
+        })
+    }
+
+    async findCirugies() {
+        return new Promise((res,rej) => {
+            // vars
+            const proc = "CALL SearchCirugias()"
+
+            // conect to database
+            this.database = new DataBase()
+            this.database.conect()
+            
+            if (this.database) this.database.conection.query(proc,(err,result) => {
+                if(err) rej({ message: err })
+                if(!result || !result[0][0]) rej({
+                    message: "Not found",
+                    status: 404
+                })
+                setTimeout(() => {
+                    res({
+                        message: "Pets found",
                         result: result
                     })
                 },1000)
@@ -153,6 +209,32 @@ class Services {
 
             // close conection 
             this.database.conection.end()
+        })
+    }
+
+    async DeleteService(data) {
+        return new Promise((res,rej) => {
+            // vars
+            const proc = "CALL DeleteService(?);"
+
+            // conect to database
+            this.database = new DataBase()
+            this.database.conect()
+
+            if (this.database) this.database.conection.query(proc,[data],(err,result) => {
+                console.log(result)
+                this.database.conection.end()
+
+                if(err) rej({ message: err })
+                setTimeout(() => {
+                    res({
+                        message: "Servicio Deshabilitado",
+                        result: result
+                    })
+                },1000)
+            })
+
+            // close conection 
         })
     }
 }

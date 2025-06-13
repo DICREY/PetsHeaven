@@ -1,7 +1,8 @@
--- Active: 1747352860830@@127.0.0.1@3306@pets_heaven
+-- Active: 1746046445434@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchServices()
 BEGIN
     SELECT
+        s.id_ser,
         s.nom_ser,
         s.pre_ser,
         s.des_ser,
@@ -75,6 +76,7 @@ CREATE PROCEDURE pets_heaven.SearchServicesBy(
 )
 BEGIN
     SELECT
+        s.id_ser,
         s.nom_ser,
         s.pre_ser,
         s.des_ser,
@@ -82,10 +84,12 @@ BEGIN
         s.sta_ser,
         c.nom_cat,
         c.img_cat,
-        (
+        (   
             SELECT 
                 GROUP_CONCAT(
                     CONCAT_WS('---',
+                        ci.id_cir,
+                        ci.des_cir,
                         ci.res_cir,
                         ci.com_cir,
                         ci.obv_cir
@@ -130,7 +134,6 @@ BEGIN
         s.nom_ser
     LIMIT 1000;
 END //
-
 
 CREATE PROCEDURE pets_heaven.RegisterService(
     IN p_cat_ser INT,
@@ -227,5 +230,116 @@ BEGIN
     ORDER BY 
         v.nom_vac ASC;
 END //
+
+
+CREATE PROCEDURE pets_heaven.SearchCirugias()
+BEGIN
+    SELECT 
+        ci.*,
+        s.id_ser,
+        s.cat_ser,  
+        s.nom_ser,  
+        s.pre_ser,  
+        s.des_ser,  
+        s.sta_ser,  
+        s.tec_des_ser,
+        cs.nom_cat 
+    FROM 
+        cirugias ci
+    JOIN 
+        servicios s ON ci.ser_CIR = s.id_ser
+    JOIN 
+        categorias_ser cs ON s.cat_ser = cs.id_cat;
+END //
+
+
+CREATE PROCEDURE pets_heaven.DeleteService(
+    IN p_id_ser INT
+)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    SET autocommit = 0;
+
+    START TRANSACTION;
+
+    UPDATE 
+        pets_heaven.servicios
+    SET 
+        sta_ser = 'NO-DISPONIBLE'
+    WHERE 
+        id_ser = p_id_ser;
+
+    COMMIT;
+
+    SET autocommit = 1;
+END //
+
+CREATE PROCEDURE pets_heaven.SearchService(
+    IN p_id_ser VARCHAR(100)
+)
+BEGIN
+    SELECT
+        s.id_ser,
+        s.nom_ser,
+        s.pre_ser,
+        s.des_ser,
+        s.tec_des_ser,
+        s.sta_ser,
+        c.nom_cat,
+        c.img_cat,
+        (
+            SELECT 
+                GROUP_CONCAT(
+                    CONCAT_WS('---',
+                        ci.res_cir,
+                        ci.com_cir,
+                        ci.obv_cir
+                    ) 
+                    SEPARATOR '; '
+                )
+            FROM 
+                cirugias ci
+            WHERE 
+                ci.ser_cir = s.id_ser
+        ) AS cirugias,
+        (
+            SELECT
+                GROUP_CONCAT(
+                    CONCAT_WS('---',
+                        v.nom_vac,
+                        v.efe_sec_vac,
+                        v.cat_vac,
+                        v.dos_rec_vac,
+                        v.des_vac,
+                        v.des_tec_vac,
+                        v.lot_vac,
+                        v.fre_vac,
+                        v.fec_ven_vac,
+                        v.pre_vac
+                    ) 
+                    SEPARATOR '; '
+                )
+            FROM 
+                vacunas v
+            WHERE 
+                v.ser_vac = s.id_ser
+        ) AS vacunas
+    FROM 
+        servicios s
+    JOIN 
+        categorias_ser c ON c.id_cat = s.cat_ser 
+    WHERE
+        s.id_ser LIKE p_id_ser
+    ORDER BY 
+        s.nom_ser
+    LIMIT 1000;
+END //
+
+
 
 
