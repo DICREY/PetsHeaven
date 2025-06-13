@@ -88,20 +88,7 @@ export const NavBar = () => {
               <a href={url} className='enlace-nav'>{redirectTo}</a>
             )
           }
-        </nav>
-
-        {/* Botón Menú Móvil */}
-        <div className='contenedor-boton-menu'>
-          <button
-            className='boton-menu'
-            onClick={() => setMenuAbierto(!menuAbierto)}
-            aria-label={menuAbierto ? 'Cerrar menú' : 'Abrir menú'}>
-            {menuAbierto ? <X className='icono-menu' /> : <Menu className='icono-menu' />}
-          </button>
-        </div>
-
-        {/* Botones para escritorio */}
-        {
+          {
           log ? (
             <div className='botones-escritorio'>
               <a href='/main' className='boton-login-nav' onClick={logout}>Cerrar Sesión</a>
@@ -113,6 +100,17 @@ export const NavBar = () => {
             </div>
           )
         }
+        </nav>
+
+        {/* Botón Menú Móvil */}
+        <div className='contenedor-boton-menu'>
+          <button
+            className='boton-menu'
+            onClick={() => setMenuAbierto(!menuAbierto)}
+            aria-label={menuAbierto ? 'Cerrar menú' : 'Abrir menú'}>
+            {menuAbierto ? <X className='icono-menu' /> : <Menu className='icono-menu' />}
+          </button>
+        </div>
       </div>
 
       {/* Navegación Móvil */}

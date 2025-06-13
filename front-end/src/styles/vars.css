@@ -57,31 +57,36 @@ html {
 }
 @media (1500px < width) {
     html {
-        font-size: 18px;
+        font-size: 20px;
     }
 }
 @media (2000px < width) {
     html {
-        font-size: 24px;
+        font-size: 28px;
+    }
+}
+@media (2500px < width) {
+    html {
+        font-size: 36px;
     }
 }
 @media (3000px < width) {
     html {
-        font-size: 32px;
+        font-size: 48px;
     }
 }
 @media (4000px < width) {
     html {
-        font-size: 40px;
+        font-size: 60px;
     }
 }
 @media (5000px < width) {
     html {
-        font-size: 48px;
+        font-size: 70px;
     }
 }
 @media (6000px < width) {
     html {
-        font-size: 56px;
+        font-size: 80px;
     }
 }

@@ -7,11 +7,7 @@
 
 .contenedor {
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  max-width: 1280px;
+  padding: 0 1rem;
 }
 
 /* ========== UTILITY CLASSES ========== */
@@ -28,7 +24,7 @@
 /* ========== CAROUSEL SECTION ========== */
 .carrusel {
   position: relative;
-  height: 50vh;
+  height: 85vh;
   width: 100%;
   overflow: hidden;
 }
@@ -67,7 +63,7 @@
 .indicador {
   width: 0.75rem;
   height: 0.75rem;
-  border-radius: 9999px;
+  border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.5);
   transition: background-color 0.3s ease;
   border: none;
@@ -75,13 +71,13 @@
 }
 
 .indicador.activo {
-  background-color: var(--blanco);
+  background-color: var(--white);
 }
 
 /* ========== ABOUT US SECTION ========== */
 .seccion-nosotros {
   padding: 2rem 0;
-  background-color: var(--blanco);
+  background-color: var(--white);
 }
 
 .contenedor-nosotros {
@@ -99,8 +95,8 @@
   width: 100%;
   height: auto;
   object-fit: cover;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 0.7rem;
+  box-shadow: var(--shadow-sm);
 }
 
 .texto-nosotros {
@@ -115,8 +111,8 @@
 }
 
 .texto-seccion {
-  color: #4b5563;
-  font-size: 0.875rem;
+  color: var(--gray-800);
+  font-size: 0.9rem;
   line-height: 1.5;
 }
 
@@ -134,14 +130,14 @@
 }
 
 .tarjeta-servicio {
-  background-color: var(--blanco);
-  border-radius: 0.5rem;
-  overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  border-radius: 0.5rem;
+  background-color: var(--white);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .tarjeta-servicio:hover {
@@ -151,7 +147,7 @@
 
 .imagen-servicio {
   position: relative;
-  height: 10rem;
+  min-height: 10rem;
 }
 
 .img-servicio {
@@ -168,22 +164,22 @@
 }
 
 .titulo-servicio {
-  font-size: 1.125rem;
+  font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
   color: var(--verde-aguamarina);
 }
 
 .descripcion-servicio {
-  color: #4b5563;
-  font-size: 0.875rem;
+  color: var(--gray-800);
+  font-size: 0.9rem;
   line-height: 1.5;
 }
 
 /* ========== PROMOTIONS SECTION ========== */
 .seccion-promociones {
   padding: 2rem 0;
-  background-color: var(--blanco);
+  background-color: var(--white);
 }
 
 .grid-promociones {
@@ -193,10 +189,10 @@
 }
 
 .tarjeta-promocion {
-  background-color: var(--blanco);
+  background-color: var(--white);
   border-radius: 0.5rem;
   overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   height: 100%;
   display: flex;
@@ -205,7 +201,7 @@
 
 .tarjeta-promocion:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
 }
 
 .imagen-promocion {
@@ -226,11 +222,11 @@
   top: 0;
   right: 0;
   background-color: var(--azul-turquesa);
-  color: white;
+  color: var(--white);
   padding: 0.25rem 0.75rem;
   margin: 0.5rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
 }
 
@@ -242,22 +238,22 @@
 }
 
 .titulo-promocion {
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
   color: var(--verde-aguamarina);
 }
 
 .descripcion-promocion {
-  color: #4b5563;
-  font-size: 0.875rem;
+  color: var(--gray-800);
+  font-size: 0.975rem;
   margin-bottom: 1rem;
   line-height: 1.5;
 }
 
 .boton-promocion {
   background-color: var(--azul-turquesa);
-  color: white;
+  color: var(--white);
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
   font-weight: 500;
@@ -267,7 +263,7 @@
   cursor: pointer;
   margin-top: auto;
   text-align: center;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
 }
 
 .boton-promocion:hover {
@@ -277,7 +273,7 @@
 /* ========== TESTIMONIALS SECTION ========== */
 .seccion-test {
   padding: 2rem 0;
-  background-color: var(--blanco);
+  background-color: var(--white);
 }
 
 .carrusel-test {
@@ -311,7 +307,7 @@
   background-color: var(--azul-claro);
   border-radius: 0.5rem;
   padding: 1.25rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm);
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -324,9 +320,9 @@
 }
 
 .foto-perfil {
-  width: 50px;
-  height: 50px;
-  border-radius: 9999px;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
   margin-right: 1rem;
   object-fit: cover;
 }
@@ -338,7 +334,7 @@
 
 .nombre-test {
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 0.975rem;
 }
 
 .estrellas {
@@ -347,8 +343,8 @@
 }
 
 .estrella {
-  height: 0.875rem;
-  width: 0.875rem;
+  height: 0.975rem;
+  width: 0.975rem;
 }
 
 .estrella.activa {
@@ -361,10 +357,10 @@
 }
 
 .texto-test {
-  color: #4b5563;
+  color: var(--gray-800);
   font-style: italic;
   margin-top: auto;
-  font-size: 0.875rem;
+  font-size: 0.975rem;
   line-height: 1.5;
 }
 
@@ -378,7 +374,7 @@
 .indicador-test {
   width: 0.75rem;
   height: 0.75rem;
-  border-radius: 9999px;
+  border-radius: 50%;
   background-color: #d1d5db;
   transition: background-color 0.3s ease;
   border: none;
@@ -409,10 +405,9 @@
 }
 
 .descripcion-contacto {
-  color: #4b5563;
+  color: var(--gray-800);
   margin-bottom: 1.5rem;
-  max-width: 400px;
-  font-size: 0.875rem;
+  font-size: 0.975rem;
   line-height: 1.5;
 }
 
@@ -426,16 +421,16 @@
 .item-contacto {
   display: flex;
   align-items: flex-start;
-  color: #4b5563;
-  font-size: 0.875rem;
+  color: var(--gray-800);
+  font-size: 0.975rem;
 }
 
 .icono-contacto {
   color: var(--azul-turquesa);
   margin-right: 0.75rem;
   flex-shrink: 0;
-  height: 1.25rem;
-  width: 1.25rem;
+  height: 1.35rem;
+  width: 1.35rem;
 }
 
 .horarios {
@@ -449,7 +444,7 @@
 }
 
 .titulo-redes {
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 0.75rem;
   color: var(--verde-aguamarina);
@@ -466,8 +461,8 @@
   justify-content: center;
   padding: 0.5rem;
   background-color: var(--azul-turquesa);
-  color: white;
-  border-radius: 9999px;
+  color: var(--white);
+  border-radius: 50%;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
@@ -477,8 +472,8 @@
 }
 
 .icono-red {
-  height: 1.25rem;
-  width: 1.25rem;
+  height: 2rem;
+  width: 2rem;
 }
 
 .mapa-contacto {
@@ -486,7 +481,7 @@
   height: 100%;
   border-radius: 0.5rem;
   overflow: hidden;
-  border: 2px solid var(--white);
+  border: .1rem solid var(--white);
   margin-bottom: 2rem;
 }
 
@@ -500,17 +495,17 @@
 /* ========== SCROLL TO TOP BUTTON ========== */
 .boton-subir {
   position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  width: 2.5rem;
-  height: 2.5rem;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
   background-color: var(--azul-turquesa);
-  color: white;
+  color: var(--white);
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
   z-index: 50;
   transition: background-color 0.3s ease, transform 0.3s ease;
