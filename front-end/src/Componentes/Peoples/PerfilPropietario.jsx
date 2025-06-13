@@ -196,12 +196,15 @@ export const PerfilPropietario = ({
           <section className='contenedorProps'>
             <header className='cabeceraProps'>
               <h1 className='tituloProps'>
-                Configuración de usuario <span className='subtituloProps'> | Creación</span>
+                Configuración de usuario <span className='subtituloProps'> | Edición</span>
               </h1>
-              <div className='botonesAccionProps'>
-                <button className='BackBtn' onClick={() => navigate(-1)}>
+              <nav className='botonesAccionProps'>
+                <button 
+                  className='BackBtn'
+                  onClick={() => navigate(-1)}
+                  >
                   <ArrowLeft className='icon' />
-                  <span>Atrás</span>
+                  Atrás
                 </button>
 
                 {/* Botones de Eliminar y Editar solo cuando estamos en la pestaña de Propietario */}
@@ -232,7 +235,7 @@ export const PerfilPropietario = ({
                     }
                   </>
                 )}
-              </div>
+              </nav>
             </header>
 
             {

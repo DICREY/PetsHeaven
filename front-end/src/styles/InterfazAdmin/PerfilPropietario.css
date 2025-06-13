@@ -1,18 +1,4 @@
 /* Estilos generales */
-.contenedorpageProps{
-  display: flex;
-  background-color: var(--background);
-  height: 100vh;
-  overflow: auto;
-}
-
-.principalpageProp{
-  flex: 1;
-  height: 100vh;
-  transition: padding 0.3s ease;
-  overflow: auto;
-}
-
 .contenedorProps {
   position: relative;
   padding: .5rem;
@@ -32,6 +18,7 @@
 
 .tituloProps {
   margin: 0;
+  border: 2px solid red;
   font-size: 1.1rem;
   font-weight: 500;
   color: var(--primary);
@@ -234,7 +221,7 @@
   gap: .2rem;
   padding: .5rem 1rem;
   background-color: var(--primary);
-  color: white;
+  color: var(--white);
   border: none;
   border-radius: .2rem;
   cursor: pointer;
@@ -253,22 +240,22 @@
 }
 
 /* Responsive */
-@media (max-width: 76.5rem) {
+@media (max-width: 1224px) {
   .cabeceraProps {
     flex-direction: column;
     align-items: flex-start;
   }
-
+  
   .botonesAccionProps {
     width: 100%;
     flex-wrap: wrap;
   }
-
+  
   .propietarioFotoInfoProps {
     flex-direction: column;
     align-items: center;
   }
-
+  
   .propietarioDatosProps {
     grid-template-columns: 1fr;
     width: 100%;
