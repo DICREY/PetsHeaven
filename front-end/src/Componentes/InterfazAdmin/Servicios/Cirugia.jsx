@@ -295,34 +295,32 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
 
   return (
     <div className="contenedor-cirugia">
-      <div className="contenedorprincipal-cirugia">
+      <div className="contenedor-principal-cirugia">
         {/* Encabezado */}
         <header className="encabezado-cirugia">
-          <div className="tituloadminhome">
-            <Activity className="iconoadminhome" />
-            <h1 className="textoadminhome">Servicios de Cirugía</h1>
+          <div className="titulo-con-icono-cirugia">
+            <Activity className="icono-titulo-cirugia" />
+            <h1 className="titulo-cirugia">Servicios de Cirugía</h1>
           </div>
           <p className="descripcion-cirugia">Gestión completa de procedimientos quirúrgicos veterinarios</p>
         </header>
 
         {/* Controles */}
-        <div className="header-cirugia">
+        <div className="controles-cirugia">
           <h2 className="subtitulo-cirugia">Cirugías Disponibles</h2>
-          <div className="controles-cirugia">
-            <div className="filtro-contenedor-cirugia">
-              <select value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)} className="filtro-cirugia">
-                <option value="todos">Todas las cirugías</option>
-                <option value="disponibles">Disponibles</option>
-                <option value="no-disponibles">No disponibles</option>
-                <optgroup label="Por especialidad">
-                  {categorias.map((categoria) => (
-                    <option key={categoria} value={categoria}>
-                      {categoria}
-                    </option>
-                  ))}
-                </optgroup>
-              </select>
-            </div>
+          <div className="acciones-control-cirugia">
+            <select value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)} className="filtro-cirugia">
+              <option value="todos">Todas las cirugías</option>
+              <option value="disponibles">Disponibles</option>
+              <option value="no-disponibles">No disponibles</option>
+              <optgroup label="Por especialidad">
+                {categorias.map((categoria) => (
+                  <option key={categoria} value={categoria}>
+                    {categoria}
+                  </option>
+                ))}
+              </optgroup>
+            </select>
             <button onClick={abrirModalAgregar} className="boton-agregar-cirugia">
               <Plus size={16} />
               Agregar Cirugía
@@ -351,20 +349,20 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
                   <button
                     onClick={(e) => {
                       e.stopPropagation()
-                      abrirModalEditar(cirugia)
+                      eliminarCirugia(cirugia.id)
                     }}
-                    className="boton-editar-cirugia"
+                    className="boton-eliminar-cirugia"
                   >
-                    <Edit size={16} />
+                    <Trash2 size={16} />
                   </button>
                   <button
                     onClick={(e) => {
                       e.stopPropagation()
                       eliminarCirugia(cirugia.id_ser)
                     }}
-                    className="boton-eliminar-cirugia"
+                    className="boton-editar-cirugia"
                   >
-                    <Trash2 size={16} />
+                    <Edit size={16} />
                   </button>
                 </div>
               </div>
@@ -532,69 +530,99 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
 
         {/* Modal Detalle */}
         {mostrarDetalle && cirugiaDetalle && (
-          <div className="overlay-cirugia">
+          <div className="modal-fondo-cirugia">
             <div className="modal-detalle-cirugia">
-              <div className="header-modal-cirugia">
+              <div className="modal-encabezado-cirugia">
                 <h3 className="titulo-modal-cirugia">{cirugiaDetalle.nombre}</h3>
-                <button onClick={() => setMostrarDetalle(false)} className="boton-cerrar-cirugia">
+                <button onClick={() => setMostrarDetalle(false)} className="cerrar-modal-cirugia">
                   <X size={20} />
                 </button>
               </div>
-
-              {/* Métricas principales */}
-              <div className="metricas-cirugia">
-                <div className="metrica-item-cirugia">
-                  <div className="metrica-valor-cirugia">{formatearPrecio(cirugiaDetalle.precio)}</div>
-                  <div className="metrica-label-cirugia">Precio</div>
-                </div>
-                <div className="metrica-item-cirugia">
-                  <div className="metrica-valor-cirugia">{cirugiaDetalle.duracion}</div>
-                  <div className="metrica-label-cirugia">Duración</div>
-                </div>
-                <div className="metrica-item-cirugia">
-                  <div className="metrica-valor-cirugia">{cirugiaDetalle.categoria}</div>
-                  <div className="metrica-label-cirugia">Categoría</div>
-                </div>
-                <div className="metrica-item-cirugia">
-                  <div className={`metrica-valor-cirugia ${cirugiaDetalle.disponible ? "" : "no-disponible-cirugia"}`}>
-                    {cirugiaDetalle.disponible ? "SÍ" : "NO"}
+              <div className="contenido-detalle-cirugia">
+                {/* Métricas principales */}
+                <div className="metricas-principales-cirugia">
+                  <div className="metrica-cirugia">
+                    <div className="valor-metrica-cirugia">{formatearPrecio(cirugiaDetalle.precio)}</div>
+                    <div className="etiqueta-metrica-cirugia">Precio</div>
                   </div>
-                  <div className="metrica-label-cirugia">Disponible</div>
-                </div>
-              </div>
-
-              {/* Secciones de información */}
-              <div className="secciones-detalle-cirugia">
-                <div className="seccion-detalle-cirugia">
-                  <h4 className="titulo-seccion-cirugia">
-                    <FileText size={20} />
-                    Descripción
-                  </h4>
-                  <p className="contenido-seccion-cirugia">{cirugiaDetalle.descripcion}</p>
-                </div>
-
-                <div className="seccion-detalle-cirugia">
-                  <h4 className="titulo-seccion-cirugia">
-                    <Target size={20} />
-                    Preparación
-                  </h4>
-                  <p className="contenido-seccion-cirugia">{cirugiaDetalle.preparacion}</p>
+                  <div className="metrica-cirugia">
+                    <div className="valor-metrica-cirugia">{cirugiaDetalle.duracion}</div>
+                    <div className="etiqueta-metrica-cirugia">Duración</div>
+                  </div>
+                  <div className="metrica-cirugia">
+                    <div className="valor-metrica-cirugia">{cirugiaDetalle.categoria}</div>
+                    <div className="etiqueta-metrica-cirugia">Categoría</div>
+                  </div>
+                  <div className="metrica-cirugia">
+                    <div
+                      className={`valor-metrica-cirugia ${
+                        cirugiaDetalle.disponible ? "texto-verde-cirugia" : "texto-rojo-cirugia"
+                      }`}
+                    >
+                      {cirugiaDetalle.disponible ? "SÍ" : "NO"}
+                    </div>
+                    <div className="etiqueta-metrica-cirugia">Disponible</div>
+                  </div>
                 </div>
 
-                <div className="seccion-detalle-cirugia">
-                  <h4 className="titulo-seccion-cirugia">
-                    <AlertTriangle size={20} />
-                    Complicaciones
-                  </h4>
-                  <p className="contenido-seccion-cirugia">{cirugiaDetalle.complicaciones}</p>
+                {/* Grid de información */}
+                <div className="grid-detalle-cirugia">
+                  <div className="seccion-detalle-cirugia">
+                    <div className="encabezado-seccion-cirugia">
+                      <FileText size={20} className="icono-seccion-cirugia" />
+                      <h4 className="titulo-seccion-cirugia">Descripción</h4>
+                    </div>
+                    <p className="texto-seccion-cirugia">{cirugiaDetalle.descripcion}</p>
+                  </div>
+
+                  <div className="seccion-detalle-cirugia">
+                    <div className="encabezado-seccion-cirugia">
+                      <Target size={20} className="icono-seccion-cirugia" />
+                      <h4 className="titulo-seccion-cirugia">Preparación</h4>
+                    </div>
+                    <p className="texto-seccion-cirugia">{cirugiaDetalle.preparacion}</p>
+                  </div>
+
+                  <div className="seccion-detalle-cirugia">
+                    <div className="encabezado-seccion-cirugia">
+                      <AlertTriangle size={20} className="icono-seccion-cirugia" />
+                      <h4 className="titulo-seccion-cirugia">Complicaciones</h4>
+                    </div>
+                    <p className="texto-seccion-cirugia">{cirugiaDetalle.complicaciones}</p>
+                  </div>
+
+                  <div className="seccion-detalle-cirugia">
+                    <div className="encabezado-seccion-cirugia">
+                      <Clock size={20} className="icono-seccion-cirugia" />
+                      <h4 className="titulo-seccion-cirugia">Recomendaciones</h4>
+                    </div>
+                    <p className="texto-seccion-cirugia">{cirugiaDetalle.recomendaciones}</p>
+                  </div>
                 </div>
 
-                <div className="seccion-detalle-cirugia">
-                  <h4 className="titulo-seccion-cirugia">
-                    <Clock size={20} />
-                    Recomendaciones
-                  </h4>
-                  <p className="contenido-seccion-cirugia">{cirugiaDetalle.recomendaciones}</p>
+                {/* Información adicional */}
+                <div className="info-adicional-cirugia">
+                  <h4 className="titulo-info-adicional-cirugia">Información Adicional</h4>
+                  <div className="contenedor-info-adicional-cirugia">
+                    <div className="item-info-adicional-cirugia">
+                      <span className="etiqueta-info-adicional-cirugia">Recuperación:</span>
+                      <span className="valor-info-adicional-cirugia">{cirugiaDetalle.recuperacion}</span>
+                    </div>
+                    <div className="item-info-adicional-cirugia">
+                      <span className="etiqueta-info-adicional-cirugia">Anestesia:</span>
+                      <span className="valor-info-adicional-cirugia">{cirugiaDetalle.anestesia}</span>
+                    </div>
+                    <div className="item-info-adicional-cirugia">
+                      <span className="etiqueta-info-adicional-cirugia">Tipo de Animal:</span>
+                      <span className="valor-info-adicional-cirugia">
+                        {cirugiaDetalle.tipoAnimal === "perro"
+                          ? "Perros"
+                          : cirugiaDetalle.tipoAnimal === "gato"
+                            ? "Gatos"
+                            : "Perros y gatos"}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
