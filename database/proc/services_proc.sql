@@ -253,8 +253,9 @@ BEGIN
 END //
 
 
-CREATE PROCEDURE pets_heaven.DeleteService(
-    IN p_id_ser INT
+CREATE PROCEDURE pets_heaven.AbleOrDesableService(
+    IN p_id_ser INT,
+    IN p_or BOOLEAN
 )
 BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -269,8 +270,10 @@ BEGIN
 
     UPDATE 
         pets_heaven.servicios
-    SET 
-        sta_ser = 'NO-DISPONIBLE'
+    SET sta_ser = CASE
+        WHEN p_or THEN 'NO-DISPONIBLE'
+        ELSE 'DISPONIBLE'
+        END
     WHERE 
         id_ser = p_id_ser;
 
