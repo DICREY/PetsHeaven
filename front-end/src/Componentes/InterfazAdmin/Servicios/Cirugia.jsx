@@ -24,15 +24,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
   const didFetch = useRef(false)
   const mainUrl = `${URL}/service`
   const { admin } = useContext(AuthContext)
-
-  const [cirugias, setCirugias] = useState([])
-  const [mostrarFormulario, setMostrarFormulario] = useState(false)
-  const [mostrarDetalle, setMostrarDetalle] = useState(false)
-  const [cirugiaDetalle, setCirugiaDetalle] = useState(null)
-  const [cirugiaEditando, setCirugiaEditando] = useState(null)
-  const [modoEdicion, setModoEdicion] = useState(false)
-  const [filtroTipo, setFiltroTipo] = useState("todos")
-  const [nuevaCirugia, setNuevaCirugia] = useState({
+  const formRef = useRef({
     id: "",
     nombre: "",
     descripcion: "",
@@ -45,18 +37,34 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
     resultadoEsperado: "",
     observaciones: ""
   });
-  const nuevaCirugia = useRef({
-    id: "",
-    nombre: "",
-    descripcion: "",
-    complicaciones: "",
-    recomendaciones: "",
-    precio: "",
-    disponible: true,
-    fechaCirugia: "",
-    descripcionBreve: "",
-    resultadoEsperado: "",
-    observaciones: ""
+
+  const [cirugias, setCirugias] = useState([])
+  const [mostrarFormulario, setMostrarFormulario] = useState(false)
+  const [mostrarDetalle, setMostrarDetalle] = useState(false)
+  const [cirugiaDetalle, setCirugiaDetalle] = useState(null)
+  const [cirugiaEditando, setCirugiaEditando] = useState(null)
+  const [modoEdicion, setModoEdicion] = useState(false)
+  const [filtroTipo, setFiltroTipo] = useState("todos")
+  
+  // Categorías de cirugías
+  const categorias = [
+    "Ortopedia",
+    "Oftalmología",
+    "Dermatología",
+    "Cardiología",
+    "Neurología",
+    "Oncología",
+    "Traumatología",
+    "Odontología",
+    "General"
+  ];
+
+  // Filtrar cirugías según el filtro seleccionado
+  const cirugiasFiltradas = cirugias.filter(cirugia => {
+    if (filtroTipo === "todos") return true;
+    if (filtroTipo === "disponibles") return cirugia.sta_ser === "DISPONIBLE";
+    if (filtroTipo === "no-disponibles") return cirugia.sta_ser === "NO DISPONIBLE";
+    return cirugia.categoria === filtroTipo;
   });
 
   const fetchCirugias = useCallback(async () => {
@@ -98,7 +106,6 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
   useEffect(() => {
     fetchCirugias();
   }, [fetchCirugias]);
-
 
   const manejarCambioFormulario = useCallback((e) => {
     const { name, value, type, checked } = e.target;
@@ -199,6 +206,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
       observaciones: cirugia.obv_cir || ""
     };
     setCirugiaEditando(cirugia);
+    setModoEdicion(true);
     setMostrarFormulario(true);
   }, []);
 
@@ -221,9 +229,69 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
   const cancelarFormulario = useCallback(() => {
     setMostrarFormulario(false);
     setCirugiaEditando(null);
+    setModoEdicion(false);
     resetForm();
   }, [resetForm]);
 
+  // Abrir modal para agregar nueva cirugía
+  const abrirModalAgregar = useCallback(() => {
+    resetForm();
+    setModoEdicion(false);
+    setMostrarFormulario(true);
+  }, [resetForm]);
+
+  // Abrir modal para ver detalles
+  const abrirModalDetalle = useCallback((cirugia) => {
+    setCirugiaDetalle({
+      ...cirugia,
+      nombre: cirugia.nom_ser,
+      descripcion: cirugia.des_ser,
+      precio: cirugia.pre_ser,
+      disponible: cirugia.sta_ser === "DISPONIBLE",
+      duracion: "45-60 minutos", // Valor de ejemplo
+      categoria: "General", // Valor de ejemplo
+      preparacion: "Ayuno de 12 horas antes del procedimiento", // Valor de ejemplo
+      recomendaciones: cirugia.tec_des_ser,
+      complicaciones: cirugia.com_cir
+    });
+    setMostrarDetalle(true);
+  }, []);
+
+  // Abrir modal para editar
+  const abrirModalEditar = useCallback((cirugia) => {
+    editarCirugia(cirugia);
+  }, [editarCirugia]);
+
+  // Formatear precio
+  const formatearPrecio = useCallback((precio) => {
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0
+    }).format(precio || 0);
+  }, []);
+
+  // Cambiar estado de disponibilidad
+  const cambiarEstado = useCallback(async (id, e) => {
+    e.stopPropagation();
+    try {
+      const cirugia = cirugias.find(c => c.id_ser === id);
+      const nuevoEstado = cirugia.sta_ser === "DISPONIBLE" ? "NO DISPONIBLE" : "DISPONIBLE";
+      
+      await ModifyData(`${mainUrl}/modify`, {
+        id_ser: id,
+        sta_ser: nuevoEstado
+      });
+      
+      fetchCirugias();
+    } catch (err) {
+      setNotify({
+        title: 'Error',
+        message: 'No se pudo cambiar el estado de la cirugía',
+        close: setNotify
+      });
+    }
+  }, [mainUrl, cirugias, fetchCirugias]);
 
   return (
     <div className="contenedor-cirugia">
@@ -265,18 +333,18 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
         {/* Grid de cirugías */}
         <div className="grid-cirugia">
           {cirugiasFiltradas.map((cirugia) => (
-            <div key={cirugia.id} className="tarjeta-cirugia" onClick={() => abrirModalDetalle(cirugia)}>
+            <div key={cirugia.id_ser} className="tarjeta-cirugia" onClick={() => abrirModalDetalle(cirugia)}>
               <div className="header-tarjeta-cirugia">
                 <div className="icono-cirugia">
                   <Activity size={20} />
                 </div>
                 <div className="info-cirugia">
-                  <h3 className="nombre-cirugia">{cirugia.nombre}</h3>
+                  <h3 className="nombre-cirugia">{cirugia.nom_ser}</h3>
                   <span
-                    className={`estado-cirugia ${cirugia.disponible ? "disponible-cirugia" : "no-disponible-cirugia"}`}
-                    onClick={(e) => cambiarEstado(cirugia.id, e)}
+                    className={`estado-cirugia ${cirugia.sta_ser === "DISPONIBLE" ? "disponible-cirugia" : "no-disponible-cirugia"}`}
+                    onClick={(e) => cambiarEstado(cirugia.id_ser, e)}
                   >
-                    {cirugia.disponible ? "Disponible" : "No disponible"}
+                    {cirugia.sta_ser === "DISPONIBLE" ? "Disponible" : "No disponible"}
                   </span>
                 </div>
                 <div className="acciones-cirugia">
@@ -292,7 +360,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
                   <button
                     onClick={(e) => {
                       e.stopPropagation()
-                      eliminarCirugia(cirugia.id)
+                      eliminarCirugia(cirugia.id_ser)
                     }}
                     className="boton-eliminar-cirugia"
                   >
@@ -301,7 +369,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
                 </div>
               </div>
 
-              <p className="descripcion-tarjeta-cirugia">{cirugia.descripcion}</p>
+              <p className="descripcion-tarjeta-cirugia">{cirugia.des_ser}</p>
 
               <div className="detalles-cirugia">
                 <div className="detalle-cirugia">
@@ -309,20 +377,20 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
                     <Clock size={14} className="icono-detalle-cirugia" />
                     Duración:
                   </strong>
-                  <p>{cirugia.duracion}</p>
+                  <p>45-60 minutos</p>
                 </div>
                 <div className="detalle-cirugia">
                   <strong>
                     <Timer size={14} className="icono-detalle-cirugia" />
                     Recuperación:
                   </strong>
-                  <p>{cirugia.recuperacion}</p>
+                  <p>7-10 días</p>
                 </div>
               </div>
 
               <div className="footer-tarjeta-cirugia">
-                <span className="precio-cirugia">{formatearPrecio(cirugia.precio)}</span>
-                <span className="id-cirugia">{cirugia.id}</span>
+                <span className="precio-cirugia">{formatearPrecio(cirugia.pre_ser)}</span>
+                <span className="id-cirugia">{cirugia.id_ser}</span>
               </div>
             </div>
           ))}
@@ -336,141 +404,128 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
                 <h3 className="titulo-formulario-cirugia">
                   {modoEdicion ? "Editar Cirugía" : "Agregar Nueva Cirugía"}
                 </h3>
-                <button onClick={() => setMostrarFormulario(false)} className="boton-cerrar-cirugia">
+                <button onClick={cancelarFormulario} className="boton-cerrar-cirugia">
                   <X size={20} />
                 </button>
               </div>
 
-              <div className="campo-cirugia">
-                <label>ID Cirugía</label>
-                <input
-                  type="text"
-                  value={nuevaCirugia.id}
-                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, id: e.target.value })}
-                  disabled={modoEdicion}
-                  placeholder="Ej: CIR001"
-                />
-              </div>
-
-              <div className="campo-cirugia">
-                <label>Nombre de la Cirugía</label>
-                <input
-                  type="text"
-                  value={nuevaCirugia.nombre}
-                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, nombre: e.target.value })}
-                  placeholder="Ej: Esterilización"
-                />
-              </div>
-
-              <div className="campo-cirugia">
-                <label>Descripción</label>
-                <textarea
-                  value={nuevaCirugia.descripcion}
-                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, descripcion: e.target.value })}
-                  placeholder="Descripción del procedimiento quirúrgico"
-                />
-              </div>
-
-              <div className="campo-cirugia">
-                <label>Precio (COP)</label>
-                <input
-                  type="number"
-                  value={nuevaCirugia.precio}
-                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, precio: e.target.value })}
-                  placeholder="Ej: 150000"
-                />
-              </div>
-
-              <div className="campo-cirugia">
-                <label>Duración</label>
-                <input
-                  type="text"
-                  value={nuevaCirugia.duracion}
-                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, duracion: e.target.value })}
-                  placeholder="Ej: 45-60 minutos"
-                />
-              </div>
-
-              <div className="campo-cirugia">
-                <label>Categoría</label>
-                <select
-                  value={nuevaCirugia.categoria}
-                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, categoria: e.target.value })}
-                >
-                  {categorias.map((categoria) => (
-                    <option key={categoria} value={categoria}>
-                      {categoria}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="campo-cirugia">
-                <label>Tiempo de Recuperación</label>
-                <input
-                  type="text"
-                  value={nuevaCirugia.recuperacion}
-                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, recuperacion: e.target.value })}
-                  placeholder="Ej: 7-10 días"
-                />
-              </div>
-
-              <div className="campo-cirugia">
-                <label>Tipo de Anestesia</label>
-                <input
-                  type="text"
-                  value={nuevaCirugia.anestesia}
-                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, anestesia: e.target.value })}
-                  placeholder="Ej: General inhalatoria"
-                />
-              </div>
-
-              <div className="campo-cirugia">
-                <label>Preparación Requerida</label>
-                <textarea
-                  value={nuevaCirugia.preparacion}
-                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, preparacion: e.target.value })}
-                  placeholder="Preparación necesaria antes de la cirugía"
-                />
-              </div>
-
-              <div className="campo-cirugia">
-                <label>Complicaciones Posibles</label>
-                <textarea
-                  value={nuevaCirugia.complicaciones}
-                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, complicaciones: e.target.value })}
-                  placeholder="Posibles complicaciones del procedimiento"
-                />
-              </div>
-
-              <div className="campo-cirugia">
-                <label>Recomendaciones Post-operatorias</label>
-                <textarea
-                  value={nuevaCirugia.recomendaciones}
-                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, recomendaciones: e.target.value })}
-                  placeholder="Cuidados después de la cirugía"
-                />
-              </div>
-
-              <div className="campo-checkbox-cirugia">
-                <label>
+              <form onSubmit={modoEdicion ? actualizarCirugia : agregarCirugia}>
+                <div className="campo-cirugia">
+                  <label>Nombre de la Cirugía</label>
                   <input
-                    type="checkbox"
-                    checked={nuevaCirugia.disponible}
-                    onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, disponible: e.target.checked })}
+                    type="text"
+                    name="nombre"
+                    value={formRef.current.nombre}
+                    onChange={manejarCambioFormulario}
+                    placeholder="Ej: Esterilización"
+                    required
                   />
-                  Disponible
-                </label>
-              </div>
+                </div>
 
-              <div className="botones-formulario-cirugia">
-                <button onClick={guardarCirugia} className="boton-guardar-cirugia">
-                  {modoEdicion ? "Actualizar" : "Agregar"}
-                </button>
-                <button onClick={() => setMostrarFormulario(false)} className="boton-cancelar-cirugia">
-                  Cancelar
-                </button>
-              </div>
+                <div className="campo-cirugia">
+                  <label>Descripción</label>
+                  <textarea
+                    name="descripcion"
+                    value={formRef.current.descripcion}
+                    onChange={manejarCambioFormulario}
+                    placeholder="Descripción del procedimiento quirúrgico"
+                    required
+                  />
+                </div>
+
+                <div className="campo-cirugia">
+                  <label>Precio (COP)</label>
+                  <input
+                    type="number"
+                    name="precio"
+                    value={formRef.current.precio}
+                    onChange={manejarCambioFormulario}
+                    placeholder="Ej: 150000"
+                    required
+                  />
+                </div>
+
+                <div className="campo-cirugia">
+                  <label>Fecha de Cirugía</label>
+                  <input
+                    type="date"
+                    name="fechaCirugia"
+                    value={formRef.current.fechaCirugia}
+                    onChange={manejarCambioFormulario}
+                  />
+                </div>
+
+                <div className="campo-cirugia">
+                  <label>Descripción Breve</label>
+                  <textarea
+                    name="descripcionBreve"
+                    value={formRef.current.descripcionBreve}
+                    onChange={manejarCambioFormulario}
+                    placeholder="Descripción breve del procedimiento"
+                  />
+                </div>
+
+                <div className="campo-cirugia">
+                  <label>Resultado Esperado</label>
+                  <textarea
+                    name="resultadoEsperado"
+                    value={formRef.current.resultadoEsperado}
+                    onChange={manejarCambioFormulario}
+                    placeholder="Resultado esperado de la cirugía"
+                  />
+                </div>
+
+                <div className="campo-cirugia">
+                  <label>Complicaciones Posibles</label>
+                  <textarea
+                    name="complicaciones"
+                    value={formRef.current.complicaciones}
+                    onChange={manejarCambioFormulario}
+                    placeholder="Posibles complicaciones del procedimiento"
+                  />
+                </div>
+
+                <div className="campo-cirugia">
+                  <label>Recomendaciones Post-operatorias</label>
+                  <textarea
+                    name="recomendaciones"
+                    value={formRef.current.recomendaciones}
+                    onChange={manejarCambioFormulario}
+                    placeholder="Cuidados después de la cirugía"
+                  />
+                </div>
+
+                <div className="campo-cirugia">
+                  <label>Observaciones</label>
+                  <textarea
+                    name="observaciones"
+                    value={formRef.current.observaciones}
+                    onChange={manejarCambioFormulario}
+                    placeholder="Observaciones adicionales"
+                  />
+                </div>
+
+                <div className="campo-checkbox-cirugia">
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="disponible"
+                      checked={formRef.current.disponible}
+                      onChange={manejarCambioFormulario}
+                    />
+                    Disponible
+                  </label>
+                </div>
+
+                <div className="botones-formulario-cirugia">
+                  <button type="submit" className="boton-guardar-cirugia">
+                    {modoEdicion ? "Actualizar" : "Agregar"}
+                  </button>
+                  <button type="button" onClick={cancelarFormulario} className="boton-cancelar-cirugia">
+                    Cancelar
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}
@@ -546,7 +601,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
           </div>
         )}
       </div>
+      {notify && <Notification {...notify} />}
     </div>
   )
 }
-
