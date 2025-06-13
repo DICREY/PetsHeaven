@@ -1,6 +1,6 @@
 // Librarys
 import { useState, useRef, useEffect, useContext, useCallback } from "react";
-import { Trash2, PenSquare, Plus, Filter, AlertCircle, FileText, Activity } from "lucide-react"
+import { Activity, Plus, Trash2, Edit, X, Clock, AlertTriangle, FileText, Target, Timer } from "lucide-react"
 
 // Imports
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'

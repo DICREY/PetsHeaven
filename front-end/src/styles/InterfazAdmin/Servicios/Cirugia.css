@@ -1,17 +1,10 @@
-.maincontenedor-cirugia{
-  display: flex;
-  min-height: 100vh;
-  width: 100%;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
 .contenedor-cirugia {
   background-color: #f8fafc;
   padding: 2rem;
   width: 100%;
   min-height: 100vh;
 }
-.contenedorprincipal-cirugia{
+.contenedorprincipal-cirugia {
   background-color: white;
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -134,6 +127,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 }
 
 .tarjeta-cirugia:hover {
@@ -176,6 +170,7 @@
   border-radius: 20px;
   font-size: 12px;
   font-weight: 500;
+  cursor: pointer;
 }
 
 .disponible-cirugia {
@@ -320,7 +315,8 @@
 }
 
 .campo-cirugia input,
-.campo-cirugia textarea {
+.campo-cirugia textarea,
+.campo-cirugia select {
   width: 100%;
   padding: 12px;
   border: 2px solid #b2ebf2;
@@ -331,7 +327,8 @@
 }
 
 .campo-cirugia input:focus,
-.campo-cirugia textarea:focus {
+.campo-cirugia textarea:focus,
+.campo-cirugia select:focus {
   outline: none;
   border-color: #00bcd4;
 }
@@ -415,6 +412,124 @@ fieldset {
   border-width: 0;
 }
 
+.tituloadminhome {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.iconoadminhome {
+  color: #00bcd4;
+  width: 24px;
+  height: 24px;
+}
+
+.textoadminhome {
+  color: #00bcd4;
+  font-size: 1.375rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Estilos adicionales para el modal de detalle */
+.modal-detalle-cirugia {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 800px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.header-modal-cirugia {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #b2ebf2;
+}
+
+.titulo-modal-cirugia {
+  color: #0097a7;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.boton-cerrar-cirugia {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.boton-cerrar-cirugia:hover {
+  background: #f5f5f5;
+}
+
+.metricas-cirugia {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.metrica-item-cirugia {
+  background: #f8fdfe;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid #b2ebf2;
+}
+
+.metrica-valor-cirugia {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #0097a7;
+  margin-bottom: 5px;
+}
+
+.metrica-label-cirugia {
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.secciones-detalle-cirugia {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.seccion-detalle-cirugia {
+  background: #f8fdfe;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #b2ebf2;
+}
+
+.titulo-seccion-cirugia {
+  color: #0097a7;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contenido-seccion-cirugia {
+  color: #666;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
 @media (max-width: 768px) {
   .contenedor-cirugia {
     padding: 10px;
@@ -437,8 +552,17 @@ fieldset {
     font-size: 2rem;
   }
 
-  .formulario-cirugia {
+  .formulario-cirugia,
+  .modal-detalle-cirugia {
     margin: 20px;
     width: calc(100% - 40px);
+  }
+
+  .metricas-cirugia {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .secciones-detalle-cirugia {
+    grid-template-columns: 1fr;
   }
 }
