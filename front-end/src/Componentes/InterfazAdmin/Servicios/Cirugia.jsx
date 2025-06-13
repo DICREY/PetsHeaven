@@ -1,6 +1,6 @@
 // Librarys
 import { useState, useRef, useEffect, useContext, useCallback } from "react";
-import { Trash2, PenSquare, Plus, Filter, AlertCircle, FileText, Activity } from "lucide-react"
+import { Activity, Plus, Trash2, Edit, X, Clock, AlertTriangle, FileText, Target, Timer } from "lucide-react"
 
 // Imports
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
@@ -14,6 +14,7 @@ import { AuthContext } from "../../../Contexts/Contexts"
 
 // Style
 import "../../../styles/InterfazAdmin/Servicios/Cirugia.css"
+import { data } from "react-router";
 
 export const CirugiasVeterinaria = ({ URL = '' }) => {
   // Dynamic Vars 
@@ -26,8 +27,12 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
 
   const [cirugias, setCirugias] = useState([])
   const [mostrarFormulario, setMostrarFormulario] = useState(false)
+  const [mostrarDetalle, setMostrarDetalle] = useState(false)
+  const [cirugiaDetalle, setCirugiaDetalle] = useState(null)
   const [cirugiaEditando, setCirugiaEditando] = useState(null)
-  const formRef = useRef({
+  const [modoEdicion, setModoEdicion] = useState(false)
+  const [filtroTipo, setFiltroTipo] = useState("todos")
+  const [nuevaCirugia, setNuevaCirugia] = useState({
     id: "",
     nombre: "",
     descripcion: "",
@@ -65,8 +70,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
     });
 
     try {
-      const byValue = "Cirugía";
-      let data = await GetData(`${mainUrl}/all/${encodeURIComponent(byValue)}`);
+      let data = await GetData(`${mainUrl}/cirs`);
       setNotify(null);
 
       if (data && !Array.isArray(data)) {
@@ -202,7 +206,8 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
   const eliminarCirugia = useCallback(async (id_ser) => {
     if (!window.confirm("¿Seguro que deseas eliminar esta cirugía?")) return;
     try {
-      await ModifyData(`${mainUrl}/delete`, { id_ser });
+      const data = {data:{id_ser:id_ser, or:true}}
+      await ModifyData(`${mainUrl}/AblOrDis`, data);
       fetchCirugias();
     } catch (err) {
       setNotify({
@@ -221,228 +226,327 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
 
 
   return (
-    <main className="maincontenedor-cirugia">
-      <NavBarAdmin />
-      <div className="principaladminhome">
-        <div className="contenedor-cirugia">
-          {admin ? (<HeaderAdmin />) : (<HeaderUser />)}
-          <div className="contenedorprincipal-cirugia">
-            <header className="encabezado-cirugia">
-              <div className="tituloadminhome">
-                <Activity className="iconoadminhome" aria-hidden='true' />
-                <h1 className="textoadminhome">Servicios de Cirugía</h1>
-              </div>
-            </header>
+    <div className="contenedor-cirugia">
+      <div className="contenedorprincipal-cirugia">
+        {/* Encabezado */}
+        <header className="encabezado-cirugia">
+          <div className="tituloadminhome">
+            <Activity className="iconoadminhome" />
+            <h1 className="textoadminhome">Servicios de Cirugía</h1>
+          </div>
+          <p className="descripcion-cirugia">Gestión completa de procedimientos quirúrgicos veterinarios</p>
+        </header>
 
-            <section className="seccion-cirugia">
-              <header className="header-cirugia">
-                <h2 className="subtitulo-cirugia">Cirugías Disponibles</h2>
-                <nav className="controles-cirugia">
-                  <div className="filtro-contenedor-cirugia">
-                    <Filter size={16} className="icono-filtro-cirugia" aria-hidden="true" />
-                    <select className="filtro-cirugia" aria-label="Filtrar cirugías">
-                      <option>Todas las cirugías</option>
-                      <option>Disponibles</option>
-                      <option>No disponibles</option>
-                    </select>
-                  </div>
-                  <button className="boton-agregar-cirugia" onClick={() => setMostrarFormulario(true)}>
-                    <Plus size={18} aria-hidden="true" /> <span>Agregar Cirugía</span>
-                  </button>
-                </nav>
-              </header>
-
-              {mostrarFormulario && (
-                <aside className="overlay-cirugia" role="dialog" aria-modal="true" aria-labelledby="form-title">
-                  <section className="formulario-cirugia">
-                    <h3 id="form-title" className="titulo-formulario-cirugia">
-                      {cirugiaEditando ? "Editar Cirugía" : "Agregar Nueva Cirugía"}
-                    </h3>
-                    <form onSubmit={agregarCirugia}>
-                      <fieldset>
-                        <legend className="sr-only">Información de la cirugía</legend>
-                        <div className="campo-cirugia">
-                          <label htmlFor="id-cirugia">ID Cirugía:</label>
-                          <input
-                            type="text"
-                            id="id-cirugia"
-                            name="id"
-                            value={nuevaCirugia.id}
-                            onChange={manejarCambioFormulario}
-                            required
-                            disabled={cirugiaEditando}
-                          />
-                        </div>
-                        <div className="campo-cirugia">
-                          <label htmlFor="nombre-cirugia">Nombre de la Cirugía:</label>
-                          <input
-                            type="text"
-                            id="nombre-cirugia"
-                            name="nombre"
-                            defaultValue={cirugiaEditando ? formRef.current.nombre : ""}
-                            onChange={manejarCambioFormulario}
-                            required
-                          />
-                        </div>
-                        <div className="campo-cirugia">
-                          <label htmlFor="descripcion-cirugia">Descripción de la Cirugía:</label>
-                          <textarea
-                            id="descripcion-cirugia"
-                            name="descripcion"
-                            defaultValue={cirugiaEditando ? formRef.current.descripcion : ""}
-                            onChange={manejarCambioFormulario}
-                            required
-                          />
-                        </div>
-                        <div className="campo-cirugia">
-                          <label htmlFor="complicaciones-cirugia">Complicaciones:</label>
-                          <textarea
-                            id="complicaciones-cirugia"
-                            name="complicaciones"
-                            defaultValue={cirugiaEditando ? formRef.current.complicaciones : ""}
-                            onChange={manejarCambioFormulario}
-                            required
-                          />
-                        </div>
-                        <div className="campo-cirugia">
-                          <label htmlFor="recomendaciones-cirugia">Recomendaciones Técnicas:</label>
-                          <textarea
-                            id="recomendaciones-cirugia"
-                            name="recomendaciones"
-                            defaultValue={cirugiaEditando ? formRef.current.recomendaciones : ""}
-                            onChange={manejarCambioFormulario}
-                            required
-                          />
-                        </div>
-                        <div className="campo-cirugia">
-                          <label htmlFor="precio-cirugia">Precio:</label>
-                          <input
-                            type="number"
-                            id="precio-cirugia"
-                            name="precio"
-                            defaultValue={cirugiaEditando ? formRef.current.precio : ""}
-                            onChange={manejarCambioFormulario}
-                            required
-                          />
-                        </div>
-                        <div className="campo-cirugia">
-                          <label htmlFor="descripcion-breve-cirugia">Descripción Breve:</label>
-                          <input
-                            type="text"
-                            id="descripcion-breve-cirugia"
-                            name="descripcionBreve"
-                            defaultValue={cirugiaEditando ? formRef.current.descripcionBreve : ""}
-                            onChange={manejarCambioFormulario}
-                            required
-                          />
-                        </div>
-                        <div className="campo-cirugia">
-                          <label htmlFor="resultado-esperado-cirugia">Resultado Esperado:</label>
-                          <input
-                            type="text"
-                            id="resultado-esperado-cirugia"
-                            name="resultadoEsperado"
-                            defaultValue={cirugiaEditando ? formRef.current.resultadoEsperado : ""}
-                            onChange={manejarCambioFormulario}
-                            required
-                          />
-                        </div>
-                        <div className="campo-cirugia">
-                          <label htmlFor="observaciones-cirugia">Observaciones:</label>
-                          <textarea
-                            id="observaciones-cirugia"
-                            name="observaciones"
-                            defaultValue={cirugiaEditando ? formRef.current.observaciones : ""}
-                            onChange={manejarCambioFormulario}
-                          />
-                        </div>
-                        <div className="campo-checkbox-cirugia">
-                          <label htmlFor="disponible-cirugia">
-                            <input
-                              type="checkbox"
-                              id="disponible-cirugia"
-                              name="disponible"
-                              defaultChecked={cirugiaEditando ? formRef.current.disponible : true}
-                              onChange={manejarCambioFormulario}
-                            />
-                            Disponible
-                          </label>
-                        </div>
-                      </fieldset>
-                      <div className="botones-formulario-cirugia">
-                        <button type="submit" className="boton-guardar-cirugia">
-                          {cirugiaEditando ? "Actualizar" : "Agregar"}
-                        </button>
-                        <button type="button" className="boton-cancelar-cirugia" onClick={cancelarFormulario}>
-                          Cancelar
-                        </button>
-                      </div>
-                    </form>
-                  </section>
-                </aside>
-              )}
-
-              <ul className="grid-cirugia" aria-label="Lista de cirugías disponibles">
-                {cirugias.map((cirugia, idx) => (
-                  <li key={cirugia.id_ser || cirugia.nom_ser || idx}>
-                    <article className="tarjeta-cirugia">
-                      <header className="header-tarjeta-cirugia">
-                        <div className="info-cirugia">
-                          <h3 className="nombre-cirugia">{cirugia.nom_ser}</h3>
-                          <span
-                            className={`estado-cirugia ${cirugia.sta_ser === "DISPONIBLE" ? "disponible-cirugia" : "no-disponible-cirugia"}`}
-                          >
-                            {cirugia.sta_ser === "DISPONIBLE" ? "Disponible" : "No disponible"}
-                          </span>
-                        </div>
-                        <div className="acciones-cirugia">
-                          <button
-                            className="boton-eliminar-cirugia"
-                            onClick={() => eliminarCirugia(cirugia.id_ser || cirugia.nom_ser)}
-                            aria-label={`Eliminar cirugía ${cirugia.nom_ser}`}
-                          >
-                            <Trash2 size={18} aria-hidden="true" />
-                          </button>
-                          <button
-                            className="boton-editar-cirugia"
-                            onClick={() => editarCirugia(cirugia)}
-                            aria-label={`Editar cirugía ${cirugia.nom_ser}`}
-                          >
-                            <PenSquare size={18} aria-hidden="true" />
-                          </button>
-                        </div>
-                      </header>
-
-                      <p className="descripcion-tarjeta-cirugia">{cirugia.des_ser}</p>
-
-                      <section className="detalles-cirugia">
-                        <div className="detalle-cirugia">
-                          <strong>
-                            <AlertCircle size={14} className="icono-detalle-cirugia" aria-hidden="true" /> Complicaciones:
-                          </strong>
-                          <p>{cirugia.com_cir || "No especificadas"}</p>
-                        </div>
-                        <div className="detalle-cirugia">
-                          <strong>
-                            <FileText size={14} className="icono-detalle-cirugia" aria-hidden="true" /> Recomendaciones:
-                          </strong>
-                          <p>{cirugia.tec_des_ser}</p>
-                        </div>
-                      </section>
-
-                      <footer className="footer-tarjeta-cirugia">
-                        <span className="precio-cirugia">Precio: ${Number(cirugia.pre_ser).toLocaleString()}</span>
-                        <span className="id-cirugia">{cirugia.id_ser || cirugia.nom_ser}</span>
-                      </footer>
-                    </article>
-                  </li>
-                ))}
-              </ul>
-            </section>
+        {/* Controles */}
+        <div className="header-cirugia">
+          <h2 className="subtitulo-cirugia">Cirugías Disponibles</h2>
+          <div className="controles-cirugia">
+            <div className="filtro-contenedor-cirugia">
+              <select value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)} className="filtro-cirugia">
+                <option value="todos">Todas las cirugías</option>
+                <option value="disponibles">Disponibles</option>
+                <option value="no-disponibles">No disponibles</option>
+                <optgroup label="Por especialidad">
+                  {categorias.map((categoria) => (
+                    <option key={categoria} value={categoria}>
+                      {categoria}
+                    </option>
+                  ))}
+                </optgroup>
+              </select>
+            </div>
+            <button onClick={abrirModalAgregar} className="boton-agregar-cirugia">
+              <Plus size={16} />
+              Agregar Cirugía
+            </button>
           </div>
         </div>
+
+        {/* Grid de cirugías */}
+        <div className="grid-cirugia">
+          {cirugiasFiltradas.map((cirugia) => (
+            <div key={cirugia.id} className="tarjeta-cirugia" onClick={() => abrirModalDetalle(cirugia)}>
+              <div className="header-tarjeta-cirugia">
+                <div className="icono-cirugia">
+                  <Activity size={20} />
+                </div>
+                <div className="info-cirugia">
+                  <h3 className="nombre-cirugia">{cirugia.nombre}</h3>
+                  <span
+                    className={`estado-cirugia ${cirugia.disponible ? "disponible-cirugia" : "no-disponible-cirugia"}`}
+                    onClick={(e) => cambiarEstado(cirugia.id, e)}
+                  >
+                    {cirugia.disponible ? "Disponible" : "No disponible"}
+                  </span>
+                </div>
+                <div className="acciones-cirugia">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      abrirModalEditar(cirugia)
+                    }}
+                    className="boton-editar-cirugia"
+                  >
+                    <Edit size={16} />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      eliminarCirugia(cirugia.id)
+                    }}
+                    className="boton-eliminar-cirugia"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+              </div>
+
+              <p className="descripcion-tarjeta-cirugia">{cirugia.descripcion}</p>
+
+              <div className="detalles-cirugia">
+                <div className="detalle-cirugia">
+                  <strong>
+                    <Clock size={14} className="icono-detalle-cirugia" />
+                    Duración:
+                  </strong>
+                  <p>{cirugia.duracion}</p>
+                </div>
+                <div className="detalle-cirugia">
+                  <strong>
+                    <Timer size={14} className="icono-detalle-cirugia" />
+                    Recuperación:
+                  </strong>
+                  <p>{cirugia.recuperacion}</p>
+                </div>
+              </div>
+
+              <div className="footer-tarjeta-cirugia">
+                <span className="precio-cirugia">{formatearPrecio(cirugia.precio)}</span>
+                <span className="id-cirugia">{cirugia.id}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Modal Agregar/Editar */}
+        {mostrarFormulario && (
+          <div className="overlay-cirugia">
+            <div className="formulario-cirugia">
+              <div className="header-modal-cirugia">
+                <h3 className="titulo-formulario-cirugia">
+                  {modoEdicion ? "Editar Cirugía" : "Agregar Nueva Cirugía"}
+                </h3>
+                <button onClick={() => setMostrarFormulario(false)} className="boton-cerrar-cirugia">
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="campo-cirugia">
+                <label>ID Cirugía</label>
+                <input
+                  type="text"
+                  value={nuevaCirugia.id}
+                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, id: e.target.value })}
+                  disabled={modoEdicion}
+                  placeholder="Ej: CIR001"
+                />
+              </div>
+
+              <div className="campo-cirugia">
+                <label>Nombre de la Cirugía</label>
+                <input
+                  type="text"
+                  value={nuevaCirugia.nombre}
+                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, nombre: e.target.value })}
+                  placeholder="Ej: Esterilización"
+                />
+              </div>
+
+              <div className="campo-cirugia">
+                <label>Descripción</label>
+                <textarea
+                  value={nuevaCirugia.descripcion}
+                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, descripcion: e.target.value })}
+                  placeholder="Descripción del procedimiento quirúrgico"
+                />
+              </div>
+
+              <div className="campo-cirugia">
+                <label>Precio (COP)</label>
+                <input
+                  type="number"
+                  value={nuevaCirugia.precio}
+                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, precio: e.target.value })}
+                  placeholder="Ej: 150000"
+                />
+              </div>
+
+              <div className="campo-cirugia">
+                <label>Duración</label>
+                <input
+                  type="text"
+                  value={nuevaCirugia.duracion}
+                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, duracion: e.target.value })}
+                  placeholder="Ej: 45-60 minutos"
+                />
+              </div>
+
+              <div className="campo-cirugia">
+                <label>Categoría</label>
+                <select
+                  value={nuevaCirugia.categoria}
+                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, categoria: e.target.value })}
+                >
+                  {categorias.map((categoria) => (
+                    <option key={categoria} value={categoria}>
+                      {categoria}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="campo-cirugia">
+                <label>Tiempo de Recuperación</label>
+                <input
+                  type="text"
+                  value={nuevaCirugia.recuperacion}
+                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, recuperacion: e.target.value })}
+                  placeholder="Ej: 7-10 días"
+                />
+              </div>
+
+              <div className="campo-cirugia">
+                <label>Tipo de Anestesia</label>
+                <input
+                  type="text"
+                  value={nuevaCirugia.anestesia}
+                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, anestesia: e.target.value })}
+                  placeholder="Ej: General inhalatoria"
+                />
+              </div>
+
+              <div className="campo-cirugia">
+                <label>Preparación Requerida</label>
+                <textarea
+                  value={nuevaCirugia.preparacion}
+                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, preparacion: e.target.value })}
+                  placeholder="Preparación necesaria antes de la cirugía"
+                />
+              </div>
+
+              <div className="campo-cirugia">
+                <label>Complicaciones Posibles</label>
+                <textarea
+                  value={nuevaCirugia.complicaciones}
+                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, complicaciones: e.target.value })}
+                  placeholder="Posibles complicaciones del procedimiento"
+                />
+              </div>
+
+              <div className="campo-cirugia">
+                <label>Recomendaciones Post-operatorias</label>
+                <textarea
+                  value={nuevaCirugia.recomendaciones}
+                  onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, recomendaciones: e.target.value })}
+                  placeholder="Cuidados después de la cirugía"
+                />
+              </div>
+
+              <div className="campo-checkbox-cirugia">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={nuevaCirugia.disponible}
+                    onChange={(e) => setNuevaCirugia({ ...nuevaCirugia, disponible: e.target.checked })}
+                  />
+                  Disponible
+                </label>
+              </div>
+
+              <div className="botones-formulario-cirugia">
+                <button onClick={guardarCirugia} className="boton-guardar-cirugia">
+                  {modoEdicion ? "Actualizar" : "Agregar"}
+                </button>
+                <button onClick={() => setMostrarFormulario(false)} className="boton-cancelar-cirugia">
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Modal Detalle */}
+        {mostrarDetalle && cirugiaDetalle && (
+          <div className="overlay-cirugia">
+            <div className="modal-detalle-cirugia">
+              <div className="header-modal-cirugia">
+                <h3 className="titulo-modal-cirugia">{cirugiaDetalle.nombre}</h3>
+                <button onClick={() => setMostrarDetalle(false)} className="boton-cerrar-cirugia">
+                  <X size={20} />
+                </button>
+              </div>
+
+              {/* Métricas principales */}
+              <div className="metricas-cirugia">
+                <div className="metrica-item-cirugia">
+                  <div className="metrica-valor-cirugia">{formatearPrecio(cirugiaDetalle.precio)}</div>
+                  <div className="metrica-label-cirugia">Precio</div>
+                </div>
+                <div className="metrica-item-cirugia">
+                  <div className="metrica-valor-cirugia">{cirugiaDetalle.duracion}</div>
+                  <div className="metrica-label-cirugia">Duración</div>
+                </div>
+                <div className="metrica-item-cirugia">
+                  <div className="metrica-valor-cirugia">{cirugiaDetalle.categoria}</div>
+                  <div className="metrica-label-cirugia">Categoría</div>
+                </div>
+                <div className="metrica-item-cirugia">
+                  <div className={`metrica-valor-cirugia ${cirugiaDetalle.disponible ? "" : "no-disponible-cirugia"}`}>
+                    {cirugiaDetalle.disponible ? "SÍ" : "NO"}
+                  </div>
+                  <div className="metrica-label-cirugia">Disponible</div>
+                </div>
+              </div>
+
+              {/* Secciones de información */}
+              <div className="secciones-detalle-cirugia">
+                <div className="seccion-detalle-cirugia">
+                  <h4 className="titulo-seccion-cirugia">
+                    <FileText size={20} />
+                    Descripción
+                  </h4>
+                  <p className="contenido-seccion-cirugia">{cirugiaDetalle.descripcion}</p>
+                </div>
+
+                <div className="seccion-detalle-cirugia">
+                  <h4 className="titulo-seccion-cirugia">
+                    <Target size={20} />
+                    Preparación
+                  </h4>
+                  <p className="contenido-seccion-cirugia">{cirugiaDetalle.preparacion}</p>
+                </div>
+
+                <div className="seccion-detalle-cirugia">
+                  <h4 className="titulo-seccion-cirugia">
+                    <AlertTriangle size={20} />
+                    Complicaciones
+                  </h4>
+                  <p className="contenido-seccion-cirugia">{cirugiaDetalle.complicaciones}</p>
+                </div>
+
+                <div className="seccion-detalle-cirugia">
+                  <h4 className="titulo-seccion-cirugia">
+                    <Clock size={20} />
+                    Recomendaciones
+                  </h4>
+                  <p className="contenido-seccion-cirugia">{cirugiaDetalle.recomendaciones}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </main>
+    </div>
   )
 }
 

@@ -39,7 +39,7 @@
     --purple-1:  #c7d2fe;
     --purple-2:  #6366f1;
     --border-radius: 0.7rem;
-    --shadow-sm: 0 0.1rem 0.2rem #0000001f;
+    --shadow-sm: 0 0.1rem 0.2rem #00000027;
     --shadow-md: 0 0.2rem 0.4rem #0000001a;
     --shadow-lg: 0 0.7rem 0.9rem #0000001a;
     --font-size: 1rem;
@@ -55,38 +55,23 @@ html {
         font-size: 16px;
     }
 }
-@media (1500px < width) {
-    html {
-        font-size: 20px;
-    }
-}
-@media (2000px < width) {
-    html {
-        font-size: 28px;
-    }
-}
 @media (2500px < width) {
     html {
-        font-size: 36px;
-    }
-}
-@media (3000px < width) {
-    html {
-        font-size: 48px;
+        font-size: 26px;
     }
 }
 @media (4000px < width) {
     html {
-        font-size: 60px;
+        font-size: 36px;
     }
 }
-@media (5000px < width) {
+@media (5500px < width) {
     html {
-        font-size: 70px;
+        font-size: 46px;
     }
 }
-@media (6000px < width) {
+@media (7000px < width) {
     html {
-        font-size: 80px;
+        font-size: 56px;
     }
 }
