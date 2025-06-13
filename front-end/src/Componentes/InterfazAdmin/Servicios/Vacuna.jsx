@@ -193,8 +193,8 @@ export const VisualizadorVacunas = ({ URL = '' }) => {
     <main className="maincontenedorVacunas">
       <NavBarAdmin />
       <main className="principaladminhome">
+        {admin ? (<HeaderAdmin />) : (<HeaderUser />)}
         <main className="contenedorPrincipalVacunas">
-          {admin ? (<HeaderAdmin />) : (<HeaderUser />)}
           <div className="contenedorVacunas">
             <header className="encabezadoVacunas">
               <div className="tituloadminhome">
