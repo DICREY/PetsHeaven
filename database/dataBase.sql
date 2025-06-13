@@ -156,3 +156,6 @@ CREATE TABLE pets_heaven.consultas(
     vet_con INT NOT NULL,INDEX (vet_con),FOREIGN KEY (vet_con) REFERENCES veterinarios(id_vet) ON DELETE RESTRICT ON UPDATE CASCADE,
     mas_con INT NOT NULL,INDEX (mas_con),FOREIGN KEY (mas_con) REFERENCES mascotas(id_mas) ON DELETE RESTRICT ON UPDATE CASCADE
 );
+
+
+
