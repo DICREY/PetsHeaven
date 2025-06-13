@@ -89,7 +89,7 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
       }
 
       const created = await PostData(`${mainUrl}/register`, formData)
-      
+
       setNotify({
         title: 'Registrado',
         message: 'El usuario ha sido registrado correctamente',
@@ -142,7 +142,7 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
               <span className='creacion-regusuario'>| Creación</span>
             </div>
             <div className='acciones-regusuario'>
-              <button 
+              <button
                 className='atras-regusuario'
                 onClick={() => navigate(-1)}
                 type="button"
@@ -150,8 +150,8 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
                 <ChevronLeft size={16} />
                 <span className='texto-btn-regusuario'>Atrás</span>
               </button>
-              <button 
-                className='guardar-regusuario' 
+              <button
+                className='guardar-regusuario'
                 onClick={handleSubmit(onSubmit)}
                 disabled={isSubmitting}
                 aria-busy={isSubmitting}
@@ -189,9 +189,9 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
                   <div className='perfil-regusuario'>
                     <div className='imagen-regusuario'>
                       {profileImage ? (
-                        <img 
-                          src={profileImage} 
-                          alt="Imagen de perfil del usuario" 
+                        <img
+                          src={profileImage}
+                          alt="Imagen de perfil del usuario"
                           aria-describedby="profile-image-desc"
                         />
                       ) : (
@@ -200,8 +200,8 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
                         </div>
                       )}
                     </div>
-                    <button 
-                      className='editar-regusuario' 
+                    <button
+                      className='editar-regusuario'
                       onClick={() => profileInputRef.current.click()}
                       type="button"
                       aria-label="Cambiar imagen de perfil"
@@ -230,7 +230,7 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
                       className={`campo-regusuario ${errors.tipDoc ? 'campo-error' : ''}`}
                       aria-invalid={!!errors.tipDoc}
                       aria-describedby={errors.tipDoc ? 'tipDoc-error' : undefined}
-                      {...register('tipDoc', { 
+                      {...register('tipDoc', {
                         required: 'El tipo de documento es requerido',
                         validate: validateDocumentType
                       })}
@@ -294,7 +294,7 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
                       className={`campo-regusuario ${errors.nombres ? 'campo-error' : ''}`}
                       aria-invalid={!!errors.nombres}
                       aria-describedby={errors.nombres ? 'nombres-error' : undefined}
-                      {...register('nombres', { 
+                      {...register('nombres', {
                         required: 'Los nombres son requeridos',
                         minLength: {
                           value: 2,
@@ -328,7 +328,7 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
                       className={`campo-regusuario ${errors.apellidos ? 'campo-error' : ''}`}
                       aria-invalid={!!errors.apellidos}
                       aria-describedby={errors.apellidos ? 'apellidos-error' : undefined}
-                      {...register('apellidos', { 
+                      {...register('apellidos', {
                         required: 'Los apellidos son requeridos',
                         minLength: {
                           value: 2,
@@ -362,7 +362,7 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
                       className={`campo-regusuario ${errors.fecNac ? 'campo-error' : ''}`}
                       aria-invalid={!!errors.fecNac}
                       aria-describedby={errors.fecNac ? 'fecNac-error' : undefined}
-                      {...register('fecNac', { 
+                      {...register('fecNac', {
                         required: 'La fecha de nacimiento es requerida',
                         validate: {
                           legalAge: (value) => {
@@ -370,11 +370,11 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
                             const today = new Date()
                             let age = today.getFullYear() - birthDate.getFullYear()
                             const monthDiff = today.getMonth() - birthDate.getMonth()
-                            
+
                             if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
                               age--
                             }
-                            
+
                             return age >= 18 || 'Debe ser mayor de 18 años'
                           }
                         }
@@ -396,7 +396,7 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
                       className={`campo-regusuario ${errors.genero ? 'campo-error' : ''}`}
                       aria-invalid={!!errors.genero}
                       aria-describedby={errors.genero ? 'genero-error' : undefined}
-                      {...register('genero', { 
+                      {...register('genero', {
                         required: 'El género es requerido',
                         validate: validateGender
                       })}
@@ -456,7 +456,7 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
                       className={`campo-regusuario ${errors.direccion ? 'campo-error' : ''}`}
                       aria-invalid={!!errors.direccion}
                       aria-describedby={errors.direccion ? 'direccion-error' : undefined}
-                      {...register('direccion', { 
+                      {...register('direccion', {
                         required: 'La dirección es requerida',
                         minLength: {
                           value: 5,
@@ -536,21 +536,21 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
               </form>
             )}
 
-            {activeTab === 'password' && 
-              <Contrasena 
-                watch={watch} 
-                register={register} 
-                handleSubmit={handleSubmit} 
-                onSubmit={onSubmit} 
+            {activeTab === 'password' &&
+              <Contrasena
+                watch={watch}
+                register={register}
+                handleSubmit={handleSubmit}
+                onSubmit={onSubmit}
                 errors={errors}
               />
             }
           </div>
-          <Footer/>
+          <Footer />
         </div>
       </main>
       {notify && (
-        <Notification 
+        <Notification
           {...notify}
         />
       )}

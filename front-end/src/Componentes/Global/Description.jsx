@@ -17,7 +17,7 @@ export class Description extends React.Component {
   }
 
   componentDidMount() {
-    if(!this.props.datas) window.location.href = '/consultorio'
+    if (!this.props.datas) window.location.href = '/consultorio'
   }
 
   // Functions
@@ -29,12 +29,12 @@ export class Description extends React.Component {
     if (header.includes("fec")) return {
       value: formatDate(item),
       type: "date",
-      active: deactive? false : true
+      active: deactive ? false : true
     }
     return {
       value: item,
       type: "text",
-      active: deactive? false : true
+      active: deactive ? false : true
     }
   }
 
@@ -49,7 +49,8 @@ export class Description extends React.Component {
       return {
         headerValue: headers[key],
         label: key,
-        ...item}
+        ...item
+      }
     })
 
     return (
@@ -66,12 +67,12 @@ export class Description extends React.Component {
               )}
             </div>
             <div className="propietarioDatosProps">
-              {headers?.map((header,index) => (
-                isEditing? (
+              {headers?.map((header, index) => (
+                isEditing ? (
                   <div key={index + 938} className="propietarioCampoProps">
                     <div className="propietarioEtiquetaProps">{header.label}</div>
-                    {header.label.toLowerCase().includes("gen")? (
-                      <select 
+                    {header.label.toLowerCase().includes("gen") ? (
+                      <select
                         className="select"
                         name={header.headerValue}
                         onChange={handleChange}
@@ -81,12 +82,12 @@ export class Description extends React.Component {
                         <option value="Femenino">Femenino</option>
                         <option value="Masculino">Masculino</option>
                       </select>
-                    ):(
+                    ) : (
                       <input
                         name={header.headerValue}
                         type={header.type}
                         className="input"
-                        max={header.type === "date" ? header.headerValue === 'fec_nac_per'? this.legalDate: this.maxDate : 100}
+                        max={header.type === "date" ? header.headerValue === 'fec_nac_per' ? this.legalDate : this.maxDate : 100}
                         placeholder={header.label}
                         onChange={handleChange}
                         defaultValue={header.value}
@@ -94,8 +95,8 @@ export class Description extends React.Component {
                       />)
                     }
                   </div>
-                ): (
-                  <div key={index+11290} className="propietarioCampoProps">
+                ) : (
+                  <div key={index + 11290} className="propietarioCampoProps">
                     <div className="propietarioEtiquetaProps">{header.label}</div>
                     <div className="propietarioValorProps">
                       {header.value || "no-registrado"}

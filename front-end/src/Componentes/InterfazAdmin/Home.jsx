@@ -14,8 +14,8 @@ import { AuthContext } from "../../Contexts/Contexts"
 
 export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
   // Dynamic vars 
-  const [ appoint, setAppoint ] = useState()
-  const [ notify, setNotify ] = useState()
+  const [appoint, setAppoint] = useState()
+  const [notify, setNotify] = useState()
 
   // Vars 
   const mainUrl = `${URL}/appointment`
@@ -39,7 +39,7 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
         const message = errorStatusHandler(err.status)
         setNotify({
           title: 'Error',
-          message: `${message}`,    
+          message: `${message}`,
           close: setNotify
         })
       } else console.log(err)
@@ -48,15 +48,15 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
 
   useEffect(() => {
     getAppoint()
-  },[])
+  }, [])
 
   return (
     <main className="contenedoradminhome">
-      <NavBarAdmin/>
+      <NavBarAdmin />
       <main className="tablero-admin">
         {/* Header del dashboard */}
         <HeaderAdmin />
-        
+
         <main className="contenido-principal-admin">
 
           {/* Stats Grid */}
@@ -124,7 +124,7 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
                   Nueva Cita
                 </button>
 
-                <button 
+                <button
                   className="EditBtn"
                   onClick={() => navigate('/main')}
                 >
@@ -160,7 +160,7 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
         </main>
       </main>
       {notify && (
-        <Notification 
+        <Notification
           {...notify}
         />
       )}

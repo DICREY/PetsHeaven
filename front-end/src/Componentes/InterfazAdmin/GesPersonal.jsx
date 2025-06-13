@@ -1,7 +1,7 @@
 // Librarys 
 import React, { useEffect, useState, useContext } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
-import { Plus} from "lucide-react"
+import { Plus } from "lucide-react"
 
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
@@ -21,9 +21,9 @@ import Footer from "../Varios/Footer2"
 export function GesPersonal({ setUserSelect, URL = "" }) {
   // Dynamic vars
   const mainUrl = `${URL}/staff/all`
-  const [users,setUsers] = useState([])
-  const [usersAlmac,setUsersAlmac] = useState([])
-  const [headers,setHeaders] = useState([])
+  const [users, setUsers] = useState([])
+  const [usersAlmac, setUsersAlmac] = useState([])
+  const [headers, setHeaders] = useState([])
   const [notify, setNotify] = useState(null)
   const { logout } = useContext(AuthContext)
 
@@ -45,17 +45,17 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
         'Correo': 'email_per'
       })
       setUsersAlmac(data)
-      setUsers(divideList(data,4))      
+      setUsers(divideList(data, 4))
     } catch (err) {
       setNotify(null)
       if (err.status) {
         const message = errorStatusHandler(err.status)
         setNotify({
           title: 'Error',
-          message: `${message}`,    
+          message: `${message}`,
           close: setNotify
         })
-        if(err.status === 403) {
+        if (err.status === 403) {
           setTimeout(() => {
             logout()
           }, 2000)
@@ -91,7 +91,7 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
 
       <section className="principaladminhome">
         <HeaderAdmin URL={URL} />
-        
+
         <section className="tarjetagesusuario">
           <div className="contenidogesusuario">
             <header className="encabezadogesusuario">
@@ -104,25 +104,25 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
                 Registrar personal
               </button>
             </header>
-            
- 
+
+
             {/* Table  */}
-            <GlobalTable 
+            <GlobalTable
               subtitle={'Personal vinculado a la veterinaria: Petsheaven'}
               filters='nombre, apellido, email, celular o documento'
               fullData={usersAlmac}
-              headersSearch={['nom_per', 'email_per', 'cel_per', 'ape_per','doc_per']}
+              headersSearch={['nom_per', 'email_per', 'cel_per', 'ape_per', 'doc_per']}
               headers={headers}
               watch={handleDescription}
-            /> 
+            />
 
           </div>
         </section>
-      <Footer/>
+        <Footer />
       </section>
-      
+
       {notify && (
-        <Notification 
+        <Notification
           {...notify}
         />
       )}

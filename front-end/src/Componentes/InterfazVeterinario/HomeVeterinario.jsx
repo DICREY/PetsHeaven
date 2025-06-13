@@ -1,7 +1,7 @@
 // Librarys 
 import React, { useState, useEffect } from "react"
 import { Outlet } from "react-router"
-import { Heart,Clock,ExternalLink,Plus,Stethoscope,Activity,FileText,Bell,HelpCircle,LogOut,User,Settings,ChevronDown,AlertCircle,CheckCircle } from "lucide-react"
+import { Heart, Clock, ExternalLink, Plus, Stethoscope, Activity, FileText, Bell, HelpCircle, LogOut, User, Settings, ChevronDown, AlertCircle, CheckCircle } from "lucide-react"
 
 // Import
 import { Notification } from '../Global/Notifys'
@@ -32,7 +32,7 @@ export const PanelVeterinario = ({ URL = '', imgDefault = '' }) => {
     {
       id: 2,
       type: "emergency",
-      title: "Emergencia atendida", 
+      title: "Emergencia atendida",
       message: "Cirugía de Toby completada exitosamente",
       time: "Hace 1 hora",
       icon: AlertCircle,
@@ -261,7 +261,7 @@ export const PanelVeterinario = ({ URL = '', imgDefault = '' }) => {
         </section>
       </main>
       {notify && (
-        <Notification 
+        <Notification
           {...notify}
         />
       )}

@@ -1,8 +1,10 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import React, { useState, useEffect, useContext } from 'react'
-import { Settings, Users, Headset, ChevronDown, Syringe, Bath, Scissors, Calendar, Menu, X,
-  Stethoscope, CalendarRange, CalendarClock, FlaskRoundIcon as Flask, 
-  Home} from 'lucide-react'
+import {
+  Settings, Users, Headset, ChevronDown, Syringe, Bath, Scissors, Calendar, Menu, X,
+  Stethoscope, CalendarRange, CalendarClock, FlaskRoundIcon as Flask,
+  Home
+} from 'lucide-react'
 
 // Imports
 import { checkImage } from '../Varios/Util'
@@ -76,14 +78,14 @@ export const NavBarAdmin = () => {
               `${user.names} ${user.lastNames}`,
               imgDefault,
               'inicialnavadmin'
-              )}
+            )}
           </picture>
           <div className='nombrenavadmin'>
             {user.names} {user.lastNames}
           </div>
         </header>
         <hr className='separadornavadmin' />
- 
+
         <nav className='menunavadmin'>
           <ul className='listanavadmin'>
             {
@@ -139,7 +141,7 @@ export const NavBarAdmin = () => {
                 </li>
               </ul>
             </li>
-            
+
             <li className='itemnavadmin'>
               <button className='botonnavadmin' onClick={toggleServicios}>
                 <div className='contenidobotonnavadmin'>

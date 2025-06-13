@@ -12,11 +12,11 @@ import '../../../src/styles/BarrasNavegacion/NavBar.css'
 export const NavBar = () => {
   // Vars 
   const [menuAbierto, setMenuAbierto] = useState(false)
-  const [ url, setUrl] = useState('/user/pets')
-  const [ redirectTo, setRedirectTo] = useState('Mascotas')
+  const [url, setUrl] = useState('/user/pets')
+  const [redirectTo, setRedirectTo] = useState('Mascotas')
   const refNav = useRef(null)
   const { mainRol, logout, log } = useContext(AuthContext)
-  
+
   // Función para manejar el scroll a secciones
   const irASeccion = (e, id) => {
     e.preventDefault()
@@ -43,7 +43,7 @@ export const NavBar = () => {
 
   useEffect(() => {
     if (log) {
-      if(mainRol === 'Administrador') {
+      if (mainRol === 'Administrador') {
         setRedirectTo('Administración')
         setUrl('/admin/administracion')
       } else if (mainRol === 'Veterinario') {
@@ -56,7 +56,7 @@ export const NavBar = () => {
     }
   }, [])
 
-  return (  
+  return (
     <header className='encabezado' ref={refNav}>
       <div className='contenedor-header'>
         <div className='logo-container'>
@@ -89,17 +89,17 @@ export const NavBar = () => {
             )
           }
           {
-          log ? (
-            <div className='botones-escritorio'>
-              <a href='/main' className='boton-login-nav' onClick={logout}>Cerrar Sesión</a>
-            </div>
-          ) : (
-            <div className='botones-escritorio'>
-              <a href='/user/register' className='boton-registro-nav'>Registrarse</a>
-              <a href='/user/login' className='boton-login-nav'>Iniciar Sesión</a>
-            </div>
-          )
-        }
+            log ? (
+              <div className='botones-escritorio'>
+                <a href='/main' className='boton-login-nav' onClick={logout}>Cerrar Sesión</a>
+              </div>
+            ) : (
+              <div className='botones-escritorio'>
+                <a href='/user/register' className='boton-registro-nav'>Registrarse</a>
+                <a href='/user/login' className='boton-login-nav'>Iniciar Sesión</a>
+              </div>
+            )
+          }
         </nav>
 
         {/* Botón Menú Móvil */}
@@ -134,7 +134,7 @@ export const NavBar = () => {
           <a href='#contacto' className='enlace-nav-movil' onClick={(e) => irASeccion(e, 'contacto')}>
             Contáctanos
           </a>
-          {log && ( <a href={url} className='enlace-nav'>{redirectTo}</a> )}
+          {log && (<a href={url} className='enlace-nav'>{redirectTo}</a>)}
           {/* Botones para móvil */}
           {
             log ? (
@@ -149,7 +149,7 @@ export const NavBar = () => {
                 <a href='/user/login' className='boton-login-movil-nav'>Iniciar Sesión</a>
               </div>
             )
-          } 
+          }
         </nav>
       </div>
     </header>

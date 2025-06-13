@@ -8,6 +8,7 @@ import { Outlet } from 'react-router'
 export const MainAdmin = () => {
   return (
     <main>
-      <Outlet/>
+      <Outlet />
     </main>
-)}
+  )
+}
