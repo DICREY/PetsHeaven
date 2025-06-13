@@ -2,32 +2,32 @@ import { useState, useEffect } from 'react'
 import '../../styles/Global/CookieConsent.css'
 
 export const CookieConsent = () => {
-  const [visible, setVisible] = useState(false)
-  const [showSettings, setShowSettings] = useState(false)
-  const [preferences, setPreferences] = useState({
-    essential: true,
-    theme: false
-  })
+    const [visible, setVisible] = useState(false)
+    const [showSettings, setShowSettings] = useState(false)
+    const [preferences, setPreferences] = useState({
+        essential: true,
+        theme: false
+    })
 
-  useEffect(() => {
-    const consent = localStorage.getItem('vet_cookie_consent')
-    if (!consent) {
-      setVisible(true)
+    useEffect(() => {
+        const consent = localStorage.getItem('vet_cookie_consent')
+        if (!consent) {
+            setVisible(true)
+        }
+    }, [])
+
+    const handleAcceptAll = () => {
+        const consent = { essential: true, theme: true }
+        localStorage.setItem('vet_cookie_consent', JSON.stringify(consent))
+        setVisible(false)
     }
-  }, [])
 
-  const handleAcceptAll = () => {
-    const consent = { essential: true, theme: true }
-    localStorage.setItem('vet_cookie_consent', JSON.stringify(consent))
-    setVisible(false)
-  }
+    const handleSavePreferences = () => {
+        localStorage.setItem('vet_cookie_consent', JSON.stringify(preferences))
+        setVisible(false)
+    }
 
-  const handleSavePreferences = () => {
-    localStorage.setItem('vet_cookie_consent', JSON.stringify(preferences))
-    setVisible(false)
-  }
-
-  if (!visible) return null
+    if (!visible) return null
 
     return (
         <aside className='cookieConsent'>
@@ -37,7 +37,7 @@ export const CookieConsent = () => {
                         <span className='dot'></span>
                         Preferencias de Privacidad
                     </h3>
-                    <button 
+                    <button
                         onClick={() => setVisible(false)}
                         className='closeBtnCookie'
                         aria-label="Cerrar"
@@ -47,31 +47,31 @@ export const CookieConsent = () => {
                 </header>
 
                 <p className='descriptionCookie'>
-                En nuestra clínica veterinaria usamos cookies esenciales para tu sesión y 
-                opcionales para recordar tus preferencias de personalización. Valoramos tu privacidad.
+                    En nuestra clínica veterinaria usamos cookies esenciales para tu sesión y
+                    opcionales para recordar tus preferencias de personalización. Valoramos tu privacidad.
                 </p>
 
                 {showSettings && (
-                <section className='settingsBox'>
-                    <aside className='settingRow'>
-                        <label htmlFor="essential-cookies" className='settingLabel'>
-                            Cookies Esenciales
-                        </label>
-                        <div className='switchWrapper'>
-                            <input 
-                                type="checkbox" 
-                                id="essential-cookies"
-                                defaultChecked={preferences.essential}
-                                disabled
-                                className='switchInput'
-                            />
-                            Siempre activas
-                            <div className='switchTrack switchTrackOn'></div>
-                            <div className='switchDot switchDotOn'></div>
-                        </div>
-                    </aside>
+                    <section className='settingsBox'>
+                        <aside className='settingRow'>
+                            <label htmlFor="essential-cookies" className='settingLabel'>
+                                Cookies Esenciales
+                            </label>
+                            <div className='switchWrapper'>
+                                <input
+                                    type="checkbox"
+                                    id="essential-cookies"
+                                    defaultChecked={preferences.essential}
+                                    disabled
+                                    className='switchInput'
+                                />
+                                Siempre activas
+                                <div className='switchTrack switchTrackOn'></div>
+                                <div className='switchDot switchDotOn'></div>
+                            </div>
+                        </aside>
 
-                    {/* <aside className='settingRow'>
+                        {/* <aside className='settingRow'>
                         <label htmlFor="theme-cookies" className='settingLabel'>
                             Preferencia de Tema
                         </label>
@@ -87,7 +87,7 @@ export const CookieConsent = () => {
                             <div className={`$'switchDot' ${preferences.theme ?'switchDotOn': ''}`}></div>
                         </div>
                     </aside> */}
-                </section>
+                    </section>
                 )}
 
                 <div className='actionsCookie'>
@@ -107,16 +107,16 @@ export const CookieConsent = () => {
 
                     {showSettings && (
                         <button
-                        onClick={handleSavePreferences}
-                        className='AddBtn expandBtn'
+                            onClick={handleSavePreferences}
+                            className='AddBtn expandBtn'
                         >
-                        Guardar
+                            Guardar
                         </button>
                     )}
                 </div>
 
                 <p className='footerCookie'>
-                Al continuar, aceptas nuestro{' '}
+                    Al continuar, aceptas nuestro{' '}
                     <a href="/politica-cookies" className='cookieLink'>
                         uso de cookies
                     </a>.

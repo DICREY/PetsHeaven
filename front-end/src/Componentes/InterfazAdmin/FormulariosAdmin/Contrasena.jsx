@@ -32,7 +32,7 @@ const Contrasena = () => {
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <fieldset className='grid-contrasena' border >
           <legend className='sr-only'>Formulario de creación de contraseña</legend>
-          
+
           <div className='grupo-contrasena'>
             <label htmlFor='password' className='etiqueta-contrasena'>
               Contraseña<span className='obligatorio' aria-hidden='true'>*</span>

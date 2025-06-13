@@ -15,13 +15,13 @@ export const NotFound = ({ num = 400, redirectTo }) => {
         <p className="text">
           La página que buscas se fue de paseo con las mascotas.
         </p>
-        
+
         <div className="pet-elements">
           <span className="paw-icon">🐾</span>
           <span className="pet-icon">🐕</span>
           <span className="pet-icon">🐈</span>
         </div>
-        
+
         <Link to={redirectTo} className="pet-home-button">
           <i className="fas fa-bone"></i> Volver al hogar
         </Link>
@@ -40,13 +40,13 @@ export const SubNotFound = ({ num = 400 }) => {
         <p className="text">
           Lo que buscas se fue de paseo con las mascotas.
         </p>
-        
+
         <address className="pet-elements">
           <span className="paw-icon">🐾</span>
           <span className="pet-icon">🐕</span>
           <span className="pet-icon">🐈</span>
         </address>
-        
+
       </div>
     </section>
   )

@@ -375,10 +375,10 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
             {activeTab === 'password' && <Contrasena register={register} onSubmit={onSubmit} errors={errors} />}
           </section>
         </main>
-        <Footer/>
+        <Footer />
       </main>
       {notify && (
-        <Notification 
+        <Notification
           {...notify}
         />
       )}
