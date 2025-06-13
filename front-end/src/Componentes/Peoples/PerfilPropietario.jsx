@@ -302,8 +302,8 @@ export const PerfilPropietario = ({
                             </div>
                           </div>
                           <div className='mascotaAccionesProps'>
-                            <button className='botonHistorialProps' onClick={() => verHistorial(mascota)}>
-                              <Calendar size={16} />
+                            <button className='EditBtn expandBtn' onClick={() => verHistorial(mascota)}>
+                              <Calendar className='icon' />
                               <span>Ver historial</span>
                             </button>
                           </div>
