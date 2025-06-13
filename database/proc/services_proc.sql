@@ -1,4 +1,4 @@
--- Active: 1746046445434@@127.0.0.1@3306@pets_heaven
+-- Active: 1747081666433@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchServices()
 BEGIN
     SELECT
@@ -342,7 +342,3 @@ BEGIN
         s.nom_ser
     LIMIT 1000;
 END //
-
-
-
-
