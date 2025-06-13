@@ -63,7 +63,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
   const cirugiasFiltradas = cirugias.filter(cirugia => {
     if (filtroTipo === "todos") return true;
     if (filtroTipo === "disponibles") return cirugia.sta_ser === "DISPONIBLE";
-    if (filtroTipo === "no-disponibles") return cirugia.sta_ser === "NO DISPONIBLE";
+    if (filtroTipo === "no-disponibles") return cirugia.sta_ser === "NO-DISPONIBLE";
     return cirugia.categoria === filtroTipo;
   });
 
