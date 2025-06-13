@@ -14,6 +14,7 @@ import { AuthContext } from "../../../Contexts/Contexts"
 
 // Style
 import "../../../styles/InterfazAdmin/Servicios/Cirugia.css"
+import { data } from "react-router";
 
 export const CirugiasVeterinaria = ({ URL = '' }) => {
   // Dynamic Vars 
@@ -201,7 +202,8 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
   const eliminarCirugia = useCallback(async (id_ser) => {
     if (!window.confirm("¿Seguro que deseas eliminar esta cirugía?")) return;
     try {
-      await ModifyData(`${mainUrl}/disable`, {data: id_ser});
+      const data = {data:{id_ser:id_ser, or:true}}
+      await ModifyData(`${mainUrl}/AblOrDis`, data);
       fetchCirugias();
     } catch (err) {
       setNotify({

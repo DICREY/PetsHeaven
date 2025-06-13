@@ -77,18 +77,17 @@ Route.get('/cirs', ValidatorRol("usuario"), async (req,res) => {
     }
 })
 
-Route.put('/disable', ValidatorRol("administrador"), async (req, res) => {
+Route.put('/AblOrDis', ValidatorRol("administrador"), async (req, res) => {
     // Vars 
     const { data } = req.body
-    console.log(data)
 
     try {
         if (!data) return res.status(400).json({ message: "Petición no valida"})
         
-        const find = await services.findBy(data)
-        if (!find.result[0][0]) return res.status(404).json({message: "Mascota no encontrada"})
+        const find = await services.findBy(data.id_ser)
+        if (!find.result[0][0]) return res.status(404).json({message: "Servicio no encontrado"})
         
-        const cancelled = await services.DeleteService(data)
+        const cancelled = await services.AbleOrDesableService(data)
         if (cancelled.result) return res.status(200).json(cancelled)
 
         res.status(500).json({ message: "No se pudo deshabilitar la cirugia" })

@@ -212,16 +212,21 @@ class Services {
         })
     }
 
-    async DeleteService(data) {
+    async AbleOrDesableService(data) {
         return new Promise((res,rej) => {
             // vars
-            const proc = "CALL DeleteService(?);"
+            const params = [
+                data.id_ser,
+                data.or
+            ]
+
+            const proc = "CALL AbleOrDesableService(?,?);"
 
             // conect to database
             this.database = new DataBase()
             this.database.conect()
 
-            if (this.database) this.database.conection.query(proc,[data],(err,result) => {
+            if (this.database) this.database.conection.query(proc,params,(err,result) => {
                 console.log(result)
                 this.database.conection.end()
 
