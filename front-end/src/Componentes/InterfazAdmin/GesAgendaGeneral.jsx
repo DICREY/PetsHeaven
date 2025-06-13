@@ -90,22 +90,22 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
     //Dia de hoy
     const today = new Date().toISOString().split('T')[0] // 'YYYY-MM-DD'
 
-const fetchPacientes = async () => {
-    await ReqFunction(
-        `${URL}/pet/all`,
-        GetData,
-        setNotify,
-        setAllPacientes
-    )
-}
-const fetchVet = async () => {
-    await ReqFunction(
-        `${URL}/staff/all/vet`,
-        GetData,
-        setNotify,
-        setAllVet
-    )
-}
+    const fetchPacientes = async () => {
+        await ReqFunction(
+            `${URL}/pet/all`,
+            GetData,
+            setNotify,
+            setAllPacientes
+        )
+    }
+    const fetchVet = async () => {
+        await ReqFunction(
+            `${URL}/staff/all/vet`,
+            GetData,
+            setNotify,
+            setAllVet
+        )
+    }
 
     // Crear citas
     const handleDateClick = (arg) => {

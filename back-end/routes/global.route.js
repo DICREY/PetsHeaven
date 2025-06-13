@@ -9,7 +9,7 @@ const Global = require('../services/Global.services')
 const Services = require('../services/Services.services')
 const People = require('../services/People.services')
 const { limiterLog, cookiesOptionsLog } = require('../middleware/varios.handler')
-const { authenticateJWT } = require('../middleware/validator.handler')
+const { authenticateJWT, ValidatorRol } = require('../middleware/validator.handler')
 
 // Env vars
 const secret = process.env.JWT_SECRET
@@ -35,6 +35,22 @@ Route.get('/services', async (req,res) => {
     }
 })
 
+Route.get('/info/general', ValidatorRol('administrador'), async (req,res) => {
+    // Vars
+    const info = new Global()
+    try {
+        const inf = await info.GetDataAdmin()
+
+        // Verify if exist 
+        if (!inf.result) res.status(404).json({ message: "Información no encontrada" })
+
+        res.status(200).json(inf)
+    } catch (err) {
+        console.log(err)
+        if (err.status) return res.status(err.status).json({ message: err.message })
+        res.status(500).json({ message: err })
+    }
+})
 
 Route.post('/register', async (req,res) => {
     // Vars 

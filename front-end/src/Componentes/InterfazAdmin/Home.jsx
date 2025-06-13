@@ -11,23 +11,25 @@ import { errorStatusHandler } from '../Varios/Util'
 
 import "../../styles/InterfazAdmin/Home.css"
 import { AuthContext } from "../../Contexts/Contexts"
+import { ReqFunction } from "../../Utils/Utils"
 
 export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
   // Dynamic vars 
   const [ appoint, setAppoint ] = useState()
+  const [ infoGeneral, setInfoGeneral ] = useState()
   const [ notify, setNotify ] = useState()
 
   // Vars 
   const mainUrl = `${URL}/appointment`
   const navigate = useNavigate()
   const { admin } = useContext(AuthContext)
-
   const stats = [
-    { title: "Citas Hoy", value: "12", icon: Calendar, color: "azul" },
-    { title: "Pacientes Activos", value: "248", icon: Heart, color: "verde" },
-    { title: "Doctores Disponibles", value: "4", icon: Users, color: "morado" },
-    { title: "Emergencias", value: "2", icon: Clock, color: "rojo" },
+    { title: "Citas Hoy", value: infoGeneral?.cit || '0', icon: Calendar, color: "azul" },
+    { title: "Pacientes Activos", value: infoGeneral?.mas || '0', icon: Heart, color: "verde" },
+    { title: "Doctores Disponibles", value: infoGeneral?.doc || '0', icon: Users, color: "morado" },
+    { title: "Emergencias", value: infoGeneral?.emg || '0', icon: Clock, color: "rojo" },
   ]
+
   const getAppoint = async () => {
     try {
       const data = await GetData(`${mainUrl}/general`)
@@ -39,7 +41,7 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
         const message = errorStatusHandler(err.status)
         setNotify({
           title: 'Error',
-          message: `${message}`,    
+          message: `${message}`,
           close: setNotify
         })
       } else console.log(err)
@@ -47,21 +49,27 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
   }
 
   useEffect(() => {
+    ReqFunction(
+      `${URL}/global/info/general`,
+      GetData,
+      setNotify,
+      setInfoGeneral
+    )
     getAppoint()
-  },[])
+  }, [])
 
   return (
     <main className="contenedoradminhome">
-      <NavBarAdmin/>
+      <NavBarAdmin />
       <main className="tablero-admin">
         {/* Header del dashboard */}
         <HeaderAdmin />
-        
+
         <main className="contenido-principal-admin">
 
           {/* Stats Grid */}
           <section className="estadisticas-grid-admin" aria-label="Estadísticas del día">
-            {stats.map((stat, index) => (
+            {stats?.map((stat, index) => (
               <article key={index} className={`tarjeta-estadistica-admin ${stat.color}-admin`}>
                 <div className="contenido-estadistica-admin">
                   <p>{stat.title}</p>
@@ -124,7 +132,7 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
                   Nueva Cita
                 </button>
 
-                <button 
+                <button
                   className="EditBtn"
                   onClick={() => navigate('/main')}
                 >
@@ -160,7 +168,7 @@ export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
         </main>
       </main>
       {notify && (
-        <Notification 
+        <Notification
           {...notify}
         />
       )}

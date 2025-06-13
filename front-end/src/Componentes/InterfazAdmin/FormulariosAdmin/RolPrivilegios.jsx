@@ -12,7 +12,7 @@ const RolPrivilegios = ({ register, errors }) => {
   return (
     <section className='rol-privilegios-container' aria-labelledby='titulo-perfil'>
       <h2 id='titulo-perfil'>Perfil del personal</h2>
-      
+
       <div className='nota-admin' role='note'>
         <InfoIcon size={16} className='info-icon' aria-hidden='true' />
         <span>Esta configuración solo es editable por un rol administrador.</span>
@@ -51,7 +51,7 @@ const RolPrivilegios = ({ register, errors }) => {
 
       <section className='seccion-privilegios' aria-labelledby='titulo-privilegios'>
         <h3 id='titulo-privilegios'>Privilegios de agenda</h3>
-        
+
       </section>
     </section>
   )

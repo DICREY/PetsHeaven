@@ -7,11 +7,11 @@ import { AuthContext } from '../../Contexts/Contexts'
 
 // Import styles
 import styles from '../../styles/BarrasNavegacion/HeaderUser.module.css'
-import '../../styles/global.css' 
+import '../../styles/global.css'
 
 // Component 
 export const HeaderUser = () => {
-  const [ tabHelp,setTabHelp ] = useState()
+  const [tabHelp, setTabHelp] = useState()
   const { logout } = React.useContext(AuthContext)
 
   const handleProfile = () => {
@@ -20,7 +20,7 @@ export const HeaderUser = () => {
   }
 
   const handleHelp = () => {
-    tabHelp? setTabHelp(false): setTabHelp(true)
+    tabHelp ? setTabHelp(false) : setTabHelp(true)
   }
 
   return (
@@ -28,19 +28,19 @@ export const HeaderUser = () => {
       <div className={styles.logo}>
         <img src='https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/5.png' alt='Logo de PetsHeaven con la palabra Pets en celeste y Heaven en negro, en una tipografía moderna.' width={50} height={50} className='logo-img' />
       </div>
-      
+
       <nav className={styles.navLinks}>
-        <button 
-          onClick={handleHelp} 
+        <button
+          onClick={handleHelp}
           className='BackBtn'
           aria-label="Ayuda"
         >
           <HelpCircle className={styles.icon} />
           <span>Ayuda</span>
         </button>
-        
-        <button 
-          onClick={handleProfile} 
+
+        <button
+          onClick={handleProfile}
           // className={`${styles.navButton} ${styles.profileButton}`}
           className='EditBtn'
           aria-label="Perfil"
@@ -48,8 +48,8 @@ export const HeaderUser = () => {
           <User className={styles.icon} />
           <span>Perfil</span>
         </button>
-        
-        <button 
+
+        <button
           onClick={logout}
           className='DeleteBtn'
           aria-label="Cerrar sesión"
@@ -59,7 +59,7 @@ export const HeaderUser = () => {
         </button>
       </nav>
       {tabHelp && (
-        <TabHelp onClose={handleHelp}/>
+        <TabHelp onClose={handleHelp} />
       )}
     </header>
   )

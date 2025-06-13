@@ -35,8 +35,10 @@
 }
 
 .titulo-cirugia {
-  color: #0097a7;
-  font-size: 2rem;
+  color: var(--primary);
+  font-size: 1.375rem;
+  margin-bottom: 0.5rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 600;
   margin: 0;
   letter-spacing: -0.01em;
@@ -58,7 +60,8 @@
 }
 
 .subtitulo-cirugia {
-  font-size: 1.125rem;
+  font-size: 1rem;
+  color: var(--primary);
   font-weight: 500;
   color: #0097a7;
   margin: 0;
@@ -82,15 +85,12 @@
   min-width: 180px;
 }
 
-.filtro-cirugia:focus {
-  outline: none;
-  border-color: #00bcd4;
+.filtro-cirugia:hover {
+  border-color: var(--primary);
 }
 
 .boton-agregar-cirugia {
-  display: flex;
-  align-items: center;
-  background-color: #00bcd4;
+  background: var(--primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -407,7 +407,7 @@
 .textarea-cirugia:focus,
 .select-cirugia:focus {
   outline: none;
-  border-color: #00bcd4;
+  border-color: var(--primary);
 }
 
 .textarea-cirugia {
@@ -454,7 +454,12 @@
   font-weight: 500;
   font-size: 0.8125rem;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: all 0.3s ease;
+}
+
+.boton-guardar-cirugia {
+  background: var(--primary);
+  color: white;
 }
 
 .boton-guardar-cirugia:hover {
@@ -478,8 +483,44 @@
   background-color: #e0e0e0;
 }
 
-.contenido-detalle-cirugia {
-  padding: 1.5rem;
+.tituloadminhome {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.iconoadminhome {
+  color: var(--primary);
+  width: 24px;
+  height: 24px;
+}
+
+.textoadminhome {
+  color: var(--primary);
+  font-size: 1.375rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Estilos adicionales para el modal de detalle */
+.modal-detalle-cirugia {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 800px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.header-modal-cirugia {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #b2ebf2;
 }
 
 .metricas-principales-cirugia {
