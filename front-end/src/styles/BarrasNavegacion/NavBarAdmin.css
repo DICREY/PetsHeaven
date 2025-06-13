@@ -68,6 +68,8 @@
   justify-content: center;
   margin: 0 auto;
   overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: .1rem solid var(--gray-400);
 }
 
 .inicialnavadmin {
