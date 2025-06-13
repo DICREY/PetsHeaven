@@ -1,4 +1,4 @@
--- Active: 1747352860830@@127.0.0.1@3306@pets_heaven
+-- Active: 1746046445434@@127.0.0.1@3306@pets_heaven
 DROP DATABASE IF EXISTS pets_heaven;
 CREATE DATABASE IF NOT EXISTS pets_heaven;
 
@@ -156,3 +156,6 @@ CREATE TABLE pets_heaven.consultas(
     vet_con INT NOT NULL,INDEX (vet_con),FOREIGN KEY (vet_con) REFERENCES veterinarios(id_vet) ON DELETE RESTRICT ON UPDATE CASCADE,
     mas_con INT NOT NULL,INDEX (mas_con),FOREIGN KEY (mas_con) REFERENCES mascotas(id_mas) ON DELETE RESTRICT ON UPDATE CASCADE
 );
+
+
+

@@ -181,7 +181,7 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
                           profileImage,
                           'imagen de la mascota para guardar en el sistema',
                           imgDefault): 
-                        checkImage(
+                        checkImage(cd, 
                           imgDefault,
                           'imagen de la mascota para guardar en el sistema',
                           imgDefault)

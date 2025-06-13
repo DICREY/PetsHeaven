@@ -87,10 +87,6 @@
   gap: 2rem;
 }
 
-.imagen-nosotros {
-  width: 100%;
-}
-
 .img-nosotros {
   width: 100%;
   height: auto;
@@ -615,7 +611,7 @@
     flex-direction: row;
   }
 
-  .imagen-nosotros,
+  .img-nosotros,
   .texto-nosotros {
     width: 50%;
   }

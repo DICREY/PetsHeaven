@@ -8,16 +8,16 @@ import '../../../src/styles/Loaders/DogLoader.css'
 
 // Component
 export const SmallLoader = () => {
-  const random = Math.floor(Math.random() * 3) + 1 // Randomly choose between 1 and 3
+  const random = Math.floor(Math.random() * 2) + 1 // Randomly choose between 1 and 3 for now
   if (random === 1) {
     return <SmallLoaderHamster />
   }
   if (random === 2) {
     return <SmallLoaderCat />
   }
-  if(random=== 3){
-    return <SmallLoaderDog/>
-  }
+  // if(random=== 3){
+  //   return <SmallLoaderDog/>
+  // }
 }
 
 const SmallLoaderHamster = () => {

@@ -203,14 +203,12 @@ export default function VeterinariaPage({ URL = '', setArriveTo }) {
           >
             <div className='contenedor'>
               <motion.div className='contenedor-nosotros'>
-                <motion.div className='imagen-nosotros' variants={itemVariants}>
-                  {checkImage(
-                    'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Fondos/NosotrosR.jpg',
-                    'cuatro veterinarios sonrientes posando con tres perros de tamaño medio en un fondo claro',
-                    imgDefault,
-                    'img-nosotros'
-                  )}
-                </motion.div>
+                {checkImage(
+                  'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Fondos/NosotrosR.jpg',
+                  'cuatro veterinarios sonrientes posando con tres perros de tamaño medio en un fondo claro',
+                  imgDefault,
+                  'img-nosotros'
+                )}
                 <motion.div className='texto-nosotros' variants={itemVariants}>
                   <h2 className='titulo-seccion'>Quienes somos</h2>
                   <p className='texto-seccion mb-4'>

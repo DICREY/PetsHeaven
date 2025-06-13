@@ -14,71 +14,18 @@ import { AuthContext } from "../../../Contexts/Contexts"
 
 // Style
 import "../../../styles/InterfazAdmin/Servicios/Cirugia.css"
+import { data } from "react-router";
 
-export default function CirugiasVeterinaria() {
-  const [cirugias, setCirugias] = useState([
-    {
-      id: "CIR001",
-      nombre: "Esterilización",
-      descripcion: "Procedimiento quirúrgico para prevenir la reproducción en mascotas.",
-      complicaciones: "Sangrado, infección, reacción a anestesia",
-      recomendaciones: "Ayuno de 12 horas previo. Reposo post-operatorio de 7-10 días.",
-      precio: 150000,
-      disponible: true,
-      duracion: "45-60 minutos",
-      tipoAnimal: "ambos",
-      categoria: "Preventiva",
-      recuperacion: "7-10 días",
-      preparacion: "Ayuno de 12 horas, exámenes prequirúrgicos",
-      anestesia: "General inhalatoria",
-    },
-    {
-      id: "CIR002",
-      nombre: "Extracción Dental",
-      descripcion: "Remoción de piezas dentales dañadas o infectadas.",
-      complicaciones: "Sangrado, dolor post-operatorio, infección",
-      recomendaciones: "Dieta blanda por 3-5 días. Antibióticos según prescripción.",
-      precio: 80000,
-      disponible: true,
-      duracion: "30-45 minutos",
-      tipoAnimal: "ambos",
-      categoria: "Dental",
-      recuperacion: "3-5 días",
-      preparacion: "Ayuno de 8 horas, evaluación dental previa",
-      anestesia: "General o local según caso",
-    },
-    {
-      id: "CIR003",
-      nombre: "Cirugía de Cataratas",
-      descripcion: "Procedimiento para restaurar la visión en casos de cataratas.",
-      complicaciones: "Infección ocular, rechazo del implante, ceguera",
-      recomendaciones: "Collar isabelino por 2 semanas. Gotas oftálmicas diarias.",
-      precio: 450000,
-      disponible: false,
-      duracion: "60-90 minutos",
-      tipoAnimal: "ambos",
-      categoria: "Oftalmológica",
-      recuperacion: "2-3 semanas",
-      preparacion: "Evaluación oftalmológica completa, ayuno de 12 horas",
-      anestesia: "General con monitoreo especializado",
-    },
-    {
-      id: "CIR004",
-      nombre: "Reparación de Fractura",
-      descripcion: "Cirugía ortopédica para reparar huesos fracturados.",
-      complicaciones: "Infección ósea, rechazo de implantes, cojera permanente",
-      recomendaciones: "Reposo absoluto 4-6 semanas. Fisioterapia posterior.",
-      precio: 320000,
-      disponible: true,
-      duracion: "90-120 minutos",
-      tipoAnimal: "ambos",
-      categoria: "Ortopédica",
-      recuperacion: "4-6 semanas",
-      preparacion: "Radiografías, ayuno de 12 horas, estabilización previa",
-      anestesia: "General con analgesia multimodal",
-    },
-  ])
+export const CirugiasVeterinaria = ({ URL = '' }) => {
+  // Dynamic Vars 
+  const [notify, setNotify] = useState(null)
 
+  // Vars 
+  const didFetch = useRef(false)
+  const mainUrl = `${URL}/service`
+  const { admin } = useContext(AuthContext)
+
+  const [cirugias, setCirugias] = useState([])
   const [mostrarFormulario, setMostrarFormulario] = useState(false)
   const [mostrarDetalle, setMostrarDetalle] = useState(false)
   const [cirugiaDetalle, setCirugiaDetalle] = useState(null)
@@ -93,34 +40,135 @@ export default function CirugiasVeterinaria() {
     recomendaciones: "",
     precio: "",
     disponible: true,
-    duracion: "",
-    tipoAnimal: "ambos",
-    categoria: "Preventiva",
-    recuperacion: "",
-    preparacion: "",
-    anestesia: "",
-  })
+    fechaCirugia: "",
+    descripcionBreve: "",
+    resultadoEsperado: "",
+    observaciones: ""
+  });
+  const nuevaCirugia = useRef({
+    id: "",
+    nombre: "",
+    descripcion: "",
+    complicaciones: "",
+    recomendaciones: "",
+    precio: "",
+    disponible: true,
+    fechaCirugia: "",
+    descripcionBreve: "",
+    resultadoEsperado: "",
+    observaciones: ""
+  });
 
-  const categorias = ["Preventiva", "Dental", "Oftalmológica", "Ortopédica", "Neurológica", "Oncológica", "General"]
+  const fetchCirugias = useCallback(async () => {
+    if (didFetch.current) return;
+    didFetch.current = true;
 
-  const formatearPrecio = (precio) => {
-    return new Intl.NumberFormat("es-CO", {
-      style: "currency",
-      currency: "COP",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(precio)
-  }
+    setNotify({
+      title: 'Cargando',
+      message: 'Cargando cirugias, por favor espere...',
+      load: 1
+    });
 
-  const cirugiasFiltradas = cirugias.filter((cirugia) => {
-    if (filtroTipo === "todos") return true
-    if (filtroTipo === "disponibles") return cirugia.disponible
-    if (filtroTipo === "no-disponibles") return !cirugia.disponible
-    return cirugia.categoria === filtroTipo
-  })
+    try {
+      let data = await GetData(`${mainUrl}/cirs`);
+      setNotify(null);
 
-  const abrirModalAgregar = () => {
-    setNuevaCirugia({
+      if (data && !Array.isArray(data)) {
+        data = [data];
+      }
+      if (data) {
+        setCirugias(data);
+      }
+    } catch (err) {
+      setNotify(null);
+      if (err.status) {
+        const message = errorStatusHandler(err.status);
+        setNotify({
+          title: 'Error',
+          message: `${message}`,
+          close: setNotify
+        });
+      } else {
+        console.error(err);
+      }
+    }
+  }, [mainUrl]);
+
+  // Functions    
+  useEffect(() => {
+    fetchCirugias();
+  }, [fetchCirugias]);
+
+
+  const manejarCambioFormulario = useCallback((e) => {
+    const { name, value, type, checked } = e.target;
+    formRef.current = {
+      ...formRef.current,
+      [name]: type === "checkbox" ? checked : value,
+    };
+  }, []);
+
+  const agregarCirugia = useCallback(async (e) => {
+    e.preventDefault();
+    try {
+      const nueva = {
+        cat_ser: 3,
+        nom_ser: formRef.current.nombre,
+        pre_ser: Number(formRef.current.precio),
+        des_ser: formRef.current.descripcion,
+        sta_ser: formRef.current.disponible ? "DISPONIBLE" : "NO DISPONIBLE",
+        tec_des_ser: formRef.current.recomendaciones,
+        fec_cir: formRef.current.fechaCirugia,
+        des_cir: formRef.current.descripcionBreve,
+        res_cir: formRef.current.resultadoEsperado,
+        com_cir: formRef.current.complicaciones,
+        obv_cir: formRef.current.observaciones
+      };
+
+      await PostData(`${mainUrl}/register`, nueva);
+      setMostrarFormulario(false);
+      resetForm();
+      fetchCirugias();
+    } catch (err) {
+      setNotify({
+        title: 'Error',
+        message: 'No se pudo agregar la cirugía',
+        close: setNotify
+      });
+    }
+  }, [mainUrl, fetchCirugias]);
+
+  const actualizarCirugia = useCallback(async (e) => {
+    e.preventDefault();
+    try {
+      const actualizada = {
+        id_ser: cirugiaEditando.id_ser,
+        nom_ser: formRef.current.nombre,
+        des_ser: formRef.current.descripcion,
+        com_cir: formRef.current.complicaciones,
+        tec_des_ser: formRef.current.recomendaciones,
+        pre_ser: Number(formRef.current.precio),
+        sta_ser: formRef.current.disponible ? "DISPONIBLE" : "NO DISPONIBLE",
+        tipo_ser: "Cirugía"
+      };
+
+      await ModifyData(`${mainUrl}/modify`, actualizada);
+      setMostrarFormulario(false);
+      setCirugiaEditando(null);
+      resetForm();
+      fetchCirugias();
+    } catch (err) {
+      setNotify({
+        title: 'Error',
+        message: 'No se pudo actualizar la cirugía',
+        close: setNotify
+      });
+    }
+  }, [mainUrl, cirugiaEditando, fetchCirugias]);
+
+  // Resetear formulario
+  const resetForm = useCallback(() => {
+    formRef.current = {
       id: "",
       nombre: "",
       descripcion: "",
@@ -128,56 +176,54 @@ export default function CirugiasVeterinaria() {
       recomendaciones: "",
       precio: "",
       disponible: true,
-      duracion: "",
-      tipoAnimal: "ambos",
-      categoria: "Preventiva",
-      recuperacion: "",
-      preparacion: "",
-      anestesia: "",
-    })
-    setModoEdicion(false)
-    setMostrarFormulario(true)
-  }
+      fechaCirugia: "",
+      descripcionBreve: "",
+      resultadoEsperado: "",
+      observaciones: ""
+    };
+  }, []);
 
-  const abrirModalEditar = (cirugia) => {
-    setNuevaCirugia({ ...cirugia, precio: cirugia.precio.toString() })
-    setCirugiaEditando(cirugia.id)
-    setModoEdicion(true)
-    setMostrarFormulario(true)
-  }
+  // Editar cirugía
+  const editarCirugia = useCallback((cirugia) => {
+    formRef.current = {
+      id: cirugia.id_ser || "",
+      nombre: cirugia.nom_ser || "",
+      descripcion: cirugia.des_ser || "",
+      complicaciones: cirugia.com_cir || "",
+      recomendaciones: cirugia.tec_des_ser || "",
+      precio: cirugia.pre_ser ? cirugia.pre_ser.toString() : "",
+      disponible: cirugia.sta_ser === "DISPONIBLE",
+      fechaCirugia: cirugia.fec_cir || "",
+      descripcionBreve: cirugia.des_cir || "",
+      resultadoEsperado: cirugia.res_cir || "",
+      observaciones: cirugia.obv_cir || ""
+    };
+    setCirugiaEditando(cirugia);
+    setMostrarFormulario(true);
+  }, []);
 
-  const abrirModalDetalle = (cirugia) => {
-    setCirugiaDetalle(cirugia)
-    setMostrarDetalle(true)
-  }
-
-  const guardarCirugia = () => {
-    if (nuevaCirugia.nombre && nuevaCirugia.precio > 0) {
-      if (modoEdicion) {
-        setCirugias(
-          cirugias.map((c) =>
-            c.id === cirugiaEditando ? { ...nuevaCirugia, precio: Number(nuevaCirugia.precio) } : c,
-          ),
-        )
-      } else {
-        setCirugias([...cirugias, { ...nuevaCirugia, precio: Number(nuevaCirugia.precio) }])
-      }
-      setMostrarFormulario(false)
+  // Eliminar cirugía
+  const eliminarCirugia = useCallback(async (id_ser) => {
+    if (!window.confirm("¿Seguro que deseas eliminar esta cirugía?")) return;
+    try {
+      const data = {data:{id_ser:id_ser, or:true}}
+      await ModifyData(`${mainUrl}/AblOrDis`, data);
+      fetchCirugias();
+    } catch (err) {
+      setNotify({
+        title: 'Error',
+        message: 'No se pudo eliminar la cirugía',
+        close: setNotify
+      });
     }
-  }
+  }, [mainUrl, fetchCirugias]);
 
-  const eliminarCirugia = (id) => {
-    if (window.confirm("¿Estás seguro de que deseas eliminar esta cirugía?")) {
-      setCirugias(cirugias.filter((c) => c.id !== id))
-    }
-  }
+  const cancelarFormulario = useCallback(() => {
+    setMostrarFormulario(false);
+    setCirugiaEditando(null);
+    resetForm();
+  }, [resetForm]);
 
-  const cambiarEstado = (id, e) => {
-    e.stopPropagation()
-    setCirugias(
-      cirugias.map((cirugia) => (cirugia.id === id ? { ...cirugia, disponible: !cirugia.disponible } : cirugia)),
-    )
-  }
 
   return (
     <div className="contenedor-cirugia">

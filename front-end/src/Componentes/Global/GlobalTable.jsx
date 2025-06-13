@@ -209,10 +209,10 @@ export class GlobalTable extends Component {
                       <button 
                         onClick={() => this.onWatch(item)} 
                         aria-label={`Ver detalles de ${item.nom_per}`}
-                        className='EditBtn'
+                        className='GDesc'
                       >
-                        <FileText className="icon" aria-hidden='true' />
                         Descripción
+                        <FileText className="icon" aria-hidden='true' />
                       </button>  
                     </td>
                   </tr>
