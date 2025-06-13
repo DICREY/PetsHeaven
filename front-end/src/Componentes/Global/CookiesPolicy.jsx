@@ -23,7 +23,7 @@ export const CookiePolicy = () => {
 
     return (
         <main className={styles.conta}>
-            <NavBar/>
+            <NavBar />
             <div className={styles.container}>
                 <span className={styles.headerSpan}>
                     <h1 className={styles.title}>Política de Cookies</h1>
@@ -37,7 +37,7 @@ export const CookiePolicy = () => {
                         Atrás
                     </button>
                 </span>
-                
+
 
                 <section className={styles.section}>
                     <h2 className={styles.subtitle}>¿Qué son las cookies?</h2>

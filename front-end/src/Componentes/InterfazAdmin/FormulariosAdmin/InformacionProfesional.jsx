@@ -84,19 +84,19 @@ const InformacionProfesional = ({ register, errors }) => {
         <div className='tarjeta-container'>
           <div className='tarjeta-placeholder' aria-hidden='true'>
             {cardImage ? (
-              <img 
-                src={cardImage || '/placeholder.svg'} 
-                alt='' 
-                className='tarjeta-imagen' 
+              <img
+                src={cardImage || '/placeholder.svg'}
+                alt=''
+                className='tarjeta-imagen'
                 role='presentation'
               />
             ) : (
               'Tarjeta N/D'
             )}
           </div>
-          <button 
+          <button
             type='button'
-            className='editar-tarjeta' 
+            className='editar-tarjeta'
             onClick={() => cardInputRef.current.click()}
             aria-label='Subir imagen de tarjeta profesional'
           >

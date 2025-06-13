@@ -14,16 +14,16 @@ import { AuthContext } from '../../Contexts/Contexts'
 import '../../../src/styles/Pets/pets.css'
 
 // Main component
-export const Pets = ({URL = '', imgPetDefault = '', setPetSelect }) => {
+export const Pets = ({ URL = '', imgPetDefault = '', setPetSelect }) => {
     // Dynamic Vars
     const [petsData, setPetsData] = useState([])
     const [loading, setLoading] = useState(false)
-    const [searchBy,setSearchBy] = useState('')
-    const [found,setfound] = useState(false)
-    const [isAdmin,setIsAdmin] = useState(false)
+    const [searchBy, setSearchBy] = useState('')
+    const [found, setfound] = useState(false)
+    const [isAdmin, setIsAdmin] = useState(false)
     const [notify, setNotify] = useState(null)
     const { roles, user } = useContext(AuthContext)
-    
+
     // Vars 
     const mainURL = `${URL}/pet`
     const imgDefault = imgPetDefault
@@ -42,20 +42,20 @@ export const Pets = ({URL = '', imgPetDefault = '', setPetSelect }) => {
             setNotify(null)
             setPetsData(pets)
             setfound(true)
-            if(pets[0]) setfound(true)
+            if (pets[0]) setfound(true)
         } catch (err) {
             setNotify(null)
-            if (err.status){
+            if (err.status) {
                 const message = errorStatusHandler(err.status)
                 setNotify({
                     title: 'Error',
-                    message: `${message}`,    
+                    message: `${message}`,
                     close: setNotify
                 })
             }
         }
     }
-    
+
     // Ejecutar el fetch para traer datos
     useEffect(() => {
         // Vars
@@ -63,9 +63,9 @@ export const Pets = ({URL = '', imgPetDefault = '', setPetSelect }) => {
 
         const admin = roles.includes('Administrador')
 
-        admin? setIsAdmin(true): setIsAdmin(false)
+        admin ? setIsAdmin(true) : setIsAdmin(false)
 
-        const newUrl = admin? `${mainURL}/all`: `${mainURL}/all:${by}`
+        const newUrl = admin ? `${mainURL}/all` : `${mainURL}/all:${by}`
 
         fetchData(newUrl)
 
@@ -79,56 +79,56 @@ export const Pets = ({URL = '', imgPetDefault = '', setPetSelect }) => {
                 <main className='main-pets-container'>
                     <nav className='nav-search-container'>
                         <span className='search-container'>
-                            <input className='search-input input' type='search' placeholder='Buscar' onChange={e => setSearchBy(e.target.value)}/>
+                            <input className='search-input input' type='search' placeholder='Buscar' onChange={e => setSearchBy(e.target.value)} />
                             <button className='boton-enviar' type='button' onClick={() => fetchData(`${mainURL}/all:${searchBy}`)} >Buscar</button>
                         </span>
                         <picture className='img-container'>
-                            
+
                         </picture>
                     </nav>
                     {
-                        found?
-                        (
-                        <section className='pets-container'>
-                            {petsData.map((i, index) => (
-                                <aside key={index} className='pets-card'>
-                                <div className='pets-img-container'>
-                                    {checkImage(
-                                        i.fot_mas,
-                                        `${i.esp_mas} de raza ${i.raz_mas} color ${i.col_mas} con nombre ${i.nom_mas}`,
-                                        imgDefault,
-                                        'pets-card-img'
-                                    )}
-                                    <span className='pets-species-badge'>{i.esp_mas}</span>
-                                </div>
-                                
-                                <section className='pets-info-wrapper'>
-                                    <p className='pets-name'><strong>{i.nom_mas}</strong></p>
-                                    <span className='pets-meta'>
-                                        {i.raz_mas || 'Raza no especificada'} {i.col_mas || 'Color no especificado'}
-                                    </span>
-                                    
-                                    <button 
-                                        type='button' 
-                                        className='boton-enviar pets-detail-btn'
-                                        onClick={() => setPetSelect(i)}
-                                    >Descripción
-                                    </button>
+                        found ?
+                            (
+                                <section className='pets-container'>
+                                    {petsData.map((i, index) => (
+                                        <aside key={index} className='pets-card'>
+                                            <div className='pets-img-container'>
+                                                {checkImage(
+                                                    i.fot_mas,
+                                                    `${i.esp_mas} de raza ${i.raz_mas} color ${i.col_mas} con nombre ${i.nom_mas}`,
+                                                    imgDefault,
+                                                    'pets-card-img'
+                                                )}
+                                                <span className='pets-species-badge'>{i.esp_mas}</span>
+                                            </div>
+
+                                            <section className='pets-info-wrapper'>
+                                                <p className='pets-name'><strong>{i.nom_mas}</strong></p>
+                                                <span className='pets-meta'>
+                                                    {i.raz_mas || 'Raza no especificada'} {i.col_mas || 'Color no especificado'}
+                                                </span>
+
+                                                <button
+                                                    type='button'
+                                                    className='boton-enviar pets-detail-btn'
+                                                    onClick={() => setPetSelect(i)}
+                                                >Descripción
+                                                </button>
+                                            </section>
+                                        </aside>
+                                    ))}
                                 </section>
-                            </aside>
-                            ))}
-                        </section>
-                        ):(
-                            <NotFound />
-                        )
-                    }  
+                            ) : (
+                                <NotFound />
+                            )
+                    }
                     {notify && (
-                        <Notification 
+                        <Notification
                             {...notify}
                         />
                     )}
                 </main>
-            )}   
+            )}
         </>
     )
 }

@@ -27,11 +27,11 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   const [notify, setNotify] = useState(null)
   let didFetch = useRef(false)
   const { admin } = useContext(AuthContext)
-  
+
   // Vars 
   const mainUrl = `${URL}/owner`
   const headersSearchUser = ['nom_per', 'email_per', 'cel_per', 'ape_per']
-  const headersSearchPet = ['nom_mas','esp_mas','raz_mas','ali_mas','gen_mas']
+  const headersSearchPet = ['nom_mas', 'esp_mas', 'raz_mas', 'ali_mas', 'gen_mas']
   const navigate = useNavigate()
 
   // Functions
@@ -53,7 +53,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
         const message = errorStatusHandler(err.status)
         setNotify({
           title: 'Error',
-          message: `${message}`,    
+          message: `${message}`,
           close: setNotify
         })
       } else console.log(err)
@@ -65,7 +65,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
     try {
       const pets = await GetData(`${URL}/pet/all`)
       setNotify(null)
-      setPetsDataAlmc(pets)    
+      setPetsDataAlmc(pets)
     } catch (err) {
       setNotify(null)
       if (err.status) {
@@ -130,7 +130,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   }
 
   const handleSearch = async (term = '', data = [], headers = []) => {
-    if(!datasAlmac) await GetDataOwners()
+    if (!datasAlmac) await GetDataOwners()
 
     const termLower = term.toLowerCase()
 
@@ -142,17 +142,17 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
     })
 
     const find = data.filter(item => {
-      return headers.some(field => 
+      return headers.some(field =>
         item[field]?.toLowerCase().includes(termLower)
       )
     })
-  
+
     if (find) setDatas(find)
   }
 
   // Handle search pets 
   const handleSearchPets = async (term = '', data = [], headers = []) => {
-    if(!petsDataAlmc) await getPets()
+    if (!petsDataAlmc) await getPets()
 
     setDatas(petsDataAlmc)
     setHeaders({
@@ -162,12 +162,12 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
       Edad: 'fec_nac_mas',
       Propietario: 'nom_per'
     })
-    
+
     searchFilter(term, data, headers, setDatas)
   }
 
   const handleDescription = (data) => {
-    const handler = data.nom_mas? handleDescriptionPet: handleDescriptionOwner
+    const handler = data.nom_mas ? handleDescriptionPet : handleDescriptionOwner
     return handler(data)
   }
 
@@ -188,10 +188,10 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
     const REFRESH_INTERVAL = 2 * 60 * 1000 // 2 minutes
     let intervalId
 
-    didFetch?didFetch:false
+    didFetch ? didFetch : false
     GetDataOwners()
     getPets()
-    
+
     intervalId = setInterval(() => {
       GetDataOwners()
       getPets()
@@ -201,95 +201,95 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   }, [])
 
   return (
-      <main className='contenedoradminhome'>
-        <NavBarAdmin /> 
-        <section className='principaladminhome'>
-          <HeaderAdmin />
-          
-          <article className='tarjetaadminhome' aria-labelledby='lista-usuarios-titulo'>
-            <div className='contenidoadminhome'>
-              <header className='encabezadoadminhome'>
-                <div className='tituloadminhome'>
-                  <FileText className='iconoadminhome' aria-hidden='true' />
-                  <h1 id='lista-usuarios-titulo' className='textoadminhome'>Lista de usuarios y mascotas</h1>
-                  <div className='decoracionadminhome' aria-hidden='true'>
-                    <PawPrint className='huellaadminhome' />
-                  </div>
+    <main className='contenedoradminhome'>
+      <NavBarAdmin />
+      <section className='principaladminhome'>
+        <HeaderAdmin />
+
+        <article className='tarjetaadminhome' aria-labelledby='lista-usuarios-titulo'>
+          <div className='contenidoadminhome'>
+            <header className='encabezadoadminhome'>
+              <div className='tituloadminhome'>
+                <FileText className='iconoadminhome' aria-hidden='true' />
+                <h1 id='lista-usuarios-titulo' className='textoadminhome'>Lista de usuarios y mascotas</h1>
+                <div className='decoracionadminhome' aria-hidden='true'>
+                  <PawPrint className='huellaadminhome' />
                 </div>
+              </div>
 
-                <nav className='BtnsRegisters'>
-                  <button 
-                    className='AddBtn' 
-                    onClick={() => navigate('/mascota/registro')}
-                    aria-label='Registrar nueva mascota'
-                  >
-                    <Plus size={16} className='iconoplusadminhome' aria-hidden='true' />
-                    Registrar Mascota
-                  </button>
-                  <button 
-                    className='AddBtn' 
-                    onClick={() => navigate('/propietario/registro')}
-                    aria-label='Registrar nuevo usuario'
-                  >
-                    <Plus size={16} className='iconoplusadminhome' aria-hidden='true' />
-                    Registrar usuario
-                  </button>
-                </nav>
-              </header>
+              <nav className='BtnsRegisters'>
+                <button
+                  className='AddBtn'
+                  onClick={() => navigate('/mascota/registro')}
+                  aria-label='Registrar nueva mascota'
+                >
+                  <Plus size={16} className='iconoplusadminhome' aria-hidden='true' />
+                  Registrar Mascota
+                </button>
+                <button
+                  className='AddBtn'
+                  onClick={() => navigate('/propietario/registro')}
+                  aria-label='Registrar nuevo usuario'
+                >
+                  <Plus size={16} className='iconoplusadminhome' aria-hidden='true' />
+                  Registrar usuario
+                </button>
+              </nav>
+            </header>
 
-              <section className='busquedaadminhome' aria-label='Búsqueda de usuarios y mascotas'>
-                <div className='seccionadminhome'>
-                  <label htmlFor='busqueda-usuario' className='etiquetaadminhome'>Usuario</label>
-                  <div className='inputcontenedoradminhome'>
-                    <User className='inputiconoadminhome' aria-hidden='true' />
-                    <input
-                      id='busqueda-usuario'
-                      className='campoadminhome'
-                      placeholder='Buscar por identificación o nombre de usuario'
-                      type='search'
-                      aria-label='Buscar usuarios'
-                      onChange={e => handleSearch(e.target.value, datasAlmac, headersSearchUser)}
-                      onFocus={() => handleDataShow(0)}
-                    />
-                  </div>
+            <section className='busquedaadminhome' aria-label='Búsqueda de usuarios y mascotas'>
+              <div className='seccionadminhome'>
+                <label htmlFor='busqueda-usuario' className='etiquetaadminhome'>Usuario</label>
+                <div className='inputcontenedoradminhome'>
+                  <User className='inputiconoadminhome' aria-hidden='true' />
+                  <input
+                    id='busqueda-usuario'
+                    className='campoadminhome'
+                    placeholder='Buscar por identificación o nombre de usuario'
+                    type='search'
+                    aria-label='Buscar usuarios'
+                    onChange={e => handleSearch(e.target.value, datasAlmac, headersSearchUser)}
+                    onFocus={() => handleDataShow(0)}
+                  />
                 </div>
+              </div>
 
-                <div className='seccionadminhome'>
-                  <label htmlFor='busqueda-mascota' className='etiquetaadminhome'>Mascota</label>
-                  <div className='inputcontenedoradminhome'>
-                    <PawPrint className='inputiconoadminhome' aria-hidden='true' />
-                    <input
-                      id='busqueda-mascota'
-                      className='campoadminhome'
-                      placeholder='Buscar por nombre o identificador de la mascota'
-                      type='search'
-                      aria-label='Buscar mascotas'
-                      onChange={e => handleSearchPets(e.target.value, petsDataAlmc, headersSearchPet)}
-                      onFocus={() => handleDataShow(1)}
-                    />
-                  </div>
+              <div className='seccionadminhome'>
+                <label htmlFor='busqueda-mascota' className='etiquetaadminhome'>Mascota</label>
+                <div className='inputcontenedoradminhome'>
+                  <PawPrint className='inputiconoadminhome' aria-hidden='true' />
+                  <input
+                    id='busqueda-mascota'
+                    className='campoadminhome'
+                    placeholder='Buscar por nombre o identificador de la mascota'
+                    type='search'
+                    aria-label='Buscar mascotas'
+                    onChange={e => handleSearchPets(e.target.value, petsDataAlmc, headersSearchPet)}
+                    onFocus={() => handleDataShow(1)}
+                  />
                 </div>
-              </section>
+              </div>
+            </section>
 
-              <GlobalTable 
-                fullData={datas}
-                headersSearch={['nom_per', 'doc_per', 'cel_per']}
-                listHeader={'mascotas'}
-                headers={headers}
-                watch={handleDescription}
-              /> 
-            </div>
-          </article>
-          <Footer/>
-        </section>
+            <GlobalTable
+              fullData={datas}
+              headersSearch={['nom_per', 'doc_per', 'cel_per']}
+              listHeader={'mascotas'}
+              headers={headers}
+              watch={handleDescription}
+            />
+          </div>
+        </article>
+        <Footer />
+      </section>
 
-        {notify && (
-          <Notification 
-            {...notify}
-          />
-        )}
+      {notify && (
+        <Notification
+          {...notify}
+        />
+      )}
 
-        <Outlet />
-      </main>
+      <Outlet />
+    </main>
   )
 }

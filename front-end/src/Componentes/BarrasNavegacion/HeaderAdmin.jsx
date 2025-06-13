@@ -16,10 +16,10 @@ import "../../styles/BarrasNavegacion/Header.css"
 export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:3000' }) => {
   // Dynamic Vars 
   const [isProfileOpen, setIsProfileOpen] = useState(false)
-  const [ tabHelp,setTabHelp ] = useState()
+  const [tabHelp, setTabHelp] = useState()
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
-  const [ appointment,setAppointment ] = useState()
-  const [ notify,setNotify ] = useState()
+  const [appointment, setAppointment] = useState()
+  const [notify, setNotify] = useState()
 
   // Vars 
   const navigate = useNavigate()
@@ -69,7 +69,7 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
 
   // Show TabHelp
   const handleHelp = () => {
-    tabHelp? setTabHelp(false): setTabHelp(true)
+    tabHelp ? setTabHelp(false) : setTabHelp(true)
   }
 
   useEffect(() => {
@@ -80,23 +80,23 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
       setAppointment,
       { by: user.doc }
     )
-  },[])
+  }, [])
 
   return (
     <header className="cabecera-header">
       <div className="contenido-cabecera-header">
         <div className="izquierda-cabecera-header">
-          {mainRol === 'Administrador'? (
+          {mainRol === 'Administrador' ? (
             <h1>Panel de Administración</h1>
-            ):(
-              <h1>Panel Medico</h1>
-            )
+          ) : (
+            <h1>Panel Medico</h1>
+          )
           }
           <p>Bienvenid@ de vuelta, {user.names} {user.lastNames}</p>
         </div>
 
         <nav className="derecha-cabecera-header" aria-label="Navegación principal">
-          <button 
+          <button
             type="button"
             className="BackBtn expandBtn"
             aria-label="Obtener ayuda"
@@ -147,7 +147,7 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
 
                 <footer className="pie-notificaciones-header">
                   <button type="button" className="boton-ver-todas-header" onClick={() => navigate('/notificaciones')}>
-                    Ver todas las notificaciones 
+                    Ver todas las notificaciones
                   </button>
                 </footer>
               </div>
@@ -182,7 +182,7 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
                   <Settings className="icon" aria-hidden="true" />
                   <span>Configuración</span>
                 </button>
-                <button type="button" className="item-dropdown-header item-salir-header" 
+                <button type="button" className="item-dropdown-header item-salir-header"
                   role="menuitem"
                   onClick={logout}
                 >
@@ -195,7 +195,7 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
         </nav>
       </div>
       {tabHelp && (
-        <TabHelp onClose={handleHelp}/>
+        <TabHelp onClose={handleHelp} />
       )}
     </header>
   )

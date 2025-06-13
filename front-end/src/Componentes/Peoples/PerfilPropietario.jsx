@@ -19,22 +19,22 @@ import '../../../src/styles/InterfazAdmin/PerfilPropietario.css'
 
 // Component 
 export const PerfilPropietario = ({
-    userSelect, 
-    owner = false,
-    URL = '', 
-    imgPetDefault = '', 
-    imgUserDefault = '',
-    setPetDetailTab,
-    setPetSelect }) => {
+  userSelect,
+  owner = false,
+  URL = '',
+  imgPetDefault = '',
+  imgUserDefault = '',
+  setPetDetailTab,
+  setPetSelect }) => {
   // Vars dynamic
   const [isEditing, setIsEditing] = useState(false)
-  const [isAdmin,setIsAdmin] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
   const [activeTab, setActiveTab] = useState('propietario')
-  const [petsData,setPetsData] = useState([])
+  const [petsData, setPetsData] = useState([])
   const [formData, setFormData] = useState({})
   const [notify, setNotify] = useState(null)
-  const [userData,setUserData] = useState({})
-  const [modPro,setModPro] = useState({})
+  const [userData, setUserData] = useState({})
+  const [modPro, setModPro] = useState({})
 
   // Vars 
   const mainUrl = `${URL}/people`
@@ -64,7 +64,8 @@ export const PerfilPropietario = ({
       dir_per: userSelect.doc_per,
       cel_per: userSelect.doc_per,
       email_per: userSelect.doc_per,
-      ...data})
+      ...data
+    })
     setPetDetailTab('Historia Clinica')
     navigate('/pets/details')
   }
@@ -95,7 +96,7 @@ export const PerfilPropietario = ({
       })
     } catch (err) {
       setNotify(null)
-      if(err.status) {
+      if (err.status) {
         const message = errorStatusHandler(err.status)
         setNotify({
           title: 'Error',
@@ -124,7 +125,7 @@ export const PerfilPropietario = ({
     try {
       const admin = roles.some(role => role.toLowerCase() === 'administrador')
       if (admin) {
-        const deleted = await DeleteData(`${mainUrl}/delete`, { doc: userData.doc_per})
+        const deleted = await DeleteData(`${mainUrl}/delete`, { doc: userData.doc_per })
         setNotify(null)
         deleted.deleted & setNotify({
           title: 'Desactivada',
@@ -134,7 +135,7 @@ export const PerfilPropietario = ({
       }
     } catch (err) {
       setNotify(null)
-      if(err.status) {
+      if (err.status) {
         const message = errorStatusHandler(err.status)
         setNotify({
           title: 'Error',
@@ -172,7 +173,7 @@ export const PerfilPropietario = ({
       genero: userData.Genero,
     })
     setPetsData(userData.mascotas)
-  },[petsData])
+  }, [petsData])
 
   useEffect(() => {
     // Vars
@@ -183,14 +184,14 @@ export const PerfilPropietario = ({
 
     const admin = roles.some(role => role.toLowerCase() === 'administrador')
 
-    admin?setIsAdmin(true):setIsAdmin(false)
-  },[])
+    admin ? setIsAdmin(true) : setIsAdmin(false)
+  }, [])
 
   return (
     <main className='contenedorpageProps'>
       <NavBarAdmin />
       <main className='principalpageProp'>
-      {admin? (<HeaderAdmin />): (<HeaderUser />)}
+        {admin ? (<HeaderAdmin />) : (<HeaderUser />)}
 
         <section className='tarjetagesusuario'>
           <section className='contenedorProps'>
@@ -256,18 +257,18 @@ export const PerfilPropietario = ({
               )
             }
 
-              <section className='contenidoProps'>
-                {activeTab === 'propietario' && (
-                  <Description
-                    handleChange={handleChange} 
-                    headers={headers}
-                    datas={userSelect}
-                    imgDefault={imgDefault}
-                    navigate={navigate}
-                    isEditing={isEditing}
-                    disabled={['doc_per', 'tip_doc_per']}
-                  />
-                )}
+            <section className='contenidoProps'>
+              {activeTab === 'propietario' && (
+                <Description
+                  handleChange={handleChange}
+                  headers={headers}
+                  datas={userSelect}
+                  imgDefault={imgDefault}
+                  navigate={navigate}
+                  isEditing={isEditing}
+                  disabled={['doc_per', 'tip_doc_per']}
+                />
+              )}
 
               {activeTab === 'mascotas' && (
                 <section className='mascotasContenedorProps'>
@@ -315,13 +316,13 @@ export const PerfilPropietario = ({
             </section>
           </section>
         </section>
-      <Footer/>
-      </main>      
+        <Footer />
+      </main>
       {notify && (
-        <Notification 
+        <Notification
           {...notify}
         />
       )}
-    </main> 
+    </main>
   )
 }

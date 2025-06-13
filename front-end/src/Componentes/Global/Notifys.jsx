@@ -25,33 +25,33 @@ export const Notification = ({
     secondOption = null
 }) => {
     // Dynamic vars
-    const [isOpen,setIsOpen] = useState(true)
+    const [isOpen, setIsOpen] = useState(true)
 
     // Effects
     // close then at time
     useEffect(() => {
-        if(close) setTimeout(() => {
+        if (close) setTimeout(() => {
             close(null)
-        },time)
-    },[])
-    
+        }, time)
+    }, [])
+
     return (
         <>
             {isOpen && (
                 <section className='LoadingNotification'>
                     <article className='LoadingContent'>
-                        {load?(
+                        {load ? (
                             <aside className='LoadingPaw'>
-                                <SmallLoader /> 
-                            </aside> 
-                        ):(
+                                <SmallLoader />
+                            </aside>
+                        ) : (
                             <aside className='LoadingPawImg'>
                                 {checkImage(
                                     img,
                                     'ganzo antropomorfico con traje formal negro con una lupa antigua en la pata derecha y la cabeza inclinada 40grados a la izquierda',
                                     imgDefault,
                                     'LoadingImg'
-                                )} 
+                                )}
                             </aside>
                         )}
                         <aside className='LoadingText'>
@@ -73,12 +73,12 @@ export const Notification = ({
                         )}
                         {firstOption && secondOption && (
                             <aside className='LoadingSelect'>
-                                <button 
-                                    className='DeleteBtn' 
+                                <button
+                                    className='DeleteBtn'
                                     onClick={firstOption}
                                 >Salir</button>
                                 <button
-                                    className='AddBtn' 
+                                    className='AddBtn'
                                     onClick={secondOption}
                                 >Continuar</button>
                             </aside>

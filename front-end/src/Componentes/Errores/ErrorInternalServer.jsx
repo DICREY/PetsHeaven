@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router'
 
 // Import styles 
 import '../../../src/styles/Errores/notfound.css'
-  
+
 // Component
 export const ErrorInternalServer = () => {
   // Vars 
@@ -18,8 +18,8 @@ export const ErrorInternalServer = () => {
           No eres tu soy yo, solo necesito tiempo para actulizarme
         </p>
         <div className="contenedor-button">
-          <button 
-            onClick={() => navigate(-1)} 
+          <button
+            onClick={() => navigate(-1)}
             className="pet-home-button"
           >
             <i className="fas fa-bone"></i> Volver atrás

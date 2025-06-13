@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { Bell,Clock,AlertCircle,CheckCircle,Calendar,Heart,Users,Search,Trash2,Eye,EyeOff,ArrowLeft } from "lucide-react"
+import { Bell, Clock, AlertCircle, CheckCircle, Calendar, Heart, Users, Search, Trash2, Eye, EyeOff, ArrowLeft } from "lucide-react"
 import { useState } from "react"
 
 // Imports 
@@ -145,7 +145,7 @@ export default function TodasLasNotificaciones({ onVolver }) {
 
   return (
     <div className="contenedoradminhome">
-      <NavBarAdmin/>
+      <NavBarAdmin />
       <div className="tablero-admin">
         <main className="contenido-principal-admin">
           {/* Header del dashboard - igual que en veterinary */}

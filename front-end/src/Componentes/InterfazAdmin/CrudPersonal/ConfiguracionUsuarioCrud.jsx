@@ -4,10 +4,10 @@ import { useState } from "react"
 import { ChevronLeft, User, Shield, FileText, Lock } from "lucide-react"
 
 // Imports 
-import {InformacionPersonalCrud} from "./InformacionPersonalCrud"
-import {RolPrivilegiosCrud} from "./RolPrivilegioCrud"
-import {InformacionProfesionalCrud} from "./InformacionProfesionalCrud"
-import {ContrasenaCrud} from "./ContrasenaCrud"
+import { InformacionPersonalCrud } from "./InformacionPersonalCrud"
+import { RolPrivilegiosCrud } from "./RolPrivilegioCrud"
+import { InformacionProfesionalCrud } from "./InformacionProfesionalCrud"
+import { ContrasenaCrud } from "./ContrasenaCrud"
 
 // Component
 export const ConfiguracionUsuarioCrud = () => {
