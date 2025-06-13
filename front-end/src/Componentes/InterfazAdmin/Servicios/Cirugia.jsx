@@ -45,19 +45,6 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
     resultadoEsperado: "",
     observaciones: ""
   });
-  const nuevaCirugia = useRef({
-    id: "",
-    nombre: "",
-    descripcion: "",
-    complicaciones: "",
-    recomendaciones: "",
-    precio: "",
-    disponible: true,
-    fechaCirugia: "",
-    descripcionBreve: "",
-    resultadoEsperado: "",
-    observaciones: ""
-  });
 
   const fetchCirugias = useCallback(async () => {
     if (didFetch.current) return;

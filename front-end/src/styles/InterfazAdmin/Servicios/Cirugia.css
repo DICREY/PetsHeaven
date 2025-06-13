@@ -20,7 +20,7 @@
 }
 
 .titulo-cirugia {
-  color: #00bcd4;
+  color: var(--primary);
   font-size: 1.375rem;
   margin-bottom: 0.5rem;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -50,7 +50,7 @@
 
 .subtitulo-cirugia {
   font-size: 1rem;
-  color: #00bcd4;
+  color: var(--primary);
   font-weight: 500;
 }
 
@@ -84,11 +84,11 @@
 }
 
 .filtro-cirugia:hover {
-  border-color: #00bcd4;
+  border-color: var(--primary);
 }
 
 .boton-agregar-cirugia {
-  background: #00bcd4;
+  background: var(--primary);
   color: white;
   border: none;
   padding: 12px 20px;
@@ -330,7 +330,7 @@
 .campo-cirugia textarea:focus,
 .campo-cirugia select:focus {
   outline: none;
-  border-color: #00bcd4;
+  border-color: var(--primary);
 }
 
 .campo-cirugia textarea {
@@ -371,7 +371,7 @@
 }
 
 .boton-guardar-cirugia {
-  background: #00bcd4;
+  background: var(--primary);
   color: white;
 }
 
@@ -419,13 +419,13 @@ fieldset {
 }
 
 .iconoadminhome {
-  color: #00bcd4;
+  color: var(--primary);
   width: 24px;
   height: 24px;
 }
 
 .textoadminhome {
-  color: #00bcd4;
+  color: var(--primary);
   font-size: 1.375rem;
   margin: 0;
   font-weight: 600;
