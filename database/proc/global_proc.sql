@@ -1,4 +1,4 @@
--- Active: 1746041048559@@127.0.0.1@3306@pets_heaven
+-- Active: 1747081666433@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.Login(
     IN p_firstData VARCHAR(100)
 )
@@ -24,4 +24,35 @@ BEGIN
     LIMIT 40;
 END //
 
+CREATE PROCEDURE pets_heaven.GetDataAdmin(
+    /* IN p_by VARCHAR(100) */
+)
+BEGIN
+    SELECT 
+        COUNT(v.id_vet) AS doc,
+        ( SELECT COUNT(*) FROM mascotas m WHERE m.estado = 1) AS mas,
+        ( 
+            SELECT COUNT(*) 
+            FROM 
+                citas c 
+            WHERE c.fec_cit LIKE NOW()
+        ) AS cit,
+        ( 
+            SELECT COUNT(*) 
+            FROM 
+                citas c 
+            JOIN 
+                servicios s ON s.id_ser = c.ser_cit
+            JOIN
+                categorias_ser cs ON cs.id_cat = s.cat_ser
+            WHERE 
+                cs.nom_cat LIKE "Emergencias 24h"
+        ) AS emg
+    FROM 
+        veterinarios v
+    LIMIT 40;
+END //
+
 /* DROP PROCEDURE pets_heaven.`Login`; */
+/* CALL `GetDataAdmin`(); */
+/* DROP PROCEDURE `GetDataAdmin`; */
