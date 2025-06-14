@@ -4,17 +4,18 @@ const { hash } = require('bcrypt')
 
 // Imports
 const Staff = require('../services/Staff.services')
-const { authenticateJWT, ValidatorRol } = require('../middleware/validator.handler')
+const { authenticateJWT, ValidatorRol, Fullinfo } = require('../middleware/validator.handler')
 
 // vars
 const staff = new Staff()
 const Route = Router()
 
-// Middleware 
+// Middlewares
 Route.use(authenticateJWT)
+Route.use(ValidatorRol("administrador"))
 
 // Routes
-Route.get('/all', ValidatorRol("administrador"), async (req,res) => {
+Route.get('/all', async (req,res) => {
     try {
         // Verifiy if exists
         const search = await staff.findAll()
@@ -29,7 +30,7 @@ Route.get('/all', ValidatorRol("administrador"), async (req,res) => {
     }
 })
 
-Route.get('/all/vet', ValidatorRol("administrador"), async (req,res) => {
+Route.get('/all/vet', async (req,res) => {
     try {
         // Verifiy if exists
         const search = await staff.findAllVet()
@@ -44,12 +45,12 @@ Route.get('/all/vet', ValidatorRol("administrador"), async (req,res) => {
     }   
 })
 
-Route.get('/all:by', ValidatorRol("administrador"), async (req,res) => {
+Route.get('/all:by', async (req,res) => {
     // Vars 
     const by = req.params.by
     
     try {
-        if (!by) return res.status(400).json({ message: "Petición no valida"})
+        if (!by) return res.status(400).json({ message: "Petición invalida, faltan datos" })
 
         // Verifiy if exists
         const search = await staff.findAllBy(by)
@@ -62,12 +63,12 @@ Route.get('/all:by', ValidatorRol("administrador"), async (req,res) => {
     }
 })
 
-Route.get('/by:by', ValidatorRol("administrador"), async (req,res) => {
+Route.get('/by:by', async (req,res) => {
     // Vars 
     const by = req.params.by
     
     try {
-        if (!by) return res.status(400).json({ message: "Petición no valida"})
+        if (!by) return res.status(400).json({ message: "Petición invalida, faltan datos" })
 
         // Verifiy if exist
         const search = await staff.findBy(by)
@@ -80,17 +81,18 @@ Route.get('/by:by', ValidatorRol("administrador"), async (req,res) => {
     }
 })
 
-Route.post('/register', ValidatorRol("administrador"), async (req,res) => {
+// Call Middleware for verify the request data
+Route.use(Fullinfo(['cel2_per']))
+
+Route.post('/register', async (req,res) => {
     // Vars 
     const saltRounds = 15
     const body = req.body
     
     try {
-        if (!body) return res.status(400).json({ message: "Petición no valida"})
-
         // Verifiy if exist
         const find = await staff.findBy(toString(body.doc))
-        if (find.result[0][0].nom_usu) return res.status(302).json({ message: "Persona ya registrada" })
+        if (find.result[0][0].nom_per) return res.status(302).json({ message: "Persona ya registrada" })
 
         const create = await staff.createStaff({hash_pass: await hash(body.cont,saltRounds), ...body})
         if(create.created) return res.status(201).json(create)
@@ -102,15 +104,13 @@ Route.post('/register', ValidatorRol("administrador"), async (req,res) => {
     }
 })
 
-Route.put('/modify', ValidatorRol("administrador"), async (req,res) => {
+Route.put('/modify', async (req,res) => {
     // Vars 
     const { body } = req
     const saltRounds = 15
     console.log(body)
         
     try {
-        if (!body) return res.status(400).json({ message: "Petición no valida"})
-
         // Verifiy if exist
         const find = await staff.findBy(toString(body.numeroDocumento))
         if (!find.result[0][0]) return res.status(404).json({ message: "Usuario no encontrado" })
@@ -124,13 +124,11 @@ Route.put('/modify', ValidatorRol("administrador"), async (req,res) => {
         res.status(500).json({ message: err })
     }
 })
-Route.delete('/delete', ValidatorRol("administrador"), async (req,res) => {
+Route.delete('/delete', async (req,res) => {
     // Vars 
     const { body } = req
         
     try {
-        if (!body) return res.status(400).json({ message: "Petición no valida"})
-
         // Verifiy if exist
         const find = await staff.findBy(toString(body.doc))
         if (!find.result[0][0]) return res.status(404).json({ message: "Usuario no encontrado" })

@@ -4,7 +4,7 @@ const { hash } = require('bcrypt')
 
 // Imports
 const People = require('../services/People.services')
-const { authenticateJWT, ValidatorRol } = require('../middleware/validator.handler')
+const { authenticateJWT, ValidatorRol, Fullinfo } = require('../middleware/validator.handler')
 
 // vars
 const people = new People()
@@ -12,9 +12,10 @@ const Route = Router()
 
 // Middleware 
 Route.use(authenticateJWT)
+Route.use(ValidatorRol("administrador"))
 
 // Routes
-Route.get('/all', ValidatorRol("administrador"), async (req,res) => {
+Route.get('/all', async (req,res) => {
     try {
         const search = await people.findAll()
         if (!search.result) return res.status(404).json({ message: "Usuarios no encontrado"})
@@ -26,12 +27,12 @@ Route.get('/all', ValidatorRol("administrador"), async (req,res) => {
     }
 })
 
-Route.get('/all:by', ValidatorRol("administrador"), async (req,res) => {
+Route.get('/all:by', async (req,res) => {
     // Vars 
     const by = req.params.by
     
     try {
-        if (!by) return res.status(400).json({ message: "Petición no valida"})
+        if (!by) return res.status(400).json({ message: "Petición invalida, faltan datos"})
             
         // Verifiy if exists
         const search = await people.findAllBy(by)
@@ -44,12 +45,12 @@ Route.get('/all:by', ValidatorRol("administrador"), async (req,res) => {
     }
 })
 
-Route.get('/by:by', ValidatorRol("administrador"), async (req,res) => {
+Route.get('/by:by', async (req,res) => {
     // Vars 
     const by = req.params.by
     
     try {
-        if (!by) return res.status(400).json({ message: "Petición no valida"})
+        if (!by) return res.status(400).json({ message: "Petición invalida, faltan datos"})
 
         // Verifiy if exist
         const search = await people.findBy(by)
@@ -61,13 +62,17 @@ Route.get('/by:by', ValidatorRol("administrador"), async (req,res) => {
         res.status(500).json({ message: err })
     }
 })
+
+// Call Middleware for verify the request data
+Route.use(Fullinfo(['cel2_per']))
+
 Route.post('/register', async (req,res) => {
     // Vars 
     const saltRounds = 15
     const body = req.body
     
     try {
-        if (!body) return res.status(400).json({ message: "Petición no valida"})
+
         // Verifiy if exist
         const find = await people.findBy(toString(body.numeroDocumento))
         if (find.result[0][0].nom_per) res.status(302).json({ message: "Usuario ya existe" })
@@ -76,38 +81,39 @@ Route.post('/register', async (req,res) => {
         res.status(201).json(create)
 
     } catch(err) {
-        console.log(err)
         if(err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: err })
     }
 })
 
-Route.put('/modify', ValidatorRol("administrador"), async (req,res) => {
+Route.put('/modify', async (req,res) => {
     // Vars 
     const { body } = req
     const saltRounds = 15
-    console.log(body)
         
     try {
-        if (!body) return res.status(400).json({ message: "Petición no valida"})
-
         // Verifiy if exist
-        const find = await people.findBy(toString(body.numeroDocumento))
+        const find = await people.findBy(body.doc_per)
         if (!find.result) res.status(404).json({ message: "Usuario no encontrado" })
 
-        const modified = await people.modify({hash_pass: await hash(body.password,saltRounds), ...body})
-        if(modified.modified) return res.status(200).json(modified)
+        const passwd = body.cont_per.length < 50? await hash(body.cont_per,saltRounds): String(body.cont_per)
+
+        const modified = await passwd?
+            await people.modify({ hash_pass: passwd,...body })
+            :res.status(400).json({ message: "Petición no valida"})
+
+        if (modified.modified) return res.status(200).json(modified)
     } catch (err) {
         if(err.status) return res.status(err.status).json({ message: err.message })
+
         res.status(500).json({ message: err })
     }
 })
-Route.delete('/delete', ValidatorRol("administrador"), async (req,res) => {
+Route.delete('/delete', async (req,res) => {
     // Vars 
     const { body } = req
         
     try {
-        if (!body) return res.status(400).json({ message: "Petición no valida"})
         // Verifiy if exist
         const find = await people.findBy(toString(body.doc))
         if (!find.result) res.status(404).json({ message: "Usuario no encontrado" })

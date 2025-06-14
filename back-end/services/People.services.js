@@ -168,19 +168,18 @@ class People {
         return new Promise((res,rej) => {
             // data 
             const newUser = [
-                data.nombres,
-                data.apellidos,
-                data.fechaNacimiento,
-                data.tipoDocumento,
-                data.numeroDocumento,
-                data.direccion,
-                data.celular,
-                data.celular2,
-                data.email,
+                data.nom_per,
+                data.ape_per,
+                data.fec_nac_per,
+                data.doc_per,
+                data.dir_per,
+                data.cel_per,
+                data.cel2_per,
+                data.email_per,
                 data.hash_pass,
-                data.genero
+                data.gen_per
             ]
-            const procedure = "CALL ModifyPeople(?,?,?,?,?,?,?,?,?,?,?);"
+            const procedure = "CALL ModifyPeople(?,?,?,?,?,?,?,?,?,?);"
 
             // conect to database
             this.database = new DataBase()

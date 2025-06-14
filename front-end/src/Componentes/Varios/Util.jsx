@@ -161,19 +161,21 @@ export const getAge = (fec = "") => {
   return calcAge(fec) 
 }
 
-export const errorStatusHandler = (status) => {
+export const errorStatusHandler = (err) => {
   const returnMessage = (errStatus) => {
     let message = 'Error interno'
+
+    if (errStatus.response.data.message) return errStatus.response.data.message
     
     if (errStatus >= 500) return 'Error del servidor por favor intentelo mas tarde' 
     
-    switch (errStatus) {
+    switch (errStatus.status) {
       case 302:
         message = 'Ya existe en el sistema'
         break
 
       case 400:
-        message = 'Contenido invalido'
+        message = 'Contenido invalido o falta información'
         break
 
       case 401:
@@ -215,5 +217,5 @@ export const errorStatusHandler = (status) => {
     
     return message
   }
-  return returnMessage(status)
+  return returnMessage(err)
 }

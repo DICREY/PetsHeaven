@@ -4,7 +4,7 @@ const { hash } = require('bcrypt')
 
 // Imports
 const Owner = require('../services/Owner.services')
-const { authenticateJWT, ValidatorRol } = require('../middleware/validator.handler')
+const { authenticateJWT, ValidatorRol, Fullinfo } = require('../middleware/validator.handler')
 
 // vars
 const owner = new Owner()
@@ -18,6 +18,7 @@ Route.get('/all', ValidatorRol("veterinario"), async (req,res) => {
     try {
         const search = await owner.findAllOwner()
         if (!search.result) return res.status(404).json({ message: "Usuarios no encontrado"})
+            
         res.status(200).json(search)
     } catch (err) {
         if(err.status) return res.status(err.status).json(err.message)
@@ -31,48 +32,56 @@ Route.get('/all:by', ValidatorRol("veterinario"), async (req,res) => {
     const by = req.params.by
     
     try {
-        if (!by) return res.status(400).json({ message: "Petición no valida"})
+        if (!by) return res.status(400).json({ message: "Petición invalida, faltan datos"})
 
         const search = await owner.findAllByOwner(by)
         if (!search.result) return res.status(404).json({ message: "Usuarios no encontrados"})
+
         res.status(200).json(search)
     } catch (err) {
         if(err.status) return res.status(err.status).json(err.message)
         res.status(500).json({ message: "Error interno", err: err })
     }
 })
+
+Route.get('/pet:by', ValidatorRol("veterinario"), async (req,res) => {
+    // Vars 
+    const by = req.params.by
+
+    try {
+        if (!by) return res.status(400).json({ message: "Petición invalida, faltan datos"})
+
+        const search = await owner.findAllByPetOwner(by)
+        if (!search.result) return res.status(404).json({ message: "Usuario no encontrado" })
+
+        res.status(200).json(search)
+    } catch (err) {
+        if(err.status) return res.status(err.status).json(err.message)
+        res.status(500).json({ message: "Error interno", err: err })
+    }
+})
+
+// Call Middleware for verify the request data
+Route.use(Fullinfo)
+
+
 Route.put('/modify', ValidatorRol("administrador"), async (req,res) => {
     // Vars 
     const { body } = req
     const saltRounds = 15
     
     try {
-        if (!body) return res.status(400).json({ message: "Petición no valida"})
-        
         // Verifiy if exist
         const find = await owner.findBy(toString(body.numeroDocumento))
-        if (!find.result) res.status(404).json({ message: "Usuario no encontrado" })
+        if (!find.result) return res.status(404).json({ message: "Usuario no encontrado" })
 
         const modified = await owner.modify({hash_pass: await hash(body.password,saltRounds), ...body})
         if(modified.modified) return res.status(200).json(modified)
+
+        return res.status(500).json({ message: "Error interno" })
     } catch (err) {
         if(err.status) return res.status(err.status).json({ message: err.message })
         res.status(500).json({ message: err })
-    }
-})
-Route.get('/pet:by', ValidatorRol("veterinario"), async (req,res) => {
-    // Vars 
-    const by = req.params.by
-
-    try {
-        if (!by) return res.status(400).json({ message: "Petición no valida"})
-
-        const search = await owner.findAllByPetOwner(by)
-        if (!search.result) return res.status(404).json({ message: "Usuario no encontrado" })
-        res.status(200).json(search)
-    } catch (err) {
-        if(err.status) return res.status(err.status).json(err.message)
-        res.status(500).json({ message: "Error interno", err: err })
     }
 })
 
@@ -81,7 +90,6 @@ Route.delete('/delete', ValidatorRol("veterinario"), async (req,res) => {
     const by = req.body
     
     try {
-        if (!by) return res.status(400).json({ message: "Petición no valida"})
         // Verifiy if exist
         const search = await owner.findByOwner(by.doc)
 

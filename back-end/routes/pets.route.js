@@ -3,7 +3,7 @@ const { Router } = require('express')
 
 // Imports
 const Pet = require('../services/Pets.services')
-const { authenticateJWT, ValidatorRol } = require('../middleware/validator.handler')
+const { authenticateJWT, ValidatorRol, Fullinfo } = require('../middleware/validator.handler')
 
 // vars
 const pet = new Pet()
@@ -31,7 +31,7 @@ Route.get('/all:by', ValidatorRol("usuario"),async (req,res) => {
     const by = req.params.by
     
     try {
-        if (!by) return res.status(400).json({ message: "Petición no valida"})
+        if (!by) return res.status(400).json({ message: "Petición invalida, faltan datos"})
 
         const pets = await pet.findBy(by)
         if (!pets.result[0][0]) return res.status(404).json({message: "mascotas no encontradas"})
@@ -44,13 +44,14 @@ Route.get('/all:by', ValidatorRol("usuario"),async (req,res) => {
 
 })
 
+// Call Middleware for verify the request data
+Route.use(Fullinfo)
+
 Route.post('/register', ValidatorRol("veterinario"), async (req,res) => {
     // Vars
     const { body } = req
     
     try{
-        if (!body) return res.status(400).json({ message: "Petición no valida"})
-
         // Verify if exist
         const find = await pet.findAllBy(body.nom_mas,body.doc_per)
         if (find.result[0][0]) return res.status(409).json({message: "La mascota ya existe"})
@@ -70,8 +71,6 @@ Route.put('/modify', ValidatorRol("usuario"), async (req,res) => {
     const body = req.body
     
     try {
-        if (!body) return res.status(400).json({ message: "Petición no valida"})
-
         // Verify if exist
         const find = await pet.findAllBy(body.doc_per,body.nom_mas)
         if (!find.result[0][0]) return res.status(404).json({message: "Mascota no encontrada"})
@@ -91,8 +90,6 @@ Route.post('/history', ValidatorRol("veterinario") ,async (req,res) => {
     const body = req.body
     
     try {
-        if (!body) return res.status(400).json({ message: "Petición no valida"})
-
         // Verify if exist
         const findPet = await pet.findAllBy(body.secondData, body.firstData)
         if (!findPet.result) return res.status(404).json({message: "Mascota no encontrada"})
@@ -112,8 +109,6 @@ Route.delete('/delete', ValidatorRol("administrador") ,async (req,res) => {
     const body = req.body
 
     try {
-        if (!body) return res.status(400).json({ message: "Petición no valida"})
-
         // Verify if exist
         const find = await pet.findAllBy(body.doc_per,body.nom_mas)
         if (!find.result[0][0]) return res.status(404).json({message: "Mascota no encontrada"})

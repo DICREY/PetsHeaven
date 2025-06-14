@@ -3,7 +3,7 @@ const { Router } = require('express')
 
 // Imports
 const Appointment = require('../services/Appointment.services')
-const { authenticateJWT, ValidatorRol } = require('../middleware/validator.handler')
+const { authenticateJWT, ValidatorRol, Fullinfo } = require('../middleware/validator.handler')
 
 // vars
 const appoin = new Appointment()
@@ -26,13 +26,14 @@ Route.get('/general', ValidatorRol("administrador"), async (req,res) => {
     }
 })
 
+// Call Middleware for verify the request data
+Route.use(Fullinfo(['cel2_per']))
+
 Route.post('/by', ValidatorRol("veterinario"), async (req,res) => {
     // Vars 
     const { by } = req.body
 
     try {
-        if (!by) return res.status(400).json({ message: "Petición no valida"})
-
         const search = await appoin.findAppointmentsByUser(by)
 
         if (!search.result) res.status(404).json({ message: "Citas no encontradas"})
@@ -49,8 +50,6 @@ Route.post('/register', ValidatorRol("veterinario"), async (req, res) => {
     const data = req.body
     
     try {
-        if (!data) return res.status(400).json({ message: "Petición no valida"})
-
         const created = await appoin.registAppointment(data)
         if (created.result) return res.status(201).json(created)
 
@@ -67,8 +66,6 @@ Route.put('/modify', ValidatorRol("veterinario"), async (req, res) => {
     const data = req.body
 
     try {
-        if (!data) return res.status(400).json({ message: "Petición no valida"})
-
         const updated = await appoin.modifyAppointment(data)
         if (updated.result) return res.status(200).json(updated)
 
@@ -84,8 +81,6 @@ Route.put('/cancel', ValidatorRol("veterinario"), async (req, res) => {
     const data = req.body
 
     try {
-        if (!data) return res.status(400).json({ message: "Petición no valida"})
-
         const cancelled = await appoin.disableAppointment(data)
         if (cancelled.result) return res.status(200).json(cancelled)
 

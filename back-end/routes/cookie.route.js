@@ -15,7 +15,7 @@ Route.use(authenticateJWT)
 Route.post('/cookie',(req, res) => {
     const { name, value } = req.body
     try {
-        if (!name || !value) return res.status(400).json({ message: "Petición no valida"})
+        if (!name || !value) return res.status(400).json({ message: "Petición invalida, faltan datos"})
 
         res.cookie( name, value, cookiesOptions)
         res.status(201).json({ message: 'Cookie creada' })
@@ -29,7 +29,7 @@ Route.post('/cookie',(req, res) => {
 Route.post('/check-cookie',(req, res) => {
     const { name } = req.body
     try {
-        if (!name) return res.status(400).json({ message: "Petición no valida"})
+        if (!name) return res.status(400).json({ message: "Petición invalida, faltan datos"})
 
         const cookie = req.signedCookies[name] || req.cookies[name]
     

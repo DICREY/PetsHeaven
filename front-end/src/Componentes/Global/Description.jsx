@@ -26,14 +26,9 @@ export class Description extends React.Component {
 
     const deactive = disabled.some(item => item === header)
     // Lógica para tipos de datos comunes
-    if (header.includes("fec")) return {
-      value: formatDate(item),
-      type: "date",
-      active: deactive ? false : true
-    }
     return {
-      value: item,
-      type: "text",
+      value: header.includes("fec")? formatDate(item): item,
+      type: header.includes("fec")? "date": header.includes("email")? "email": header.includes("cel")? "number": "text",
       active: deactive ? false : true
     }
   }

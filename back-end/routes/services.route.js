@@ -3,7 +3,7 @@ const { Router } = require('express')
 
 // Imports
 const Services = require('../services/Services.services')
-const { authenticateJWT, ValidatorRol } = require('../middleware/validator.handler')
+const { authenticateJWT, ValidatorRol, Fullinfo } = require('../middleware/validator.handler')
 
 // vars
 const services = new Services()
@@ -28,7 +28,7 @@ Route.get('/all', ValidatorRol("usuario"), async (req,res) => {
 Route.get('/all/:by', ValidatorRol("usuario"), async (req,res) => {
     const { by } = req.params
     try {
-        if (!by) return res.status(400).json({ message: "Petición no valida"})
+        if (!by) return res.status(400).json({ message: "Petición invalida, faltan datos" })
 
         const serv = await services.findAllBy(by)
         if (!serv.result[0][0]) return res.status(404).json({ message: "Servicios no encontrados" })
@@ -37,19 +37,6 @@ Route.get('/all/:by', ValidatorRol("usuario"), async (req,res) => {
     } catch (err) {
         if(err.status) return res.status(err.status).json(err.message)
         res.status(500).json({ message: err })
-    }
-})
-
-Route.post('/register', ValidatorRol("administrador"), async (req, res) => {
-    const data = req.body
-    try {
-        if (!data) return res.status(400).json({ message: "Petición no valida"})
-
-        const result = await services.registerCirugia(data);
-        res.status(201).json({ message: "Cirugía registrada correctamente", result });
-    } catch (err) {
-        if (err.status) return res.status(err.status).json({ message: err.message });
-        res.status(500).json({ message: err.message || err });
     }
 })
 
@@ -77,15 +64,16 @@ Route.get('/cirs', ValidatorRol("usuario"), async (req,res) => {
     }
 })
 
+// Call Middleware for verify the request data
+Route.use(Fullinfo)
+
 Route.put('/AblOrDis', ValidatorRol("administrador"), async (req, res) => {
     // Vars 
     const { data } = req.body
 
     try {
-        if (!data) return res.status(400).json({ message: "Petición no valida"})
-        
         const find = await services.findBy(data.id_ser)
-        if (!find.result[0][0]) return res.status(404).json({message: "Servicio no encontrado"})
+        if (!find.result[0][0]) return res.status(404).json({ message: "Servicio no encontrado" })
         
         const cancelled = await services.AbleOrDesableService(data)
         if (cancelled.result) return res.status(200).json(cancelled)
@@ -98,4 +86,18 @@ Route.put('/AblOrDis', ValidatorRol("administrador"), async (req, res) => {
     }
 })
 
+Route.post('/register', ValidatorRol("administrador"), async (req, res) => {
+    const data = req.body
+    try {
+        if (!data) return res.status(400).json({ message: "Petición no valida"})
+
+        const result = await services.registerCirugia(data);
+        res.status(201).json({ message: "Cirugía registrada correctamente", result });
+    } catch (err) {
+        if (err.status) return res.status(err.status).json({ message: err.message });
+        res.status(500).json({ message: err.message || err });
+    }
+})
+
+// Exports 
 module.exports = Route

@@ -34,13 +34,13 @@ export const PerfilPropietario = ({
   const [formData, setFormData] = useState({})
   const [notify, setNotify] = useState(null)
   const [userData, setUserData] = useState({})
-  const [modPro, setModPro] = useState({})
+  const [modPro, setModPro] = useState(userSelect)
 
   // Vars 
   const mainUrl = `${URL}/people`
   const imgDefault = imgUserDefault
   const imgDefaultPet = imgPetDefault
-  const { admin, roles } = useContext(AuthContext)
+  const { admin } = useContext(AuthContext)
   const navigate = useNavigate()
   const headers = {
     Nombres: 'nom_per',
@@ -51,19 +51,19 @@ export const PerfilPropietario = ({
     Direccion: 'dir_per',
     Celular: 'cel_per',
     'Celular 2': 'cel2_per',
-    Correo: 'email_per',
+    Email: 'email_per',
     Genero: 'gen_per'
   }
 
   // Functions 
   const verHistorial = (data) => {
     setPetSelect({
-      nom_per: userSelect.doc_per,
-      ape_per: userSelect.doc_per,
+      nom_per: userSelect.nom_per,
+      ape_per: userSelect.ape_per,
       doc_per: userSelect.doc_per,
-      dir_per: userSelect.doc_per,
-      cel_per: userSelect.doc_per,
-      email_per: userSelect.doc_per,
+      dir_per: userSelect.dir_per,
+      cel_per: userSelect.cel_per,
+      email_per: userSelect.email_per,
       ...data
     })
     setPetDetailTab('Historia Clinica')
@@ -96,23 +96,21 @@ export const PerfilPropietario = ({
       })
     } catch (err) {
       setNotify(null)
-      if (err.status) {
-        const message = errorStatusHandler(err.status)
-        setNotify({
-          title: 'Error',
-          message: `${message}`,
-          close: setNotify
-        })
-      } else console.log(err)
+      const message = errorStatusHandler(err)
+      setNotify({
+        title: 'Error',
+        message: `${message}`,
+        close: setNotify
+      })
     }
   }
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setModPro((prev) => ({
+    setModPro(prev => ({
       ...prev,
       [name]: value,
-    }))
+    })) 
   }
 
   const handleDeleteClick = async () => {
@@ -123,7 +121,6 @@ export const PerfilPropietario = ({
       load: 1
     })
     try {
-      const admin = roles.some(role => role.toLowerCase() === 'administrador')
       if (admin) {
         const deleted = await DeleteData(`${mainUrl}/delete`, { doc: userData.doc_per })
         setNotify(null)
@@ -135,14 +132,12 @@ export const PerfilPropietario = ({
       }
     } catch (err) {
       setNotify(null)
-      if (err.status) {
-        const message = errorStatusHandler(err.status)
-        setNotify({
-          title: 'Error',
-          message: message,
-          close: setNotify
-        })
-      } else console.log(err)
+      const message = errorStatusHandler(err)
+      setNotify({
+        title: 'Error',
+        message: message,
+        close: setNotify
+      })
     }
   }
 
@@ -160,38 +155,35 @@ export const PerfilPropietario = ({
   // Effects
   useEffect(() => {
     setModPro({
-      nombres: userData.Nombres,
-      apellidos: userData.Apellidos,
-      fechaNacimiento: formatDate(userData['Fecha Nacimiento']),
-      tipoDocumento: userData['T. Doc'],
-      numeroDocumento: userData.Documento,
-      direccion: userData.Direccion,
-      celular: userData.Celular,
-      celular2: userData['Celular 2'],
-      email: userData.Correo,
-      password: userData.cont_per,
-      genero: userData.Genero,
+      nom_per: userData.nom_per,
+      ape_per: userData.ape_per,
+      fec_nac_per: formatDate(userData.fec_nac_per),
+      tip_doc_per: userData.tip_doc_per,
+      doc_per: userData.doc_per,
+      dir_per: userData.dir_per,
+      cel_per: userData.cel_per,
+      cel2_per: userData.cel2_per,
+      email_per: userData.email_per,
+      cont_per: userData.cont_per,
+      gen_per: userData.gen_per,
     })
     setPetsData(userData.mascotas)
   }, [petsData])
 
   useEffect(() => {
     // Vars
-
     if (!userSelect) navigate('/consultorio')
     setUserData(userSelect)
     setFormData(userSelect)
 
-    const admin = roles.some(role => role.toLowerCase() === 'administrador')
-
-    admin ? setIsAdmin(true) : setIsAdmin(false)
+    admin? setIsAdmin(true) : setIsAdmin(false)
   }, [])
 
   return (
     <main className='contenedorpageProps'>
       <NavBarAdmin />
       <main className='principalpageProp'>
-        {admin ? (<HeaderAdmin />) : (<HeaderUser />)}
+        {admin ? (<HeaderAdmin URL={URL} />) : (<HeaderUser />)}
 
         <section className='tarjetagesusuario'>
           <section className='contenedorProps'>
@@ -265,6 +257,7 @@ export const PerfilPropietario = ({
                 <Description
                   handleChange={handleChange}
                   headers={headers}
+                  dataHeaders={Object.values(headers)}
                   datas={userSelect}
                   imgDefault={imgDefault}
                   navigate={navigate}

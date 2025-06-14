@@ -1,4 +1,4 @@
--- Active: 1747081666433@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.RegistPeoples(
     IN p_nom_per VARCHAR(100),
     IN p_ape_per VARCHAR(100),
@@ -147,7 +147,6 @@ CREATE PROCEDURE pets_heaven.ModifyPeople(
     IN p_nom_per VARCHAR(100),
     IN p_ape_per VARCHAR(100),
     IN p_fec_nac_per DATE,
-    IN p_tip_doc_per VARCHAR(10),
     IN p_doc_per VARCHAR(20),
     IN p_dir_per VARCHAR(100),
     IN p_cel_per VARCHAR(20),
@@ -173,7 +172,6 @@ BEGIN
         p.nom_per = p_nom_per,
         p.ape_per = p_ape_per,
         p.fec_nac_per = p_fec_nac_per,
-        p.tip_doc_per = p_tip_doc_per,
         p.dir_per = p_dir_per,
         p.cel_per = p_cel_per,
         p.cel2_per = p_cel2_per,
@@ -379,3 +377,4 @@ END //
 
 /* CALL `SearchPeoplesVet`();
 DROP PROCEDURE `SearchPeoplesVet`; */
+/* DROP PROCEDURE `ModifyPeople`; */
