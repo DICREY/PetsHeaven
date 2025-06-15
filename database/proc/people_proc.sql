@@ -210,7 +210,7 @@ BEGIN
         p.estado = 1
     GROUP BY 
         p.id_per
-    LIMIT 100;
+    LIMIT 1000;
 END //
 CREATE PROCEDURE pets_heaven.SearchPeoplesVet()
 BEGIN
@@ -240,7 +240,7 @@ BEGIN
         p.estado = 1
     GROUP BY 
         p.id_per
-    LIMIT 100;
+    LIMIT 1000;
 END //
 CREATE PROCEDURE pets_heaven.SearchAllPeoples()
 BEGIN
@@ -266,7 +266,7 @@ BEGIN
         roles r ON otr.id_rol = r.id_rol
     GROUP BY 
         p.id_per
-    LIMIT 100;
+    LIMIT 1000;
 END //
 
 CREATE PROCEDURE pets_heaven.SearchPeopleBy(
@@ -301,7 +301,7 @@ BEGIN
         )
     ORDER BY
         p.id_per
-    LIMIT 50;
+    LIMIT 1000;
 END //
 
 CREATE PROCEDURE pets_heaven.SearchPeoplesBy(
@@ -342,7 +342,7 @@ BEGIN
         )
     GROUP BY 
         p.id_per
-    LIMIT 100;
+    LIMIT 1000;
 END //
 
 CREATE PROCEDURE pets_heaven.DeletePeople(

@@ -1,4 +1,4 @@
--- Active: 1746046445434@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.Login(
     IN p_firstData VARCHAR(100)
 )
@@ -21,7 +21,7 @@ BEGIN
         AND p.email_per = p_firstData
     ORDER BY 
         p.nom_per
-    LIMIT 40;
+    LIMIT 1000;
 END //
 
 CREATE PROCEDURE pets_heaven.GetDataAdmin(
@@ -50,7 +50,7 @@ BEGIN
         ) AS emg
     FROM 
         veterinarios v
-    LIMIT 40;
+    LIMIT 1000;
 END //
 
 /* DROP PROCEDURE pets_heaven.`Login`; */

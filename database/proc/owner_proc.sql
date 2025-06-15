@@ -1,4 +1,4 @@
--- Active: 1747081666433@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchOwners()
 BEGIN
     SELECT
@@ -53,7 +53,7 @@ BEGIN
         u.fec_cre_per
     ORDER BY
         u.id_per
-    LIMIT 50;
+    LIMIT 1000;
 END //
 CREATE PROCEDURE pets_heaven.SearchOwnersBy(
     IN p_by VARCHAR(100)
@@ -122,7 +122,7 @@ BEGIN
         u.fec_cre_per
     ORDER BY
         u.id_per DESC
-    LIMIT 50;
+    LIMIT 1000;
 END //
 CREATE PROCEDURE pets_heaven.SearchOwnerBy(
     IN p_by VARCHAR(100)
@@ -187,7 +187,7 @@ BEGIN
         u.fec_cre_per
     ORDER BY
         u.id_per DESC
-    LIMIT 50;
+    LIMIT 1000;
 END //
 CREATE PROCEDURE pets_heaven.SearchOwnersByPet(
     IN p_by VARCHAR(100)
@@ -255,7 +255,7 @@ BEGIN
         u.fec_cre_per
     ORDER BY
         u.id_per DESC
-    LIMIT 50;
+    LIMIT 1000;
 END //
 
 CREATE PROCEDURE pets_heaven.DeleteOwner(

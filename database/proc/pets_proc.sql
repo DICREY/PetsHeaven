@@ -1,4 +1,4 @@
--- Active: 1747081666433@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.RegistPets(
     IN p_nom_mas VARCHAR(100),
     IN p_esp_mas VARCHAR(100),
@@ -124,7 +124,7 @@ BEGIN
         AND p.estado = 1
     ORDER BY 
         m.nom_mas
-    LIMIT 40;
+    LIMIT 1000;
 
 END //
 
@@ -176,7 +176,7 @@ BEGIN
             OR (p.doc_per LIKE p_by AND m.nom_mas LIKE p_second_by)
         )
     ORDER BY m.nom_mas
-    LIMIT 40;
+    LIMIT 1000;
 END //
 
 CREATE PROCEDURE pets_heaven.SearchPetBy(
@@ -226,7 +226,7 @@ BEGIN
             OR p.doc_per LIKE p_by
         )
     ORDER BY m.nom_mas
-    LIMIT 40;
+    LIMIT 1000;
 END //
 
 CREATE PROCEDURE pets_heaven.DeletePetBy(

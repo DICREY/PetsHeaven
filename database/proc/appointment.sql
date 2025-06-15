@@ -1,5 +1,4 @@
--- Active: 1747081666433@@127.0.0.1@3306@pets_heaven
-
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchAllAppointments()
 BEGIN 
     SELECT 
@@ -38,7 +37,7 @@ BEGIN
     WHERE
         c.estado != 'CANCELADO'
     ORDER BY c.fec_cit
-    LIMIT 50;
+    LIMIT 1000;
 END //
 
 
@@ -79,7 +78,7 @@ BEGIN
             OR p.email_per = p_by
         )
     ORDER BY c.fec_cit
-    LIMIT 50;
+    LIMIT 1000;
 END //
 
 CREATE PROCEDURE pets_heaven.RegistAppointment(
