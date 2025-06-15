@@ -84,19 +84,15 @@ export const GesAgendaPersonal = ({ URL = '' }) => {
                 }
             } catch (err) {
                 setNotify(null)
-                if (err.status) {
-                    const message = errorStatusHandler(err.status)
-                    setNotify({
-                        title: 'Error',
-                        message: err.status == 404 ? 'No tienes citas asignadas' : message,
-                        close: setNotify
-                    })
-                    if (err.status === 403) {
-                        setTimeout(() => {
-                            Logout()
-                        }, 2000)
-                    }
-                } else console.log(err)
+                const message = errorStatusHandler(err)
+                setNotify({
+                    title: 'Error',
+                    message: err.status == 404 ? 'No tienes citas asignadas' : message,
+                    close: setNotify
+                })
+                if (err.status === 403) setTimeout(() => {
+                    Logout()
+                }, 2000)
             }
         }
 

@@ -56,11 +56,12 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
         setProfileImage(e.target.result)
       }
       reader.readAsDataURL(file)
-      setValue('imagen_mas', file)
+      setValue('fot_mas', file)
     }
   }
 
   const onSubmit = async (data) => {
+    // console.log(profileImage)
     setIsSubmitting(true)
     setNotify({
       title:'Validando...',
@@ -71,20 +72,18 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
     try {
       data.fec_nac_mas = formatDate(data.fec_nac_mas)
 
-      const formData = new FormData()
-      for (const key in data) {
-        if (key === 'imagen_mas' && data[key]) {
-          formData.append('imagen_mas', data[key])
-        } else {
-          formData.append(key, data[key])
-        }
-      }
+      // const formData = new FormData()
+      // for (const key in data) {
+      //   if (key === 'fot_mas' && data[key]) {
+      //     formData.append('fot_mas', data[key])
+      //   } else formData.append(key, data[key])
+      // }
+      // console.log(formData)
 
-      const created = await PostData(`${mainURL}/register`, formData)
-
+      const created = await PostData(`${mainURL}/register`, { ...data, fot_mas: "Dont" })
       setNotify(null)
 
-      if(created.status === 201) {
+      if(created.created) {
         setNotify({
           title: 'Registro Exitoso',
           message: 'La mascota ha sido registrada con éxito',
@@ -127,7 +126,7 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
     <div className='contenedorgesusuario'>
       <NavBarAdmin />
       <main className='principalgesusuario'>
-        {admin? (<HeaderAdmin />): (<HeaderUser />)}
+        {admin? (<HeaderAdmin URL={URL} />): (<HeaderUser />)}
         <main className='contenedor-regusuario'>
           <header className='cabecera-regusuario'>
             <div className='titulo-regusuario'>
@@ -135,8 +134,8 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
               <span className='creacion-regusuario'>| Creación</span>
             </div>
             <address className='acciones-regusuario'>
-              <button className='atras-regusuario' onClick={() => navigate(-1)}>
-                <ChevronLeft size={16} />
+              <button className='BackBtn' onClick={() => navigate(-1)}>
+                <ChevronLeft className='icon' />
                 <span className='texto-btn-regusuario'>Atrás</span>
               </button>
               <button 
@@ -154,7 +153,7 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
               className={`tab-regusuario ${activeTab === 'personal' ? 'activo-regusuario' : ''}`}
               onClick={() => setActiveTab('personal')}
             >
-              <User className='icono-regusuario' size={18} />
+              <User className='icon' />
               <span className='texto-tab-regusuario'>Información mascota</span>
             </div>
           </nav>
@@ -172,8 +171,8 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
                         checkImage(
                           profileImage,
                           'imagen de la mascota para guardar en el sistema',
-                          imgDefault): 
-                        checkImage(cd, 
+                          imgDefault):
+                        checkImage(
                           imgDefault,
                           'imagen de la mascota para guardar en el sistema',
                           imgDefault)
@@ -184,7 +183,7 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
                       className='editar-regusuario' 
                       onClick={() => profileInputRef.current.click()}
                     >
-                      <Pencil size={16} />
+                      <Pencil className='icon' />
                     </button>
                     <input
                       type='file'

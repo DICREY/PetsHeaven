@@ -24,10 +24,10 @@ Route.get('/all', async (req,res) => {
 
         if (search.result[0][0]) return res.status(200).json(search)
 
-        res.status(500).json({message: "Error interno"})
+        res.status(500).json({message: 'Error del servidor por favor intentelo mas tarde'})
     } catch (err) {
         if(err.status) return res.status(err.status).json({message: err.message})
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
@@ -39,10 +39,10 @@ Route.get('/all/vet', async (req,res) => {
 
         if (search.result[0][0]) return res.status(200).json(search)
 
-        res.status(500).json({message: "Error interno"})
+        res.status(500).json({message: 'Error del servidor por favor intentelo mas tarde'})
     } catch (err) {
         if(err.status) return res.status(err.status).json({message: err.message})
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }   
 })
 
@@ -60,7 +60,7 @@ Route.get('/all:by', async (req,res) => {
         res.status(200).json(search)
     } catch (err) {
         if(err.status) return res.status(err.status).json({message: err.message})
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
@@ -78,7 +78,7 @@ Route.get('/by:by', async (req,res) => {
         res.status(200).json(search)
     } catch (err) {
         if(err.status) return res.status(err.status).json({message: err.message})
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
@@ -98,10 +98,10 @@ Route.post('/register', async (req,res) => {
         const create = await staff.createStaff({hash_pass: await hash(body.cont,saltRounds), ...body})
         if(create.created) return res.status(201).json(create)
 
-        res.status(500).json({message: "Error interno"})
+        res.status(500).json({message: 'Error del servidor por favor intentelo mas tarde'})
     } catch(err) {
         if(err.status) return res.status(err.status).json({message: err.message})
-        res.status(500).json({ message: "Error interno", error: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
@@ -119,10 +119,10 @@ Route.put('/modify', async (req,res) => {
         const modified = await staff.modify({hash_pass: await hash(body.password,saltRounds), ...body})
         if(modified.modified) return res.status(200).json(modified)
 
-        res.status(500).json({message: "Error interno"})
+        res.status(500).json({message: 'Error del servidor por favor intentelo mas tarde'})
     } catch (err) {
         if(err.status) return res.status(err.status).json({ message: err.message })
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 Route.delete('/delete', async (req,res) => {
@@ -137,10 +137,10 @@ Route.delete('/delete', async (req,res) => {
         const staffDeleted = await staff.delete(body.doc)
         if (staffDeleted.deleted) return res.status(200).json(staffDeleted)
 
-        res.status(500).json({ message: "Error interno" })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde' })
     } catch (err) {
         if(err.status) return res.status(err.status).json({message: err.message})
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 

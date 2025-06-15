@@ -25,7 +25,7 @@ class Pet {
                 data.doc_per,
                 data.gen_mas,
                 data.est_rep_mas,
-                data.fot_mas || ''
+                data.fot_mas
             ]
 
             // conect to database
@@ -37,7 +37,7 @@ class Pet {
                 if(err) rej(err)
                 setTimeout(() => res({
                     message: "Pet Created",
-                    create: true
+                    created: true
                 }),1000)
             })
 

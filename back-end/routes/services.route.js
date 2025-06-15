@@ -22,7 +22,7 @@ Route.get('/all', ValidatorRol("usuario"), async (req,res) => {
         res.status(200).json(serv)
     } catch (err) {
         if(err.status) return res.status(err.status).json(err.message)
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
@@ -37,7 +37,7 @@ Route.get('/all/:by', ValidatorRol("usuario"), async (req,res) => {
         res.status(200).json(serv)
     } catch (err) {
         if(err.status) return res.status(err.status).json(err.message)
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
@@ -49,7 +49,7 @@ Route.get('/vacs', ValidatorRol("usuario"), async (req,res) => {
         res.status(200).json(serv)
     } catch (err) {
         if(err.status) return res.status(err.status).json(err.message)
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
@@ -61,12 +61,12 @@ Route.get('/cirs', ValidatorRol("usuario"), async (req,res) => {
         res.status(200).json(serv)
     } catch (err) {
         if(err.status) return res.status(err.status).json(err.message)
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
 // Call Middleware for verify the request data
-Route.use(Fullinfo)
+Route.use(Fullinfo(['empty']))
 
 Route.put('/AblOrDis', ValidatorRol("administrador"), async (req, res) => {
     // Vars 
@@ -83,7 +83,7 @@ Route.put('/AblOrDis', ValidatorRol("administrador"), async (req, res) => {
     } catch (err) {
         console.log(err)
         if (err.status) return res.status(err.status).json({ message: err.message })
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
@@ -96,7 +96,7 @@ Route.post('/register', ValidatorRol("administrador"), async (req, res) => {
         res.status(201).json({ message: "Cirugía registrada correctamente", result });
     } catch (err) {
         if (err.status) return res.status(err.status).json({ message: err.message });
-        res.status(500).json({ message: err.message || err });
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 

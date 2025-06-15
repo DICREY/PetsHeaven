@@ -24,7 +24,7 @@ Route.get('/all', async (req,res) => {
         res.status(200).json(search)
     } catch (err) {
         if(err.status) return res.status(err.status).json({message: err.message})
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
@@ -42,7 +42,7 @@ Route.get('/all:by', async (req,res) => {
         res.status(200).json(search)
     } catch (err) {
         if(err.status) return res.status(err.status).json({message: err.message})
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
@@ -60,7 +60,7 @@ Route.get('/by:by', async (req,res) => {
         res.status(200).json(search)
     } catch (err) {
         if(err.status) return res.status(err.status).json({message: err.message})
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
@@ -83,7 +83,7 @@ Route.post('/register', async (req,res) => {
 
     } catch(err) {
         if(err.status) return res.status(err.status).json({message: err.message})
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
@@ -107,7 +107,7 @@ Route.put('/modify', async (req,res) => {
     } catch (err) {
         if(err.status) return res.status(err.status).json({ message: err.message })
 
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 Route.delete('/delete', async (req,res) => {
@@ -122,10 +122,10 @@ Route.delete('/delete', async (req,res) => {
         const peopleDeleted = await people.delete(body.doc)
         if (peopleDeleted.deleted) return res.status(200).json(peopleDeleted)
 
-        res.status(500).json({ message: "Error interno" })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde' })
     } catch (err) {
         if(err.status) return res.status(err.status).json({message: err.message})
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 

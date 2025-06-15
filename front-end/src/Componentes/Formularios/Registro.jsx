@@ -358,7 +358,7 @@
                     </label>
                     <select
                       id='tipoDocumento'
-                      autoFocus // Soporte nativo para el focus en react :v
+                      autoFocus // Soporte nativo para el focus en react
                       onFocus={(e) => e.target.focus()} // Refuerza el enfoque
                       className={errors.tipoDocumento ? 'campo-error select' : 'select'}
                       {...register('tipoDocumento', {

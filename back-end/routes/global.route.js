@@ -36,7 +36,7 @@ Route.post('/check', async (req,res) => {
     } catch (err) {
         if (err.status) return res.status(err.status).json({ message: err.message })
 
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
@@ -56,7 +56,7 @@ Route.get('/services', async (req,res) => {
     } catch (err) {
         console.log(err)
         if (err.status) return res.status(err.status).json({ message: err.message })
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
@@ -73,7 +73,7 @@ Route.get('/info/general', ValidatorRol('administrador'), async (req,res) => {
     } catch (err) {
         console.log(err)
         if (err.status) return res.status(err.status).json({ message: err.message })
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
@@ -95,7 +95,7 @@ Route.post('/register', async (req,res) => {
         res.status(201).json(create)
     } catch(err) {
         if(err.status) return res.status(err.status).json({message: err.message})
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
@@ -137,7 +137,7 @@ Route.post('/login', limiterLog, async (req,res) => {
     } catch (err) {
         if (err.status) return res.status(err.status).json({ message: err.message })
 
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 

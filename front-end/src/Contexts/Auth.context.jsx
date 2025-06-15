@@ -78,7 +78,7 @@ export const AuthProvider = ({ children }) => {
             try {
                 const check = await PostData('http://localhost:3000/cookie/check-cookie', { name: '__cred' })
                 if (check) {
-                    const userData = decodeJWT(check.data.data)
+                    const userData = decodeJWT(check.data)
                     setUser(userData)
                     setRoles(userData.roles?.split(', ') || ['Usuario'])
                     setMainRol(userData.roles?.split(', ')[0] || ['Usuario'])

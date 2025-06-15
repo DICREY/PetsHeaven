@@ -21,7 +21,7 @@ Route.post('/cookie',(req, res) => {
         res.status(201).json({ message: 'Cookie creada' })
     } catch (err) {
         if (err.status) return res.status(err.status).json({ message: err.message })
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
@@ -40,7 +40,7 @@ Route.post('/check-cookie',(req, res) => {
         return res.status(200).json({ data: cookie })
     } catch (err) {
         if (err.status) return res.status(err.status).json({ message: err.message })
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
@@ -54,7 +54,7 @@ Route.post('/clear-cookies', (req, res) => {
         return res.status(200).json({ message: 'Cookies eliminadas' })
     } catch (err) {
         if (err.status) return res.status(err.status).json({ message: err.message })
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 

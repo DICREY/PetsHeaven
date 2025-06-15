@@ -49,14 +49,12 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
       })
     } catch (err) {
       setNotify(null)
-      if (err.status) {
-        const message = errorStatusHandler(err.status)
-        setNotify({
-          title: 'Error',
-          message: `${message}`,
-          close: setNotify
-        })
-      } else console.log(err)
+      const message = errorStatusHandler(err)
+      setNotify({
+        title: 'Error',
+        message: `${message}`,
+        close: setNotify
+      })
     }
   }
 

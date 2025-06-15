@@ -48,19 +48,15 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
       setUsers(divideList(data, 4))
     } catch (err) {
       setNotify(null)
-      if (err.status) {
-        const message = errorStatusHandler(err.status)
-        setNotify({
-          title: 'Error',
-          message: `${message}`,
-          close: setNotify
-        })
-        if (err.status === 403) {
-          setTimeout(() => {
-            logout()
-          }, 2000)
-        }
-      } else console.log(err)
+      const message = errorStatusHandler(err)
+      setNotify({
+        title: 'Error',
+        message: `${message}`,
+        close: setNotify
+      })
+      if (err.status === 403) setTimeout(() => {
+        logout()
+      }, 2000)
     }
   }
 

@@ -28,19 +28,16 @@ export const ReqFunction = async (
             const req = await ReqFunct(URL, data)
             setNotify(null)
             if (req.data) return set(req.data[0])
-            // if (req.data['0']) return set(req.data['0'])
+            if (req[0]) return set(req[0])
             set(req)
         }
     } catch (err) {
         setNotify(null)
-        if (err.status) {
-            if (err.status === 404) return set([])
-            const message = errorStatusHandler(err.status)
-            setNotify({
-                title: 'Error',
-                message: `${message}`,
-                close: setNotify
-            })
-        } 
+        const message = errorStatusHandler(err)
+        setNotify({
+            title: 'Error',
+            message: `${message}`,
+            close: setNotify
+        })
     }
 }

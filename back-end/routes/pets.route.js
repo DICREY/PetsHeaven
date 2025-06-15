@@ -22,7 +22,7 @@ Route.get('/all', ValidatorRol("veterinario"), async (req,res) => {
         res.status(200).json(pets)
     } catch (err) {
         if(err.status) return res.status(err.status).json(err.message)
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 
 })
@@ -40,13 +40,13 @@ Route.get('/all:by', ValidatorRol("usuario"),async (req,res) => {
         res.status(200).json(pets)
     } catch (err) {
         if(err.status) return res.status(err.status).json(err.message)
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 
 })
 
 // Call Middleware for verify the request data
-Route.use(Fullinfo)
+Route.use(Fullinfo(['empty']))
 
 Route.post('/register', ValidatorRol("veterinario"), async (req,res) => {
     // Vars
@@ -58,12 +58,12 @@ Route.post('/register', ValidatorRol("veterinario"), async (req,res) => {
         if (find.result[0][0]) return res.status(409).json({message: "La mascota ya existe"})
 
         const created = await pet.create(body)
-        if (created.create) return res.status(201).json(created)
+        if (created.created) return res.status(201).json(created)
 
-        res.status(500).json({message: "Error interno"})
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde' })
     } catch (err) {
         if(err.status) return res.status(err.status).json(err.message)
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
@@ -79,10 +79,10 @@ Route.put('/modify', ValidatorRol("usuario"), async (req,res) => {
         const petMod = await pet.modify(body)
         if(petMod.modify) return res.status(200).json(petMod)
 
-        return res.status(500).json({message: "Error interno"})
+        return res.status(500).json({message: 'Error del servidor por favor intentelo mas tarde'})
     } catch (err) {
         if(err.status) return res.status(err.status).json(err.message)
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
@@ -101,7 +101,7 @@ Route.post('/history', ValidatorRol("veterinario") ,async (req,res) => {
         return res.status(404).json({message: "Historial no encontrado"})
     } catch (err) {
         if(err.status) return res.status(err.status).json(err.message)
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
@@ -117,11 +117,11 @@ Route.delete('/delete', ValidatorRol("administrador") ,async (req,res) => {
         const petDeleted = await pet.deleteBy(body.doc_per,body.nom_mas)
         if (petDeleted.deleted) return res.status(200).json(petDeleted)
 
-        res.status(500).json({message: "Error interno"})
+        res.status(500).json({message: 'Error del servidor por favor intentelo mas tarde'})
         
     } catch (err) {
         if(err.status) return res.status(err.status).json(err.message)
-        res.status(500).json({ message: err })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 

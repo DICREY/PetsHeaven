@@ -45,7 +45,7 @@ export async function PostData(URL = '', datas = {}) {
   
         // Manejar diferentes códigos de estado
         if(200 >= response.status <= 299) {
-            return response
+            return response.data
         } else throw response
 
   
