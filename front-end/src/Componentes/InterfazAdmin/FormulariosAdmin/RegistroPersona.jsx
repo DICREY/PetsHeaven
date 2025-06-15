@@ -21,10 +21,10 @@ import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/RegistroPersonal.cs
 // Component 
 export const RegistroPro = ({ URL = '' }) => {
   // Dynamic vars
-  const [activeTab, setActiveTab] = useState('personal')
-  const [profileImage, setProfileImage] = useState(null)
-  const [notify, setNotify] = useState(null)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [ activeTab, setActiveTab ] = useState('personal')
+  const [ profileImage, setProfileImage ] = useState(null)
+  const [ notify, setNotify ] = useState(null)
+  const [ isSubmitting, setIsSubmitting ] = useState(false)
   const profileInputRef = useRef(null)
   const docRef = useRef(null)
 

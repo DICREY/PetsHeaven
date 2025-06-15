@@ -165,9 +165,9 @@ export const errorStatusHandler = (err) => {
   const returnMessage = (errStatus) => {
     let message = 'Error interno'
 
-    if (errStatus.response.data.message) return errStatus.response.data.message
+    if (errStatus?.response?.data?.message) return errStatus.response.data.message
     
-    if (errStatus >= 500) return 'Error del servidor por favor intentelo mas tarde' 
+    if (errStatus.status >= 500) return 'Error del servidor por favor intentelo mas tarde' 
     
     switch (errStatus.status) {
       case 302:

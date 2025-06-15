@@ -6,18 +6,18 @@ import { InfoIcon } from 'lucide-react'
 import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/RolPrivilegios.css'
 
 // Component 
-const RolPrivilegios = ({ register, errors }) => {
+const RolPrivilegios = ({ register, errors, setVet }) => {
 
   return (
     <section className='rol-privilegios-container' aria-labelledby='titulo-perfil'>
       <h2 id='titulo-perfil'>Perfil del personal</h2>
 
       <div className='nota-admin' role='note'>
-        <InfoIcon size={16} className='info-icon' aria-hidden='true' />
+        <InfoIcon className='icon' aria-hidden='true' />
         <span>Esta configuración solo es editable por un rol administrador.</span>
       </div>
 
-      <div className='seccion-rol'>
+      <section className='seccion-rol'>
         <div className='grupo-rol'>
           <label htmlFor='rol' className='etiqueta-rol'>
             Rol <span className='obligatorio' aria-hidden='true'>*</span>
@@ -29,6 +29,7 @@ const RolPrivilegios = ({ register, errors }) => {
               className={`campo-selector ${errors.rol ? 'campo-error' : ''}`}
               {...register('rol', { required: 'El rol es requerido.' })}
               defaultValue='--'
+              onChange={(e) => {e.target.value === 'Veterinario'? setVet(1): setVet(0)}}
               aria-invalid={errors.rol ? 'true' : 'false'}
               aria-describedby={errors.rol ? 'error-rol' : undefined}
             >
@@ -44,7 +45,7 @@ const RolPrivilegios = ({ register, errors }) => {
           )}
         </div>
         <p className='descripcion-rol'>El rol determina los privilegios generales que tendrá el usuario.</p>
-      </div>
+      </section>
 
       <div className='separador' aria-hidden='true'></div>
 

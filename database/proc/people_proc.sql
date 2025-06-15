@@ -44,7 +44,7 @@ BEGIN
     SET autocommit = 1;
 END //
 
-CREATE PROCEDURE pets_heaven.RegistPersonal(
+CREATE PROCEDURE pets_heaven.RegistStaff(
     IN p_nom_per VARCHAR(100),
     IN p_ape_per VARCHAR(100),
     IN p_fec_nac_per DATE,
@@ -56,7 +56,6 @@ CREATE PROCEDURE pets_heaven.RegistPersonal(
     IN p_email_per VARCHAR(100),
     IN p_cont_per VARCHAR(255),
     IN p_gen_per VARCHAR(20),
-    IN p_rol_per VARCHAR(100),
     IN p_esp_vet VARCHAR(100),
     IN p_num_tar_vet VARCHAR(100),
     IN p_fot_tar_vet VARCHAR(100),
@@ -106,7 +105,6 @@ CREATE PROCEDURE pets_heaven.RegistAdmin(
     IN p_email_per VARCHAR(100),
     IN p_cont_per VARCHAR(255),
     IN p_gen_per VARCHAR(20),
-    IN P_rol_per VARCHAR(100),
     IN P_esp_vet VARCHAR(100),
     IN P_num_tar_vet VARCHAR(100),
     IN P_fot_tar_vet VARCHAR(100),
@@ -378,3 +376,4 @@ END //
 /* CALL `SearchPeoplesVet`();
 DROP PROCEDURE `SearchPeoplesVet`; */
 /* DROP PROCEDURE `ModifyPeople`; */
+/* DROP PROCEDURE `RegistPersonal`; */

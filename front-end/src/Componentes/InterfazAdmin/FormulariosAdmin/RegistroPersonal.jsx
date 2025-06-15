@@ -25,6 +25,7 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
   const [activeTab, setActiveTab] = useState('personal')
   const [profileImage, setProfileImage] = useState(null)
   const [notify, setNotify] = useState(null)
+  const [ vet, setVet ] = useState(null)
   const profileInputRef = useRef(null)
   const {
     register,
@@ -56,20 +57,20 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
   const onSubmit = async (data) => {
     console.log(data)
     const datas = {
-      nombres: data.nombres,
-      apellidos: data.apellidos,
-      fec_nac_usu: data.fec_nac,
-      tipDoc: data.tipoDocumento,
-      doc: data.numeroDocumento,
-      direccion: data.direccion,
-      cel: data.celular,
-      cel2: data.cel2,
-      email: data.email,
-      cont: data.password,
-      genero: data.genero,
-      rol: data.rol,
-      esp: data.especialidad,
-      numTargPro: data.numTargPro,
+      nom_per: data.nombres,
+      ape_per: data.apellidos,
+      fec_nac_per: data.fecNac,
+      tip_doc_per: data.tipoDocumento,
+      doc_per: data.doc,
+      dir_per: data.direccion,
+      cel_per: data.cel,
+      cel2_per: data.cel2,
+      email_per: data.email,
+      cont_per: data.password,
+      gen_per: data.genero,
+      rol_per: data.rol,
+      esp_per: data.especialidad,
+      num_tar_per: data.numTargPro,
       fot_tar_vet: "no-registrado",
       fot_vet: "no-registrado",
     }
@@ -79,26 +80,28 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
         message: 'Registrando usuario...',
         load: 1
       })
-      const token = localStorage.getItem('token')
-      if (token) {
-        const created = await PostData(`${mainUrl}/register`, datas)
-        setNotify(null)
-        created.created && setNotify({
+      const created = await PostData(`${mainUrl}/register`, datas)
+      setNotify(null)
+      if (created?.created) {
+        setNotify({
           title: 'Registrado',
           message: 'Ha sido registrado correctamente',
           close: setNotify,
         })
+        setTimeout(() => {
+          navigate(-1)
+        },2000)
       }
     } catch (err) {
       setNotify(null)
-      if (err.status) {
-        const message = errorStatusHandler(err.status)
+      if(err) {
+        const message = errorStatusHandler(err)
         setNotify({
           title: 'Error',
           message: `${message}`,
           close: setNotify,
         })
-      } else console.log(err)
+      }
     }
   }
 
@@ -135,28 +138,28 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
               className={`tab-regusuario ${activeTab === 'personal' ? 'activo-regusuario' : ''}`}
               onClick={() => setActiveTab('personal')}
             >
-              <User className='icono-regusuario' size={18} />
+              <User className='icon' />
               <span className='texto-tab-regusuario'>Información personal</span>
             </div>
             <div
               className={`tab-regusuario ${activeTab === 'roles' ? 'activo-regusuario' : ''}`}
               onClick={() => setActiveTab('roles')}
             >
-              <Shield className='icono-regusuario' size={18} />
+              <Shield className='icon' />
               <span className='texto-tab-regusuario'>Rol y privilegios</span>
             </div>
             <div
               className={`tab-regusuario ${activeTab === 'profesional' ? 'activo-regusuario' : ''}`}
               onClick={() => setActiveTab('profesional')}
             >
-              <FileText className='icono-regusuario' size={18} />
+              <FileText className='icon' />
               <span className='texto-tab-regusuario'>Información profesional</span>
             </div>
             <div
               className={`tab-regusuario ${activeTab === 'password' ? 'activo-regusuario' : ''}`}
               onClick={() => setActiveTab('password')}
             >
-              <Lock className='icono-regusuario' size={18} />
+              <Lock className='icon' />
               <span className='texto-tab-regusuario'>Contraseña</span>
             </div>
           </section>
@@ -369,9 +372,9 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
               </div>
             )}
 
-            {activeTab === 'roles' && <RolPrivilegios register={register} errors={errors} />}
-            {activeTab === 'profesional' && <InformacionProfesional register={register} errors={errors} />}
-            {activeTab === 'password' && <Contrasena register={register} onSubmit={onSubmit} errors={errors} />}
+            {activeTab === 'roles' && <RolPrivilegios setVet={setVet} register={register} errors={errors} />}
+            {activeTab === 'profesional' && <InformacionProfesional vet={vet} register={register} errors={errors} />}
+            {activeTab === 'password' && <Contrasena register={register} errors={errors} />}
           </section>
         </main>
         <Footer />

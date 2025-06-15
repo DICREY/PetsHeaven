@@ -6,7 +6,8 @@ import { Pencil } from 'lucide-react'
 import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/InformacionProfesional.css'
 
 // Component 
-const InformacionProfesional = ({ register, errors }) => {
+const InformacionProfesional = ({ register, errors, vet = false }) => {
+  // Dynamic vars 
   const [cardImage, setCardImage] = useState(null)
   const cardInputRef = useRef(null)
 
@@ -23,12 +24,13 @@ const InformacionProfesional = ({ register, errors }) => {
 
   return (
     <section className='info-profesional-container' aria-labelledby='titulo-profesional'>
-      <h2 id='titulo-profesional'>Información profesional (Si aplica)</h2>
+      <h2 id='titulo-profesional'>Información profesional ({vet?'Si aplica':'No aplica'})</h2>
 
       <div className='grupo-profesional'>
         <label htmlFor='especialidad' className='etiqueta-profesional'>Especialidades</label>
         <div className='selector-profesional'>
           <select
+            disabled={!vet}
             id='especialidad'
             name='especialidad'
             className={`campo-selector-profesional ${errors.especialidad ? 'campo-error' : ''}`}
@@ -58,6 +60,7 @@ const InformacionProfesional = ({ register, errors }) => {
           id='numTargPro'
           name='numTargPro'
           type='number'
+          disabled={!vet}
           max='100'
           aria-valuemax='100'
           placeholder='Número de tarjeta profesional'
@@ -100,11 +103,12 @@ const InformacionProfesional = ({ register, errors }) => {
             onClick={() => cardInputRef.current.click()}
             aria-label='Subir imagen de tarjeta profesional'
           >
-            <Pencil size={16} aria-hidden='true' />
+            <Pencil className='icon' aria-hidden='true' />
           </button>
           <input
             type='file'
             ref={cardInputRef}
+            disabled={!vet}
             onChange={handleCardImageChange}
             accept='image/*'
             className='input-file-hidden'

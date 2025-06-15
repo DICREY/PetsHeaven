@@ -6,13 +6,11 @@ import { useForm } from 'react-hook-form'
 import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/Contrasena.css'
 
 // Component 
-const Contrasena = () => {
+const Contrasena = ({ register, errors }) => {
   const {
-    register,
-    handleSubmit,
     watch,
-    formState: { errors },
   } = useForm({ mode: 'onChange' })
+
   // Vars 
   const password = watch('password')
   const [verPassword, setVerPassword] = useState(false)
@@ -22,14 +20,10 @@ const Contrasena = () => {
   const cambiarVisibilidadPassword = () => setVerPassword(!verPassword)
   const cambiarVisibilidadConfirmarPassword = () => setVerConfirmarPassword(!verConfirmarPassword)
 
-  const onSubmit = (data) => {
-    console.log('Contraseñas válidas:', data)
-  }
-
   return (
     <section className='contrasena-container' aria-labelledby='titulo-contrasena'>
       <h2 id='titulo-contrasena'>Crea una contraseña</h2>
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <section>
         <fieldset className='grid-contrasena' border >
           <legend className='sr-only'>Formulario de creación de contraseña</legend>
 
@@ -187,7 +181,7 @@ const Contrasena = () => {
             )}
           </div>
         </fieldset>
-      </form>
+      </section>
     </section>
   )
 }

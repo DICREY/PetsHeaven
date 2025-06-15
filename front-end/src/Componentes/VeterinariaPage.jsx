@@ -103,10 +103,12 @@ export default function VeterinariaPage({ URL = '', setArriveTo }) {
   const CheckApi = async () => {
     try {
       const check = await PostData(`${mainUrl}/check`,{ key: 'pets_heaven_vite' })
-      if (check.data.checked) await getServices()
+      if (check?.checked) await getServices()
     } catch (err) {
-      const message = errorStatusHandler(err)
-      console.log(message)
+      if (err) {
+        const message = errorStatusHandler(err)
+        console.log(message)
+      }
     }
   }
 

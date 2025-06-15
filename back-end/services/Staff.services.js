@@ -16,27 +16,26 @@ class Staff extends People {
         return new Promise((res,rej) => {
             // data 
             const newUser = [
-                data.nombres,
-                data.apellidos,
-                data.fec_nac_usu,
-                data.tipDoc,
-                data.doc,
-                data.direccion,
-                data.cel,
-                data.cel2 || "no-registrado",
-                data.email,
+                data.nom_per,
+                data.ape_per,
+                data.fec_nac_per,
+                data.tip_doc_per,
+                data.doc_per,
+                data.dir_per,
+                data.cel_per,
+                data.cel2_per || "no-registrado",
+                data.email_per,
                 data.hash_pass,
-                data.genero,
-                data.rol,
-                data.esp,
-                data.numTargPro,
+                data.gen_per,
+                data.esp_per,
+                data.num_tar_per,
                 data.fot_tar_vet || "no-registrado",
                 data.fot_vet || "no-registrado"
             ]
-
-            console.log(newUser)
             
-            let procedure = "CALL RegistStaff(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"
+            const procedure = data.rol_per === 'Veterinario'?
+            "CALL RegistStaff(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"
+            :"CALL RegistAdmin(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"
 
             // conect to database
             this.database = new DataBase()

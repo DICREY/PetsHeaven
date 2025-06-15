@@ -92,10 +92,10 @@ Route.post('/register', async (req,res) => {
     
     try {
         // Verifiy if exist
-        const find = await staff.findBy(toString(body.doc))
+        const find = await staff.findBy(toString(body.doc_per))
         if (find.result[0][0].nom_per) return res.status(302).json({ message: "Persona ya registrada" })
 
-        const create = await staff.createStaff({hash_pass: await hash(body.cont,saltRounds), ...body})
+        const create = await staff.createStaff({hash_pass: await hash(body.cont_per,saltRounds), ...body})
         if(create.created) return res.status(201).json(create)
 
         res.status(500).json({message: 'Error del servidor por favor intentelo mas tarde'})
