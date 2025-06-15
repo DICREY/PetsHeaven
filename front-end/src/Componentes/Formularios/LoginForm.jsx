@@ -1,15 +1,15 @@
 // Librarys 
-import React, { use, useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router-dom'
 
 // Imports 
 import { errorStatusHandler, formatoTiempo, checkImage, useRoleRedirect } from '../Varios/Util'
 import { AuthContext } from '../../Contexts/Contexts'
+import { Notification } from '../Global/Notifys'
 
 // Import styles
 import '../../../src/styles/Formularios/login.css'
-import { Notification } from '../Global/Notifys'
 
 // Main component 
 export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = '' }) => {
@@ -65,17 +65,15 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = '' }) => {
       }
     } catch (err) {
       setNotify(null)
-      if (err.status) {
-        if (err.status === 429) {
-          setWaitTime(true)
-        } else setWaitTime(false)
-        const message = errorStatusHandler(err.status)
-        setNotify({
-          title: 'Error',
-          message: `${message}`,
-          close: setNotify
-        })
-      } else console.log(err)
+      if (err.status === 429) {
+        setWaitTime(true)
+      } else setWaitTime(false)
+      const message = errorStatusHandler(err)
+      setNotify({
+        title: 'Error',
+        message: `${message}`,
+        close: setNotify
+      })
     }
   }
 

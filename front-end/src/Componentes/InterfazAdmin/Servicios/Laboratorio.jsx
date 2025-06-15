@@ -1,8 +1,12 @@
+// Librarys 
 import React from "react"
 import { useState } from "react"
 import { FlaskConical, Plus, Trash2, Edit, X, Clock, AlertTriangle, FileText, Target } from "lucide-react"
+
+// Import styles
 import "../../../styles/InterfazAdmin/Servicios/Laboratorio.css"
 
+// Component 
 export const ExamenesLaboratorio = ({ URL='' }) => {
   const [examenes, setExamenes] = useState([
     {

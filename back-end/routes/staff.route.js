@@ -4,7 +4,7 @@ const { hash } = require('bcrypt')
 
 // Imports
 const Staff = require('../services/Staff.services')
-const { authenticateJWT, ValidatorRol, Fullinfo } = require('../middleware/validator.handler')
+const { authenticateJWT, ValidatorRol, Fullinfo, authJWTGlobal } = require('../middleware/validator.handler')
 
 // vars
 const staff = new Staff()
@@ -12,6 +12,7 @@ const Route = Router()
 
 // Middlewares
 Route.use(authenticateJWT)
+Route.use(authJWTGlobal)
 Route.use(ValidatorRol("administrador"))
 
 // Routes

@@ -6,6 +6,7 @@ import { Pencil, ChevronLeft } from 'lucide-react'
 // Import styles 
 import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/UserConfiguration.css'
 
+// Component
 const UserConfiguration = () => {
   const [activeTab, setActiveTab] = useState('personal')
   const [isMobile, setIsMobile] = useState(false)
@@ -35,11 +36,11 @@ const UserConfiguration = () => {
           <span className='creation-label'>Creación</span>
         </div>
         <div className='header-actions'>
-          <button className='btn-back'>
-            <ChevronLeft size={isMobile ? 14 : 16} />
+          <button className='BackBtn'>
+            <ChevronLeft className='icon' />
             {!isMobile && 'Atrás'}
           </button>
-          <button className='btn-save'>Guardar</button>
+          <button className='AddBtn'>Guardar</button>
         </div>
       </div>
 
@@ -77,7 +78,7 @@ const UserConfiguration = () => {
                   <img src='/placeholder.svg?height=100&width=100' alt='Perfil' />
                 </div>
                 <button className='edit-button'>
-                  <Pencil size={16} />
+                  <Pencil className='icon' />
                 </button>
               </div>
             </div>
@@ -118,7 +119,7 @@ const UserConfiguration = () => {
               <div className='signature-container'>
                 <div className='signature-box'>Firma N/D</div>
                 <button className='edit-button'>
-                  <Pencil size={16} />
+                  <Pencil className='icon' />
                 </button>
               </div>
               <small className='form-text'>Firma para impresión, sugerido 250x80px y fondo transparente</small>

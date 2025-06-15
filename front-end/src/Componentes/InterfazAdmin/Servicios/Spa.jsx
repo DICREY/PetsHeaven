@@ -12,6 +12,7 @@ import { AuthContext } from "../../../Contexts/Contexts"
 // Import styles 
 import "../../../styles/InterfazAdmin/Servicios/Spa.css"
 
+// Component
 export const SpaMascotas = ({ URL= '' }) => {
   const [servicios, setServicios] = useState([
     {

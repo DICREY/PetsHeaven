@@ -101,7 +101,7 @@ export const InformacionProfesionalCrud = ({ userData, isEditing, onChange }) =>
                 onClick={() => cardInputRef.current.click()}
                 aria-label='Subir imagen de tarjeta profesional'
               >
-                <Pencil size={16} aria-hidden='true' />
+                <Pencil className='icon' aria-hidden='true' />
               </button>
               <input
                 type='file'

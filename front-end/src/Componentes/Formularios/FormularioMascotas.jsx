@@ -1,6 +1,6 @@
 // Librarys 
-import { useNavigate } from 'react-router-dom'
 import React, { useState, useRef, useContext } from 'react';
+import { useNavigate } from 'react-router-dom'
 import { Pencil, ChevronLeft, User } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
@@ -17,6 +17,7 @@ import { AuthContext } from '../../Contexts/Contexts'
 // Import styles
 import '../../../src/styles/Formularios/FormularioMascotas.css'
 
+// Component 
 export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
   // Dynamic vars
   const [activeTab, setActiveTab] = useState('personal')
@@ -93,21 +94,12 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
       }
     } catch (err) {
       setNotify(null)
-      if(err.status) {
-        const message = errorStatusHandler(err.status)
-        setNotify({
-          title: 'Error',
-          message: `${message}`,
-          close: setNotify
-        })
-      } else {
-        console.log(err)
-        setNotify({
-          title: 'Error',
-          message: 'Ocurrió un error inesperado',
-          close: setNotify
-        })
-      }
+      const message = errorStatusHandler(err)
+      setNotify({
+        title: 'Error',
+        message: `${message}`,
+        close: setNotify
+      })
     } finally {
       setIsSubmitting(false)
     }

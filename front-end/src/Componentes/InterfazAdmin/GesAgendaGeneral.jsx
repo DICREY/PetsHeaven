@@ -1,5 +1,5 @@
 // Librarys 
-import React, { useState, useRef, useEffect, useContext } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -14,11 +14,11 @@ import { errorStatusHandler } from '../Varios/Util'
 import { Notification } from '../Global/Notifys'
 import { searchFilter } from '../Varios/Util'
 import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
+import { ReqFunction } from '../../Utils/Utils'
+// import Footer from '../Varios/Footer2'
 
 // Import styles 
 import "../../styles/InterfazAdmin/GesAgendaGeneral.css"
-import Footer from '../Varios/Footer2'
-import { ReqFunction } from '../../Utils/Utils'
 
 // Función para unir fecha y hora en formato ISO
 function joinDateTime(date, time) {

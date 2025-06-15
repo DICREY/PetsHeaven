@@ -5,7 +5,7 @@ import { Pencil } from 'lucide-react'
 // Import styles
 import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/InformacionProfesional.css'
 
-
+// Component 
 const InformacionProfesional = ({ register, errors }) => {
   const [cardImage, setCardImage] = useState(null)
   const cardInputRef = useRef(null)

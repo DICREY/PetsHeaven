@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef, useContext } from 'react'
 import { Pencil, ChevronLeft, User, Shield, FileText, Lock } from 'lucide-react'
 import { useForm } from 'react-hook-form' // Importa useForm
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 
 // Imports
 import RolPrivilegios from './RolPrivilegios'
@@ -12,13 +12,12 @@ import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
 import { errorStatusHandler, LegalAge } from '../../Varios/Util'
 import { PostData } from '../../Varios/Requests'
 import { Notification } from '../../Global/Notifys'
-import { HeaderUser } from '../../BarrasNavegacion/HeaderUser'
 import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
+import { AuthContext } from '../../../Contexts/Contexts'
 import Footer from '../../Varios/Footer2'
 
 // Import styles
 import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/RegistroPersonal.css'
-import { AuthContext } from '../../../Contexts/Contexts'
 
 // Component
 export const ConfiguracionUsuario = ({ URL = '' }) => {

@@ -1,8 +1,8 @@
 // Imports 
 import { NavBar } from './BarrasNavegacion/NavBar'
-import { GetDataGlobal } from './Varios/Requests'
+import { GetDataGlobal, PostData } from './Varios/Requests'
 import { diapositivas, promociones, testimonios } from './Varios/varios'
-import { checkImage } from './Varios/Util'
+import { checkImage, errorStatusHandler } from './Varios/Util'
 import { Loader } from './Loaders/Loader'
 import Footer from './Varios/Footer2'
 import { CookieConsent } from './Global/Cookies'
@@ -61,7 +61,7 @@ const itemVariants = {
 
 export default function VeterinariaPage({ URL = '', setArriveTo }) {
   // Dynamic vars
-  const mainUrl = `${URL}/global/services`
+  const mainUrl = `${URL}/global`
   const [diaActual, setDiaActual] = useState(0)
   const [testActual, setTestActual] = useState(0)
   const [mostrarBoton,setMostrarBoton] = useState(false)
@@ -81,11 +81,33 @@ export default function VeterinariaPage({ URL = '', setArriveTo }) {
     const testPorGrupo = esMovil ? 1 : 3
     const grupos = []
 
-    for (let i = 0; i < testimonios.length; i += testPorGrupo) {
-      grupos.push(testimonios.slice(i, i + testPorGrupo))
+    for (let i = 0; i < testimonios?.length; i += testPorGrupo) {
+      grupos.push(testimonios?.slice(i, i + testPorGrupo))
     }
 
     return grupos
+  }
+
+  const getServices = async () => {
+    try {
+      const services = await GetDataGlobal(`${mainUrl}/services`)
+      setSerData(services)
+      setLoading(false)
+    } catch (err) {
+      setSerData(null)
+      const message = errorStatusHandler(err)
+      console.log(message)
+    }
+  }
+
+  const CheckApi = async () => {
+    try {
+      const check = await PostData(`${mainUrl}/check`,{ key: 'pets_heaven_vite' })
+      if (check.data.checked) await getServices()
+    } catch (err) {
+      const message = errorStatusHandler(err)
+      console.log(message)
+    }
   }
 
   // Función para scroll al inicio
@@ -98,17 +120,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo }) {
 
   // Traer los servicios de la base de datos
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const services = await GetDataGlobal(mainUrl)
-        setSerData(services)
-        setLoading(false)
-      } catch (error) {
-        setSerData()
-      }
-    }
-  
-    fetchData()
+    CheckApi()
   }, [])
   
   // Efecto para inicializar y actualizar los grupos de testimonios
@@ -126,20 +138,20 @@ export default function VeterinariaPage({ URL = '', setArriveTo }) {
   // Efecto para el carrusel principal
   useEffect(() => {
     const intervalo = setInterval(() => {
-      setDiaActual((anterior) => (anterior === diapositivas.length - 1 ? 0 : anterior + 1))
+      setDiaActual((anterior) => (anterior === diapositivas?.length - 1 ? 0 : anterior + 1))
     }, 5000)
     return () => clearInterval(intervalo)
-  }, [diapositivas.length])
+  }, [diapositivas?.length])
 
   // Efecto para el carrusel de testimonios
   useEffect(() => {
-    if (gruposTest.length > 0) {
+    if (gruposTest?.length > 0) {
       const intervalo = setInterval(() => {
-        setTestActual((anterior) => (anterior === gruposTest.length - 1 ? 0 : anterior + 1))
+        setTestActual((anterior) => (anterior === gruposTest?.length - 1 ? 0 : anterior + 1))
       }, 7000)
       return () => clearInterval(intervalo)
     }
-  }, [gruposTest.length])
+  }, [gruposTest?.length])
 
   // Efecto para mostrar/ocultar el botón de scroll
   useEffect(() => {

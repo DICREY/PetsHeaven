@@ -10,12 +10,12 @@ import { divideList, errorStatusHandler } from '../Varios/Util'
 import { GlobalTable } from '../Global/GlobalTable'
 import { Notification } from '../Global/Notifys'
 import { AuthContext } from '../../Contexts/Contexts'
+import { HeaderAdmin } from "../BarrasNavegacion/HeaderAdmin"
+import Footer from "../Varios/Footer2"
 // import { Loader } from '../Errores/Loader'
 
 // Import styles 
 import '../../../src/styles/InterfazAdmin/GesPersonal.css'
-import { HeaderAdmin } from "../BarrasNavegacion/HeaderAdmin"
-import Footer from "../Varios/Footer2"
 
 // Component
 export function GesPersonal({ setUserSelect, URL = "" }) {

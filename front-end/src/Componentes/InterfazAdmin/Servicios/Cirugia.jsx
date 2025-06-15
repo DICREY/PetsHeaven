@@ -14,7 +14,7 @@ import { AuthContext } from "../../../Contexts/Contexts"
 
 // Style
 import "../../../styles/InterfazAdmin/Servicios/Cirugia.css"
-import { data } from "react-router";
+import { data } from "react-router-dom";
 
 export const CirugiasVeterinaria = ({ URL = '' }) => {
   // Dynamic Vars 
@@ -294,8 +294,8 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
   }, [mainUrl, cirugias, fetchCirugias]);
 
   return (
-    <div className="contenedor-cirugia">
-      <div className="contenedor-principal-cirugia">
+    <main className="contenedor-cirugia">
+      <main className="contenedor-principal-cirugia">
         {/* Encabezado */}
         <header className="encabezado-cirugia">
           <div className="titulo-con-icono-cirugia">
@@ -306,9 +306,9 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
         </header>
 
         {/* Controles */}
-        <div className="controles-cirugia">
+        <nav className="controles-cirugia">
           <h2 className="subtitulo-cirugia">Cirugías Disponibles</h2>
-          <div className="acciones-control-cirugia">
+          <nav className="acciones-control-cirugia">
             <select value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)} className="filtro-cirugia">
               <option value="todos">Todas las cirugías</option>
               <option value="disponibles">Disponibles</option>
@@ -325,13 +325,13 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
               <Plus size={16} />
               Agregar Cirugía
             </button>
-          </div>
-        </div>
+          </nav>
+        </nav>
 
         {/* Grid de cirugías */}
-        <div className="grid-cirugia">
+        <section className="grid-cirugia">
           {cirugiasFiltradas.map((cirugia) => (
-            <div key={cirugia.id_ser} className="tarjeta-cirugia" onClick={() => abrirModalDetalle(cirugia)}>
+            <section key={cirugia.id_ser} className="tarjeta-cirugia" onClick={() => abrirModalDetalle(cirugia)}>
               <div className="header-tarjeta-cirugia">
                 <div className="icono-cirugia">
                   <Activity size={20} />
@@ -390,14 +390,14 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
                 <span className="precio-cirugia">{formatearPrecio(cirugia.pre_ser)}</span>
                 <span className="id-cirugia">{cirugia.id_ser}</span>
               </div>
-            </div>
+            </section>
           ))}
-        </div>
+        </section>
 
         {/* Modal Agregar/Editar */}
         {mostrarFormulario && (
-          <div className="overlay-cirugia">
-            <div className="formulario-cirugia">
+          <aside className="overlay-cirugia">
+            <aside className="formulario-cirugia">
               <div className="header-modal-cirugia">
                 <h3 className="titulo-formulario-cirugia">
                   {modoEdicion ? "Editar Cirugía" : "Agregar Nueva Cirugía"}
@@ -524,14 +524,14 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
                   </button>
                 </div>
               </form>
-            </div>
-          </div>
+            </aside>
+          </aside>
         )}
 
         {/* Modal Detalle */}
         {mostrarDetalle && cirugiaDetalle && (
-          <div className="modal-fondo-cirugia">
-            <div className="modal-detalle-cirugia">
+          <aside className="modal-fondo-cirugia">
+            <aside className="modal-detalle-cirugia">
               <div className="modal-encabezado-cirugia">
                 <h3 className="titulo-modal-cirugia">{cirugiaDetalle.nombre}</h3>
                 <button onClick={() => setMostrarDetalle(false)} className="cerrar-modal-cirugia">
@@ -625,11 +625,15 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </aside>
+          </aside>
         )}
-      </div>
-      {notify && <Notification {...notify} />}
-    </div>
+      </main>
+      {notify && (
+        <Notification
+          {...notify}
+        />
+      )}
+    </main>
   )
 }

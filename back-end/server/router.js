@@ -19,6 +19,7 @@ function routerApi(app) {
     // Main router
     app.use('/',router)
 
+    // Routes
     router.use('/global',globalRoute)
     router.use('/cookie',cookieRoute)
     router.use('/people',peopleRoute)

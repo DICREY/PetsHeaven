@@ -9,7 +9,7 @@ const Global = require('../services/Global.services')
 const Services = require('../services/Services.services')
 const People = require('../services/People.services')
 const { limiterLog, cookiesOptionsLog } = require('../middleware/varios.handler')
-const { Fullinfo, ValidatorRol } = require('../middleware/validator.handler')
+const { Fullinfo, ValidatorRol, authJWTGlobal } = require('../middleware/validator.handler')
 
 // Env vars
 const secret = process.env.JWT_SECRET
@@ -18,6 +18,31 @@ const secret = process.env.JWT_SECRET
 const Route = Router()
 
 // Routes
+Route.post('/check', async (req,res) => {
+    // Vars
+    const { key } = req.body
+    
+    try {
+        if (key !== secret) return res.status(401).json({ message: 'No tienes autorización' })
+
+        const token = jwt.sign(
+            { front: 'PetsHeaven' },
+            secret,
+            { expiresIn: '24h' }
+        )
+
+        res.cookie('__token', token, cookiesOptionsLog)
+        res.status(200).json({ checked: 1 })
+    } catch (err) {
+        if (err.status) return res.status(err.status).json({ message: err.message })
+
+        res.status(500).json({ message: err })
+    }
+})
+
+// Call Middleware for verify the token
+Route.use(authJWTGlobal)
+
 Route.get('/services', async (req,res) => {
     // Vars
     const service = new Services()
@@ -90,7 +115,7 @@ Route.post('/login', limiterLog, async (req,res) => {
         const coincide = await compare(secondData, user.cont_per)
 
         if (!coincide) return res.status(401).json({ message: 'Credenciales inválidas' })
-        const token = jwt.sign(
+        const cred = jwt.sign(
             {   
                 names: user.nom_per,
                 lastNames: user.ape_per,
@@ -102,14 +127,13 @@ Route.post('/login', limiterLog, async (req,res) => {
             { expiresIn: '8h' }
         )
 
-        res.cookie('__cred', token, cookiesOptionsLog)
+        res.cookie('__cred', cred, cookiesOptionsLog)
         res.cookie('__nit', secret, cookiesOptionsLog)
 
         if (user.roles) res.cookie('__user', user.roles, cookiesOptionsLog)
         if (user.nom_per && user.ape_per) res.cookie('__userName', `${user.nom_per} ${user.ape_per}`, cookiesOptionsLog)
 
-        res.status(200).json({ token: token })
-
+        res.status(200).json({ __cred: cred })
     } catch (err) {
         if (err.status) return res.status(err.status).json({ message: err.message })
 

@@ -1,13 +1,13 @@
 // Librarys 
 import React from 'react'
-import { useNavigate } from 'react-router-dom' // Cambiamos el import
+import { useNavigate } from 'react-router-dom'
 
 // Import styles
 import '../../../src/styles/Errores/notfound.css'
 
 // Main component
 export const NotFound = () => {
-  const navigate = useNavigate() // Obtenemos la función de navegación
+  const navigate = useNavigate()
 
   return (
     <main className='body'>

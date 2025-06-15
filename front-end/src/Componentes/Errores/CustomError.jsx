@@ -1,6 +1,6 @@
 // Librarys 
 import React from 'react'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 
 // Import styles
 import '../../../src/styles/Errores/notfound.css'

@@ -3,13 +3,13 @@ const { Router } = require('express')
 
 // Imports
 const { cookiesOptions } = require('../middleware/varios.handler')
-const { authenticateJWT } = require('../middleware/validator.handler')
+const { authenticateJWT, authJWTGlobal } = require('../middleware/validator.handler')
 
 // Vars
 const Route = Router()
 
 // Middlewares
-Route.use(authenticateJWT)
+Route.use(authJWTGlobal)
 
 // Routes
 Route.post('/cookie',(req, res) => {
@@ -23,8 +23,10 @@ Route.post('/cookie',(req, res) => {
         if (err.status) return res.status(err.status).json({ message: err.message })
         res.status(500).json({ message: err })
     }
-
 })
+
+// Call middleware
+Route.use(authenticateJWT)
 
 Route.post('/check-cookie',(req, res) => {
     const { name } = req.body

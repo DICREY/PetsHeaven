@@ -41,7 +41,7 @@ export const InformacionPersonalCrud = ({ userData, isEditing, onChange }) => {
           {isEditing && (
             <>
               <button className="editar-imagen-info-personal" onClick={() => profileInputRef.current.click()}>
-                <Pencil size={16} />
+                <Pencil className="icon" />
               </button>
               <input
                 type="file"

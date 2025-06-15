@@ -14,13 +14,13 @@ function validatorHeaders(req, res, next) {
 
     // Validation
     if (!apiKey || apiKey !== secret) {
-        return res.status(498).json({ error: 'Usuario no autorizado' })
+        return res.status(498).json({ message: 'Usuario no autorizado' })
     }
     if (!contentType) {
-        return res.status(400).json({ error: 'Contenido invalido' })
+        return res.status(400).json({ message: 'Contenido invalido' })
     }
     if (!userAgent || !user) {
-        return res.status(401).json({ error: 'Usuario no autorizado' })
+        return res.status(401).json({ message: 'Usuario no autorizado' })
     }
 
     // Next to
@@ -29,12 +29,25 @@ function validatorHeaders(req, res, next) {
 
 // Middleware de validación
 function authenticateJWT(req, res, next) {
-    const token = req.signedCookies?.__cred
+    const cred = req.signedCookies?.__cred
 
-    if (!token) return res.status(403).json({ error: 'Token no proporcionado' })
+    if (!cred) return res.status(403).json({ message: 'Credenciales no proporcionadas' })
+
+    jwt.verify(cred, secret, (err, decoded) => {
+        if (err) return res.status(403).json({ message: 'Sesión inválida o expirada' })
+
+        req.user = decoded // Almacena datos del usuario en la request
+        next()
+    })
+}
+
+function authJWTGlobal(req, res, next) {
+    const token = req.signedCookies?.__token
+
+    if (!token) return res.status(403).json({ message: 'Token no proporcionado' })
 
     jwt.verify(token, secret, (err, decoded) => {
-        if (err) return res.status(403).json({ error: 'Token inválido o expirado' })
+        if (err) return res.status(403).json({ message: 'Token inválido o expirado' })
 
         req.user = decoded // Almacena datos del usuario en la request
         next()
@@ -85,4 +98,4 @@ function Fullinfo(optionalFields = []) {
 }
 
 // export middleware 
-module.exports = { validatorHeaders, ValidatorRol, authenticateJWT, Fullinfo }
+module.exports = { validatorHeaders, ValidatorRol, authenticateJWT, Fullinfo, authJWTGlobal }

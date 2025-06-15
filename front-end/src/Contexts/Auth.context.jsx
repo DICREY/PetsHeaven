@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
         try {            
             const response = await Login(url, firstData, secondData)
             if (response) {
-                const userData = decodeJWT(response.token)
+                const userData = decodeJWT(response.__cred)
                 setUser(userData)
                 setRoles(userData.roles?.split(', ') || ['Usuario'])
                 setMainRol(userData.roles?.split(', ')[0] || ['Usuario'])

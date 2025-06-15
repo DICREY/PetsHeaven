@@ -1,7 +1,7 @@
   // Librarys
   import React, { useState, useEffect, useRef } from 'react'
   import { useForm } from 'react-hook-form'
-  import { Link, useNavigate } from 'react-router'
+  import { Link, useNavigate } from 'react-router-dom'
   // import emailjs from '@emailjs/browser'
 
   // Imports 
@@ -232,14 +232,12 @@
         }
       } catch (error) {
         setNotify(false)
-        if (error.status) {
-          const message = errorStatusHandler(error.status)
-          setNotify({
-            title: 'Error',
-            message: `${message}`,
-            close: setNotify
-          })
-        } else console.log(error)
+        const message = errorStatusHandler(error)
+        setNotify({
+          title: 'Error',
+          message: `${message}`,
+          close: setNotify
+        })
       }
 
     }

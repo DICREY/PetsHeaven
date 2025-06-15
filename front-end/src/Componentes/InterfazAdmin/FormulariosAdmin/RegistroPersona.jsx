@@ -18,7 +18,8 @@ import { AuthContext } from '../../../Contexts/Contexts'
 // Import styles
 import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/RegistroPersonal.css'
 
-export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
+// Component 
+export const RegistroPro = ({ URL = '' }) => {
   // Dynamic vars
   const [activeTab, setActiveTab] = useState('personal')
   const [profileImage, setProfileImage] = useState(null)
@@ -99,21 +100,12 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
       setTimeout(() => navigate(-1), 2000)
     } catch (err) {
       setNotify(null)
-      if (err.status) {
-        const message = errorStatusHandler(err.status)
-        setNotify({
-          title: 'Error',
-          message: `${message}`,
-          close: setNotify
-        })
-      } else {
-        console.error(err)
-        setNotify({
-          title: 'Error',
-          message: 'Ocurrió un error inesperado',
-          close: setNotify
-        })
-      }
+      const message = errorStatusHandler(err)
+      setNotify({
+        title: 'Error',
+        message: `${message}`,
+        close: setNotify
+      })
     } finally {
       setIsSubmitting(false)
     }
@@ -132,9 +124,9 @@ export const RegistroPro = ({ URL = '', roles = ['Usuario'] }) => {
 
   return (
     <main className='contenedorgesusuario'>
-      <NavBarAdmin roles={roles} />
+      <NavBarAdmin />
       <main className='principalgesusuario'>
-        {admin ? (<HeaderAdmin />) : (<HeaderUser />)}
+        {admin ? (<HeaderAdmin URL={URL} />) : (<HeaderUser />)}
         <div className='contenedor-regusuario'>
           <div className='cabecera-regusuario'>
             <div className='titulo-regusuario'>

@@ -2,7 +2,7 @@
 const rateLimit = require('express-rate-limit')
 
 const corsOptions = {
-    origin:['http://192.168.20.57:5173','http://localhost:5173','http://thefour.petsheaven.com:5173','http://FrontEndPetsHeaven:5173'],
+    origin: ['http://192.168.20.57:5173','http://localhost:5173','http://thefour.petsheaven.com:5173','http://FrontEndPetsHeaven:5173'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'x-api-key', 'User'],
     credentials: true
@@ -22,23 +22,22 @@ const limiterLog = rateLimit({
 })
 
 const cookiesOptionsLog = {
-    maxAge: 30 * 24 * 60 * 60 * 1000, // Alternativa en milisegundos (30 días)
+    maxAge: 30 * 24 * 60 * 60 * 1000, // (30 días)
     httpOnly: true, // Seguridad: solo accesible por HTTP
     secure: true, // HTTPS en producción
     sameSite: 'strict', // Política de same-site
-    domain: 'localhost', // Dominio donde es válida (opcional)
+    domain: 'localhost', // Dominio donde es válida
     signed: true,
-    // path: '/' // Ruta donde es válida (opcional)
+    // path: '/' // Ruta donde es válida
 }
 
 const cookiesOptions = {
-    maxAge: 30 * 24 * 60 * 60 * 1000, // Alternativa en milisegundos (30 días)
-    httpOnly: true, // Seguridad: solo accesible por HTTP
-    secure: true, // HTTPS en producción
-    sameSite: 'none', // Política de same-site
-    domain: 'localhost', // Dominio donde es válida (opcional)
-    // signed: false,
-    // path: '/' // Ruta donde es válida (opcional)
+    maxAge: 60 * 24 * 60 * 60 * 1000, // (60 días)
+    httpOnly: true,
+    secure: true,
+    sameSite: 'strict',
+    domain: 'localhost',
+    signed: false,
 }
  
 module.exports = { corsOptions, limiter, limiterLog, cookiesOptions, cookiesOptionsLog }

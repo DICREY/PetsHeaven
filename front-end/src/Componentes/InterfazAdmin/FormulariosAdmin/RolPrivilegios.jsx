@@ -1,13 +1,12 @@
 // Librarys 
-import React, { useState } from 'react'
+import React from 'react'
 import { InfoIcon } from 'lucide-react'
 
 // Import styles 
 import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/RolPrivilegios.css'
 
+// Component 
 const RolPrivilegios = ({ register, errors }) => {
-  const [agendaAdmin, setAgendaAdmin] = useState(false)
-  const [agendaPersonal, setAgendaPersonal] = useState(true)
 
   return (
     <section className='rol-privilegios-container' aria-labelledby='titulo-perfil'>

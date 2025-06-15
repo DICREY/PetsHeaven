@@ -1,6 +1,6 @@
 // Librarys 
 import React from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 
 // Import styles 
 import '../../../src/styles/Errores/notfound.css'

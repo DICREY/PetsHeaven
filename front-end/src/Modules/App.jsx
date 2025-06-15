@@ -1,6 +1,6 @@
 // Librarys
 import React, { useState, useEffect, useContext } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom' 
 
 // Imports Forms
 import { LoginForm } from '../Componentes/Formularios/LoginForm'
@@ -23,7 +23,6 @@ import { useInactivityDetector } from '../Componentes/Varios/InactiveDectetor'
 import VeterinariaPage from '../Componentes/VeterinariaPage'
 import { PerfilPropietario } from '../Componentes/Peoples/PerfilPropietario'
 import { GesAgendaPersonal } from '../Componentes/InterfazAdmin/GesAgendaPersonal'
-import { Services } from '../Componentes/InterfazAdmin/Services'
 import {CirugiasVeterinaria} from "../Componentes/InterfazAdmin/Servicios/Cirugia"
 import {SpaMascotas} from "../Componentes/InterfazAdmin/Servicios/Spa"
 import {VisualizadorVacunas} from "../Componentes/InterfazAdmin/Servicios/Vacuna"
@@ -104,6 +103,7 @@ export default function App () {
 
   return (
     // Define Routes
+    <React.StrictMode>
     <AuthProvider>
       <BrowserRouter>
         <Routes>
@@ -123,10 +123,6 @@ export default function App () {
               imgPetDefault={imgPetDefault}
               URL={URL}
             />}/>}>
-          </Route>
-          <Route path='/services' element={
-            <PrivateRoute children={<Services URL={URL}
-            imgDefault={imgServiceDefault} />}/>}>
           </Route>
           <Route path='notificaciones' element={
             <PrivateRoute children={<TodasLasNotificaciones URL={URL} />}/>}>
@@ -218,5 +214,6 @@ export default function App () {
         />
       )}
     </AuthProvider>
+    </React.StrictMode>
   )
 }

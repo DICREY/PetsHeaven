@@ -1,10 +1,10 @@
-import React from 'react'
-import { useState } from 'react'
+// Librarys 
+import React, { useState } from 'react'
 
-
+// Import styles 
 import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/Contrasena.css'
 
-
+// Component 
 export const ContrasenaCrud = ({ userData, isEditing, onChange }) => {
   const [verPassword, setVerPassword] = useState(false)
   const [verConfirmarPassword, setVerConfirmarPassword] = useState(false)

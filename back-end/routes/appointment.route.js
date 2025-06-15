@@ -3,7 +3,7 @@ const { Router } = require('express')
 
 // Imports
 const Appointment = require('../services/Appointment.services')
-const { authenticateJWT, ValidatorRol, Fullinfo } = require('../middleware/validator.handler')
+const { authenticateJWT, ValidatorRol, Fullinfo, authJWTGlobal } = require('../middleware/validator.handler')
 
 // vars
 const appoin = new Appointment()
@@ -11,6 +11,7 @@ const Route = Router()
 
 // Middleware 
 Route.use(authenticateJWT)
+Route.use(authJWTGlobal)
 
 // Routes
 Route.get('/general', ValidatorRol("administrador"), async (req,res) => {

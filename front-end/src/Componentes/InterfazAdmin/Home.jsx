@@ -8,12 +8,13 @@ import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
 import { GetData } from "../Varios/Requests"
 import { Notification } from "../Global/Notifys"
 import { errorStatusHandler } from '../Varios/Util'
-
-import "../../styles/InterfazAdmin/Home.css"
 import { AuthContext } from "../../Contexts/Contexts"
 import { ReqFunction } from "../../Utils/Utils"
 
-export default function VeterinaryDashboard({ onVerTodasNotificaciones, URL }) {
+import "../../styles/InterfazAdmin/Home.css"
+
+// Component 
+export default function VeterinaryDashboard({ URL }) {
   // Dynamic vars 
   const [ appoint, setAppoint ] = useState()
   const [ infoGeneral, setInfoGeneral ] = useState()

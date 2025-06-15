@@ -1,9 +1,11 @@
 // Librarys 
 import React from "react"
 
+// Imports 
+import { checkImage } from "../../Varios/Util"
+
 // Import styles 
 import "../../../styles/InterfazAdmin/FormuariosAdmin/Consulta.css"
-import { checkImage } from "../../Varios/Util"
 
 // Component 
 export const FormularioConsulta = ({ mascota, imgDedault = '' }) => {

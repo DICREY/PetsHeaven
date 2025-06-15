@@ -5,16 +5,17 @@ import { InfoIcon } from 'lucide-react'
 // Import styles
 import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/RolPrivilegios.css'
 
+// Component
 export const RolPrivilegiosCrud = ({ userData, isEditing, onChange }) => {
   return (
-    <div className='rol-privilegios-container'>
+    <section className='rol-privilegios-container'>
       <h2>Perfil del personal</h2>
       <div className='nota-admin'>
-        <InfoIcon size={16} className='info-icon' />
+        <InfoIcon className='icon' />
         <span>Esta configuración solo es editable por un rol administrador.</span>
       </div>
 
-      <div className='seccion-rol'>
+      <section className='seccion-rol'>
         <div className='grupo-rol'>
           <label className='etiqueta-rol'>
             Rol <span className='obligatorio'>*</span>
@@ -32,11 +33,11 @@ export const RolPrivilegiosCrud = ({ userData, isEditing, onChange }) => {
           </div>
         </div>
         <p className='descripcion-rol'>El rol determina los privilegios generales que tendrá el usuario.</p>
-      </div>
+      </section>
 
       <div className='separador'></div>
 
-      <div className='seccion-privilegios'>
+      <section className='seccion-privilegios'>
         <h3>Privilegios de agenda</h3>
         <div className='privilegios-lista'>
           <div className='privilegio-item'>
@@ -79,7 +80,7 @@ export const RolPrivilegiosCrud = ({ userData, isEditing, onChange }) => {
             <p className='privilegio-descripcion'>Permite gestionar únicamente las citas asignadas al profesional.</p>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </section>
   )
 }

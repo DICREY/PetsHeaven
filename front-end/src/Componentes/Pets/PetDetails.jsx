@@ -1,7 +1,7 @@
 // Librarys 
 import React, { useState, useEffect, useContext } from 'react'
 import { ArrowLeft, Trash2, Edit, Save, X, FilePlus } from 'lucide-react'
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 
 // Import
 import { Description } from '../Global/Description'
@@ -12,12 +12,12 @@ import { DeleteData, ModifyData, PostData } from '../Varios/Requests'
 import { checkImage, getAge, errorStatusHandler, divideList } from '../Varios/Util'
 import { FormularioConsulta } from '../InterfazAdmin/FormulariosAdmin/Consulta'
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
+import { HeaderUser } from '../BarrasNavegacion/HeaderUser'
+import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
 import Footer from '../Varios/Footer2'
 
 // Import styles 
 import '../../../src/styles/Pets/petDetails.css'
-import { HeaderUser } from '../BarrasNavegacion/HeaderUser'
-import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
 
 // Main component
 export const PetDetails = ({ datas, imgPetDefault, URL = '', tab = 'Datos Generales' }) => {

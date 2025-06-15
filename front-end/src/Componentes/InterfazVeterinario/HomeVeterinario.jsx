@@ -1,7 +1,7 @@
 // Librarys 
 import React, { useState, useEffect } from "react"
-import { Outlet } from "react-router"
-import { Heart, Clock, ExternalLink, Plus, Stethoscope, Activity, FileText, Bell, HelpCircle, LogOut, User, Settings, ChevronDown, AlertCircle, CheckCircle } from "lucide-react"
+import { Outlet } from "react-router-dom"
+import { Heart, Clock, ExternalLink, Plus, Stethoscope, Activity, FileText, AlertCircle, CheckCircle } from "lucide-react"
 
 // Import
 import { Notification } from '../Global/Notifys'
@@ -19,35 +19,6 @@ export const PanelVeterinario = ({ URL = '', imgDefault = '' }) => {
 
   // Vars
   const mainUrl = `${URL}/staff`
-  const notifications = [
-    {
-      id: 1,
-      type: "appointment",
-      title: "Nueva cita programada",
-      message: "Cita para Max a las 09:00 AM",
-      time: "Hace 5 min",
-      icon: Clock,
-      color: "azul",
-    },
-    {
-      id: 2,
-      type: "emergency",
-      title: "Emergencia atendida",
-      message: "Cirugía de Toby completada exitosamente",
-      time: "Hace 1 hora",
-      icon: AlertCircle,
-      color: "verde",
-    },
-    {
-      id: 3,
-      type: "reminder",
-      title: "Recordatorio de vacuna",
-      message: "Luna necesita vacuna de refuerzo",
-      time: "Hace 2 horas",
-      icon: CheckCircle,
-      color: "naranja",
-    },
-  ]
 
   useEffect(() => {
     const handleClickOutside = (event) => {
