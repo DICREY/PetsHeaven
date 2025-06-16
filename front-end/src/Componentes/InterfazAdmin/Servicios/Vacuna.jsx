@@ -1,5 +1,5 @@
 // Librarys 
-import { useContext, useState, useEffect, useCallback } from "react"
+import { useContext, useState, useEffect, useCallback, useRef } from "react"
 import { Syringe, Plus, Trash2, Edit, X, Calendar, Clock, AlertTriangle, FileText, Target } from "lucide-react"
 
 // Imports 
@@ -9,98 +9,25 @@ import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
 import Footer from '../../Varios/Footer2'
 import { AuthContext } from "../../../Contexts/Contexts"
 import { Notification } from '../../Global/Notifys'
-import { GetData } from "../../Varios/Requests"
+import { GetData, PostData, ModifyData } from "../../Varios/Requests"
+import { errorStatusHandler } from '../../Varios/Util'
 
 // Import styles 
 import "../../../styles/InterfazAdmin/Servicios/Vacuna.css"
 
 // Component 
-export function VisualizadorVacunas() {
-  const [vacunas, setVacunas] = useState([
-    {
-      id: "VAC001",
-      nombre: "Rabia",
-      descripcion: "Vacuna esencial para prevenir la rabia en perros y gatos.",
-      descripcionTecnica: "Vacuna inactivada con virus de la rabia cultivado en células diploides humanas (HDCV).",
-      precio: 85000,
-      frecuencia: "Anual",
-      disponible: true,
-      efectosSecundarios: "Dolor leve en el sitio de inyección, fiebre baja, letargo por 24-48 horas.",
-      dosis: {
-        cachorro: "1 ml subcutáneo a partir de los 3 meses",
-        adulto: "1 ml subcutáneo anual",
-        senior: "1 ml subcutáneo anual, evaluación previa recomendada",
-      },
-      tipoAnimal: "ambos",
-      categoria: "Obligatoria",
-      lote: "RB-2023-45678",
-      fechaVencimiento: "2025-06-30",
-    },
-    {
-      id: "VAC002",
-      nombre: "Parvovirus",
-      descripcion: "Protege contra el parvovirus canino, una enfermedad altamente contagiosa.",
-      descripcionTecnica: "Vacuna con virus vivo modificado (MLV) del parvovirus canino tipo 2b.",
-      precio: 95000,
-      frecuencia: "Cada 3 años",
-      disponible: true,
-      efectosSecundarios: "Fiebre leve, posible diarrea leve transitoria.",
-      dosis: {
-        cachorro: "1 ml subcutáneo a las 6, 9 y 12 semanas",
-        adulto: "1 ml subcutáneo cada 3 años",
-        senior: "1 ml subcutáneo cada 3 años",
-      },
-      tipoAnimal: "perro",
-      categoria: "Esencial",
-      lote: "PV-2023-78945",
-      fechaVencimiento: "2024-12-15",
-    },
-    {
-      id: "VAC003",
-      nombre: "Moquillo",
-      descripcion: "Previene el moquillo canino, una enfermedad viral grave.",
-      descripcionTecnica: "Vacuna con virus vivo modificado (MLV) del virus del moquillo canino cepa Onderstepoort.",
-      precio: 78000,
-      frecuencia: "Anual",
-      disponible: true,
-      efectosSecundarios: "Letargo, posible inflamación en el sitio de inyección.",
-      dosis: {
-        cachorro: "1 ml subcutáneo a las 8, 12 y 16 semanas",
-        adulto: "1 ml subcutáneo anual",
-        senior: "1 ml subcutáneo anual",
-      },
-      tipoAnimal: "perro",
-      categoria: "Esencial",
-      lote: "MQ-2023-36547",
-      fechaVencimiento: "2025-03-22",
-    },
-    {
-      id: "VAC004",
-      nombre: "Leucemia Felina",
-      descripcion: "Vacuna recomendada para gatos con acceso al exterior.",
-      descripcionTecnica: "Vacuna recombinante con proteína p45 del virus de la leucemia felina.",
-      precio: 110000,
-      frecuencia: "Anual",
-      disponible: false,
-      efectosSecundarios: "Pérdida de apetito temporal, posible fiebre leve.",
-      dosis: {
-        cachorro: "1 ml subcutáneo a las 9 y 12 semanas",
-        adulto: "1 ml subcutáneo anual",
-        senior: "1 ml subcutáneo anual, evaluación previa recomendada",
-      },
-      tipoAnimal: "gato",
-      categoria: "Recomendada",
-      lote: "LF-2023-98765",
-      fechaVencimiento: "2024-09-10",
-    },
-  ])
-
+export function VisualizadorVacunas({ URL = '' }) {
+  const [vacunas, setVacunas] = useState([])
   const [modalAbierto, setModalAbierto] = useState(false)
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false)
   const [vacunaDetalle, setVacunaDetalle] = useState(null)
   const [filtroAnimal, setFiltroAnimal] = useState("todos")
   const [modoEdicion, setModoEdicion] = useState(false)
   const [vacunaEditando, setVacunaEditando] = useState(null)
+  const [notify, setNotify] = useState(null)
+  const didFetch = useRef(false)
+  const mainUrl = `${URL}/service`
+
   const [nuevaVacuna, setNuevaVacuna] = useState({
     id: "",
     nombre: "",
@@ -122,6 +49,81 @@ export function VisualizadorVacunas() {
   })
 
   const categorias = ["Obligatoria", "Esencial", "Recomendada", "Opcional"]
+
+  // Función para obtener las vacunas del backend
+  const fetchVacunas = useCallback(async () => {
+    if (didFetch.current) return;
+    didFetch.current = true;
+
+    setNotify({
+      title: 'Cargando',
+      message: 'Cargando vacunas, por favor espere...',
+      load: 1
+    });
+
+    try {
+      const response = await GetData(`${mainUrl}/vacs`);
+      setNotify(null);
+
+      // Asegúrate de que la respuesta tenga la estructura correcta
+      if (response && Array.isArray(response)) {
+        // Mapeamos los datos del backend al formato que espera el frontend
+        const vacunasMapeadas = response.map(vacuna => ({
+          id: vacuna.id_vac,
+          nombre: vacuna.nom_vac,
+          descripcion: vacuna.des_ser,
+          descripcionTecnica: vacuna.tec_des_ser,
+          precio: vacuna.pre_ser,
+          frecuencia: vacuna.fre_vac,
+          tipoAnimal: "perro", // Asumimos perro por defecto (ajustar según tu BD)
+          disponible: vacuna.sta_ser || "DISPONIBLE",
+          categoria: vacuna.cat_vac,
+          efectosSecundarios: vacuna.efe_sec_vac,
+          lote: vacuna.lot_vac,
+          fechaVencimiento: vacuna.fec_ven_vac,
+          dosis: {
+            cachorro: vacuna.dos_rec_vac,
+            adulto: vacuna.dos_rec_vac,
+            senior: vacuna.dos_rec_vac
+          }
+        }));
+
+        setVacunas(vacunasMapeadas);
+        console.log(vacunasMapeadas)
+      } else {
+        setNotify({
+          title: 'Error',
+          message: 'No se encontraron vacunas',
+          close: setNotify
+        });
+      }
+    } catch (err) {
+      setNotify(null);
+      if (err.status) {
+        const message = errorStatusHandler(err.status);
+        setNotify({
+          title: 'Error',
+          message: `${message}`,
+          close: setNotify
+        });
+      } else {
+        console.error('Error al cargar vacunas:', err);
+        setNotify({
+          title: 'Error',
+          message: 'Error al cargar las vacunas',
+          close: setNotify
+        });
+      }
+    }
+  }, [mainUrl]);
+
+  useEffect(() => {
+    fetchVacunas();
+  }, [fetchVacunas]);
+
+  useEffect(() => {
+    fetchVacunas();
+  }, [fetchVacunas]);
 
   const formatearPrecio = (precio) => {
     return new Intl.NumberFormat("es-CO", {
@@ -170,22 +172,106 @@ export function VisualizadorVacunas() {
     setModalAbierto(true)
   }
 
-  const guardarVacuna = () => {
+  const guardarVacuna = async () => {
     if (nuevaVacuna.nombre && nuevaVacuna.precio > 0) {
-      if (modoEdicion) {
-        setVacunas(
-          vacunas.map((v) => (v.id === vacunaEditando ? { ...nuevaVacuna, precio: Number(nuevaVacuna.precio) } : v)),
-        )
-      } else {
-        setVacunas([...vacunas, { ...nuevaVacuna, precio: Number(nuevaVacuna.precio) }])
+      try {
+        setNotify({
+          title: 'Guardando',
+          message: 'Guardando vacuna...',
+          load: 1
+        });
+
+        const vacunaData = {
+          nom_vac: nuevaVacuna.nombre,
+          efe_sec_vac: nuevaVacuna.efectosSecundarios,
+          cat_vac: nuevaVacuna.categoria,
+          dos_rec_vac: nuevaVacuna.dosis.cachorro, // Ajustar según necesidades
+          lot_vac: nuevaVacuna.lote,
+          fec_ven_vac: nuevaVacuna.fechaVencimiento,
+          fre_vac: nuevaVacuna.frecuencia,
+          // Datos del servicio asociado
+          nom_ser: nuevaVacuna.nombre,
+          pre_ser: Number(nuevaVacuna.precio),
+          des_ser: nuevaVacuna.descripcion,
+          sta_ser: nuevaVacuna.disponible ? "DISPONIBLE" : "NO-DISPONIBLE",
+          tec_des_ser: nuevaVacuna.descripcionTecnica,
+          cat_ser: 2 // Asumimos categoría 2 para vacunas (ajustar según tu BD)
+        };
+
+        if (modoEdicion) {
+          await ModifyData(`${mainUrl}/modifyVac`, {
+            id_vac: vacunaEditando,
+            ...vacunaData
+          });
+        } else {
+          await PostData(`${mainUrl}/registerVac`, vacunaData);
+        }
+
+        setNotify({
+          title: 'Éxito',
+          message: `Vacuna ${modoEdicion ? 'actualizada' : 'agregada'} correctamente`,
+          close: setNotify
+        });
+
+        setModalAbierto(false);
+        fetchVacunas();
+      } catch (err) {
+        setNotify(null);
+        if (err.status) {
+          const message = errorStatusHandler(err.status);
+          setNotify({
+            title: 'Error',
+            message: `${message}`,
+            close: setNotify
+          });
+        } else {
+          console.error(err);
+          setNotify({
+            title: 'Error',
+            message: `No se pudo ${modoEdicion ? 'actualizar' : 'agregar'} la vacuna`,
+            close: setNotify
+          });
+        }
       }
-      setModalAbierto(false)
     }
   }
 
-  const eliminarVacuna = (id) => {
+  const eliminarVacuna = async (id) => {
     if (window.confirm("¿Estás seguro de que deseas eliminar esta vacuna?")) {
-      setVacunas(vacunas.filter((v) => v.id !== id))
+      try {
+        setNotify({
+          title: 'Eliminando',
+          message: 'Eliminando vacuna...',
+          load: 1
+        });
+
+        await ModifyData(`${mainUrl}/deleteVac`, { id_vac: id });
+
+        setNotify({
+          title: 'Éxito',
+          message: 'Vacuna eliminada correctamente',
+          close: setNotify
+        });
+
+        fetchVacunas();
+      } catch (err) {
+        setNotify(null);
+        if (err.status) {
+          const message = errorStatusHandler(err.status);
+          setNotify({
+            title: 'Error',
+            message: `${message}`,
+            close: setNotify
+          });
+        } else {
+          console.error(err);
+          setNotify({
+            title: 'Error',
+            message: 'No se pudo eliminar la vacuna',
+            close: setNotify
+          });
+        }
+      }
     }
   }
 
@@ -194,9 +280,35 @@ export function VisualizadorVacunas() {
     setModalDetalleAbierto(true)
   }
 
-  const cambiarEstado = (id, e) => {
+  const cambiarEstado = async (id, e) => {
     e.stopPropagation()
-    setVacunas(vacunas.map((vacuna) => (vacuna.id === id ? { ...vacuna, disponible: !vacuna.disponible } : vacuna)))
+    try {
+      const vacuna = vacunas.find(v => v.id === id);
+      const nuevoEstado = !vacuna.disponible;
+
+      await ModifyData(`${mainUrl}/updateVacStatus`, {
+        id_vac: id,
+        sta_ser: nuevoEstado ? "DISPONIBLE" : "NO-DISPONIBLE"
+      });
+
+      fetchVacunas();
+    } catch (err) {
+      if (err.status) {
+        const message = errorStatusHandler(err.status);
+        setNotify({
+          title: 'Error',
+          message: `${message}`,
+          close: setNotify
+        });
+      } else {
+        console.error(err);
+        setNotify({
+          title: 'Error',
+          message: 'No se pudo cambiar el estado de la vacuna',
+          close: setNotify
+        });
+      }
+    }
   }
 
   const handleDosisChange = (edad, valor) => {
@@ -221,7 +333,7 @@ export function VisualizadorVacunas() {
 
   return (
     <div className="contenedor-vacunas">
-      <NavBarAdmin/>
+      <NavBarAdmin />
       <div className="contenedor-principal-vacunas">
         {/* Encabezado */}
         <header className="encabezado-vacunas">
@@ -269,9 +381,8 @@ export function VisualizadorVacunas() {
                       {vacuna.categoria}
                     </span>
                     <span
-                      className={`estado-vacunas ${
-                        vacuna.disponible ? "disponible-vacunas" : "no-disponible-badge-vacunas"
-                      }`}
+                      className={`estado-vacunas ${vacuna.disponible ? "disponible-vacunas" : "no-disponible-badge-vacunas"
+                        }`}
                       onClick={(e) => cambiarEstado(vacuna.id, e)}
                     >
                       {vacuna.disponible ? "Disponible" : "No disponible"}
@@ -341,28 +452,16 @@ export function VisualizadorVacunas() {
                 <div className="seccion-formulario-vacunas">
                   <h4 className="titulo-seccion-formulario">Información General</h4>
                   <div className="campos-formulario-vacunas">
-                    <div className="campos-dobles-vacunas">
-                      <div className="campo-vacunas">
-                        <label className="etiqueta-campo-vacunas">ID Vacuna</label>
-                        <input
-                          type="text"
-                          value={nuevaVacuna.id}
-                          onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, id: e.target.value })}
-                          className="input-vacunas"
-                          disabled={modoEdicion}
-                          placeholder="Ej: VAC001"
-                        />
-                      </div>
-                      <div className="campo-vacunas">
-                        <label className="etiqueta-campo-vacunas">Nombre de la Vacuna</label>
-                        <input
-                          type="text"
-                          value={nuevaVacuna.nombre}
-                          onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, nombre: e.target.value })}
-                          className="input-vacunas"
-                          placeholder="Ej: Rabia"
-                        />
-                      </div>
+                    <div className="campo-vacunas">
+                      <label className="etiqueta-campo-vacunas">Nombre de la Vacuna</label>
+                      <input
+                        type="text"
+                        value={nuevaVacuna.nombre}
+                        onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, nombre: e.target.value })}
+                        className="input-vacunas"
+                        placeholder="Ej: Rabia"
+                        required
+                      />
                     </div>
                     <div className="campo-vacunas">
                       <label className="etiqueta-campo-vacunas">Descripción General</label>
@@ -372,6 +471,7 @@ export function VisualizadorVacunas() {
                         className="textarea-vacunas"
                         rows={2}
                         placeholder="Breve descripción de la vacuna"
+                        required
                       />
                     </div>
                     <div className="campo-vacunas">
@@ -382,6 +482,7 @@ export function VisualizadorVacunas() {
                         className="textarea-vacunas"
                         rows={2}
                         placeholder="Información técnica sobre la vacuna"
+                        required
                       />
                     </div>
                   </div>
@@ -399,6 +500,8 @@ export function VisualizadorVacunas() {
                           onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, precio: e.target.value })}
                           className="input-vacunas"
                           placeholder="Ej: 85000"
+                          required
+                          min="0"
                         />
                       </div>
                       <div className="campo-vacunas">
@@ -409,6 +512,7 @@ export function VisualizadorVacunas() {
                           onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, frecuencia: e.target.value })}
                           className="input-vacunas"
                           placeholder="Ej: Anual"
+                          required
                         />
                       </div>
                     </div>
@@ -449,6 +553,7 @@ export function VisualizadorVacunas() {
                           onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, lote: e.target.value })}
                           className="input-vacunas"
                           placeholder="Ej: RB-2023-45678"
+                          required
                         />
                       </div>
                       <div className="campo-vacunas">
@@ -458,6 +563,7 @@ export function VisualizadorVacunas() {
                           value={nuevaVacuna.fechaVencimiento}
                           onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, fechaVencimiento: e.target.value })}
                           className="input-vacunas"
+                          required
                         />
                       </div>
                     </div>
@@ -475,6 +581,7 @@ export function VisualizadorVacunas() {
                         className="textarea-vacunas"
                         rows={2}
                         placeholder="Posibles efectos secundarios"
+                        required
                       />
                     </div>
                     <div className="subseccion-formulario-vacunas">
@@ -487,6 +594,7 @@ export function VisualizadorVacunas() {
                           onChange={(e) => handleDosisChange("cachorro", e.target.value)}
                           className="input-vacunas"
                           placeholder="Ej: 1 ml subcutáneo a partir de los 3 meses"
+                          required
                         />
                       </div>
                       <div className="campo-vacunas">
@@ -497,6 +605,7 @@ export function VisualizadorVacunas() {
                           onChange={(e) => handleDosisChange("adulto", e.target.value)}
                           className="input-vacunas"
                           placeholder="Ej: 1 ml subcutáneo anual"
+                          required
                         />
                       </div>
                       <div className="campo-vacunas">
@@ -507,6 +616,7 @@ export function VisualizadorVacunas() {
                           onChange={(e) => handleDosisChange("senior", e.target.value)}
                           className="input-vacunas"
                           placeholder="Ej: 1 ml subcutáneo anual, evaluación previa recomendada"
+                          required
                         />
                       </div>
                     </div>
@@ -523,10 +633,10 @@ export function VisualizadorVacunas() {
                 </div>
 
                 <div className="botones-formulario-vacunas">
-                  <button onClick={guardarVacuna} className="boton-guardar-vacunas">
+                  <button type="button" onClick={guardarVacuna} className="boton-guardar-vacunas">
                     {modoEdicion ? "Actualizar" : "Agregar"}
                   </button>
-                  <button onClick={() => setModalAbierto(false)} className="boton-cancelar-vacunas">
+                  <button type="button" onClick={() => setModalAbierto(false)} className="boton-cancelar-vacunas">
                     Cancelar
                   </button>
                 </div>
@@ -562,9 +672,8 @@ export function VisualizadorVacunas() {
                   </div>
                   <div className="metrica-vacunas">
                     <div
-                      className={`valor-metrica-vacunas ${
-                        vacunaDetalle.disponible ? "texto-verde-vacunas" : "texto-rojo-vacunas"
-                      }`}
+                      className={`valor-metrica-vacunas ${vacunaDetalle.disponible ? "texto-verde-vacunas" : "texto-rojo-vacunas"
+                        }`}
                     >
                       {vacunaDetalle.disponible ? "SÍ" : "NO"}
                     </div>
@@ -657,6 +766,7 @@ export function VisualizadorVacunas() {
           </div>
         )}
       </div>
+      {notify && <Notification {...notify} />}
     </div>
   )
 }
