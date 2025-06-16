@@ -44,8 +44,9 @@ Route.get('/all/:by', ValidatorRol("usuario"), async (req,res) => {
 Route.get('/vacs', ValidatorRol("usuario"), async (req,res) => {
     try {
         const serv = await services.findAllVacunas()
+        console.log (serv)
         if (!serv.result[0][0]) return res.status(404).json({ message: "Vacunas no encontradas" })
-
+        
         res.status(200).json(serv)
     } catch (err) {
         if(err.status) return res.status(err.status).json(err.message)
@@ -105,7 +106,7 @@ Route.post('/register/vac', ValidatorRol("administrador"), async (req, res) => {
     const data = req.body
     try {
         if (!data) return res.status(400).json({ message: "Petición no valida"})
-            
+
         const result = await services.registerVacuna(data);
         res.status(201).json({ message: "Vacuna registrada correctamente", result });
     } catch (err) {
