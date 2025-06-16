@@ -76,7 +76,7 @@ export function VisualizadorVacunas({ URL = '' }) {
           precio: vacuna.pre_ser,
           frecuencia: vacuna.fre_vac,
           tipoAnimal: "perro", // Asumimos perro por defecto (ajustar según tu BD)
-          disponible: vacuna.sta_ser === "DISPONIBLE",
+          disponible: vacuna.sta_ser || "DISPONIBLE",
           categoria: vacuna.cat_vac,
           efectosSecundarios: vacuna.efe_sec_vac,
           lote: vacuna.lot_vac,
@@ -89,6 +89,7 @@ export function VisualizadorVacunas({ URL = '' }) {
         }));
 
         setVacunas(vacunasMapeadas);
+        console.log(vacunasMapeadas)
       } else {
         setNotify({
           title: 'Error',

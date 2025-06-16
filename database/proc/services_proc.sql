@@ -267,14 +267,14 @@ CREATE PROCEDURE pets_heaven.SearchVacunas()
 BEGIN
     SELECT 
         v.*,
-        s.id_ser AS servicio_id,
-        s.cat_ser AS servicio_categoria_id,
-        s.nom_ser AS servicio_nombre,
-        s.pre_ser AS servicio_precio,
-        s.des_ser AS servicio_descripcion,
-        s.sta_ser AS servicio_estado,
-        s.tec_des_ser AS servicio_tecnica_descripcion,
-        cs.nom_cat AS categoria_servicio_nombre
+        s.id_ser,
+        s.cat_ser,
+        s.nom_ser,
+        s.pre_ser,
+        s.des_ser,
+        s.sta_ser,
+        s.tec_des_ser,
+        cs.nom_cat 
     FROM 
         vacunas v
     JOIN 
