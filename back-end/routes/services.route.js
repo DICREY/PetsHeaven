@@ -44,7 +44,6 @@ Route.get('/all/:by', ValidatorRol("usuario"), async (req,res) => {
 Route.get('/vacs', ValidatorRol("usuario"), async (req,res) => {
     try {
         const serv = await services.findAllVacunas()
-        console.log (serv)
         if (!serv.result[0][0]) return res.status(404).json({ message: "Vacunas no encontradas" })
         
         res.status(200).json(serv)
