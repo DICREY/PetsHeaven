@@ -219,3 +219,27 @@ export const errorStatusHandler = (err) => {
   }
   return returnMessage(err)
 }
+
+export const hourTraductor = (hour) => {
+  
+  if (!hour || typeof hour !== "string") return "";
+
+  const [hours, minutes, seconds] = hour.split(':');
+
+  const hourNum = parseInt(hours, 10);
+  const minuteNum = minutes ? parseInt(minutes, 10) : 0;
+
+  if (!hourNum < 0 || hourNum > 23 || minuteNum < 0  || minuteNum > 59){
+    return '';
+  }
+
+  const period = hourNum >= 12 ? "P.M" : "A.M";
+
+  let twelveHour = hourNum % 12;
+  twelveHour = twelveHour === 0 ? 12 : twelveHour;
+
+  const formattedMins = minuteNum.toString().padStart(2,"0");
+
+  return `${twelveHour}:${formattedMins} ${period}`;
+  
+}
