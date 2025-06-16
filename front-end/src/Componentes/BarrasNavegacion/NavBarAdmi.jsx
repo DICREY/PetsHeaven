@@ -98,6 +98,13 @@ export const NavBarAdmin = () => {
                 </li>
               )
             }
+              
+            <li className='itemnavadmin'>
+              <NavLink to={'/home/staff'} className='enlacenavadmin'>
+                <Settings className='icononavadmin' />
+                <span>Panel Médico</span>
+              </NavLink>
+            </li>
 
             <li className='itemnavadmin'>
               <NavLink to={'/consultorio'} className='enlacenavadmin'>

@@ -89,7 +89,7 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
           {mainRol === 'Administrador' ? (
             <h1>Panel de Administración</h1>
           ) : (
-            <h1>Panel Medico</h1>
+            <h1>Panel Médico</h1>
           )
           }
           <p>Bienvenid@ de vuelta, {user.names} {user.lastNames}</p>

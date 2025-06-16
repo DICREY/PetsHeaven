@@ -147,11 +147,11 @@ export default function App () {
           </Route>
           
           {/* Vet routes */}
-          <Route path='mascota/registro' element={
-            <VetRoute children={<FormularioRegMascotas URL={URL} imgDefault={imgPetDefault} />} />
-          } />
           <Route path='home/staff' element={
             <VetRoute children={<PanelVeterinario URL={URL} imgDefault={imgUserDefault} />} />
+          } />
+          <Route path='mascota/registro' element={
+            <VetRoute children={<FormularioRegMascotas URL={URL} imgDefault={imgPetDefault} />} />
           } />
           <Route path='propietario/registro' element={
             <VetRoute children={<RegistroPro URL={URL} imgDefault={imgUserDefault} />} />}>
