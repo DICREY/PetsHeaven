@@ -1,153 +1,150 @@
--- Active: 1746043677643@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 DROP DATABASE IF EXISTS pets_heaven;
 CREATE DATABASE IF NOT EXISTS pets_heaven;
 CREATE TABLE pets_heaven.roles(
-    id_rol INT AUTO_INCREMENT PRIMARY KEY,
-    nom_rol VARCHAR(100) NOT NULL
+    id_rol INT AUTO_INCREMENT PRIMARY KEY, -- ID del rol
+    nom_rol VARCHAR(100) NOT NULL,INDEX(nom_rol) -- Nombre del rol
 );
 
 /* DIVIDIR USUARIOS EN DOS TABLAS USUARIOS Y PERSONAS LOS USUARIOS TENDRAN LA INFORMACION RELEVANTE CON LA AUTENTICACION Y LAS PERSONAS EL RESTO DE INFORMACION */
 CREATE TABLE pets_heaven.personas(
-    id_per INT AUTO_INCREMENT PRIMARY KEY,
-    nom_per VARCHAR(100) NOT NULL,
-    ape_per VARCHAR(100) NOT NULL,
-    fec_nac_per DATE NOT NULL,
-    tip_doc_per VARCHAR(10) NOT NULL,
-    doc_per VARCHAR(20) UNIQUE NOT NULL,INDEX(doc_per),
-    dir_per VARCHAR(100) NOT NULL,
-    cel_per VARCHAR(20) NOT NULL,
-    cel2_per VARCHAR(20),
-    email_per VARCHAR(100) UNIQUE NOT NULL,INDEX(email_per),
-    cont_per VARCHAR(255) NOT NULL,
-    gen_per VARCHAR(100) NOT NULL,
-    estado BOOLEAN DEFAULT(1) NOT NULL,
-    fot_per TEXT DEFAULT("https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg") NOT NULL,
-    fec_cre_per DATE DEFAULT(NOW()) NOT NULL
+    id_per INT AUTO_INCREMENT PRIMARY KEY, -- ID de la persona
+    nom_per VARCHAR(100) NOT NULL, -- Nombre de la persona
+    ape_per VARCHAR(100) NOT NULL, -- Apellido de la persona
+    fec_nac_per DATE NOT NULL, -- Fecha de nacimiento
+    tip_doc_per VARCHAR(10) NOT NULL, -- Tipo de documento
+    doc_per VARCHAR(20) UNIQUE NOT NULL,INDEX(doc_per), -- Número de documento
+    dir_per VARCHAR(100) NOT NULL, -- Dirección
+    cel_per VARCHAR(20) NOT NULL, -- Celular principal
+    cel2_per VARCHAR(20), -- Celular secundario
+    email_per VARCHAR(100) UNIQUE NOT NULL,INDEX(email_per), -- Correo electrónico
+    cont_per VARCHAR(255) NOT NULL, -- Contraseña
+    gen_per VARCHAR(100) NOT NULL, -- Género
+    estado BOOLEAN DEFAULT(1) NOT NULL, -- Estado activo/inactivo
+    fot_per TEXT DEFAULT("https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg") NOT NULL, -- Foto de perfil
+    fec_cre_per DATE DEFAULT(CURRENT_DATE()) NOT NULL -- Fecha de creación del registro
 );
 
 CREATE TABLE pets_heaven.otorgar_roles(
-    id_rol INT NOT NULL,INDEX(id_rol),FOREIGN KEY(id_rol) REFERENCES roles(id_rol) ON DELETE CASCADE ON UPDATE CASCADE,
-    id_per INT NOT NULL,INDEX(id_per),FOREIGN KEY(id_per) REFERENCES personas(id_per) ON DELETE CASCADE ON UPDATE CASCADE,
-    fec_oto DATE DEFAULT(NOW()) NOT NULL,
+    id_rol INT NOT NULL,INDEX(id_rol),FOREIGN KEY(id_rol) REFERENCES roles(id_rol) ON DELETE CASCADE ON UPDATE CASCADE, -- ID del rol otorgado
+    id_per INT NOT NULL,INDEX(id_per),FOREIGN KEY(id_per) REFERENCES personas(id_per) ON DELETE CASCADE ON UPDATE CASCADE, -- ID de la persona
+    fec_oto DATE DEFAULT(CURRENT_DATE()) NOT NULL, -- Fecha de otorgamiento
     PRIMARY KEY(id_rol,id_per)
 );
 
 CREATE TABLE pets_heaven.categorias_veterinario(
-    id_cat INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    nom_cat VARCHAR(100) NOT NULL
+    id_cat INT AUTO_INCREMENT PRIMARY KEY NOT NULL, -- ID de la categoría
+    nom_cat VARCHAR(100) NOT NULL -- Nombre de la categoría
 );
 
 CREATE TABLE pets_heaven.otorgar_categoria_vet(
-    id_cat INT NOT NULL,INDEX(id_cat),FOREIGN KEY(id_cat) REFERENCES categorias_veterinario(id_cat) ON DELETE CASCADE ON UPDATE CASCADE,
-    id_per INT NOT NULL,INDEX(id_per),FOREIGN KEY(id_per) REFERENCES personas(id_per) ON DELETE CASCADE ON UPDATE CASCADE,
-    fec_oto DATE DEFAULT(NOW()) NOT NULL,
+    id_cat INT NOT NULL,INDEX(id_cat),FOREIGN KEY(id_cat) REFERENCES categorias_veterinario(id_cat) ON DELETE CASCADE ON UPDATE CASCADE, -- ID de la categoría
+    id_per INT NOT NULL,INDEX(id_per),FOREIGN KEY(id_per) REFERENCES personas(id_per) ON DELETE CASCADE ON UPDATE CASCADE, -- ID de la persona
+    fec_oto DATE DEFAULT(CURRENT_DATE()) NOT NULL, -- Fecha de otorgamiento
     PRIMARY KEY(id_cat,id_per)
 );
 
 CREATE TABLE pets_heaven.veterinarios(
-    id_vet INT PRIMARY KEY,INDEX(id_vet),FOREIGN KEY(id_vet)  REFERENCES personas(id_per) ON DELETE CASCADE ON UPDATE CASCADE,
-    especialidad VARCHAR(100) NOT NULL,
-    horarios VARCHAR(100) NOT NULL,
-    num_tar_vet VARCHAR(100) DEFAULT("no-registrado") NOT NULL,
-    fot_tar_vet TEXT DEFAULT("no-registrado") NOT NULL,
-    fot_vet TEXT DEFAULT("https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg") NOT NULL
+    id_vet INT PRIMARY KEY,INDEX(id_vet),FOREIGN KEY(id_vet)  REFERENCES personas(id_per) ON DELETE CASCADE ON UPDATE CASCADE, -- ID del veterinario (persona)
+    especialidad VARCHAR(100) NOT NULL, -- Especialidad del veterinario
+    horarios VARCHAR(100) NOT NULL, -- Horarios de atención
+    num_tar_vet VARCHAR(100) DEFAULT("no-registrado") NOT NULL, -- Número de tarjeta profesional
+    fot_tar_vet TEXT DEFAULT("no-registrado") NOT NULL, -- Foto de la tarjeta profesional
+    fot_vet TEXT DEFAULT("https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg") NOT NULL -- Foto del veterinario
 );
 
-/* PETS  */
 CREATE TABLE pets_heaven.mascotas(
-    id_mas INT AUTO_INCREMENT PRIMARY KEY,
-    nom_mas VARCHAR(100) NOT NULL,
-    esp_mas VARCHAR(100) NOT NULL,
-    col_mas VARCHAR(100) NOT NULL,
-    raz_mas VARCHAR(100) NOT NULL,
-    ali_mas VARCHAR(100) NOT NULL,
-    fec_nac_mas DATE NOT NULL,
-    pes_mas FLOAT(12,2) UNSIGNED NOT NULL,
-    gen_mas VARCHAR(20) NOT NULL,
-    id_pro_mas INT NOT NULL,INDEX(id_pro_mas),FOREIGN KEY (id_pro_mas) REFERENCES personas(id_per) ON DELETE CASCADE ON UPDATE CASCADE,
-    est_rep_mas VARCHAR(100) NOT NULL,
-    estado BOOLEAN DEFAULT(1) NOT NULL,
-    fot_mas TEXT NOT NULL,
-    fec_cre_mas DATE DEFAULT(NOW()) NOT NULL
+    id_mas INT AUTO_INCREMENT PRIMARY KEY, -- ID de la mascota
+    nom_mas VARCHAR(100) NOT NULL,INDEX(nom_mas), -- Nombre de la mascota
+    esp_mas VARCHAR(100) NOT NULL, -- Especie de la mascota
+    col_mas VARCHAR(100) NOT NULL, -- Color de la mascota
+    raz_mas VARCHAR(100) NOT NULL, -- Raza de la mascota
+    ali_mas VARCHAR(100) NOT NULL, -- Alimentación de la mascota
+    fec_nac_mas DATE NOT NULL, -- Fecha de nacimiento de la mascota
+    pes_mas FLOAT(12,2) UNSIGNED NOT NULL, -- Peso de la mascota
+    gen_mas VARCHAR(20) NOT NULL, -- Género de la mascota
+    id_pro_mas INT NOT NULL,INDEX(id_pro_mas),FOREIGN KEY (id_pro_mas) REFERENCES personas(id_per) ON DELETE CASCADE ON UPDATE CASCADE, -- ID del propietario
+    est_rep_mas VARCHAR(100) NOT NULL, -- Estado reproductivo
+    estado BOOLEAN DEFAULT(1) NOT NULL, -- Estado activo/inactivo
+    fot_mas TEXT NOT NULL, -- Foto de la mascota
+    fec_cre_mas DATE DEFAULT(CURRENT_DATE()) NOT NULL -- Fecha de creación del registro
 );
-
 
 CREATE TABLE pets_heaven.categorias_ser(
-    id_cat INT AUTO_INCREMENT PRIMARY KEY,
-    nom_cat VARCHAR(100) NOT NULL,INDEX(nom_cat),
-    img_cat TEXT DEFAULT('No-Registrado') NOT NULL,
-    tec_des_cat TEXT NOT NULL,
-    estado BOOLEAN DEFAULT(1) NOT NULL
+    id_cat INT AUTO_INCREMENT PRIMARY KEY, -- ID de la categoría de servicio
+    nom_cat VARCHAR(100) NOT NULL,INDEX(nom_cat), -- Nombre de la categoría
+    img_cat TEXT DEFAULT('No-Registrado') NOT NULL, -- Imagen de la categoría
+    tec_des_cat TEXT NOT NULL, -- Descripción técnica de la categoría
+    estado BOOLEAN DEFAULT(1) NOT NULL -- Estado activo/inactivo
 );
 
 CREATE TABLE pets_heaven.servicios(
-    id_ser INT AUTO_INCREMENT PRIMARY KEY,
-    cat_ser INT NOT NULL,INDEX(cat_ser), FOREIGN KEY(cat_ser) REFERENCES categorias_ser(id_cat) ON DELETE CASCADE ON UPDATE CASCADE,
-    nom_ser VARCHAR(100) NOT NULL,
-    pre_ser DECIMAL(10,2) NOT NULL,
-    des_ser TEXT NOT NULL,
-    sta_ser ENUM("DISPONIBLE","NO-DISPONIBLE") DEFAULT("DISPONIBLE") NOT NULL, # Estado del servicio
-    tec_des_ser TEXT NOT NULL
+    id_ser INT AUTO_INCREMENT PRIMARY KEY, -- ID del servicio
+    cat_ser INT NOT NULL,INDEX(cat_ser), FOREIGN KEY(cat_ser) REFERENCES categorias_ser(id_cat) ON DELETE CASCADE ON UPDATE CASCADE, -- ID de la categoría de servicio
+    nom_ser VARCHAR(100) NOT NULL,INDEX(nom_ser), -- Nombre del servicio
+    pre_ser DECIMAL(10,2) NOT NULL, -- Precio del servicio
+    des_ser TEXT NOT NULL, -- Descripción del servicio
+    sta_ser ENUM("DISPONIBLE","NO-DISPONIBLE") DEFAULT("DISPONIBLE") NOT NULL, -- Estado del servicio
+    tec_des_ser TEXT NOT NULL -- Descripción técnica del servicio
 );
 
 CREATE TABLE pets_heaven.cirugias(
-    id_cir INT AUTO_INCREMENT PRIMARY KEY,
-    des_cir VARCHAR (100) NOT NULL,
-    res_cir VARCHAR(200),   # Resultados
-    com_cir VARCHAR(200),   # complicacions
-    obv_cir TEXT DEFAULT("No-Registrado") NOT NULL,  # Observaciones
-    ser_cir INT NOT NULL,INDEX(ser_cir), FOREIGN KEY(ser_cir) REFERENCES servicios(id_ser) ON DELETE CASCADE ON UPDATE CASCADE
+    id_cir INT AUTO_INCREMENT PRIMARY KEY, -- ID de la cirugía
+    des_cir VARCHAR (100) NOT NULL, -- Descripción de la cirugía
+    res_cir VARCHAR(200),   -- Resultados de la cirugía
+    com_cir VARCHAR(200),   -- Complicaciones de la cirugía
+    obv_cir TEXT DEFAULT("No-Registrado") NOT NULL,  -- Observaciones de la cirugía
+    ser_cir INT NOT NULL,INDEX(ser_cir), FOREIGN KEY(ser_cir) REFERENCES servicios(id_ser) ON DELETE CASCADE ON UPDATE CASCADE -- ID del servicio asociado
 );
 
 CREATE TABLE pets_heaven.vacunas (
-    id_vac INT AUTO_INCREMENT PRIMARY KEY,
-    nom_vac VARCHAR(255) NOT NULL,INDEX(nom_vac),
-    efe_sec_vac VARCHAR(255) NOT NULL,  # Efectos Secundarios
-    cat_vac VARCHAR(100) NOT NULL,INDEX(cat_vac),
-    dos_rec_vac VARCHAR(100) NOT NULL, # Dosis recomendada
-    lot_vac VARCHAR(255) NOT NULL,INDEX(lot_vac),
-    fec_ven_vac DATE NOT NULL,
-    fre_vac VARCHAR(100) NOT NULL, # Frecuencia de vacunación
-    ser_vac INT NOT NULL,INDEX(ser_vac), FOREIGN KEY(ser_vac) REFERENCES servicios(id_ser) ON DELETE CASCADE ON UPDATE CASCADE
+    id_vac INT AUTO_INCREMENT PRIMARY KEY, -- ID de la vacuna
+    nom_vac VARCHAR(255) NOT NULL,INDEX(nom_vac), -- Nombre de la vacuna
+    efe_sec_vac VARCHAR(255) NOT NULL,  -- Efectos secundarios de la vacuna
+    cat_vac VARCHAR(100) NOT NULL,INDEX(cat_vac), -- Categoría de la vacuna
+    dos_rec_vac VARCHAR(100) NOT NULL, -- Dosis recomendada
+    lot_vac VARCHAR(255) NOT NULL,INDEX(lot_vac), -- Lote de la vacuna
+    fec_ven_vac DATE NOT NULL, -- Fecha de vencimiento
+    fre_vac VARCHAR(100) NOT NULL, -- Frecuencia de vacunación
+    ser_vac INT NOT NULL,INDEX(ser_vac), FOREIGN KEY(ser_vac) REFERENCES servicios(id_ser) ON DELETE CASCADE ON UPDATE CASCADE -- ID del servicio asociado
 );
 
 CREATE TABLE pets_heaven.citas(
-    id_cit INT AUTO_INCREMENT,
-    fec_reg_cit DATE DEFAULT(NOW()) NOT NULL,
-    fec_cit DATE NOT NULL,
-    hor_ini_cit TIME NOT NULL,
-    hor_fin_cit TIME NOT NULL,
-    lug_ate_cit VARCHAR(100) DEFAULT('No-Registrado') NOT NULL COMMENT 'lugar de atención',
-    ser_cit INT NOT NULL,INDEX(ser_cit),FOREIGN KEY(ser_cit) REFERENCES servicios(id_ser) ON DELETE CASCADE ON UPDATE CASCADE,
-    vet_cit INT NOT NULL,INDEX(vet_cit),FOREIGN KEY(vet_cit) REFERENCES veterinarios(id_vet) ON DELETE CASCADE ON UPDATE CASCADE,
-    mas_cit INT NOT NULL,INDEX(mas_cit),FOREIGN KEY(mas_cit) REFERENCES mascotas(id_mas) ON DELETE CASCADE ON UPDATE CASCADE,
-    estado ENUM("PENDIENTE","EN-ESPERA","CANCELADO","RECHAZADO","REALIZADO","CONFIRMADO") NOT NULL,
+    id_cit INT AUTO_INCREMENT, -- ID de la cita
+    fec_reg_cit DATE DEFAULT(CURRENT_DATE()) NOT NULL, -- Fecha de registro de la cita
+    fec_cit DATE NOT NULL, -- Fecha de la cita
+    hor_ini_cit TIME NOT NULL, -- Hora de inicio de la cita
+    hor_fin_cit TIME NOT NULL, -- Hora de fin de la cita
+    lug_ate_cit VARCHAR(100) DEFAULT('No-Registrado') NOT NULL COMMENT 'lugar de atención', -- Lugar de atención
+    ser_cit INT NOT NULL,INDEX(ser_cit),FOREIGN KEY(ser_cit) REFERENCES servicios(id_ser) ON DELETE CASCADE ON UPDATE CASCADE, -- ID del servicio
+    vet_cit INT NOT NULL,INDEX(vet_cit),FOREIGN KEY(vet_cit) REFERENCES veterinarios(id_vet) ON DELETE CASCADE ON UPDATE CASCADE, -- ID del veterinario
+    mas_cit INT NOT NULL,INDEX(mas_cit),FOREIGN KEY(mas_cit) REFERENCES mascotas(id_mas) ON DELETE CASCADE ON UPDATE CASCADE, -- ID de la mascota
+    estado ENUM("PENDIENTE","EN-ESPERA","CANCELADO","RECHAZADO","REALIZADO","CONFIRMADO") NOT NULL, -- Estado de la cita
     PRIMARY KEY (id_cit,mas_cit)
 );
 
-
-/* tablas aparte para evitar la insercion repetida de 'Motivo de consulta' y 'Tratamiento aplicado' */
 CREATE TABLE pets_heaven.motivos_consultas(
-    id_mot_con INT AUTO_INCREMENT PRIMARY KEY,
-    mot_con TEXT NOT NULL COMMENT 'Motivo de consulta'
+    id_mot_con INT AUTO_INCREMENT PRIMARY KEY, -- ID del motivo de consulta
+    mot_con TEXT NOT NULL COMMENT 'Motivo de consulta' -- Motivo de consulta
 );
+
 CREATE TABLE pets_heaven.tratamientos_consultas(
-    id_tra_con INT AUTO_INCREMENT PRIMARY KEY,
-    nom_tra_con VARCHAR(100) NOT NULL COMMENT 'Tratamiento aplicado',
-    des_tra_con TEXT NOT NULL
+    id_tra_con INT AUTO_INCREMENT PRIMARY KEY, -- ID del tratamiento aplicado
+    nom_tra_con VARCHAR(100) NOT NULL COMMENT 'Tratamiento aplicado',INDEX(nom_tra_con), -- Nombre del tratamiento
+    des_tra_con TEXT NOT NULL -- Descripción del tratamiento
 );
 
 CREATE TABLE pets_heaven.consultas(
-    id_con INT AUTO_INCREMENT PRIMARY KEY,
-    pes_mas_con DECIMAL(5,2) COMMENT 'Peso en kg',
-    tem_mas_con SMALLINT COMMENT 'Temperatura en °C',
-    dia_con TEXT COMMENT 'diagnostico',
-    med_con TEXT COMMENT 'Medicamentos',
-    fec_con DATE DEFAULT(NOW()) NOT NULL,INDEX(fec_con),
-    mot_con INT NOT NULL,INDEX(mot_con),FOREIGN KEY (mot_con) REFERENCES motivos_consultas(id_mot_con) ON DELETE RESTRICT ON UPDATE CASCADE,
-    nom_tra INT NOT NULL,INDEX(nom_tra),FOREIGN KEY (nom_tra) REFERENCES tratamientos_consultas(id_tra_con) ON DELETE RESTRICT ON UPDATE CASCADE,
-    cit_con INT NOT NULL,INDEX (cit_con),FOREIGN KEY (cit_con) REFERENCES citas(id_cit) ON DELETE CASCADE ON UPDATE CASCADE,
-    pro_mas_con INT NOT NULL,INDEX (pro_mas_con),FOREIGN KEY (pro_mas_con) REFERENCES personas(id_per) ON DELETE CASCADE ON UPDATE CASCADE,
-    vet_con INT NOT NULL,INDEX (vet_con),FOREIGN KEY (vet_con) REFERENCES veterinarios(id_vet) ON DELETE RESTRICT ON UPDATE CASCADE,
-    mas_con INT NOT NULL,INDEX (mas_con),FOREIGN KEY (mas_con) REFERENCES mascotas(id_mas) ON DELETE RESTRICT ON UPDATE CASCADE
+    id_con INT AUTO_INCREMENT PRIMARY KEY, -- ID de la consulta
+    pes_mas_con DECIMAL(5,2) COMMENT 'Peso en kg', -- Peso de la mascota en la consulta
+    tem_mas_con SMALLINT COMMENT 'Temperatura en °C', -- Temperatura de la mascota en la consulta
+    dia_con TEXT COMMENT 'diagnostico', -- Diagnóstico de la consulta
+    med_con TEXT COMMENT 'Medicamentos', -- Medicamentos recetados
+    fec_con DATE DEFAULT(CURRENT_DATE()) NOT NULL,INDEX(fec_con), -- Fecha de la consulta
+    mot_con INT NOT NULL,INDEX(mot_con),FOREIGN KEY (mot_con) REFERENCES motivos_consultas(id_mot_con) ON DELETE RESTRICT ON UPDATE CASCADE, -- ID del motivo de consulta
+    nom_tra INT NOT NULL,INDEX(nom_tra),FOREIGN KEY (nom_tra) REFERENCES tratamientos_consultas(id_tra_con) ON DELETE RESTRICT ON UPDATE CASCADE, -- ID del tratamiento aplicado
+    cit_con INT NOT NULL,INDEX (cit_con),FOREIGN KEY (cit_con) REFERENCES citas(id_cit) ON DELETE CASCADE ON UPDATE CASCADE, -- ID de la cita asociada
+    pro_mas_con INT NOT NULL,INDEX (pro_mas_con),FOREIGN KEY (pro_mas_con) REFERENCES personas(id_per) ON DELETE CASCADE ON UPDATE CASCADE, -- ID del propietario de la mascota
+    vet_con INT NOT NULL,INDEX (vet_con),FOREIGN KEY (vet_con) REFERENCES veterinarios(id_vet) ON DELETE RESTRICT ON UPDATE CASCADE, -- ID del veterinario
+    mas_con INT NOT NULL,INDEX (mas_con),FOREIGN KEY (mas_con) REFERENCES mascotas(id_mas) ON DELETE RESTRICT ON UPDATE CASCADE -- ID de la mascota
 );

@@ -1,4 +1,4 @@
--- Active: 1746043677643@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.Login(
     IN p_firstData VARCHAR(100)
 )
@@ -111,6 +111,6 @@ END //
 
 /* DROP PROCEDURE pets_heaven.`Login`; */
 /* CALL `GetStatsAdmin`(); */
-CALL `GetStatsVet`('1298765432');
+/* CALL `GetStatsVet`('1298765432'); */
 /* DROP PROCEDURE `GetDataAdmin`; */
 /* DROP PROCEDURE `GetStatsVet`; */
