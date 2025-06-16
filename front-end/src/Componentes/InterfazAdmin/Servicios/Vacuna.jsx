@@ -76,7 +76,7 @@ export function VisualizadorVacunas({ URL = '' }) {
           precio: vacuna.pre_ser,
           frecuencia: vacuna.fre_vac,
           tipoAnimal: "perro", // Asumimos perro por defecto (ajustar según tu BD)
-          disponible: vacuna.sta_ser || "DISPONIBLE",
+          disponible: vacuna.sta_ser,
           categoria: vacuna.cat_vac,
           efectosSecundarios: vacuna.efe_sec_vac,
           lote: vacuna.lot_vac,
@@ -281,18 +281,42 @@ export function VisualizadorVacunas({ URL = '' }) {
   }
 
   const cambiarEstado = async (id, e) => {
-    e.stopPropagation()
+    e.stopPropagation();
+    
     try {
-      const vacuna = vacunas.find(v => v.id === id);
-      const nuevoEstado = !vacuna.disponible;
-
-      await ModifyData(`${mainUrl}/updateVacStatus`, {
-        id_vac: id,
-        sta_ser: nuevoEstado ? "DISPONIBLE" : "NO-DISPONIBLE"
+      setNotify({
+        title: 'Actualizando',
+        message: 'Cambiando estado de la vacuna...',
+        load: 1
       });
 
-      fetchVacunas();
+      // Enviamos los datos en el formato que espera el backend
+      const response = await ModifyData(`${mainUrl}/AblOrDis`, {
+        data: {
+          id_ser: id, 
+          or: true    
+        }
+      });
+
+      setNotify({
+        title: 'Éxito',
+        message: 'Estado de la vacuna actualizado correctamente',
+        close: setNotify
+      });
+
+      // Actualizamos el estado local para reflejar el cambio inmediatamente
+      setVacunas(vacunas.map(vacuna => {
+        if (vacuna.id === id) {
+          return {
+            ...vacuna,
+            disponible: !vacuna.disponible
+          };
+        }
+        return vacuna;
+      }));
+
     } catch (err) {
+      setNotify(null);
       if (err.status) {
         const message = errorStatusHandler(err.status);
         setNotify({
@@ -301,7 +325,7 @@ export function VisualizadorVacunas({ URL = '' }) {
           close: setNotify
         });
       } else {
-        console.error(err);
+        console.error('Error al cambiar estado:', err);
         setNotify({
           title: 'Error',
           message: 'No se pudo cambiar el estado de la vacuna',
@@ -309,8 +333,7 @@ export function VisualizadorVacunas({ URL = '' }) {
         });
       }
     }
-  }
-
+  };
   const handleDosisChange = (edad, valor) => {
     setNuevaVacuna({
       ...nuevaVacuna,
