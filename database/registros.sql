@@ -23,8 +23,7 @@ INSERT INTO pets_heaven.personas (nom_per, ape_per, fec_nac_per, tip_doc_per, do
 ('Fernando', 'Castro', NOW(), 'CE', 'EF654321', 'Carrera 78 #90-12', '3156655443', NULL, 'fernando.castro@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Masculino',DEFAULT),
 ('Patricia', 'Ortega', NOW(), 'CC', '77889900', 'Diagonal 12 #34-56', '3175544332', NULL, 'patricia.ortega@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Femenino',DEFAULT),
 ('Roberto', 'Mendoza', NOW(), 'CC', '88990011', 'Transversal 34 #56-78', '3184433221', '3193322110', 'roberto.mendoza@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Masculino',DEFAULT);
-
-
+SELECT*FROM mascotas;
 INSERT INTO pets_heaven.otorgar_roles (id_rol, id_per) VALUES
 (1,1),
 (2,1),
