@@ -35,7 +35,7 @@ BEGIN
             SELECT COUNT(*) 
             FROM 
                 citas c 
-            WHERE c.fec_cit LIKE NOW()
+            WHERE c.fec_cit LIKE CURRENT_DATE()
         ) AS cit,
         ( 
             SELECT COUNT(*) 

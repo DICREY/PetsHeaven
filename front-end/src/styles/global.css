@@ -107,12 +107,19 @@
     transform: translateY(-.18rem);
 }
 .enlacenavadmin.active{
-  background-color: var(--verdeaguamarina);
+  background-color: var(--primary);
   color: var(--gray-50);
 }
+
+.enlacenavadmin.active > .icononavadmin {
+  color: var(--white);
+}
 .subenlacenavadmin.active{
-  background-color: var(--verdeaguamarina);
+  background-color: var(--primary);
   color: var(--gray-50);
+}
+.subenlacenavadmin.active > .icononavadmin {
+  color: var(--white);
 }
 
 .BackBtn {

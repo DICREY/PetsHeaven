@@ -142,7 +142,7 @@ export default function App () {
               <AdminRoute children={<ConfiguracionUsuarioCrud userSelect={userSelect} URL={URL} />} />} >
             </Route>
             <Route path='administracion' element={
-              <AdminRoute children={<VeterinaryDashboard URL={URL} />} />} >
+              <AdminRoute children={<VeterinaryDashboard URL={URL} setPetSelect={setPetSelect} />} />} >
             </Route>
           </Route>
           

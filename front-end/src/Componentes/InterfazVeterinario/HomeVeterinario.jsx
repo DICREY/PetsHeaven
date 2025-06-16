@@ -13,6 +13,7 @@ import { AuthContext } from "../../Contexts/Contexts"
 
 // Import styles 
 import "../../styles/InterfazVeterinario/HomeVeterinario.css"
+import { hourTraductor } from "../Varios/Util"
 
 // Component
 export const PanelVeterinario = ({ URL = '', imgDefault = '', setPetSelect }) => {
@@ -28,7 +29,7 @@ export const PanelVeterinario = ({ URL = '', imgDefault = '', setPetSelect }) =>
   const { user } = useContext(AuthContext)
   const navigate = useNavigate()
   const stats = [
-    { title: "Pacientes Hoy", value: "8", icon: Stethoscope, color: "azul" },
+    { title: "Pacientes Hoy", value: appoint?.length || '0', icon: Stethoscope, color: "azul" },
     { title: "Cirugías Programadas", value: "3", icon: Activity, color: "verde" },
     { title: "Emergencias Atendidas", value: "2", icon: Heart, color: "rojo" },
     { title: "Consultas Completadas", value: "12", icon: FileText, color: "morado" },
@@ -149,7 +150,7 @@ export const PanelVeterinario = ({ URL = '', imgDefault = '', setPetSelect }) =>
                   >
                     <div className="hora-paciente-vet">
                       <Clock className="icon" aria-hidden="true" />
-                      <time>{cita.hor_ini_cit}</time>
+                      <time>{hourTraductor(cita.hor_ini_cit)}</time>
                     </div>
 
                     <div className="detalles-paciente-vet">
@@ -183,20 +184,10 @@ export const PanelVeterinario = ({ URL = '', imgDefault = '', setPetSelect }) =>
                   Nueva Consulta
                 </button>
 
-                <button type="button" className="AddBtn">
-                  <FileText className="icon" aria-hidden="true" />
-                  Historial Médico
-                </button>
-
                 <button type="button" className="DeleteBtn">
                   <Activity className="icon" aria-hidden="true" />
                   Programar Cirugía
                 </button>
-
-                <a href="#" className="BackBtn">
-                  <ExternalLink className="icon" aria-hidden="true" />
-                  Portal Veterinario
-                </a>
               </nav>
 
               {/* Actividad Reciente */}

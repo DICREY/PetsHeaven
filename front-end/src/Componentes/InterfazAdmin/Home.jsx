@@ -7,14 +7,14 @@ import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
 import { GetData } from "../Varios/Requests"
 import { Notification } from "../Global/Notifys"
-import { errorStatusHandler } from '../Varios/Util'
+import { errorStatusHandler, hourTraductor } from '../Varios/Util'
 import { AuthContext } from "../../Contexts/Contexts"
 import { ReqFunction } from "../../Utils/Utils"
 
 import "../../styles/InterfazAdmin/Home.css"
 
 // Component 
-export default function VeterinaryDashboard({ URL }) {
+export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
   // Dynamic vars 
   const [ appoint, setAppoint ] = useState()
   const [ infoGeneral, setInfoGeneral ] = useState()
@@ -45,6 +45,24 @@ export default function VeterinaryDashboard({ URL }) {
         close: setNotify
       })
     }
+  }
+
+  const handlePetSelect = (data = {}) => {
+    const pet = {
+      nom_mas: data.nom_mas,
+      esp_mas: data.esp_mas,
+      col_mas: data.col_mas,
+      raz_mas: data.raz_mas,
+      ali_mas: data.ali_mas,
+      fec_nac_mas: data.fec_nac_mas,
+      pes_mas: data.pes_mas,
+      gen_mas: data.gen_mas,
+      est_rep_mas: data.est_rep_mas,
+      fot_mas: data.fot_mas,
+      doc_per: data.prop_doc_per
+    }
+    setPetSelect(pet)
+    navigate('/pets/details')
   }
 
   useEffect(() => {
@@ -94,10 +112,14 @@ export default function VeterinaryDashboard({ URL }) {
 
               <ul className="lista-citas-admin" role="list">
                 {appoint?.map((appointment, index) => (
-                  <li key={index + 123123} className={`item-cita-admin ${appointment.estado}-admin`}>
+                  <li 
+                    key={index + 123123} 
+                    className={`item-cita-admin ${appointment.estado}-admin`}
+                    onClick={() => handlePetSelect(appointment)}
+                  >
                     <div className="tiempo-cita-admin">
                       <Clock className="icon" aria-hidden="true" />
-                      <time>{appointment.hor_ini_cit}</time>
+                      <time>{hourTraductor(appointment.hor_ini_cit)}</time>
                     </div>
 
                     <div className="detalles-cita-admin">
