@@ -31,7 +31,6 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
     // Dynamic vars 
     const [events, setEvents] = useState([])
     const [notify, setNotify] = useState(null)
-    const [currentView, setCurrentView] = useState('dayGridMonth')
     const [showEventModal, setShowEventModal] = useState(false) //Mostrar la descripcion en un pop up de la cita
     const [showCreateModal, setShowCreateModal] = useState(false) //Mostrar el pop up de creacion de Cita
     const [selectedEvent, setSelectedEvent] = useState(null)
@@ -39,9 +38,10 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
     const [lugar, setLugar] = useState('Consultorio')
     const calendarRef = useRef(null)
     const [allPacientes, setAllPacientes] = useState([]) // Todos los pacientes
-    const [allVet, setAllVet] = useState([]) // Todos los pacientes
+    const [allVet, setAllVet] = useState([]) // Todos los veterinarios
     const [filteredPacientes, setFilteredPacientes] = useState([]) // Resultados filtrados
     const [showPacientesDropdown, setShowPacientesDropdown] = useState(false) // Controlar dropdown
+    const [activeModal, setActiveModal] = useState(null); // null, 'event', o 'create'
     // const [ log, user, roles ] = useContext(AuthContext)
     const [newEvent, setNewEvent] = useState({
         title: '',
@@ -63,17 +63,30 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
 
     // Cerrar modal al hacer clic fuera
     useEffect(() => {
-        function handleClickOutside(event) {
-            if (showCreateModal && createModalRef.current && !createModalRef.current.contains(event.target)) {
-                setShowCreateModal(false)
-            }
-            if (showEventModal && eventModalRef.current && !eventModalRef.current.contains(event.target)) {
-                setShowEventModal(false)
-            }
+    const handleClickOutside = (event) => {
+        // Verificar si hay un modal activo
+        if (!activeModal) return;
+        
+        // Verificar clicks fuera del modal de creación
+        if (activeModal === 'create' && 
+            createModalRef.current && 
+            !createModalRef.current.contains(event.target)) {
+            closeModal();
         }
-        document.addEventListener('mousedown', handleClickOutside)
-        return () => document.removeEventListener('mousedown', handleClickOutside)
-    }, [showCreateModal, showEventModal])
+        
+        // Verificar clicks fuera del modal de evento
+        if (activeModal === 'event' && 
+            eventModalRef.current && 
+            !eventModalRef.current.contains(event.target)) {
+            closeModal();
+        }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+    };
+}, [activeModal]); // Solo se vuelve a ejecutar cuando activeModal cambia
 
 
     // Vars 
@@ -99,19 +112,21 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
         )
     }
     const fetchVet = async () => {
-        await ReqFunction(
-            `${URL}/staff/all/vet`,
-            GetData,
-            setNotify,
-            setAllVet
-        )
+    try {
+        const data = await GetData(`${URL}/staff/all/vet`)
+        // Asegurarse de que data sea un array
+        setAllVet(Array.isArray(data) ? data : [])
+    } catch (error) {
+        console.error("Error fetching vets:", error)
+        setAllVet([])
+    }
     }
 
     // Crear citas
     const handleDateClick = (arg) => {
-        setSelectedDate(arg.dateStr)
-        fetchPacientes() // Cargar pacientes cuando se abre el modal
-        fetchVet() // Cargar veterinarios cuando se abre el modal
+        setSelectedDate(arg.dateStr);
+        fetchPacientes();
+        fetchVet();
         setNewEvent({
             title: '',
             start: `${arg.dateStr}T09:00:00`,
@@ -124,21 +139,22 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
             lug_ate_cit: 'Consultorio',
             telefono: '',
             estado: 'PENDIENTE'
-        })
-        setShowCreateModal(true)
-    }
+        });
+        setActiveModal('create'); // Abrir modal de creación
+    };
 
-    // Mostrar detalles de la cita
+    // Detalles cita
     const handleEventClick = (info) => {
+        info.jsEvent.stopPropagation();
         setSelectedEvent({
             id: info.event.id,
             title: info.event.title,
             start: info.event.start,
             end: info.event.end,
             ...info.event.extendedProps
-        })
-        setShowEventModal(true)
-    }
+        });
+        setActiveModal('event'); // Abrir modal de evento
+    };
 
     // Crear nueva cita en el backend
     const handleCreateEvent = async () => {
@@ -335,9 +351,6 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
                     // Plugins utilizados para habilitar características adicionales en el calendario
                     plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
 
-                    // Vista inicial del calendario (se puede cambiar dinámicamente)
-                    initialView={currentView}
-
                     // Deshabilita los dias que ya pasaron
                     validRange={{
                         start: today
@@ -434,12 +447,12 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
                 />
 
                 {/* Popup para crear nueva cita */}
-                {showCreateModal && (
+                {activeModal === 'create' && (
                     <aside className="modal-overlay">
                         <aside className="modal-content">
                             <header className="modal-header">
                                 <h3>Nueva Cita</h3>
-                                <button className="modal-close-btn" onClick={() => setShowCreateModal(false)}>
+                                <button className="modal-close-btn" onClick={() => setActiveModal(null)}>
                                     X
                                 </button>
                             </header>
@@ -522,7 +535,7 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
                                                 value={newEvent.veterinario || ''}
                                                 required
                                             >
-                                                <option value="" disabled selected>Selecciona un veterinario</option>
+                                                <option value="" disabled>Selecciona un veterinario</option>
                                                 {allVet?.map((i) =>
                                                     i.roles.split(', ').includes('Veterinario') && (
                                                         <option key={i.doc_per} value={i.doc_per}>
@@ -629,7 +642,7 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
                                 </div>
                             </section>
                             <div className="modal-footer">
-                                <button className="modal-btn modal-btn-close" onClick={() => setShowCreateModal(false)}>
+                                <button className="modal-btn modal-btn-close" onClick={() => setActiveModal(null)}>
                                     Cancelar
                                 </button>
                                 <button className="modal-btn modal-btn-confirm" onClick={handleCreateEvent}>
@@ -641,12 +654,12 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
                 )}
 
                 {/* Popup para detalles/edición de cita */}
-                {showEventModal && (
+                {activeModal === 'event' && (
                     <aside className="modal-overlay">
                         <aside className="modal-content">
                             <header className="modal-header">
                                 <h3>{selectedEvent?.id ? 'Editar Cita' : 'Detalles de la Cita'}</h3>
-                                <button className="modal-close-btn" onClick={() => setShowEventModal(false)}>
+                                <button className="modal-close-btn" onClick={() => setActiveModal(null)}>
                                     X
                                 </button>
                             </header>
@@ -825,7 +838,7 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
                                 <button className="modal-btn modal-btn-delete" onClick={handleDeleteEvent}>
                                     Eliminar
                                 </button>
-                                <button className="modal-btn modal-btn-close" onClick={() => setShowEventModal(false)}>
+                                <button className="modal-btn modal-btn-close" onClick={() => setActiveModal(null)}>
                                     Cerrar
                                 </button>
                                 <button className="modal-btn modal-btn-confirm" onClick={handleUpdateEvent}>

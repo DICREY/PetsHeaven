@@ -70,13 +70,13 @@ export default function VeterinaryDashboard({ URL }) {
           <section className="estadisticas-grid-admin" aria-label="Estadísticas del día">
             {stats?.map((stat, index) => (
               <article key={index} className={`tarjeta-estadistica-admin ${stat.color}-admin`}>
+                <header className="cabecera-estadistica-admin">
+                  <stat.icon className="icon" aria-hidden="true" />
+                </header>
+                  <h2>{stat.value}</h2>
                 <div className="contenido-estadistica-admin">
                   <p>{stat.title}</p>
                 </div>
-                <header className="cabecera-estadistica-admin">
-                  <stat.icon className="icon" aria-hidden="true" />
-                  <h2>{stat.value}</h2>
-                </header>
               </article>
             ))}
           </section>

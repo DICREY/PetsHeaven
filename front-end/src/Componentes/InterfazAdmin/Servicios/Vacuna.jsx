@@ -341,28 +341,15 @@ export function VisualizadorVacunas() {
                 <div className="seccion-formulario-vacunas">
                   <h4 className="titulo-seccion-formulario">Información General</h4>
                   <div className="campos-formulario-vacunas">
-                    <div className="campos-dobles-vacunas">
-                      <div className="campo-vacunas">
-                        <label className="etiqueta-campo-vacunas">ID Vacuna</label>
-                        <input
-                          type="text"
-                          value={nuevaVacuna.id}
-                          onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, id: e.target.value })}
-                          className="input-vacunas"
-                          disabled={modoEdicion}
-                          placeholder="Ej: VAC001"
-                        />
-                      </div>
-                      <div className="campo-vacunas">
-                        <label className="etiqueta-campo-vacunas">Nombre de la Vacuna</label>
-                        <input
-                          type="text"
-                          value={nuevaVacuna.nombre}
-                          onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, nombre: e.target.value })}
-                          className="input-vacunas"
-                          placeholder="Ej: Rabia"
-                        />
-                      </div>
+                    <div className="campo-vacunas">
+                      <label className="etiqueta-campo-vacunas">Nombre de la Vacuna</label>
+                      <input
+                        type="text"
+                        value={nuevaVacuna.nombre}
+                        onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, nombre: e.target.value })}
+                        className="input-vacunas"
+                        placeholder="Ej: Rabia"
+                      />
                     </div>
                     <div className="campo-vacunas">
                       <label className="etiqueta-campo-vacunas">Descripción General</label>

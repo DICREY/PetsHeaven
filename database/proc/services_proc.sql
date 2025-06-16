@@ -1,4 +1,4 @@
--- Active: 1746041048559@@127.0.0.1@3306@pets_heaven
+-- Active: 1746046445434@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchServices()
 BEGIN
     SELECT
@@ -204,6 +204,60 @@ BEGIN
         p_res_cir,
         p_com_cir,
         p_obv_cir,
+        @last_id_ser
+    );
+END //
+
+
+CREATE PROCEDURE pets_heaven.RegisterVacuna(
+    IN p_nom_vac VARCHAR(255),
+    IN p_des_gen TEXT,
+    IN p_des_tec TEXT,
+    IN p_pre_vac DECIMAL(10,2),
+    IN p_fre_vac VARCHAR(100),
+    IN p_cat_vac VARCHAR(100),
+    IN p_num_lot VARCHAR(255),
+    IN p_fec_vec DATE,
+    IN p_efe_sec VARCHAR(255),
+    IN p_dos_rec VARCHAR(100),
+    IN p_sta_ser ENUM('DISPONIBLE','NO-DISPONIBLE') 
+)
+BEGIN
+    INSERT INTO servicios (
+        cat_ser,
+        nom_ser,
+        pre_ser,
+        des_ser,
+        sta_ser,
+        tec_des_ser
+    ) VALUES (
+        2, 
+        p_nom_vac,
+        p_pre_vac,
+        p_des_gen,
+        p_sta_ser,
+        p_des_tec
+    );
+
+    SET @last_id_ser = LAST_INSERT_ID();
+
+    INSERT INTO vacunas (
+        nom_vac,
+        efe_sec_vac,
+        cat_vac,
+        dos_rec_vac,
+        lot_vac,
+        fec_ven_vac,
+        fre_vac,
+        ser_vac
+    ) VALUES (
+        p_nom_vac,
+        p_efe_sec,
+        p_cat_vac, 
+        p_dos_rec,
+        p_num_lot, 
+        p_fec_vec, 
+        p_fre_vac,
         @last_id_ser
     );
 END //
