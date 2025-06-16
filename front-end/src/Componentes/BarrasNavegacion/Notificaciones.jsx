@@ -4,7 +4,7 @@ import { useState } from "react"
 
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
-import { HeaderUser } from '../BarrasNavegacion/HeaderUser'
+import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
 import { AuthContext } from "../../Contexts/Contexts"
 
 // Import styles 
@@ -147,9 +147,8 @@ export default function TodasLasNotificaciones({ onVolver }) {
     <div className="contenedoradminhome">
       <NavBarAdmin />
       <div className="tablero-admin">
+        <HeaderAdmin />
         <main className="contenido-principal-admin">
-          {/* Header del dashboard - igual que en veterinary */}
-          <HeaderUser />
 
           {/* Contenedor unificado para cabecera y controles */}
           <section className="contenedor-cabecera-notificaciones-noti">
