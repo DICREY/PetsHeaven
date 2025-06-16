@@ -449,7 +449,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo }) {
                     <h3 className='titulo-redes'>Síguenos en redes sociales</h3>
                     <div className='iconos-redes'>
                       <motion.a
-                        href='https://www.instagram.com/petsheaven'
+                        // href='https://www.instagram.com/petsheaven'
                         target='_blank'
                         rel='noopener noreferrer'
                         className='enlace-red'
