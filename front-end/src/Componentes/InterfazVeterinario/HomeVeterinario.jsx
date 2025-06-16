@@ -13,7 +13,7 @@ import { AuthContext } from "../../Contexts/Contexts"
 
 // Import styles 
 import "../../styles/InterfazVeterinario/HomeVeterinario.css"
-import { hourTraductor } from "../Varios/Util"
+import { errorStatusHandler, hourTraductor } from "../Varios/Util"
 
 // Component
 export const PanelVeterinario = ({ URL = '', imgDefault = '', setPetSelect }) => {
@@ -30,9 +30,9 @@ export const PanelVeterinario = ({ URL = '', imgDefault = '', setPetSelect }) =>
   const navigate = useNavigate()
   const stats = [
     { title: "Pacientes Hoy", value: appoint?.length || '0', icon: Stethoscope, color: "azul" },
-    { title: "Cirugías Programadas", value: "3", icon: Activity, color: "verde" },
-    { title: "Emergencias Atendidas", value: "2", icon: Heart, color: "rojo" },
-    { title: "Consultas Completadas", value: "12", icon: FileText, color: "morado" },
+    { title: "Cirugías Programadas", value: infoGeneral?.cir_pro || "0", icon: Activity, color: "verde" },
+    { title: "Emergencias Atendidas", value: infoGeneral?.emg_ate || "0", icon: Heart, color: "rojo" },
+    { title: "Consultas Completadas", value: infoGeneral?.con_com || "0", icon: FileText, color: "morado" },
   ]
 
   useEffect(() => {
@@ -84,25 +84,27 @@ export const PanelVeterinario = ({ URL = '', imgDefault = '', setPetSelect }) =>
     try {
       const data = await PostData(`${URL}/appointment/by`,{ by: user.doc })
       setNotify(null)
-      console.log(data[0])
       if (data[0]) setAppoint(data[0])
     } catch (err) {
       setNotify(null)
-      const message = errorStatusHandler(err)
-      setNotify({
-        title: 'Error',
-        message: `${message}`,
-        close: setNotify
-      })
+      if (err) {
+        const message = errorStatusHandler(err)
+        setNotify({
+          title: 'Error',
+          message: `${message}`,
+          close: setNotify
+        })
+      }
     }
   }
 
   useEffect(() => {
     ReqFunction(
-      `${URL}/global/info/general`,
-      GetData,
+      `${URL}/global/stats/staff`,
+      PostData,
       setNotify,
-      setInfoGeneral
+      setInfoGeneral,
+      { by: user.doc }
     )
     getAppoint()
   }, [])

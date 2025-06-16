@@ -44,9 +44,9 @@ BEGIN
             FROM 
                 citas c 
             JOIN 
-                servicios s ON s.id_ser = c.ser_cit
+                servicios s ON ccs.id_ser = c.ser_cit
             JOIN
-                categorias_ser cs ON cs.id_cat = s.cat_ser
+                categorias_ser cs ON cs.id_cat = ccs.cat_ser
             WHERE 
                 cs.nom_cat LIKE "Emergencias 24h"
         ) AS emg
@@ -55,35 +55,62 @@ BEGIN
     LIMIT 1000;
 END //
 
-CREATE PROCEDURE pets_heaven.GetStatsVet()
+CREATE PROCEDURE pets_heaven.GetStaffStats(
+    IN p_by VARCHAR(100)
+)
 BEGIN
     SELECT 
         COUNT(v.id_vet) AS doc,
-        ( SELECT COUNT(*) FROM mascotas m WHERE m.estado = 1) AS mas,
-        ( 
-            SELECT COUNT(*) 
+        (   
+            SELECT 
+                COUNT(*) 
             FROM 
-                citas c 
-            WHERE 
-                c.fec_cit LIKE CURRENT_DATE()
-                AND c.estado != 'CANCELADO'
-        ) AS cit,
-        ( 
-            SELECT COUNT(*)
-            FROM 
-                citas c 
-            JOIN 
-                servicios s ON s.id_ser = c.ser_cit
+                citas cc
             JOIN
-                categorias_ser cs ON cs.id_cat = s.cat_ser
-            WHERE 
-                cs.nom_cat LIKE "Emergencias 24h"
-        ) AS emg
-    FROM 
+                servicios ccs ON cc.ser_cit = ccs.id_ser
+            JOIN
+                categorias_ser cs ON cs.id_cat = ccs.cat_ser
+            WHERE
+                cc.vet_cit = v.id_vet
+                AND cs.nom_cat LIKE CONCAT('%','Cirugía','%')
+        ) AS cir_pro,
+        ( 
+            SELECT 
+                COUNT(*) 
+            FROM 
+                citas cc
+            JOIN
+                servicios ccs ON cc.ser_cit = ccs.id_ser
+            JOIN
+                categorias_ser cs ON cs.id_cat = ccs.cat_ser
+            WHERE
+                cc.vet_cit = v.id_vet
+                AND cs.nom_cat LIKE CONCAT('%','Emergencias 24h','%')
+        ) AS emg_ate,
+        ( 
+            SELECT 
+                COUNT(*) 
+            FROM 
+                citas cc
+            JOIN
+                servicios ccs ON cc.ser_cit = ccs.id_ser
+            JOIN
+                categorias_ser cs ON cs.id_cat = ccs.cat_ser
+            WHERE
+                cc.vet_cit = v.id_vet
+                AND cs.nom_cat LIKE CONCAT('%','Consulta General','%')
+        ) AS con_com
+    FROM
         veterinarios v
+    JOIN
+        personas p
+    WHERE
+        p.doc_per LIKE p_by
     LIMIT 1000;
 END //
 
 /* DROP PROCEDURE pets_heaven.`Login`; */
-/* CALL `GetDataAdmin`(); */
+/* CALL `GetStatsAdmin`(); */
+CALL `GetStatsVet`('1298765432');
 /* DROP PROCEDURE `GetDataAdmin`; */
+/* DROP PROCEDURE `GetStatsVet`; */

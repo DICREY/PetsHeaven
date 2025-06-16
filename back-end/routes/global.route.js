@@ -77,6 +77,27 @@ Route.get('/info/general', ValidatorRol('administrador'), async (req,res) => {
     }
 })
 
+Route.post('/stats/staff', ValidatorRol('veterinario'), async (req,res) => {
+    // Vars
+    const { by } = req.body
+    
+    try {
+        if (!by) return res.status(400).json({ message: "Petición invalida, faltan datos"})
+
+        const info = new Global(by)
+        const inf = await info.GetStaffStats()
+
+        // Verify if exist 
+        if (!inf.result) res.status(404).json({ message: "Información no encontrada" })
+
+        res.status(200).json(inf)
+    } catch (err) {
+        console.log(err)
+        if (err.status) return res.status(err.status).json({ message: err.message })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
+    }
+})
+
 // Call Middleware for verify the request data
 Route.use(Fullinfo(['cel2_per']))
 

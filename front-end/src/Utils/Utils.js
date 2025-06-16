@@ -27,17 +27,20 @@ export const ReqFunction = async (
         if (ReqFunct && setNotify && set){
             const req = await ReqFunct(URL, data)
             setNotify(null)
-            if (req.data) return set(req.data[0])
+            if (req?.result[0]) return set(req.result[0])
+            if (req?.data) return set(req.data[0])
             if (req[0]) return set(req[0])
             set(req)
         }
     } catch (err) {
-        setNotify(null)
-        const message = errorStatusHandler(err)
-        setNotify({
-            title: 'Error',
-            message: `${message}`,
-            close: setNotify
-        })
+        if (err) {
+            setNotify(null)
+            const message = errorStatusHandler(err)
+            setNotify({
+                title: 'Error',
+                message: `${message}`,
+                close: setNotify
+            })
+        }
     }
 }
