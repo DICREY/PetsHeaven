@@ -4,14 +4,11 @@ import { Outlet, useNavigate } from "react-router-dom"
 import { Plus } from "lucide-react"
 
 // Imports 
-import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GetData } from '../Varios/Requests'
 import { divideList, errorStatusHandler } from '../Varios/Util'
 import { GlobalTable } from '../Global/GlobalTable'
 import { Notification } from '../Global/Notifys'
 import { AuthContext } from '../../Contexts/Contexts'
-import { HeaderAdmin } from "../BarrasNavegacion/HeaderAdmin"
-import Footer from "../Varios/Footer2"
 // import { Loader } from '../Errores/Loader'
 
 // Import styles 
@@ -83,10 +80,8 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
 
   return (
     <main className="contenedoradminhome">
-      <NavBarAdmin />
 
       <section className="principaladminhome">
-        <HeaderAdmin URL={URL} />
 
         <section className="tarjetagesusuario">
           <div className="contenidogesusuario">
@@ -114,7 +109,6 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
 
           </div>
         </section>
-        <Footer />
       </section>
 
       {notify && (

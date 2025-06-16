@@ -1,6 +1,7 @@
 // Librarys
 import React, { useState, useEffect, useContext } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom' 
+import AdminLayout from "../Componentes/InterfazAdmin/AdminLayout"
 
 // Imports Forms
 import { LoginForm } from '../Componentes/Formularios/LoginForm'
@@ -131,7 +132,14 @@ export default function App () {
           </Route>
 
           {/* Admin routes  */}
-          <Route path='/admin' element={<MainAdmin />} >
+          <Route path='/admin' element={<AdminLayout />} >
+            <Route index element={<VeterinaryDashboard />} />
+            <Route path='servicios/vacunas' element={<VisualizadorVacunas />} />
+            <Route path='servicios/cirugia' element={<CirugiasVeterinaria />} />
+            <Route path='servicios/laboratorio' element={<ExamenesLaboratorio />} />
+            <Route path='agenda/general' element={
+              <AdminRoute children={<GesAgendaGeneral setUserSelect={setUserSelect} URL={URL}/>} />} />
+            <Route path='calendario/personal' element={<GesAgendaPersonal />} />
             <Route path='gestion/usuarios' element={
               <AdminRoute children={<GesPersonal setUserSelect={setUserSelect} URL={URL} />} />} >
             </Route>

@@ -191,9 +191,7 @@ export const VisualizadorVacunas = ({ URL = '' }) => {
 
   return (
     <main className="maincontenedorVacunas">
-      <NavBarAdmin />
       <main className="principaladminhome">
-        {admin ? (<HeaderAdmin />) : (<HeaderUser />)}
         <main className="contenedorPrincipalVacunas">
           <div className="contenedorVacunas">
             <header className="encabezadoVacunas">
@@ -776,7 +774,6 @@ export const VisualizadorVacunas = ({ URL = '' }) => {
             </div>
           )}
         </main>
-        <Footer />
       </main>
       {notify && (
         <Notification

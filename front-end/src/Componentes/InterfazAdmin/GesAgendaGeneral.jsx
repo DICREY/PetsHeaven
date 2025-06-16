@@ -8,12 +8,10 @@ import listPlugin from '@fullcalendar/list'
 import esLocale from "@fullcalendar/core/locales/es"
 
 // Imports 
-import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { GetData, PostData, ModifyData } from '../Varios/Requests'
 import { errorStatusHandler } from '../Varios/Util'
 import { Notification } from '../Global/Notifys'
 import { searchFilter } from '../Varios/Util'
-import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
 import { ReqFunction } from '../../Utils/Utils'
 // import Footer from '../Varios/Footer2'
 
@@ -323,10 +321,8 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
 
 
     return (
-        <main className="calendar-container">
-            <NavBarAdmin />
-            <main className='calendar-container' id='main-container-calendar'>
-                <HeaderAdmin openHelp={() => setTabHelp(true)} URL={URL} />
+        // <div className="calendar-container">
+            <div className='calendar-container' id='main-container-calendar'>
 
                 <FullCalendar
                     // Refencia del calendario, permite acceder a la instancia del componente para manipularlo
@@ -835,12 +831,12 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
                         </aside>
                     </aside>
                 )}
-            </main>
             {notify && (
                 <Notification
                     {...notify}
                 />
             )}
-        </main>
+            </div>
+        // </div>
     )
 }

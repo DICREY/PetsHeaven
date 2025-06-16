@@ -8,14 +8,11 @@ import listPlugin from '@fullcalendar/list'
 import esLocale from "@fullcalendar/core/locales/es"
 
 // Imports 
-import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { PostData } from '../Varios/Requests'
 import { Notification } from '../Global/Notifys'
 import { errorStatusHandler } from '../Varios/Util'
 import { AuthContext } from '../../Contexts/Contexts'
-import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
 import { HeaderUser } from '../BarrasNavegacion/HeaderUser'
-import Footer from '../Varios/Footer2'
 
 // Import styles 
 import "../../styles/InterfazAdmin/GesAgendaGeneral.css"
@@ -209,10 +206,9 @@ export const GesAgendaPersonal = ({ URL = '' }) => {
     }
 
     return (
-        <main className="calendar-container">
-            <NavBarAdmin />
-            <main className='calendar-container' id='main-container-calendar'>
-                {admin ? (<HeaderAdmin URL={URL} />) : (<HeaderUser />)}
+        <>
+            {/* Solo el contenido principal, sin NavBarAdmin, HeaderAdmin ni Footer */}
+            <main className="calendar-container" id="main-container-calendar">
                 <input
                     type="date"
                     ref={dateInputRef}
@@ -529,13 +525,7 @@ export const GesAgendaPersonal = ({ URL = '' }) => {
                         </div>
                     </div>
                 )}
-                <Footer />
             </main>
-            {notify && (
-                <Notification
-                    {...notify}
-                />
-            )}
-        </main>
+        </>
     )
 }

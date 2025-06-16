@@ -3,12 +3,8 @@ import { useState, useRef, useEffect, useContext, useCallback } from "react";
 import { Activity, Plus, Trash2, Edit, X, Clock, AlertTriangle, FileText, Target, Timer } from "lucide-react"
 
 // Imports
-import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
-import { HeaderUser } from '../../BarrasNavegacion/HeaderUser'
-import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
 import { errorStatusHandler } from '../../Varios/Util'
 import { Notification } from '../../Global/Notifys'
-import Footer from '../../Varios/Footer2'
 import { GetData, PostData, ModifyData } from "../../Varios/Requests"
 import { AuthContext } from "../../../Contexts/Contexts"
 
