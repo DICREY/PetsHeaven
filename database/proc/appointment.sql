@@ -1,4 +1,4 @@
--- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
+-- Active: 1746041048559@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchAllAppointments()
 BEGIN 
     SELECT 
@@ -40,12 +40,13 @@ BEGIN
     LIMIT 1000;
 END //
 
-
 CREATE PROCEDURE pets_heaven.SearchAppointmentsByUser(
     IN p_by VARCHAR(100)
 )
 BEGIN 
     SELECT 
+        c.id_cit,
+        c.mas_cit,
         c.fec_reg_cit,
         c.fec_cit,
         c.hor_ini_cit,
@@ -56,10 +57,13 @@ BEGIN
         s.des_ser,
         m.nom_mas,
         m.esp_mas,
-        m.fot_mas,    
-        p.nom_per,
-        p.ape_per,
-        p.cel_per,
+        m.fot_mas,
+        p_vet.nom_per AS vet_nom_per,
+        p_vet.ape_per AS vet_ape_per,
+        p_vet.cel_per AS vet_cel_per,
+        p_prop.nom_per AS prop_nom_per,
+        p_prop.ape_per AS prop_ape_per,
+        p_prop.cel_per AS prop_cel_per,
         c.estado
     FROM 
         citas c
@@ -70,16 +74,19 @@ BEGIN
     JOIN 
         categorias_ser cs ON cs.id_cat = s.cat_ser
     JOIN 
-        personas p ON p.id_per = c.vet_cit
+        personas p_vet ON p_vet.id_per = c.vet_cit
+    JOIN 
+        personas p_prop ON p_prop.id_per = m.id_pro_mas
     WHERE
         c.estado != 'CANCELADO'
         AND (
-            p.doc_per = p_by
-            OR p.email_per = p_by
+            p_vet.doc_per = p_by
+            OR p_vet.email_per = p_by
         )
-    ORDER BY c.fec_cit
+    ORDER BY c.fec_reg_cit
     LIMIT 1000;
 END //
+
 
 CREATE PROCEDURE pets_heaven.RegistAppointment(
     IN p_reg_date DATE,

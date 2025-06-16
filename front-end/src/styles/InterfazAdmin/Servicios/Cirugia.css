@@ -1,9 +1,9 @@
 /* Estilos para el sistema de gestión de cirugías veterinarias */
 .contenedor-cirugia {
   background-color: #f0fdff;
-  padding: 2rem;
   width: 100%;
   height: 100vh;
+  display: flex;
 }
 .contenedorprincipal-cirugia {
   background-color: var(--white);
