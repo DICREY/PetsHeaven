@@ -119,7 +119,6 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
               <span className="insignia-notificacion-header" aria-label="3 notificaciones nuevas">
                 {appointment?.length || 0}
               </span>
-              Notificaciones
             </button>
 
             {isNotificationsOpen && (

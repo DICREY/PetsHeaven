@@ -197,9 +197,9 @@
 
 .dog__tail {
   position: absolute;
-  right: -3rem;
-  height: 0.625rem; /* 10px */
-  width: 1rem;
+  right: -2.3rem;
+  height: 1rem; /* 10px */
+  width: 3rem;
   background-color: #e96839;
   border-radius: 1.5rem;
 }
