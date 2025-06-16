@@ -12,18 +12,19 @@
 .contenido-principal-admin {
   padding: 1.5rem;
   width: 100%;
+  margin-top: 1.5rem;
 }
 
 /* Stats Grid */
 .estadisticas-grid-admin {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(1rem, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
   margin-bottom: 2rem;
 }
 
 .tarjeta-estadistica-admin {
-  padding: 1.2rem;
+  padding: 1.5rem;
   border-radius: 1rem;
   border-left: .2rem solid;
   background: var(--white);
@@ -50,8 +51,9 @@
 
 .cabecera-estadistica-admin {
   display: flex;
-  gap: .5rem;
+  justify-content: space-between;
   align-items: center;
+  margin-bottom: 1rem;
 }
 
 .tarjeta-estadistica-admin.azul-admin .cabecera-estadistica-admin svg {
@@ -71,6 +73,7 @@
   font-size: 1.8rem;
   font-weight: 700;
   color: var(--gray-900);
+   margin-bottom: 0.25rem;
 }
 
 .contenido-estadistica-admin p {
@@ -84,6 +87,7 @@
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 2rem;
+  margin-top: 2.5rem;
 }
 
 /* Appointments Card */
@@ -118,11 +122,11 @@
 }
 
 .lista-citas-admin {
+  max-height: 500px;
+  overflow-y: auto;
   list-style: none;
   margin: 0;
   padding: 0;
-  height: 22rem;
-  overflow: auto;
 }
 
 .item-cita-admin {
@@ -224,7 +228,9 @@
 .acciones-rapidas-admin {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
 /* Recent Activity */
