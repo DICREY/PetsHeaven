@@ -1,6 +1,6 @@
 // Librarys 
 import { useContext, useState, useEffect, useCallback } from "react"
-import { Syringe } from 'lucide-react'
+import { Syringe, Plus, Trash2, Edit, X, Calendar, Clock, AlertTriangle, FileText, Target } from "lucide-react"
 
 // Imports 
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
@@ -15,105 +15,172 @@ import { GetData } from "../../Varios/Requests"
 import "../../../styles/InterfazAdmin/Servicios/Vacuna.css"
 
 // Component 
-export const VisualizadorVacunas = ({ URL = '' }) => {
-  const mainUrl = `${URL}/service`
-  const [vacunas, setVacunas] = useState([])
+export function VisualizadorVacunas() {
+  const [vacunas, setVacunas] = useState([
+    {
+      id: "VAC001",
+      nombre: "Rabia",
+      descripcion: "Vacuna esencial para prevenir la rabia en perros y gatos.",
+      descripcionTecnica: "Vacuna inactivada con virus de la rabia cultivado en células diploides humanas (HDCV).",
+      precio: 85000,
+      frecuencia: "Anual",
+      disponible: true,
+      efectosSecundarios: "Dolor leve en el sitio de inyección, fiebre baja, letargo por 24-48 horas.",
+      dosis: {
+        cachorro: "1 ml subcutáneo a partir de los 3 meses",
+        adulto: "1 ml subcutáneo anual",
+        senior: "1 ml subcutáneo anual, evaluación previa recomendada",
+      },
+      tipoAnimal: "ambos",
+      categoria: "Obligatoria",
+      lote: "RB-2023-45678",
+      fechaVencimiento: "2025-06-30",
+    },
+    {
+      id: "VAC002",
+      nombre: "Parvovirus",
+      descripcion: "Protege contra el parvovirus canino, una enfermedad altamente contagiosa.",
+      descripcionTecnica: "Vacuna con virus vivo modificado (MLV) del parvovirus canino tipo 2b.",
+      precio: 95000,
+      frecuencia: "Cada 3 años",
+      disponible: true,
+      efectosSecundarios: "Fiebre leve, posible diarrea leve transitoria.",
+      dosis: {
+        cachorro: "1 ml subcutáneo a las 6, 9 y 12 semanas",
+        adulto: "1 ml subcutáneo cada 3 años",
+        senior: "1 ml subcutáneo cada 3 años",
+      },
+      tipoAnimal: "perro",
+      categoria: "Esencial",
+      lote: "PV-2023-78945",
+      fechaVencimiento: "2024-12-15",
+    },
+    {
+      id: "VAC003",
+      nombre: "Moquillo",
+      descripcion: "Previene el moquillo canino, una enfermedad viral grave.",
+      descripcionTecnica: "Vacuna con virus vivo modificado (MLV) del virus del moquillo canino cepa Onderstepoort.",
+      precio: 78000,
+      frecuencia: "Anual",
+      disponible: true,
+      efectosSecundarios: "Letargo, posible inflamación en el sitio de inyección.",
+      dosis: {
+        cachorro: "1 ml subcutáneo a las 8, 12 y 16 semanas",
+        adulto: "1 ml subcutáneo anual",
+        senior: "1 ml subcutáneo anual",
+      },
+      tipoAnimal: "perro",
+      categoria: "Esencial",
+      lote: "MQ-2023-36547",
+      fechaVencimiento: "2025-03-22",
+    },
+    {
+      id: "VAC004",
+      nombre: "Leucemia Felina",
+      descripcion: "Vacuna recomendada para gatos con acceso al exterior.",
+      descripcionTecnica: "Vacuna recombinante con proteína p45 del virus de la leucemia felina.",
+      precio: 110000,
+      frecuencia: "Anual",
+      disponible: false,
+      efectosSecundarios: "Pérdida de apetito temporal, posible fiebre leve.",
+      dosis: {
+        cachorro: "1 ml subcutáneo a las 9 y 12 semanas",
+        adulto: "1 ml subcutáneo anual",
+        senior: "1 ml subcutáneo anual, evaluación previa recomendada",
+      },
+      tipoAnimal: "gato",
+      categoria: "Recomendada",
+      lote: "LF-2023-98765",
+      fechaVencimiento: "2024-09-10",
+    },
+  ])
+
+  const [modalAbierto, setModalAbierto] = useState(false)
+  const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false)
+  const [vacunaDetalle, setVacunaDetalle] = useState(null)
+  const [filtroAnimal, setFiltroAnimal] = useState("todos")
+  const [modoEdicion, setModoEdicion] = useState(false)
+  const [vacunaEditando, setVacunaEditando] = useState(null)
   const [nuevaVacuna, setNuevaVacuna] = useState({
+    id: "",
     nombre: "",
     descripcion: "",
     descripcionTecnica: "",
-    precio: 0,
+    precio: "",
     frecuencia: "",
     tipoAnimal: "perro",
+    disponible: true,
+    categoria: "Esencial",
+    efectosSecundarios: "",
+    lote: "",
+    fechaVencimiento: "",
     dosis: {
       cachorro: "",
       adulto: "",
       senior: "",
     },
-    efectosSecundarios: "",
-    disponible: true,
-    categoria: "Esencial",
-    lote: "",
-    fechaVencimiento: "",
   })
-  const [vacunaEditando, setVacunaEditando] = useState(null)
-  const [modalAbierto, setModalAbierto] = useState(false)
-  const [modoEdicion, setModoEdicion] = useState(false)
-  const [filtroAnimal, setFiltroAnimal] = useState("todos")
-  const [vacunaDetalle, setVacunaDetalle] = useState(null)
-  const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false)
-  const [notify, setNotify] = useState()
 
-  // Vars 
-  const { admin } = useContext(AuthContext)
+  const categorias = ["Obligatoria", "Esencial", "Recomendada", "Opcional"]
+
+  const formatearPrecio = (precio) => {
+    return new Intl.NumberFormat("es-CO", {
+      style: "currency",
+      currency: "COP",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(precio)
+  }
+
+  const vacunasFiltradas = vacunas.filter((vacuna) => {
+    if (filtroAnimal === "todos") return true
+    if (filtroAnimal === "disponibles") return vacuna.disponible
+    if (filtroAnimal === "no-disponibles") return !vacuna.disponible
+    return vacuna.tipoAnimal === filtroAnimal || vacuna.tipoAnimal === "ambos"
+  })
 
   const abrirModalAgregar = () => {
     setNuevaVacuna({
+      id: "",
       nombre: "",
       descripcion: "",
       descripcionTecnica: "",
-      precio: 0,
+      precio: "",
       frecuencia: "",
       tipoAnimal: "perro",
+      disponible: true,
+      categoria: "Esencial",
+      efectosSecundarios: "",
+      lote: "",
+      fechaVencimiento: "",
       dosis: {
         cachorro: "",
         adulto: "",
         senior: "",
       },
-      efectosSecundarios: "",
-      disponible: true,
-      categoria: "Esencial",
-      lote: "",
-      fechaVencimiento: "",
     })
     setModoEdicion(false)
     setModalAbierto(true)
   }
 
   const abrirModalEditar = (vacuna) => {
-    setNuevaVacuna({ ...vacuna })
+    setNuevaVacuna({ ...vacuna, precio: vacuna.precio.toString() })
     setVacunaEditando(vacuna.id)
     setModoEdicion(true)
     setModalAbierto(true)
   }
 
-  const cerrarModal = () => {
-    setModalAbierto(false)
-  }
-
   const guardarVacuna = () => {
     if (nuevaVacuna.nombre && nuevaVacuna.precio > 0) {
       if (modoEdicion) {
-        setVacunas(vacunas.map((v) => (v.id === vacunaEditando ? { ...nuevaVacuna, id: v.id } : v)))
+        setVacunas(
+          vacunas.map((v) => (v.id === vacunaEditando ? { ...nuevaVacuna, precio: Number(nuevaVacuna.precio) } : v)),
+        )
       } else {
-        setVacunas([
-          ...vacunas,
-          {
-            id: vacunas.length + 1,
-            ...nuevaVacuna,
-          },
-        ])
+        setVacunas([...vacunas, { ...nuevaVacuna, precio: Number(nuevaVacuna.precio) }])
       }
       setModalAbierto(false)
     }
-  }
-
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target
-    setNuevaVacuna({
-      ...nuevaVacuna,
-      [name]: type === "checkbox" ? checked : type === "number" ? Number(value) : value,
-    })
-  }
-
-  const handleDosisChange = (edad, valor) => {
-    setNuevaVacuna({
-      ...nuevaVacuna,
-      dosis: {
-        ...nuevaVacuna.dosis,
-        [edad]: valor,
-      },
-    })
   }
 
   const eliminarVacuna = (id) => {
@@ -127,662 +194,468 @@ export const VisualizadorVacunas = ({ URL = '' }) => {
     setModalDetalleAbierto(true)
   }
 
-  const vacunasFiltradas = vacunas.filter((vacuna) => {
-    if (filtroAnimal === "todos") return true
-    return vacuna.tipoAnimal === filtroAnimal || vacuna.tipoAnimal === "ambos"
-  })
-
-  const formatearFecha = (fechaStr) => {
-    if (!fechaStr) return "No especificada"
-    const fecha = new Date(fechaStr)
-    return fecha.toLocaleDateString("es-ES", { day: "2-digit", month: "long", year: "numeric" })
+  const cambiarEstado = (id, e) => {
+    e.stopPropagation()
+    setVacunas(vacunas.map((vacuna) => (vacuna.id === id ? { ...vacuna, disponible: !vacuna.disponible } : vacuna)))
   }
 
-  const formatearPrecio = (precio) => {
-    return new Intl.NumberFormat("es-CO", {
-      style: "currency",
-      currency: "COP",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(precio)
+  const handleDosisChange = (edad, valor) => {
+    setNuevaVacuna({
+      ...nuevaVacuna,
+      dosis: {
+        ...nuevaVacuna.dosis,
+        [edad]: valor,
+      },
+    })
   }
 
-  // Fetch vacunas 
-  const fetchVacunas = useCallback(async () => {
-    try {
-      let data = await GetData(`${mainUrl}/vacs`)
-      // Si tu backend responde con { result: [[...vacunas]] }
-      const vacunasRaw = Array.isArray(data?.result?.[0]) ? data.result[0] : data
-
-      const vacunasMapeadas = vacunasRaw.map(vacuna => ({
-        id: vacuna.id_vac,
-        nombre: vacuna.nom_vac,
-        descripcion: vacuna.des_vac,
-        descripcionTecnica: vacuna.des_tec_vac || vacuna.servicio_tecnica_descripcion,
-        precio: vacuna.pre_vac || vacuna.servicio_precio,
-        frecuencia: vacuna.fre_vac,
-        tipoAnimal: vacuna.cat_vac || "ambos",
-        dosis: {
-          cachorro: vacuna.dos_rec_vac || "",
-          adulto: vacuna.dos_rec_vac || "",
-          senior: vacuna.dos_rec_vac || "",
-        },
-        efectosSecundarios: vacuna.efe_sec_vac,
-        disponible: vacuna.servicio_estado === "DISPONIBLE",
-        categoria: vacuna.categoria_servicio_nombre || vacuna.cat_vac || "Esencial",
-        lote: vacuna.lot_vac,
-        fechaVencimiento: vacuna.fec_ven_vac,
-      }))
-
-      setVacunas(vacunasMapeadas)
-      console.log("Vacunas cargadas:", vacunasMapeadas)
-    } catch (err) {
-      setNotify({
-        title: 'Error',
-        message: 'No se pudieron cargar las vacunas',
-        close: setNotify
-      })
+  const obtenerColorCategoria = (categoria) => {
+    const colores = {
+      Obligatoria: "categoria-obligatoria",
+      Esencial: "categoria-esencial",
+      Recomendada: "categoria-recomendada",
+      Opcional: "categoria-opcional",
     }
-  }, [mainUrl])
-
-  useEffect(() => {
-    fetchVacunas()
-  }, [fetchVacunas])
+    return colores[categoria] || "categoria-opcional"
+  }
 
   return (
-    <main className="maincontenedorVacunas">
-      <NavBarAdmin />
-      <main className="principaladminhome">
-        {admin ? (<HeaderAdmin />) : (<HeaderUser />)}
-        <main className="contenedorPrincipalVacunas">
-          <div className="contenedorVacunas">
-            <header className="encabezadoVacunas">
-              <div className="tituloadminhome">
-                <Syringe className='iconoadminhome' aria-hidden='true' />
-                <h1 className="tituloVacunas">Servicios de Vacunación</h1>
-              </div>
-            </header>
+    <div className="contenedor-vacunas">
+      <div className="contenedor-principal-vacunas">
+        {/* Encabezado */}
+        <header className="encabezado-vacunas">
+          <div className="titulo-con-icono-vacunas">
+            <Syringe className="icono-titulo-vacunas" />
+            <h1 className="titulo-vacunas">Servicios de Vacunación</h1>
+          </div>
+          <p className="descripcion-vacunas">Ofrecemos una variedad de vacunas para mantener a tu mascota saludable</p>
+        </header>
 
-            <nav className="controlVacunas">
-              <h2 className="subtituloVacunas">Vacunas Disponibles</h2>
-              <div className="accionesControlVacunas">
-                <div className="filtroContenedorVacunas">
-                  <label htmlFor="filtroAnimal" className="sr-only">
-                    Filtrar por tipo de animal
-                  </label>
-                  <select
-                    id="filtroAnimal"
-                    value={filtroAnimal}
-                    onChange={(e) => setFiltroAnimal(e.target.value)}
-                    className="selectFiltroVacunas"
-                  >
-                    <option value="todos">Todos los animales</option>
-                    <option value="perro">Solo perros</option>
-                    <option value="gato">Solo gatos</option>
-                    <option value="ambos">Ambos</option>
-                  </select>
+        {/* Controles */}
+        <div className="controles-vacunas">
+          <h2 className="subtitulo-vacunas">Vacunas Disponibles</h2>
+          <div className="acciones-control-vacunas">
+            <select value={filtroAnimal} onChange={(e) => setFiltroAnimal(e.target.value)} className="filtro-vacunas">
+              <option value="todos">Todas las vacunas</option>
+              <option value="disponibles">Disponibles</option>
+              <option value="no-disponibles">No disponibles</option>
+              <optgroup label="Por tipo de animal">
+                <option value="perro">Solo perros</option>
+                <option value="gato">Solo gatos</option>
+                <option value="ambos">Ambos</option>
+              </optgroup>
+            </select>
+            <button onClick={abrirModalAgregar} className="boton-agregar-vacunas">
+              <Plus size={16} />
+              Agregar Vacuna
+            </button>
+          </div>
+        </div>
+
+        {/* Grid de vacunas */}
+        <div className="grid-vacunas">
+          {vacunasFiltradas.map((vacuna) => (
+            <div
+              key={vacuna.id}
+              className={`tarjeta-vacunas ${!vacuna.disponible ? "no-disponible-vacunas" : ""}`}
+              onClick={() => abrirModalDetalle(vacuna)}
+            >
+              <div className="encabezado-tarjeta-vacunas">
+                <div className="info-principal-vacunas">
+                  <h3 className="nombre-vacunas">{vacuna.nombre}</h3>
+                  <div className="etiquetas-vacunas">
+                    <span className={`categoria-vacunas ${obtenerColorCategoria(vacuna.categoria)}`}>
+                      {vacuna.categoria}
+                    </span>
+                    <span
+                      className={`estado-vacunas ${
+                        vacuna.disponible ? "disponible-vacunas" : "no-disponible-badge-vacunas"
+                      }`}
+                      onClick={(e) => cambiarEstado(vacuna.id, e)}
+                    >
+                      {vacuna.disponible ? "Disponible" : "No disponible"}
+                    </span>
+                  </div>
                 </div>
-                <button className="botonAgregarVacunas" onClick={abrirModalAgregar}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="iconoVacunas"
-                    aria-hidden="true"
+                <div className="acciones-vacunas">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      eliminarVacuna(vacuna.id)
+                    }}
+                    className="boton-eliminar-vacunas"
                   >
-                    <path d="M12 5v14"></path>
-                    <path d="M5 12h14"></path>
-                  </svg>
-                  Agregar Vacuna
+                    <Trash2 size={16} />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      abrirModalEditar(vacuna)
+                    }}
+                    className="boton-editar-vacunas"
+                  >
+                    <Edit size={16} />
+                  </button>
+                </div>
+              </div>
+
+              <p className="descripcion-tarjeta-vacunas">{vacuna.descripcion}</p>
+
+              <div className="detalles-rapidos-vacunas">
+                <div className="detalle-rapido-vacunas">
+                  <Calendar size={14} className="icono-detalle-vacunas" />
+                  <span className="texto-detalle-vacunas">{vacuna.frecuencia}</span>
+                </div>
+                <div className="detalle-rapido-vacunas">
+                  <Target size={14} className="icono-detalle-vacunas" />
+                  <span className="texto-detalle-vacunas">
+                    {vacuna.tipoAnimal === "perro"
+                      ? "Perros"
+                      : vacuna.tipoAnimal === "gato"
+                        ? "Gatos"
+                        : "Perros y gatos"}
+                  </span>
+                </div>
+              </div>
+
+              <div className="footer-tarjeta-vacunas">
+                <span className="precio-vacunas">{formatearPrecio(vacuna.precio)}</span>
+                <span className="id-vacunas">{vacuna.id}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Modal Agregar/Editar */}
+        {modalAbierto && (
+          <div className="modal-fondo-vacunas">
+            <div className="modal-vacunas">
+              <div className="modal-encabezado-vacunas">
+                <h3 className="titulo-modal-vacunas">{modoEdicion ? "Editar Vacuna" : "Agregar Nueva Vacuna"}</h3>
+                <button onClick={() => setModalAbierto(false)} className="cerrar-modal-vacunas">
+                  <X size={20} />
                 </button>
               </div>
-            </nav>
-
-            <section className="listaVacunas" role="grid" aria-label="Lista de vacunas disponibles">
-              {vacunasFiltradas.map((vacuna) => (
-                <article
-                  key={vacuna.id || vacuna.id_vac}
-                  className={`tarjetaVacunas ${!vacuna.disponible ? "noDisponibleVacunas" : ""}`}
-                  onClick={() => abrirModalDetalle(vacuna)}
-                  role="gridcell"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault()
-                      abrirModalDetalle(vacuna)
-                    }
-                  }}
-                >
-                  <header className="tarjetaEncabezadoVacunas">
-                    <div className="iconoNombreVacunas">
-                      <h3 className="nombreVacunas">{vacuna.nombre}</h3>
+              <div className="formulario-vacunas">
+                <div className="seccion-formulario-vacunas">
+                  <h4 className="titulo-seccion-formulario">Información General</h4>
+                  <div className="campos-formulario-vacunas">
+                    <div className="campos-dobles-vacunas">
+                      <div className="campo-vacunas">
+                        <label className="etiqueta-campo-vacunas">ID Vacuna</label>
+                        <input
+                          type="text"
+                          value={nuevaVacuna.id}
+                          onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, id: e.target.value })}
+                          className="input-vacunas"
+                          disabled={modoEdicion}
+                          placeholder="Ej: VAC001"
+                        />
+                      </div>
+                      <div className="campo-vacunas">
+                        <label className="etiqueta-campo-vacunas">Nombre de la Vacuna</label>
+                        <input
+                          type="text"
+                          value={nuevaVacuna.nombre}
+                          onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, nombre: e.target.value })}
+                          className="input-vacunas"
+                          placeholder="Ej: Rabia"
+                        />
+                      </div>
                     </div>
-                    <div className="accionesVacunas">
-                      <button
-                        className="botonEliminarVacunas"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          eliminarVacuna(vacuna.id)
-                        }}
-                        aria-label={`Eliminar vacuna ${vacuna.nombre}`}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          aria-hidden="true"
-                        >
-                          <path d="M3 6h18"></path>
-                          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                          <line x1="10" x2="10" y1="11" y2="17"></line>
-                          <line x1="14" x2="14" y1="11" y2="17"></line>
-                        </svg>
-                      </button>
-                      <button
-                        className="botonEditarVacunas"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          abrirModalEditar(vacuna)
-                        }}
-                        aria-label={`Editar vacuna ${vacuna.nombre}`}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          aria-hidden="true"
-                        >
-                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                        </svg>
-                      </button>
-                      <span
-                        className={`estadoVacunas ${vacuna.disponible ? "disponibleVacunas" : "noDisponibleBadgeVacunas"}`}
-                        role="status"
-                        aria-label={vacuna.disponible ? "Vacuna disponible" : "Vacuna no disponible"}
-                      >
-                        {vacuna.disponible ? (
-                          <>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="14"
-                              height="14"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              aria-hidden="true"
-                            >
-                              <path d="M20 6 9 17l-5-5"></path>
-                            </svg>
-                            Disponible
-                          </>
-                        ) : (
-                          <>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="14"
-                              height="14"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              aria-hidden="true"
-                            >
-                              <path d="M18 6 6 18"></path>
-                              <path d="m6 6 12 12"></path>
-                            </svg>
-                            No disponible
-                          </>
-                        )}
-                      </span>
-                    </div>
-                  </header>
-                  <p className="descripcionTarjetaVacunas">{vacuna.descripcion}</p>
-                  <footer className="detallesVacunas">
-                    <dl className="detalleVacunas">
-                      <dt className="etiquetaVacunas">Precio:</dt>
-                      <dd className="valorVacunas">{formatearPrecio(vacuna.precio)}</dd>
-                    </dl>
-                    <dl className="detalleVacunas">
-                      <dt className="sr-only">Frecuencia:</dt>
-                      <dd className="valorVacunas">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="iconoDetalleVacunas"
-                          aria-hidden="true"
-                        >
-                          <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
-                          <line x1="16" x2="16" y1="2" y2="6"></line>
-                          <line x1="8" x2="8" y1="2" y2="6"></line>
-                          <line x1="3" x2="21" y1="10" y2="10"></line>
-                        </svg>
-                        {vacuna.frecuencia}
-                      </dd>
-                    </dl>
-                  </footer>
-                </article>
-              ))}
-            </section>
-
-          </div>
-
-          {modalAbierto && (
-            <div className="modalFondoVacunas" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-              <div className="modalVacunas modalFormularioVacunas">
-                <header className="modalEncabezadoVacunas">
-                  <h3 id="modal-title">{modoEdicion ? "Editar Vacuna" : "Agregar Nueva Vacuna"}</h3>
-                  <button className="cerrarModalVacunas" onClick={cerrarModal} aria-label="Cerrar modal">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M18 6 6 18"></path>
-                      <path d="m6 6 12 12"></path>
-                    </svg>
-                  </button>
-                </header>
-                <form
-                  className="formularioVacunas"
-                  onSubmit={(e) => {
-                    e.preventDefault()
-                    guardarVacuna()
-                  }}
-                >
-                  <fieldset className="pestanasFormularioVacunas">
-                    <legend className="sr-only">Información de la vacuna</legend>
-
-                    <div className="campoVacunas">
-                      <label htmlFor="nombre">Nombre de la Vacuna</label>
-                      <input id="nombre" name="nombre" value={nuevaVacuna.nombre} onChange={handleInputChange} required />
-                    </div>
-
-                    <div className="campoVacunas">
-                      <label htmlFor="descripcion">Descripción General</label>
+                    <div className="campo-vacunas">
+                      <label className="etiqueta-campo-vacunas">Descripción General</label>
                       <textarea
-                        id="descripcion"
-                        name="descripcion"
                         value={nuevaVacuna.descripcion}
-                        onChange={handleInputChange}
-                        required
+                        onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, descripcion: e.target.value })}
+                        className="textarea-vacunas"
+                        rows={2}
+                        placeholder="Breve descripción de la vacuna"
                       />
                     </div>
-
-                    <div className="campoVacunas">
-                      <label htmlFor="descripcionTecnica">Descripción Técnica</label>
+                    <div className="campo-vacunas">
+                      <label className="etiqueta-campo-vacunas">Descripción Técnica</label>
                       <textarea
-                        id="descripcionTecnica"
-                        name="descripcionTecnica"
                         value={nuevaVacuna.descripcionTecnica}
-                        onChange={handleInputChange}
+                        onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, descripcionTecnica: e.target.value })}
+                        className="textarea-vacunas"
+                        rows={2}
+                        placeholder="Información técnica sobre la vacuna"
                       />
                     </div>
+                  </div>
+                </div>
 
-                    <div className="campoDobleVacunas">
-                      <div className="campoVacunas">
-                        <label htmlFor="precio">Precio (COP)</label>
+                <div className="seccion-formulario-vacunas">
+                  <h4 className="titulo-seccion-formulario">Detalles y Clasificación</h4>
+                  <div className="campos-formulario-vacunas">
+                    <div className="campos-dobles-vacunas">
+                      <div className="campo-vacunas">
+                        <label className="etiqueta-campo-vacunas">Precio (COP)</label>
                         <input
-                          id="precio"
-                          name="precio"
                           type="number"
-                          min="0"
-                          value={nuevaVacuna.precio || ""}
-                          onChange={handleInputChange}
-                          required
+                          value={nuevaVacuna.precio}
+                          onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, precio: e.target.value })}
+                          className="input-vacunas"
+                          placeholder="Ej: 85000"
                         />
                       </div>
-                      <div className="campoVacunas">
-                        <label htmlFor="frecuencia">Frecuencia</label>
+                      <div className="campo-vacunas">
+                        <label className="etiqueta-campo-vacunas">Frecuencia</label>
                         <input
-                          id="frecuencia"
-                          name="frecuencia"
+                          type="text"
                           value={nuevaVacuna.frecuencia}
-                          onChange={handleInputChange}
-                          required
+                          onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, frecuencia: e.target.value })}
+                          className="input-vacunas"
+                          placeholder="Ej: Anual"
                         />
                       </div>
                     </div>
-
-                    <div className="campoDobleVacunas">
-                      <div className="campoVacunas">
-                        <label htmlFor="tipoAnimal">Tipo de Animal</label>
+                    <div className="campos-dobles-vacunas">
+                      <div className="campo-vacunas">
+                        <label className="etiqueta-campo-vacunas">Tipo de Animal</label>
                         <select
-                          id="tipoAnimal"
-                          name="tipoAnimal"
                           value={nuevaVacuna.tipoAnimal}
-                          onChange={handleInputChange}
-                          required
+                          onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, tipoAnimal: e.target.value })}
+                          className="select-vacunas"
                         >
                           <option value="perro">Perro</option>
                           <option value="gato">Gato</option>
                           <option value="ambos">Ambos</option>
                         </select>
                       </div>
-                      <div className="campoVacunas">
-                        <label htmlFor="categoria">Categoría</label>
+                      <div className="campo-vacunas">
+                        <label className="etiqueta-campo-vacunas">Categoría</label>
                         <select
-                          id="categoria"
-                          name="categoria"
                           value={nuevaVacuna.categoria}
-                          onChange={handleInputChange}
-                          required
+                          onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, categoria: e.target.value })}
+                          className="select-vacunas"
                         >
-                          <option value="Obligatoria">Obligatoria</option>
-                          <option value="Esencial">Esencial</option>
-                          <option value="Recomendada">Recomendada</option>
-                          <option value="Opcional">Opcional</option>
+                          {categorias.map((categoria) => (
+                            <option key={categoria} value={categoria}>
+                              {categoria}
+                            </option>
+                          ))}
                         </select>
                       </div>
                     </div>
-
-                    <div className="campoDobleVacunas">
-                      <div className="campoVacunas">
-                        <label htmlFor="lote">Número de Lote</label>
-                        <input id="lote" name="lote" value={nuevaVacuna.lote} onChange={handleInputChange} />
-                      </div>
-                      <div className="campoVacunas">
-                        <label htmlFor="fechaVencimiento">Fecha de Vencimiento</label>
+                    <div className="campos-dobles-vacunas">
+                      <div className="campo-vacunas">
+                        <label className="etiqueta-campo-vacunas">Número de Lote</label>
                         <input
-                          id="fechaVencimiento"
-                          name="fechaVencimiento"
+                          type="text"
+                          value={nuevaVacuna.lote}
+                          onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, lote: e.target.value })}
+                          className="input-vacunas"
+                          placeholder="Ej: RB-2023-45678"
+                        />
+                      </div>
+                      <div className="campo-vacunas">
+                        <label className="etiqueta-campo-vacunas">Fecha de Vencimiento</label>
+                        <input
                           type="date"
                           value={nuevaVacuna.fechaVencimiento}
-                          onChange={handleInputChange}
+                          onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, fechaVencimiento: e.target.value })}
+                          className="input-vacunas"
                         />
                       </div>
                     </div>
+                  </div>
+                </div>
 
-                    <div className="campoVacunas">
-                      <label htmlFor="efectosSecundarios">Efectos Secundarios</label>
+                <div className="seccion-formulario-vacunas">
+                  <h4 className="titulo-seccion-formulario">Información Médica</h4>
+                  <div className="campos-formulario-vacunas">
+                    <div className="campo-vacunas">
+                      <label className="etiqueta-campo-vacunas">Efectos Secundarios</label>
                       <textarea
-                        id="efectosSecundarios"
-                        name="efectosSecundarios"
                         value={nuevaVacuna.efectosSecundarios}
-                        onChange={handleInputChange}
+                        onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, efectosSecundarios: e.target.value })}
+                        className="textarea-vacunas"
+                        rows={2}
+                        placeholder="Posibles efectos secundarios"
                       />
                     </div>
-
-                    <fieldset className="seccionDosisVacunas">
-                      <legend className="labelSeccionVacunas">Dosis Recomendadas</legend>
-                      <div className="campoVacunas">
-                        <label htmlFor="dosisCachorro">Cachorros</label>
+                    <div className="subseccion-formulario-vacunas">
+                      <h5 className="subtitulo-seccion-formulario">Dosis Recomendadas</h5>
+                      <div className="campo-vacunas">
+                        <label className="etiqueta-campo-vacunas">Cachorros</label>
                         <input
-                          id="dosisCachorro"
+                          type="text"
                           value={nuevaVacuna.dosis?.cachorro || ""}
                           onChange={(e) => handleDosisChange("cachorro", e.target.value)}
+                          className="input-vacunas"
+                          placeholder="Ej: 1 ml subcutáneo a partir de los 3 meses"
                         />
                       </div>
-                      <div className="campoVacunas">
-                        <label htmlFor="dosisAdulto">Adultos</label>
+                      <div className="campo-vacunas">
+                        <label className="etiqueta-campo-vacunas">Adultos</label>
                         <input
-                          id="dosisAdulto"
+                          type="text"
                           value={nuevaVacuna.dosis?.adulto || ""}
                           onChange={(e) => handleDosisChange("adulto", e.target.value)}
+                          className="input-vacunas"
+                          placeholder="Ej: 1 ml subcutáneo anual"
                         />
                       </div>
-                      <div className="campoVacunas">
-                        <label htmlFor="dosisSenior">Senior</label>
+                      <div className="campo-vacunas">
+                        <label className="etiqueta-campo-vacunas">Senior</label>
                         <input
-                          id="dosisSenior"
+                          type="text"
                           value={nuevaVacuna.dosis?.senior || ""}
                           onChange={(e) => handleDosisChange("senior", e.target.value)}
+                          className="input-vacunas"
+                          placeholder="Ej: 1 ml subcutáneo anual, evaluación previa recomendada"
                         />
                       </div>
-                    </fieldset>
-
-                    <div className="campoVacunas">
-                      <label className="checkboxLabelVacunas">
-                        <input
-                          type="checkbox"
-                          name="disponible"
-                          checked={nuevaVacuna.disponible}
-                          onChange={handleInputChange}
-                        />
-                        Disponible actualmente
-                      </label>
                     </div>
-
-                    <button type="submit" className="botonGuardarVacunas">
-                      {modoEdicion ? "Actualizar Vacuna" : "Guardar Vacuna"}
-                    </button>
-                  </fieldset>
-                </form>
-              </div>
-
-            </div>
-
-          )}
-
-          {modalDetalleAbierto && vacunaDetalle && (
-            <div className="modalFondoVacunas" role="dialog" aria-modal="true" aria-labelledby="detalle-title">
-              <article className="modalVacunas modalDetalleVacunas">
-                <header className="modalEncabezadoVacunas">
-                  <button
-                    className="cerrarModalVacunas"
-                    onClick={() => setModalDetalleAbierto(false)}
-                    aria-label="Cerrar detalle de vacuna"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M18 6 6 18"></path>
-                      <path d="m6 6 12 12"></path>
-                    </svg>
-                  </button>
-                </header>
-
-                <div className="detalleVacunaContenedor">
-                  <header className="detalleVacunaCabecera">
-                    <div className="detalleVacunaID">ID: {vacunaDetalle.id}</div>
-                    <h2 id="detalle-title" className="detalleVacunaTitulo">
-                      {vacunaDetalle.nombre}
-                    </h2>
-                    <div className="detalleVacunaFecha">
-                      Vence: {formatearFecha(vacunaDetalle.fechaVencimiento)} • Lote: {vacunaDetalle.lote}
+                    <div className="campo-checkbox-vacunas">
+                      <input
+                        type="checkbox"
+                        checked={nuevaVacuna.disponible}
+                        onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, disponible: e.target.checked })}
+                        className="checkbox-vacunas"
+                      />
+                      <label className="etiqueta-checkbox-vacunas">Disponible</label>
                     </div>
-                    <span className={`detalleVacunaCategoria ${vacunaDetalle.categoria.toLowerCase()}Categoria`}>
-                      {vacunaDetalle.categoria}
-                    </span>
-                  </header>
-
-                  <section className="detalleVacunaGrid">
-                    <article className="detalleVacunaCard">
-                      <div className="detalleVacunaCardIcono" aria-hidden="true">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                        </svg>
-                      </div>
-                      <div className="detalleVacunaCardContenido">
-                        <h3>Descripción General</h3>
-                        <p>{vacunaDetalle.descripcion}</p>
-                      </div>
-                    </article>
-
-                    <article className="detalleVacunaCard">
-                      <div className="detalleVacunaCardIcono" aria-hidden="true">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
-                          <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg>
-                      </div>
-                      <div className="detalleVacunaCardContenido">
-                        <h3>Descripción Técnica</h3>
-                        <p>{vacunaDetalle.descripcionTecnica}</p>
-                      </div>
-                    </article>
-
-                    <article className="detalleVacunaCard">
-                      <div className="detalleVacunaCardIcono" aria-hidden="true">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
-                        </svg>
-                      </div>
-                      <div className="detalleVacunaCardContenido">
-                        <h3>Efectos Secundarios</h3>
-                        <p>{vacunaDetalle.efectosSecundarios}</p>
-                      </div>
-                    </article>
-
-                    <article className="detalleVacunaCard">
-                      <div className="detalleVacunaCardIcono" aria-hidden="true">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M8 2v4"></path>
-                          <path d="M16 2v4"></path>
-                          <rect width="18" height="18" x="3" y="4" rx="2"></rect>
-                          <path d="M3 10h18"></path>
-                        </svg>
-                      </div>
-                      <div className="detalleVacunaCardContenido">
-                        <h3>Dosis Recomendadas</h3>
-                        <dl className="detalleVacunaDosis">
-                          <div>
-                            <dt className="detalleVacunaDosisEtiqueta">Cachorros:</dt>
-                            <dd className="detalleVacunaDosisValor">
-                              {vacunaDetalle.dosis?.cachorro || "No especificada"}
-                            </dd>
-                          </div>
-                          <div>
-                            <dt className="detalleVacunaDosisEtiqueta">Adultos:</dt>
-                            <dd className="detalleVacunaDosisValor">{vacunaDetalle.dosis?.adulto || "No especificada"}</dd>
-                          </div>
-                          <div>
-                            <dt className="detalleVacunaDosisEtiqueta">Senior:</dt>
-                            <dd className="detalleVacunaDosisValor">{vacunaDetalle.dosis?.senior || "No especificada"}</dd>
-                          </div>
-                        </dl>
-                      </div>
-                    </article>
-                  </section>
-
-                  <footer className="detalleVacunaMetricas">
-                    <dl className="detalleVacunaMetrica">
-                      <dt className="detalleVacunaMetricaEtiqueta">Precio</dt>
-                      <dd className="detalleVacunaMetricaValor">{formatearPrecio(vacunaDetalle.precio)}</dd>
-                    </dl>
-                    <dl className="detalleVacunaMetrica">
-                      <dt className="detalleVacunaMetricaEtiqueta">Frecuencia</dt>
-                      <dd className="detalleVacunaMetricaValor">{vacunaDetalle.frecuencia}</dd>
-                    </dl>
-                    <dl className="detalleVacunaMetrica">
-                      <dt className="detalleVacunaMetricaEtiqueta">Tipo Animal</dt>
-                      <dd className="detalleVacunaMetricaValor">
-                        {vacunaDetalle.tipoAnimal === "perro"
-                          ? "Perro"
-                          : vacunaDetalle.tipoAnimal === "gato"
-                            ? "Gato"
-                            : "Ambos"}
-                      </dd>
-                    </dl>
-                    <dl className="detalleVacunaMetrica">
-                      <dt className="detalleVacunaMetricaEtiqueta">Estado</dt>
-                      <dd
-                        className={`detalleVacunaMetricaValor ${vacunaDetalle.disponible ? "disponible" : "noDisponible"}`}
-                      >
-                        {vacunaDetalle.disponible ? "Disponible" : "No disponible"}
-                      </dd>
-                    </dl>
-                  </footer>
+                  </div>
                 </div>
-              </article>
+
+                <div className="botones-formulario-vacunas">
+                  <button onClick={guardarVacuna} className="boton-guardar-vacunas">
+                    {modoEdicion ? "Actualizar" : "Agregar"}
+                  </button>
+                  <button onClick={() => setModalAbierto(false)} className="boton-cancelar-vacunas">
+                    Cancelar
+                  </button>
+                </div>
+              </div>
             </div>
-          )}
-        </main>
-        <Footer />
-      </main>
-      {notify && (
-        <Notification
-          {...notify}
-        />
-      )}
-    </main>
+          </div>
+        )}
+
+        {/* Modal Detalle */}
+        {modalDetalleAbierto && vacunaDetalle && (
+          <div className="modal-fondo-vacunas">
+            <div className="modal-detalle-vacunas">
+              <div className="modal-encabezado-vacunas">
+                <h3 className="titulo-modal-vacunas">{vacunaDetalle.nombre}</h3>
+                <button onClick={() => setModalDetalleAbierto(false)} className="cerrar-modal-vacunas">
+                  <X size={20} />
+                </button>
+              </div>
+              <div className="contenido-detalle-vacunas">
+                {/* Métricas principales */}
+                <div className="metricas-principales-vacunas">
+                  <div className="metrica-vacunas">
+                    <div className="valor-metrica-vacunas">{formatearPrecio(vacunaDetalle.precio)}</div>
+                    <div className="etiqueta-metrica-vacunas">Precio</div>
+                  </div>
+                  <div className="metrica-vacunas">
+                    <div className="valor-metrica-vacunas">{vacunaDetalle.frecuencia}</div>
+                    <div className="etiqueta-metrica-vacunas">Frecuencia</div>
+                  </div>
+                  <div className="metrica-vacunas">
+                    <div className="valor-metrica-vacunas">{vacunaDetalle.categoria}</div>
+                    <div className="etiqueta-metrica-vacunas">Categoría</div>
+                  </div>
+                  <div className="metrica-vacunas">
+                    <div
+                      className={`valor-metrica-vacunas ${
+                        vacunaDetalle.disponible ? "texto-verde-vacunas" : "texto-rojo-vacunas"
+                      }`}
+                    >
+                      {vacunaDetalle.disponible ? "SÍ" : "NO"}
+                    </div>
+                    <div className="etiqueta-metrica-vacunas">Disponible</div>
+                  </div>
+                </div>
+
+                {/* Grid de información */}
+                <div className="grid-detalle-vacunas">
+                  <div className="seccion-detalle-vacunas">
+                    <div className="encabezado-seccion-vacunas">
+                      <FileText size={20} className="icono-seccion-vacunas" />
+                      <h4 className="titulo-seccion-vacunas">Descripción General</h4>
+                    </div>
+                    <p className="texto-seccion-vacunas">{vacunaDetalle.descripcion}</p>
+                  </div>
+
+                  <div className="seccion-detalle-vacunas">
+                    <div className="encabezado-seccion-vacunas">
+                      <Target size={20} className="icono-seccion-vacunas" />
+                      <h4 className="titulo-seccion-vacunas">Descripción Técnica</h4>
+                    </div>
+                    <p className="texto-seccion-vacunas">{vacunaDetalle.descripcionTecnica}</p>
+                  </div>
+
+                  <div className="seccion-detalle-vacunas">
+                    <div className="encabezado-seccion-vacunas">
+                      <AlertTriangle size={20} className="icono-seccion-vacunas" />
+                      <h4 className="titulo-seccion-vacunas">Efectos Secundarios</h4>
+                    </div>
+                    <p className="texto-seccion-vacunas">{vacunaDetalle.efectosSecundarios}</p>
+                  </div>
+
+                  <div className="seccion-detalle-vacunas">
+                    <div className="encabezado-seccion-vacunas">
+                      <Clock size={20} className="icono-seccion-vacunas" />
+                      <h4 className="titulo-seccion-vacunas">Información Adicional</h4>
+                    </div>
+                    <div className="info-adicional-vacunas">
+                      <div className="item-info-adicional">
+                        <span className="etiqueta-info-adicional">Lote:</span>
+                        <span className="valor-info-adicional">{vacunaDetalle.lote}</span>
+                      </div>
+                      <div className="item-info-adicional">
+                        <span className="etiqueta-info-adicional">Vencimiento:</span>
+                        <span className="valor-info-adicional">
+                          {new Date(vacunaDetalle.fechaVencimiento).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <div className="item-info-adicional">
+                        <span className="etiqueta-info-adicional">Tipo de Animal:</span>
+                        <span className="valor-info-adicional">
+                          {vacunaDetalle.tipoAnimal === "perro"
+                            ? "Perros"
+                            : vacunaDetalle.tipoAnimal === "gato"
+                              ? "Gatos"
+                              : "Perros y gatos"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Dosis recomendadas */}
+                <div className="dosis-recomendadas-vacunas">
+                  <h4 className="titulo-dosis-vacunas">Dosis Recomendadas</h4>
+                  <div className="contenedor-dosis-vacunas">
+                    <div className="dosis-item-vacunas">
+                      <div className="encabezado-dosis-vacunas">
+                        <span className="etiqueta-dosis-vacunas">Cachorros</span>
+                      </div>
+                      <p className="texto-dosis-vacunas">{vacunaDetalle.dosis?.cachorro}</p>
+                    </div>
+                    <div className="dosis-item-vacunas">
+                      <div className="encabezado-dosis-vacunas">
+                        <span className="etiqueta-dosis-vacunas">Adultos</span>
+                      </div>
+                      <p className="texto-dosis-vacunas">{vacunaDetalle.dosis?.adulto}</p>
+                    </div>
+                    <div className="dosis-item-vacunas">
+                      <div className="encabezado-dosis-vacunas">
+                        <span className="etiqueta-dosis-vacunas">Senior</span>
+                      </div>
+                      <p className="texto-dosis-vacunas">{vacunaDetalle.dosis?.senior}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   )
 }
