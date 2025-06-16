@@ -105,12 +105,9 @@ CREATE TABLE pets_heaven.vacunas (
     efe_sec_vac VARCHAR(255) NOT NULL,  # Efectos Secundarios
     cat_vac VARCHAR(100) NOT NULL,INDEX(cat_vac),
     dos_rec_vac VARCHAR(100) NOT NULL, # Dosis recomendada
-    des_vac TEXT NOT NULL,
-    des_tec_vac TEXT NOT NULL,
-    lot_vac VARCHAR(255) NOT NULL,INDEX(cat_vac),
+    lot_vac VARCHAR(255) NOT NULL,INDEX(lot_vac),
     fec_ven_vac DATE NOT NULL,
     fre_vac VARCHAR(100) NOT NULL, # Frecuencia de vacunación
-    pre_vac DECIMAL(10,2) NOT NULL,
     ser_vac INT NOT NULL,INDEX(ser_vac), FOREIGN KEY(ser_vac) REFERENCES servicios(id_ser) ON DELETE CASCADE ON UPDATE CASCADE
 );
 

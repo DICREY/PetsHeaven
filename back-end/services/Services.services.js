@@ -184,6 +184,40 @@ class Services {
         });
     }
 
+    async registerVacuna(data) {
+        return new Promise((res, rej) => {
+            const proc = "CALL RegisterVacuna(?,?,?,?,?,?,?,?,?,?,?);";
+            const params = [
+                data.nom_vac,        
+                data.des_gen,         
+                data.des_tec,         
+                data.pre_vac,        
+                data.fre_vac,        
+                data.cat_vac,        
+                data.num_lot,        
+                data.fec_ven,       
+                data.efe_sec,        
+                data.dos_rec,       
+                data.sta_ser         
+            ];
+
+            this.database = new DataBase();
+            this.database.conect();
+
+            if (this.database) this.database.conection.query(proc, params, (err, result) => {
+                if (err) return rej({ message: err });
+                setTimeout(() => {
+                    res({
+                        message: "Cirugía registrada correctamente",
+                        result: result
+                    });
+                }, 500);
+            });
+
+            this.database.conection.end();
+        });
+    }
+
     async findAllVacunas() {
         return new Promise((res,rej) => {
             // vars

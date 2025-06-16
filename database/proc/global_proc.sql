@@ -24,7 +24,7 @@ BEGIN
     LIMIT 1000;
 END //
 
-CREATE PROCEDURE pets_heaven.GetDataAdmin(
+CREATE PROCEDURE pets_heaven.GetStatsAdmin(
     /* IN p_by VARCHAR(100) */
 )
 BEGIN
@@ -35,10 +35,41 @@ BEGIN
             SELECT COUNT(*) 
             FROM 
                 citas c 
-            WHERE c.fec_cit LIKE CURRENT_DATE()
+            WHERE 
+                c.fec_cit LIKE CURRENT_DATE()
+                AND c.estado != 'CANCELADO'
         ) AS cit,
         ( 
             SELECT COUNT(*) 
+            FROM 
+                citas c 
+            JOIN 
+                servicios s ON s.id_ser = c.ser_cit
+            JOIN
+                categorias_ser cs ON cs.id_cat = s.cat_ser
+            WHERE 
+                cs.nom_cat LIKE "Emergencias 24h"
+        ) AS emg
+    FROM 
+        veterinarios v
+    LIMIT 1000;
+END //
+
+CREATE PROCEDURE pets_heaven.GetStatsVet()
+BEGIN
+    SELECT 
+        COUNT(v.id_vet) AS doc,
+        ( SELECT COUNT(*) FROM mascotas m WHERE m.estado = 1) AS mas,
+        ( 
+            SELECT COUNT(*) 
+            FROM 
+                citas c 
+            WHERE 
+                c.fec_cit LIKE CURRENT_DATE()
+                AND c.estado != 'CANCELADO'
+        ) AS cit,
+        ( 
+            SELECT COUNT(*)
             FROM 
                 citas c 
             JOIN 

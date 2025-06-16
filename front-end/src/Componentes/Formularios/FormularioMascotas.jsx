@@ -13,6 +13,8 @@ import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
 import { HeaderUser } from '../BarrasNavegacion/HeaderUser'
 import Footer from '../Varios/Footer2'
 import { AuthContext } from '../../Contexts/Contexts'
+import { supabase } from '../../supabaseClient'; 
+
 
 // Import styles
 import '../../../src/styles/Formularios/FormularioMascotas.css'
@@ -61,42 +63,70 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
   }
 
   const onSubmit = async (data) => {
-    // console.log(profileImage)
     setIsSubmitting(true)
     setNotify({
-      title:'Validando...',
-      message:'Verificando datos proporcionados',
+      title:'Subiendo imagen...',
+      message:'Guardando imagen de la mascota en Supabase',
       load: true
     })
-    
+  
     try {
       data.fec_nac_mas = formatDate(data.fec_nac_mas)
-
-      // const formData = new FormData()
-      // for (const key in data) {
-      //   if (key === 'fot_mas' && data[key]) {
-      //     formData.append('fot_mas', data[key])
-      //   } else formData.append(key, data[key])
-      // }
-      // console.log(formData)
-
-      const created = await PostData(`${mainURL}/register`, { ...data, fot_mas: "Dont" })
+  
+      let imageUrl = ''
+      if (data.fot_mas) {
+        const file = data.fot_mas
+        const fileExt = file.name.split('.').pop()
+        const fileName = `${Date.now()}.${fileExt}`
+        const filePath = `mascotas/${fileName}`
+  
+        const { data: storageData, error: storageError } = await supabase.storage
+          .from('mascotas')
+          .upload(filePath, file)
+  
+        if (storageError) throw storageError
+  
+        const { data: publicUrlData } = supabase
+          .storage
+          .from('mascotas')
+          .getPublicUrl(filePath)
+  
+        imageUrl = publicUrlData.publicUrl
+      }
+  
+      const created = await PostData(`${mainURL}/register`, {
+        ...data,
+        fot_mas: imageUrl
+      })
+  
       setNotify(null)
-
-      if(created.created) {
+  
+      if (created.created) {
         setNotify({
           title: 'Registro Exitoso',
           message: 'La mascota ha sido registrada con éxito',
-          close: setNotify,
+          close: setNotify
         })
         setTimeout(() => navigate(-1), 2000)
       }
+  
     } catch (err) {
       setNotify(null)
-      const message = errorStatusHandler(err)
+  
+      let message = ''
+      if (err.message) {
+        message = err.message
+      } else if (err.error_description) {
+        message = err.error_description
+      } else if (typeof err === 'object') {
+        message = JSON.stringify(err, null, 2)
+      } else {
+        message = String(err)
+      }
+  
       setNotify({
         title: 'Error',
-        message: `${message}`,
+        message: message,
         close: setNotify
       })
     } finally {
