@@ -221,6 +221,7 @@ export function VisualizadorVacunas() {
 
   return (
     <div className="contenedor-vacunas">
+      <NavBarAdmin/>
       <div className="contenedor-principal-vacunas">
         {/* Encabezado */}
         <header className="encabezado-vacunas">

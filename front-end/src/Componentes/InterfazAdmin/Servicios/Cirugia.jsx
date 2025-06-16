@@ -295,6 +295,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
 
   return (
     <main className="contenedor-cirugia">
+      <NavBarAdmin/>
       <main className="contenedor-principal-cirugia">
         {/* Encabezado */}
         <header className="encabezado-cirugia">

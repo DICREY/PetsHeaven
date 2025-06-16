@@ -3,6 +3,9 @@ import React from "react"
 import { useState } from "react"
 import { FlaskConical, Plus, Trash2, Edit, X, Clock, AlertTriangle, FileText, Target } from "lucide-react"
 
+// Imports
+import { NavBarAdmin } from "../../BarrasNavegacion/NavBarAdmi"
+
 // Import styles
 import "../../../styles/InterfazAdmin/Servicios/Laboratorio.css"
 
@@ -223,6 +226,7 @@ export const ExamenesLaboratorio = ({ URL='' }) => {
 
   return (
     <main className="contenedor-laboratorio">
+      <NavBarAdmin/>
       <div className="contenedor-principal-laboratorio">
         {/* Encabezado */}
         <header className="encabezado-laboratorio">
