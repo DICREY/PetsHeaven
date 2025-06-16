@@ -57,13 +57,22 @@ BEGIN
         s.des_ser,
         m.nom_mas,
         m.esp_mas,
+        m.col_mas,
+        m.raz_mas,
+        m.ali_mas,
+        m.fec_nac_mas,
+        m.pes_mas,
+        m.gen_mas,
+        m.est_rep_mas,
         m.fot_mas,
+        m.fec_cre_mas,
         p_vet.nom_per AS vet_nom_per,
         p_vet.ape_per AS vet_ape_per,
         p_vet.cel_per AS vet_cel_per,
         p_prop.nom_per AS prop_nom_per,
         p_prop.ape_per AS prop_ape_per,
         p_prop.cel_per AS prop_cel_per,
+        p_prop.doc_per AS prop_doc_per,
         c.estado
     FROM 
         citas c
@@ -86,7 +95,6 @@ BEGIN
     ORDER BY c.fec_reg_cit
     LIMIT 1000;
 END //
-
 
 CREATE PROCEDURE pets_heaven.RegistAppointment(
     IN p_reg_date DATE,

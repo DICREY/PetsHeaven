@@ -1,6 +1,6 @@
 // Librarys 
 import React, { useState, useEffect, useContext } from "react"
-import { Outlet } from "react-router-dom"
+import { Outlet, useNavigate } from "react-router-dom"
 import { Heart, Clock, ExternalLink, Plus, Stethoscope, Activity, FileText, AlertCircle, CheckCircle } from "lucide-react"
 
 // Import
@@ -15,7 +15,7 @@ import { AuthContext } from "../../Contexts/Contexts"
 import "../../styles/InterfazVeterinario/HomeVeterinario.css"
 
 // Component
-export const PanelVeterinario = ({ URL = '', imgDefault = '' }) => {
+export const PanelVeterinario = ({ URL = '', imgDefault = '', setPetSelect }) => {
   // Dynamic vars 
   const [isProfileOpen, setIsProfileOpen] = useState(false)
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
@@ -26,6 +26,7 @@ export const PanelVeterinario = ({ URL = '', imgDefault = '' }) => {
   // Vars
   const mainUrl = `${URL}/staff`
   const { user } = useContext(AuthContext)
+  const navigate = useNavigate()
   const stats = [
     { title: "Pacientes Hoy", value: "8", icon: Stethoscope, color: "azul" },
     { title: "Cirugías Programadas", value: "3", icon: Activity, color: "verde" },
@@ -60,10 +61,29 @@ export const PanelVeterinario = ({ URL = '', imgDefault = '' }) => {
     setIsProfileOpen(false)
   }
 
+  const handlePetSelect = (data = {}) => {
+    const pet = {
+      nom_mas: data.nom_mas,
+      esp_mas: data.esp_mas,
+      col_mas: data.col_mas,
+      raz_mas: data.raz_mas,
+      ali_mas: data.ali_mas,
+      fec_nac_mas: data.fec_nac_mas,
+      pes_mas: data.pes_mas,
+      gen_mas: data.gen_mas,
+      est_rep_mas: data.est_rep_mas,
+      fot_mas: data.fot_mas,
+      doc_per: data.prop_doc_per
+    }
+    setPetSelect(pet)
+    navigate('/pets/details')
+  }
+
   const getAppoint = async () => {
     try {
       const data = await PostData(`${URL}/appointment/by`,{ by: user.doc })
       setNotify(null)
+      console.log(data[0])
       if (data[0]) setAppoint(data[0])
     } catch (err) {
       setNotify(null)
@@ -98,13 +118,13 @@ export const PanelVeterinario = ({ URL = '', imgDefault = '' }) => {
           <section className="estadisticas-grid-admin" aria-label="Estadísticas del día">
               {stats?.map((stat, index) => (
                 <article key={index} className={`tarjeta-estadistica-admin ${stat.color}-admin`}>
-                  <div className="contenido-estadistica-admin">
-                    <p>{stat.title}</p>
-                  </div>
                   <header className="cabecera-estadistica-admin">
                     <stat.icon className="icon" aria-hidden="true" />
-                    <h2>{stat.value}</h2>
                   </header>
+                  <div className="contenido-estadistica-admin">
+                    <h2>{stat.value}</h2>
+                    <p>{stat.title}</p>
+                  </div>
                 </article>
               ))}
             </section>
@@ -122,7 +142,11 @@ export const PanelVeterinario = ({ URL = '', imgDefault = '' }) => {
 
               <ul className="lista-pacientes-vet" role="list">
                 {appoint?.map((cita, index) => (
-                  <li key={index + 123} className={`item-paciente-vet ${cita.estado}-vet ${cita.urgencia}-vet`}>
+                  <li 
+                    key={index + 123} 
+                    className={`item-paciente-vet ${cita.estado}-vet ${cita.urgencia}-vet`}
+                    onClick={() => handlePetSelect(cita)}
+                  >
                     <div className="hora-paciente-vet">
                       <Clock className="icon" aria-hidden="true" />
                       <time>{cita.hor_ini_cit}</time>
@@ -130,7 +154,8 @@ export const PanelVeterinario = ({ URL = '', imgDefault = '' }) => {
 
                     <div className="detalles-paciente-vet">
                       <h3>{cita.nom_mas}</h3>
-                      <p>Propietario: {cita.nom_per} {cita.ape_per}</p>
+                      <p>Propietario: {cita.prop_nom_per} {cita.prop_ape_per}</p>
+                      <p>{cita.nom_ser}</p>
                       <span className="tipo-consulta-vet">{cita.nom_cat}</span>
                     </div>
 

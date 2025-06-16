@@ -133,17 +133,17 @@
   font-weight: 600;
 }
 
-.insignia-estado-vet.confirmada-vet {
+.insignia-estado-vet.CONFIRMADA-vet {
   background: #dcfce7;
   color: #166534;
 }
 
-.insignia-estado-vet.pendiente-vet {
+.insignia-estado-vet.PENDIENTE-vet {
   background: #fef3c7;
   color: #92400e;
 }
 
-.insignia-estado-vet.urgente-vet {
+.insignia-estado-vet.URGENTE-vet {
   background: #fee2e2;
   color: #991b1b;
 }
