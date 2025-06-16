@@ -87,7 +87,7 @@ Route.put('/AblOrDis', ValidatorRol("administrador"), async (req, res) => {
     }
 })
 
-Route.post('/register', ValidatorRol("administrador"), async (req, res) => {
+Route.post('/register/cir', ValidatorRol("administrador"), async (req, res) => {
     const data = req.body
     try {
         if (!data) return res.status(400).json({ message: "Petición no valida"})
@@ -99,6 +99,21 @@ Route.post('/register', ValidatorRol("administrador"), async (req, res) => {
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
+
+
+Route.post('/register/vac', ValidatorRol("administrador"), async (req, res) => {
+    const data = req.body
+    try {
+        if (!data) return res.status(400).json({ message: "Petición no valida"})
+            
+        const result = await services.registerVacuna(data);
+        res.status(201).json({ message: "Vacuna registrada correctamente", result });
+    } catch (err) {
+        if (err.status) return res.status(err.status).json({ message: err.message });
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
+    }
+})
+
 
 // Exports 
 module.exports = Route

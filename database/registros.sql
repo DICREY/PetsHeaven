@@ -104,19 +104,19 @@ INSERT INTO pets_heaven.cirugias (des_cir, res_cir, com_cir, obv_cir, ser_cir) V
 ('Cierre quirúrgico de herida traumática', 'Herida cerrada correctamente', 'Ligera inflamación', 'Mantener limpieza diaria', 15);
 
 INSERT INTO pets_heaven.vacunas (
-    nom_vac, efe_sec_vac, cat_vac, dos_rec_vac, des_vac, des_tec_vac, 
-    lot_vac, fec_ven_vac, fre_vac, pre_vac, ser_vac
-) VALUES 
-('Vacuna contra la Rabia', 'Letargo leve, dolor en el lugar de la inyección', 'Rabia', '1 mL', 'Protege contra el virus de la rabia, enfermedad mortal', 'Administrar por vía subcutánea en la región dorsal', 'LOT-RAB-2023', '2024-12-31', 'Anual', 45.00, 16),
-('Vacuna contra el Moquillo', 'Fiebre leve, pérdida de apetito temporal', 'Moquillo', '1 mL', 'Protege contra el virus del moquillo canino', 'Administrar por vía subcutánea', 'LOT-MOQ-2023', '2024-10-15', 'Cada 2-3 años', 60.00, 17),
-('Vacuna contra Parvovirus', 'Hinchazón en el lugar de la inyección', 'Parvovirus', '1 mL', 'Protege contra el parvovirus canino altamente contagioso', 'Inyección intramuscular', 'LOT-PAR-2023', '2024-11-20', 'Anual', 55.00, 18),
-('Vacuna contra Leptospirosis', 'Dolor local, fiebre baja', 'Leptospirosis', '1 mL', 'Protege contra bacterias que causan daño renal y hepático', 'Inyección subcutánea', 'LOT-LEP-2023', '2024-09-30', 'Anual', 50.00, 19),
-('Vacuna contra Bordetella', 'Estornudos leves', 'Tos de las perreras', '0.5 mL', 'Protege contra la bacteria que causa tos de las perreras', 'Administración intranasal', 'LOT-BOR-2023', '2024-08-25', 'Anual', 40.00, 20),
-('Vacuna contra Coronavirus', 'Malestar gastrointestinal leve', 'Coronavirus', '1 mL', 'Protege contra el coronavirus canino', 'Inyección subcutánea', 'LOT-COR-2023', '2025-01-15', 'Anual', 48.00, 21),
-('Vacuna contra Hepatitis', 'Dolor en el lugar de la inyección', 'Hepatitis', '1 mL', 'Protege contra el adenovirus canino tipo 1', 'Inyección intramuscular', 'LOT-HEP-2023', '2024-07-10', 'Cada 3 años', 65.00, 22),
-('Vacuna contra Influenza', 'Letargo temporal', 'Influenza', '1 mL', 'Protege contra los virus de influenza canina', 'Inyección subcutánea', 'LOT-INF-2023', '2024-06-30', 'Anual', 52.00, 23),
-('Vacuna contra Giardia', 'Malestar gastrointestinal', 'Parásitos', '1 mL', 'Protege contra la giardiasis en perros', 'Inyección subcutánea', 'LOT-GIA-2023', '2024-05-20', 'Cada 6 meses', 38.00, 24),
-('Vacuna Polivalente V8', 'Fiebre leve, dolor local', 'Combinada', '1 mL', 'Protege contra 8 enfermedades comunes en perros', 'Inyección subcutánea', 'LOT-V8-2023', '2024-12-15', 'Anual', 75.00, 25);
+    id_vac, nom_vac, efe_sec_vac, cat_vac, dos_rec_vac, lot_vac, 
+    fec_ven_vac, fre_vac, ser_vac
+) VALUES
+(1, 'Vacuna contra la Rabia', 'Letargo leve, dolor en el lugar de la inyección', 'Rabia', '1 mL', 'LOT-RAB-2023', '2024-12-31', 'Anual', 16),
+(2, 'Vacuna contra el Moquillo', 'Fiebre leve, pérdida de apetito temporal', 'Moquillo', '1 mL', 'LOT-MOQ-2023', '2024-10-15', 'Cada 2-3 años', 17),
+(3, 'Vacuna contra Parvovirus', 'Hinchazón en el lugar de la inyección', 'Parvovirus', '1 mL', 'LOT-PAR-2023', '2024-11-20', 'Anual', 18),
+(4, 'Vacuna contra Leptospirosis', 'Dolor local, fiebre baja', 'Leptospirosis', '1 mL', 'LOT-LEP-2023', '2024-09-30', 'Anual', 19),
+(5, 'Vacuna contra Bordetella', 'Estornudos leves', 'Tos de las perreras', '0.5 mL', 'LOT-BOR-2023', '2024-08-25', 'Anual', 20),
+(6, 'Vacuna contra Coronavirus', 'Malestar gastrointestinal leve', 'Coronavirus', '1 mL', 'LOT-COR-2023', '2025-01-15', 'Anual', 21),
+(7, 'Vacuna contra Hepatitis', 'Dolor en el lugar de la inyección', 'Hepatitis', '1 mL', 'LOT-HEP-2023', '2024-07-10', 'Cada 3 años', 22),
+(8, 'Vacuna contra Influenza', 'Letargo temporal', 'Influenza', '1 mL', 'LOT-INF-2023', '2024-06-30', 'Anual', 23),
+(9, 'Vacuna contra Giardia', 'Malestar gastrointestinal', 'Parásitos', '1 mL', 'LOT-GIA-2023', '2024-05-20', 'Cada 6 meses', 24),
+(10, 'Vacuna Polivalente V8', 'Fiebre leve, dolor local', 'Combinada', '1 mL', 'LOT-V8-2023', '2024-12-15', 'Anual', 25);
 
 
 INSERT INTO pets_heaven.mascotas 
