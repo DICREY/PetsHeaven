@@ -30,7 +30,7 @@ class Global {
                         message: "Authorized",
                         result: result
                     })
-                },1000)
+                },200)
             })
 
             // close conection 
@@ -59,7 +59,7 @@ class Global {
                         message: "Found info",
                         result: result['0']
                     })
-                },1000)
+                },200)
             })
 
             // close conection 
