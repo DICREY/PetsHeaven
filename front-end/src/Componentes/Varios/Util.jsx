@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 // Utilidades
 export const useRoleRedirect = (roles = []) => {
   const roleRoutes = {
-    'Administrador': '/admin/gestion/usuarios',
+    'Administrador': '/admin/administracion',
     'Veterinario': '/consultorio',
     'default': '/user/pets'
   }

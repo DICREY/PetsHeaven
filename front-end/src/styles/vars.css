@@ -2,6 +2,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Zain:ital,wght@0,200;0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap');
 
 :root {
+    --primary: #00BCD4;
+    --primary-light: #E0F7FA;
+    --primary-dark: #006b77;
     --white: #fff;
     --black: #000000;
     --background: #f8fafc;
@@ -23,8 +26,6 @@
     --border-input: #c4c4c4;
     --border-focus-input:#4a90e233;
     --black-box: #00000025; 
-    --primary: #00BCD4;
-    --primary-light: #E0F7FA;
     --secondary: #607D8B;
     --gray-50: #FAFAFA;
     --gray-100: #F5F5F5;

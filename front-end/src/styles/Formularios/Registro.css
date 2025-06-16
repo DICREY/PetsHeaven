@@ -13,8 +13,7 @@
 .registro-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height: 100vh;
 }
 
 /* Sección derecha - Imagen y cita */

@@ -95,8 +95,8 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
                 <h1 className="textogesusuario">Gestión de personal</h1>
                 <span className="subtitulogesusuario">/ Administración</span>
               </div>
-              <button className="AddBtn" onClick={() => window.location.href = "/admin/usuario/registro"}>
-                <Plus size={16} className="iconoplusadminhome" />
+              <button className="AddBtn" onClick={() => navigate("/admin/usuario/registro")}>
+                <Plus className="icon" />
                 Registrar personal
               </button>
             </header>

@@ -69,7 +69,7 @@ function ValidatorRol(requireRol = '') {
         const isAdmin = roles.some(role => role.toLowerCase() === requireRol.toLowerCase())
 
         // Manejo de acceso
-        if (!isAdmin) return res.status(401).json({ message: 'Usuario no autorizado' })
+        if (!isAdmin) return res.status(401).json({ message: `No estas autorizado para realiazar esta acción` })
 
         next()
     }

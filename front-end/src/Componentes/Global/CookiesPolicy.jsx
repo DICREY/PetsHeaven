@@ -12,12 +12,17 @@ export const CookiePolicy = () => {
         {
             name: '__cred',
             purpose: 'Mantener la sesión del usuario',
-            duration: '8 horas y/o hasta cerrar el navegador'
+            duration: '24 horas maximo'
         },
         {
             name: '__userName',
-            purpose: 'Identificar al usuario',
-            duration: '8 horas y/o hasta cerrar el navegador'
+            purpose: 'Identificar al usuario que ingresa al sistema',
+            duration: '24 horas maximo'
+        },
+        {
+            name: '__token',
+            purpose: 'Validar que el cliente tiene acceso al sistema',
+            duration: '24 horas maximo'
         }
     ]
 

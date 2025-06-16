@@ -76,13 +76,13 @@ export async function ModifyData(URL = '', datas = {}) {
     try {
         const response = await axios.put( URL, {...datas}, { 
             headers: {
-                    'x-api-key': 'pets_heaven_vite'
-                },
+                'x-api-key': 'pets_heaven_vite'
+            },
             withCredentials: true } )
 
         if (response.statusText !== 'OK') throw response
 
-        return response
+        return response.data
 
     } catch (error) {
         throw error
@@ -93,8 +93,8 @@ export async function DeleteData(URL = '', datas = {}) {
     try {
         const response = await axios.delete( URL, {...datas}, { 
             headers: {
-                    'x-api-key': 'pets_heaven_vite'
-                },
+                'x-api-key': 'pets_heaven_vite'
+            },
             withCredentials: true } )
 
         if (response.statusText !== 'OK') {

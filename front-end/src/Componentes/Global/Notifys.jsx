@@ -9,9 +9,6 @@ import { SmallLoader } from '../Loaders/SmallLoader'
 // Import styles 
 import '../../styles/Global/notifys.css'
 
-// Vars 
-const NotificationContext = createContext()
-
 // Component 
 export const Notification = ({
     title = 'Cargando información...',
@@ -22,7 +19,9 @@ export const Notification = ({
     time = 4000,
     close = null,
     firstOption = null,
-    secondOption = null
+    secondOption = null,
+    firstOptionName = 'Cancelar',
+    secondOptionName = 'Aceptar'
 }) => {
     // Dynamic vars
     const [isOpen, setIsOpen] = useState(true)
@@ -76,11 +75,11 @@ export const Notification = ({
                                 <button
                                     className='DeleteBtn'
                                     onClick={firstOption}
-                                >Salir</button>
+                                >{firstOptionName}</button>
                                 <button
                                     className='AddBtn'
                                     onClick={secondOption}
-                                >Continuar</button>
+                                >{secondOptionName}</button>
                             </aside>
                         )}
                     </article>

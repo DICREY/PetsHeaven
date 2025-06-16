@@ -47,12 +47,11 @@ const RolPrivilegios = ({ register, errors, setVet }) => {
         <p className='descripcion-rol'>El rol determina los privilegios generales que tendrá el usuario.</p>
       </section>
 
-      <div className='separador' aria-hidden='true'></div>
+      {/* <hr className='LineH' /> */}
 
-      <section className='seccion-privilegios' aria-labelledby='titulo-privilegios'>
+      {/* <section className='seccion-privilegios' aria-labelledby='titulo-privilegios'>
         <h3 id='titulo-privilegios'>Privilegios de agenda</h3>
-
-      </section>
+      </section> */}
     </section>
   )
 }

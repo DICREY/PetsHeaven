@@ -36,7 +36,7 @@ BEGIN
         personas p_prop ON p_prop.id_per = m.id_pro_mas
     WHERE
         c.estado != 'CANCELADO'
-    ORDER BY c.fec_cit
+    ORDER BY c.fec_reg_cit
     LIMIT 1000;
 END //
 

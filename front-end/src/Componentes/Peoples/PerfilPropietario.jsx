@@ -89,11 +89,14 @@ export const PerfilPropietario = ({
     try {
       const mod = await ModifyData(`${mainUrl}/modify`, modPro)
       setNotify(null)
-      mod.modified & setNotify({
-        title: 'Modificado',
-        message: 'Los datos del usuario han sido modificados',
-        close: setNotify
-      })
+      if (mod?.modified) {
+        setNotify({
+          title: 'Modificado',
+          message: 'Los datos del usuario han sido modificados',
+          close: setNotify
+        })
+        setTimeout(() => navigate(-1), 2000)
+      } 
     } catch (err) {
       setNotify(null)
       const message = errorStatusHandler(err)
@@ -124,7 +127,7 @@ export const PerfilPropietario = ({
       if (admin) {
         const deleted = await DeleteData(`${mainUrl}/delete`, { doc: userData.doc_per })
         setNotify(null)
-        deleted.deleted & setNotify({
+        if (deleted?.deleted) setNotify({
           title: 'Desactivada',
           message: 'La persona ha sido desactivada correctamente.',
           close: setNotify
@@ -209,7 +212,7 @@ export const PerfilPropietario = ({
                           <X className='icon' />
                           <span>Cancelar</span>
                         </button>
-                        <button className='AddBtn' onClick={handleSaveEdit}>
+                        <button className='EditBtn' onClick={handleSaveEdit}>
                           <Save className='icon' />
                           <span>Guardar</span>
                         </button>

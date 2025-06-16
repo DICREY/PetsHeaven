@@ -20,7 +20,7 @@ import Footer from '../Varios/Footer2'
 import '../../../src/styles/Pets/petDetails.css'
 
 // Main component
-export const PetDetails = ({ datas, imgPetDefault, URL = '', tab = 'Datos Generales' }) => {
+export const PetDetails = ({ datas, imgPetDefault = '', URL = '', tab = 'Datos Generales' }) => {
     // Dynamic vars
     const [isAdmin, setIsAdmin] = useState(false)
     const [isEditing, setIsEditing] = useState(false)
@@ -63,10 +63,13 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '', tab = 'Datos Genera
     // Change tabs
     const handleTabChange = (tab) => {
         if (isEditing) {
-            if (window.confirm('Tiene cambios sin guardar. ¿Desea salir sin guardar?')) {
-                setIsEditing(false)
-                setCurrentTab(tab)
-            }
+            setNotify({
+                title: 'Atencion',
+                message: 'Tiene cambios sin guardar. ¿Desea salir sin guardar?',
+                firstOption: () => setNotify(null),
+                secondOption: () => {setIsEditing(false); setCurrentTab(tab); setNotify(null)},
+                secondOptionName: 'Salir',
+            })
         } else setCurrentTab(tab)
     }
 
@@ -98,19 +101,18 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '', tab = 'Datos Genera
                 firstData: datas.nom_mas,
                 secondData: datas.doc_per
             })
-            if (data.data.result) {
-                setAppointment(divideList(data.data.result.citas, 6))
-                setAppointmentAlmc(data.data.result.citas)
+            console.log(data)
+            if (data?.result) {
+                setAppointment(divideList(data.result.citas, 6))
+                setAppointmentAlmc(data.result.citas)
             }
         } catch (err) {
-            if (err.status) {
-                const message = errorStatusHandler(err.status)
-                setNotify({
-                    title: 'Error',
-                    message: `${message}`,
-                    close: setNotify
-                })
-            } else console.log(err)
+            const message = errorStatusHandler(err)
+            setNotify({
+                title: 'Error',
+                message: `${message}`,
+                close: setNotify
+            })
         }
     }
 
@@ -124,21 +126,22 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '', tab = 'Datos Genera
         try {
             const mod = await ModifyData(`${mainURL}/modify`, modPet)
             setNotify(null)
-            if (mod.data.modify) setNotify({
-                title: 'Modificación exitosa',
-                message: 'Los datos de la mascota han sido modificados exitosamente',
-                close: setNotify
-            })
-        } catch (err) {
-            setNotify(null)
-            if (err.status) {
-                const message = errorStatusHandler(err.status)
+            if (mod?.modify) {
                 setNotify({
-                    title: 'Error',
-                    message: `${message}`,
+                    title: 'Modificación exitosa',
+                    message: 'Los datos de la mascota han sido modificados exitosamente',
                     close: setNotify
                 })
-            } else console.log(err)
+                setTimeout(() => navigate(-1),2000)
+            }
+        } catch (err) {
+            setNotify(null)
+            const message = errorStatusHandler(err)
+            setNotify({
+                title: 'Error',
+                message: `${message}`,
+                close: setNotify
+            })
         }
     }
 
@@ -152,29 +155,27 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '', tab = 'Datos Genera
             load: 1
         })
         try {
-            const admin = roles.includes('Administrador')
-            if (admin) {
-                const deleted = await DeleteData(deleteURL, {
-                    nom_mas: datas.nom_mas,
-                    doc_per: datas.doc_per
-                })
-                setNotify(null)
-                if (deleted.data.deleted) setNotify({
+            const deleted = await DeleteData(deleteURL, {
+                nom_mas: datas.nom_mas,
+                doc_per: datas.doc_per
+            })
+            setNotify(null)
+            if (deleted?.deleted) {
+                setNotify({
                     title: 'Mascota Desactivada',
                     message: 'La mascota ha sido desactivada correctamente.',
                     close: setNotify
                 })
+                setTimeout(() => navigate(-1),2000)
             }
         } catch (err) {
             setNotify(null)
-            if (err.status) {
-                const message = errorStatusHandler(err.status)
-                setNotify({
-                    title: 'Error',
-                    message: message,
-                    close: setNotify
-                })
-            } else console.log(err)
+            const message = errorStatusHandler(err)
+            setNotify({
+                title: 'Error',
+                message: message,
+                close: setNotify
+            })
         }
     }
 
@@ -205,7 +206,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '', tab = 'Datos Genera
                 <main className='app-container-pet-details'>
                     <NavBarAdmin />
                     <main className='main-content-pet-details'>
-                        {admin ? (<HeaderAdmin />) : (<HeaderUser />)}
+                        {admin ? (<HeaderAdmin URL={URL} />) : (<HeaderUser />)}
                         <div className='pet-modal-overlay-pet-details'>
                             <div className='pet-modal-content-pet-details'>
 
@@ -216,13 +217,13 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '', tab = 'Datos Genera
                                     </h1>
                                     <div className='botonesAccionProps'>
                                         <button className='BackBtn' onClick={() => navigate(-1)}>
-                                            <ArrowLeft size={18} />
+                                            <ArrowLeft className='icon' />
                                             <span>Atrás</span>
                                         </button>
 
                                         {currentTab === 'Historia Clinica' && (
                                             <button className='EditBtn' onClick={() => setConsult(true)}>
-                                                <FilePlus size={18} />
+                                                <FilePlus className='icon' />
                                                 <span>Agregar Consulta</span>
                                             </button>
                                         )}
@@ -231,23 +232,23 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '', tab = 'Datos Genera
                                                 {isEditing ? (
                                                     <>
                                                         <button className='DeleteBtn' onClick={() => setIsEditing(false)}>
-                                                            <X size={18} />
+                                                            <X className='icon' />
                                                             <span>Cancelar</span>
                                                         </button>
                                                         <button className='EditBtn' onClick={modifyData}>
-                                                            <Save size={18} />
+                                                            <Save className='icon' />
                                                             <span>Guardar</span>
                                                         </button>
                                                     </>
                                                 ) : (
                                                     <button className='EditBtn' onClick={() => setIsEditing(true)}>
-                                                        <Edit size={18} />
+                                                        <Edit className='icon' />
                                                         <span>Editar</span>
                                                     </button>
                                                 )}
                                                 {isAdmin && !isEditing && (
                                                     <button className='DeleteBtn' onClick={deletePet}>
-                                                        <Trash2 size={18} />
+                                                        <Trash2 className='icon' />
                                                         <span>Desactivar</span>
                                                     </button>)
                                                 }
@@ -283,7 +284,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '', tab = 'Datos Genera
                                                 imgDefault={imgPetDefault}
                                                 navigate={navigate}
                                                 isEditing={isEditing}
-                                                disabled={['esp_mas', 'raz_mas', 'col_mas', 'gen_mas']}
+                                                disabled={['nom_mas','esp_mas', 'raz_mas', 'col_mas', 'gen_mas']}
                                             />
                                         )}
                                     </section>
@@ -350,7 +351,7 @@ export const PetDetails = ({ datas, imgPetDefault, URL = '', tab = 'Datos Genera
                                                                 <span className='info-value-pet-details'>{`${item.nom_per} ${item.ape_per}`}</span>
                                                             </div>
                                                             <button className='EditBtn'>
-                                                                <Edit size={18} />
+                                                                <Edit className='icon' />
                                                                 <span>Ver</span>
                                                             </button>
                                                         </div>

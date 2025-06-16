@@ -1,31 +1,32 @@
 /* Header */
 .cabecera-header {
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  /* border-radius: 1rem; */
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
   overflow: visible;
-  position: relative;
   z-index: 100;
-  margin: 1.5rem 1.5rem 1.5rem 1.5rem;
+  /* margin: 1.5rem 1.5rem 1.5rem 1.5rem; */
 }
 
 .contenido-cabecera-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.75rem 2rem;
+  padding: 1.5rem 1.75rem;
 }
 
 .izquierda-cabecera-header h1 {
   font-size: 1.875rem;
   font-weight: 700;
-  color: #00BCD4;
-  margin-bottom: 0.5rem;
+  color: var(--primary);
+  margin-bottom: 0.3rem;
 }
 
 .izquierda-cabecera-header p {
-  color: #64748b;
-  font-size: 0.875rem;
+  color: var(--gray-700);
+  font-size: 0.9rem;
 }
 
 .derecha-cabecera-header {
@@ -48,44 +49,20 @@
   transition: all 0.2s ease;
   font-size: 0.875rem;
   text-decoration: none;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  min-height: 44px;
+  min-height: 2.8rem;
 }
 
-.boton-ayuda-header {
-  background: #f1f5f9;
-  color: #475569;
-}
-
-.boton-ayuda-header:hover {
-  background: #e2e8f0;
-  transform: translateY(-1px);
-}
-
-.boton-notificacion-header {
-  position: relative;
-  background: #B2EBF2;
-  color: #92400e;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.boton-notificacion-header:hover {
-  background: #00BCD4;
-  transform: translateY(-1px);
-}
 
 .insignia-notificacion-header {
   position: absolute;
   top: -6px;
   right: -6px;
   background: #ef4444;
-  color: white;
-  font-size: 0.75rem;
+  color: var(--white);
+  font-size: 0.78rem;
   padding: 0.125rem 0.375rem;
-  border-radius: 9999px;
-  min-width: 1.25rem;
+  border-radius: 50%;
+  width: 1.25rem;
   height: 1.25rem;
   display: flex;
   align-items: center;
@@ -107,12 +84,12 @@
 
 .contenedor-perfil-header {
   position: relative;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .boton-perfil-header {
   background: var(--gray-100);
-  color: var(--azulturquesa);
+  color: var(--primary);
   padding: 0.75rem 1rem;
   display: flex;
   align-items: center;
@@ -122,20 +99,20 @@
 }
 
 .boton-perfil-header:hover {
-  background: #bfdbfe;
-  transform: translateY(-1px);
+  background: var(--gray-100);
+  transform: translateY(-.1rem);
 }
 
 .avatar-perfil-header {
   display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    background: var(--azulturquesa);
-    border-radius: 50%;
-    border: .1rem solid var(--azulturquesa);
-    color: var(--white);
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  background: var(--primary);
+  border-radius: 50%;
+  border: .1rem solid var(--primary);
+  color: var(--white);
 }
 
 .info-perfil-header {
@@ -151,8 +128,9 @@
 }
 
 .rol-perfil-header {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   opacity: 0.8;
+  color: var(--gray-700);
 }
 
 .icono-flecha-header {
@@ -174,12 +152,12 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   border: 1px solid #e2e8f0;
   min-width: 200px;
-  z-index: 9999;
   overflow: hidden;
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
   transition: all 0.2s ease;
+  z-index: 100;
 }
 
 .item-dropdown-header {
@@ -196,7 +174,6 @@
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: left;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .item-dropdown-header:hover {
@@ -215,7 +192,7 @@
 /* Notifications Dropdown */
 .contenedor-notificaciones-header {
   position: relative;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .dropdown-notificaciones-header {
@@ -227,7 +204,7 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   border: 1px solid #e2e8f0;
   width: 320px;
-  z-index: 10000;
+  z-index: 100;
   overflow: hidden;
   max-height: 500px;
   display: block;
@@ -255,7 +232,7 @@
 
 .contador-notificaciones-header {
   font-size: 0.75rem;
-  color: #64748b;
+  color: var(--gray-700);
   background: #e2e8f0;
   padding: 0.25rem 0.5rem;
   border-radius: 0.375rem;
@@ -326,7 +303,7 @@
 
 .contenido-notificacion-header p {
   font-size: 0.8rem;
-  color: #64748b;
+  color: var(--gray-700);
   margin: 0 0 0.375rem 0;
   line-height: 1.4;
 }
@@ -347,13 +324,12 @@
   padding: 0.5rem;
   background: transparent;
   border: none;
-  color: #00BCD4; 
+  color: var(--primary); 
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
   border-radius: 0.375rem;
   transition: background-color 0.2s ease;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .boton-ver-todas-header:hover {

@@ -3,15 +3,28 @@
   height: 100vh;
   width: 100vw;
   background-color: var(--background);
+  overflow: auto;
+}
+
+.principalgesusuario {
+  height: 100vh;
+  width: 100%;
+  overflow: auto;
 }
 
 /* Contenedor principal que se alinea con la estructura de GesUsuario */
-.contenedor-regusuario {
+.main-contenedor-regusuario {
+  padding: 1.5rem;
   width: 100%;
-  margin: 1.5rem;
+  background-color: var(--background);
+}
+
+.contenedor-regusuario {
+  padding: .5rem;
+  width: 100%;
   border-radius: 0.5rem;
   background-color: var(--white);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
   transition: all 0.3s ease;
 }
 
@@ -45,31 +58,6 @@
   gap: .8rem;
 }
 
-.atras-regusuario {
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-  padding: .5rem .8rem;
-  border: 1px solid #e5e7eb;
-  background-color: #fff;
-  border-radius: 0.2rem;
-  font-size: 0.7rem;
-  cursor: pointer;
-  color: #374151;
-  text-decoration: none;
-}
-
-.guardar-regusuario {
-  padding: .5rem 1rem;
-  background-color: #00bcd4;
-  color: var(--white);
-  border: none;
-  border-radius: 0.2rem;
-  font-size: 0.7rem;
-  font-weight: 500;
-  cursor: pointer;
-}
-
 .tabs-regusuario {
   display: flex;
   border-bottom: 1px solid #e5e7eb;
@@ -82,16 +70,16 @@
   align-items: center;
   gap: .5rem;
   padding: .8rem 1rem;
-  font-size: 0.7rem;
-  color: #6b7280;
+  font-size: 1rem;
+  color: var(--gray-700);
   cursor: pointer;
   border-bottom: 2px solid transparent;
   white-space: nowrap;
 }
 
 .tab-regusuario.activo-regusuario {
-  color: #00bcd4;
-  border-bottom: 2px solid #00bcd4;
+  color: var(--primary);
+  border-bottom: .18rem solid var(--primary);
 }
 
 .icono-regusuario {
@@ -103,9 +91,9 @@
 }
 
 .form-regusuario h2 {
-  font-size: 1rem;
+  font-size: 1.3rem;
   font-weight: 500;
-  color: #00BCD4;
+  color: var(--primary);
   margin-top: 0;
   margin-bottom: 1.5rem;
 }
@@ -115,7 +103,6 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 1.9rem;
   margin-bottom: 1.2rem;
-  column-gap: 50px;
 }
 
 .grupo-regusuario {
@@ -125,22 +112,24 @@
 }
 
 .etiqueta-regusuario {
-  font-size: 0.7rem;
-  color: #00BCD4;
+  font-size: 1.1rem;
+  letter-spacing: 0.03rem;
+  color: var(--gray-800);
 }
 
 .campo-regusuario {
-  padding: 10px .8rem;
-  border: 1px solid #d1d5db;
+  letter-spacing: 0.03rem;
+  padding: .6rem .8rem;
+  border: .1rem solid #d1d5db;
   border-radius: 0.2rem;
-  font-size: 0.7rem;
+  font-size: 1rem;
   width: 100%;
   outline: none;
   transition: border-color 0.2s;
 }
 
 .campo-regusuario:focus {
-  border-color: #00bcd4;
+  border-color: var(--primary);
 }
 
 .perfil-regusuario {
@@ -196,21 +185,21 @@
 
 .firma-regusuario {
   position: relative;
-  width: 200px;
-  height: 80px;
+  width: 12.5rem;
+  height: 5rem;
 }
 
 .caja-firma-regusuario {
   width: 100%;
   height: 100%;
   background-color: #f3f4f6;
-  border: 1px solid #d1d5db;
+  border: .1rem solid #d1d5db;
   border-radius: 0.2rem;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #9ca3af;
-  font-size: 0.7rem;
+  font-size: 1rem;
   overflow: hidden;
 }
 
@@ -228,7 +217,8 @@
   display: none;
 }
 .obligatorio{
-  color: #dc2626;
+  font-size: 1.2rem;
+  color: #ff2020;
 }
 
 /* ==================== MEDIA QUERIES ==================== */

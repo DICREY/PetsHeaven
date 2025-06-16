@@ -207,7 +207,7 @@ BEGIN
     WHERE
         p.estado = 1
     GROUP BY 
-        p.id_per
+        p.fec_cre_per
     LIMIT 1000;
 END //
 CREATE PROCEDURE pets_heaven.SearchPeoplesVet()
@@ -237,7 +237,7 @@ BEGIN
     WHERE
         p.estado = 1
     GROUP BY 
-        p.id_per
+        p.fec_cre_per
     LIMIT 1000;
 END //
 CREATE PROCEDURE pets_heaven.SearchAllPeoples()
@@ -263,7 +263,7 @@ BEGIN
     JOIN
         roles r ON otr.id_rol = r.id_rol
     GROUP BY 
-        p.id_per
+        p.fec_cre_per
     LIMIT 1000;
 END //
 

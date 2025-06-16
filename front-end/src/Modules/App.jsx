@@ -97,6 +97,8 @@ export default function App () {
         message: 'Tu sesión ha estado inactiva por un tiempo prolongado. ¿Deseas continuar?',
         firstOption: () => window.location.href = '/user/login',
         secondOption: () => setNotify(null),
+        firstOptionName: 'Salir',
+        secondOptionName: 'Continuar'
       })
     }
   },[isInactive])

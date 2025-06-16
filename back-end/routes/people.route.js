@@ -73,12 +73,11 @@ Route.post('/register', async (req,res) => {
     const body = req.body
     
     try {
-
         // Verifiy if exist
-        const find = await people.findBy(toString(body.numeroDocumento))
+        const find = await people.findBy(toString(body.doc_per))
         if (find.result[0][0].nom_per) res.status(302).json({ message: "Usuario ya existe" })
 
-        const create = await people.create({ hash_pass: await hash(body.password,saltRounds), ...body })
+        const create = await people.create({ hash_pass: await hash(body.pas_per,saltRounds), ...body })
         res.status(201).json(create)
 
     } catch(err) {
@@ -113,13 +112,14 @@ Route.put('/modify', async (req,res) => {
 Route.delete('/delete', async (req,res) => {
     // Vars 
     const { body } = req
+    console.log(body)
         
     try {
         // Verifiy if exist
-        const find = await people.findBy(toString(body.doc))
+        const find = await people.findBy(toString(body.doc_per))
         if (!find.result) res.status(404).json({ message: "Usuario no encontrado" })
 
-        const peopleDeleted = await people.delete(body.doc)
+        const peopleDeleted = await people.delete(body.doc_per)
         if (peopleDeleted.deleted) return res.status(200).json(peopleDeleted)
 
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde' })

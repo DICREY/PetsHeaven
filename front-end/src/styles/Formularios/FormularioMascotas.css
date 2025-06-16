@@ -1,25 +1,23 @@
 /* Imports  */
-@import url("../vars.css");
-@import url("../global.css");
 
 /* Estilos base del formulario */
-section.formContMascota {
+.formContMascota {
   background-color: var(--white);
   border-radius: var(--border-radius);
   width: 100%;
   gap: 1.1rem;
-  max-width: 55vw;
-  max-height: 90vh;
+  /* max-width: 55vw; */
+  /* max-height: 90vh; */
   position: relative;
   box-shadow: var(--shadow-lg);
-  padding: 24px;
+  padding: 1.4rem;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
 }
 
 /* Encabezado del formulario */
-header.formHeadMascota {
+.formHeadMascota {
   text-align: left;
   margin-bottom: 20px;
 }
@@ -113,7 +111,7 @@ header.formHeadMascota {
 }
 
 /* Grid para campos del formulario */
-fieldset.contPasoMascota {
+.contPasoMascota {
   border: none;
   padding: 0;
   margin: 0;
@@ -168,8 +166,8 @@ fieldset.contPasoMascota {
   display: block;
 }
 
-/* Fieldset y legend */
-legend.sr-only {
+/*  y legend */
+.sr-only {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -183,18 +181,12 @@ legend.sr-only {
 
 /* Responsive */
 @media (max-width: 768px) {
-  section.formContMascota {
-    max-width: 90vw;
-    padding: 16px;
-  }
-
-  fieldset.contPasoMascota {
+  .contPasoMascota {
     grid-template-columns: 1fr;
   }
 
   .supContBotonesMascota {
     flex-direction: column;
-    gap: 20px;
   }
 
   .botonesMascota {

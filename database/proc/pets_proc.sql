@@ -123,7 +123,7 @@ BEGIN
         m.estado = 1
         AND p.estado = 1
     ORDER BY 
-        m.nom_mas
+        m.fec_cre_mas
     LIMIT 1000;
 
 END //
