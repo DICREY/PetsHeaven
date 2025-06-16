@@ -182,7 +182,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: calc(6 * 120px); /* Altura aproximada de 6 notificaciones */
+  max-height: calc(4 * 120px); /* Altura aproximada de 6 notificaciones */
   overflow-y: auto;
 }
 
