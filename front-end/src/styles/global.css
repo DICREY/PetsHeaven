@@ -129,7 +129,7 @@
   justify-content: center;
   gap: 0.3rem;
   padding: 0.5rem 1rem;
-  border: 0.1rem solid var(--gray-300);
+  border: 0.1rem solid var(--gray-tr);
   border-radius: 0.4rem;
   background-color: var(--white);
   color: var(--gray-600);
@@ -171,7 +171,7 @@
   color: var(--white);
   font-size: 0.9rem;
   font-weight: 500;
-  border: 0.1rem solid var(--azulturquesa);
+  border: 0.1rem solid var(--gray-tr);
   border-radius: 0.4rem;
   background-color: var(--azulturquesa);
   box-shadow: var(--shadow-sm);

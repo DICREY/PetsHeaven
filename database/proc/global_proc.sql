@@ -24,9 +24,7 @@ BEGIN
     LIMIT 1000;
 END //
 
-CREATE PROCEDURE pets_heaven.GetStatsAdmin(
-    /* IN p_by VARCHAR(100) */
-)
+CREATE PROCEDURE pets_heaven.GetAdminStats()
 BEGIN
     SELECT 
         COUNT(v.id_vet) AS doc,
@@ -44,9 +42,9 @@ BEGIN
             FROM 
                 citas c 
             JOIN 
-                servicios s ON ccs.id_ser = c.ser_cit
+                servicios s ON s.id_ser = c.ser_cit
             JOIN
-                categorias_ser cs ON cs.id_cat = ccs.cat_ser
+                categorias_ser cs ON cs.id_cat = s.cat_ser
             WHERE 
                 cs.nom_cat LIKE "Emergencias 24h"
         ) AS emg
@@ -112,5 +110,5 @@ END //
 /* DROP PROCEDURE pets_heaven.`Login`; */
 /* CALL `GetStatsAdmin`(); */
 /* CALL `GetStatsVet`('1298765432'); */
-/* DROP PROCEDURE `GetDataAdmin`; */
+/* DROP PROCEDURE `GetAdminStats`; */
 /* DROP PROCEDURE `GetStatsVet`; */

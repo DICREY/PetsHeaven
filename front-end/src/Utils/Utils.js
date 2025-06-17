@@ -26,10 +26,10 @@ export const ReqFunction = async (
     try {
         if (ReqFunct && setNotify && set){
             const req = await ReqFunct(URL, data)
+            // console.log(req)
             setNotify(null)
-            if (req?.result[0]) return set(req.result[0])
-            if (req?.data) return set(req.data[0])
-            if (req[0]) return set(req[0])
+            if (req?.result) return set(req.result)
+            if (req?.data) return set(req.data)
             set(req)
         }
     } catch (err) {

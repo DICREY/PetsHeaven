@@ -64,14 +64,13 @@ Route.get('/info/general', ValidatorRol('administrador'), async (req,res) => {
     // Vars
     const info = new Global()
     try {
-        const inf = await info.GetDataAdmin()
+        const inf = await info.GetAdminStats()
 
         // Verify if exist 
         if (!inf.result) res.status(404).json({ message: "Información no encontrada" })
 
         res.status(200).json(inf)
     } catch (err) {
-        console.log(err)
         if (err.status) return res.status(err.status).json({ message: err.message })
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }

@@ -45,7 +45,7 @@ class Appointment {
             this.database = new DataBase()
             this.database.conect()
         
-            if (this.database) this.database.conection.query(procedure, by , (err,result) =>{
+            if (this.database) this.database.conection.query(procedure, by, (err,result) =>{
                 if(err) rej({ message: err})
                 if(!result || !result[0][0]) rej({
                     message: "Not found",

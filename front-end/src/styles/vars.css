@@ -19,9 +19,10 @@
     --gris-claro: #f5f5f5;
     --gris-medio: #e0e0e0;
     --gris-oscuro: #757575;
-    --sombra: 0 0.1rem 0.7rem rgba(0, 0, 0, 0.08);
+    --sombra: 0 0.1rem 0.7rem rgba(0, 0, 0, 0.103);
     --gris: #666;
     --gray: #6e6e6e;
+    --gray-tr: #6e6e6e2c;
     --red: #c20300;
     --border-input: #c4c4c4;
     --border-focus-input:#4a90e233;
@@ -40,7 +41,7 @@
     --purple-1:  #c7d2fe;
     --purple-2:  #6366f1;
     --border-radius: 0.7rem;
-    --shadow-sm: 0 0.1rem 0.2rem #00000027;
+    --shadow-sm: 0 0.1rem 0.2rem #00000033;
     --shadow-md: 0 0.2rem 0.4rem #0000001a;
     --shadow-lg: 0 0.7rem 0.9rem #0000001a;
     --font-size: 1rem;

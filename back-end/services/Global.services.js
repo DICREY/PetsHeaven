@@ -38,10 +38,10 @@ class Global {
         })
     }
 
-    async GetDataAdmin() {
+    async GetAdminStats() {
         return new Promise((res,rej) => {
             // vars
-            const proc = "CALL GetDataAdmin();"
+            const proc = "CALL GetAdminStats();"
             // const by = this.args[0].replace(" ","")
 
             // conect to database

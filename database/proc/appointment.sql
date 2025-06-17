@@ -74,7 +74,6 @@ BEGIN
         m.gen_mas,
         m.est_rep_mas,
         m.fot_mas,
-        m.fec_cre_mas,
         p_vet.nom_per AS vet_nom_per,
         p_vet.ape_per AS vet_ape_per,
         p_vet.cel_per AS vet_cel_per,

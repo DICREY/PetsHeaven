@@ -5,9 +5,9 @@ import { useNavigate } from 'react-router-dom'
 
 // Imports 
 import { AuthContext } from "../../Contexts/Contexts"
-import { ReqFunction } from "../../Utils/Utils"
 import { PostData } from '../Varios/Requests'
 import { TabHelp } from '../Global/TabHelp'
+import { hourTraductor } from "../Varios/Util"
 
 // import styles 
 import "../../styles/BarrasNavegacion/Header.css"
@@ -72,14 +72,24 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
     tabHelp ? setTabHelp(false) : setTabHelp(true)
   }
 
+  const getAppoint = async () => {
+    try {
+      const data = await PostData(mainUrl,{ by: user.doc })
+      setNotify(null)
+      if (data) setAppointment(data[0])
+    } catch (err) {
+      setNotify(null)
+      const message = errorStatusHandler(err)
+      setNotify({
+        title: 'Error',
+        message: `${message}`,
+        close: setNotify
+      })
+    }
+  }
+
   useEffect(() => {
-    ReqFunction(
-      mainUrl,
-      PostData,
-      setNotify,
-      setAppointment,
-      { by: user.doc }
-    )
+    getAppoint()
   }, [])
 
   return (
@@ -116,9 +126,10 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
               aria-haspopup="true"
             >
               <Bell className="icon" aria-hidden="true" />
-              <span className="insignia-notificacion-header" aria-label="3 notificaciones nuevas">
+              <span className="insignia-notificacion-header" aria-label={`${appointment?.length || 0} notificaciones nuevas`}>
                 {appointment?.length || 0}
               </span>
+              Notificaciones
             </button>
 
             {isNotificationsOpen && (
@@ -138,7 +149,7 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
                         <h3>{notification.nom_cat}</h3>
                         <h4>{notification.nom_ser}</h4>
                         <p>{notification.des_ser}</p>
-                        <time className="tiempo-notificacion-header">{notification.hor_ini_cit}</time>
+                        <time className="tiempo-notificacion-header">{hourTraductor(notification.hor_ini_cit)}</time>
                       </article>
                     </li>
                   ))}
