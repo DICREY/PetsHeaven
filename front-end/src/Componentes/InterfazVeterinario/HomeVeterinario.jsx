@@ -10,6 +10,7 @@ import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { ReqFunction } from "../../Utils/Utils"
 import { GetData, PostData } from "../Varios/Requests"
 import { AuthContext } from "../../Contexts/Contexts"
+import AppointmentForm from "../InterfazAdmin/FormulariosAdmin/AgendarCita"
 
 // Import styles 
 import "../../styles/InterfazVeterinario/HomeVeterinario.css"
@@ -109,6 +110,13 @@ export const PanelVeterinario = ({ URL = '', imgDefault = '', setPetSelect }) =>
     getAppoint()
   }, [])
 
+  // Form flotante agendar cita 
+    const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  
+    const toggleFormulario = () => {
+      setMostrarFormulario(!mostrarFormulario);
+    };
+
   return (
     <main className="tablero-vet">
       <NavBarAdmin />
@@ -181,11 +189,11 @@ export const PanelVeterinario = ({ URL = '', imgDefault = '', setPetSelect }) =>
               <h2>Acciones Rápidas</h2>
 
               <nav className="acciones-rapidas-vet" aria-label="Acciones rápidas">
-                <button type="button" className="EditBtn">
+                <button type="button" className="EditBtn" onClick={toggleFormulario}>
                   <Plus className="icon" aria-hidden="true" />
                   Nueva Consulta
                 </button>
-
+                {mostrarFormulario && <AppointmentForm onClose={toggleFormulario} />}
                 <button type="button" className="DeleteBtn">
                   <Activity className="icon" aria-hidden="true" />
                   Programar Cirugía

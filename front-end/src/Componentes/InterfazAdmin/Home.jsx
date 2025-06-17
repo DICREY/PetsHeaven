@@ -10,6 +10,7 @@ import { Notification } from "../Global/Notifys"
 import { errorStatusHandler, hourTraductor } from '../Varios/Util'
 import { AuthContext } from "../../Contexts/Contexts"
 import { ReqFunction } from "../../Utils/Utils"
+import AppointmentForm from "../InterfazAdmin/FormulariosAdmin/AgendarCita"
 
 import "../../styles/InterfazAdmin/Home.css"
 
@@ -74,6 +75,13 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
     )
     getAppoint()
   }, [])
+
+  // Form flotante agendar cita 
+  const [mostrarFormulario, setMostrarFormulario] = useState(false);
+
+  const toggleFormulario = () => {
+    setMostrarFormulario(!mostrarFormulario);
+  };
 
   return (
     <main className="contenedoradminhome">
@@ -148,7 +156,7 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
               <h2>Acciones Rápidas</h2>
 
               <nav className="acciones-rapidas-admin" aria-label="Acciones rápidas">
-                <button type="button" className="AddBtn">
+                <button type="button" className="AddBtn" onClick={toggleFormulario}>
                   <Plus className="icon" aria-hidden="true" />
                   Nueva Cita
                 </button>
@@ -160,6 +168,7 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
                   <ExternalLink className="icon" aria-hidden="true" />
                   Visitar Página Web
                 </button>
+                {mostrarFormulario && <AppointmentForm onClose={toggleFormulario} />}
               </nav>
 
               {/* Recent Activity */}

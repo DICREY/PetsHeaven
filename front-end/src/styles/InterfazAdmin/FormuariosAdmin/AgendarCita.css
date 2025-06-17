@@ -70,13 +70,13 @@
 .modal-header h3 {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1e293b;
-  margin: 0;
+  color: #00BCD4;
+  margin: 0; 
 }
 
 .modal-cerrar {
-  background: none;
-  border: none;
+  background: #f8fdfe;
+  border: 1px solid #e0f7fa;
   color: #64748b;
   cursor: pointer;
   padding: 0.5rem;
@@ -90,9 +90,10 @@
 }
 
 .modal-cerrar:hover {
-  background: #f8fafc;
-  color: #1e293b;
+  background: #E0F7FA;
+  color: #00BCD4;
   transform: scale(1.1);
+  border: 1px solid #e0f7fa;
 }
 
 /* Cuerpo del modal */
@@ -156,7 +157,7 @@
 .seccion-header h4 {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1e293b;
+  color: #00BCD4;
   margin: 0;
 }
 
@@ -179,7 +180,7 @@
 .etiqueta {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #1e293b;
+  color: #616161;
   margin-bottom: 0.5rem;
   min-height: 1.25rem;
   display: block;
@@ -342,11 +343,11 @@
   width: 100%;
   padding: 1rem 1.5rem;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 400;
   border: 2px solid #e2e8f0;
   border-radius: 12px;
   background: #ffffff;
-  color: #1e293b;
+  color: #424242;
   transition: all 0.3s ease;
   min-height: 3rem;
   outline: none;
@@ -368,14 +369,13 @@
 .hora-input {
   width: 100%;
   padding: 1rem 1.5rem;
-  font-size: 1.125rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 400;
   border: 2px solid #e2e8f0;
   border-radius: 12px;
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-  color: #1e293b;
+  background: #ffffff;
+  color: #424242;
   transition: all 0.3s ease;
-  text-align: center;
   min-height: 3rem;
   outline: none;
 }
@@ -387,21 +387,13 @@
   background: #ffffff;
 }
 
-.separador {
+.separador-ci {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 1rem 0;
-  margin-top: 1.75rem;
   height: 3rem;
-}
-
-.separador-linea {
-  width: 2px;
-  height: 1rem;
-  background: linear-gradient(to bottom, #00bcd4, #e0f7fa);
-  border-radius: 1px;
 }
 
 .separador-texto {

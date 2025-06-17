@@ -207,8 +207,7 @@ export default function AppointmentForm({ onClose, onSubmit }) {
                     placeholder="Nombre del propietario"
                     value={newEvent.propietario}
                     onChange={handleInputChange}
-                    className="campo campo-disabled"
-                    disabled
+                    className="campo"
                   />
                 </div>
 
@@ -321,7 +320,7 @@ export default function AppointmentForm({ onClose, onSubmit }) {
                       />
                     </div>
 
-                    <div className="separador">
+                    <div className="separador-ci">
                       <div className="separador-linea"></div>
                       <span className="separador-texto">hasta</span>
                       <div className="separador-linea"></div>
