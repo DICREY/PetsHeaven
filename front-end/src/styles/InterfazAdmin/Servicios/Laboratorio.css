@@ -45,19 +45,18 @@
 }
 
 .contenedor-principal-laboratorio {
-  width: 100%;
-  margin: 0 auto;
-  background-color: var(--color-fondo);
-  border-radius: var(--radio);
-  box-shadow: var(--sombra-minima);
-  padding: calc(var(--espaciado) * 2);
-  border: 1px solid var(--color-borde);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: var(--white);
+  transition: all 0.3s ease;
 }
 
 .encabezado-laboratorio {
-  margin-bottom: calc(var(--espaciado) * 2);
-  padding-bottom: var(--espaciado);
-  border-bottom: 1px solid var(--color-borde);
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .titulo-con-icono-laboratorio {
@@ -74,10 +73,9 @@
 }
 
 .titulo-laboratorio {
-  color: var(--color-primario-oscuro);
-  font-size: 2rem;
-  font-weight: 500;
-  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--azulturquesa);
   letter-spacing: -0.01em;
 }
 
@@ -98,9 +96,9 @@
 }
 
 .subtitulo-laboratorio {
-  font-size: 1.125rem;
+ font-size: 1.125rem;
   font-weight: 500;
-  color: var(--color-primario-oscuro);
+  color: var(--azulturquesa);
   margin: 0;
 }
 
@@ -195,9 +193,9 @@
 .nombre-laboratorio {
   font-size: 1rem;
   font-weight: 500;
-  color: var(--color-primario-oscuro);
-  line-height: 1.3;
+  color: #00BCD4;
   margin: 0 0 0.75rem 0;
+  line-height: 1.3;
 }
 
 /* Nueva fila de metadatos */
@@ -372,7 +370,7 @@
 
 .precio-laboratorio {
   font-weight: 500;
-  color: var(--color-primario-oscuro);
+  color: #00BCD4;
   font-size: 0.9375rem;
 }
 
