@@ -182,9 +182,9 @@ export function VisualizadorVacunas({ URL = '' }) {
 
         const vacunaData = {
           nom_vac: nuevaVacuna.nombre,
-          des_gen: nuevaVacuna.descripcion || '', // Valor por defecto si es null
+          des_gen: nuevaVacuna.descripcion || '', 
           des_tec: nuevaVacuna.descripcionTecnica || '',
-          pre_vac: Number(nuevaVacuna.precio), // Convertir a número
+          pre_vac: Number(nuevaVacuna.precio), 
           fre_vac: nuevaVacuna.frecuencia || '',
           cat_vac: nuevaVacuna.categoria || 'Esencial',
           num_lot: nuevaVacuna.lote || '',
