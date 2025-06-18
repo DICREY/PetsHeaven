@@ -6,8 +6,6 @@ import { Syringe, Plus, Trash2, Edit, X, Calendar, Clock, AlertTriangle, FileTex
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
 import { HeaderUser } from '../../BarrasNavegacion/HeaderUser'
 import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
-import Footer from '../../Varios/Footer2'
-import { AuthContext } from "../../../Contexts/Contexts"
 import { Notification } from '../../Global/Notifys'
 import { GetData, PostData, ModifyData } from "../../Varios/Requests"
 import { errorStatusHandler } from '../../Varios/Util'
@@ -18,6 +16,7 @@ import "../../../styles/InterfazAdmin/Servicios/Vacuna.css"
 // Component 
 export function VisualizadorVacunas({ URL = '' }) {
   const [vacunas, setVacunas] = useState([])
+  const [almcVac, setAlmcVac] = useState([])
   const [modalAbierto, setModalAbierto] = useState(false)
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false)
   const [vacunaDetalle, setVacunaDetalle] = useState(null)
@@ -25,6 +24,7 @@ export function VisualizadorVacunas({ URL = '' }) {
   const [modoEdicion, setModoEdicion] = useState(false)
   const [vacunaEditando, setVacunaEditando] = useState(null)
   const [notify, setNotify] = useState(null)
+  const [page, setPage] = useState(1)
   const didFetch = useRef(false)
   const mainUrl = `${URL}/service`
 
@@ -91,6 +91,7 @@ export function VisualizadorVacunas({ URL = '' }) {
         }));
 
         setVacunas(vacunasMapeadas);
+        setAlmcVac(vacunasMapeadas);
         console.log(vacunasMapeadas)
       } else {
         setNotify({
@@ -349,6 +350,14 @@ export function VisualizadorVacunas({ URL = '' }) {
     return colores[categoria] || "categoria-opcional"
   }
 
+  const prevPage = () => {
+    if (page != 1) setPage(page - 1)
+  }
+
+  const nextPage = () => {
+    if (page < almcVac.length) setPage(page + 1)
+  }
+
   return (
     <div className="contenedor-vacunas">
       <NavBarAdmin />
@@ -387,7 +396,7 @@ export function VisualizadorVacunas({ URL = '' }) {
 
             {/* Grid de vacunas */}
             <div className="grid-vacunas">
-              {vacunasFiltradas.map((vacuna) => (
+              {almcVac?.map((vacuna) => (
                 <div
                   key={vacuna.id}
                   className={`tarjeta-vacunas ${!vacuna.disponible ? "no-disponible-vacunas" : ""}`}
@@ -463,6 +472,7 @@ export function VisualizadorVacunas({ URL = '' }) {
                 <button
                   type='button'
                   className='BackBtn'
+                  onClick={prevPage}
                 >
                   <ChevronLeft className='icon' />
                   Anterior
@@ -470,11 +480,12 @@ export function VisualizadorVacunas({ URL = '' }) {
                 <button
                   type='button'
                   className='btn-paginacion btn-active'>
-                  1
+                  {page}
                 </button>
                 <button
                   type='button'
                   className='BackBtn'
+                  onClick={nextPage}
                 >
                   Siguiente
                   <ChevronRight className='icon' />
