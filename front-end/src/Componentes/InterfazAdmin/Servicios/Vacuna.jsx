@@ -68,8 +68,10 @@ export function VisualizadorVacunas({ URL = '' }) {
       // Asegúrate de que la respuesta tenga la estructura correcta
       if (response && Array.isArray(response)) {
         // Mapeamos los datos del backend al formato que espera el frontend
+        console.log(response)
         const vacunasMapeadas = response.map(vacuna => ({
           id: vacuna.id_vac,
+          id_ser: vacuna.id_ser,
           nombre: vacuna.nom_vac,
           descripcion: vacuna.des_ser,
           descripcionTecnica: vacuna.tec_des_ser,
@@ -122,10 +124,6 @@ export function VisualizadorVacunas({ URL = '' }) {
     fetchVacunas();
   }, [fetchVacunas]);
 
-  useEffect(() => {
-    fetchVacunas();
-  }, [fetchVacunas]);
-
   const formatearPrecio = (precio) => {
     return new Intl.NumberFormat("es-CO", {
       style: "currency",
@@ -167,16 +165,13 @@ export function VisualizadorVacunas({ URL = '' }) {
   }
 
   const abrirModalEditar = (vacuna) => {
-    setNuevaVacuna({ ...vacuna, precio: vacuna.precio.toString() })
+    setNuevaVacuna({...vacuna})
     setVacunaEditando(vacuna.id)
     setModoEdicion(true)
     setModalAbierto(true)
   }
 
   const guardarVacuna = async () => {
-
-    
-
     if (nuevaVacuna.nombre && nuevaVacuna.precio > 0) {
       try {
         setNotify({
@@ -187,28 +182,30 @@ export function VisualizadorVacunas({ URL = '' }) {
 
         const vacunaData = {
           nom_vac: nuevaVacuna.nombre,
-          efe_sec_vac: nuevaVacuna.efectosSecundarios,
-          cat_vac: nuevaVacuna.categoria,
-          dos_rec_vac: nuevaVacuna.dosis.cachorro, // Ajustar según necesidades
-          lot_vac: nuevaVacuna.lote,
-          fec_ven_vac: nuevaVacuna.fechaVencimiento,
-          fre_vac: nuevaVacuna.frecuencia,
-          // Datos del servicio asociado
-          nom_ser: nuevaVacuna.nombre,
-          pre_ser: Number(nuevaVacuna.precio),
-          des_ser: nuevaVacuna.descripcion,
-          sta_ser: nuevaVacuna.disponible ? "DISPONIBLE" : "NO-DISPONIBLE",
-          tec_des_ser: nuevaVacuna.descripcionTecnica,
-          cat_ser: 2 // Asumimos categoría 2 para vacunas (ajustar según tu BD)
+          des_gen: nuevaVacuna.descripcion || '', 
+          des_tec: nuevaVacuna.descripcionTecnica || '',
+          pre_vac: Number(nuevaVacuna.precio), 
+          fre_vac: nuevaVacuna.frecuencia || '',
+          cat_vac: nuevaVacuna.categoria || 'Esencial',
+          num_lot: nuevaVacuna.lote || '',
+          fec_ven: nuevaVacuna.fechaVencimiento || new Date().toISOString().split('T')[0],
+          efe_sec: nuevaVacuna.efectosSecundarios || '',
+          dos_rec: nuevaVacuna.dosis?.cachorro || '',
+          sta_ser: nuevaVacuna.disponible ? "DISPONIBLE" : "NO-DISPONIBLE"
         };
 
+        console.log('Datos a enviar:', vacunaData);
+
         if (modoEdicion) {
+          if (!vacunaEditando) {
+            throw new Error('ID de vacuna no especificado para edición');
+          }
           await ModifyData(`${mainUrl}/modifyVac`, {
             id_vac: vacunaEditando,
             ...vacunaData
           });
         } else {
-          await PostData(`${mainUrl}/registerVac`, vacunaData)
+          await PostData(`${mainUrl}/register/vac`, vacunaData);
         }
 
         setNotify({
@@ -218,27 +215,31 @@ export function VisualizadorVacunas({ URL = '' }) {
         });
 
         setModalAbierto(false);
-        fetchVacunas();
+        await fetchVacunas(); 
+
       } catch (err) {
         setNotify(null);
-        if (err.status) {
-          const message = errorStatusHandler(err.status);
-          setNotify({
-            title: 'Error',
-            message: `${message}`,
-            close: setNotify
-          });
-        } else {
-          console.error(err);
-          setNotify({
-            title: 'Error',
-            message: `No se pudo ${modoEdicion ? 'actualizar' : 'agregar'} la vacuna`,
-            close: setNotify
-          });
-        }
+        console.error('Error al guardar vacuna:', err);
+
+        const message = err.status
+          ? errorStatusHandler(err.status)
+          : err.message || `No se pudo ${modoEdicion ? 'actualizar' : 'agregar'} la vacuna`;
+
+        setNotify({
+          title: 'Error',
+          message: message,
+          close: setNotify
+        });
       }
+    } else {
+      setNotify({
+        title: 'Error',
+        message: 'Por favor complete todos los campos requeridos',
+        close: setNotify
+      });
     }
   }
+
   const eliminarVacuna = async (id) => {
     if (window.confirm("¿Estás seguro de que deseas eliminar esta vacuna?")) {
       try {
@@ -283,9 +284,10 @@ export function VisualizadorVacunas({ URL = '' }) {
     setModalDetalleAbierto(true)
   }
 
-  const cambiarEstado = async (id, e) => {
-    e.stopPropagation();
-    
+
+  const cambiarEstado = useCallback(async (id_ser, estadoActual) => {
+    if (!window.confirm(`¿Seguro que deseas cambiar esta vacuna a ${estadoActual === "DISPONIBLE" ? "NO DISPONIBLE" : "DISPONIBLE"}?`)) return;
+
     try {
       setNotify({
         title: 'Actualizando',
@@ -294,49 +296,40 @@ export function VisualizadorVacunas({ URL = '' }) {
       });
 
       // Enviamos los datos en el formato que espera el backend
-      const response = await ModifyData(`${mainUrl}/AblOrDis`, {
+      const data = {
         data: {
-          id_ser: id, 
-          or: true    
+          id_ser: id_ser,
+          or: estadoActual === "DISPONIBLE" 
         }
-      });
+      };
 
+      await ModifyData(`${mainUrl}/AblOrDis`, data);
+
+      
       setNotify({
         title: 'Éxito',
-        message: 'Estado de la vacuna actualizado correctamente',
+        message: `Estado de la vacuna actualizado correctamente`,
         close: setNotify
       });
-
-      // Actualizamos el estado local para reflejar el cambio inmediatamente
-      setVacunas(vacunas.map(vacuna => {
-        if (vacuna.id === id) {
-          return {
-            ...vacuna,
-            disponible: !vacuna.disponible
-          };
-        }
-        return vacuna;
-      }));
-
+      await fetchVacunas();
+      
     } catch (err) {
       setNotify(null);
-      if (err.status) {
-        const message = errorStatusHandler(err.status);
-        setNotify({
-          title: 'Error',
-          message: `${message}`,
-          close: setNotify
-        });
-      } else {
-        console.error('Error al cambiar estado:', err);
-        setNotify({
-          title: 'Error',
-          message: 'No se pudo cambiar el estado de la vacuna',
-          close: setNotify
-        });
-      }
+      console.error('Error al cambiar estado:', err);
+
+      const message = err.status
+        ? errorStatusHandler(err.status)
+        : 'No se pudo cambiar el estado de la vacuna';
+
+      setNotify({
+        title: 'Error',
+        message: message,
+        close: setNotify
+      });
     }
-  };
+  }, [mainUrl, fetchVacunas]);
+
+ 
   const handleDosisChange = (edad, valor) => {
     setNuevaVacuna({
       ...nuevaVacuna,
@@ -417,11 +410,11 @@ export function VisualizadorVacunas({ URL = '' }) {
                           {vacuna.categoria}
                         </span>
                         <span
-                          className={`estado-vacunas ${vacuna.disponible ? "disponible-vacunas" : "no-disponible-badge-vacunas"
+                          className={`estado-vacunas ${vacuna.disponible === "DISPONIBLE" ? "disponible-vacunas" : "no-disponible-badge-vacunas"
                             }`}
-                          onClick={(e) => cambiarEstado(vacuna.id, e)}
+                          onClick={() => cambiarEstado(vacuna.id_ser, vacuna.disponible)}
                         >
-                          {vacuna.disponible ? "Disponible" : "No disponible"}
+                          {vacuna.disponible === "DISPONIBLE" ? "Disponible" : "No disponible"}
                         </span>
                       </div>
                     </div>

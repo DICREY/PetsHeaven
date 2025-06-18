@@ -1,12 +1,12 @@
 /* Estilos para el sistema de gestión de spa para mascotas */
 .contenedor-spa {
   background-color: #f0fdff;
-  padding: 2rem;
   min-height: 100vh;
+  display: flex;
 }
 
 .contenedor-principal-spa {
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   background-color: white;
   border-radius: 8px;
