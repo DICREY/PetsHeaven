@@ -185,6 +185,7 @@ export function SpaMascotas() {
 
   return (
     <div className="contenedor-spa">
+      <NavBarAdmin/>
       <div className="contenedor-principal-spa">
         {/* Encabezado */}
         <header className="encabezado-spa">

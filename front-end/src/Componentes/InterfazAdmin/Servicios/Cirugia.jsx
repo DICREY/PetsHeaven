@@ -45,7 +45,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
   const [cirugiaEditando, setCirugiaEditando] = useState(null)
   const [modoEdicion, setModoEdicion] = useState(false)
   const [filtroTipo, setFiltroTipo] = useState("todos")
-  
+
   // Categorías de cirugías
   const categorias = [
     "Ortopedia",
@@ -214,7 +214,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
   const eliminarCirugia = useCallback(async (id_ser) => {
     if (!window.confirm("¿Seguro que deseas eliminar esta cirugía?")) return;
     try {
-      const data = {data:{id_ser:id_ser, or:true}}
+      const data = { data: { id_ser: id_ser, or: true } }
       await ModifyData(`${mainUrl}/AblOrDis`, data);
       fetchCirugias();
     } catch (err) {
@@ -277,12 +277,12 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
     try {
       const cirugia = cirugias.find(c => c.id_ser === id);
       const nuevoEstado = cirugia.sta_ser === "DISPONIBLE" ? "NO DISPONIBLE" : "DISPONIBLE";
-      
+
       await ModifyData(`${mainUrl}/modify`, {
         id_ser: id,
         sta_ser: nuevoEstado
       });
-      
+
       fetchCirugias();
     } catch (err) {
       setNotify({
@@ -295,7 +295,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
 
   return (
     <main className="contenedor-cirugia">
-      <NavBarAdmin/>
+      <NavBarAdmin />
       <main className="contenedor-principal-cirugia">
         {/* Encabezado */}
         <header className="encabezado-cirugia">
@@ -556,9 +556,8 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
                   </div>
                   <div className="metrica-cirugia">
                     <div
-                      className={`valor-metrica-cirugia ${
-                        cirugiaDetalle.disponible ? "texto-verde-cirugia" : "texto-rojo-cirugia"
-                      }`}
+                      className={`valor-metrica-cirugia ${cirugiaDetalle.disponible ? "texto-verde-cirugia" : "texto-rojo-cirugia"
+                        }`}
                     >
                       {cirugiaDetalle.disponible ? "SÍ" : "NO"}
                     </div>
