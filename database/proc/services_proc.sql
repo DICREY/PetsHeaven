@@ -1,4 +1,4 @@
--- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
+-- Active: 1746046445434@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchServices()
 BEGIN
     SELECT
@@ -373,12 +373,9 @@ BEGIN
                         v.efe_sec_vac,
                         v.cat_vac,
                         v.dos_rec_vac,
-                        v.des_vac,
-                        v.des_tec_vac,
                         v.lot_vac,
                         v.fre_vac,
-                        v.fec_ven_vac,
-                        v.pre_vac
+                        v.fec_ven_vac
                     ) 
                     SEPARATOR '; '
                 )
