@@ -112,17 +112,18 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
   
     } catch (err) {
       setNotify(null)
+      const message = errorStatusHandler(err)
   
-      let message = ''
-      if (err.message) {
-        message = err.message
-      } else if (err.error_description) {
-        message = err.error_description
-      } else if (typeof err === 'object') {
-        message = JSON.stringify(err, null, 2)
-      } else {
-        message = String(err)
-      }
+      // let message = ''
+      // if (err.message) {
+      //   message = err.message
+      // } else if (err.error_description) {
+      //   message = err.error_description
+      // } else if (typeof err === 'object') {
+      //   message = JSON.stringify(err, null, 2)
+      // } else {
+      //   message = String(err)
+      // }
   
       setNotify({
         title: 'Error',

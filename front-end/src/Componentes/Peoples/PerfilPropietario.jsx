@@ -127,11 +127,14 @@ export const PerfilPropietario = ({
       if (admin) {
         const deleted = await ModifyData(`${mainUrl}/delete`, { doc: userData.doc_per })
         setNotify(null)
-        if (deleted?.deleted) setNotify({
-          title: 'Desactivada',
-          message: 'La persona ha sido desactivada correctamente.',
-          close: setNotify
-        })
+        if (deleted?.deleted) {
+          setNotify({
+            title: 'Desactivada',
+            message: 'La persona ha sido desactivada correctamente.',
+            close: setNotify
+          })
+          setTimeout(() => navigate(-1),2000)
+        }
       }
     } catch (err) {
       setNotify(null)

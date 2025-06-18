@@ -8,7 +8,7 @@ import { Description } from '../Global/Description'
 import { HistoryTest } from './historyTest'
 import { Notification } from '../Global/Notifys'
 import { AuthContext } from '../../Contexts/Contexts'
-import { DeleteData, ModifyData, PostData } from '../Varios/Requests'
+import { ModifyData, PostData } from '../Varios/Requests'
 import { checkImage, getAge, errorStatusHandler, divideList } from '../Varios/Util'
 import { FormularioConsulta } from '../InterfazAdmin/FormulariosAdmin/Consulta'
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
@@ -116,7 +116,7 @@ export const PetDetails = ({ datas, imgPetDefault = '', URL = '', tab = 'Datos G
     }
 
     // Request for Modify Data
-    const modifyData = async () => {
+    const modify = async () => {
         setNotify({
             title: 'Validando...',
             message: 'Verificando datos proporcionados',
@@ -235,7 +235,7 @@ export const PetDetails = ({ datas, imgPetDefault = '', URL = '', tab = 'Datos G
                                                             <X className='icon' />
                                                             <span>Cancelar</span>
                                                         </button>
-                                                        <button className='EditBtn' onClick={modifyData}>
+                                                        <button className='EditBtn' onClick={modify}>
                                                             <Save className='icon' />
                                                             <span>Guardar</span>
                                                         </button>

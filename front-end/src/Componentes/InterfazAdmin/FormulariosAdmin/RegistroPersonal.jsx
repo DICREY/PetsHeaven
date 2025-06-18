@@ -88,9 +88,7 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
           message: 'Ha sido registrado correctamente',
           close: setNotify,
         })
-        setTimeout(() => {
-          navigate(-1)
-        },2000)
+        setTimeout(() => navigate(-1),2000)
       }
     } catch (err) {
       setNotify(null)

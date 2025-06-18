@@ -96,6 +96,7 @@ export const RegistroPro = ({ URL = '' }) => {
           message: 'El usuario ha sido registrado correctamente',
           close: setNotify
         })
+        setTimeout(() => navigate(-1),2000)
       }
 
       setTimeout(() => navigate(-1), 2000)
