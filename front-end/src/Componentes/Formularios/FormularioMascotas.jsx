@@ -73,26 +73,7 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
     try {
       data.fec_nac_mas = formatDate(data.fec_nac_mas)
   
-      let imageUrl = ''
-      if (data.fot_mas) {
-        const file = data.fot_mas
-        const fileExt = file.name.split('.').pop()
-        const fileName = `${Date.now()}.${fileExt}`
-        const filePath = `mascotas/${fileName}`
-  
-        const { data: storageData, error: storageError } = await supabase.storage
-          .from('mascotas')
-          .upload(filePath, file)
-  
-        if (storageError) throw storageError
-  
-        const { data: publicUrlData } = supabase
-          .storage
-          .from('mascotas')
-          .getPublicUrl(filePath)
-  
-        imageUrl = publicUrlData.publicUrl
-      }
+      
   
       const created = await PostData(`${mainURL}/register`, {
         ...data,

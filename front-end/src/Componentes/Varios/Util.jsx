@@ -243,3 +243,25 @@ export const hourTraductor = (hour) => {
   return `${twelveHour}:${formattedMins} ${period}`;
   
 }
+
+export const uploadImg = async (img, from = '') => {
+  if (img) {
+    const file = img
+    const fileExt = file.name.split('.').pop()
+    const fileName = `${Date.now()}.${fileExt}`
+    const filePath = `mascotas/${fileName}`
+
+    const { data: storageData, error: storageError } = await supabase.storage
+      .from(from)
+      .upload(filePath, file)
+
+    if (storageError) throw storageError
+
+    const { data: publicUrlData } = supabase
+      .storage
+      .from(from)
+      .getPublicUrl(filePath)
+
+    return publicUrlData.publicUrl
+  }
+}
