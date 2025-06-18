@@ -8,7 +8,7 @@ import { Notification } from '../Global/Notifys'
 import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { ReqFunction } from "../../Utils/Utils"
-import { GetData, PostData } from "../Varios/Requests"
+import { PostData } from "../Varios/Requests"
 import { AuthContext } from "../../Contexts/Contexts"
 import AppointmentForm from "../InterfazAdmin/FormulariosAdmin/AgendarCita"
 
@@ -193,7 +193,7 @@ export const PanelVeterinario = ({ URL = '', imgDefault = '', setPetSelect }) =>
                   <Plus className="icon" aria-hidden="true" />
                   Nueva Consulta
                 </button>
-                {mostrarFormulario && <AppointmentForm onClose={toggleFormulario} />}
+                {mostrarFormulario && <AppointmentForm URL={URL} onClose={toggleFormulario} />}
                 <button type="button" className="DeleteBtn">
                   <Activity className="icon" aria-hidden="true" />
                   Programar Cirugía

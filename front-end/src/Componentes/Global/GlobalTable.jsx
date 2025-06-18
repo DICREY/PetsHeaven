@@ -46,10 +46,10 @@ export class GlobalTable extends Component {
   }
 
   handleSearch = (term = '', data = []) => {
-    const termLower = term.toLowerCase()
+    const termLower = term?.toLowerCase()
 
-    const find = data.filter(pet => {
-      return this.headersSearch.some(field =>
+    const find = data?.filter(pet => {
+      return this.headersSearch?.some(field =>
         pet[field]?.toLowerCase().includes(termLower)
       )
     })
@@ -101,9 +101,9 @@ export class GlobalTable extends Component {
 
   renderCell = (item, header) => {
     // Lógica para tipos de datos comunes
-    if (header.includes('fec_nac')) return `${getAge(item[header])} Años`
-    if (header.includes('fec')) return formatDate(item[header])
-    if (header.includes('pre')) return `$ ${item[header]}`
+    if (header?.includes('fec_nac')) return `${getAge(item[header])} Años`
+    if (header?.includes('fec')) return formatDate(item[header])
+    if (header?.includes('pre')) return `$ ${item[header]}`
 
     switch (item[header]) {
       case 'date':
@@ -208,7 +208,7 @@ export class GlobalTable extends Component {
                     <td className='actions-cell'>
                       <button
                         onClick={() => this.onWatch(item)}
-                        aria-label={`Ver detalles de ${item.nom_per}`}
+                        aria-label={`Ver detalles de ${item?.nom_per}`}
                       >
                         <FileText className="icon" aria-hidden='true' />
                         Descripción

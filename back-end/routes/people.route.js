@@ -13,7 +13,7 @@ const Route = Router()
 // Middleware 
 Route.use(authenticateJWT)
 Route.use(authJWTGlobal)
-Route.use(ValidatorRol("administrador"))
+Route.use(ValidatorRol("veterinario"))
 
 // Routes
 Route.get('/all', async (req,res) => {
@@ -109,7 +109,7 @@ Route.put('/modify', async (req,res) => {
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
-Route.delete('/delete', async (req,res) => {
+Route.put('/delete', ValidatorRol("administrador"), async (req,res) => {
     // Vars 
     const { body } = req
     console.log(body)

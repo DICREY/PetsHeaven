@@ -125,7 +125,7 @@ export const PerfilPropietario = ({
     })
     try {
       if (admin) {
-        const deleted = await DeleteData(`${mainUrl}/delete`, { doc: userData.doc_per })
+        const deleted = await ModifyData(`${mainUrl}/delete`, { doc: userData.doc_per })
         setNotify(null)
         if (deleted?.deleted) setNotify({
           title: 'Desactivada',

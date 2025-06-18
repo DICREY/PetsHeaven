@@ -1,14 +1,15 @@
-import React from "react"
+// Librarys 
+import React, { useEffect } from "react"
 import { useState } from "react"
 import { Calendar, FileText, Stethoscope, PawPrint, X, Save, ChevronDown } from "lucide-react"
-import "../../../styles/InterfazAdmin/FormuariosAdmin/AgendarCita.css"
 
-const mockPacientes = [
-  { id_mas: 1, nom_mas: "Max", nom_per: "Juan", ape_per: "Pérez" },
-  { id_mas: 2, nom_mas: "Luna", nom_per: "María", ape_per: "García" },
-  { id_mas: 3, nom_mas: "Rocky", nom_per: "Carlos", ape_per: "López" },
-  { id_mas: 4, nom_mas: "Bella", nom_per: "Ana", ape_per: "Martín" },
-]
+// Imports 
+import { GetData } from "../../Varios/Requests"
+import { Notification } from "../../Global/Notifys"
+import { searchFilter } from "../../Varios/Util"
+
+// Import styles 
+import "../../../styles/InterfazAdmin/FormuariosAdmin/AgendarCita.css"
 
 const mockVeterinarios = [
   { doc_per: "12345678", nom_per: "Dr. Ana", ape_per: "Martínez", roles: "Veterinario" },
@@ -24,9 +25,10 @@ const consultorios = [
   { id: 5, nombre: "Sala de Emergencias" },
 ]
 
-export default function AppointmentForm({ onClose, onSubmit }) {
+// Component 
+export default function AppointmentForm({ onClose, onSubmit, URL = '' }) {
   const [newEvent, setNewEvent] = useState({
-    paciente: "",
+    nom_mas: "",
     propietario: "",
     veterinario: "",
     category: "consulta",
@@ -36,26 +38,24 @@ export default function AppointmentForm({ onClose, onSubmit }) {
     mas_cit: null,
   })
   const [lugar, setLugar] = useState("")
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0])
-  const [filteredPacientes, setFilteredPacientes] = useState([])
-  const [showPacientesDropdown, setShowPacientesDropdown] = useState(false)
+  const [ selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0])
+  const [ almcPacientes, setAlmcPacientes] = useState([])
+  const [ showDropDown, setShowDropDown ] = useState(false)
+  const [ notify, setNotify ] = useState()
   const [formErrors, setFormErrors] = useState({})
-  const [allPacientes] = useState(mockPacientes)
+  const [ pacientes, setPacientes ] = useState([])
   const [allVet] = useState(mockVeterinarios)
+
+  // Vars 
+  const mainUrl = `${URL}/appointment`
 
   const validatePatientName = (value) => {
     return value.replace(/[0-9]/g, "")
   }
 
-  const searchFilter = (value, data, fields, setFiltered) => {
-    if (!value) {
-      setFiltered([])
-      return
-    }
-    const filtered = data.filter((item) =>
-      fields.some((field) => item[field]?.toLowerCase().includes(value.toLowerCase())),
-    )
-    setFiltered(filtered)
+  const filter = (term) => {
+    searchFilter(term,pacientes, ["nom_mas", "nom_per", "ape_per"],setAlmcPacientes)
+    if (almcPacientes) setShowDropDown(1)
   }
 
   const handleInputChange = (e) => {
@@ -74,19 +74,6 @@ export default function AppointmentForm({ onClose, onSubmit }) {
       start: `${newDate}T${prev.start.split("T")[1]}`,
       end: `${newDate}T${prev.end.split("T")[1]}`,
     }))
-  }
-
-  const handleCreateEvent = () => {
-    const appointmentData = { ...newEvent, lugar }
-    console.log("Creando cita:", appointmentData)
-
-    if (onSubmit) {
-      onSubmit(appointmentData)
-    }
-
-    if (onClose) {
-      onClose()
-    }
   }
 
   const handleClose = () => {
@@ -121,6 +108,104 @@ export default function AppointmentForm({ onClose, onSubmit }) {
     }
   }
 
+  const validateEventFields = (event) => {
+    const errors = {}
+    if (!event.paciente || !event.mas_cit) {
+      errors.paciente = 'Selecciona un paciente válido.'
+    }
+    if (!event.veterinario) {
+      errors.veterinario = 'Selecciona un veterinario.'
+    }
+    if (!event.start || !event.end) {
+      errors.start = 'Selecciona fecha y hora de inicio.'
+      errors.end = 'Selecciona fecha y hora de fin.'
+    }
+    if (!event.category) {
+      errors.category = 'Selecciona el tipo de cita.'
+    }
+    if (!event.lug_ate_cit || event.lug_ate_cit.trim().length < 3) {
+      errors.lug_ate_cit = 'El lugar de atención es obligatorio.'
+    }
+    if (event.description && event.description.length > 255) {
+      errors.description = 'La descripción es demasiado larga.'
+    }
+    return errors
+  }
+
+  const handleCreateEvent = async () => {
+    const errors = validateEventFields(newEvent)
+    setFormErrors(errors)
+    if (Object.keys(errors).length > 0) return
+    setNotify({
+      title: 'Cargando',
+      message: 'Por favor, espere mientras se validan los datos.',
+      load: true
+    })
+    const citaData = {
+        fec_reg_cit: new Date().toISOString().split('T')[0],
+        fec_cit: newEvent.start.split('T')[0],
+        hor_ini_cit: newEvent.start.split('T')[1],
+        hor_fin_cit: newEvent.end.split('T')[1],
+        lug_ate_cit: lugar,
+        ser_cit: newEvent.category,
+        vet_cit: newEvent.veterinario,
+        mas_cit: newEvent.nom_mas,
+        estado: 'PENDIENTE'
+    }
+    try {
+        const data = await PostData(`${mainUrl}/register`, citaData)
+        setNotify(null)
+        console.log(data)
+        if (data) {
+          setNotify({
+            title: 'Cita Agendada',
+            message: 'La cita ha sido agendada exitosamente',
+            close: setNotify
+          })
+          if (onClose) {
+            onClose()
+          }
+        }
+    } catch (err) {
+        setNotify(null)
+        const message = errorStatusHandler(err)
+        setNotify({
+            title: 'Error',
+            message: message,
+            close: setNotify
+        })
+        if (err.status === 403) setTimeout(() => {
+            Logout()
+        }, 2000)
+    }
+  }
+
+  const fetchpacientes = async () => {
+    try {
+      const data = await GetData(`${URL}/pet/all`)
+      setNotify(null)
+      if (data) {
+        setPacientes(data)
+        setAlmcPacientes(data)
+      }
+    } catch (err) {
+      setNotify(null)
+      const message = errorStatusHandler(err)
+      setNotify({
+          title: 'Error',
+          message: message,
+          close: setNotify
+      })
+      if (err.status === 403) setTimeout(() => {
+          Logout()
+      }, 2000)
+    }
+  }
+
+  useEffect(() => {
+    fetchpacientes()
+  },[])
+
   return (
     <aside className="modal-fondo">
       <aside className="modal-contenido">
@@ -130,17 +215,17 @@ export default function AppointmentForm({ onClose, onSubmit }) {
             <h3>Nueva Cita</h3>
           </div>
           <button className="modal-cerrar" onClick={handleClose}>
-            <X size={20} />
+            <X className="icon" />
           </button>
         </header>
 
         <section className="modal-cuerpo">
-          <div className="form-layout">
-            {/* Información del Paciente */}
-            <div className="seccion">
+          <section className="form-layout">
+            {/* Información del nom_mas */}
+            <section className="seccion">
               <div className="seccion-header">
-                <PawPrint size={20} />
-                <h4>Información del Paciente</h4>
+                <PawPrint className="icon" />
+                <h4>Información del nom_mas</h4>
               </div>
 
               <div className="form-grid">
@@ -149,46 +234,45 @@ export default function AppointmentForm({ onClose, onSubmit }) {
                   <div className="autocomplete">
                     <input
                       type="text"
-                      name="paciente"
+                      name="nom_mas"
                       placeholder="Buscar mascota..."
-                      value={newEvent.paciente}
+                      defaultValue={newEvent.nom_mas}
                       className="campo"
                       onChange={(e) => {
                         const value = e.target.value
                         const filteredValue = validatePatientName(value)
-                        if (filteredValue === value || value.length < newEvent.paciente.length) {
-                          setNewEvent({ ...newEvent, paciente: value })
-                          searchFilter(value, allPacientes, ["nom_mas", "nom_per", "ape_per"], setFilteredPacientes)
-                          setShowPacientesDropdown(value.length > 0)
+                        if (filteredValue === value || value.length < newEvent.nom_mas.length) {
+                          setNewEvent({ ...newEvent, nom_mas: value })
+                          filter(value)
                         }
                       }}
-                      onFocus={() => setShowPacientesDropdown(newEvent.paciente.length > 0)}
+                      onFocus={() => setShowDropDown(1)}
                       onKeyDown={(e) => {
                         if (e.key >= "0" && e.key <= "9") {
                           e.preventDefault()
                         }
                       }}
                     />
-                    {showPacientesDropdown && filteredPacientes.length > 0 && (
+                    {showDropDown && (
                       <div className="dropdown">
-                        {filteredPacientes.map((paciente) => (
+                        {almcPacientes.map((nom_mas, index) => (
                           <div
-                            key={paciente.id_mas}
+                            key={index + 9082}
                             className="dropdown-item"
                             onClick={() => {
                               setNewEvent({
                                 ...newEvent,
-                                paciente: paciente.nom_mas,
-                                propietario: `${paciente.nom_per} ${paciente.ape_per}`,
-                                mas_cit: paciente.id_mas,
+                                nom_mas: nom_mas.nom_mas,
+                                propietario: `${nom_mas.nom_per} ${nom_mas.ape_per}`,
+                                mas_cit: nom_mas.id_mas,
                               })
-                              setShowPacientesDropdown(false)
+                              setShowDropDown(false)
                             }}
                           >
                             <div className="dropdown-contenido">
-                              <div className="dropdown-nombre">{paciente.nom_mas}</div>
+                              <div className="dropdown-nombre">{nom_mas.nom_mas}</div>
                               <div className="dropdown-dueno">
-                                {paciente.nom_per} {paciente.ape_per}
+                                {nom_mas.nom_per} {nom_mas.ape_per}
                               </div>
                             </div>
                           </div>
@@ -196,7 +280,7 @@ export default function AppointmentForm({ onClose, onSubmit }) {
                       </div>
                     )}
                   </div>
-                  {formErrors.paciente && <div className="error">{formErrors.paciente}</div>}
+                  {formErrors.nom_mas && <div className="error">{formErrors.nom_mas}</div>}
                 </div>
 
                 <div className="grupo">
@@ -229,12 +313,12 @@ export default function AppointmentForm({ onClose, onSubmit }) {
                   {formErrors.category && <div className="error">{formErrors.category}</div>}
                 </div>
               </div>
-            </div>
+            </section>
 
             {/* Profesional y Lugar */}
             <div className="seccion">
               <div className="seccion-header">
-                <Stethoscope size={20} />
+                <Stethoscope className="icon" />
                 <h4>Profesional y Lugar</h4>
               </div>
 
@@ -289,7 +373,7 @@ export default function AppointmentForm({ onClose, onSubmit }) {
             {/* Fecha y Horario */}
             <div className="seccion ancho-completo">
               <div className="seccion-header">
-                <Calendar size={20} />
+                <Calendar className="icon" />
                 <h4>Fecha y Horario</h4>
               </div>
 
@@ -350,7 +434,7 @@ export default function AppointmentForm({ onClose, onSubmit }) {
             {/* Descripción */}
             <div className="seccion ancho-completo">
               <div className="seccion-header">
-                <FileText size={20} />
+                <FileText className="icon" />
                 <h4>Descripción y Observaciones</h4>
               </div>
 
@@ -366,7 +450,7 @@ export default function AppointmentForm({ onClose, onSubmit }) {
                 {formErrors.description && <div className="error">{formErrors.description}</div>}
               </div>
             </div>
-          </div>
+          </section>
         </section>
 
         <div className="modal-footer">
@@ -380,6 +464,11 @@ export default function AppointmentForm({ onClose, onSubmit }) {
           </button>
         </div>
       </aside>
+      {notify && (
+          <Notification
+              {...notify}
+          />
+      )}
     </aside>
   )
 }

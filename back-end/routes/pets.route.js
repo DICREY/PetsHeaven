@@ -27,7 +27,7 @@ Route.get('/all', ValidatorRol("veterinario"), async (req,res) => {
 
 })
 
-Route.get('/all:by', ValidatorRol("usuario"),async (req,res) => {
+Route.get('/all:by',async (req,res) => {
     // Vars
     const by = req.params.by
     
@@ -67,7 +67,7 @@ Route.post('/register', ValidatorRol("veterinario"), async (req,res) => {
     }
 })
 
-Route.put('/modify', ValidatorRol("usuario"), async (req,res) => {
+Route.put('/modify', async (req,res) => {
     // Vars 
     const body = req.body
     
@@ -105,7 +105,7 @@ Route.post('/history', ValidatorRol("veterinario") ,async (req,res) => {
     }
 })
 
-Route.delete('/delete', ValidatorRol("administrador") ,async (req,res) => {
+Route.put('/delete', ValidatorRol("administrador") ,async (req,res) => {
     // Vars 
     const body = req.body
 

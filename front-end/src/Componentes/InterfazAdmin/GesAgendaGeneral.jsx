@@ -159,8 +159,8 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
     // Crear nueva cita en el backend
     const handleCreateEvent = async () => {
         const errors = validateEventFields(newEvent);
-        setFormErrors(errors);
-        if (Object.keys(errors).length > 0) return;
+        setFormErrors(errors)
+        if (Object.keys(errors).length > 0) return
         const citaData = {
             fec_reg_cit: new Date().toISOString().split('T')[0],
             fec_cit: newEvent.start.split('T')[0],

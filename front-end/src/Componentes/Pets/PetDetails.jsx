@@ -101,7 +101,6 @@ export const PetDetails = ({ datas, imgPetDefault = '', URL = '', tab = 'Datos G
                 firstData: datas.nom_mas,
                 secondData: datas.doc_per
             })
-            console.log(data)
             if (data?.result) {
                 setAppointment(divideList(data.result.citas, 6))
                 setAppointmentAlmc(data.result.citas)
@@ -155,10 +154,11 @@ export const PetDetails = ({ datas, imgPetDefault = '', URL = '', tab = 'Datos G
             load: 1
         })
         try {
-            const deleted = await DeleteData(deleteURL, {
+            const deleted = await ModifyData(deleteURL, {
                 nom_mas: datas.nom_mas,
                 doc_per: datas.doc_per
             })
+            console.log(deleted)
             setNotify(null)
             if (deleted?.deleted) {
                 setNotify({

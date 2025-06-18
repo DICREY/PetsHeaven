@@ -168,7 +168,7 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
                   <ExternalLink className="icon" aria-hidden="true" />
                   Visitar Página Web
                 </button>
-                {mostrarFormulario && <AppointmentForm onClose={toggleFormulario} />}
+                {mostrarFormulario && <AppointmentForm onClose={toggleFormulario} URL={URL} />}
               </nav>
 
               {/* Recent Activity */}

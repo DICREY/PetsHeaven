@@ -86,7 +86,7 @@ Route.put('/modify', ValidatorRol("administrador"), async (req,res) => {
     }
 })
 
-Route.delete('/delete', ValidatorRol("veterinario"), async (req,res) => {
+Route.put('/delete', ValidatorRol("administrador"), async (req,res) => {
     // Vars 
     const by = req.body
     

@@ -137,8 +137,8 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
       'Mascotas': 'mascotas'
     })
 
-    const find = data.filter(item => {
-      return headers.some(field =>
+    const find = data?.filter(item => {
+      return headers?.some(field =>
         item[field]?.toLowerCase().includes(termLower)
       )
     })
@@ -163,7 +163,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   }
 
   const handleDescription = (data) => {
-    const handler = data.nom_mas ? handleDescriptionPet : handleDescriptionOwner
+    const handler = data?.nom_mas ? handleDescriptionPet : handleDescriptionOwner
     return handler(data)
   }
 
