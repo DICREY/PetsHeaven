@@ -189,13 +189,14 @@ export class GlobalTable extends Component {
                                   ${this.renderCell(item[listHeader][0], 'esp_mas')}`}
                                 </span>
                               </li>
-                              <li className='mascotaitemadminhome'>
-                                <span>
-                                  {`${this.renderCell(item[listHeader][1], 'nom_mas')} - 
-                                  ${this.renderCell(item[listHeader][1], 'esp_mas')}`}
-                                </span>
-                              </li>
-                              {item[listHeader].length > 2 && (
+                              {item[listHeader]?.length > 2? (
+                                <li className='mascotaitemadminhome'>
+                                  <span>
+                                    {`${this.renderCell(item[listHeader][1], 'nom_mas')} - 
+                                    ${this.renderCell(item[listHeader][1], 'esp_mas')}`}
+                                  </span>
+                                </li>
+                              ):(
                                 <li className='mascotaitemadminhome'>
                                   <span className=''>-- Ver mas --</span>
                                 </li>

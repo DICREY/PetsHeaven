@@ -6,14 +6,13 @@ import { useForm } from 'react-hook-form'
 
 // Imports
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
-import { formatDate, errorStatusHandler, checkImage } from '../Varios/Util'
+import { formatDate, errorStatusHandler, checkImage, uploadImg } from '../Varios/Util'
 import { Notification } from '../Global/Notifys'
 import { PostData } from '../Varios/Requests'
 import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
 import { HeaderUser } from '../BarrasNavegacion/HeaderUser'
 import Footer from '../Varios/Footer2'
 import { AuthContext } from '../../Contexts/Contexts'
-import { supabase } from '../../supabaseClient'; 
 
 
 // Import styles
@@ -72,8 +71,7 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
   
     try {
       data.fec_nac_mas = formatDate(data.fec_nac_mas)
-  
-      
+      const imageUrl = uploadImg(data.fot_mas,'mascotas')
   
       const created = await PostData(`${mainURL}/register`, {
         ...data,

@@ -8,7 +8,7 @@ import { HeaderUser } from '../../BarrasNavegacion/HeaderUser'
 import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
 import { Notification } from '../../Global/Notifys'
 import { GetData, PostData, ModifyData } from "../../Varios/Requests"
-import { errorStatusHandler } from '../../Varios/Util'
+import { DataFilter, divideList, errorStatusHandler, searchFilter } from '../../Varios/Util'
 
 // Import styles 
 import "../../../styles/InterfazAdmin/Servicios/Vacuna.css"
@@ -65,10 +65,8 @@ export function VisualizadorVacunas({ URL = '' }) {
       const response = await GetData(`${mainUrl}/vacs`);
       setNotify(null);
 
-      // Asegúrate de que la respuesta tenga la estructura correcta
       if (response && Array.isArray(response)) {
         // Mapeamos los datos del backend al formato que espera el frontend
-        console.log(response)
         const vacunasMapeadas = response.map(vacuna => ({
           id: vacuna.id_vac,
           id_ser: vacuna.id_ser,
@@ -91,8 +89,7 @@ export function VisualizadorVacunas({ URL = '' }) {
         }));
 
         setVacunas(vacunasMapeadas);
-        setAlmcVac(vacunasMapeadas);
-        console.log(vacunasMapeadas)
+        setAlmcVac(divideList(vacunasMapeadas,6))
       } else {
         setNotify({
           title: 'Error',
@@ -133,12 +130,18 @@ export function VisualizadorVacunas({ URL = '' }) {
     }).format(precio)
   }
 
-  const vacunasFiltradas = vacunas.filter((vacuna) => {
-    if (filtroAnimal === "todos") return true
-    if (filtroAnimal === "disponibles") return vacuna.disponible
-    if (filtroAnimal === "no-disponibles") return !vacuna.disponible
-    return vacuna.tipoAnimal === filtroAnimal || vacuna.tipoAnimal === "ambos"
-  })
+  // const vacunasFiltradas = vacunas.filter((vacuna) => {
+  //   if (filtroAnimal === "todos") return true
+  //   if (filtroAnimal === "disponibles") return vacuna.disponible
+  //   if (filtroAnimal === "no-disponibles") return !vacuna.disponible
+  //   return vacuna.tipoAnimal === filtroAnimal || vacuna.tipoAnimal === "ambos"
+  // })
+
+  const Filter = (e) => {
+    const term = e.target.value
+    const found = DataFilter(term,vacunas,['disponible'])
+    if (found) setAlmcVac(divideList(found,6))
+  }
 
   const abrirModalAgregar = () => {
     setNuevaVacuna({
@@ -377,9 +380,13 @@ export function VisualizadorVacunas({ URL = '' }) {
             <div className="controles-vacunas">
               <h2 className="subtitulo-vacunas">Vacunas Disponibles</h2>
               <div className="acciones-control-vacunas">
-                <select value={filtroAnimal} onChange={(e) => setFiltroAnimal(e.target.value)} className="filtro-vacunas">
-                  <option value="todos">Todas las vacunas</option>
-                  <option value="disponibles">Disponibles</option>
+                <select
+                  defaultValue={filtroAnimal}
+                  onChange={(e) => Filter(e)} 
+                  className="filtro-vacunas"
+                >
+                  <option value="">Todas las vacunas</option>
+                  <option value="DISPONIBLE">Disponibles</option>
                   <option value="no-disponibles">No disponibles</option>
                   <optgroup label="Por tipo de animal">
                     <option value="perro">Solo perros</option>
@@ -396,7 +403,7 @@ export function VisualizadorVacunas({ URL = '' }) {
 
             {/* Grid de vacunas */}
             <div className="grid-vacunas">
-              {almcVac?.map((vacuna) => (
+              {almcVac[page -1]?.map((vacuna) => (
                 <div
                   key={vacuna.id}
                   className={`tarjeta-vacunas ${!vacuna.disponible ? "no-disponible-vacunas" : ""}`}

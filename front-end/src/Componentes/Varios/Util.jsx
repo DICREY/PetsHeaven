@@ -1,6 +1,9 @@
 // Librays
 import { useNavigate } from 'react-router-dom'
 
+// imports
+import { supabase } from '../../supabaseClient';
+
 // Utilidades
 export const useRoleRedirect = (roles = []) => {
   const roleRoutes = {
@@ -143,6 +146,21 @@ export const searchFilter = (term = '', data = [], headers = [], set = null) => 
   })
 
   if (find && set) set(find)
+}
+
+export const DataFilter = (term = '', data = [], headers = []) => {
+  if (!term || !data || !headers || !Array.isArray(data) || !Array.isArray(headers)) return
+
+  // const termLower = term == ''? term.toLowerCase(): term
+  const termLower = term.toLowerCase().trim()
+
+  const find = data?.filter(item => {
+    return headers?.some(field => 
+      item[field]?.toLowerCase().includes(termLower)
+    )
+  })
+
+  if (find) return find
 }
 
 export const getAge = (fec = "") => {
