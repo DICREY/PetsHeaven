@@ -32,6 +32,7 @@ import { CookiePolicy } from '../Componentes/Global/CookiesPolicy'
 import { Notification } from '../Componentes/Global/Notifys'
 import { PanelVeterinario } from '../Componentes/InterfazVeterinario/HomeVeterinario'
 import {ExamenesLaboratorio} from '../Componentes/InterfazAdmin/Servicios/Laboratorio'
+// import { SiteTraffic } from '../Componentes/Global/Visits'
 
 // Import contexts
 import { AuthProvider } from '../Contexts/Auth.context'
@@ -197,6 +198,7 @@ export default function App () {
 
           {/* Public Routes */}
           <Route path='/' element={<MainRoute />} />
+          {/* <Route path='/traffic' element={<SiteTraffic />} /> */}
           <Route path='main' element={<VeterinariaPage URL={URL} setArriveTo={setArriveTo} />} />
           <Route path='user/login' element={
             <LoginForm
