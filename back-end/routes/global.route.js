@@ -40,6 +40,21 @@ Route.post('/check', async (req,res) => {
     }
 })
 
+Route.get('/owners', async (req,res) => {
+    // Vars
+    const people = new People()
+
+    try {
+        const search = await people.findAll()
+        if (!search.result) return res.status(404).json({ message: "Propietarios no encontrado"})
+
+        res.status(200).json(search)
+    } catch (err) {
+        if(err.status) return res.status(err.status).json({message: err.message})
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
+    }
+})
+
 // Call Middleware for verify the token
 Route.use(authJWTGlobal)
 

@@ -25,7 +25,7 @@ const Contrasena = ({ register, errors }) => {
     <section className='contrasena-container' aria-labelledby='titulo-contrasena'>
       <h2 id='titulo-contrasena'>Crea una contraseña</h2>
       <section>
-        <fieldset className='grid-contrasena' border >
+        <fieldset className='grid-contrasena'>
           <legend className='sr-only'>Formulario de creación de contraseña</legend>
 
           <div className='grupo-contrasena'>

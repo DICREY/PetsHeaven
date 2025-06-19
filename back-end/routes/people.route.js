@@ -65,12 +65,34 @@ Route.get('/by:by', async (req,res) => {
 })
 
 // Call Middleware for verify the request data
-Route.use(Fullinfo(['cel2_per']))
+Route.use(Fullinfo(['cel2_per','esp_per','num_tar_per','fot_tar_vet']))
+
+Route.post('/assign-rol', async (req,res) => {
+    // Vars 
+    const body = req.body
+    console.log(body)
+    
+    try {
+        // Verifiy if exist
+        const find = await people.findBy(toString(body.doc_per))
+        if (!find.result) res.status(404).json({ message: "Usuario no encontrado" })
+
+        const assign = await people.AssignRol(body)
+        if(assign.assigned) return res.status(201).json(assign)
+
+        res.status(500).json({message: 'Error del servidor por favor intentelo mas tarde'})
+    } catch(err) {
+        console.log(err)
+        if(err.status) return res.status(err.status).json({message: err.message})
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
+    }
+})
 
 Route.post('/register', async (req,res) => {
     // Vars 
     const saltRounds = 15
     const body = req.body
+    console.log(body)
     
     try {
         // Verifiy if exist

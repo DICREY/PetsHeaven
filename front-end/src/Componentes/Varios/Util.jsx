@@ -183,7 +183,9 @@ export const errorStatusHandler = (err) => {
   const returnMessage = (errStatus) => {
     let message = 'Error interno'
 
-    if (errStatus?.response?.data?.message) return errStatus.response.data.message
+    if (errStatus?.response?.data?.message) {
+      return errStatus.response.data.message
+    } else if (errStatus?.message) return errStatus.message
     
     if (errStatus.status >= 500) return 'Error del servidor por favor intentelo mas tarde' 
     
@@ -267,17 +269,17 @@ export const uploadImg = async (img, from = '') => {
     const file = img
     const fileExt = file.name.split('.').pop()
     const fileName = `${Date.now()}.${fileExt}`
-    const filePath = `mascotas/${fileName}`
+    const filePath = `${from}/${fileName}`
 
     const { data: storageData, error: storageError } = await supabase.storage
-      .from(from)
+      .from('mascotas')
       .upload(filePath, file)
 
     if (storageError) throw storageError
 
     const { data: publicUrlData } = supabase
       .storage
-      .from(from)
+      .from('mascotas')
       .getPublicUrl(filePath)
 
     return publicUrlData.publicUrl

@@ -387,11 +387,11 @@ export function VisualizadorVacunas({ URL = '' }) {
                 >
                   <option value="">Todas las vacunas</option>
                   <option value="DISPONIBLE">Disponibles</option>
-                  <option value="no-disponibles">No disponibles</option>
+                  <option value="NO-DISPONIBLE">No disponibles</option>
                   <optgroup label="Por tipo de animal">
                     <option value="perro">Solo perros</option>
                     <option value="gato">Solo gatos</option>
-                    <option value="ambos">Ambos</option>
+                    <option value="">Ambos</option>
                   </optgroup>
                 </select>
                 <button onClick={abrirModalAgregar} className="boton-agregar-vacunas">

@@ -2,17 +2,20 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { User, PawPrint, ArrowLeft, Trash2, Edit, Save, X, Calendar } from 'lucide-react'
+import { useForm } from 'react-hook-form'
 
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
-import { formatDate, getAge, errorStatusHandler, checkImage } from '../Varios/Util'
-import { DeleteData, ModifyData } from '../Varios/Requests'
+import { formatDate, getAge, errorStatusHandler, checkImage, uploadImg } from '../Varios/Util'
+import { ModifyData, PostData } from '../Varios/Requests'
 import { Description } from '../Global/Description'
 import { Notification } from '../Global/Notifys'
-import Footer from '../Varios/Footer2'
 import { HeaderUser } from '../BarrasNavegacion/HeaderUser'
 import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
 import { AuthContext } from '../../Contexts/Contexts'
+import Footer from '../Varios/Footer2'
+import RolPrivilegios from '../InterfazAdmin/FormulariosAdmin/RolPrivilegios'
+import InformacionProfesional from '../InterfazAdmin/FormulariosAdmin/InformacionProfesional'
 
 // Import styles 
 import '../../../src/styles/InterfazAdmin/PerfilPropietario.css'
@@ -35,6 +38,8 @@ export const PerfilPropietario = ({
   const [notify, setNotify] = useState(null)
   const [userData, setUserData] = useState({})
   const [modPro, setModPro] = useState(userSelect)
+  const [rol, setRol] = useState(0)
+  const [profileImage, setProfileImage] = useState(null)
 
   // Vars 
   const mainUrl = `${URL}/people`
@@ -53,6 +58,47 @@ export const PerfilPropietario = ({
     'Celular 2': 'cel2_per',
     Email: 'email_per',
     Genero: 'gen_per'
+  }
+
+  // Form configuration
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      rol: 0,
+    }
+  })
+
+  const AssigRol = async (datas) => {
+    const data = {
+      doc_per: userData.doc_per,
+      rol_per: datas.rol,
+      esp_per: datas.especialidad,
+      num_tar_per: datas.numTargPro,
+      fot_tar_vet: datas.tarjetaProfesional,
+    }
+    console.log(data)
+    try {
+      const assign = await PostData(`${mainUrl}/assign-rol`,data)
+      if (assign?.assigned) {
+        setNotify({
+          title: 'Rol Asignado',
+          message: 'El rol fue asignado correctamente.',
+          close: setNotify
+        })
+      }
+    } catch (err) {
+      setNotify(null)
+      const message = errorStatusHandler(err)
+      setNotify({
+        title: 'Error',
+        message: `${message}`,
+        close: setNotify
+      })
+    }
   }
 
   // Functions 
@@ -87,7 +133,8 @@ export const PerfilPropietario = ({
     })
     setIsEditing(false)
     try {
-      const mod = await ModifyData(`${mainUrl}/modify`, modPro)
+      const imgUrl = await uploadImg(modPro.img,'users')
+      const mod = await ModifyData(`${mainUrl}/modify`, {...modPro, img_per: imgUrl})
       setNotify(null)
       if (mod?.modified) {
         setNotify({
@@ -109,11 +156,27 @@ export const PerfilPropietario = ({
   }
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    let { name, value } = e.target
+    if (name === 'img') handleProfileImageChange(e)
     setModPro(prev => ({
       ...prev,
       [name]: value,
-    })) 
+    }))
+  }
+
+  const handleProfileImageChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        setProfileImage(e.target.result)
+        setModPro(prev => ({
+        ...prev,
+        img: file,
+      })) 
+      }
+      reader.readAsDataURL(file)
+    }
   }
 
   const handleDeleteClick = async () => {
@@ -205,6 +268,7 @@ export const PerfilPropietario = ({
                   <ArrowLeft className='icon' />
                   Atrás
                 </button>
+                {console.log(userSelect)}
 
                 {/* Botones de Eliminar y Editar solo cuando estamos en la pestaña de Propietario */}
                 {activeTab === 'propietario' && (
@@ -234,6 +298,15 @@ export const PerfilPropietario = ({
                     }
                   </>
                 )}
+                {activeTab === 'rol' && (
+                  <button
+                    className='EditBtn'
+                    type='submit'
+                    onClick={handleSubmit(AssigRol)}
+                  >
+                    Assignar
+                  </button>
+                )}
               </nav>
             </header>
 
@@ -254,17 +327,27 @@ export const PerfilPropietario = ({
                     <PawPrint className='icon' />
                     <span>Mascotas</span>
                   </button>
+                  {admin && (
+                    <button
+                      className={`pestanaProps ${activeTab === 'rol' ? 'activaProps' : ''}`}
+                      onClick={() => handleTabChange('rol')}
+                    >
+                      <User className='icon' />
+                      <span>Roles</span>
+                    </button>
+                  )}
                 </nav>
               )
             }
 
             <section className='contenidoProps'>
-              {activeTab === 'propietario' && (
+              {activeTab === 'propietario' && userSelect &&(
                 <Description
                   handleChange={handleChange}
                   headers={headers}
                   dataHeaders={Object.values(headers)}
                   datas={userSelect}
+                  headerImg={'fot_per'}
                   imgDefault={imgDefault}
                   navigate={navigate}
                   isEditing={isEditing}
@@ -272,7 +355,7 @@ export const PerfilPropietario = ({
                 />
               )}
 
-              {activeTab === 'mascotas' && (
+              {activeTab === 'mascotas' && userSelect && (
                 <section className='mascotasContenedorProps'>
                   <div className='mascotasGrillaProps'>
                     {petsData?.map((mascota, index) => (
@@ -314,6 +397,14 @@ export const PerfilPropietario = ({
 
                   {petsData?.length === 0 && <div className='sinResultadosProps'>No hay mascotas vinculadas</div>}
                 </section>
+              )}
+
+              {activeTab === 'rol' && userSelect && (
+                <form>
+                  <RolPrivilegios register={register} errors={errors} setVet={setRol} />
+                  <hr className='lineH' />
+                  <InformacionProfesional register={register} errors={errors} vet={rol} />
+                </form>
               )}
             </section>
           </section>

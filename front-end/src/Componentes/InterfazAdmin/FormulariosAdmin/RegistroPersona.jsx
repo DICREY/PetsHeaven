@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 // Imports
 import Contrasena from './Contrasena'
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
-import { errorStatusHandler, LegalAge } from '../../Varios/Util'
+import { errorStatusHandler, LegalAge, uploadImg } from '../../Varios/Util'
 import { Notification } from '../../Global/Notifys'
 import { PostData } from '../../Varios/Requests'
 import { HeaderUser } from '../../BarrasNavegacion/HeaderUser'
@@ -73,6 +73,8 @@ export const RegistroPro = ({ URL = '' }) => {
         load: true
       })
 
+      const imageUrl = await uploadImg(data.profileImage,'users')
+
       const NewPeople = {
         nom_per: data.nombres,
         ape_per: data.apellidos,
@@ -85,7 +87,7 @@ export const RegistroPro = ({ URL = '' }) => {
         email_per: data.email,
         pas_per: data.password,
         gen_per: data.genero,
-        img_per: data.profileImage? data.profileImage: 'dont'
+        img_per: imageUrl
       }
 
       const created = await PostData(`${mainUrl}/register`, NewPeople)
@@ -98,9 +100,8 @@ export const RegistroPro = ({ URL = '' }) => {
         })
         setTimeout(() => navigate(-1),2000)
       }
-
-      setTimeout(() => navigate(-1), 2000)
     } catch (err) {
+      console.log(err)
       setNotify(null)
       const message = errorStatusHandler(err)
       setNotify({

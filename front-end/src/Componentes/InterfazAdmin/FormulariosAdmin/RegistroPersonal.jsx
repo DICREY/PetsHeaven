@@ -9,7 +9,7 @@ import RolPrivilegios from './RolPrivilegios'
 import InformacionProfesional from './InformacionProfesional'
 import Contrasena from './Contrasena'
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
-import { errorStatusHandler, LegalAge } from '../../Varios/Util'
+import { errorStatusHandler, LegalAge, uploadImg } from '../../Varios/Util'
 import { PostData } from '../../Varios/Requests'
 import { Notification } from '../../Global/Notifys'
 import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
@@ -55,31 +55,33 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
   }
 
   const onSubmit = async (data) => {
-    console.log(data)
-    const datas = {
-      nom_per: data.nombres,
-      ape_per: data.apellidos,
-      fec_nac_per: data.fecNac,
-      tip_doc_per: data.tipoDocumento,
-      doc_per: data.doc,
-      dir_per: data.direccion,
-      cel_per: data.cel,
-      cel2_per: data.cel2,
-      email_per: data.email,
-      cont_per: data.password,
-      gen_per: data.genero,
-      rol_per: data.rol,
-      esp_per: data.especialidad,
-      num_tar_per: data.numTargPro,
-      fot_tar_vet: "no-registrado",
-      fot_vet: "no-registrado",
-    }
+    setNotify({
+      title: 'Cargando...',
+      message: 'Registrando usuario...',
+      load: 1
+    })
     try {
-      setNotify({
-        title: 'Cargando',
-        message: 'Registrando usuario...',
-        load: 1
-      })
+      const imgUrl = await uploadImg(data.profileImage,'users')
+
+      const datas = {
+        nom_per: data.nombres,
+        ape_per: data.apellidos,
+        fec_nac_per: data.fecNac,
+        tip_doc_per: data.tipoDocumento,
+        doc_per: data.doc,
+        dir_per: data.direccion,
+        cel_per: data.cel,
+        cel2_per: data.cel2,
+        email_per: data.email,
+        cont_per: data.password,
+        gen_per: data.genero,
+        rol_per: data.rol,
+        esp_per: data.especialidad,
+        num_tar_per: data.numTargPro,
+        fot_tar_vet: "no-registrado",
+        fot_vet: imgUrl,
+      }
+      
       const created = await PostData(`${mainUrl}/register`, datas)
       setNotify(null)
       if (created?.created) {

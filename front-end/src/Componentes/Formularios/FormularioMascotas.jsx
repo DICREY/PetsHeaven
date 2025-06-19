@@ -1,14 +1,14 @@
 // Librarys 
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { Pencil, ChevronLeft, User } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 // Imports
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
-import { formatDate, errorStatusHandler, checkImage, uploadImg } from '../Varios/Util'
+import { formatDate, errorStatusHandler, checkImage, uploadImg, searchFilter } from '../Varios/Util'
 import { Notification } from '../Global/Notifys'
-import { PostData } from '../Varios/Requests'
+import { GetData, PostData } from '../Varios/Requests'
 import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
 import { HeaderUser } from '../BarrasNavegacion/HeaderUser'
 import Footer from '../Varios/Footer2'
@@ -25,6 +25,10 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
   const [profileImage, setProfileImage] = useState(null)
   const [notify, setNotify] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [ owners, setOwners ] = useState([])
+  const [ almcOwners, setAlmcOwners ] = useState([])
+  const [ showDropDown, setShowDropDown ] = useState(null)
+  const [ ownerSelect, setOwnerSelect ] = useState({})
 
   // Vars 
   const profileInputRef = useRef(null)
@@ -49,6 +53,15 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
     }
   })
 
+  const validatePatientName = (value) => {
+    return value.replace(/[0-9]/g, "")
+  }
+
+  const filter = (term) => {
+    searchFilter(term,owners, ["nom_per", "doc_per", "ape_per"],setAlmcOwners)
+    setShowDropDown(1)
+  }
+
   const handleProfileImageChange = (e) => {
     const file = e.target.files[0]
     if (file) {
@@ -64,17 +77,18 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
   const onSubmit = async (data) => {
     setIsSubmitting(true)
     setNotify({
-      title:'Subiendo imagen...',
-      message:'Guardando imagen de la mascota en Supabase',
+      title:'Validando datos...',
+      message:'Por favor espere mientras se suben los datos',
       load: true
     })
   
     try {
       data.fec_nac_mas = formatDate(data.fec_nac_mas)
-      const imageUrl = uploadImg(data.fot_mas,'mascotas')
+      const imageUrl = await uploadImg(data.fot_mas,'mascotas')
   
       const created = await PostData(`${mainURL}/register`, {
         ...data,
+        ...ownerSelect,
         fot_mas: imageUrl
       })
   
@@ -92,17 +106,6 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
     } catch (err) {
       setNotify(null)
       const message = errorStatusHandler(err)
-  
-      // let message = ''
-      // if (err.message) {
-      //   message = err.message
-      // } else if (err.error_description) {
-      //   message = err.error_description
-      // } else if (typeof err === 'object') {
-      //   message = JSON.stringify(err, null, 2)
-      // } else {
-      //   message = String(err)
-      // }
   
       setNotify({
         title: 'Error',
@@ -131,6 +134,27 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
       e.preventDefault()
     }
   }
+
+  const GetOwners = async () => {
+    try {
+      const own = await GetData(`${URL}/global/owners`)
+      if (own) {
+        setOwners(own)
+        setAlmcOwners(own)
+      }
+    } catch (err) {
+      const message = errorStatusHandler(err)
+      setNotify({
+        title: 'Error',
+        message: message,
+        close: setNotify
+      })
+    }
+  }
+
+  useEffect(() => {
+    GetOwners()
+  },[])
 
   return (
     <main className='contenedorgesusuario'>
@@ -405,31 +429,57 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
                     </div>
           
                     <div className='grupo-regusuario'>
-                      <label className='label'>Documento del propietario<span className='obligatorio'>*</span></label>
-                      <input 
-                        {...register('doc_per', {
-                          required: 'El documento es obligatorio',
-                          minLength: {
-                            value: 6,
-                            message: 'Minimo 6 dígitos'
-                          },
-                          maxLength: {
-                            value: 20,
-                            message: 'Máximo 20 digitos'
-                          },
-                        })}
-                        type='text' 
-                        placeholder='Documento del propietario' 
-                        className={`input ${errors.doc_per ? 'campo-error' : ''}`}
-                        onKeyPress={permitirSoloNumeros}
-                        aria-invalid={!!errors.doc_per}
-                        aria-describedby={errors.doc_per ? 'error-doc-per' : undefined}
-                      />
-                      {errors.doc_per && (
-                        <p id="error-doc-per" className='mensaje-error' role="alert">
-                          {errors.doc_per.message}
-                        </p>
-                      )}
+                      <label className='label'>Propietario<span className='obligatorio'>*</span></label>
+                      <div className='autocomplete'>
+                        <input
+                          type="text"
+                          name="nom_mas"
+                          placeholder="Elige nombre o documento del propietario"
+                          value={ownerSelect.nom_per}
+                          defaultValue={ownerSelect.nom_per || ''}
+                          className="input"
+                          onChange={(e) => {
+                            const value = e.target.value
+                            const filteredValue = validatePatientName(value)
+                            if (filteredValue === value || value.length < ownerSelect.nom_per.length) {
+                              setOwnerSelect({ ...ownerSelect, nom_per: value })
+                              filter(value)
+                            }
+                          }}
+                          onFocus={() => setShowDropDown(1)}
+                          onKeyDown={(e) => {
+                            if (e.key >= "0" && e.key <= "9") {
+                              e.preventDefault()
+                            }
+                          }}
+                        />
+                        
+                        {showDropDown && (
+                          <div className="dropdown">
+                            {almcOwners.map((prop, index) => (
+                              <div
+                                key={index + 9082}
+                                className="dropdown-item"
+                                onClick={() => {
+                                  setOwnerSelect({
+                                    ...ownerSelect,
+                                    doc_per: prop.doc_per,
+                                    nom_per: `${prop.nom_per} ${prop.ape_per} (${prop.doc_per})`,
+                                  })
+                                  setShowDropDown(false)
+                                }}
+                              >
+                                <div className="dropdown-contenido">
+                                  <div className="dropdown-nombre">{prop.nom_per} {prop.ape_per}</div>
+                                  <div className="dropdown-dueno">
+                                    {prop.doc_per}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
 
                     <div className='grupo-regusuario'>

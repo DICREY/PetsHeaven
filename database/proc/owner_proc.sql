@@ -1,4 +1,4 @@
--- Active: 1750268475844@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchOwners()
 BEGIN
     SELECT
@@ -15,6 +15,7 @@ BEGIN
         p.cont_per,
         p.fec_cre_per,
         p.gen_per,
+        p.fot_per,
         GROUP_CONCAT(
             CONCAT_WS(',',
                 m.nom_mas,
@@ -30,7 +31,19 @@ BEGIN
                 m.fec_cre_mas
             ) 
             SEPARATOR '---'
-        ) AS mascotas
+        ) AS mascotas,
+        (
+            SELECT GROUP_CONCAT(
+                r.nom_rol
+                SEPARATOR ', '
+            )
+            FROM
+                roles r
+            JOIN
+                otorgar_roles otr ON otr.id_per = p.id_per
+            WHERE
+                otr.id_rol = r.id_rol
+        ) AS roles
     FROM 
         personas p
     JOIN 
@@ -72,6 +85,7 @@ BEGIN
         p.cont_per,
         p.fec_cre_per,
         p.gen_per,
+        p.fot_per,
         (
             SELECT GROUP_CONCAT(
                 CONCAT_WS(',',
@@ -93,7 +107,19 @@ BEGIN
             WHERE 
                 m.id_pro_mas = p.id_per
                 AND m.estado = 1
-        ) AS mascotas
+        ) AS mascotas,
+        (
+            SELECT GROUP_CONCAT(
+                r.nom_rol
+                SEPARATOR ', '
+            )
+            FROM
+                roles r
+            JOIN
+                otorgar_roles otr ON otr.id_per = p.id_per
+            WHERE
+                otr.id_rol = r.id_rol
+        ) AS roles
     FROM 
         personas p
     WHERE
@@ -141,6 +167,7 @@ BEGIN
         p.cont_per,
         p.fec_cre_per,
         p.gen_per,
+        p.fot_per,
         (
             SELECT GROUP_CONCAT(
                 CONCAT_WS(',',
@@ -162,7 +189,19 @@ BEGIN
             WHERE 
                 m.id_pro_mas = p.id_per
                 AND m.estado = 1
-        ) AS mascotas
+        ) AS mascotas,
+        (
+            SELECT GROUP_CONCAT(
+                r.nom_rol
+                SEPARATOR ', '
+            )
+            FROM
+                roles r
+            JOIN
+                otorgar_roles otr ON otr.id_per = p.id_per
+            WHERE
+                otr.id_rol = r.id_rol
+        ) AS roles
     FROM 
         personas p
     WHERE
@@ -206,6 +245,7 @@ BEGIN
         p.cont_per,
         p.fec_cre_per,
         p.gen_per,
+        p.fot_per,
         (
             GROUP_CONCAT(
                 CONCAT_WS(',',
@@ -223,7 +263,19 @@ BEGIN
                 ) 
                 SEPARATOR '---'
             ) 
-        ) AS mascotas
+        ) AS mascotas,
+        (
+            SELECT GROUP_CONCAT(
+                r.nom_rol
+                SEPARATOR ', '
+            )
+            FROM
+                roles r
+            JOIN
+                otorgar_roles otr ON otr.id_per = p.id_per
+            WHERE
+                otr.id_rol = r.id_rol
+        ) AS roles
     FROM 
         personas p
     LEFT JOIN mascotas m ON

@@ -10,7 +10,8 @@ export class Description extends React.Component {
     super(props)
 
     this.state = {
-      validImg: false
+      validImg: false,
+      profileImage: null
     }
     this.legalDate = LegalAge()
     this.maxDate = new Date().toLocaleDateString('en-CA')
@@ -21,6 +22,20 @@ export class Description extends React.Component {
   }
 
   // Functions
+  handleProfileImageChange = (e) => {
+    const { handleChange } = this.props
+    const file = e.target.files[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        this.setState({ profileImage: e.target.result })
+      }
+      reader.readAsDataURL(file)
+      this.setState({ fot_mas: file })
+    }
+    handleChange(e)
+  }
+  
   renderCell = (item, header) => {
     const { disabled } = this.props
 
@@ -34,7 +49,8 @@ export class Description extends React.Component {
   }
 
   render = () => {
-    let { datas, isEditing, handleChange, headers, imgDefault } = this.props
+    let { datas, isEditing, handleChange, headers, headerImg, imgDefault } = this.props
+    const { profileImage } = this.state
 
     const headersKeys = Object.keys(headers)
     const headersValues = Object.values(headers)
@@ -49,19 +65,43 @@ export class Description extends React.Component {
     })
 
     return (
-      <div className="propietarioSeccionProps">
+      <main className="propietarioSeccionProps">
         <h2 className="seccionTituloProps">Información personal:</h2>
-        <div className="propietarioInfoProps">
-          <div className="propietarioFotoInfoProps">
-            <div className="propietarioFotoProps">
-              {datas && checkImage(
-                datas.image,
-                `${datas.alt_img}`,
-                imgDefault,
-                ''
-              )}
-            </div>
-            <div className="propietarioDatosProps">
+        <section className="propietarioInfoProps">
+          <section className="propietarioFotoInfoProps">
+            <section className='grupo-regusuario'>
+              <label className='propietarioEtiquetaProps'>Imagen del usuario:</label>
+                <div className='perfil-regusuario'>
+                  <div className='imagen-regusuario'>
+                    {profileImage?
+                      checkImage(
+                        profileImage,
+                        'imagen del usuario para guardar en el sistema',
+                        imgDefault):
+                      checkImage(
+                        datas[headerImg],
+                        'imagen del usuario guardada en el sistema',
+                        imgDefault)
+                    }
+                  </div>
+                  {/* <button 
+                    type="button"
+                    className='editar-regusuario' 
+                    onClick={() => profileInputRef.current.click()}
+                  >
+                    <Pencil className='icon' />
+                  </button> */}
+                  <input
+                    type='file'
+                    name="img"
+                    // ref={profileInputRef}
+                    onChange={this.handleProfileImageChange}
+                    accept='image/*'
+                    className={isEditing? '':'input-file-hidden'}
+                  />
+                </div>
+              </section>
+            <section className="propietarioDatosProps">
               {headers?.map((header, index) => (
                 isEditing ? (
                   <div key={index + 938} className="propietarioCampoProps">
@@ -99,10 +139,10 @@ export class Description extends React.Component {
                   </div>
                 )))
               }
-            </div>
-          </div>
-        </div>
-      </div>
+            </section>
+          </section>
+        </section>
+      </main>
     )
   }
 }

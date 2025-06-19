@@ -35,11 +35,11 @@ const InformacionProfesional = ({ register, errors, vet = false }) => {
             name='especialidad'
             className={`campo-selector-profesional ${errors.especialidad ? 'campo-error' : ''}`}
             {...register('especialidad', { required: 'Seleccione al menos una especialidad.' })}
-            defaultValue='--'
+            defaultValue={0}
             aria-invalid={errors.especialidad ? 'true' : 'false'}
             aria-describedby={errors.especialidad ? 'error-especialidad' : undefined}
           >
-            <option disabled value='--'>Si aplica, seleccione una o varias</option>
+            <option disabled value={0}>Si aplica, seleccione una o varias</option>
             <option value='medicina'>Medicina General</option>
             <option value='pediatria'>Pediatría</option>
             <option value='cardiologia'>Cardiología</option>
@@ -61,12 +61,11 @@ const InformacionProfesional = ({ register, errors, vet = false }) => {
           name='numTargPro'
           type='number'
           disabled={!vet}
-          max='100'
-          aria-valuemax='100'
+          min={5}
           placeholder='Número de tarjeta profesional'
           className={`campo-profesional ${errors.numTargPro ? 'campo-error' : ''}`}
           {...register('numTargPro', {
-            required: 'El número de tarjeta profesional es requerido.',
+            // required: 'El número de tarjeta profesional es requerido.',
             pattern: {
               value: /^[0-9]+$/,
               message: 'El número de tarjeta profesional debe contener solo números.',
@@ -98,9 +97,9 @@ const InformacionProfesional = ({ register, errors, vet = false }) => {
             )}
           </div>
           <button
-            type='button'
             className='editar-tarjeta'
             onClick={() => cardInputRef.current.click()}
+            type='button'
             aria-label='Subir imagen de tarjeta profesional'
           >
             <Pencil className='icon' aria-hidden='true' />

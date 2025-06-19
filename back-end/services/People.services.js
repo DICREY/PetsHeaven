@@ -142,6 +142,7 @@ class People {
                 data.email_per,
                 data.hash_pass,
                 data.gen_per,
+                data.img_per,
             ]
             let procedure = "CALL RegistPeoples(?,?,?,?,?,?,?,?,?,?,?);"
 
@@ -155,6 +156,42 @@ class People {
                 setTimeout(() => res({
                     message: "User Created",
                     created: 1
+                }),1000)
+            })
+            
+            // close conection 
+            this.database.conection.end()
+        })
+    }
+
+    // function to register assign rol
+    async AssignRol(data) {
+        return new Promise((res,rej) => {
+            // data 
+            const newUser = data.rol_per === '1'?[
+                data.doc_per,
+                data.rol_per === '1'? 'Administrador': 'Veterinario',
+                data.esp_per,
+                data.num_tar_per,
+                data.fot_tar_vet || "no-registrado",
+            ]:[
+                data.doc_per,
+                data.rol_per === '1'? 'Administrador': 'Veterinario',
+            ]
+            
+            const procedure = data.rol_per === '1'? "CALL AssignRol(?,?);"
+            :"CALL AssignRolStaff(?,?,?,?,?);"
+
+            // conect to database
+            this.database = new DataBase()
+            this.database.conect()
+            
+            // call procedure
+            if (this.database) this.database.conection.query(procedure,newUser,err=> {
+                if(err) rej(err) 
+                setTimeout(() => res({
+                    message: "Rol assigned",
+                    assigned: 1
                 }),1000)
             })
             
@@ -177,9 +214,10 @@ class People {
                 data.cel2_per,
                 data.email_per,
                 data.hash_pass,
-                data.gen_per
+                data.gen_per,
+                data.img_per
             ]
-            const procedure = "CALL ModifyPeople(?,?,?,?,?,?,?,?,?,?);"
+            const procedure = "CALL ModifyPeople(?,?,?,?,?,?,?,?,?,?,?);"
 
             // conect to database
             this.database = new DataBase()

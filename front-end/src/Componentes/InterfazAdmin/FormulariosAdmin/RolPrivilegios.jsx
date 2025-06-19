@@ -28,14 +28,14 @@ const RolPrivilegios = ({ register, errors, setVet }) => {
               name='rol'
               className={`campo-selector ${errors.rol ? 'campo-error' : ''}`}
               {...register('rol', { required: 'El rol es requerido.' })}
-              defaultValue='--'
-              onChange={(e) => {e.target.value === 'Veterinario'? setVet(1): setVet(0)}}
+              defaultValue={0}
+              onChange={(e) => setVet(e.target.value)}
               aria-invalid={errors.rol ? 'true' : 'false'}
               aria-describedby={errors.rol ? 'error-rol' : undefined}
             >
-              <option value='--' disabled>Seleccione una opción</option>
-              <option value='Administrador'>Administrador</option>
-              <option value='Veterinario'>Veterinario</option>
+              <option value={0} disabled>Seleccione una opción</option>
+              <option value={1}>Administrador</option>
+              <option value={2}>Veterinario</option>
             </select>
           </div>
           {errors.rol && (

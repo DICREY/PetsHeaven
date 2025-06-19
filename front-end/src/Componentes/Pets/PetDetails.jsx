@@ -9,7 +9,7 @@ import { HistoryTest } from './historyTest'
 import { Notification } from '../Global/Notifys'
 import { AuthContext } from '../../Contexts/Contexts'
 import { ModifyData, PostData } from '../Varios/Requests'
-import { checkImage, getAge, errorStatusHandler, divideList } from '../Varios/Util'
+import { checkImage, getAge, errorStatusHandler, divideList, uploadImg } from '../Varios/Util'
 import { FormularioConsulta } from '../InterfazAdmin/FormulariosAdmin/Consulta'
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { HeaderUser } from '../BarrasNavegacion/HeaderUser'
@@ -33,6 +33,7 @@ export const PetDetails = ({ datas, imgPetDefault = '', URL = '', tab = 'Datos G
     const [showMedicHistory, setShowMedicHistory] = useState(false)
     const [consult, setConsult] = useState(false)
     const [notify, setNotify] = useState(null)
+    const [profileImage, setProfileImage] = useState(null)
     const { roles, admin } = useContext(AuthContext)
     const headers = {
         Nombre: 'nom_mas',
@@ -54,10 +55,26 @@ export const PetDetails = ({ datas, imgPetDefault = '', URL = '', tab = 'Datos G
     // Handle value change
     const handleChange = (e) => {
         const { name, value } = e.target
+        if (name === 'img') handleProfileImageChange(e)
         setModPet((prev) => ({
             ...prev,
             [name]: value,
         }))
+    }
+
+    const handleProfileImageChange = (e) => {
+        const file = e.target.files[0]
+        if (file) {
+            const reader = new FileReader()
+            reader.onload = (e) => {
+                setProfileImage(e.target.result)
+                setModPet(prev => ({
+                    ...prev,
+                    img: file,
+                })) 
+            }
+            reader.readAsDataURL(file)
+        }
     }
 
     // Change tabs
@@ -123,7 +140,8 @@ export const PetDetails = ({ datas, imgPetDefault = '', URL = '', tab = 'Datos G
             load: 1
         })
         try {
-            const mod = await ModifyData(`${mainURL}/modify`, modPet)
+            const imgUrl = await uploadImg(modPet.img,'mascotas')
+            const mod = await ModifyData(`${mainURL}/modify`, {...modPet, img_mas: imgUrl})
             setNotify(null)
             if (mod?.modify) {
                 setNotify({
@@ -276,8 +294,8 @@ export const PetDetails = ({ datas, imgPetDefault = '', URL = '', tab = 'Datos G
                                             <Description
                                                 handleChange={handleChange}
                                                 headers={headers}
+                                                headerImg={'fot_mas'}
                                                 datas={{
-                                                    image: datas.fot_mas,
                                                     alt_img: `${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`,
                                                     ...datas
                                                 }}

@@ -150,7 +150,7 @@ class Pet {
                 data.doc_per,
                 data.gen_mas,
                 data.est_rep_mas,
-                data.fot_mas
+                data.img_mas
             ]
 
             // conect to database
