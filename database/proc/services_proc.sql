@@ -33,7 +33,7 @@ BEGIN
                         v.efe_sec_vac,
                         v.cat_vac,
                         v.dos_rec_vac,
-                        v.des_vac,
+                        /* v.des_vac, */
                         v.des_tec_vac,
                         v.lot_vac,
                         v.fre_vac,

@@ -161,6 +161,16 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
                   Nueva Cita
                 </button>
 
+                <button type="button" className="AddBtn" onClick={() => navigate('/propietario/registro')}>
+                  <Plus className="icon" aria-hidden="true" />
+                  Registrar Propietario
+                </button>
+
+                <button type="button" className="AddBtn" onClick={() => navigate('/admin/usuario/registro')}>
+                  <Plus className="icon" aria-hidden="true" />
+                  Registrar Personal
+                </button>
+
                 <button
                   className="EditBtn"
                   onClick={() => navigate('/main')}
