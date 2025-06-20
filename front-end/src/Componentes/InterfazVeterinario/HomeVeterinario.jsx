@@ -17,7 +17,7 @@ import AppointmentForm from "../InterfazAdmin/FormulariosAdmin/AgendarCita"
 import "../../styles/InterfazVeterinario/HomeVeterinario.css"
 
 // Component
-export const PanelVeterinario = ({ URL = '', imgDefault = '', setPetSelect }) => {
+export const PanelVeterinario = ({ URL , imgDefault = '', setPetSelect }) => {
   // Dynamic vars 
   const [isProfileOpen, setIsProfileOpen] = useState(false)
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
@@ -151,7 +151,7 @@ export const PanelVeterinario = ({ URL = '', imgDefault = '', setPetSelect }) =>
                 </span>
               </header>
 
-              <ul className="lista-pacientes-vet" role="list">
+              <ul className="lista-citas-admin" role="list">
                 {appoint?.map((cita, index) => (
                   <li 
                     key={index + 123} 

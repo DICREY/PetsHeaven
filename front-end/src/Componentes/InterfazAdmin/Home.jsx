@@ -108,7 +108,7 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
           </section>
 
           {/* Content Grid */}
-          <section className="contenido-grid-admin">
+          <section className="contenido-grid-vet">
             {/* Today's Appointments */}
             <article className="tarjeta-citas-admin">
               <header className="cabecera-tarjeta-admin">

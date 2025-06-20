@@ -149,8 +149,30 @@ CREATE TABLE pets_heaven.consultas(
     fec_con DATE DEFAULT(CURRENT_DATE()) NOT NULL,INDEX(fec_con), -- Fecha de la consulta
     mot_con INT NOT NULL,INDEX(mot_con),FOREIGN KEY (mot_con) REFERENCES motivos_consultas(id_mot_con) ON DELETE RESTRICT ON UPDATE CASCADE, -- ID del motivo de consulta
     nom_tra INT NOT NULL,INDEX(nom_tra),FOREIGN KEY (nom_tra) REFERENCES tratamientos_consultas(id_tra_con) ON DELETE RESTRICT ON UPDATE CASCADE, -- ID del tratamiento aplicado
-    cit_con INT NOT NULL,INDEX (cit_con),FOREIGN KEY (cit_con) REFERENCES citas(id_cit) ON DELETE CASCADE ON UPDATE CASCADE, -- ID de la cita asociada
-    pro_mas_con INT NOT NULL,INDEX (pro_mas_con),FOREIGN KEY (pro_mas_con) REFERENCES personas(id_per) ON DELETE CASCADE ON UPDATE CASCADE, -- ID del propietario de la mascota
-    vet_con INT NOT NULL,INDEX (vet_con),FOREIGN KEY (vet_con) REFERENCES veterinarios(id_vet) ON DELETE RESTRICT ON UPDATE CASCADE, -- ID del veterinario
-    mas_con INT NOT NULL,INDEX (mas_con),FOREIGN KEY (mas_con) REFERENCES mascotas(id_mas) ON DELETE RESTRICT ON UPDATE CASCADE -- ID de la mascota
+    cit_con INT NOT NULL,INDEX(cit_con),FOREIGN KEY (cit_con) REFERENCES citas(id_cit) ON DELETE CASCADE ON UPDATE CASCADE -- ID de la cita asociada
+);
+
+CREATE TABLE tipos_prueba (
+    id_tip_pru INT AUTO_INCREMENT PRIMARY KEY, -- ID del tipo de prueba
+    nom_tip_pru VARCHAR(50) NOT NULL,INDEX(nom_tip_pru), -- nombre del tipo de prueba
+    des_tip_pru TEXT, -- Descripcion del tipo de prueba
+    tie_est_tip_pru INT -- Tiempo estimado en horas
+);
+
+CREATE TABLE pruebas_laboratorio (
+    id_pru_lab INT AUTO_INCREMENT PRIMARY KEY, -- ID de la prueba de laboratorio
+    mas_pru_lab INT NOT NULL,INDEX(mas_pru_lab),FOREIGN KEY (mas_pru_lab) REFERENCES mascotas(id_mas) ON UPDATE CASCADE ON DELETE CASCADE, -- Mascota de la prueba
+    vet_pru_lab INT NOT NULL,INDEX(vet_pru_lab), FOREIGN KEY (vet_pru_lab) REFERENCES veterinarios(id_vet) ON UPDATE CASCADE ON DELETE CASCADE, -- Veterinario que solicito la prueba
+    tip_pru_lab INT NOT NULL,INDEX(tip_pru_lab), FOREIGN KEY (tip_pru_lab) REFERENCES tipos_prueba(id_tip_pru) ON UPDATE CASCADE ON DELETE CASCADE, -- Tipo de prueba solicitada
+    fec_sol_pru_lab DATETIME NOT NULL, -- Fecha en que se solicito la prueba
+    fec_rea_pru_lab DATETIME NOT NULL, -- Fecha de realizacion de la prueba
+    fec_ent_pru_lab DATETIME, -- Fecha de entrega de resultados
+    sta_pru_lab ENUM('SOLICITADO', 'EN-PROCESO', 'COMPLETADO', 'ENTREGADO') DEFAULT 'SOLICITADO', -- Estado de la prueba
+    res_pru_lab TEXT, -- Resultados obtenidos de la prueba
+    obs_pru_lab TEXT, -- Observaciones de la prueba
+    pre_pru_lab DECIMAL(10,2), -- Precio de la prueba 
+    pri_pru_lab ENUM('RUTINA', 'URGENTE') DEFAULT 'RUTINA', -- Nivel de priorida de la prueba
+    met_pru_lab VARCHAR(100), -- Metodo usado en la prueba
+    created_pru_lab TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Fecha de insercion de datos
+    updated_pru_lab TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- Fecha de actualizacion de datos
 );
