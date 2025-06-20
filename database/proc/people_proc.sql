@@ -1,4 +1,4 @@
--- Active: 1745625018911@@localhost@3306@pets_heaven
+-- Active: 1750268475844@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.RegistPeoples(
     IN p_nom_per VARCHAR(100),
     IN p_ape_per VARCHAR(100),
@@ -45,13 +45,14 @@ BEGIN
     SET autocommit = 1;
 END //
 
-CREATE PROCEDURE pets_heaven.AssignRol(
+CREATE PROCEDURE pets_heaven.AssignRolAdmin(
     IN p_doc VARCHAR(100),
     IN p_rol VARCHAR(100)
 )
 BEGIN
     DECLARE p_id_per INT;
     DECLARE p_id_rol INT;
+    DECLARE p_id_rol_sec INT;
 
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
      BEGIN
@@ -66,6 +67,11 @@ BEGIN
     SELECT id_per INTO p_id_per FROM personas WHERE doc_per = p_doc;
 
     SELECT id_rol INTO p_id_rol FROM roles WHERE nom_rol = p_rol;
+
+    SELECT id_rol INTO p_id_rol_sec FROM roles WHERE nom_rol LIKE CONCAT('%',"Veterinario",'%');
+
+    INSERT INTO otorgar_roles(id_per,id_rol,fec_oto)
+    VALUES (p_id_per,p_id_rol,NOW());
 
     INSERT INTO otorgar_roles(id_per,id_rol,fec_oto)
     VALUES (p_id_per,p_id_rol,NOW());

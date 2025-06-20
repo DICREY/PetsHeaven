@@ -144,7 +144,7 @@ class People {
                 data.gen_per,
                 data.img_per,
             ]
-            let procedure = "CALL RegistPeoples(?,?,?,?,?,?,?,?,?,?,?);"
+            let procedure = "CALL RegistPeoples(?,?,?,?,?,?,?,?,?,?,?,?);"
 
             // conect to database
             this.database = new DataBase()
@@ -179,7 +179,7 @@ class People {
                 data.rol_per === '1'? 'Administrador': 'Veterinario',
             ]
             
-            const procedure = data.rol_per === '1'? "CALL AssignRol(?,?);"
+            const procedure = data.rol_per === '1'? "CALL AssignRolAdmin(?,?);"
             :"CALL AssignRolStaff(?,?,?,?,?);"
 
             // conect to database

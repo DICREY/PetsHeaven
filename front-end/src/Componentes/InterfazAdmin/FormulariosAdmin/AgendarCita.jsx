@@ -6,7 +6,7 @@ import { Calendar, FileText, Stethoscope, PawPrint, X, Save, ChevronDown } from 
 // Imports 
 import { GetData, PostData } from "../../Varios/Requests"
 import { Notification } from "../../Global/Notifys"
-import { errorStatusHandler, searchFilter } from "../../Varios/Util"
+import { errorStatusHandler, formatDate, searchFilter } from "../../Varios/Util"
 
 // Import styles 
 import "../../../styles/InterfazAdmin/FormuariosAdmin/AgendarCita.css"
@@ -427,7 +427,12 @@ export default function AppointmentForm({ onClose, onSubmit, URL = '' }) {
                 <div className="fecha-seccion">
                   <div className="grupo">
                     <label className="etiqueta">Fecha de la Cita</label>
-                    <input type="date" value={selectedDate} onChange={handleDateChange} className="fecha-input" />
+                    <input 
+                      type="date" value={selectedDate} 
+                      onChange={handleDateChange} 
+                      className="fecha-input" 
+                      min={formatDate(new Date())}
+                    />
                   </div>
                 </div>
 
@@ -464,6 +469,7 @@ export default function AppointmentForm({ onClose, onSubmit, URL = '' }) {
                         value={newEvent.end.split("T")[1].substring(0, 5)}
                         onChange={(e) => {
                           const time = e.target.value
+                          console.log(e.target.value)
                           setNewEvent({
                             ...newEvent,
                             end: `${selectedDate}T${time}:00`,
