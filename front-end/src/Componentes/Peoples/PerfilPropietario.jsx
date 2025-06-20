@@ -212,13 +212,14 @@ export const PerfilPropietario = ({
 
   const handleTabChange = (tab) => {
     if (isEditing) {
-      if (window.confirm('Tiene cambios sin guardar. ¿Desea salir sin guardar?')) {
-        setIsEditing(false)
-        setActiveTab(tab)
-      }
-    } else {
-      setActiveTab(tab)
-    }
+      setNotify({
+          title: 'Atencion',
+          message: 'Tiene cambios sin guardar. ¿Desea salir sin guardar?',
+          firstOption: () => setNotify(null),
+          secondOption: () => {setIsEditing(false); setActiveTab(tab); setNotify(null)},
+          secondOptionName: 'Salir',
+      })
+    } else setActiveTab(tab)
   }
 
   // Effects
@@ -327,18 +328,27 @@ export const PerfilPropietario = ({
                     <PawPrint className='icon' />
                     <span>Mascotas</span>
                   </button>
-                  {admin && (
-                    <button
-                      className={`pestanaProps ${activeTab === 'rol' ? 'activaProps' : ''}`}
-                      onClick={() => handleTabChange('rol')}
-                    >
-                      <User className='icon' />
-                      <span>Roles</span>
-                    </button>
-                  )}
                 </nav>
               )
             }
+            {admin && (
+              <nav className='pestanasProps'>
+                <button
+                  className={`pestanaProps ${activeTab === 'propietario' ? 'activaProps' : ''}`}
+                  onClick={() => handleTabChange('propietario')}
+                >
+                  <User className='icon' />
+                  <span>Usuario</span>
+                </button>
+                <button
+                  className={`pestanaProps ${activeTab === 'rol' ? 'activaProps' : ''}`}
+                  onClick={() => handleTabChange('rol')}
+                >
+                  <User className='icon' />
+                  <span>Roles</span>
+                </button>
+              </nav>
+            )}
 
             <section className='contenidoProps'>
               {activeTab === 'propietario' && userSelect &&(

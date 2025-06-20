@@ -65,6 +65,7 @@ Route.get('/by:by', async (req,res) => {
 })
 
 // Call Middleware for verify the request data
+Route.use(ValidatorRol("administrador"))
 Route.use(Fullinfo(['cel2_per','esp_per','num_tar_per','fot_tar_vet']))
 
 Route.post('/assign-rol', async (req,res) => {
@@ -92,7 +93,6 @@ Route.post('/register', async (req,res) => {
     // Vars 
     const saltRounds = 15
     const body = req.body
-    console.log(body)
     
     try {
         // Verifiy if exist
@@ -131,10 +131,9 @@ Route.put('/modify', async (req,res) => {
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
-Route.put('/delete', ValidatorRol("administrador"), async (req,res) => {
+Route.put('/delete', async (req,res) => {
     // Vars 
     const { body } = req
-    console.log(body)
         
     try {
         // Verifiy if exist

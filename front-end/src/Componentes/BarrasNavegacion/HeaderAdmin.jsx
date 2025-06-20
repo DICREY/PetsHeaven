@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { AuthContext } from "../../Contexts/Contexts"
 import { PostData } from '../Varios/Requests'
 import { TabHelp } from '../Global/TabHelp'
-import { hourTraductor } from "../Varios/Util"
+import { errorStatusHandler, hourTraductor } from "../Varios/Util"
 
 // import styles 
 import "../../styles/BarrasNavegacion/Header.css"
