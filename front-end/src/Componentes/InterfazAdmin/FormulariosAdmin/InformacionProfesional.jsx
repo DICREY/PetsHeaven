@@ -53,6 +53,23 @@ const InformacionProfesional = ({ register, errors, vet = false }) => {
       </div>
 
       <div className='grupo-profesional'>
+        <label htmlFor='especialidad' className='etiqueta-profesional'>Horarios</label>
+        <div className='selector-profesional'>
+          <input
+            id='horVet'
+            name='horVet'
+            type='text'
+            disabled={!vet}
+            min={5}
+            placeholder='Horario de trabajo'
+            className={`campo-profesional ${errors.horVet ? 'campo-error' : ''}`}
+            aria-invalid={errors.horVet ? 'true' : 'false'}
+            aria-describedby={errors.horVet ? 'error-horVet' : undefined}
+          />
+        </div>
+      </div>
+
+      <div className='grupo-profesional'>
         <label htmlFor='numTargPro' className='etiqueta-profesional'>
           Nº Tarjeta profesional<span className='obligatorio' aria-hidden='true'>*</span>
         </label>

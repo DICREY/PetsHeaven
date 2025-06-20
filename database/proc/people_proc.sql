@@ -46,8 +46,7 @@ BEGIN
 END //
 
 CREATE PROCEDURE pets_heaven.AssignRolAdmin(
-    IN p_doc VARCHAR(100),
-    IN p_rol VARCHAR(100)
+    IN p_doc VARCHAR(100)
 )
 BEGIN
     DECLARE p_id_per INT;
@@ -66,7 +65,7 @@ BEGIN
 
     SELECT id_per INTO p_id_per FROM personas WHERE doc_per = p_doc;
 
-    SELECT id_rol INTO p_id_rol FROM roles WHERE nom_rol = p_rol;
+    SELECT id_rol INTO p_id_rol FROM roles WHERE nom_rol LIKE CONCAT('%',"Administrador",'%');
 
     SELECT id_rol INTO p_id_rol_sec FROM roles WHERE nom_rol LIKE CONCAT('%',"Veterinario",'%');
 
@@ -75,6 +74,41 @@ BEGIN
 
     INSERT INTO otorgar_roles(id_per,id_rol,fec_oto)
     VALUES (p_id_per,p_id_rol,NOW());
+
+    COMMIT;
+
+    SET autocommit = 1;
+END //
+CREATE PROCEDURE pets_heaven.AssignRolStaff(
+    IN p_doc VARCHAR(100),
+    IN p_esp VARCHAR(100),
+    IN p_hor VARCHAR(100),
+    IN p_num_tar VARCHAR(100),
+    IN p_fot_tar TEXT
+)
+BEGIN
+    DECLARE p_id_per INT;
+    DECLARE p_id_rol INT;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+     BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    SET autocommit = 0;
+
+    START TRANSACTION;
+
+    SELECT id_per INTO p_id_per FROM personas WHERE doc_per = p_doc;
+
+    SELECT id_rol INTO p_id_rol FROM roles WHERE nom_rol LIKE CONCAT('%',"Veterinario",'%');
+
+    INSERT INTO otorgar_roles(id_per,id_rol,fec_oto)
+    VALUES (p_id_per,p_id_rol,NOW());
+
+    INSERT INTO veterinarios (id_vet,especialidad,horarios,num_tar_vet,fot_tar_vet)
+    VALUES (p_id_per,p_esp,p_hor,p_num_tar,p_fot_tar);
 
     COMMIT;
 
@@ -236,10 +270,11 @@ END //
 /* CALL `SearchPeoplesVet`();
 /* CALL pets_heaven.SearchAllPeoples(); */
 /* CALL pets_heaven.SearchPeoples(); */
-/* CALL pets_heaven.AssignRol('12345678','Administrador'); */
+/* CALL pets_heaven.AssignRolAdmin('12345678'); */
 
 /* DROP PROCEDURE `RegistPeoples`; */
-/* DROP PROCEDURE `AssignRol`; */
+/* DROP PROCEDURE `AssignRolAdmin`; */
+/* DROP PROCEDURE `AssignRolStaff`; */
 /* DROP PROCEDURE `ModifyPeople`; */
 /* DROP PROCEDURE pets_heaven.`SearchPeopleBy`; */
 /* DROP PROCEDURE pets_heaven.`SearchPeoplesBy`; */

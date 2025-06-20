@@ -49,8 +49,7 @@ CREATE TABLE pets_heaven.veterinarios(
     especialidad VARCHAR(100) NOT NULL, -- Especialidad del veterinario
     horarios VARCHAR(100) NOT NULL, -- Horarios de atención
     num_tar_vet VARCHAR(100) DEFAULT("no-registrado") NOT NULL, -- Número de tarjeta profesional
-    fot_tar_vet TEXT DEFAULT("no-registrado") NOT NULL, -- Foto de la tarjeta profesional
-    fot_vet TEXT DEFAULT("https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg") NOT NULL -- Foto del veterinario
+    fot_tar_vet TEXT DEFAULT("no-registrado") NOT NULL -- Foto de la tarjeta profesional
 );
 
 CREATE TABLE pets_heaven.mascotas(

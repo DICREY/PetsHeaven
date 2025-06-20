@@ -76,8 +76,9 @@ export const PerfilPropietario = ({
     const data = {
       doc_per: userData.doc_per,
       rol_per: datas.rol,
-      esp_per: datas.especialidad,
-      num_tar_per: datas.numTargPro,
+      hor_vet: datas.horVet,
+      esp_vet: datas.especialidad,
+      num_tar_vet: datas.numTargPro,
       fot_tar_vet: datas.tarjetaProfesional,
     }
     console.log(data)
@@ -269,7 +270,6 @@ export const PerfilPropietario = ({
                   <ArrowLeft className='icon' />
                   Atrás
                 </button>
-                {console.log(userSelect)}
 
                 {/* Botones de Eliminar y Editar solo cuando estamos en la pestaña de Propietario */}
                 {activeTab === 'propietario' && (
@@ -311,26 +311,6 @@ export const PerfilPropietario = ({
               </nav>
             </header>
 
-            {
-              owner && (
-                <nav className='pestanasProps'>
-                  <button
-                    className={`pestanaProps ${activeTab === 'propietario' ? 'activaProps' : ''}`}
-                    onClick={() => handleTabChange('propietario')}
-                  >
-                    <User className='icon' />
-                    <span>Usuario</span>
-                  </button>
-                  <button
-                    className={`pestanaProps ${activeTab === 'mascotas' ? 'activaProps' : ''}`}
-                    onClick={() => handleTabChange('mascotas')}
-                  >
-                    <PawPrint className='icon' />
-                    <span>Mascotas</span>
-                  </button>
-                </nav>
-              )
-            }
             {admin && (
               <nav className='pestanasProps'>
                 <button
@@ -340,6 +320,15 @@ export const PerfilPropietario = ({
                   <User className='icon' />
                   <span>Usuario</span>
                 </button>
+                {owner && (
+                  <button
+                    className={`pestanaProps ${activeTab === 'mascotas' ? 'activaProps' : ''}`}
+                    onClick={() => handleTabChange('mascotas')}
+                  >
+                    <PawPrint className='icon' />
+                    <span>Mascotas</span>
+                  </button>)
+                }
                 <button
                   className={`pestanaProps ${activeTab === 'rol' ? 'activaProps' : ''}`}
                   onClick={() => handleTabChange('rol')}

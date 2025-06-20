@@ -170,16 +170,13 @@ class People {
             // data 
             const newUser = data.rol_per === '1'?[
                 data.doc_per,
-                data.rol_per === '1'? 'Administrador': 'Veterinario',
-                data.esp_per,
-                data.num_tar_per,
+                data.esp_vet,
+                data.hor_vet,
+                data.num_tar_vet,
                 data.fot_tar_vet || "no-registrado",
-            ]:[
-                data.doc_per,
-                data.rol_per === '1'? 'Administrador': 'Veterinario',
-            ]
+            ]:[ data.doc_per ]
             
-            const procedure = data.rol_per === '1'? "CALL AssignRolAdmin(?,?);"
+            const procedure = data.rol_per === '1'? "CALL AssignRolAdmin(?);"
             :"CALL AssignRolStaff(?,?,?,?,?);"
 
             // conect to database
