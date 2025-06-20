@@ -6,7 +6,7 @@ COPY package.json .
 COPY . .
 
 RUN yarn add react react-dom react-hook-form boxicons react-router react-router-dom lucide-react @supabase/supabase-js @emailjs/browser sweetalert sweetalert2 framer-motion
-RUN yarn add @fullcalendar/core @fullcalendar/react @fullcalendar/daygrid @fullcalendar/interaction @fullcalendar/timegrid @fullcalendar/list axios
+RUN yarn add @fullcalendar/core @fullcalendar/react @fullcalendar/daygrid @fullcalendar/interaction @fullcalendar/timegrid @fullcalendar/list axios compresorjs
 RUN yarn add -D sass-embedded react-scripts
 
 EXPOSE 5173

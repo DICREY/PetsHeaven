@@ -5,8 +5,7 @@ WORKDIR /home/app/
 COPY package.json .
 COPY . .
 
-RUN yarn add cors express mysql express-rate-limit jsonwebtoken bcrypt dotenv
-RUN yarn add -D nodemon
+RUN yarn add cors express mysql express-rate-limit jsonwebtoken bcrypt dotenv cookie-parser
 
 EXPOSE 3000
 
