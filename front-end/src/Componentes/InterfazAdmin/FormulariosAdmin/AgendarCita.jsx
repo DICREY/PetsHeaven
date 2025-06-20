@@ -335,6 +335,7 @@ export default function AppointmentForm({ onClose, onSubmit, URL = '' }) {
                     value={newEvent.propietario}
                     onChange={handleInputChange}
                     className="campo"
+                    disabled="true"
                   />
                 </div>
 
