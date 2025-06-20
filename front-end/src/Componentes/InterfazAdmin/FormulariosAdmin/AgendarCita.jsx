@@ -20,7 +20,7 @@ const consultorios = [
 ]
 
 // Component 
-export default function AppointmentForm({ onClose, onSubmit, URL = '' }) {
+export default function AppointmentForm({ onClose, date, URL = ''}) {
   const [newEvent, setNewEvent] = useState({
     nom_mas: "",
     propietario: "",
@@ -335,6 +335,7 @@ export default function AppointmentForm({ onClose, onSubmit, URL = '' }) {
                     value={newEvent.propietario}
                     onChange={handleInputChange}
                     className="campo"
+                    disabled={true}
                   />
                 </div>
 
@@ -428,7 +429,7 @@ export default function AppointmentForm({ onClose, onSubmit, URL = '' }) {
                   <div className="grupo">
                     <label className="etiqueta">Fecha de la Cita</label>
                     <input 
-                      type="date" value={selectedDate} 
+                      type="date" value={date ? date : selectedDate} 
                       onChange={handleDateChange} 
                       className="fecha-input" 
                       min={formatDate(new Date())}
