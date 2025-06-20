@@ -21,16 +21,6 @@ const consultorios = [
 
 // Component 
 export default function AppointmentForm({ onClose, date, URL = '', sended}) {
-  const [newEvent, setNewEvent] = useState({
-    nom_mas: "",
-    propietario: "",
-    veterinario: "",
-    category: "",
-    start: new Date().toISOString().slice(0, 16),
-    end: new Date(Date.now() + 60 * 60 * 1000).toISOString().slice(0, 16),
-    description: "",
-    mas_cit: null,
-  })
   const [lugar, setLugar] = useState("")
   const [ selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0])
   const [ almcPacientes, setAlmcPacientes] = useState([])
@@ -40,6 +30,17 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
   const [ pacientes, setPacientes ] = useState([])
   const [ almcAppoint, setAlmcAppoint ] = useState([])
   const [ almcVet, setAlmcVet ] = useState([])
+  const [newEvent, setNewEvent] = useState({
+    nom_mas: "",
+    propietario: "",
+    veterinario: "",
+    category: "",
+    fecCit: date? date: selectedDate,
+    start: new Date().toISOString().slice(0, 16),
+    end: new Date(Date.now() + 60 * 60 * 1000).toISOString().slice(0, 16),
+    description: "",
+    mas_cit: null,
+  })
 
   // Vars 
   const mainUrl = `${URL}/appointment`
@@ -62,12 +63,11 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
   }
 
   const handleDateChange = (e) => {
-    const newDate = e.target.value
-    setSelectedDate(newDate)
+    const newValue = e.target.value
+    setSelectedDate(newValue)
     setNewEvent((prev) => ({
       ...prev,
-      start: `${newDate}T${prev.start.split("T")[1]}`,
-      end: `${newDate}T${prev.end.split("T")[1]}`,
+      fecCit: newValue,
     }))
   }
 
@@ -143,15 +143,15 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
       load: true
     })
     const citaData = {
-        fec_reg_cit: new Date().toISOString().split('T')[0],
-        fec_cit: newEvent.start.split('T')[0],
-        hor_ini_cit: newEvent.start.split('T')[1],
-        hor_fin_cit: newEvent.end.split('T')[1],
-        lug_ate_cit: lugar,
-        ser_cit: newEvent.category,
-        vet_cit: newEvent.veterinario,
-        mas_cit: newEvent.nom_mas,
-        estado: 'PENDIENTE'
+      fec_reg_cit: new Date().toISOString().split('T')[0],
+      fec_cit: newEvent.fecCit,
+      hor_ini_cit: newEvent.start.split('T')[1],
+      hor_fin_cit: newEvent.end.split('T')[1],
+      lug_ate_cit: lugar,
+      ser_cit: newEvent.category,
+      vet_cit: newEvent.veterinario,
+      mas_cit: newEvent.nom_mas,
+      estado: 'PENDIENTE'
     }
     try {
         const data = await PostData(`${mainUrl}/register`, citaData)
@@ -163,7 +163,7 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
             close: setNotify
           })
           sended ? sended() : null
-          setTimeout(() => {if (onClose) onClose()}, 3000)
+          setTimeout(() => {if (onClose) onClose()}, 2000)
         }
     } catch (err) {
         setNotify(null)
@@ -429,8 +429,10 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
                 <div className="fecha-seccion">
                   <div className="grupo">
                     <label className="etiqueta">Fecha de la Cita</label>
-                    <input 
-                      type="date" value={date ? date : selectedDate} 
+                    <input
+                      name="fecCit"
+                      type="date" value={date ? date : selectedDate}
+                      disabled={date?1:0}
                       onChange={handleDateChange} 
                       className="fecha-input" 
                       min={formatDate(new Date())}
@@ -446,13 +448,7 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
                         type="time"
                         name="start"
                         value={newEvent.start.split("T")[1].substring(0, 5)}
-                        onChange={(e) => {
-                          const time = e.target.value
-                          setNewEvent({
-                            ...newEvent,
-                            start: `${selectedDate}T${time}:00`,
-                          })
-                        }}
+                        onChange={handleInputChange}
                         className="hora-input"
                       />
                     </div>
@@ -469,14 +465,7 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
                         type="time"
                         name="end"
                         value={newEvent.end.split("T")[1].substring(0, 5)}
-                        onChange={(e) => {
-                          const time = e.target.value
-                          console.log(e.target.value)
-                          setNewEvent({
-                            ...newEvent,
-                            end: `${selectedDate}T${time}:00`,
-                          })
-                        }}
+                        onChange={handleInputChange}
                         className="hora-input"
                       />
                     </div>
