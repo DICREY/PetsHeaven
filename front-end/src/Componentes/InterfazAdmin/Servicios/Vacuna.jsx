@@ -314,7 +314,7 @@ export function VisualizadorVacunas({ URL = '' }) {
         message: `Estado de la vacuna actualizado correctamente`,
         close: setNotify
       });
-      await fetchVacunas();
+      // await fetchVacunas();
       
     } catch (err) {
       setNotify(null);
