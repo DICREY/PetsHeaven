@@ -1,0 +1,77 @@
+.ico-diag {
+  color: #3b82f6;
+}
+
+.ico-sint {
+  color: #f59e0b;
+}
+
+.dot-sint {
+  width: 8px;
+  height: 8px;
+  background-color: #f59e0b;
+  border-radius: 50%;
+}
+
+.ico-exam {
+  color: #ec4899;
+}
+
+.item-exam {
+  text-align: center;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.ico-lab {
+  color: #10b981;
+}
+
+.item-lab {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.res-lab {
+  background: #dcfce7;
+  color: #166534;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ico-med {
+  color: #8b5cf6;
+}
+
+.card-med-det {
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.dur-med {
+  background: #f3e8ff;
+  color: #7c3aed;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ico-rec {
+  color: #3b82f6;
+}
+
+.check-rec {
+  color: #10b981;
+}

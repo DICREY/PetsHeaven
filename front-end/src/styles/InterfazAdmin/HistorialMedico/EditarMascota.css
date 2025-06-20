@@ -1,0 +1,19 @@
+.icono-edit-form {
+  color: #00bcd4;
+}
+
+.boton-guardar-edit {
+  background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.boton-guardar-edit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 188, 212, 0.3);
+  background: linear-gradient(135deg, #0097a7 0%, #00838f 100%);
+}

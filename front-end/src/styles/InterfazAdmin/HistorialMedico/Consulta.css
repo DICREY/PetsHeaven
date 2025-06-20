@@ -1,0 +1,302 @@
+.titulo-form-cons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #1f2937;
+}
+
+.desc-form-cons {
+  font-size: 18px;
+  color: #6b7280;
+}
+
+.cont-form-cons {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.ico-nueva-cons {
+  color: #3b82f6;
+}
+
+.ico-fecha-cons {
+  color: #3b82f6;
+}
+
+.ico-tipo-cons {
+  color: #10b981;
+}
+
+.ico-diag-cons {
+  color: #3b82f6;
+}
+
+.ico-sint-cons {
+  color: #f59e0b;
+}
+
+.ico-exam-cons {
+  color: #ec4899;
+}
+
+.ico-lab-cons {
+  color: #10b981;
+}
+
+.ico-med-cons {
+  color: #8b5cf6;
+}
+
+.ico-rec-cons {
+  color: #3b82f6;
+}
+
+.ico-cont-cons {
+  color: #3b82f6;
+}
+
+.titulo-seccion-cons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.cont-fecha-cons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.btn-fecha-cons {
+  width: 100%;
+  justify-content: flex-start;
+  text-align: left;
+  font-weight: normal;
+}
+
+.cont-detalles-cons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.texto-esp-vet {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.cont-diag-cons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.area-diag-cons {
+  margin-top: 4px;
+}
+
+.area-trat-cons {
+  margin-top: 4px;
+}
+
+.area-notas-cons {
+  margin-top: 4px;
+}
+
+.cont-sint-cons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fila-sint-cons {
+  display: flex;
+  gap: 8px;
+}
+
+.input-sint-cons {
+  flex: 1;
+}
+
+.btn-eliminar-cons {
+  flex-shrink: 0;
+}
+
+.btn-agregar-cons {
+  width: 100%;
+}
+
+.grid-exam-cons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.input-exam-cons {
+  margin-top: 4px;
+}
+
+.cont-lab-cons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fila-lab-cons {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.input-lab-cons {
+  margin-top: 4px;
+}
+
+.btn-eliminar-lab-cons {
+  margin-top: 24px;
+  flex-shrink: 0;
+}
+
+.cont-med-cons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fila-med-cons {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr auto;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.input-med-cons {
+  margin-top: 4px;
+}
+
+.btn-eliminar-med-cons {
+  margin-top: 24px;
+  flex-shrink: 0;
+}
+
+.cont-rec-cons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fila-rec-cons {
+  display: flex;
+  gap: 8px;
+}
+
+.input-rec-cons {
+  flex: 1;
+}
+
+.cont-adicional-cons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.nivel-urgencia-cons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.punto-verde-cons {
+  width: 12px;
+  height: 12px;
+  background-color: #10b981;
+  border-radius: 50%;
+}
+
+.punto-amarillo-cons {
+  width: 12px;
+  height: 12px;
+  background-color: #f59e0b;
+  border-radius: 50%;
+}
+
+.punto-naranja-cons {
+  width: 12px;
+  height: 12px;
+  background-color: #f97316;
+  border-radius: 50%;
+}
+
+.punto-rojo-cons {
+  width: 12px;
+  height: 12px;
+  background-color: #ef4444;
+  border-radius: 50%;
+}
+
+.input-tel-cons {
+  margin-top: 4px;
+}
+
+.botones-form-cons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.btn-registrar-cons {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-registrar-cons:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+}
+
+.btn-registrar-cons:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+@media (max-width: 768px) {
+  .fila-lab-cons {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .fila-med-cons {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .grid-exam-cons {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-eliminar-lab-cons,
+  .btn-eliminar-med-cons {
+    margin-top: 0;
+  }
+}
