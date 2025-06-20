@@ -107,6 +107,12 @@ CREATE TABLE pets_heaven.vacunas (
     fre_vac VARCHAR(100) NOT NULL, -- Frecuencia de vacunación
     ser_vac INT NOT NULL,INDEX(ser_vac), FOREIGN KEY(ser_vac) REFERENCES servicios(id_ser) ON DELETE CASCADE ON UPDATE CASCADE -- ID del servicio asociado
 );
+CREATE TABLE pets_heaven.consultorios(
+    nom_esp VARCHAR (100) NOT NULL PRIMARY KEY, -- Nombre del consultorio (Ej. con 101)
+    sta_esp BOOLEAN NOT NULL, -- Estado del consultorio
+    esp_esp VARCHAR (255) NOT NULL, -- Especialidad del consultorio
+    des_esp TEXT NOT NULL -- Descripcion del consultorio (Ej. Sala urgencias)
+);
 
 CREATE TABLE pets_heaven.citas(
     id_cit INT AUTO_INCREMENT, -- ID de la cita
@@ -114,13 +120,14 @@ CREATE TABLE pets_heaven.citas(
     fec_cit DATE NOT NULL, -- Fecha de la cita
     hor_ini_cit TIME NOT NULL, -- Hora de inicio de la cita
     hor_fin_cit TIME NOT NULL, -- Hora de fin de la cita
-    lug_ate_cit VARCHAR(100) DEFAULT('No-Registrado') NOT NULL COMMENT 'lugar de atención', -- Lugar de atención
+    lug_ate_cit VARCHAR(100) NOT NULL,INDEX(lug_ate_cit), FOREIGN KEY(lug_ate_cit) REFERENCES consultorios(nom_esp) ON DELETE CASCADE ON UPDATE CASCADE, -- ID del consultorio
     ser_cit INT NOT NULL,INDEX(ser_cit),FOREIGN KEY(ser_cit) REFERENCES servicios(id_ser) ON DELETE CASCADE ON UPDATE CASCADE, -- ID del servicio
     vet_cit INT NOT NULL,INDEX(vet_cit),FOREIGN KEY(vet_cit) REFERENCES veterinarios(id_vet) ON DELETE CASCADE ON UPDATE CASCADE, -- ID del veterinario
     mas_cit INT NOT NULL,INDEX(mas_cit),FOREIGN KEY(mas_cit) REFERENCES mascotas(id_mas) ON DELETE CASCADE ON UPDATE CASCADE, -- ID de la mascota
     estado ENUM("PENDIENTE","EN-ESPERA","CANCELADO","RECHAZADO","REALIZADO","CONFIRMADO") NOT NULL, -- Estado de la cita
     PRIMARY KEY (id_cit,mas_cit)
 );
+
 
 CREATE TABLE pets_heaven.motivos_consultas(
     id_mot_con INT AUTO_INCREMENT PRIMARY KEY, -- ID del motivo de consulta

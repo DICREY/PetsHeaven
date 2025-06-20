@@ -180,17 +180,26 @@ VALUES
 (2,7),
 (3,6);
 
-INSERT INTO pets_heaven.citas (fec_cit, hor_ini_cit, hor_fin_cit, ser_cit, vet_cit, mas_cit, estado) VALUES
-(CURRENT_DATE(), '09:00:00', '10:00:00', 1, 1, 1, 'REALIZADO'),  -- Lunes, Consulta General
-(CURRENT_DATE(), '11:00:00', '12:00:00', 2, 1, 1, 'PENDIENTE'),   -- Martes, Vacunación
-(CURRENT_DATE(), '14:00:00', '15:00:00', 3, 2, 2, 'REALIZADO'),   -- Miércoles, Cirugía
-(CURRENT_DATE(), '10:30:00', '11:30:00', 1, 2, 2, 'EN-ESPERA'),   -- Jueves, Consulta General
-(CURRENT_DATE(), '16:00:00', '17:00:00', 4, 3, 3, 'REALIZADO'),   -- Viernes, Emergencias
-(CURRENT_DATE(), '09:30:00', '10:30:00', 2, 3, 3, 'CANCELADO'),   -- Sábado, Vacunación
-(CURRENT_DATE(), '13:00:00', '14:00:00', 5, 1, 4, 'REALIZADO'),   -- Domingo, Spa y Baño
-(CURRENT_DATE(), '15:30:00', '16:30:00', 1, 1, 4, 'PENDIENTE'),   -- Lunes, Consulta General
-(CURRENT_DATE(), '11:30:00', '12:30:00', 3, 2, 5, 'REALIZADO'),   -- Martes, Cirugía
-(CURRENT_DATE(), '17:00:00', '18:00:00', 4, 7, 5, 'PENDIENTE'),   -- Miércoles, Emergencias
-(CURRENT_DATE(), '17:00:00', '18:00:00', 5, 6, 5, 'PENDIENTE'),   -- Miércoles, Emergencias
-(CURRENT_DATE(), '17:00:00', '18:00:00', 5, 6, 5, 'PENDIENTE'),   -- Miércoles, Emergencias
-(CURRENT_DATE(), '17:00:00', '18:00:00', 3, 7, 5, 'PENDIENTE');   -- Miércoles, Emergencias
+
+INSERT INTO pets_heaven.consultorios (nom_esp, sta_esp, esp_esp, des_esp)
+VALUES
+('Consultorio 101', TRUE, 'Medicina General', 'Atención básica y chequeos generales para mascotas.'),
+('Consultorio 102', TRUE, 'Cirugía Veterinaria', 'Sala equipada para procedimientos quirúrgicos menores y mayores.'),
+('Consultorio 201', FALSE, 'Dermatología', 'Especializado en enfermedades cutáneas y alergias en animales.'),
+('Consultorio 202', TRUE, 'Odontología', 'Consultorio dental para limpiezas, extracciones y tratamientos dentales.'),
+('Consultorio 301', TRUE, 'Emergencias', 'Sala de urgencias abierta 24/7 con personal especializado.');
+
+INSERT INTO pets_heaven.citas (fec_cit, hor_ini_cit, hor_fin_cit, lug_ate_cit, ser_cit, vet_cit, mas_cit, estado) VALUES
+(CURRENT_DATE(), '09:00:00', '10:00:00','Consultorio 101', 1, 1, 1, 'REALIZADO'),  -- Lunes, Consulta General
+(CURRENT_DATE(), '11:00:00', '12:00:00','Consultorio 102', 2, 1, 1, 'PENDIENTE'),   -- Martes, Vacunación
+(CURRENT_DATE(), '14:00:00', '15:00:00','Consultorio 101', 3, 2, 2, 'REALIZADO'),   -- Miércoles, Cirugía
+(CURRENT_DATE(), '10:30:00', '11:30:00','Consultorio 101', 1, 2, 2, 'EN-ESPERA'),   -- Jueves, Consulta General
+(CURRENT_DATE(), '16:00:00', '17:00:00','Consultorio 102', 4, 3, 3, 'REALIZADO'),   -- Viernes, Emergencias
+(CURRENT_DATE(), '09:30:00', '10:30:00','Consultorio 301', 2, 3, 3, 'CANCELADO'),   -- Sábado, Vacunación
+(CURRENT_DATE(), '13:00:00', '14:00:00','Consultorio 202', 5, 1, 4, 'REALIZADO'),   -- Domingo, Spa y Baño
+(CURRENT_DATE(), '15:30:00', '16:30:00','Consultorio 102', 1, 1, 4, 'PENDIENTE'),   -- Lunes, Consulta General
+(CURRENT_DATE(), '11:30:00', '12:30:00','Consultorio 101', 3, 2, 5, 'REALIZADO'),   -- Martes, Cirugía
+(CURRENT_DATE(), '17:00:00', '18:00:00','Consultorio 202', 4, 7, 5, 'PENDIENTE'),   -- Miércoles, Emergencias
+(CURRENT_DATE(), '17:00:00', '18:00:00','Consultorio 101', 5, 6, 5, 'PENDIENTE'),   -- Miércoles, Emergencias
+(CURRENT_DATE(), '17:00:00', '18:00:00','Consultorio 102', 5, 6, 5, 'PENDIENTE'),   -- Miércoles, Emergencias
+(CURRENT_DATE(), '17:00:00', '18:00:00','Consultorio 301', 3, 7, 5, 'PENDIENTE');   -- Miércoles, Emergencias
