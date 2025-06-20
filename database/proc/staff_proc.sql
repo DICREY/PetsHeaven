@@ -1,4 +1,4 @@
--- Active: 1745625018911@@localhost@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.RegistStaff(
     IN p_nom_per VARCHAR(100),
     IN p_ape_per VARCHAR(100),
@@ -148,6 +148,11 @@ BEGIN
         p.gen_per,
         p.fec_cre_per,
         p.fot_per,
+        v.especialidad AS esp_vet,
+        v.num_tar_vet,
+        v.fot_tar_vet,
+        v.fot_vet,
+        v.horarios,
         (
             SELECT GROUP_CONCAT(
                 r.nom_rol
@@ -205,3 +210,6 @@ BEGIN
         p.fec_cre_per
     LIMIT 1000;
 END //
+
+/* CALL pets_heaven.SearchPeoplesVet(); */
+/* DROP PROCEDURE pets_heaven.SearchPeoplesVet; */

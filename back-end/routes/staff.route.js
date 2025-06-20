@@ -13,7 +13,7 @@ const Route = Router()
 // Middlewares
 Route.use(authenticateJWT)
 Route.use(authJWTGlobal)
-Route.use(ValidatorRol("administrador"))
+Route.use(ValidatorRol("veterinario"))
 
 // Routes
 Route.get('/all', async (req,res) => {
@@ -45,6 +45,7 @@ Route.get('/all/vet', async (req,res) => {
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }   
 })
+
 
 Route.get('/all:by', async (req,res) => {
     // Vars 
@@ -83,6 +84,7 @@ Route.get('/by:by', async (req,res) => {
 })
 
 // Call Middleware for verify the request data
+Route.use(ValidatorRol("administrador"))
 Route.use(Fullinfo(['cel2_per']))
 
 Route.post('/register', async (req,res) => {

@@ -193,6 +193,14 @@ export const PanelVeterinario = ({ URL = '', imgDefault = '', setPetSelect }) =>
                   <Plus className="icon" aria-hidden="true" />
                   Nueva Consulta
                 </button>
+                <button type="button" className="AddBtn" onClick={() => navigate('/mascota/registro')}>
+                  <Plus className="icon" aria-hidden="true" />
+                  Registrar Mascota
+                </button>
+                <button type="button" className="AddBtn" onClick={() => navigate('/propietario/registro')}>
+                  <Plus className="icon" aria-hidden="true" />
+                  Registrar Propietario
+                </button>
                 {mostrarFormulario && <AppointmentForm URL={URL} onClose={toggleFormulario} />}
                 <button type="button" className="DeleteBtn">
                   <Activity className="icon" aria-hidden="true" />

@@ -4,18 +4,12 @@ import { useState } from "react"
 import { Calendar, FileText, Stethoscope, PawPrint, X, Save, ChevronDown } from "lucide-react"
 
 // Imports 
-import { GetData } from "../../Varios/Requests"
+import { GetData, PostData } from "../../Varios/Requests"
 import { Notification } from "../../Global/Notifys"
-import { searchFilter } from "../../Varios/Util"
+import { errorStatusHandler, searchFilter } from "../../Varios/Util"
 
 // Import styles 
 import "../../../styles/InterfazAdmin/FormuariosAdmin/AgendarCita.css"
-
-const mockVeterinarios = [
-  { doc_per: "12345678", nom_per: "Dr. Ana", ape_per: "Martínez", roles: "Veterinario" },
-  { doc_per: "87654321", nom_per: "Dr. Luis", ape_per: "Rodríguez", roles: "Veterinario" },
-  { doc_per: "11223344", nom_per: "Dra. Carmen", ape_per: "Silva", roles: "Veterinario" },
-]
 
 const consultorios = [
   { id: 1, nombre: "Consultorio 1" },
@@ -31,7 +25,7 @@ export default function AppointmentForm({ onClose, onSubmit, URL = '' }) {
     nom_mas: "",
     propietario: "",
     veterinario: "",
-    category: "consulta",
+    category: "",
     start: new Date().toISOString().slice(0, 16),
     end: new Date(Date.now() + 60 * 60 * 1000).toISOString().slice(0, 16),
     description: "",
@@ -44,7 +38,8 @@ export default function AppointmentForm({ onClose, onSubmit, URL = '' }) {
   const [ notify, setNotify ] = useState()
   const [formErrors, setFormErrors] = useState({})
   const [ pacientes, setPacientes ] = useState([])
-  const [allVet] = useState(mockVeterinarios)
+  const [ almcAppoint, setAlmcAppoint ] = useState([])
+  const [ almcVet, setAlmcVet ] = useState([])
 
   // Vars 
   const mainUrl = `${URL}/appointment`
@@ -83,16 +78,22 @@ export default function AppointmentForm({ onClose, onSubmit, URL = '' }) {
   }
 
   const getCategoryIcon = (category) => {
+    let icon
     switch (category) {
-      case "consulta":
-        return <Stethoscope size={16} />
-      case "vacuna":
-        return <PawPrint size={16} />
-      case "emergencia":
-        return <FileText size={16} />
+      case "Consulta General":
+        icon = <Stethoscope className="icon" />
+        break
+      case "Vacunacion":
+        icon = <PawPrint className="icon" />
+        break
+      case "Emergencias 24h":
+        icon = <FileText className="icon" />
+        break
       default:
-        return <Stethoscope size={16} />
+        icon = <Stethoscope className="icon" />
+        break
     }
+    return icon
   }
 
   const getCategoryColor = (category) => {
@@ -110,8 +111,8 @@ export default function AppointmentForm({ onClose, onSubmit, URL = '' }) {
 
   const validateEventFields = (event) => {
     const errors = {}
-    if (!event.paciente || !event.mas_cit) {
-      errors.paciente = 'Selecciona un paciente válido.'
+    if (!event.nom_mas) {
+      errors.nom_mas = 'Selecciona un paciente válido.'
     }
     if (!event.veterinario) {
       errors.veterinario = 'Selecciona un veterinario.'
@@ -123,8 +124,8 @@ export default function AppointmentForm({ onClose, onSubmit, URL = '' }) {
     if (!event.category) {
       errors.category = 'Selecciona el tipo de cita.'
     }
-    if (!event.lug_ate_cit || event.lug_ate_cit.trim().length < 3) {
-      errors.lug_ate_cit = 'El lugar de atención es obligatorio.'
+    if (!event.lugar || event.lugar.trim().length < 3) {
+      errors.lugar = 'El lugar de atención es obligatorio.'
     }
     if (event.description && event.description.length > 255) {
       errors.description = 'La descripción es demasiado larga.'
@@ -133,9 +134,9 @@ export default function AppointmentForm({ onClose, onSubmit, URL = '' }) {
   }
 
   const handleCreateEvent = async () => {
+    setFormErrors(null)
     const errors = validateEventFields(newEvent)
     setFormErrors(errors)
-    if (Object.keys(errors).length > 0) return
     setNotify({
       title: 'Cargando',
       message: 'Por favor, espere mientras se validan los datos.',
@@ -155,16 +156,13 @@ export default function AppointmentForm({ onClose, onSubmit, URL = '' }) {
     try {
         const data = await PostData(`${mainUrl}/register`, citaData)
         setNotify(null)
-        console.log(data)
         if (data) {
           setNotify({
             title: 'Cita Agendada',
             message: 'La cita ha sido agendada exitosamente',
             close: setNotify
           })
-          if (onClose) {
-            onClose()
-          }
+          setTimeout(() => {if (onClose) onClose()}, 3000)
         }
     } catch (err) {
         setNotify(null)
@@ -202,8 +200,52 @@ export default function AppointmentForm({ onClose, onSubmit, URL = '' }) {
     }
   }
 
+  const GetVet = async () => {
+    try {
+      const data = await GetData(`${URL}/staff/all/vet`)
+      setNotify(null)
+      if (data) {
+        setAlmcVet(data)
+      }
+    } catch (err) {
+      setNotify(null)
+      const message = errorStatusHandler(err)
+      setNotify({
+          title: 'Error',
+          message: message,
+          close: setNotify
+      })
+      if (err.status === 403) setTimeout(() => {
+          Logout()
+      }, 2000)
+    }
+  }
+
+  const GetAppointmentCat = async () => {
+    try {
+      const data = await GetData(`${URL}/global/services`)
+      setNotify(null)
+      if (data) {
+        setAlmcAppoint(data)
+      }
+    } catch (err) {
+      setNotify(null)
+      const message = errorStatusHandler(err)
+      setNotify({
+          title: 'Error',
+          message: message,
+          close: setNotify
+      })
+      if (err.status === 403) setTimeout(() => {
+          Logout()
+      }, 2000)
+    }
+  }
+
   useEffect(() => {
     fetchpacientes()
+    GetVet()
+    GetAppointmentCat()
   },[])
 
   return (
@@ -221,14 +263,14 @@ export default function AppointmentForm({ onClose, onSubmit, URL = '' }) {
 
         <section className="modal-cuerpo">
           <section className="form-layout">
-            {/* Información del nom_mas */}
+            {/* Información del paciente */}
             <section className="seccion">
               <div className="seccion-header">
                 <PawPrint className="icon" />
-                <h4>Información del nom_mas</h4>
+                <h4>Información del Paciente</h4>
               </div>
 
-              <div className="form-grid">
+              <section className="form-grid">
                 <div className="grupo">
                   <label className="etiqueta">Nombre de la Mascota</label>
                   <div className="autocomplete">
@@ -236,7 +278,8 @@ export default function AppointmentForm({ onClose, onSubmit, URL = '' }) {
                       type="text"
                       name="nom_mas"
                       placeholder="Buscar mascota..."
-                      defaultValue={newEvent.nom_mas}
+                      value={newEvent.nom_mas || ''}
+                      // defaultValue={newEvent.nom_mas}
                       className="campo"
                       onChange={(e) => {
                         const value = e.target.value
@@ -300,19 +343,25 @@ export default function AppointmentForm({ onClose, onSubmit, URL = '' }) {
                   <div className="select-wrapper">
                     <select
                       name="category"
-                      value={newEvent.category}
+                      value={newEvent.category || ""}
                       onChange={handleInputChange}
                       className={`select ${getCategoryColor(newEvent.category)}`}
                     >
-                      <option value="consulta">Consulta general</option>
-                      <option value="vacuna">Vacuna</option>
-                      <option value="emergencia">Emergencia</option>
+                      <option value="" disabled>
+                        Selecciona una cita
+                      </option>
+                      {almcAppoint?.map((app, index) => (
+                        <option key={index} value={app.nom_cat}>
+                          {app.nom_cat}
+                          {/* {getCategoryIcon(app.nom_cat)} */}
+                        </option>
+                      ))}
                     </select>
-                    <ChevronDown size={16} className="select-icono" />
+                    <ChevronDown className="select-icono icon" />
                   </div>
                   {formErrors.category && <div className="error">{formErrors.category}</div>}
                 </div>
-              </div>
+              </section>
             </section>
 
             {/* Profesional y Lugar */}
@@ -336,16 +385,13 @@ export default function AppointmentForm({ onClose, onSubmit, URL = '' }) {
                       <option value="" disabled>
                         Selecciona un veterinario
                       </option>
-                      {allVet?.map(
-                        (vet) =>
-                          vet.roles.split(", ").includes("Veterinario") && (
-                            <option key={vet.doc_per} value={vet.doc_per}>
-                              {vet.nom_per} {vet.ape_per}
-                            </option>
-                          ),
-                      )}
+                      {almcVet?.map( vet => (
+                        <option key={vet.doc_per} value={vet.doc_per}>
+                          {vet.nom_per} {vet.ape_per} ({vet.esp_vet})
+                        </option>
+                      ))}
                     </select>
-                    <ChevronDown size={16} className="select-icono" />
+                    <ChevronDown className="select-icono icon" />
                   </div>
                   {formErrors.veterinario && <div className="error">{formErrors.veterinario}</div>}
                 </div>
@@ -363,7 +409,7 @@ export default function AppointmentForm({ onClose, onSubmit, URL = '' }) {
                         </option>
                       ))}
                     </select>
-                    <ChevronDown size={16} className="select-icono" />
+                    <ChevronDown className="select-icono icon" />
                   </div>
                   {formErrors.lug_ate_cit && <div className="error">{formErrors.lug_ate_cit}</div>}
                 </div>
@@ -455,11 +501,11 @@ export default function AppointmentForm({ onClose, onSubmit, URL = '' }) {
 
         <div className="modal-footer">
           <button className="boton boton-cancelar" onClick={handleClose}>
-            <X size={16} />
+            <X className="icon" />
             Cancelar
           </button>
           <button className="boton boton-confirmar" onClick={handleCreateEvent}>
-            <Save size={16} />
+            <Save className="icon" />
             Crear Cita
           </button>
         </div>

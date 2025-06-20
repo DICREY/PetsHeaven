@@ -21,6 +21,7 @@ Route.get('/all', ValidatorRol("usuario"), async (req,res) => {
 
         res.status(200).json(serv)
     } catch (err) {
+        console.log(err)
         if(err.status) return res.status(err.status).json(err.message)
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
