@@ -12,15 +12,15 @@ import { errorStatusHandler, formatDate, searchFilter } from "../../Varios/Util"
 import "../../../styles/InterfazAdmin/FormuariosAdmin/AgendarCita.css"
 
 const consultorios = [
-  { id: 1, nombre: "Consultorio 1" },
-  { id: 2, nombre: "Consultorio 2" },
-  { id: 3, nombre: "Consultorio 3" },
-  { id: 4, nombre: "Sala de Cirugía" },
-  { id: 5, nombre: "Sala de Emergencias" },
+  { id: 1, nombre: "Consultorio 101" },
+  { id: 2, nombre: "Consultorio 102" },
+  { id: 3, nombre: "Consultorio 201" },
+  { id: 4, nombre: "Consultorio 202" },
+  { id: 5, nombre: "Consultorio 301" },
 ]
 
 // Component 
-export default function AppointmentForm({ onClose, date, URL = ''}) {
+export default function AppointmentForm({ onClose, date, URL = '', sended}) {
   const [newEvent, setNewEvent] = useState({
     nom_mas: "",
     propietario: "",
@@ -162,6 +162,7 @@ export default function AppointmentForm({ onClose, date, URL = ''}) {
             message: 'La cita ha sido agendada exitosamente',
             close: setNotify
           })
+          sended()
           setTimeout(() => {if (onClose) onClose()}, 3000)
         }
     } catch (err) {
