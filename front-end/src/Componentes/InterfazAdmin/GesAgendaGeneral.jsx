@@ -420,6 +420,7 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
                         onClose={() => setActiveModal(null)} 
                         URL={URL}
                         date={selectedDate}
+                        sended={fetchAppointments}
                     />)}
                 {/* Popup para detalles/edición de cita */}
                 {activeModal === 'event' && (
