@@ -15,6 +15,7 @@ import { Notification } from '../Global/Notifys'
 import { searchFilter } from '../Varios/Util'
 import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
 import { ReqFunction } from '../../Utils/Utils'
+import AppointmentForm from './FormulariosAdmin/AgendarCita'
 // import Footer from '../Varios/Footer2'
 
 // Import styles 
@@ -256,13 +257,12 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
 
     // Manejar cambios en los inputs
     const handleInputChange = (e) => {
-        const { name, value } = e.target
-        if (showCreateModal) {
-            setNewEvent({ ...newEvent, [name]: value })
-        } else {
-            setSelectedEvent({ ...selectedEvent, [name]: value })
-        }
-    }
+    const { name, value } = e.target;
+    setNewEvent(prev => ({
+        ...prev,
+        [name]: value
+    }));
+    };
 
     const fetchAppointments = async () => {
         setNotify({
@@ -448,211 +448,8 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
 
                 {/* Popup para crear nueva cita */}
                 {activeModal === 'create' && (
-                    <aside className="modal-overlay">
-                        <aside className="modal-content">
-                            <header className="modal-header">
-                                <h3>Nueva Cita</h3>
-                                <button className="modal-close-btn" onClick={() => setActiveModal(null)}>
-                                    X
-                                </button>
-                            </header>
-                            <section className="modal-body">
-                                <div className="form-columns">
-                                    <div className="form-column">
-                                        <div className="form-group">
-                                            <label>Paciente:</label>
-                                            <div className="paciente-autocomplete">
-                                                <input
-                                                    type="text"
-                                                    name="paciente"
-                                                    value={newEvent.paciente}
-                                                    onChange={(e) => {
-                                                        const value = e.target.value
-                                                        // Filtramos los números antes de actualizar el estado
-                                                        const filteredValue = validatePatientName(value)
-                                                        if (filteredValue === value || value.length < newEvent.paciente.length) {
-                                                            setNewEvent({ ...newEvent, paciente: value })
-                                                            searchFilter(
-                                                                value,
-                                                                allPacientes,
-                                                                ['nom_mas', 'nom_per', 'ape_per'], // Campos a buscar
-                                                                setFilteredPacientes
-                                                            )
-                                                            setShowPacientesDropdown(value.length > 0)
-                                                        }
-                                                    }}
-                                                    onFocus={() => setShowPacientesDropdown(newEvent.paciente.length > 0)}
-                                                    onKeyDown={(e) => {
-                                                        // Bloquear teclas numéricas directamente
-                                                        if (e.key >= '0' && e.key <= '9') {
-                                                            e.preventDefault()
-                                                        }
-                                                    }}
-                                                />
-                                                {showPacientesDropdown && filteredPacientes.length > 0 && (
-                                                    <div className="paciente-dropdown">
-                                                        {filteredPacientes.map((paciente) => (
-                                                            <div
-                                                                key={paciente.id_mas}
-                                                                className="dropdown-item"
-                                                                onClick={() => {
-                                                                    setNewEvent({
-                                                                        ...newEvent,
-                                                                        paciente: paciente.nom_mas,
-                                                                        propietario: `${paciente.nom_per} ${paciente.ape_per}`,
-                                                                        telefono: paciente.cel_per || '',
-                                                                        mas_cit: paciente.id_mas
-                                                                    },
-                                                                    )
-                                                                    setShowPacientesDropdown(false)
-                                                                }}
-                                                            >
-                                                                {paciente.nom_mas} ({paciente.nom_per} {paciente.ape_per})
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                )}
-                                            </div>
-                                            {formErrors.paciente && (
-                                                <div className="form-error">{formErrors.paciente}</div>
-                                            )}
-                                        </div>
-                                        <div className="form-group">
-                                            <label>Propietario:</label>
-                                            <input
-                                                type="text"
-                                                name="propietario"
-                                                value={newEvent.propietario}
-                                                onChange={handleInputChange}
-                                                disabled
-                                            />
-                                        </div>
-                                        <div className="form-group">
-                                            <label>Veterinario:</label>
-                                            <select
-                                                name="veterinario"
-                                                onChange={handleInputChange}
-                                                value={newEvent.veterinario || ''}
-                                                required
-                                            >
-                                                <option value="" disabled>Selecciona un veterinario</option>
-                                                {allVet?.map((i) =>
-                                                    i.roles.split(', ').includes('Veterinario') && (
-                                                        <option key={i.doc_per} value={i.doc_per}>
-                                                            {i.nom_per} {i.ape_per} (Veterinario)
-                                                        </option>
-                                                    )
-                                                )}
-                                            </select>
-                                            {formErrors.veterinario && (
-                                                <div className="form-error">{formErrors.veterinario}</div>
-                                            )}
-                                        </div>
-                                        <div className="form-group">
-                                            <label>Teléfono:</label>
-                                            <input
-                                                type="text"
-                                                name="telefono"
-                                                value={newEvent.telefono}
-                                                onChange={handleInputChange}
-                                                disabled
-                                            />
-                                        </div>
-                                        <div className="form-group">
-                                            <label>Tipo:</label>
-                                            <select
-                                                name="category"
-                                                value={newEvent.category}
-                                                onChange={handleInputChange}
-                                            >
-                                                <option value="consulta">Consulta general</option>
-                                                <option value="vacuna">Vacuna</option>
-                                                <option value="emergencia">Emergencia</option>
-                                            </select>
-                                            {formErrors.category && (
-                                                <div className="form-error">{formErrors.category}</div>
-                                            )}
-                                        </div>
-                                    </div>
-                                    <div className="form-column">
-                                        <div className="form-group">
-                                            <label>Fecha:</label>
-                                            <input
-                                                type="date"
-                                                value={selectedDate}
-                                                disabled
-                                            />
-                                        </div>
-                                        <div className="form-row">
-                                            <div className="form-group">
-                                                <label>Hora Inicio:</label>
-                                                <input
-                                                    type="time"
-                                                    name="start"
-                                                    value={newEvent.start.split('T')[1].substring(0, 5)}
-                                                    onChange={(e) => {
-                                                        const time = e.target.value
-                                                        setNewEvent({
-                                                            ...newEvent,
-                                                            start: `${selectedDate}T${time}:00`
-                                                        })
-                                                    }}
-                                                />
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Hora Fin:</label>
-                                                <input
-                                                    type="time"
-                                                    name="end"
-                                                    value={newEvent.end.split('T')[1].substring(0, 5)}
-                                                    onChange={(e) => {
-                                                        const time = e.target.value
-                                                        setNewEvent({
-                                                            ...newEvent,
-                                                            end: `${selectedDate}T${time}:00`
-                                                        })
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="form-group">
-                                            <label>Lugar de atención:</label>
-                                            <input
-                                                type="text"
-                                                name="lugar"
-                                                value={lugar}
-                                                onChange={e => setLugar(e.target.value)}
-                                            />
-                                            {formErrors.lug_ate_cit && (
-                                                <div className="form-error">{formErrors.lug_ate_cit}</div>
-                                            )}
-                                        </div>
-                                        <div className="form-group">
-                                            <label>Descripción:</label>
-                                            <textarea
-                                                name="description"
-                                                value={newEvent.description}
-                                                onChange={handleInputChange}
-                                            />
-                                            {formErrors.description && (
-                                                <div className="form-error">{formErrors.description}</div>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                            <div className="modal-footer">
-                                <button className="modal-btn modal-btn-close" onClick={() => setActiveModal(null)}>
-                                    Cancelar
-                                </button>
-                                <button className="modal-btn modal-btn-confirm" onClick={handleCreateEvent}>
-                                    Crear Cita
-                                </button>
-                            </div>
-                        </aside>
-                    </aside>
-                )}
-
+                    <AppointmentForm/>
+                    )}
                 {/* Popup para detalles/edición de cita */}
                 {activeModal === 'event' && (
                     <aside className="modal-overlay">
