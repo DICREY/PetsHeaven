@@ -256,13 +256,12 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
 
     // Manejar cambios en los inputs
     const handleInputChange = (e) => {
-        const { name, value } = e.target
-        if (showCreateModal) {
-            setNewEvent({ ...newEvent, [name]: value })
-        } else {
-            setSelectedEvent({ ...selectedEvent, [name]: value })
-        }
-    }
+    const { name, value } = e.target;
+    setNewEvent(prev => ({
+        ...prev,
+        [name]: value
+    }));
+    };
 
     const fetchAppointments = async () => {
         setNotify({
@@ -529,21 +528,38 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
                                         </div>
                                         <div className="form-group">
                                             <label>Veterinario:</label>
-                                            <select
+                                            {!allVet || allVet.length === 0 ? (
+                                                <div>Cargando veterinarios...</div>
+                                            ) : (
+                                                <select
                                                 name="veterinario"
                                                 onChange={handleInputChange}
                                                 value={newEvent.veterinario || ''}
                                                 required
-                                            >
-                                                <option value="" disabled>Selecciona un veterinario</option>
-                                                {allVet?.map((i) =>
-                                                    i.roles.split(', ').includes('Veterinario') && (
-                                                        <option key={i.doc_per} value={i.doc_per}>
-                                                            {i.nom_per} {i.ape_per} (Veterinario)
+                                                >
+                                                <option value="">Selecciona un veterinario</option>
+                                                {allVet.map((vet) => {
+                                                    // Manejo robusto de roles
+                                                    const roles = typeof vet.roles === 'string' 
+                                                    ? vet.roles.split(',').map(r => r.trim().toLowerCase())
+                                                    : Array.isArray(vet.roles) 
+                                                        ? vet.roles.map(r => r.toLowerCase())
+                                                        : [];
+                                                    
+                                                    if (roles.includes('veterinario')) {
+                                                    return (
+                                                        <option 
+                                                        key={vet.doc_per} 
+                                                        value={vet.doc_per}
+                                                        >
+                                                        {vet.nom_per} {vet.ape_per} (Veterinario)
                                                         </option>
-                                                    )
-                                                )}
-                                            </select>
+                                                    );
+                                                    }
+                                                    return null;
+                                                })}
+                                                </select>
+                                            )}
                                             {formErrors.veterinario && (
                                                 <div className="form-error">{formErrors.veterinario}</div>
                                             )}
