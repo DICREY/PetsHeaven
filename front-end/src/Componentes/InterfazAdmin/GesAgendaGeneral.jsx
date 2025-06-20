@@ -451,6 +451,7 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
                     <AppointmentForm 
                         onClose={() => setActiveModal(null)} 
                         URL={URL}
+                        date={selectedDate}
                     />)}
                 {/* Popup para detalles/edición de cita */}
                 {activeModal === 'event' && (
