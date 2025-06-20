@@ -448,8 +448,10 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
 
                 {/* Popup para crear nueva cita */}
                 {activeModal === 'create' && (
-                    <AppointmentForm/>
-                    )}
+                    <AppointmentForm
+                        onClose={() => setActiveModal(null)}  
+                    />
+                )}
                 {/* Popup para detalles/edición de cita */}
                 {activeModal === 'event' && (
                     <aside className="modal-overlay">
