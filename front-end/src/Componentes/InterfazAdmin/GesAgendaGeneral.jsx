@@ -32,16 +32,10 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
     // Dynamic vars 
     const [events, setEvents] = useState([])
     const [notify, setNotify] = useState(null)
-    const [showEventModal, setShowEventModal] = useState(false) //Mostrar la descripcion en un pop up de la cita
-    const [showCreateModal, setShowCreateModal] = useState(false) //Mostrar el pop up de creacion de Cita
     const [selectedEvent, setSelectedEvent] = useState(null)
     const [selectedDate, setSelectedDate] = useState('')
     const [lugar, setLugar] = useState('Consultorio')
     const calendarRef = useRef(null)
-    const [allPacientes, setAllPacientes] = useState([]) // Todos los pacientes
-    const [allVet, setAllVet] = useState([]) // Todos los veterinarios
-    const [filteredPacientes, setFilteredPacientes] = useState([]) // Resultados filtrados
-    const [showPacientesDropdown, setShowPacientesDropdown] = useState(false) // Controlar dropdown
     const [activeModal, setActiveModal] = useState(null); // null, 'event', o 'create'
     // const [ log, user, roles ] = useContext(AuthContext)
     const [newEvent, setNewEvent] = useState({
@@ -104,30 +98,9 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
     //Dia de hoy
     const today = new Date().toISOString().split('T')[0] // 'YYYY-MM-DD'
 
-    const fetchPacientes = async () => {
-        await ReqFunction(
-            `${URL}/pet/all`,
-            GetData,
-            setNotify,
-            setAllPacientes
-        )
-    }
-    const fetchVet = async () => {
-    try {
-        const data = await GetData(`${URL}/staff/all/vet`)
-        // Asegurarse de que data sea un array
-        setAllVet(Array.isArray(data) ? data : [])
-    } catch (error) {
-        console.error("Error fetching vets:", error)
-        setAllVet([])
-    }
-    }
-
     // Crear citas
     const handleDateClick = (arg) => {
         setSelectedDate(arg.dateStr);
-        fetchPacientes();
-        fetchVet();
         setNewEvent({
             title: '',
             start: `${arg.dateStr}T09:00:00`,
@@ -306,11 +279,6 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
                 close: setNotify
             })
         }
-    }
-
-    const validatePatientName = (input) => {
-        // Expresión regular que solo permite letras, espacios y algunos caracteres especiales comunes en nombres
-        return input.replace(/[0-9]/g, '')
     }
 
     const validateEventFields = (event) => {
