@@ -162,7 +162,7 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
             message: 'La cita ha sido agendada exitosamente',
             close: setNotify
           })
-          sended()
+          sended ? sended() : null
           setTimeout(() => {if (onClose) onClose()}, 3000)
         }
     } catch (err) {
