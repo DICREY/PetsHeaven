@@ -23,9 +23,12 @@ import {
 } from "lucide-react"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
-import "../styles/formulario-consulta.css"
 
-export default function FormularioNuevaConsulta({
+// Import styles 
+import "../../../styles/InterfazAdmin/HistorialMedico/Consulta.css"
+
+// Component 
+const FormularioNuevaConsulta = ({
   isOpen,
   onClose,
   petData,
@@ -43,7 +46,7 @@ export default function FormularioNuevaConsulta({
   onAddMedication,
   onSubmit,
   isFormValid,
-}) {
+}) => {
   const consultationTypes = [
     { value: "routine", label: "Consulta de Rutina" },
     { value: "vaccination", label: "Vacunación" },
@@ -612,3 +615,5 @@ export default function FormularioNuevaConsulta({
     </Dialog>
   )
 }
+
+export default FormularioNuevaConsulta

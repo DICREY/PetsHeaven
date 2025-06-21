@@ -1,9 +1,11 @@
-"use client"
-
+// Librarys 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import "../styles/tarjeta-historial.css"
 
-export default function TarjetaHistorial({ record, onClick }) {
+// Import styles 
+import "../../../styles/InterfazAdmin/HistorialMedico/TarjetaHistorial.css"
+
+// Component 
+const TarjetaHistorial = ({ record, onClick }) => {
   return (
     <Card
       className="card-hist cursor-pointer hover:shadow-lg transition-all duration-200"
@@ -36,3 +38,6 @@ export default function TarjetaHistorial({ record, onClick }) {
     </Card>
   )
 }
+
+// export 
+export default TarjetaHistorial

@@ -4,7 +4,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Edit } from "lucide-react"
-import "../styles/formulario-editar.css"
+
+// Import styles 
+import "../../../styles/InterfazAdmin/HistorialMedico/EditarMascota.css"
 
 export default function FormularioEditarMascota({
   isOpen,

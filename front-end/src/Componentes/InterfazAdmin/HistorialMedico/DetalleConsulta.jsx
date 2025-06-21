@@ -2,7 +2,9 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Stethoscope, AlertCircle, Heart, CheckCircle, Pill } from "lucide-react"
-import "../styles/modal-detalle.css"
+
+// Import styles 
+import "../../../styles/InterfazAdmin/HistorialMedico/DetalleConsulta.css"
 
 export default function ModalDetalleConsulta({ isOpen, onClose, consultation }) {
   if (!consultation) return null

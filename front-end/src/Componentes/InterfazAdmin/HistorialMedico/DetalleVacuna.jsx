@@ -1,7 +1,9 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Shield, FileText, Info, Calendar } from "lucide-react"
-import "../styles/modal-detalle-vacuna.css"
+
+// Import styles 
+import "../../../styles/InterfazAdmin/HistorialMedico/DetalleVacuna.css"
 
 export default function ModalDetalleVacuna({ isOpen, onClose, vaccine }) {
   if (!vaccine) return null

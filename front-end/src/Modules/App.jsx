@@ -32,6 +32,7 @@ import { CookiePolicy } from '../Componentes/Global/CookiesPolicy'
 import { Notification } from '../Componentes/Global/Notifys'
 import { PanelVeterinario } from '../Componentes/InterfazVeterinario/HomeVeterinario'
 import {ExamenesLaboratorio} from '../Componentes/InterfazAdmin/Servicios/Laboratorio'
+// import { PetMedicalHistory } from '../Componentes/InterfazAdmin/HistorialMedico/HistorialMedico'
 // import { SiteTraffic } from '../Componentes/Global/Visits'
 
 // Import contexts
@@ -130,9 +131,15 @@ export default function App () {
           <Route path='notificaciones' element={
             <PrivateRoute children={<TodasLasNotificaciones URL={URL} />}/>}>
           </Route>
+          {/* <Route path='/pet/medical-history' element={
+            <PrivateRoute children={<PetMedicalHistory URL={URL} />}/>}>
+          </Route> */}
 
           {/* Admin routes  */}
           <Route path='/admin' element={<MainAdmin />} >
+            <Route path='calendario/general' element={
+              <AdminRoute children={<GesAgendaGeneral URL={URL} />} />} >
+            </Route>
             <Route path='gestion/usuarios' element={
               <AdminRoute children={<GesPersonal setUserSelect={setUserSelect} URL={URL} />} />} >
             </Route>
@@ -176,9 +183,6 @@ export default function App () {
               URL={URL}
               setPetSelect={setPetSelect}
             />} />} >
-          </Route>
-          <Route path='calendario/general' element={
-            <VetRoute children={<GesAgendaGeneral URL={URL} />} />} >
           </Route>
           <Route path='calendario/usuario' element={
             <VetRoute children={<GesAgendaPersonal URL={URL} />} />

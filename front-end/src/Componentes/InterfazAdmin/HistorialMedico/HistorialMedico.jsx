@@ -1,22 +1,24 @@
-"use client"
-
+// Librarys 
 import { useState } from "react"
 import { Calendar, Heart, Pill, Stethoscope, Clock } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import "./styles/principal.css"
 import { ArrowLeft, Printer, Plus } from "lucide-react"
 
-// Importar los nuevos componentes
-import ResumenMascota from "./components/resumen-mascota"
-import TarjetaHistorial from "./components/tarjeta-historial"
-import ModalDetalleConsulta from "./components/modal-detalle-consulta"
-import FormularioNuevaConsulta from "./components/formulario-nueva-consulta"
-import GeneradorPDF from "./components/generador-pdf"
-import ModalDetalleVacuna from "./components/modal-detalle-vacuna"
+// Imports
+import ResumenMascota from "./ResumenMascota"
+import TarjetaHistorial from "./TarjetaHistorial"
+import ModalDetalleConsulta from "./DetalleConsulta"
+import FormularioNuevaConsulta from "./Consulta"
+import GeneradorPDF from "./GenerarPdf"
+import ModalDetalleVacuna from "./DetalleVacuna"
 
-export default function PetMedicalHistory() {
+// Import styles 
+import "../../../styles/InterfazAdmin/HistorialMedico/HistorialMedico.css"
+
+// Component 
+export const PetMedicalHistory = ({ URL = '' }) => {
   const [selectedTab, setSelectedTab] = useState("overview")
   const [selectedConsultation, setSelectedConsultation] = useState(null)
   const [selectedVaccine, setSelectedVaccine] = useState(null)
@@ -141,54 +143,7 @@ export default function PetMedicalHistory() {
       ],
       nextAppointment: "2024-12-10",
       images: [],
-    },
-    {
-      id: 3,
-      date: "2023-11-22",
-      time: "16:45",
-      type: "Emergencia",
-      veterinarian: "Dr. Miguel Torres",
-      diagnosis: "Gastroenteritis leve",
-      treatment: "Dieta blanda + Probióticos",
-      notes: "Recuperación completa en 5 días",
-      status: "completed",
-      symptoms: ["Vómitos ocasionales", "Diarrea leve", "Pérdida de apetito", "Letargo"],
-      physicalExam: {
-        temperature: "39.1°C",
-        weight: "27 kg",
-        heartRate: "110 bpm",
-        respiratoryRate: "28 rpm",
-        bloodPressure: "Ligeramente elevada",
-        bodyCondition: "Buena (4/9)",
-      },
-      labResults: [
-        { test: "Análisis fecal", result: "Negativo para parásitos", reference: "Sin patógenos detectados" },
-        { test: "Hemograma", result: "Leve leucocitosis", reference: "Indicativo de inflamación leve" },
-      ],
-      medications: [
-        {
-          name: "Probióticos",
-          dosage: "1 sobre",
-          duration: "7 días",
-          instructions: "Mezclar con comida, 2 veces al día",
-        },
-        {
-          name: "Dieta blanda",
-          dosage: "Según necesidad",
-          duration: "3-5 días",
-          instructions: "Arroz hervido con pollo",
-        },
-      ],
-      recommendations: [
-        "Dieta blanda por 3-5 días",
-        "Agua fresca disponible siempre",
-        "Monitorear síntomas",
-        "Revisión en 5 días si no mejora",
-        "Evitar cambios bruscos en la dieta",
-      ],
-      nextAppointment: "2023-11-27",
-      images: ["/placeholder.svg?height=200&width=300"],
-    },
+    }    
   ]
 
   const vaccinations = [
@@ -282,86 +237,7 @@ export default function PetMedicalHistory() {
       countryOfOrigin: "Francia",
       storageTemperature: "2-8°C",
       price: "25.00€",
-    },
-    {
-      id: "VAC003",
-      name: "Leishmaniosis",
-      date: "2023-06-15",
-      nextDue: "2024-06-15",
-      status: "due-soon",
-      category: "Vacuna Específica",
-      description:
-        "Vacuna específica contra la leishmaniosis canina, enfermedad parasitaria transmitida por flebótomos. Especialmente importante en zonas endémicas.",
-      technicalDescription:
-        "Vacuna recombinante que contiene proteína LiESAp-MDP purificada de Leishmania infantum con adyuvante QA-21 saponina. Estimula respuesta inmune celular específica.",
-      sideEffects: [
-        "Dolor moderado en el sitio de inyección",
-        "Formación de nódulo temporal",
-        "Letargo leve",
-        "Pérdida de apetito temporal",
-        "Fiebre baja (rara)",
-      ],
-      dosageByAge: [
-        {
-          ageRange: "6 meses en adelante",
-          dosage: "1 ml subcutáneo",
-          frequency: "Serie de 3 dosis",
-          notes: "Dosis separadas por 3 semanas",
-        },
-        {
-          ageRange: "Adultos",
-          dosage: "1 ml subcutáneo",
-          frequency: "Anual",
-          notes: "Refuerzo anual en zonas endémicas",
-        },
-      ],
-      batchNumber: "LEISH2023-3456",
-      manufacturingDate: "2023-04-10",
-      expirationDate: "2025-04-10",
-      laboratory: "Virbac España",
-      countryOfOrigin: "España",
-      storageTemperature: "2-8°C",
-      price: "85.00€",
-    },
-    {
-      id: "VAC004",
-      name: "Tos de las perreras",
-      date: "2023-03-20",
-      nextDue: "2024-03-20",
-      status: "overdue",
-      category: "Vacuna Opcional",
-      description:
-        "Vacuna intranasal contra la traqueobronquitis infecciosa canina (tos de las perreras). Protege contra Bordetella bronchiseptica y Parainfluenza.",
-      technicalDescription:
-        "Vacuna de bacterias vivas atenuadas (Bordetella bronchiseptica) y virus vivos modificados (Parainfluenza). Administración intranasal para inmunidad local rápida.",
-      sideEffects: [
-        "Estornudos leves por 2-3 días",
-        "Secreción nasal temporal",
-        "Tos leve ocasional",
-        "Letargo mínimo",
-      ],
-      dosageByAge: [
-        {
-          ageRange: "3 semanas en adelante",
-          dosage: "0.5 ml intranasal",
-          frequency: "Dosis única",
-          notes: "Protección rápida en 72 horas",
-        },
-        {
-          ageRange: "Adultos",
-          dosage: "0.5 ml intranasal",
-          frequency: "Anual",
-          notes: "Refuerzo anual recomendado",
-        },
-      ],
-      batchNumber: "KC2023-7890",
-      manufacturingDate: "2023-01-15",
-      expirationDate: "2025-01-15",
-      laboratory: "Zoetis España",
-      countryOfOrigin: "Bélgica",
-      storageTemperature: "2-8°C",
-      price: "35.00€",
-    },
+    }
   ]
 
   const medications = [

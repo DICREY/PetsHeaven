@@ -7,7 +7,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import "../styles/resumen-mascota.css"
+
+// Import styles 
+import "../../../styles/InterfazAdmin/HistorialMedico/ResumenMascota.css"
 
 export default function ResumenMascota({ petData, setPetData }) {
   const [isEditing, setIsEditing] = useState(false)
