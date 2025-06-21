@@ -11,10 +11,12 @@ import { Notification } from '../../Global/Notifys'
 import Footer from '../../Varios/Footer2'
 import { GetData, PostData, ModifyData } from "../../Varios/Requests"
 import { AuthContext } from "../../../Contexts/Contexts"
+import { ServicesContainer } from '../../Global/Services'
+import { data } from "react-router-dom";
+
 
 // Style
 import "../../../styles/InterfazAdmin/Servicios/Cirugia.css"
-import { data } from "react-router-dom";
 
 export const CirugiasVeterinaria = ({ URL = '' }) => {
   // Dynamic Vars 
@@ -296,41 +298,28 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
   return (
     <main className="contenedor-cirugia">
       <NavBarAdmin />
-      <main className="contenedor-principal-cirugia">
+      <main className="tablero-admin">
         {/* Encabezado */}
-        <header className="encabezado-cirugia">
-          <div className="titulo-con-icono-cirugia">
-            <Activity className="icono-titulo-cirugia" />
-            <h1 className="titulo-cirugia">Servicios de Cirugía</h1>
-          </div>
-          <p className="descripcion-cirugia">Gestión completa de procedimientos quirúrgicos veterinarios</p>
-        </header>
-
-        {/* Controles */}
-        <nav className="controles-cirugia">
-          <h2 className="subtitulo-cirugia">Cirugías Disponibles</h2>
-          <nav className="acciones-control-cirugia">
-            <select value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)} className="filtro-cirugia">
-              <option value="todos">Todas las cirugías</option>
-              <option value="disponibles">Disponibles</option>
-              <option value="no-disponibles">No disponibles</option>
-              <optgroup label="Por especialidad">
-                {categorias.map((categoria) => (
-                  <option key={categoria} value={categoria}>
-                    {categoria}
-                  </option>
-                ))}
-              </optgroup>
-            </select>
-            <button onClick={abrirModalAgregar} className="boton-agregar-cirugia">
-              <Plus size={16} />
-              Agregar Cirugía
-            </button>
-          </nav>
-        </nav>
+        <ServicesContainer 
+          Name={"Cirugias"}
+          TitleIcon={Activity}
+          title={'Servicios de Cirugía'}
+          subTitle="Gestión completa de procedimientos quirúrgicos veterinarios"
+          filters={categorias}
+          headers={{
+            nom: 'nom_ser',
+            des: 'des_ser',
+            cat: 'nom_cat',
+            sta: 'sta_ser',
+            pri: 'pre_ser',
+            cod: 'id_ser',
+          }}
+          SearchHeaders={['nom_cat']}
+          datas={cirugias}
+        />
 
         {/* Grid de cirugías */}
-        <section className="grid-cirugia">
+        {/* <section className="grid-cirugia">
           {cirugiasFiltradas.map((cirugia) => (
             <section key={cirugia.id_ser} className="tarjeta-cirugia" onClick={() => abrirModalDetalle(cirugia)}>
               <div className="header-tarjeta-cirugia">
@@ -393,7 +382,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
               </div>
             </section>
           ))}
-        </section>
+        </section> */}
 
         {/* Modal Agregar/Editar */}
         {mostrarFormulario && (

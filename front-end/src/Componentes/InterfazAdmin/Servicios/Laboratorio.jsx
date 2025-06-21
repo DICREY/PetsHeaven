@@ -5,6 +5,8 @@ import { FlaskConical, Plus, Trash2, Edit, X, Clock, AlertTriangle, FileText, Ta
 
 // Imports
 import { ServicesContainer } from "../../Global/Services"
+import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
+import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
 
 // Import styles
 import "../../../styles/InterfazAdmin/Servicios/Laboratorio.css"
@@ -121,7 +123,6 @@ export const ExamenesLaboratorio = ({ URL='' }) => {
   const [examenDetalle, setExamenDetalle] = useState(null)
   const [examenEditando, setExamenEditando] = useState(null)
   const [modoEdicion, setModoEdicion] = useState(false)
-  const [filtroTipo, setFiltroTipo] = useState("todos")
   const [nuevoExamen, setNuevoExamen] = useState({
     id: "",
     nombre: "",
@@ -158,13 +159,6 @@ export const ExamenesLaboratorio = ({ URL='' }) => {
       maximumFractionDigits: 0,
     }).format(precio)
   }
-
-  const examenesFiltrados = examenes.filter((examen) => {
-    if (filtroTipo === "todos") return true
-    if (filtroTipo === "disponibles") return examen.disponible
-    if (filtroTipo === "no-disponibles") return !examen.disponible
-    return examen.categoria === filtroTipo
-  })
 
   const abrirModalAgregar = () => {
     setNuevoExamen({
@@ -225,9 +219,406 @@ export const ExamenesLaboratorio = ({ URL='' }) => {
   }
 
   return (
-    <ServicesContainer 
-      TitleIcon={FlaskConical}
-      title={'Servicios de Laboratorio'}
-    />
+    <main className="contenedor-laboratorio">
+      <NavBarAdmin />
+      <main className="tablero-admin">
+        <HeaderAdmin />
+        <ServicesContainer 
+          Name="Examén"
+          TitleIcon={FlaskConical}
+          title={'Servicios de Laboratorio'}
+          subTitle="Exámenes Disponibles"
+          filters={categorias}
+          headers={{
+            nom: 'nombre',
+            des: 'descripcion',
+            cat: 'categoria',
+            sta: 'disponible',
+            pri: 'precio',
+            cod: 'id',
+          }}
+          SearchHeaders={['categoria']}
+          OpenDetails={abrirModalDetalle}
+          OpenCreate={abrirModalAgregar}
+          OpenEdit={abrirModalEditar}
+          Delete={eliminarExamen}
+          ChangeState={cambiarEstado}
+          datas={examenes}
+        />
+        {/* Modal Agregar/Editar */}
+        {mostrarFormulario && (
+          <div className="modal-fondo-laboratorio" role="dialog" aria-modal="true" aria-labelledby="titulo-modal">
+            <div className="modal-laboratorio">
+              <header className="modal-encabezado-laboratorio">
+                <h2 id="titulo-modal" className="titulo-modal-laboratorio">
+                  {modoEdicion ? "Editar Examen" : "Agregar Nuevo Examen"}
+                </h2>
+                <button
+                  onClick={() => setMostrarFormulario(false)}
+                  className="cerrar-modal-laboratorio"
+                  aria-label="Cerrar modal"
+                >
+                  <X size={20} aria-hidden="true" />
+                </button>
+              </header>
+              <form
+                className="formulario-laboratorio"
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  guardarExamen()
+                }}
+              >
+                <fieldset className="seccion-formulario-laboratorio">
+                  <legend className="titulo-seccion-formulario">Información General</legend>
+                  <div className="campos-formulario-laboratorio">
+                    <div className="campos-dobles-laboratorio">
+                      <div className="campo-laboratorio">
+                        <label htmlFor="id-examen" className="etiqueta-campo-laboratorio">
+                          ID Examen
+                        </label>
+                        <input
+                          id="id-examen"
+                          type="text"
+                          value={nuevoExamen.id}
+                          onChange={(e) => setNuevoExamen({ ...nuevoExamen, id: e.target.value })}
+                          className="input-laboratorio"
+                          disabled={modoEdicion}
+                          placeholder="Ej: LAB001"
+                          required
+                        />
+                      </div>
+                      <div className="campo-laboratorio">
+                        <label htmlFor="nombre-examen" className="etiqueta-campo-laboratorio">
+                          Nombre del Examen
+                        </label>
+                        <input
+                          id="nombre-examen"
+                          type="text"
+                          value={nuevoExamen.nombre}
+                          onChange={(e) => setNuevoExamen({ ...nuevoExamen, nombre: e.target.value })}
+                          className="input-laboratorio"
+                          placeholder="Ej: Hemograma Completo"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="campo-laboratorio">
+                      <label htmlFor="descripcion-examen" className="etiqueta-campo-laboratorio">
+                        Descripción
+                      </label>
+                      <textarea
+                        id="descripcion-examen"
+                        value={nuevoExamen.descripcion}
+                        onChange={(e) => setNuevoExamen({ ...nuevoExamen, descripcion: e.target.value })}
+                        className="textarea-laboratorio"
+                        rows={2}
+                        placeholder="Descripción del examen de laboratorio"
+                        required
+                      />
+                    </div>
+                  </div>
+                </fieldset>
+
+                <fieldset className="seccion-formulario-laboratorio">
+                  <legend className="titulo-seccion-formulario">Detalles y Clasificación</legend>
+                  <div className="campos-formulario-laboratorio">
+                    <div className="campos-dobles-laboratorio">
+                      <div className="campo-laboratorio">
+                        <label htmlFor="precio-examen" className="etiqueta-campo-laboratorio">
+                          Precio (COP)
+                        </label>
+                        <input
+                          id="precio-examen"
+                          type="number"
+                          min="0"
+                          value={nuevoExamen.precio}
+                          onChange={(e) => setNuevoExamen({ ...nuevoExamen, precio: e.target.value })}
+                          className="input-laboratorio"
+                          placeholder="Ej: 65000"
+                          required
+                        />
+                      </div>
+                      <div className="campo-laboratorio">
+                        <label htmlFor="tiempo-resultados" className="etiqueta-campo-laboratorio">
+                          Tiempo de Resultados
+                        </label>
+                        <input
+                          id="tiempo-resultados"
+                          type="text"
+                          value={nuevoExamen.tiempoResultados}
+                          onChange={(e) => setNuevoExamen({ ...nuevoExamen, tiempoResultados: e.target.value })}
+                          className="input-laboratorio"
+                          placeholder="Ej: 2-4 horas"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="campos-dobles-laboratorio">
+                      <div className="campo-laboratorio">
+                        <label htmlFor="tipo-animal" className="etiqueta-campo-laboratorio">
+                          Tipo de Animal
+                        </label>
+                        <select
+                          id="tipo-animal"
+                          value={nuevoExamen.tipoAnimal}
+                          onChange={(e) => setNuevoExamen({ ...nuevoExamen, tipoAnimal: e.target.value })}
+                          className="select-laboratorio"
+                        >
+                          <option value="perro">Perro</option>
+                          <option value="gato">Gato</option>
+                          <option value="ambos">Ambos</option>
+                        </select>
+                      </div>
+                      <div className="campo-laboratorio">
+                        <label htmlFor="categoria-examen" className="etiqueta-campo-laboratorio">
+                          Categoría
+                        </label>
+                        <select
+                          id="categoria-examen"
+                          value={nuevoExamen.categoria}
+                          onChange={(e) => setNuevoExamen({ ...nuevoExamen, categoria: e.target.value })}
+                          className="select-laboratorio"
+                        >
+                          {categorias.map((categoria) => (
+                            <option key={categoria} value={categoria}>
+                              {categoria}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="campos-dobles-laboratorio">
+                      <div className="campo-laboratorio">
+                        <label htmlFor="tipo-muestra" className="etiqueta-campo-laboratorio">
+                          Tipo de Muestra
+                        </label>
+                        <input
+                          id="tipo-muestra"
+                          type="text"
+                          value={nuevoExamen.muestra}
+                          onChange={(e) => setNuevoExamen({ ...nuevoExamen, muestra: e.target.value })}
+                          className="input-laboratorio"
+                          placeholder="Ej: Sangre con anticoagulante EDTA"
+                        />
+                      </div>
+                      <div className="campo-laboratorio">
+                        <label htmlFor="equipo-requerido" className="etiqueta-campo-laboratorio">
+                          Equipo Requerido
+                        </label>
+                        <input
+                          id="equipo-requerido"
+                          type="text"
+                          value={nuevoExamen.equipoRequerido}
+                          onChange={(e) => setNuevoExamen({ ...nuevoExamen, equipoRequerido: e.target.value })}
+                          className="input-laboratorio"
+                          placeholder="Ej: Analizador hematológico"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+
+                <fieldset className="seccion-formulario-laboratorio">
+                  <legend className="titulo-seccion-formulario">Información Técnica</legend>
+                  <div className="campos-formulario-laboratorio">
+                    <div className="campo-laboratorio">
+                      <label htmlFor="preparacion-requerida" className="etiqueta-campo-laboratorio">
+                        Preparación Requerida
+                      </label>
+                      <textarea
+                        id="preparacion-requerida"
+                        value={nuevoExamen.preparacionRequerida}
+                        onChange={(e) => setNuevoExamen({ ...nuevoExamen, preparacionRequerida: e.target.value })}
+                        className="textarea-laboratorio"
+                        rows={2}
+                        placeholder="Preparación necesaria antes del examen"
+                      />
+                    </div>
+                    <div className="campo-laboratorio">
+                      <label htmlFor="metodologia" className="etiqueta-campo-laboratorio">
+                        Metodología
+                      </label>
+                      <input
+                        id="metodologia"
+                        type="text"
+                        value={nuevoExamen.metodologia}
+                        onChange={(e) => setNuevoExamen({ ...nuevoExamen, metodologia: e.target.value })}
+                        className="input-laboratorio"
+                        placeholder="Ej: Citometría de flujo automatizada"
+                      />
+                    </div>
+                    <div className="campo-laboratorio">
+                      <label htmlFor="valores-referencia" className="etiqueta-campo-laboratorio">
+                        Valores de Referencia
+                      </label>
+                      <textarea
+                        id="valores-referencia"
+                        value={nuevoExamen.valoresReferencia}
+                        onChange={(e) => setNuevoExamen({ ...nuevoExamen, valoresReferencia: e.target.value })}
+                        className="textarea-laboratorio"
+                        rows={2}
+                        placeholder="Valores normales esperados"
+                      />
+                    </div>
+                    <div className="campo-laboratorio">
+                      <label htmlFor="indicaciones" className="etiqueta-campo-laboratorio">
+                        Indicaciones
+                      </label>
+                      <textarea
+                        id="indicaciones"
+                        value={nuevoExamen.indicaciones}
+                        onChange={(e) => setNuevoExamen({ ...nuevoExamen, indicaciones: e.target.value })}
+                        className="textarea-laboratorio"
+                        rows={2}
+                        placeholder="Cuándo se recomienda este examen"
+                      />
+                    </div>
+                    <div className="campo-checkbox-laboratorio">
+                      <input
+                        id="disponible"
+                        type="checkbox"
+                        checked={nuevoExamen.disponible}
+                        onChange={(e) => setNuevoExamen({ ...nuevoExamen, disponible: e.target.checked })}
+                        className="checkbox-laboratorio"
+                      />
+                      <label htmlFor="disponible" className="etiqueta-checkbox-laboratorio">
+                        Disponible
+                      </label>
+                    </div>
+                  </div>
+                </fieldset>
+
+                <div className="botones-formulario-laboratorio">
+                  <button type="submit" className="boton-guardar-laboratorio">
+                    {modoEdicion ? "Actualizar" : "Agregar"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setMostrarFormulario(false)}
+                    className="boton-cancelar-laboratorio"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Modal Detalle */}
+        {mostrarDetalle && examenDetalle && (
+          <div className="modal-fondo-laboratorio" role="dialog" aria-modal="true" aria-labelledby="titulo-detalle">
+            <div className="modal-detalle-laboratorio">
+              <header className="modal-encabezado-laboratorio">
+                <h2 id="titulo-detalle" className="titulo-modal-laboratorio">
+                  {examenDetalle.nombre}
+                </h2>
+                <button
+                  onClick={() => setMostrarDetalle(false)}
+                  className="cerrar-modal-laboratorio"
+                  aria-label="Cerrar modal de detalles"
+                >
+                  <X size={20} aria-hidden="true" />
+                </button>
+              </header>
+              <div className="contenido-detalle-laboratorio">
+                {/* Métricas principales */}
+                <section className="metricas-principales-laboratorio" aria-label="Métricas del examen">
+                  <div className="metrica-laboratorio">
+                    <div className="valor-metrica-laboratorio">{formatearPrecio(examenDetalle.precio)}</div>
+                    <div className="etiqueta-metrica-laboratorio">Precio</div>
+                  </div>
+                  <div className="metrica-laboratorio">
+                    <div className="valor-metrica-laboratorio">{examenDetalle.tiempoResultados}</div>
+                    <div className="etiqueta-metrica-laboratorio">Tiempo</div>
+                  </div>
+                  <div className="metrica-laboratorio">
+                    <div className="valor-metrica-laboratorio">{examenDetalle.categoria}</div>
+                    <div className="etiqueta-metrica-laboratorio">Especialidad</div>
+                  </div>
+                  <div className="metrica-laboratorio">
+                    <div
+                      className={`valor-metrica-laboratorio ${examenDetalle.disponible ? "texto-verde-laboratorio" : "texto-rojo-laboratorio"
+                        }`}
+                    >
+                      {examenDetalle.disponible ? "SÍ" : "NO"}
+                    </div>
+                    <div className="etiqueta-metrica-laboratorio">Disponible</div>
+                  </div>
+                </section>
+
+                {/* Grid de información */}
+                <section className="grid-detalle-laboratorio" aria-label="Información detallada del examen">
+                  <article className="seccion-detalle-laboratorio">
+                    <header className="encabezado-seccion-laboratorio">
+                      <FileText size={20} className="icono-seccion-laboratorio" aria-hidden="true" />
+                      <h3 className="titulo-seccion-laboratorio">Descripción</h3>
+                    </header>
+                    <p className="texto-seccion-laboratorio">{examenDetalle.descripcion}</p>
+                  </article>
+
+                  <article className="seccion-detalle-laboratorio">
+                    <header className="encabezado-seccion-laboratorio">
+                      <AlertTriangle size={20} className="icono-seccion-laboratorio" aria-hidden="true" />
+                      <h3 className="titulo-seccion-laboratorio">Preparación</h3>
+                    </header>
+                    <p className="texto-seccion-laboratorio">{examenDetalle.preparacionRequerida}</p>
+                  </article>
+
+                  <article className="seccion-detalle-laboratorio">
+                    <header className="encabezado-seccion-laboratorio">
+                      <FlaskConical size={20} className="icono-seccion-laboratorio" aria-hidden="true" />
+                      <h3 className="titulo-seccion-laboratorio">Metodología</h3>
+                    </header>
+                    <p className="texto-seccion-laboratorio">{examenDetalle.metodologia}</p>
+                  </article>
+
+                  <article className="seccion-detalle-laboratorio">
+                    <header className="encabezado-seccion-laboratorio">
+                      <Target size={20} className="icono-seccion-laboratorio" aria-hidden="true" />
+                      <h3 className="titulo-seccion-laboratorio">Indicaciones</h3>
+                    </header>
+                    <p className="texto-seccion-laboratorio">{examenDetalle.indicaciones}</p>
+                  </article>
+                </section>
+
+                {/* Valores de referencia */}
+                <section className="valores-referencia-laboratorio" aria-label="Valores de referencia">
+                  <h3 className="titulo-valores-laboratorio">Valores de Referencia</h3>
+                  <div className="contenido-valores-laboratorio">
+                    <p className="texto-valores-laboratorio">{examenDetalle.valoresReferencia}</p>
+                  </div>
+                </section>
+
+                {/* Información adicional */}
+                <section className="info-adicional-laboratorio" aria-label="Información adicional">
+                  <h3 className="titulo-info-adicional-laboratorio">Información Adicional</h3>
+                  <dl className="contenedor-info-adicional-laboratorio">
+                    <div className="item-info-adicional-laboratorio">
+                      <dt className="etiqueta-info-adicional-laboratorio">Muestra:</dt>
+                      <dd className="valor-info-adicional-laboratorio">{examenDetalle.muestra}</dd>
+                    </div>
+                    <div className="item-info-adicional-laboratorio">
+                      <dt className="etiqueta-info-adicional-laboratorio">Equipo:</dt>
+                      <dd className="valor-info-adicional-laboratorio">{examenDetalle.equipoRequerido}</dd>
+                    </div>
+                    <div className="item-info-adicional-laboratorio">
+                      <dt className="etiqueta-info-adicional-laboratorio">Tipo de Animal:</dt>
+                      <dd className="valor-info-adicional-laboratorio">
+                        {examenDetalle.tipoAnimal === "perro"
+                          ? "Perros"
+                          : examenDetalle.tipoAnimal === "gato"
+                            ? "Gatos"
+                            : "Perros y gatos"}
+                      </dd>
+                    </div>
+                  </dl>
+                </section>
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
+    </main>
   )
 }

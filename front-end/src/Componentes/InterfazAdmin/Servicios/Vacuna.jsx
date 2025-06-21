@@ -474,7 +474,7 @@ export function VisualizadorVacunas({ URL = '' }) {
               ))}
             </div>
             <footer className='paginacion-gestion'>
-              <div className='info-paginacion'>Mostrando registros del 1 al de un total de registros.</div>
+              <section className='info-paginacion'>Pagina {page} de {almcVac.length} de un total {vacunas.length} de registros.</section>
               <div className='btns-container-paginacion'>
                 <button
                   type='button'
