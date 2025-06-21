@@ -1,4 +1,4 @@
--- Active: 1750268475844@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.Login(
     IN p_firstData VARCHAR(100)
 )
@@ -18,7 +18,10 @@ BEGIN
         roles r ON otr.id_rol = r.id_rol
     WHERE
         p.estado = 1
-        AND p.email_per = p_firstData
+        AND (
+                p.email_per = p_firstData
+                OR p.doc_per = p_firstData
+            )
     ORDER BY 
         p.nom_per
     LIMIT 1000;
@@ -107,7 +110,7 @@ BEGIN
     LIMIT 1000;
 END //
 
-/* DROP PROCEDURE pets_heaven.`Login`; */
+DROP PROCEDURE pets_heaven.`Login`;
 /* CALL `GetStatsAdmin`(); */
 /* CALL `GetStatsVet`('1298765432'); */
 /* DROP PROCEDURE `GetAdminStats`; */

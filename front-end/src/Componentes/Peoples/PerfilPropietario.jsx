@@ -40,6 +40,7 @@ export const PerfilPropietario = ({
   const [modPro, setModPro] = useState(userSelect)
   const [rol, setRol] = useState(0)
   const [profileImage, setProfileImage] = useState(null)
+  const { user } = useContext(AuthContext)
 
   // Vars 
   const mainUrl = `${URL}/people`
@@ -72,6 +73,34 @@ export const PerfilPropietario = ({
     }
   })
 
+  const verifyPerm = async (datas) => {
+    const verify = async (value) => {
+      try {
+        setNotify({
+          title: 'Validando...',
+          message: 'Verificando datos proporcionados',
+          load: 1
+        })
+        const logg = await PostData(`${URL}/global/login`, {firstData: user.doc, secondData: value})
+        if (logg) AssigRol(datas)
+      } catch (err) {
+        setNotify(null)
+        const message = errorStatusHandler(err)
+        setNotify({
+          title: 'Error',
+          message: `${message}`,
+          close: setNotify
+        })
+      }
+    }
+    setNotify({
+      title: 'Verificar Credenciales',
+      message: 'Ingresa tu contraseña para continuar',
+      input: verify,
+      btnClose: () => setNotify(null)
+    })
+  }
+
   const AssigRol = async (datas) => {
     const data = {
       doc_per: userData.doc_per,
@@ -81,7 +110,6 @@ export const PerfilPropietario = ({
       num_tar_vet: datas.numTargPro,
       fot_tar_vet: datas.tarjetaProfesional,
     }
-    console.log(data)
     try {
       const assign = await PostData(`${mainUrl}/assign-rol`,data)
       if (assign?.assigned) {
@@ -225,21 +253,23 @@ export const PerfilPropietario = ({
 
   // Effects
   useEffect(() => {
-    setModPro({
-      nom_per: userData.nom_per,
-      ape_per: userData.ape_per,
-      fec_nac_per: formatDate(userData.fec_nac_per),
-      tip_doc_per: userData.tip_doc_per,
-      doc_per: userData.doc_per,
-      dir_per: userData.dir_per,
-      cel_per: userData.cel_per,
-      cel2_per: userData.cel2_per,
-      email_per: userData.email_per,
-      cont_per: userData.cont_per,
-      gen_per: userData.gen_per,
-    })
-    setPetsData(userData.mascotas)
-  }, [petsData])
+    if (userData) {
+      setModPro({
+        nom_per: userData.nom_per,
+        ape_per: userData.ape_per,
+        fec_nac_per: formatDate(userData.fec_nac_per),
+        tip_doc_per: userData.tip_doc_per,
+        doc_per: userData.doc_per,
+        dir_per: userData.dir_per,
+        cel_per: userData.cel_per,
+        cel2_per: userData.cel2_per,
+        email_per: userData.email_per,
+        cont_per: userData.cont_per,
+        gen_per: userData.gen_per,
+      })
+      setPetsData(userData.mascotas)
+    }
+  }, [userData,petsData])
 
   useEffect(() => {
     // Vars

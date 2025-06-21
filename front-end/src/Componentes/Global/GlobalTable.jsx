@@ -225,7 +225,8 @@ export class GlobalTable extends Component {
           )}
         </section>
         <footer className='paginacion-gestion'>
-          <div className='info-paginacion'>Mostrando registros del 1 al {info?.length} de un total de {fullData?.length} registros.</div>
+          {/* <div className='info-paginacion'>Mostrando registros del 1 al {info?.length} de un total de {fullData?.length} registros.</div> */}
+          <section className='info-paginacion'>Pagina {page} de {info.length} de un total {fullData.length} de registros.</section>
           <div className='btns-container-paginacion'>
             <button
               type='button'

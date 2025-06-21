@@ -21,10 +21,13 @@ export const Notification = ({
     firstOption = null,
     secondOption = null,
     firstOptionName = 'Cancelar',
-    secondOptionName = 'Aceptar'
+    secondOptionName = 'Aceptar',
+    input = null,
+    btnClose = null,
 }) => {
     // Dynamic vars
     const [isOpen, setIsOpen] = useState(true)
+    const [inputValue, setInputValue] = useState('')
 
     // Effects
     // close then at time
@@ -61,6 +64,28 @@ export const Notification = ({
                             <aside className='LoadingBar'>
                                 <div className='LoadingProgress'></div>
                             </aside>
+                        )}
+                        {input && (
+                            <>
+                                <aside className='LoadingContainer'>
+                                    <input
+                                        type='text'
+                                        className='input'
+                                        onChange={e => setInputValue(e.target.value)}
+                                        // onClick={() => close(null)}
+                                    />
+                                </aside>
+                                <aside className='LoadingSelect'>
+                                    <button
+                                        className='DeleteBtn'
+                                        onClick={btnClose}
+                                    >Cerrar</button>
+                                    <button
+                                        className='EditBtn'
+                                        onClick={() => input(inputValue)}
+                                    >Validar</button>
+                                </aside>
+                            </>
                         )}
                         {close && (
                             <aside className='LoadingContainer'>
