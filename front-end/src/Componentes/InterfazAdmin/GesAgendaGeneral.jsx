@@ -130,31 +130,6 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
         setActiveModal('event'); // Abrir modal de evento
     };
 
-    // Crear nueva cita en el backend
-    const handleCreateEvent = async () => {
-        const errors = validateEventFields(newEvent);
-        setFormErrors(errors)
-        if (Object.keys(errors).length > 0) return
-        const citaData = {
-            fec_reg_cit: new Date().toISOString().split('T')[0],
-            fec_cit: newEvent.start.split('T')[0],
-            hor_ini_cit: newEvent.start.split('T')[1],
-            hor_fin_cit: newEvent.end.split('T')[1],
-            lug_ate_cit: lugar,
-            ser_cit: newEvent.category,
-            vet_cit: newEvent.veterinario,
-            mas_cit: newEvent.paciente,
-            estado: 'PENDIENTE'
-        }
-        try {
-            await PostData(`${mainUrl}/register`, citaData)
-            setShowCreateModal(false)
-            fetchAppointments()
-        } catch (err) {
-            alert('Error al crear la cita')
-        }
-    }
-
     // Actualizar cita existente en el backend
     const handleUpdateEvent = async () => {
         const errors = validateEventFields(selectedEvent);

@@ -13,6 +13,7 @@ export const ServicesContainer = ({
     Name = '',
     TitleIcon,
     title = '',
+    titleDes = '',
     subTitle = '',
     filters = [],
     datas = [],
@@ -65,6 +66,7 @@ export const ServicesContainer = ({
                         {TitleIcon && (<TitleIcon className="icono-titulo-laboratorio icon" aria-hidden="true" />)}
                         <h1 className="titulo-laboratorio">{title}</h1>
                     </div>
+                    <p className="descripcion-spa">{titleDes}</p>
                 </header>
 
                 {/* Controles */}
@@ -126,7 +128,7 @@ export const ServicesContainer = ({
                                         </span>
                                         <button
                                             className={`estado-laboratorio ${dat[headers.sta]? "disponible-laboratorio" : "no-disponible-badge-laboratorio"}`}
-                                            onClick={(e) => ChangeState(dat[headers.cod], e)}
+                                            onClick={(e) => ChangeState(dat[headers.cod], dat[headers.sta])}
                                             aria-label={`Cambiar estado del examen ${dat[headers.nom]}. Actualmente: ${dat[headers.sta] ? "disponible" : "no disponible"
                                                 }`}
                                         >

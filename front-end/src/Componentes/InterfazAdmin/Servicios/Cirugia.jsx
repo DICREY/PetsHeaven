@@ -1,6 +1,6 @@
 // Librarys
-import { useState, useRef, useEffect, useContext, useCallback } from "react";
-import { Activity, Plus, Trash2, Edit, X, Clock, AlertTriangle, FileText, Target, Timer } from "lucide-react"
+import { useState, useRef, useEffect, useContext, useCallback } from "react"
+import { Activity, X, Clock, AlertTriangle, FileText, Target } from "lucide-react"
 
 // Imports
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
@@ -8,19 +8,24 @@ import { HeaderUser } from '../../BarrasNavegacion/HeaderUser'
 import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
 import { errorStatusHandler } from '../../Varios/Util'
 import { Notification } from '../../Global/Notifys'
-import Footer from '../../Varios/Footer2'
 import { GetData, PostData, ModifyData } from "../../Varios/Requests"
 import { AuthContext } from "../../../Contexts/Contexts"
 import { ServicesContainer } from '../../Global/Services'
-import { data } from "react-router-dom";
-
+// import Footer from '../../Varios/Footer2'
 
 // Style
 import "../../../styles/InterfazAdmin/Servicios/Cirugia.css"
 
+// Component 
 export const CirugiasVeterinaria = ({ URL = '' }) => {
   // Dynamic Vars 
   const [notify, setNotify] = useState(null)
+  const [cirugias, setCirugias] = useState([])
+  const [mostrarFormulario, setMostrarFormulario] = useState(false)
+  const [mostrarDetalle, setMostrarDetalle] = useState(false)
+  const [cirugiaDetalle, setCirugiaDetalle] = useState(null)
+  const [cirugiaEditando, setCirugiaEditando] = useState(null)
+  const [modoEdicion, setModoEdicion] = useState(false)
 
   // Vars 
   const didFetch = useRef(false)
@@ -38,17 +43,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
     descripcionBreve: "",
     resultadoEsperado: "",
     observaciones: ""
-  });
-
-  const [cirugias, setCirugias] = useState([])
-  const [mostrarFormulario, setMostrarFormulario] = useState(false)
-  const [mostrarDetalle, setMostrarDetalle] = useState(false)
-  const [cirugiaDetalle, setCirugiaDetalle] = useState(null)
-  const [cirugiaEditando, setCirugiaEditando] = useState(null)
-  const [modoEdicion, setModoEdicion] = useState(false)
-  const [filtroTipo, setFiltroTipo] = useState("todos")
-
-  // Categorías de cirugías
+  })
   const categorias = [
     "Ortopedia",
     "Oftalmología",
@@ -59,66 +54,52 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
     "Traumatología",
     "Odontología",
     "General"
-  ];
+  ]
 
-  // Filtrar cirugías según el filtro seleccionado
-  const cirugiasFiltradas = cirugias.filter(cirugia => {
-    if (filtroTipo === "todos") return true;
-    if (filtroTipo === "disponibles") return cirugia.sta_ser === "DISPONIBLE";
-    if (filtroTipo === "no-disponibles") return cirugia.sta_ser === "NO-DISPONIBLE";
-    return cirugia.categoria === filtroTipo;
-  });
-
+  // Functions 
   const fetchCirugias = useCallback(async () => {
-    if (didFetch.current) return;
-    didFetch.current = true;
+    if (didFetch.current) return
+    didFetch.current = true
 
     setNotify({
       title: 'Cargando',
       message: 'Cargando cirugias, por favor espere...',
       load: 1
-    });
+    })
 
     try {
-      let data = await GetData(`${mainUrl}/cirs`);
-      setNotify(null);
-
-      if (data && !Array.isArray(data)) {
-        data = [data];
-      }
-      if (data) {
-        setCirugias(data);
-      }
+      let data = await GetData(`${mainUrl}/cirs`)
+      setNotify(null)
+      if (data && !Array.isArray(data)) data = [data]
+      if (data) setCirugias(data)
     } catch (err) {
-      setNotify(null);
-      if (err.status) {
-        const message = errorStatusHandler(err.status);
+      setNotify(null)
+      if (err) {
+        const message = errorStatusHandler(err)
         setNotify({
           title: 'Error',
           message: `${message}`,
           close: setNotify
-        });
-      } else {
-        console.error(err);
+        })
       }
     }
-  }, [mainUrl]);
+  }, [mainUrl])
 
   // Functions    
   useEffect(() => {
-    fetchCirugias();
-  }, [fetchCirugias]);
+    fetchCirugias()
+  }, [fetchCirugias])
 
   const manejarCambioFormulario = useCallback((e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type, checked } = e.target
     formRef.current = {
       ...formRef.current,
       [name]: type === "checkbox" ? checked : value,
-    };
-  }, []);
+    }
+  }, [])
 
   const agregarCirugia = useCallback(async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
       const nueva = {
         cat_ser: 3,
@@ -132,23 +113,24 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
         res_cir: formRef.current.resultadoEsperado,
         com_cir: formRef.current.complicaciones,
         obv_cir: formRef.current.observaciones
-      };
+      }
 
-      await PostData(`${mainUrl}/register`, nueva);
-      setMostrarFormulario(false);
-      resetForm();
-      fetchCirugias();
+      await PostData(`${mainUrl}/register`, nueva)
+      setMostrarFormulario(false)
+      resetForm()
+      fetchCirugias()
     } catch (err) {
+      const message = errorStatusHandler(err)
       setNotify({
         title: 'Error',
-        message: 'No se pudo agregar la cirugía',
+        message: `${message}`,
         close: setNotify
-      });
+      })
     }
-  }, [mainUrl, fetchCirugias]);
+  }, [mainUrl, fetchCirugias])
 
   const actualizarCirugia = useCallback(async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
       const actualizada = {
         id_ser: cirugiaEditando.id_ser,
@@ -159,21 +141,22 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
         pre_ser: Number(formRef.current.precio),
         sta_ser: formRef.current.disponible ? "DISPONIBLE" : "NO DISPONIBLE",
         tipo_ser: "Cirugía"
-      };
+      }
 
-      await ModifyData(`${mainUrl}/modify`, actualizada);
-      setMostrarFormulario(false);
-      setCirugiaEditando(null);
-      resetForm();
-      fetchCirugias();
+      await ModifyData(`${mainUrl}/modify`, actualizada)
+      setMostrarFormulario(false)
+      setCirugiaEditando(null)
+      resetForm()
+      fetchCirugias()
     } catch (err) {
+      const message = errorStatusHandler(err)
       setNotify({
         title: 'Error',
-        message: 'No se pudo actualizar la cirugía',
+        message: `${message}`,
         close: setNotify
-      });
+      })
     }
-  }, [mainUrl, cirugiaEditando, fetchCirugias]);
+  }, [mainUrl, cirugiaEditando, fetchCirugias])
 
   // Resetear formulario
   const resetForm = useCallback(() => {
@@ -189,8 +172,8 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
       descripcionBreve: "",
       resultadoEsperado: "",
       observaciones: ""
-    };
-  }, []);
+    }
+  }, [])
 
   // Editar cirugía
   const editarCirugia = useCallback((cirugia) => {
@@ -206,41 +189,42 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
       descripcionBreve: cirugia.des_cir || "",
       resultadoEsperado: cirugia.res_cir || "",
       observaciones: cirugia.obv_cir || ""
-    };
-    setCirugiaEditando(cirugia);
-    setModoEdicion(true);
-    setMostrarFormulario(true);
-  }, []);
+    }
+    setCirugiaEditando(cirugia)
+    setModoEdicion(true)
+    setMostrarFormulario(true)
+  }, [])
 
   // Eliminar cirugía
   const eliminarCirugia = useCallback(async (id_ser) => {
-    if (!window.confirm("¿Seguro que deseas eliminar esta cirugía?")) return;
+    if (!window.confirm("¿Seguro que deseas eliminar esta cirugía?")) return
     try {
       const data = { data: { id_ser: id_ser, or: true } }
-      await ModifyData(`${mainUrl}/AblOrDis`, data);
-      fetchCirugias();
+      await ModifyData(`${mainUrl}/AblOrDis`, data)
+      fetchCirugias()
     } catch (err) {
+      const message = errorStatusHandler(err)
       setNotify({
         title: 'Error',
-        message: 'No se pudo eliminar la cirugía',
+        message: `${message}`,
         close: setNotify
-      });
+      })
     }
-  }, [mainUrl, fetchCirugias]);
+  }, [mainUrl, fetchCirugias])
 
   const cancelarFormulario = useCallback(() => {
-    setMostrarFormulario(false);
-    setCirugiaEditando(null);
-    setModoEdicion(false);
-    resetForm();
-  }, [resetForm]);
+    setMostrarFormulario(false)
+    setCirugiaEditando(null)
+    setModoEdicion(false)
+    resetForm()
+  }, [resetForm])
 
   // Abrir modal para agregar nueva cirugía
   const abrirModalAgregar = useCallback(() => {
-    resetForm();
-    setModoEdicion(false);
-    setMostrarFormulario(true);
-  }, [resetForm]);
+    resetForm()
+    setModoEdicion(false)
+    setMostrarFormulario(true)
+  }, [resetForm])
 
   // Abrir modal para ver detalles
   const abrirModalDetalle = useCallback((cirugia) => {
@@ -255,14 +239,14 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
       preparacion: "Ayuno de 12 horas antes del procedimiento", // Valor de ejemplo
       recomendaciones: cirugia.tec_des_ser,
       complicaciones: cirugia.com_cir
-    });
-    setMostrarDetalle(true);
-  }, []);
+    })
+    setMostrarDetalle(true)
+  }, [])
 
   // Abrir modal para editar
   const abrirModalEditar = useCallback((cirugia) => {
-    editarCirugia(cirugia);
-  }, [editarCirugia]);
+    editarCirugia(cirugia)
+  }, [editarCirugia])
 
   // Formatear precio
   const formatearPrecio = useCallback((precio) => {
@@ -270,36 +254,38 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
       style: 'currency',
       currency: 'COP',
       minimumFractionDigits: 0
-    }).format(precio || 0);
-  }, []);
+    }).format(precio || 0)
+  }, [])
 
   // Cambiar estado de disponibilidad
   const cambiarEstado = useCallback(async (id, e) => {
-    e.stopPropagation();
+    e.stopPropagation()
     try {
-      const cirugia = cirugias.find(c => c.id_ser === id);
-      const nuevoEstado = cirugia.sta_ser === "DISPONIBLE" ? "NO DISPONIBLE" : "DISPONIBLE";
+      const cirugia = cirugias.find(c => c.id_ser === id)
+      const nuevoEstado = cirugia.sta_ser === "DISPONIBLE" ? "NO DISPONIBLE" : "DISPONIBLE"
 
       await ModifyData(`${mainUrl}/modify`, {
         id_ser: id,
         sta_ser: nuevoEstado
-      });
+      })
 
-      fetchCirugias();
+      fetchCirugias()
     } catch (err) {
+      const message = errorStatusHandler(err)
       setNotify({
         title: 'Error',
-        message: 'No se pudo cambiar el estado de la cirugía',
+        message: `${message}`,
         close: setNotify
-      });
+      })
     }
-  }, [mainUrl, cirugias, fetchCirugias]);
+  }, [mainUrl, cirugias, fetchCirugias])
 
   return (
     <main className="contenedor-cirugia">
       <NavBarAdmin />
-      <main className="tablero-admin">
+      <section className="tablero-admin">
         {/* Encabezado */}
+        {admin ?(<HeaderAdmin URL={URL} />):(<HeaderUser />)}
         <ServicesContainer 
           Name={"Cirugias"}
           TitleIcon={Activity}
@@ -316,73 +302,12 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
           }}
           SearchHeaders={['nom_cat']}
           datas={cirugias}
+          OpenCreate={abrirModalAgregar}
+          OpenDetails={abrirModalDetalle}
+          OpenEdit={abrirModalEditar}
+          Delete={eliminarCirugia}
+          ChangeState={cambiarEstado}
         />
-
-        {/* Grid de cirugías */}
-        {/* <section className="grid-cirugia">
-          {cirugiasFiltradas.map((cirugia) => (
-            <section key={cirugia.id_ser} className="tarjeta-cirugia" onClick={() => abrirModalDetalle(cirugia)}>
-              <div className="header-tarjeta-cirugia">
-                <div className="icono-cirugia">
-                  <Activity size={20} />
-                </div>
-                <div className="info-cirugia">
-                  <h3 className="nombre-cirugia">{cirugia.nom_ser}</h3>
-                  <span
-                    className={`estado-cirugia ${cirugia.sta_ser === "DISPONIBLE" ? "disponible-cirugia" : "no-disponible-cirugia"}`}
-                    onClick={(e) => cambiarEstado(cirugia.id_ser, e)}
-                  >
-                    {cirugia.sta_ser === "DISPONIBLE" ? "Disponible" : "No disponible"}
-                  </span>
-                </div>
-                <div className="acciones-cirugia">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      eliminarCirugia(cirugia.id)
-                    }}
-                    className="boton-eliminar-cirugia"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      eliminarCirugia(cirugia.id_ser)
-                    }}
-                    className="boton-editar-cirugia"
-                  >
-                    <Edit size={16} />
-                  </button>
-                </div>
-              </div>
-
-              <p className="descripcion-tarjeta-cirugia">{cirugia.des_ser}</p>
-
-              <div className="detalles-cirugia">
-                <div className="detalle-cirugia">
-                  <strong>
-                    <Clock size={14} className="icono-detalle-cirugia" />
-                    Duración:
-                  </strong>
-                  <p>45-60 minutos</p>
-                </div>
-                <div className="detalle-cirugia">
-                  <strong>
-                    <Timer size={14} className="icono-detalle-cirugia" />
-                    Recuperación:
-                  </strong>
-                  <p>7-10 días</p>
-                </div>
-              </div>
-
-              <div className="footer-tarjeta-cirugia">
-                <span className="precio-cirugia">{formatearPrecio(cirugia.pre_ser)}</span>
-                <span className="id-cirugia">{cirugia.id_ser}</span>
-              </div>
-            </section>
-          ))}
-        </section> */}
 
         {/* Modal Agregar/Editar */}
         {mostrarFormulario && (
@@ -393,7 +318,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
                   {modoEdicion ? "Editar Cirugía" : "Agregar Nueva Cirugía"}
                 </h3>
                 <button onClick={cancelarFormulario} className="boton-cerrar-cirugia">
-                  <X size={20} />
+                  <X className="icon" />
                 </button>
               </div>
 
@@ -525,7 +450,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
               <div className="modal-encabezado-cirugia">
                 <h3 className="titulo-modal-cirugia">{cirugiaDetalle.nombre}</h3>
                 <button onClick={() => setMostrarDetalle(false)} className="cerrar-modal-cirugia">
-                  <X size={20} />
+                  <X className="icon" />
                 </button>
               </div>
               <div className="contenido-detalle-cirugia">
@@ -558,7 +483,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
                 <div className="grid-detalle-cirugia">
                   <div className="seccion-detalle-cirugia">
                     <div className="encabezado-seccion-cirugia">
-                      <FileText size={20} className="icono-seccion-cirugia" />
+                      <FileText className="icono-seccion-cirugia icon" />
                       <h4 className="titulo-seccion-cirugia">Descripción</h4>
                     </div>
                     <p className="texto-seccion-cirugia">{cirugiaDetalle.descripcion}</p>
@@ -566,7 +491,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
 
                   <div className="seccion-detalle-cirugia">
                     <div className="encabezado-seccion-cirugia">
-                      <Target size={20} className="icono-seccion-cirugia" />
+                      <Target className="icono-seccion-cirugia icon" />
                       <h4 className="titulo-seccion-cirugia">Preparación</h4>
                     </div>
                     <p className="texto-seccion-cirugia">{cirugiaDetalle.preparacion}</p>
@@ -574,7 +499,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
 
                   <div className="seccion-detalle-cirugia">
                     <div className="encabezado-seccion-cirugia">
-                      <AlertTriangle size={20} className="icono-seccion-cirugia" />
+                      <AlertTriangle className="icono-seccion-cirugia icon" />
                       <h4 className="titulo-seccion-cirugia">Complicaciones</h4>
                     </div>
                     <p className="texto-seccion-cirugia">{cirugiaDetalle.complicaciones}</p>
@@ -582,7 +507,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
 
                   <div className="seccion-detalle-cirugia">
                     <div className="encabezado-seccion-cirugia">
-                      <Clock size={20} className="icono-seccion-cirugia" />
+                      <Clock className="icono-seccion-cirugia icon" />
                       <h4 className="titulo-seccion-cirugia">Recomendaciones</h4>
                     </div>
                     <p className="texto-seccion-cirugia">{cirugiaDetalle.recomendaciones}</p>
@@ -617,7 +542,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
             </aside>
           </aside>
         )}
-      </main>
+      </section>
       {notify && (
         <Notification
           {...notify}

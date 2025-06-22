@@ -1,18 +1,45 @@
 // Librarys 
-import React from "react"
+import React, { useContext } from "react"
 import { useState } from "react"
-import { FlaskConical, Plus, Trash2, Edit, X, Clock, AlertTriangle, FileText, Target } from "lucide-react"
+import { FlaskConical, X, AlertTriangle, FileText, Target } from "lucide-react"
 
 // Imports
 import { ServicesContainer } from "../../Global/Services"
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
 import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
+import { HeaderUser } from "../../BarrasNavegacion/HeaderUser"
+import { AuthContext } from "../../../Contexts/Contexts"
+import { Notification } from "../../Global/Notifys"
 
 // Import styles
 import "../../../styles/InterfazAdmin/Servicios/Laboratorio.css"
 
 // Component 
-export const ExamenesLaboratorio = ({ URL='' }) => {
+export const ExamenesLaboratorio = ({ URL= '' }) => {
+  // Dynamic vars 
+  const [mostrarFormulario, setMostrarFormulario] = useState(false)
+  const [mostrarDetalle, setMostrarDetalle] = useState(false)
+  const [examenDetalle, setExamenDetalle] = useState(null)
+  const [examenEditando, setExamenEditando] = useState(null)
+  const [modoEdicion, setModoEdicion] = useState(false)
+  const [notify, setNotify] = useState(false)
+  const [nuevoExamen, setNuevoExamen] = useState({
+    id: "",
+    nombre: "",
+    descripcion: "",
+    tipoExamen: "Hematología",
+    tiempoResultados: "",
+    preparacionRequerida: "",
+    metodologia: "",
+    valoresReferencia: "",
+    indicaciones: "",
+    precio: "",
+    disponible: true,
+    categoria: "Hematología",
+    tipoAnimal: "ambos",
+    equipoRequerido: "",
+    muestra: "",
+  })
   const [examenes, setExamenes] = useState([
     {
       id: "LAB001",
@@ -118,29 +145,8 @@ export const ExamenesLaboratorio = ({ URL='' }) => {
     },
   ])
 
-  const [mostrarFormulario, setMostrarFormulario] = useState(false)
-  const [mostrarDetalle, setMostrarDetalle] = useState(false)
-  const [examenDetalle, setExamenDetalle] = useState(null)
-  const [examenEditando, setExamenEditando] = useState(null)
-  const [modoEdicion, setModoEdicion] = useState(false)
-  const [nuevoExamen, setNuevoExamen] = useState({
-    id: "",
-    nombre: "",
-    descripcion: "",
-    tipoExamen: "Hematología",
-    tiempoResultados: "",
-    preparacionRequerida: "",
-    metodologia: "",
-    valoresReferencia: "",
-    indicaciones: "",
-    precio: "",
-    disponible: true,
-    categoria: "Hematología",
-    tipoAnimal: "ambos",
-    equipoRequerido: "",
-    muestra: "",
-  })
-
+  // Vars 
+  const { admin } = useContext(AuthContext)
   const categorias = [
     "Hematología",
     "Bioquímica",
@@ -151,6 +157,7 @@ export const ExamenesLaboratorio = ({ URL='' }) => {
     "Inmunología",
   ]
 
+  // Functions 
   const formatearPrecio = (precio) => {
     return new Intl.NumberFormat("es-CO", {
       style: "currency",
@@ -208,7 +215,15 @@ export const ExamenesLaboratorio = ({ URL='' }) => {
   }
 
   const eliminarExamen = (id) => {
-    if (window.confirm("¿Estás seguro de que deseas eliminar este examen?")) {
+    setNotify({
+      title: 'Atencion',
+      message: '¿Estás seguro de que deseas eliminar esta vacuna?',
+      firstOption: () => {setNotify(null); return},
+      secondOption: () => {setNotify(null); DeleteService(id)},
+      firstOptionName: 'Cancelar',
+      secondOptionName: 'Continuar',
+    })
+    const DeleteService = async (id) => {
       setExamenes(examenes.filter((e) => e.id !== id))
     }
   }
@@ -222,7 +237,7 @@ export const ExamenesLaboratorio = ({ URL='' }) => {
     <main className="contenedor-laboratorio">
       <NavBarAdmin />
       <main className="tablero-admin">
-        <HeaderAdmin />
+        {admin? (<HeaderAdmin URL={URL} />):(<HeaderUser />)}
         <ServicesContainer 
           Name="Examén"
           TitleIcon={FlaskConical}
@@ -247,8 +262,8 @@ export const ExamenesLaboratorio = ({ URL='' }) => {
         />
         {/* Modal Agregar/Editar */}
         {mostrarFormulario && (
-          <div className="modal-fondo-laboratorio" role="dialog" aria-modal="true" aria-labelledby="titulo-modal">
-            <div className="modal-laboratorio">
+          <aside className="modal-fondo-laboratorio" role="dialog" aria-modal="true" aria-labelledby="titulo-modal">
+            <section className="modal-laboratorio">
               <header className="modal-encabezado-laboratorio">
                 <h2 id="titulo-modal" className="titulo-modal-laboratorio">
                   {modoEdicion ? "Editar Examen" : "Agregar Nuevo Examen"}
@@ -501,8 +516,8 @@ export const ExamenesLaboratorio = ({ URL='' }) => {
                   </button>
                 </div>
               </form>
-            </div>
-          </div>
+            </section>
+          </aside>
         )}
 
         {/* Modal Detalle */}
@@ -619,6 +634,7 @@ export const ExamenesLaboratorio = ({ URL='' }) => {
           </div>
         )}
       </main>
+      {notify && <Notification {...notify} />}
     </main>
   )
 }

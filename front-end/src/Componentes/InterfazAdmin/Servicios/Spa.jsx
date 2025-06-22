@@ -1,19 +1,42 @@
 // Librarys 
 import { useContext, useState } from "react"
-import { Bath, Plus, Trash2, Edit, X, Heart, Clock, Sparkles, Timer, Target, FileText } from "lucide-react"
+import { Bath, X, Heart, Sparkles, Target, FileText } from "lucide-react"
 
 // Imports 
 import { HeaderUser } from '../../BarrasNavegacion/HeaderUser'
 import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
-import Footer from '../../Varios/Footer2'
 import { AuthContext } from "../../../Contexts/Contexts"
+import { ServicesContainer } from "../../Global/Services"
+import { Notification } from "../../Global/Notifys"
+// import Footer from '../../Varios/Footer2'
 
 // Import styles 
 import "../../../styles/InterfazAdmin/Servicios/Spa.css"
 
 // Component
-export function SpaMascotas() {
+export const SpaMascotas = ({ URL = '' }) => {
+  // Dynamic vars 
+  const [mostrarFormulario, setMostrarFormulario] = useState(false)
+  const [mostrarDetalle, setMostrarDetalle] = useState(false)
+  const [ notify, setNotify ] = useState()
+  const [servicioDetalle, setServicioDetalle] = useState(null)
+  const [servicioEditando, setServicioEditando] = useState(null)
+  const [modoEdicion, setModoEdicion] = useState(false)
+  const [nuevoServicio, setNuevoServicio] = useState({
+    id: "",
+    nombre: "",
+    descripcion: "",
+    beneficios: "",
+    duracion: "",
+    recomendaciones: "",
+    precio: "",
+    disponible: true,
+    categoria: "Higiene",
+    tipoAnimal: "ambos",
+    productos: "",
+    frecuencia: "",
+  })
   const [servicios, setServicios] = useState([
     {
       id: "SPA001",
@@ -73,28 +96,9 @@ export function SpaMascotas() {
     },
   ])
 
-  const [mostrarFormulario, setMostrarFormulario] = useState(false)
-  const [mostrarDetalle, setMostrarDetalle] = useState(false)
-  const [servicioDetalle, setServicioDetalle] = useState(null)
-  const [servicioEditando, setServicioEditando] = useState(null)
-  const [modoEdicion, setModoEdicion] = useState(false)
-  const [filtroTipo, setFiltroTipo] = useState("todos")
-  const [nuevoServicio, setNuevoServicio] = useState({
-    id: "",
-    nombre: "",
-    descripcion: "",
-    beneficios: "",
-    duracion: "",
-    recomendaciones: "",
-    precio: "",
-    disponible: true,
-    categoria: "Higiene",
-    tipoAnimal: "ambos",
-    productos: "",
-    frecuencia: "",
-  })
-
+  // Vars 
   const categorias = ["Higiene", "Estética", "Salud", "Terapéutico", "Relajación", "Especial"]
+  const { admin } = useContext(AuthContext)
 
   const formatearPrecio = (precio) => {
     return new Intl.NumberFormat("es-CO", {
@@ -104,13 +108,6 @@ export function SpaMascotas() {
       maximumFractionDigits: 0,
     }).format(precio)
   }
-
-  const serviciosFiltrados = servicios.filter((servicio) => {
-    if (filtroTipo === "todos") return true
-    if (filtroTipo === "disponibles") return servicio.disponible
-    if (filtroTipo === "no-disponibles") return !servicio.disponible
-    return servicio.categoria === filtroTipo
-  })
 
   const abrirModalAgregar = () => {
     setNuevoServicio({
@@ -159,7 +156,15 @@ export function SpaMascotas() {
   }
 
   const eliminarServicio = (id) => {
-    if (window.confirm("¿Estás seguro de que deseas eliminar este servicio?")) {
+    setNotify({
+      title: 'Atencion',
+      message: '¿Estás seguro de que deseas eliminar esta vacuna?',
+      firstOption: () => {setNotify(null); return},
+      secondOption: () => {setNotify(null); DeleteService(id)},
+      firstOptionName: 'Cancelar',
+      secondOptionName: 'Continuar',
+    })
+    const DeleteService = async (id) => {
       setServicios(servicios.filter((s) => s.id !== id))
     }
   }
@@ -171,124 +176,39 @@ export function SpaMascotas() {
     )
   }
 
-  const obtenerColorCategoria = (categoria) => {
-    const colores = {
-      Higiene: "bg-blue-100 text-blue-700",
-      Estética: "bg-pink-100 text-pink-700",
-      Salud: "bg-green-100 text-green-700",
-      Terapéutico: "bg-purple-100 text-purple-700",
-      Relajación: "bg-indigo-100 text-indigo-700",
-      Especial: "bg-orange-100 text-orange-700",
-    }
-    return colores[categoria] || "bg-gray-100 text-gray-700"
-  }
-
   return (
-    <div className="contenedor-spa">
+    <main className="contenedor-spa">
       <NavBarAdmin/>
-      <div className="contenedor-principal-spa">
-        {/* Encabezado */}
-        <header className="encabezado-spa">
-          <div className="titulo-con-icono-spa">
-            <Bath className="icono-titulo-spa" />
-            <h1 className="titulo-spa">Servicios de Spa y Cuidado</h1>
-          </div>
-          <p className="descripcion-spa">Tratamientos de belleza y bienestar para tu mascota</p>
-        </header>
-
-        {/* Controles */}
-        <div className="controles-spa">
-          <h2 className="subtitulo-spa">Tratamientos Disponibles</h2>
-          <div className="acciones-control-spa">
-            <select value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)} className="filtro-spa">
-              <option value="todos">Todos los servicios</option>
-              <option value="disponibles">Disponibles</option>
-              <option value="no-disponibles">No disponibles</option>
-              <optgroup label="Por categoría">
-                {categorias.map((categoria) => (
-                  <option key={categoria} value={categoria}>
-                    {categoria}
-                  </option>
-                ))}
-              </optgroup>
-            </select>
-            <button onClick={abrirModalAgregar} className="boton-agregar-spa">
-              <Plus size={16} />
-              Agregar Servicio
-            </button>
-          </div>
-        </div>
-
-        {/* Grid de servicios */}
-        <div className="grid-spa">
-          {serviciosFiltrados.map((servicio) => (
-            <div
-              key={servicio.id}
-              className={`tarjeta-spa ${!servicio.disponible ? "no-disponible-spa" : ""}`}
-              onClick={() => abrirModalDetalle(servicio)}
-            >
-              <div className="encabezado-tarjeta-spa">
-                <div className="info-principal-spa">
-                  <h3 className="nombre-spa">{servicio.nombre}</h3>
-                  <div className="etiquetas-spa">
-                    <span className={`categoria-spa ${obtenerColorCategoria(servicio.categoria)}`}>
-                      {servicio.categoria}
-                    </span>
-                    <span
-                      className={`estado-spa ${servicio.disponible ? "disponible-spa" : "no-disponible-badge-spa"}`}
-                      onClick={(e) => cambiarEstado(servicio.id, e)}
-                    >
-                      {servicio.disponible ? "Disponible" : "No disponible"}
-                    </span>
-                  </div>
-                </div>
-                <div className="acciones-spa">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      eliminarServicio(servicio.id)
-                    }}
-                    className="boton-eliminar-spa"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      abrirModalEditar(servicio)
-                    }}
-                    className="boton-editar-spa"
-                  >
-                    <Edit size={16} />
-                  </button>
-                </div>
-              </div>
-
-              <p className="descripcion-tarjeta-spa">{servicio.descripcion}</p>
-
-              <div className="detalles-rapidos-spa">
-                <div className="detalle-rapido-spa">
-                  <Clock size={14} className="icono-detalle-spa" />
-                  <span className="texto-detalle-spa">{servicio.duracion}</span>
-                </div>
-                <div className="detalle-rapido-spa">
-                  <Timer size={14} className="icono-detalle-spa" />
-                  <span className="texto-detalle-spa">{servicio.frecuencia}</span>
-                </div>
-              </div>
-
-              <div className="footer-tarjeta-spa">
-                <span className="precio-spa">{formatearPrecio(servicio.precio)}</span>
-                <span className="id-spa">{servicio.id}</span>
-              </div>
-            </div>
-          ))}
-        </div>
+      <section className="tablero-admin">
+        {admin? (<HeaderAdmin URL={URL} />):(<HeaderUser />)}
+        <ServicesContainer 
+          TitleIcon={Bath}
+          title="Servicios de Spa y Cuidado"
+          titleDes='Tratamientos de belleza y bienestar para tu mascota'
+          subTitle="Tratamientos Disponibles"
+          Name="Tratamiento"
+          datas={servicios}
+          filters={categorias}
+          headers={{
+            nom: 'nombre',
+            des: 'descripcion',
+            cat: 'categoria',
+            sta: 'disponible',
+            pri: 'precio',
+            cod: 'id',
+          }}
+          SearchHeaders={['categoria']}
+          OpenCreate={abrirModalAgregar}
+          OpenDetails={abrirModalDetalle}
+          OpenEdit={abrirModalEditar}
+          Delete={eliminarServicio}
+          ChangeState={cambiarEstado}
+        />
 
         {/* Modal Agregar/Editar */}
         {mostrarFormulario && (
-          <div className="modal-fondo-spa">
-            <div className="modal-spa">
+          <aside className="modal-fondo-spa">
+            <section className="modal-spa">
               <div className="modal-encabezado-spa">
                 <h3 className="titulo-modal-spa">{modoEdicion ? "Editar Servicio" : "Agregar Nuevo Servicio"}</h3>
                 <button onClick={() => setMostrarFormulario(false)} className="cerrar-modal-spa">
@@ -457,14 +377,14 @@ export function SpaMascotas() {
                   </button>
                 </div>
               </div>
-            </div>
-          </div>
+            </section>
+          </aside>
         )}
 
         {/* Modal Detalle */}
         {mostrarDetalle && servicioDetalle && (
-          <div className="modal-fondo-spa">
-            <div className="modal-detalle-spa">
+          <aside className="modal-fondo-spa">
+            <section className="modal-detalle-spa">
               <div className="modal-encabezado-spa">
                 <h3 className="titulo-modal-spa">{servicioDetalle.nombre}</h3>
                 <button onClick={() => setMostrarDetalle(false)} className="cerrar-modal-spa">
@@ -554,11 +474,11 @@ export function SpaMascotas() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </section>
+          </aside>
         )}
-      </div>
-    </div>
+      </section>
+      {notify && <Notification {...notify} />}
+    </main>
   )
 }
-
