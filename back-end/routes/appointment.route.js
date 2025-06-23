@@ -22,6 +22,20 @@ Route.get('/general', ValidatorRol("administrador"), async (req,res) => {
 
         res.status(200).json(search)
     } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
+        if (err.status) return res.status(err.status).json({message: err.message})
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
+    }
+})
+
+Route.get('/consulting-rooms', ValidatorRol("veterinario"), async (req,res) => {
+    try {
+        const search = await appoin.findConsultingRooms()
+
+        if (!search.result) res.status(404).json({ message: "Consultorios no encontrados"})
+        res.status(200).json(search)
+    } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if (err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -41,6 +55,7 @@ Route.post('/by', ValidatorRol("veterinario"), async (req,res) => {
 
         res.status(200).json({...search.result})
     } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if (err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -57,6 +72,7 @@ Route.post('/register', ValidatorRol("veterinario"), async (req, res) => {
         res.status(500).json({ message: "No se pudo registrar la cita" })
 
     } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if (err.status) return res.status(err.status).json({ message: err.message })
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -72,6 +88,7 @@ Route.put('/modify', ValidatorRol("veterinario"), async (req, res) => {
 
         res.status(500).json({ message: "No se pudo modificar la cita" })
     } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if (err.status) return res.status(err.status).json({ message: err.message })
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -87,6 +104,7 @@ Route.put('/cancel', ValidatorRol("veterinario"), async (req, res) => {
 
         res.status(500).json({ message: "No se pudo cancelar la cita" })
     } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if (err.status) return res.status(err.status).json({ message: err.message })
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }

@@ -1,4 +1,4 @@
--- Active: 1750268475844@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchAllAppointments()
 BEGIN 
     SELECT 
@@ -103,7 +103,22 @@ BEGIN
     ORDER BY c.fec_reg_cit
     LIMIT 1000;
 END //
-
+CREATE PROCEDURE pets_heaven.SearchConsultingRooms()
+BEGIN
+    IF (
+        SELECT
+            c.nom_esp,
+            c.esp_esp,
+            c.des_esp,
+            c.sta_esp
+        FROM
+            consultorios c
+        ORDER BY
+            c.id_esp
+        LIMIT 1000
+    ) IS NULL THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Consultorios no encontrados';
+    END IF;
+END //
 CREATE PROCEDURE pets_heaven.RegistAppointment(
     IN p_reg_date DATE,
     IN p_date DATE,
@@ -222,4 +237,5 @@ END //
 
 /* DROP PROCEDURE SearchAppointmentsByUser; */
 /* DROP PROCEDURE RegistAppointment; */
+/* DROP PROCEDURE SearchConsultingRooms; */
 /* CALL `SearchAppointmentsByUser`('1298765432'); */

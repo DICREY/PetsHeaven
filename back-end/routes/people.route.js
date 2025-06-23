@@ -23,6 +23,7 @@ Route.get('/all', async (req,res) => {
 
         res.status(200).json(search)
     } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if(err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -41,6 +42,7 @@ Route.get('/all:by', async (req,res) => {
 
         res.status(200).json(search)
     } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if(err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -59,6 +61,7 @@ Route.get('/by:by', async (req,res) => {
 
         res.status(200).json(search)
     } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if(err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -66,12 +69,11 @@ Route.get('/by:by', async (req,res) => {
 
 // Call Middleware for verify the request data
 Route.use(ValidatorRol("administrador"))
-Route.use(Fullinfo(['cel2_per','esp_per','num_tar_per','fot_tar_vet']))
+Route.use(Fullinfo(['cel2_per','esp_vet','hor_vet','num_tar_vet','fot_tar_vet']))
 
 Route.post('/assign-rol', async (req,res) => {
     // Vars 
     const body = req.body
-    console.log(body)
     
     try {
         // Verifiy if exist
@@ -83,7 +85,7 @@ Route.post('/assign-rol', async (req,res) => {
 
         res.status(500).json({message: 'Error del servidor por favor intentelo mas tarde'})
     } catch(err) {
-        console.log(err)
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if(err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -103,6 +105,7 @@ Route.post('/register', async (req,res) => {
         res.status(201).json(create)
 
     } catch(err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if(err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -126,6 +129,7 @@ Route.put('/modify', async (req,res) => {
 
         if (modified.modified) return res.status(200).json(modified)
     } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if(err.status) return res.status(err.status).json({ message: err.message })
 
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
@@ -145,6 +149,7 @@ Route.put('/delete', async (req,res) => {
 
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde' })
     } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if(err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }

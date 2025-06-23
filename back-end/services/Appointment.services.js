@@ -62,6 +62,32 @@ class Appointment {
         }) 
     }
 
+    // Get all the ConsultingRooms
+    async findConsultingRooms() {
+        return new Promise((res,rej)=> {
+            const procedure = "CALL SearchConsultingRooms();"
+
+            // conect to database
+            this.database = new DataBase()
+            this.database.conect()
+        
+            if (this.database) this.database.conection.query(procedure, (err,result) =>{
+                if(err) rej({ message: err})
+                if(!result || !result[0][0]) rej({
+                    message: "Not found",
+                    status: 404
+                })
+                setTimeout(() =>{
+                    res({
+                        message: "Consulting rooms founds",
+                        result: result
+                    })
+                }, 1000)
+            })
+            this.database.conection.end()
+        }) 
+    }
+
     async registAppointment(data) {
         return new Promise((res, rej) => {
             const procedure = "CALL RegistAppointment(?,?,?,?,?,?,?,?,?)";

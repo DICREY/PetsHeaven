@@ -324,6 +324,10 @@ BEGIN
 
     START TRANSACTION;
 
+    IF (SELECT id_per FROM personas WHERE doc_per = p_by;) IS NULL THEN 
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta persona no esta registrada en el sistema';
+    END IF;
+
     UPDATE 
         personas p
     JOIN 

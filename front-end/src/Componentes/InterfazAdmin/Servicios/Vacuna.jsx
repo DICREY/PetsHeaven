@@ -238,7 +238,7 @@ export function VisualizadorVacunas({ URL = '' }) {
           load: 1
         })
 
-        await ModifyData(`${mainUrl}/deleteVac`, { id_vac: id })
+        await ModifyData(`${mainUrl}/delete/vac`, { id_vac: id })
 
         setNotify({
           title: 'Éxito',

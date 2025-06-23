@@ -22,6 +22,7 @@ Route.get('/all', ValidatorRol("usuario"), async (req,res) => {
         res.status(200).json(serv)
     } catch (err) {
         console.log(err)
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if(err.status) return res.status(err.status).json(err.message)
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -37,6 +38,7 @@ Route.get('/all/:by', ValidatorRol("usuario"), async (req,res) => {
 
         res.status(200).json(serv)
     } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if(err.status) return res.status(err.status).json(err.message)
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -49,6 +51,7 @@ Route.get('/vacs', ValidatorRol("usuario"), async (req,res) => {
         
         res.status(200).json(serv)
     } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if(err.status) return res.status(err.status).json(err.message)
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -61,6 +64,7 @@ Route.get('/cirs', ValidatorRol("usuario"), async (req,res) => {
 
         res.status(200).json(serv)
     } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if(err.status) return res.status(err.status).json(err.message)
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -69,7 +73,7 @@ Route.get('/cirs', ValidatorRol("usuario"), async (req,res) => {
 // Call Middleware for verify the request data
 Route.use(Fullinfo(['empty']))
 
-Route.put('/AblOrDis', ValidatorRol("administrador"), async (req, res) => {
+Route.put('/AblOrDis', ValidatorRol("veterinario"), async (req, res) => {
     // Vars 
     const { data } = req.body
     try {
@@ -82,6 +86,7 @@ Route.put('/AblOrDis', ValidatorRol("administrador"), async (req, res) => {
         res.status(500).json({ message: "No se pudo deshabilitar la cirugia" })
     } catch (err) {
         console.log(err)
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if (err.status) return res.status(err.status).json({ message: err.message })
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -90,11 +95,10 @@ Route.put('/AblOrDis', ValidatorRol("administrador"), async (req, res) => {
 Route.post('/register/cir', ValidatorRol("administrador"), async (req, res) => {
     const data = req.body
     try {
-        if (!data) return res.status(400).json({ message: "Petición no valida"})
-
         const result = await services.registerCirugia(data);
         res.status(201).json({ message: "Cirugía registrada correctamente", result });
     } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if (err.status) return res.status(err.status).json({ message: err.message });
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -102,18 +106,33 @@ Route.post('/register/cir', ValidatorRol("administrador"), async (req, res) => {
 
 
 Route.post('/register/vac', ValidatorRol("administrador"), async (req, res) => {
+    // Vars 
     const data = req.body
     
-    try {
-        if (!data) return res.status(400).json({ message: "Petición no valida"})
-            
-            const result = await services.registerVacuna(data);
-            res.status(201).json({ message: "Vacuna registrada correctamente", result });
-        } catch (err) {
-            if (err.status) return res.status(err.status).json({ message: err.message });
-            res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
-            console.log(err.message)
-        }
+    try {   
+        const result = await services.registerVacuna(data);
+        res.status(201).json({ message: "Vacuna registrada correctamente", result });
+    } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
+        if (err.status) return res.status(err.status).json({ message: err.message });
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
+        console.log(err.message)
+    }
+})
+
+Route.put('/delete/vac', ValidatorRol("administrador"), async (req, res) => {
+    // Vars 
+    const data = req.body
+
+    try {            
+        const result = await services.AbleOrDesableService(data.state);
+        res.status(201).json({ message: "Vacuna Desactivada correctamente", result });
+    } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
+        if (err.status) return res.status(err.status).json({ message: err.message });
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
+        console.log(err.message)
+    }
 })
 
 

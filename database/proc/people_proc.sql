@@ -1,4 +1,4 @@
--- Active: 1750268475844@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.RegistPeoples(
     IN p_nom_per VARCHAR(100),
     IN p_ape_per VARCHAR(100),
@@ -27,6 +27,15 @@ BEGIN
 
     START TRANSACTION;
 
+    IF (SELECT id_per FROM personas WHERE doc_per = p_doc_per;) THEN 
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este numero de documento ya esta registrado en el sistema';
+    END IF;
+
+    
+    IF (SELECT id_per FROM personas WHERE email_per = p_email_per;) THEN 
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este correo electrónico ya esta registrado en el sistema';
+    END IF;
+
     INSERT INTO personas (
         nom_per,ape_per,fec_nac_per,tip_doc_per,doc_per,dir_per,cel_per,cel2_per,email_per,cont_per,gen_per,fot_per
     )
@@ -39,7 +48,7 @@ BEGIN
     SELECT id_rol INTO p_id_rol FROM roles WHERE nom_rol = 'Usuario';
 
     INSERT INTO otorgar_roles(id_per,id_rol,fec_oto)
-    VALUES (p_id_persona,p_id_rol,NOW());
+    VALUES (p_id_persona,p_id_rol,CURRENT_DATE());
 
     COMMIT;
     SET autocommit = 1;
@@ -64,16 +73,30 @@ BEGIN
     START TRANSACTION;
 
     SELECT id_per INTO p_id_per FROM personas WHERE doc_per = p_doc;
+    IF p_id_per IS NULL THEN 
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se encontro a esta persona';
+    END IF;
 
-    SELECT id_rol INTO p_id_rol FROM roles WHERE nom_rol LIKE CONCAT('%',"Administrador",'%');
+    SELECT id_rol INTO p_id_rol FROM roles WHERE nom_rol LIKE 'Administrador';
 
-    SELECT id_rol INTO p_id_rol_sec FROM roles WHERE nom_rol LIKE CONCAT('%',"Veterinario",'%');
+    SELECT id_rol INTO p_id_rol_sec FROM roles WHERE nom_rol LIKE 'Veterinario';
 
-    INSERT INTO otorgar_roles(id_per,id_rol,fec_oto)
-    VALUES (p_id_per,p_id_rol,NOW());
+    IF EXISTS (SELECT 1 FROM otorgar_roles WHERE id_per = p_id_per AND id_rol = p_id_rol)
+        THEN SIGNAL SQLSTATE '45000' 
+            SET MESSAGE_TEXT = 'Esta persona ya tiene este Rol';
+    END IF;
 
-    INSERT INTO otorgar_roles(id_per,id_rol,fec_oto)
-    VALUES (p_id_per,p_id_rol,NOW());
+    -- Asignar rol Administrador si no lo tiene
+    IF NOT EXISTS (SELECT 1 FROM otorgar_roles WHERE id_per = p_id_per AND id_rol = p_id_rol) THEN
+        INSERT INTO otorgar_roles(id_per, id_rol, fec_oto)
+        VALUES (p_id_per, p_id_rol, CURRENT_DATE());
+    END IF;
+
+    -- Asignar rol Veterinario si no lo tiene
+    IF NOT EXISTS (SELECT 1 FROM otorgar_roles WHERE id_per = p_id_per AND id_rol = p_id_rol_sec) THEN
+        INSERT INTO otorgar_roles(id_per, id_rol, fec_oto)
+        VALUES (p_id_per, p_id_rol_sec, CURRENT_DATE());
+    END IF;
 
     COMMIT;
 
@@ -101,11 +124,19 @@ BEGIN
     START TRANSACTION;
 
     SELECT id_per INTO p_id_per FROM personas WHERE doc_per = p_doc;
+    IF p_id_per IS NULL THEN 
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se encontro a esta persona';
+    END IF;
 
-    SELECT id_rol INTO p_id_rol FROM roles WHERE nom_rol LIKE CONCAT('%',"Veterinario",'%');
+    SELECT id_rol INTO p_id_rol FROM roles WHERE nom_rol LIKE 'Veterinario';
 
-    INSERT INTO otorgar_roles(id_per,id_rol,fec_oto)
-    VALUES (p_id_per,p_id_rol,NOW());
+    -- Asignar rol Veterinario si no lo tiene
+    IF EXISTS (SELECT 1 FROM otorgar_roles WHERE id_per = p_id_per AND id_rol = p_id_rol) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta persona ya tiene este Rol';
+    ELSE 
+        INSERT INTO otorgar_roles(id_per, id_rol, fec_oto)
+        VALUES (p_id_per, p_id_rol, CURRENT_DATE());
+    END IF;
 
     INSERT INTO veterinarios (id_vet,especialidad,horarios,num_tar_vet,fot_tar_vet)
     VALUES (p_id_per,p_esp,p_hor,p_num_tar,p_fot_tar);
@@ -138,6 +169,10 @@ BEGIN
     SET autocommit = 0;
 
     START TRANSACTION;
+
+    IF (SELECT id_per FROM personas WHERE doc_per = p_doc_per;) IS NULL THEN 
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta persona no esta registrada en el sistema';
+    END IF;
 
     UPDATE 
         personas p
@@ -250,6 +285,10 @@ BEGIN
     SET autocommit = 0;
 
     START TRANSACTION;
+
+    IF (SELECT id_per FROM personas WHERE doc_per = p_by;) IS NULL THEN 
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta persona no esta registrada en el sistema';
+    END IF;
 
     UPDATE
         personas p

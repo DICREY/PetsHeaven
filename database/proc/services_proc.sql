@@ -1,4 +1,4 @@
--- Active: 1750268475844@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchServices()
 BEGIN
     SELECT
@@ -144,6 +144,16 @@ CREATE PROCEDURE pets_heaven.RegisterService(
     IN p_tec_des_ser TEXT
 )
 BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    SET autocommit = 0;
+
+    START TRANSACTION;
+
     INSERT INTO servicios (
         cat_ser,
         nom_ser,
@@ -159,6 +169,10 @@ BEGIN
         p_sta_ser,
         p_tec_des_ser
     );
+
+    COMMIT;
+
+    SET autocommit = 1;
 END //
 
 
@@ -175,6 +189,16 @@ CREATE PROCEDURE pets_heaven.RegisterCirugia(
     IN p_obv_cir TEXT
 )
 BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    SET autocommit = 0;
+
+    START TRANSACTION;
+
     INSERT INTO servicios (
         cat_ser,
         nom_ser,
@@ -206,6 +230,10 @@ BEGIN
         p_obv_cir,
         @last_id_ser
     );
+
+    COMMIT;
+
+    SET autocommit = 1;
 END //
 
 
@@ -223,6 +251,20 @@ CREATE PROCEDURE pets_heaven.RegisterVacuna(
     IN p_sta_ser ENUM('DISPONIBLE','NO-DISPONIBLE') 
 )
 BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    SET autocommit = 0;
+
+    START TRANSACTION;
+
+    IF (SELECT id_vac FROM vacunas WHERE lot_vac LIKE p_num_lot)
+        THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este lote de vacuna ya existe';
+    END IF;
+
     INSERT INTO servicios (
         cat_ser,
         nom_ser,
@@ -260,6 +302,10 @@ BEGIN
         p_fre_vac,
         @last_id_ser
     );
+
+    COMMIT;
+
+    SET autocommit = 1;
 END //
 
 
@@ -341,56 +387,61 @@ CREATE PROCEDURE pets_heaven.SearchService(
     IN p_id_ser VARCHAR(100)
 )
 BEGIN
-    SELECT
-        s.id_ser,
-        s.nom_ser,
-        s.pre_ser,
-        s.des_ser,
-        s.tec_des_ser,
-        s.sta_ser,
-        c.nom_cat,
-        c.img_cat,
-        (
-            SELECT 
-                GROUP_CONCAT(
-                    CONCAT_WS('---',
-                        ci.res_cir,
-                        ci.com_cir,
-                        ci.obv_cir
-                    ) 
-                    SEPARATOR '; '
-                )
-            FROM 
-                cirugias ci
-            WHERE 
-                ci.ser_cir = s.id_ser
-        ) AS cirugias,
-        (
-            SELECT
-                GROUP_CONCAT(
-                    CONCAT_WS('---',
-                        v.nom_vac,
-                        v.efe_sec_vac,
-                        v.cat_vac,
-                        v.dos_rec_vac,
-                        v.lot_vac,
-                        v.fre_vac,
-                        v.fec_ven_vac
-                    ) 
-                    SEPARATOR '; '
-                )
-            FROM 
-                vacunas v
-            WHERE 
-                v.ser_vac = s.id_ser
-        ) AS vacunas
-    FROM 
-        servicios s
-    JOIN 
-        categorias_ser c ON c.id_cat = s.cat_ser 
-    WHERE
-        s.id_ser LIKE p_id_ser
-    ORDER BY 
-        s.nom_ser
-    LIMIT 1000;
+    IF (
+        SELECT
+            s.id_ser,
+            s.nom_ser,
+            s.pre_ser,
+            s.des_ser,
+            s.tec_des_ser,
+            s.sta_ser,
+            c.nom_cat,
+            c.img_cat,
+            (
+                SELECT 
+                    GROUP_CONCAT(
+                        CONCAT_WS('---',
+                            ci.res_cir,
+                            ci.com_cir,
+                            ci.obv_cir
+                        ) 
+                        SEPARATOR '; '
+                    )
+                FROM 
+                    cirugias ci
+                WHERE 
+                    ci.ser_cir = s.id_ser
+            ) AS cirugias,
+            (
+                SELECT
+                    GROUP_CONCAT(
+                        CONCAT_WS('---',
+                            v.nom_vac,
+                            v.efe_sec_vac,
+                            v.cat_vac,
+                            v.dos_rec_vac,
+                            v.lot_vac,
+                            v.fre_vac,
+                            v.fec_ven_vac
+                        ) 
+                        SEPARATOR '; '
+                    )
+                FROM 
+                    vacunas v
+                WHERE 
+                    v.ser_vac = s.id_ser
+            ) AS vacunas
+        FROM 
+            servicios s
+        JOIN 
+            categorias_ser c ON c.id_cat = s.cat_ser 
+        WHERE
+            s.id_ser LIKE p_id_ser
+        ORDER BY 
+            s.nom_ser
+        LIMIT 1000
+    ) IS NULL THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se encontro el servicio';
+    END IF;
 END //
+
+DROP PROCEDURE `SearchService`;

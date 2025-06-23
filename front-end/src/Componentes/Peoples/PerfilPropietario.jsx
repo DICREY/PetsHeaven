@@ -275,7 +275,6 @@ export const PerfilPropietario = ({
     // Vars
     if (!userSelect) navigate('/consultorio')
     setUserData(userSelect)
-    setFormData(userSelect)
 
     admin? setIsAdmin(true) : setIsAdmin(false)
   }, [])
@@ -333,7 +332,7 @@ export const PerfilPropietario = ({
                   <button
                     className='EditBtn'
                     type='submit'
-                    onClick={handleSubmit(AssigRol)}
+                    onClick={handleSubmit(verifyPerm)}
                   >
                     Assignar
                   </button>

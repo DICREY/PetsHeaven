@@ -1,4 +1,4 @@
--- Active: 1750268475844@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.RegistPets(
     IN p_nom_mas VARCHAR(100),
     IN p_esp_mas VARCHAR(100),
@@ -14,7 +14,8 @@ CREATE PROCEDURE pets_heaven.RegistPets(
 )
 BEGIN
     DECLARE p_id_pro_mas INT;
-        DECLARE EXIT HANDLER FOR SQLEXCEPTION
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
      BEGIN
         ROLLBACK;
         RESIGNAL;
@@ -30,6 +31,10 @@ BEGIN
     WHERE 
         p.doc_per = p_persona
         OR p.email_per = p_persona;
+
+    IF (p_id_pro_mas) IS NULL THEN 
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta persona no esta registrada en el sistema';
+    END IF;
 
     INSERT INTO pets_heaven.mascotas (nom_mas,esp_mas,col_mas,raz_mas,ali_mas,fec_nac_mas,pes_mas,gen_mas,id_pro_mas,est_rep_mas,fot_mas)
     VALUES(p_nom_mas,p_esp_mas,p_col_mas,p_raz_mas,p_ali_mas,p_fec_nac_mas,p_pes_mas,p_gen_mas,p_id_pro_mas,p_est_rep_mas,p_fot_mas);
@@ -61,6 +66,14 @@ BEGIN
     SET autocommit = 0;
 
     START TRANSACTION;
+
+    IF (SELECT id_per FROM personas WHERE doc_per = p_persona;) IS NULL THEN 
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta persona no esta registrada en el sistema';
+    END IF;
+
+    IF (SELECT id_mas FROM mascotas WHERE nom_mas = p_nom_mas;) IS NULL THEN 
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta mascota no esta registrada en el sistema';
+    END IF;
 
     UPDATE
         mascotas m, personas p
@@ -234,6 +247,24 @@ CREATE PROCEDURE pets_heaven.DeletePetBy(
     IN p_second_by VARCHAR(100)
 )
 BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    SET autocommit = 0;
+
+    START TRANSACTION;
+
+    IF (SELECT id_per FROM personas WHERE doc_per = p_persona;) IS NULL THEN 
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta persona no esta registrada en el sistema';
+    END IF;
+
+    IF (SELECT id_mas FROM mascotas WHERE nom_mas = p_nom_mas;) IS NULL THEN 
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta mascota no esta registrada en el sistema';
+    END IF;
+
     UPDATE 
         mascotas m, personas p
     SET 
@@ -246,6 +277,10 @@ BEGIN
             p.email_per = p_first_by
             OR p.doc_per = p_first_by
         );
+
+    COMMIT;
+
+    SET autocommit = 1;
 END //
 
 /* Historys */

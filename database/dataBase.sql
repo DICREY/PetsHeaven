@@ -1,4 +1,4 @@
--- Active: 1750268475844@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 DROP DATABASE IF EXISTS pets_heaven;
 CREATE DATABASE IF NOT EXISTS pets_heaven;
 CREATE TABLE pets_heaven.roles(
@@ -108,7 +108,8 @@ CREATE TABLE pets_heaven.vacunas (
     ser_vac INT NOT NULL,INDEX(ser_vac), FOREIGN KEY(ser_vac) REFERENCES servicios(id_ser) ON DELETE CASCADE ON UPDATE CASCADE -- ID del servicio asociado
 );
 CREATE TABLE pets_heaven.consultorios(
-    nom_esp VARCHAR (100) NOT NULL PRIMARY KEY, -- Nombre del consultorio (Ej. con 101)
+    id_esp INT AUTO_INCREMENT PRIMARY KEY, -- ID del consultorio
+    nom_esp VARCHAR (100) NOT NULL,INDEX(nom_esp) -- Nombre del consultorio (Ej. con 101)
     sta_esp BOOLEAN NOT NULL, -- Estado del consultorio
     esp_esp VARCHAR (255) NOT NULL, -- Especialidad del consultorio
     des_esp TEXT NOT NULL -- Descripcion del consultorio (Ej. Sala urgencias)

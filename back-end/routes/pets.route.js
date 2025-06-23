@@ -21,6 +21,7 @@ Route.get('/all', ValidatorRol("veterinario"), async (req,res) => {
 
         res.status(200).json(pets)
     } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if(err.status) return res.status(err.status).json(err.message)
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -39,6 +40,7 @@ Route.get('/all:by',async (req,res) => {
 
         res.status(200).json(pets)
     } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if(err.status) return res.status(err.status).json(err.message)
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -62,6 +64,7 @@ Route.post('/register', ValidatorRol("veterinario"), async (req,res) => {
 
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde' })
     } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if(err.status) return res.status(err.status).json(err.message)
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -81,6 +84,7 @@ Route.put('/modify', async (req,res) => {
 
         return res.status(500).json({message: 'Error del servidor por favor intentelo mas tarde'})
     } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if(err.status) return res.status(err.status).json(err.message)
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -100,6 +104,7 @@ Route.post('/history', ValidatorRol("veterinario") ,async (req,res) => {
 
         return res.status(404).json({message: "Historial no encontrado"})
     } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if(err.status) return res.status(err.status).json(err.message)
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -120,6 +125,7 @@ Route.put('/delete', ValidatorRol("administrador") ,async (req,res) => {
         res.status(500).json({message: 'Error del servidor por favor intentelo mas tarde'})
         
     } catch (err) {
+        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if(err.status) return res.status(err.status).json(err.message)
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
