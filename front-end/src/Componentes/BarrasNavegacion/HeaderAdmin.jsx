@@ -76,7 +76,7 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
     try {
       const data = await PostData(mainUrl,{ by: user.doc })
       setNotify(null)
-      if (data) setAppointment(data[0])
+      if (data?.result) setAppointment(data.result)
     } catch (err) {
       setNotify(null)
       const message = errorStatusHandler(err)

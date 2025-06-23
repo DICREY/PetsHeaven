@@ -65,17 +65,17 @@ export function VisualizadorVacunas({ URL = '' }) {
       const response = await GetData(`${mainUrl}/vacs`)
       setNotify(null)
 
-      if (response && Array.isArray(response)) {
+      if (response[0] && Array.isArray(response[0])) {
         // Mapeamos los datos del backend al formato que espera el frontend
-        const vacunasMapeadas = response.map(vacuna => ({
+        const vacunasMapeadas = response[0].map(vacuna => ({
           id: vacuna.id_vac,
           id_ser: vacuna.id_ser,
           nombre: vacuna.nom_vac,
           descripcion: vacuna.des_ser,
-          descripcionTecnica: vacuna.tec_des_ser,
+          descripcionTecnica: vacuna.des_pro,
           precio: vacuna.pre_ser,
           frecuencia: vacuna.fre_vac,
-          tipoAnimal: "perro", // Asumimos perro por defecto (ajustar según tu BD)
+          tipoAnimal: vacuna.req,
           disponible: vacuna.sta_ser,
           categoria: vacuna.cat_vac,
           efectosSecundarios: vacuna.efe_sec_vac,

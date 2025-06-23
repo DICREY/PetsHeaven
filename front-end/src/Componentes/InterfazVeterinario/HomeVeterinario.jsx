@@ -85,7 +85,7 @@ export const PanelVeterinario = ({ URL , imgDefault = '', setPetSelect }) => {
     try {
       const data = await PostData(`${URL}/appointment/by`,{ by: user.doc })
       setNotify(null)
-      if (data[0]) setAppoint(data[0])
+      if (data.result) setAppoint(data.result)
     } catch (err) {
       setNotify(null)
       if (err) {

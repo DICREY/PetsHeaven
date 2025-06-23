@@ -213,30 +213,35 @@ INSERT INTO pets_heaven.citas (
 -- Enero 2025
 ('2025-01-10', '09:00:00', '10:00:00', 'Chequeo anual rutinario', 'PENDIENTE', 1, 1, 1, 1),
 ('2025-01-10', '11:00:00', '12:30:00', 'Vacunación antirrábica', 'CONFIRMADA', 1, 5, 2, 2),
-('2025-01-15', '14:00:00', '15:00:00', 'Problemas dermatológicos', 'PENDIENTE', 1, 2, 3, 3),
+('2025-01-15', '14:00:00', '15:00:00', 'Problemas dermatológicos', 'PENDIENTE', 1, 2, 6, 3),
 -- Febrero 2025
 ('2025-02-05', '10:30:00', '12:00:00', 'Castración canina', 'CONFIRMADA', 2, 6, 2, 4),
 ('2025-02-12', '16:00:00', '17:00:00', 'Consulta cardiología', 'PENDIENTE', 1, 3, 1, 5),
-('2025-02-20', '09:30:00', '10:00:00', 'Refuerzo vacunal', 'CONFIRMADA', 1, 4, 3, 1),
+('2025-02-20', '09:30:00', '10:00:00', 'Refuerzo vacunal', 'CONFIRMADA', 1, 4, 6, 1),
 -- Marzo 2025
-('2025-03-03', '13:00:00', '14:30:00', 'Cirugía de tumor mamario', 'CONFIRMADA', 2, 7, 2, 2),
+('2025-03-03', '13:00:00', '14:30:00', 'Cirugía de tumor mamario', 'CONFIRMADA', 2, 7, 7, 2),
 ('2025-03-08', '15:00:00', '16:00:00', 'Baño medicado', 'PENDIENTE', 5, 9, 3, 3),
 ('2025-03-18', '08:00:00', '09:00:00', 'Análisis de sangre completo', 'CONFIRMADA', 3, 8, 1, 4),
 -- Abril 2025
 ('2025-04-02', '11:00:00', '12:00:00', 'Control postoperatorio', 'PENDIENTE', 1, 1, 2, 5),
 ('2025-04-15', '17:00:00', '18:00:00', 'Emergencia - Vómitos persistentes', 'CONFIRMADA', 4, 12, 1, 1),
-('2025-04-22', '10:00:00', '11:30:00', 'Corte de pelo según raza', 'PENDIENTE', 5, 10, 3, 2),
+('2025-04-22', '10:00:00', '11:30:00', 'Corte de pelo según raza', 'PENDIENTE', 5, 10, 7, 2),
 -- Mayo 2025
-('2025-05-05', '14:30:00', '15:30:00', 'Consulta geriátrica', 'CONFIRMADA', 1, 1, 1, 3),
+('2025-05-05', '14:30:00', '15:30:00', 'Consulta geriátrica', 'CONFIRMADA', 1, 1, 7, 3),
 ('2025-05-12', '09:00:00', '10:30:00', 'Extracción de cuerpo extraño', 'PENDIENTE', 2, 7, 2, 4),
-('2025-05-19', '16:00:00', '17:00:00', 'Vacunación polivalente', 'CONFIRMADA', 1, 4, 3, 5),
+('2025-05-19', '16:00:00', '17:00:00', 'Vacunación polivalente', 'CONFIRMADA', 1, 4, 7, 5),
 -- Junio 2025
 ('2025-06-07', '13:30:00', '15:00:00', 'Limpieza dental profesional', 'PENDIENTE', 2, 6, 2, 1),
 ('2025-06-14', '10:00:00', '11:00:00', 'Control de peso', 'CONFIRMADA', 1, 1, 1, 2),
 ('2025-06-21', '15:30:00', '16:30:00', 'Examen coprológico', 'PENDIENTE', 3, 9, 3, 3),
 -- Julio 2025
 ('2025-07-03', '08:30:00', '10:00:00', 'Revisión post-trauma', 'CONFIRMADA', 1, 1, 2, 4),
-('2025-07-17', '11:30:00', '12:30:00', 'Test genético', 'PENDIENTE', 3, 8, 1, 5);
+('2025-07-17', '11:30:00', '12:30:00', 'Test genético', 'PENDIENTE', 3, 8, 1, 5),
+-- Now
+(CURRENT_DATE, '08:30:00', '10:00:00', 'Revisión post-trauma', 'CONFIRMADA', 1, 1, 6, 4),
+(CURRENT_DATE, '11:30:00', '12:30:00', 'Test genético', 'PENDIENTE', 3, 8, 6, 5),
+(CURRENT_DATE, '08:30:00', '10:00:00', 'Revisión post-trauma', 'CONFIRMADA', 1, 1, 6, 4),
+(CURRENT_DATE, '11:30:00', '12:30:00', 'Test genético', 'PENDIENTE', 3, 8, 6, 5);
 
 INSERT INTO pets_heaven.vacunas (
     nom_vac, efe_sec_vac, cat_vac, dos_rec_vac, lot_vac, fec_ven_vac, fre_vac, pro_vac

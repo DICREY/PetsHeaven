@@ -165,11 +165,10 @@ BEGIN
         p.cont_per,
         p.gen_per,
         p.fec_cre_per,
-        p.fot_per,
+        p.fot_per AS fot_vet,
         v.especialidad AS esp_vet,
         v.num_tar_vet,
         v.fot_tar_vet,
-        v.fot_vet,
         v.horarios,
         (
             SELECT GROUP_CONCAT(
@@ -229,5 +228,5 @@ BEGIN
     LIMIT 1000;
 END //
 
-/* CALL pets_heaven.SearchPeoplesVet(); */
+/* CALL pets_heaven.SearchPeoplesVet();  */
 /* DROP PROCEDURE pets_heaven.SearchPeoplesVet; */

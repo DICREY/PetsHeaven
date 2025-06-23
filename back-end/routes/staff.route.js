@@ -42,6 +42,7 @@ Route.get('/all/vet', async (req,res) => {
 
         res.status(500).json({message: 'Error del servidor por favor intentelo mas tarde'})
     } catch (err) {
+        console.log(err)
         if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if(err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })

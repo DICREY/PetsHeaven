@@ -29,7 +29,7 @@ export async function GetData(URL = '') {
 
         if (response.statusText !== 'OK') throw response
 
-        return response.data.result[0]
+        return response.data.result
     } catch (error) {
         throw error
     }

@@ -1,5 +1,6 @@
 // Imports
 const DataBase = require('./DataBase')
+const Global = require('./Global.services')
 
 // Main class 
 class Services {
@@ -7,6 +8,7 @@ class Services {
     constructor(...args) {
         this.database = new DataBase()
         this.args = args
+        this.global = new Global()
     }
 
     // function to find all
@@ -126,7 +128,7 @@ class Services {
     async findCirugies() {
         return new Promise((res,rej) => {
             // vars
-            const proc = "CALL SearchCirugias()"
+            const proc = "CALL SearchServicesBy('Cirugia')"
 
             // conect to database
             this.database = new DataBase()
@@ -138,10 +140,15 @@ class Services {
                     message: "Not found",
                     status: 404
                 })
+                const resOne = this.global.format(
+                    result[0],
+                    'proc_ser',
+                    ['nom_pro','des_pro','cat_pro','niv_rie_pro','dur_min_pro','pro_pro','con_esp_pro']
+                )
                 setTimeout(() => {
                     res({
-                        message: "Pets found",
-                        result: result
+                        message: "Cirugies found",
+                        result: resOne
                     })
                 },1000)
             })
@@ -229,7 +236,7 @@ class Services {
 
             if (this.database) this.database.conection.query(proc,(err,result) => {
                 if(err) rej({ message: err })
-                if(!result || !result[0][0]) rej({
+                if(!result || !result[0]) rej({
                     message: "Not found",
                     status: 404
                 })
@@ -251,7 +258,7 @@ class Services {
             // vars
             const params = [
                 data.id_ser,
-                data.or
+                data.nom_cat
             ]
 
             const proc = "CALL AbleOrDesableService(?,?);"

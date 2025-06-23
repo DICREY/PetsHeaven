@@ -20,7 +20,7 @@ class Appointment {
         
             if (this.database) this.database.conection.query(procedure, (err,result) =>{
                 if(err) rej({ message: err})
-                if(!result || !result[0][0]) rej({
+                if(!result || !result[0][0]) rej({    
                     message: "Not found",
                     status: 404
                 })
@@ -47,6 +47,7 @@ class Appointment {
         
             if (this.database) this.database.conection.query(procedure, by, (err,result) =>{
                 if(err) rej({ message: err})
+                // console.log(result['0'])
                 if(!result || !result[0][0]) rej({
                     message: "Not found",
                     status: 404
@@ -54,7 +55,7 @@ class Appointment {
                 setTimeout(() =>{
                     res({
                         message: "Appointments found",
-                        result: result
+                        result: result[0]
                     })
                 }, 1000)
             })
@@ -90,17 +91,16 @@ class Appointment {
 
     async registAppointment(data) {
         return new Promise((res, rej) => {
-            const procedure = "CALL RegistAppointment(?,?,?,?,?,?,?,?,?)";
+            const procedure = "CALL RegistAppointment(?,?,?,?,?,?,?,?)";
             const params = [
-                data.fec_reg_cit,   
-                data.fec_cit,       
-                data.hor_ini_cit,   
-                data.hor_fin_cit,   
-                data.lug_ate_cit,   
-                data.ser_cit,       
-                data.vet_cit,       
-                data.mas_cit,       
-                data.estado         
+                data.fec_cit,
+                data.hor_ini_cit,
+                data.hor_fin_cit,
+                data.lug_ate_cit,
+                data.mot_cit,
+                data.ser_cit,
+                data.vet_cit,
+                data.mas_cit,
             ];
 
             this.database = new DataBase();

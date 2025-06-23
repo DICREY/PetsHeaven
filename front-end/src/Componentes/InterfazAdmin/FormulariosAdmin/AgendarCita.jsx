@@ -11,14 +11,6 @@ import { errorStatusHandler, formatDate, searchFilter } from "../../Varios/Util"
 // Import styles 
 import "../../../styles/InterfazAdmin/FormuariosAdmin/AgendarCita.css"
 
-const consultorios = [
-  { id: 1, nombre: "Consultorio 101" },
-  { id: 2, nombre: "Consultorio 102" },
-  { id: 3, nombre: "Consultorio 201" },
-  { id: 4, nombre: "Consultorio 202" },
-  { id: 5, nombre: "Consultorio 301" },
-]
-
 // Component 
 export default function AppointmentForm({ onClose, date, URL = '', sended}) {
   const [lugar, setLugar] = useState("")
@@ -30,6 +22,7 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
   const [ pacientes, setPacientes ] = useState([])
   const [ almcAppoint, setAlmcAppoint ] = useState([])
   const [ almcVet, setAlmcVet ] = useState([])
+  const [ almcConsultingRooms, setAlmcConsultingRooms ] = useState([])
   const [newEvent, setNewEvent] = useState({
     nom_mas: "",
     propietario: "",
@@ -148,10 +141,10 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
       hor_ini_cit: newEvent.start.split('T')[1],
       hor_fin_cit: newEvent.end.split('T')[1],
       lug_ate_cit: lugar,
+      mot_cit: newEvent.description,
       ser_cit: newEvent.category,
       vet_cit: newEvent.veterinario,
-      mas_cit: newEvent.nom_mas,
-      estado: 'PENDIENTE'
+      mas_cit: newEvent.nom_mas
     }
     try {
         const data = await PostData(`${mainUrl}/register`, citaData)
@@ -243,10 +236,32 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
     }
   }
 
+  const GetConsultingRooms = async () => {
+    try {
+      const data = await GetData(`${mainUrl}/consulting-rooms`)
+      setNotify(null)
+      if (data) {
+        setAlmcConsultingRooms(data)
+      }
+    } catch (err) {
+      setNotify(null)
+      const message = errorStatusHandler(err)
+      setNotify({
+          title: 'Error',
+          message: message,
+          close: setNotify
+      })
+      if (err.status === 403) setTimeout(() => {
+          Logout()
+      }, 2000)
+    }
+  }
+
   useEffect(() => {
     fetchpacientes()
     GetVet()
     GetAppointmentCat()
+    GetConsultingRooms()
   },[])
 
   return (
@@ -405,9 +420,9 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
                       <option value="" disabled>
                         Seleccionar consultorio
                       </option>
-                      {consultorios.map((consultorio) => (
-                        <option key={consultorio.id} value={consultorio.nombre}>
-                          {consultorio.nombre}
+                      {almcConsultingRooms.map((consultorio) => (
+                        <option key={consultorio.id_con} value={consultorio.cod_con}>
+                          {consultorio.nom_con} ({consultorio.cod_con})
                         </option>
                       ))}
                     </select>
@@ -447,7 +462,7 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
                       <input
                         type="time"
                         name="start"
-                        value={newEvent.start.split("T")[1].substring(0, 5)}
+                        value={newEvent.start?.split("T")[1]?.substring(0, 5)}
                         onChange={handleInputChange}
                         className="hora-input"
                       />
@@ -464,7 +479,7 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
                       <input
                         type="time"
                         name="end"
-                        value={newEvent.end.split("T")[1].substring(0, 5)}
+                        value={newEvent.end?.split("T")[1]?.substring(0, 5)}
                         onChange={handleInputChange}
                         className="hora-input"
                       />

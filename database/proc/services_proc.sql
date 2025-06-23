@@ -27,7 +27,7 @@ BEGIN
         (
             SELECT 
                 GROUP_CONCAT(
-                    CONCAT_WS('---',
+                    CONCAT_WS(';',
                         p.nom_pro, -- Nombre del procedimiento
                         p.des_pro, -- Descripción del procedimiento
                         p.cat_pro, -- Categoría del procedimiento
@@ -36,14 +36,14 @@ BEGIN
                         p.pro_pro, -- Protocolo
                         p.con_esp_pro -- Consideraciones especiales
                     ) 
-                    SEPARATOR '; '
+                    SEPARATOR '---'
                 )
             FROM 
                 servicios_procedimientos sp
             JOIN procedimientos p ON p.id_pro = sp.id_pro
             WHERE
                 sp.id_ser = s.id_ser
-        ) AS procedimientos
+        ) AS proc_ser
     FROM 
         servicios s
     JOIN tipos_servicios ts ON ts.id_tip_ser = s.tip_ser
@@ -63,6 +63,7 @@ BEGIN
         s.nom_ser, -- Nombre del servicio
         s.pre_ser, -- Precio base del servicio
         s.des_ser, -- Descripción del servicio
+        s.pre_act_ser, -- Precio actual del servicio
         s.sta_ser, -- Estado del servicio
         ts.nom_tip_ser, -- Nombre del tipo de servicio
         ts.des_tip_ser, -- descripción del tipo de servicio
@@ -73,7 +74,7 @@ BEGIN
         (
             SELECT 
                 GROUP_CONCAT(
-                    CONCAT_WS('---',
+                    CONCAT_WS(';',
                         p.nom_pro, -- Nombre del procedimiento
                         p.des_pro, -- Descripción del procedimiento
                         p.cat_pro, -- Categoría del procedimiento
@@ -82,14 +83,14 @@ BEGIN
                         p.pro_pro, -- Protocolo
                         p.con_esp_pro -- Consideraciones especiales
                     ) 
-                    SEPARATOR '; '
+                    SEPARATOR '---'
                 )
             FROM 
                 servicios_procedimientos sp
             JOIN procedimientos p ON p.id_pro = sp.id_pro
             WHERE
                 sp.id_ser = s.id_ser
-        ) AS procedimientos
+        ) AS proc_ser
     FROM 
         servicios s
     JOIN tipos_servicios ts ON ts.id_tip_ser = s.tip_ser
@@ -273,9 +274,12 @@ BEGIN
 END //
 CREATE PROCEDURE pets_heaven.AbleOrDesableService(
     IN p_id_ser INT,
-    IN p_or BOOLEAN
+    IN p_nom_cat VARCHAR(100)
 )
 BEGIN
+    DECLARE p_id_tip_ser INT;
+    DECLARE p_id_cat_ser INT;
+    DECLARE p_sta_ser ENUM('DISPONIBLE','NO_DISPONIBLE','TEMPORAL');
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
@@ -283,15 +287,38 @@ BEGIN
     END;
 
     SET autocommit = 0;
-
     START TRANSACTION;
 
-    UPDATE pets_heaven.servicios
-    SET sta_ser = CASE
-        WHEN p_or THEN 'NO_DISPONIBLE'
-        ELSE 'DISPONIBLE'
-        END
-    WHERE id_ser = p_id_ser;
+    -- Verifica que el servicio exista
+    IF NOT EXISTS (SELECT 1 FROM servicios WHERE id_ser = p_id_ser) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se encontro el servicio en el sistema';
+    END IF;
+
+    -- Obtiene el tipo de servicio y la categoría
+    SELECT tip_ser INTO p_id_tip_ser FROM servicios WHERE id_ser = p_id_ser;
+    SELECT id_cat INTO p_id_cat_ser FROM categorias_servicios WHERE nom_cat LIKE p_nom_cat;
+
+    -- Verifica que el tipo de servicio pertenezca a la categoría indicada
+    IF NOT EXISTS (
+        SELECT 1 FROM tipos_servicios 
+        WHERE id_tip_ser = p_id_tip_ser AND cat_tip_ser = p_id_cat_ser
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El tipo de servicio no pertenece a la categoría indicada';
+    END IF;
+
+    -- Obtiene el estado actual del servicio
+    SELECT sta_ser INTO p_sta_ser FROM servicios WHERE id_ser = p_id_ser;
+
+    -- Cambia el estado del servicio
+    IF p_sta_ser LIKE 'DISPONIBLE' THEN
+        UPDATE servicios
+        SET sta_ser = 'NO_DISPONIBLE'
+        WHERE id_ser = p_id_ser;
+    ELSE
+        UPDATE servicios
+        SET sta_ser = 'DISPONIBLE'
+        WHERE id_ser = p_id_ser;
+    END IF;
 
     COMMIT;
     SET autocommit = 1;
@@ -437,7 +464,10 @@ END //
 
 /* DROP PROCEDURE `SearchServices`; */
 /* DROP PROCEDURE pets_heaven.SearchServicesBy; */
+/* DROP PROCEDURE pets_heaven.AbleOrDesableService; */
+/* DROP PROCEDURE pets_heaven.SearchVacunas; */
 
 /* CALL `SearchServices`(); */
 /* CALL pets_heaven.SearchServicesBy('Cirugia'); */
-CALL pets_heaven.SearchVacunas();
+/* CALL pets_heaven.AbleOrDesableService('6','Cirugia'); */
+/* CALL pets_heaven.SearchVacunas(); */

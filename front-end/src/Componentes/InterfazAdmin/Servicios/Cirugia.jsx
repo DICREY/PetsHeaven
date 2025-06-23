@@ -196,21 +196,43 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
   }, [])
 
   // Eliminar cirugía
-  const eliminarCirugia = useCallback(async (id_ser) => {
-    if (!window.confirm("¿Seguro que deseas eliminar esta cirugía?")) return
-    try {
-      const data = { data: { id_ser: id_ser, or: true } }
-      await ModifyData(`${mainUrl}/AblOrDis`, data)
-      fetchCirugias()
-    } catch (err) {
-      const message = errorStatusHandler(err)
-      setNotify({
-        title: 'Error',
-        message: `${message}`,
-        close: setNotify
-      })
+  const eliminarCirugia = (id_ser) => {
+    setNotify({
+      title: 'Atencion',
+      message: '¿Estás seguro de que deseas eliminar esta vacuna?',
+      firstOption: () => {setNotify(null); return},
+      secondOption: () => DeleteService(id_ser),
+      firstOptionName: 'Cancelar',
+      secondOptionName: 'Continuar',
+    })
+    const DeleteService = async (id_ser) => {
+      try {
+        setNotify({
+          title: 'Cargando...',
+          message: 'Validando credenciales, por favor espere...',
+          load: 1
+        })
+        const data = { data: { id_ser: id_ser, nom_cat: 'Cirugia' } }
+        const deleted = await ModifyData(`${mainUrl}/AblOrDis`, data)
+        setNotify(null)
+        if (deleted) {
+          setNotify({
+              title: 'Desactivación exitosa',
+              message: 'La cirugia ha sido desactivada exitosamente',
+              close: setNotify
+          })
+          fetchCirugias()
+        }
+      } catch (err) {
+        const message = errorStatusHandler(err)
+        setNotify({
+          title: 'Error',
+          message: `${message}`,
+          close: setNotify
+        })
+      }
     }
-  }, [mainUrl, fetchCirugias])
+  }
 
   const cancelarFormulario = useCallback(() => {
     setMostrarFormulario(false)

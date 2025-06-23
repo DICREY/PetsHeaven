@@ -28,6 +28,15 @@ export const ServicesContainer = ({
     // Dynamic vars 
     const [ almcData, setAlmcData ] = useState([])
     const [ page, setPage ] = useState(1)
+
+    const formatState = (state) => {
+        const sta = state === 'DISPONIBLE' ? "Disponible": 
+        state === 1? "Disponible":
+        state === '1'? "Disponible":
+        state === true? "Disponible":
+        "No-disponible"
+        return sta
+    }
     
     const formatearPrecio = (precio) => {
         return new Intl.NumberFormat("es-CO", {
@@ -127,12 +136,11 @@ export const ServicesContainer = ({
                                             {dat[headers.cat]}
                                         </span>
                                         <button
-                                            className={`estado-laboratorio ${dat[headers.sta]? "disponible-laboratorio" : "no-disponible-badge-laboratorio"}`}
+                                            className={`estado-laboratorio ${formatState(dat[headers.sta])}-laboratorio`}
                                             onClick={(e) => ChangeState(dat[headers.cod], dat[headers.sta])}
-                                            aria-label={`Cambiar estado del examen ${dat[headers.nom]}. Actualmente: ${dat[headers.sta] ? "disponible" : "no disponible"
-                                                }`}
+                                            aria-label={`Cambiar estado del examen ${formatState(dat[headers.sta])}. Actualmente: ${formatState(dat[headers.sta])}`}
                                         >
-                                            {dat[headers.sta] ? "Disponible" : "No disponible"}
+                                            {formatState(dat[headers.sta])}
                                         </button>
                                     </div>
                                 </div>

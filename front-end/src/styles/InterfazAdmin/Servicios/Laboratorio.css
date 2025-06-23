@@ -330,13 +330,13 @@
   transform: scale(1.05);
 }
 
-.disponible-laboratorio {
+.Disponible-laboratorio {
   background-color: #caffca;
   color: #24af2b;
   border-color: #7fc481;
 }
 
-.no-disponible-badge-laboratorio {
+.No-disponible-laboratorio {
   background-color: #ffebee;
   color: #c62828;
   border-color: #ffcdd2;

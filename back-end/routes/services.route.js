@@ -60,10 +60,11 @@ Route.get('/vacs', ValidatorRol("usuario"), async (req,res) => {
 Route.get('/cirs', ValidatorRol("usuario"), async (req,res) => {
     try {
         const serv = await services.findCirugies()
-        if (!serv.result[0][0]) return res.status(404).json({ message: "Cirugias no encontradas" })
+        if (!serv.result) return res.status(404).json({ message: "Cirugias no encontradas" })
 
         res.status(200).json(serv)
     } catch (err) {
+        console.log(err)
         if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if(err.status) return res.status(err.status).json(err.message)
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
