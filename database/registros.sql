@@ -1,4 +1,4 @@
--- Active: 1750268475844@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 INSERT INTO pets_heaven.roles (nom_rol) VALUES
 ('Administrador'),
 ('Veterinario'),
@@ -54,69 +54,29 @@ INSERT INTO pets_heaven.otorgar_roles (id_rol, id_per) VALUES
 (3,17),
 (3,18);
 
-INSERT INTO pets_heaven.categorias_ser (nom_cat,img_cat, tec_des_cat) VALUES
-('Consulta General','https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Servicios/consulta.jpg', 'Examen físico completo, revisión de historial médico, recomendaciones nutricionales.'),
-('Vacunación','https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Servicios/vacunacion.jpg', 'Aplicación de vacunas según calendario, control de temperatura, seguimiento post-vacunación.'),
-('Cirugía','https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Servicios/cirugia.jpg', 'Evaluación pre-quirúrgica, anestesia monitorizada, equipo esterilizado, recuperación asistida.'),
-('Emergencias 24h','https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Servicios/urgencias.jpg', 'Equipo de emergencias disponible 24/7, unidad de cuidados intensivos, monitoreo constante.'),
-('Spa y Baño','https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Servicios/ba%C3%B1o.jpg', 'Baño con productos hipoalergénicos, secado profesional, corte según raza, cuidado de uñas y oídos.');
+INSERT INTO pets_heaven.categorias_veterinario (nom_cat)
+VALUES 
+('Generalista'),
+('Especialista en Cirugía'),
+('Dermatología'),
+('Cardiología'),
+('Odontología');
 
-INSERT INTO pets_heaven.servicios (cat_ser, nom_ser, pre_ser, des_ser, tec_des_ser) VALUES
-(1, 'Consulta Preventiva', 50.00, 'Examen completo de salud para tu mascota con recomendaciones personalizadas.', 'Examen físico completo, revisión de historial médico, recomendaciones nutricionales.'),
-(2, 'Medicina Preventiva', 35.00, 'Programa completo de vacunación para prevenir enfermedades comunes.', 'Aplicación de vacunas según calendario, control de temperatura, seguimiento post-vacunación.'),
-(3, 'Cirugía', 200.00, 'Procedimientos quirúrgicos realizados por especialistas con equipos de última generación.', 'Evaluación pre-quirúrgica, anestesia monitorizada, equipo esterilizado, recuperación asistida.'),
-(4, 'Urgencias', 80.00, 'Atención inmediata para situaciones urgentes a cualquier hora del día.', 'Equipo de emergencias disponible 24/7, unidad de cuidados intensivos, monitoreo constante.'),
-(5, 'Estética y Bienestar', 45.00, 'Servicio completo de baño, corte de pelo, limpieza de oídos y corte de uñas para tu mascota.', 'Baño con productos hipoalergénicos, secado profesional, corte según raza, cuidado de uñas y oídos.'),
-(3, 'Castración de perro macho', 150.00, 'Castración quirúrgica para perros machos.', 'Anestesia general, procedimiento estéril, recuperación asistida.'),
-(3, 'Limpieza dental felina', 80.00, 'Limpieza y cuidado dental para gatos.', 'Limpieza con ultrasonido, pulido dental, anestesia ligera.'),
-(3, 'Resección tumor mamario', 300.00, 'Cirugía para extirpación de tumores mamarios.', 'Anestesia general, cuidado postquirúrgico, control del dolor.'),
-(3, 'Fijación de fractura', 350.00, 'Procedimiento para estabilización de fracturas óseas.', 'Uso de placas y tornillos, anestesia general, fisioterapia postquirúrgica.'),
-(3, 'Laparotomía exploratoria', 400.00, 'Cirugía abdominal para diagnóstico y tratamiento.', 'Anestesia general, monitorización, cuidados intensivos.'),
-(3, 'Extracción cuerpo extraño gastrointestinal', 250.00, 'Cirugía para extracción de objetos ingeridos.', 'Anestesia general, cuidado postoperatorio.'),
-(3, 'Castración de gato macho', 120.00, 'Castración quirúrgica para gatos machos.', 'Anestesia general, procedimiento estéril, recuperación rápida.'),
-(3, 'Corrección de luxación patelar', 280.00, 'Cirugía para corregir luxación en rodilla.', 'Anestesia general, inmovilización y fisioterapia.'),
-(3, 'Orquiectomía en perro macho', 150.00, 'Extirpación de testículos en perros.', 'Anestesia general, cuidado postquirúrgico.'),
-(3, 'Cierre herida traumática', 100.00, 'Cierre quirúrgico de heridas traumáticas.', 'Sutura estéril, limpieza profunda, seguimiento postoperatorio.'),
-(2, 'Vacunación contra Rabia', 45.00, 'Vacuna anual contra la rabia','Administración subcutánea'),
-(2, 'Vacunación contra Moquillo', 60.00, 'Vacuna contra el virus del moquillo canino','Administración subcutánea'),
-(2, 'Vacunación contra Parvovirus', 55.00, 'Vacuna contra parvovirus canino','Inyección intramuscular'),
-(2, 'Vacunación contra Leptospirosis', 50.00, 'Protección contra bacterias dañinas','Inyección subcutánea'),
-(2, 'Vacunación contra Bordetella', 40.00, 'Prevención de tos de las perreras','Administración intranasal'),
-(2, 'Vacunación contra Coronavirus', 48.00, 'Protección contra coronavirus canino','Inyección subcutánea'),
-(2, 'Vacunación contra Hepatitis', 65.00, 'Protección contra adenovirus canino','Inyección intramuscular'),
-(2, 'Vacunación contra Influenza', 52.00, 'Protección contra influenza canina','Inyección subcutánea'),
-(2, 'Vacunación contra Giardia', 38.00, 'Protección contra giardiasis','Inyección subcutánea'),
-(2, 'Vacunación Polivalente V8', 75.00, 'Protección contra 8 enfermedades comunes','Inyección subcutánea');
+INSERT INTO pets_heaven.veterinarios (id_vet, especialidad, horarios)
+VALUES
+(1, 'Generalista', 'Lunes a Viernes 9:00 - 18:00'),
+(2, 'Cirujano', 'Lunes a Viernes 10:00 - 16:00'),
+(3, 'Especialista en Dermatología', 'Martes a Jueves 9:00 - 14:00'),
+(7, 'Cirujano', 'Lunes a Viernes 10:00 - 16:00'),
+(6, 'Dermatologo', 'Martes a Jueves 9:00 - 14:00');
 
-
-INSERT INTO pets_heaven.cirugias (des_cir, res_cir, com_cir, obv_cir, ser_cir) VALUES
-('Castración de perro macho', 'Éxito total', 'Sin complicaciones', 'Recuperación rápida', 6),
-('Limpieza dental para gato', 'Mejora notable', 'Sangrado leve', 'Paciente muy calmado', 7),
-('Resección de tumor mamario', 'Tumor extirpado completamente', 'Inflamación postquirúrgica', 'Controlar antibióticos', 8),
-('Fijación de fractura en pata', 'Fractura estabilizada', 'Inflamación leve', 'Reposo absoluto', 9),
-('Laparotomía exploratoria abdominal', 'Diagnóstico confirmado', 'Adherencias internas', 'Monitorear signos vitales', 10),
-('Extracción de cuerpo extraño gastrointestinal', 'Objeto retirado sin daño', 'Infección leve', 'Administrar antibióticos', 11),
-('Castración de gato macho', 'Procedimiento exitoso', 'Sin complicaciones', 'Paciente con buena recuperación', 12),
-('Corrección quirúrgica de luxación patelar', 'Luxación corregida', 'Inflamación y dolor moderado', 'Reposo y fisioterapia', 13),
-('Orquiectomía en perro macho', 'Sin complicaciones', 'Pequeña infección en la herida', 'Control antibiótico', 14),
-('Cierre quirúrgico de herida traumática', 'Herida cerrada correctamente', 'Ligera inflamación', 'Mantener limpieza diaria', 15);
-
-INSERT INTO pets_heaven.vacunas (
-    id_vac, nom_vac, efe_sec_vac, cat_vac, dos_rec_vac, lot_vac, 
-    fec_ven_vac, fre_vac, ser_vac
-) VALUES
-(1, 'Vacuna contra la Rabia', 'Letargo leve, dolor en el lugar de la inyección', 'Rabia', '1 mL', 'LOT-RAB-2023', '2024-12-31', 'Anual', 16),
-(2, 'Vacuna contra el Moquillo', 'Fiebre leve, pérdida de apetito temporal', 'Moquillo', '1 mL', 'LOT-MOQ-2023', '2024-10-15', 'Cada 2-3 años', 17),
-(3, 'Vacuna contra Parvovirus', 'Hinchazón en el lugar de la inyección', 'Parvovirus', '1 mL', 'LOT-PAR-2023', '2024-11-20', 'Anual', 18),
-(4, 'Vacuna contra Leptospirosis', 'Dolor local, fiebre baja', 'Leptospirosis', '1 mL', 'LOT-LEP-2023', '2024-09-30', 'Anual', 19),
-(5, 'Vacuna contra Bordetella', 'Estornudos leves', 'Tos de las perreras', '0.5 mL', 'LOT-BOR-2023', '2024-08-25', 'Anual', 20),
-(6, 'Vacuna contra Coronavirus', 'Malestar gastrointestinal leve', 'Coronavirus', '1 mL', 'LOT-COR-2023', '2025-01-15', 'Anual', 21),
-(7, 'Vacuna contra Hepatitis', 'Dolor en el lugar de la inyección', 'Hepatitis', '1 mL', 'LOT-HEP-2023', '2024-07-10', 'Cada 3 años', 22),
-(8, 'Vacuna contra Influenza', 'Letargo temporal', 'Influenza', '1 mL', 'LOT-INF-2023', '2024-06-30', 'Anual', 23),
-(9, 'Vacuna contra Giardia', 'Malestar gastrointestinal', 'Parásitos', '1 mL', 'LOT-GIA-2023', '2024-05-20', 'Cada 6 meses', 24),
-(10, 'Vacuna Polivalente V8', 'Fiebre leve, dolor local', 'Combinada', '1 mL', 'LOT-V8-2023', '2024-12-15', 'Anual', 25);
-
-
+INSERT INTO pets_heaven.otorgar_categoria_vet (id_cat,id_vet)
+VALUES
+(1,1),
+(2,2),
+(3,3),
+(2,7),
+(3,6);
 INSERT INTO pets_heaven.mascotas 
 (nom_mas, esp_mas, col_mas, raz_mas, ali_mas, fec_nac_mas, pes_mas, gen_mas, id_pro_mas, est_rep_mas, fot_mas) VALUES
 ('Max', 'Perro', 'Marrón', 'Labrador Retriever', 'Purina Dog Chow', '2018-05-15', 28.5, 'M', 1, 'No esterilizado', 'https://www.javer-keleb.com/wp-content/uploads/2024/02/2.jpg'),
@@ -150,56 +110,162 @@ INSERT INTO pets_heaven.mascotas
 ('Bruno', 'Perro', 'Crema', 'Caniche', 'Nutro', '2020-09-15', 7.2, 'M', 9, 'Esterilizado', ''),
 ('Lola', 'Gato', 'Negro', 'Bombay', 'Canidae', '2019-12-24', 4.0, 'F', 10, 'Esterilizado', '');
 
-INSERT INTO pets_heaven.categorias_veterinario (nom_cat)
-VALUES 
-('Generalista'),
-('Especialista en Cirugía'),
-('Dermatología'),
-('Cardiología'),
-('Odontología');
-
-INSERT INTO pets_heaven.personas (nom_per, ape_per, fec_nac_per, tip_doc_per, doc_per, dir_per, cel_per, email_per, cont_per, gen_per)
+INSERT INTO pets_heaven.categorias_servicios 
+(nom_cat, slug, des_cat, col_hex, img_cat) 
 VALUES
-('Juan', 'Pérez', '1980-04-25', 'DNI', '12345222678', 'Calle Ficticia 123', '555-1234', 'juan.peresdfsfz@email.com', 'contraseña123', 'Masculino'),
-('María', 'Gómez', '1990-08-15', 'DNI', '876333954321', 'Avenida Real 456', '555-5678', 'maria.gsdfsfomez@email.com', 'contraseña456', 'Femenino'),
-('Carlos', 'López', '1985-12-05', 'DNI', '114444223344', 'Calle Nueva 789', '555-9101', 'carlos.losdfsdpez@email.com', 'contraseña789', 'Masculino');
-
-INSERT INTO pets_heaven.veterinarios (id_vet, especialidad, horarios, fot_vet)
+('Consulta General', 'consulta-general', 'Servicios de consulta y diagnóstico básico', '#4b8ef5', 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Servicios/consulta.jpg'),
+('Vacunación', 'vacunacion', 'Programas de inmunización para mascotas', '#2ecc71', 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Servicios/vacunacion.jpg'),
+('Cirugía', 'cirugia', 'Procedimientos quirúrgicos para mascotas', '#e74c3c', 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Servicios/cirugia.jpg'),
+('Laboratorio', 'laboratorio', 'Pruebas diagnósticas y análisis clínicos', '#9b59b6', 'https://example.com/img/laboratorio.jpg'),
+('Estética', 'estetica', 'Servicios de belleza y cuidado para mascotas', '#f39c12', 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Servicios/ba%C3%B1o.jpg'),
+('Emergencias', 'emergencias', 'Atención médica urgente 24/7', '#e74c3c', 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Servicios/urgencias.jpg');
+INSERT INTO pets_heaven.tipos_servicios 
+(cat_tip_ser, nom_tip_ser, des_tip_ser, tec_des_cat, req_equ_esp, dur_min_tip_ser) 
 VALUES
-(1, 'Generalista', 'Lunes a Viernes 9:00 - 18:00', 'https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg'),
-(2, 'Cirujano', 'Lunes a Viernes 10:00 - 16:00', 'https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg'),
-(3, 'Especialista en Dermatología', 'Martes a Jueves 9:00 - 14:00','https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg'),
-(7, 'Cirujano', 'Lunes a Viernes 10:00 - 16:00', 'https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg'),
-(6, 'Dermatologo', 'Martes a Jueves 9:00 - 14:00','https://img.freepik.com/vector-gratis/lindo-perro-medico-estetoscopio-dibujos-animados-vector-icono-ilustracion-animal-salud-icono-aislado_138676-5182.jpg');
+(1, 'Consulta Preventiva', 'Revisión general de salud', 'Examen físico completo, revisión de historial médico', FALSE, 1),
+(1, 'Consulta Especializada', 'Consulta con veterinario especialista', 'Evaluación detallada por especialidad', FALSE, 1),
+(2, 'Vacunación Básica', 'Vacunas esenciales para mascotas', 'Protocolo estándar de vacunación', FALSE, 1),
+(2, 'Vacunación Premium', 'Vacunación completa con refuerzos', 'Incluye todas las vacunas y seguimiento', FALSE, 1),
+(3, 'Castración', 'Procedimiento de esterilización', 'Anestesia general, procedimiento estéril', TRUE, 2),
+(3, 'Cirugía Mayor', 'Intervenciones quirúrgicas complejas', 'Equipo quirúrgico completo, monitoreo', TRUE, 4),
+(4, 'Análisis de Sangre', 'Perfil bioquímico completo', 'Toma de muestra sanguínea, análisis automatizado', TRUE, 24),
+(4, 'Examen Coprológico', 'Análisis de muestras fecales', 'Examen microscópico para parásitos', TRUE, 24),
+(5, 'Baño Completo', 'Limpieza y cuidado básico', 'Shampoo especializado, secado profesional', FALSE, 2),
+(5, 'Corte de Pelo', 'Estilizado profesional', 'Técnicas según raza y estándares', FALSE, 2),
+(6, 'Urgencia Básica', 'Atención inmediata para casos no críticos', 'Evaluación primaria, estabilización', TRUE, 1),
+(6, 'Trauma Crítico', 'Atención para emergencias graves', 'Equipo de trauma, monitoreo constante', TRUE, 3);
 
-INSERT INTO pets_heaven.otorgar_categoria_vet (id_cat,id_per)
+INSERT INTO pets_heaven.servicios 
+(tip_ser, nom_ser, des_ser, pre_ser, pre_act_ser, cos_est_ser, req) 
 VALUES
-(1,1),
-(2,2),
-(3,3),
-(2,7),
-(3,6);
+(1, 'Chequeo Anual', 'Revisión completa de salud anual', 50.00, 45.00, 20.00, 'Mascota en ayunas de 4 horas'),
+(1, 'Consulta Dermatológica', 'Evaluación especializada de piel', 65.00, 65.00, 30.00, 'No bañar 48h antes'),
+(2, 'Consulta Cardiológica', 'Evaluación cardíaca especializada', 80.00, 80.00, 40.00, 'Traer historial médico'),
+(3, 'Vacuna Triple Felina', 'Protección contra panleucopenia, calicivirus y rinotraqueitis', 35.00, 35.00, 15.00, 'Mascota saludable'),
+(4, 'Vacuna Antirrábica', 'Protección contra la rabia', 40.00, 40.00, 18.00, 'Mascota mayor de 3 meses'),
+(5, 'Castración Canina', 'Esterilización para perros', 150.00, 140.00, 70.00, 'Ayuno de 12h antes'),
+(6, 'Extracción de Cuerpo Extraño', 'Remoción quirúrgica de objetos ingeridos', 300.00, 300.00, 150.00, 'Estabilización previa'),
+(7, 'Perfil Bioquímico Completo', 'Análisis de 12 parámetros sanguíneos', 60.00, 60.00, 25.00, 'Ayuno de 8h'),
+(8, 'Examen Parasitológico', 'Detección de parásitos intestinales', 25.00, 25.00, 10.00, 'Muestra fresca'),
+(9, 'Baño Medicado', 'Baño con shampoo especial para condiciones dermatológicas', 45.00, 45.00, 20.00, 'No requisitos'),
+(10, 'Corte de Raza', 'Estilizado profesional según estándar de raza', 55.00, 55.00, 25.00, 'Cepillado previo'),
+(11, 'Atención de Urgencia', 'Evaluación y estabilización inicial', 90.00, 90.00, 45.00, 'Ninguno'),
+(12, 'Reanimación', 'Atención crítica para pacientes graves', 200.00, 200.00, 100.00, 'Ninguno');
 
-
-INSERT INTO pets_heaven.consultorios (nom_esp, sta_esp, esp_esp, des_esp)
+INSERT INTO pets_heaven.procedimientos 
+(nom_pro, des_pro, cat_pro, niv_rie_pro, dur_min_pro, pro_pro, con_esp_pro) 
 VALUES
-('Consultorio 101', TRUE, 'Medicina General', 'Atención básica y chequeos generales para mascotas.'),
-('Consultorio 102', TRUE, 'Cirugía Veterinaria', 'Sala equipada para procedimientos quirúrgicos menores y mayores.'),
-('Consultorio 201', FALSE, 'Dermatología', 'Especializado en enfermedades cutáneas y alergias en animales.'),
-('Consultorio 202', TRUE, 'Odontología', 'Consultorio dental para limpiezas, extracciones y tratamientos dentales.'),
-('Consultorio 301', TRUE, 'Emergencias', 'Sala de urgencias abierta 24/7 con personal especializado.');
+('Examen Físico', 'Evaluación general de salud', 'DIAGNOSTICO', 'BAJO', 30, '1. Inspección visual\n2. Palpación\n3. Auscultación', 'Mascota debe estar calmada'),
+('Vacunación SC', 'Administración subcutánea de vacuna', 'VACUNA', 'BAJO', 15, '1. Preparar vacuna\n2. Desinfectar zona\n3. Inyectar', 'Observar reacciones alérgicas'),
+('Ovariohisterectomía', 'Esterilización de hembras', 'CIRUGIA', 'MODERADO', 90, '1. Anestesia\n2. Asepsia\n3. Incisión\n4. Ligadura', 'Manejo postquirúrgico del dolor'),
+('Intubación', 'Manejo de vía aérea', 'TERAPIA', 'ALTO', 10, '1. Preparar equipo\n2. Posicionar\n3. Visualizar cuerdas\n4. Insertar tubo', 'Requiere monitorización constante'),
+('Toma de Muestra Sanguínea', 'Obtención de sangre para análisis', 'DIAGNOSTICO', 'BAJO', 10, '1. Localizar vena\n2. Desinfectar\n3. Extraer muestra\n4. Presionar', 'Evitar hemólisis'),
+('Limpieza Dental', 'Profilaxis dental completa', 'TERAPIA', 'MODERADO', 60, '1. Anestesia\n2. Remoción de sarro\n3. Pulido\n4. Fluoruro', 'Evaluar extracciones necesarias'),
+('Radiografía', 'Imagen diagnóstica por rayos X', 'DIAGNOSTICO', 'BAJO', 30, '1. Posicionar\n2. Proteger\n3. Tomar imagen\n4. Revelar', 'Minimizar exposición');
 
-INSERT INTO pets_heaven.citas (fec_cit, hor_ini_cit, hor_fin_cit, lug_ate_cit, ser_cit, vet_cit, mas_cit, estado) VALUES
-(CURRENT_DATE(), '09:00:00', '10:00:00','Consultorio 101', 1, 1, 1, 'REALIZADO'),  -- Lunes, Consulta General
-(CURRENT_DATE(), '11:00:00', '12:00:00','Consultorio 102', 2, 1, 1, 'PENDIENTE'),   -- Martes, Vacunación
-(CURRENT_DATE(), '14:00:00', '15:00:00','Consultorio 101', 3, 2, 2, 'REALIZADO'),   -- Miércoles, Cirugía
-(CURRENT_DATE(), '10:30:00', '11:30:00','Consultorio 101', 1, 2, 2, 'EN-ESPERA'),   -- Jueves, Consulta General
-(CURRENT_DATE(), '16:00:00', '17:00:00','Consultorio 102', 4, 3, 3, 'REALIZADO'),   -- Viernes, Emergencias
-(CURRENT_DATE(), '09:30:00', '10:30:00','Consultorio 301', 2, 3, 3, 'CANCELADO'),   -- Sábado, Vacunación
-(CURRENT_DATE(), '13:00:00', '14:00:00','Consultorio 202', 5, 1, 4, 'REALIZADO'),   -- Domingo, Spa y Baño
-(CURRENT_DATE(), '15:30:00', '16:30:00','Consultorio 102', 1, 1, 4, 'PENDIENTE'),   -- Lunes, Consulta General
-(CURRENT_DATE(), '11:30:00', '12:30:00','Consultorio 101', 3, 2, 5, 'REALIZADO'),   -- Martes, Cirugía
-(CURRENT_DATE(), '17:00:00', '18:00:00','Consultorio 202', 4, 7, 5, 'PENDIENTE'),   -- Miércoles, Emergencias
-(CURRENT_DATE(), '17:00:00', '18:00:00','Consultorio 101', 5, 6, 5, 'PENDIENTE'),   -- Miércoles, Emergencias
-(CURRENT_DATE(), '17:00:00', '18:00:00','Consultorio 102', 5, 6, 5, 'PENDIENTE'),   -- Miércoles, Emergencias
-(CURRENT_DATE(), '17:00:00', '18:00:00','Consultorio 301', 3, 7, 5, 'PENDIENTE');   -- Miércoles, Emergencias
+INSERT INTO pets_heaven.servicios_procedimientos 
+(id_ser, id_pro, es_principal, ord_eje) 
+VALUES
+(1, 1, TRUE, 1),
+(2, 1, TRUE, 1),
+(4, 2, TRUE, 1),
+(5, 2, TRUE, 1),
+(6, 3, TRUE, 1),
+(7, 3, FALSE, 2),
+(8, 5, TRUE, 1),
+(9, 5, FALSE, 1),
+(11, 1, TRUE, 1),
+(12, 4, TRUE, 1),
+(12, 1, FALSE, 2);
+
+INSERT INTO pets_heaven.tipos_pruebas 
+(cod_tip_pru, nom_tip_pru, des_tip_pru, cat_tip_pru, met_est_tip_pru, tie_est_hrs_tip_pru, ins_pre_tip_pru, par_ref_tip_pru) 
+VALUES
+('HEM-001', 'Hemograma Completo', 'Evaluación de células sanguíneas', 'HEMATOLOGIA', 'Automated hematology analyzer', 2, 'Ayuno de 8 horas', 'WBC: 6-17 x10³/μL, RBC: 5.5-8.5 x10⁶/μL'),
+('BIO-002', 'Perfil Renal', 'Evaluación función renal', 'BIOQUIMICA', 'Espectrofotometría', 24, 'Ayuno de 12 horas', 'BUN: 10-30 mg/dL, Creat: 0.5-1.8 mg/dL'),
+('MIC-003', 'Cultivo Bacteriano', 'Identificación de bacterias', 'MICROBIOLOGIA', 'Medios de cultivo', 72, 'Muestra estéril', 'Reporte cualitativo'),
+('PAT-004', 'Citología', 'Evaluación celular', 'PATOLOGIA', 'Tinción Wright-Giemsa', 48, 'Muestra fresca', 'Interpretación patológica'),
+('GEN-005', 'Test de ADN', 'Pruebas genéticas', 'GENETICA', 'PCR en tiempo real', 168, 'Hisopado bucal', 'Resultado positivo/negativo'),
+('BIO-006', 'Perfil Hepático', 'Evaluación función hepática', 'BIOQUIMICA', 'Espectrofotometría', 24, 'Ayuno de 12 horas', 'ALT: 10-100 U/L, ALP: 20-150 U/L');
+
+INSERT INTO pets_heaven.pruebas_laboratorio 
+(cod_ord_pru_lab, id_mas_pru_lab, id_vet_sol_pru_lab, id_tip_pru_lab, id_ser_pru_lab, fec_sol_pru_lab, fec_mue_pru_lab, est_pru_lab, pri_pru_lab, res_pru_lab) 
+VALUES
+('LAB-2025-001', 1, 1, 1, 8, '2025-05-10 09:00:00', '2025-05-10 09:30:00', 'COMPLETADO', 'ROUTINA', 'WBC: 12.5 (H), RBC: 7.2, HCT: 45%'),
+('LAB-2025-002', 2, 2, 2, NULL, '2025-05-11 10:00:00', '2025-05-11 10:15:00', 'ENTREGADO', 'URGENTE', 'BUN: 28, Creat: 1.6 - Función renal normal'),
+('LAB-2025-003', 3, 1, 3, NULL, '2025-05-12 11:00:00', '2025-05-12 11:20:00', 'EN_PROCESO', 'ROUTINA', NULL),
+('LAB-2025-004', 4, 3, 4, NULL, '2025-05-13 14:00:00', '2025-05-13 14:30:00', 'MUESTRA_TOMADA', 'ROUTINA', NULL),
+('LAB-2025-005', 5, 2, 5, NULL, '2025-05-14 16:00:00', '2025-05-14 16:45:00', 'REGISTRADO', 'STAT', NULL);
+
+INSERT INTO pets_heaven.consultorios 
+(cod_con, nom_con, des_con, tip_con, equ_con, cap_con) 
+VALUES
+('CON-101', 'Consultorio General 101', 'Consultorio para atención básica', 'CONSULTA', '["Estetoscopio", "Termómetro", "Otoscopio"]', 1),
+('CON-102', 'Consultorio Cirugía', 'Sala para procedimientos quirúrgicos', 'CIRUGIA', '["Mesa quirúrgica", "Anestesia", "Monitor vitales"]', 1),
+('LAB-201', 'Laboratorio Clínico', 'Área de toma de muestras y análisis', 'LABORATORIO', '["Microscopio", "Centrífuga", "Analizador bioquímico"]', 2),
+('EMG-301', 'Sala de Emergencias', 'Área para atención de urgencias', 'HOSPITALIZACION', '["Oxígeno", "Carro de emergencia", "Monitor multiparámetro"]', 1),
+('EST-202', 'Sala de Estética', 'Área para baño y cuidado de mascotas', 'CONSULTA', '["Bañera", "Secador", "Mesa de trabajo"]', 1);
+
+INSERT INTO pets_heaven.citas (
+    fec_cit, hor_ini_cit, hor_fin_cit, mot_cit, est_cit, 
+    con_cit, ser_cit, vet_cit, mas_cit
+) VALUES
+-- Enero 2025
+('2025-01-10', '09:00:00', '10:00:00', 'Chequeo anual rutinario', 'PENDIENTE', 1, 1, 1, 1),
+('2025-01-10', '11:00:00', '12:30:00', 'Vacunación antirrábica', 'CONFIRMADA', 1, 5, 2, 2),
+('2025-01-15', '14:00:00', '15:00:00', 'Problemas dermatológicos', 'PENDIENTE', 1, 2, 3, 3),
+-- Febrero 2025
+('2025-02-05', '10:30:00', '12:00:00', 'Castración canina', 'CONFIRMADA', 2, 6, 2, 4),
+('2025-02-12', '16:00:00', '17:00:00', 'Consulta cardiología', 'PENDIENTE', 1, 3, 1, 5),
+('2025-02-20', '09:30:00', '10:00:00', 'Refuerzo vacunal', 'CONFIRMADA', 1, 4, 3, 1),
+-- Marzo 2025
+('2025-03-03', '13:00:00', '14:30:00', 'Cirugía de tumor mamario', 'CONFIRMADA', 2, 7, 2, 2),
+('2025-03-08', '15:00:00', '16:00:00', 'Baño medicado', 'PENDIENTE', 5, 9, 3, 3),
+('2025-03-18', '08:00:00', '09:00:00', 'Análisis de sangre completo', 'CONFIRMADA', 3, 8, 1, 4),
+-- Abril 2025
+('2025-04-02', '11:00:00', '12:00:00', 'Control postoperatorio', 'PENDIENTE', 1, 1, 2, 5),
+('2025-04-15', '17:00:00', '18:00:00', 'Emergencia - Vómitos persistentes', 'CONFIRMADA', 4, 12, 1, 1),
+('2025-04-22', '10:00:00', '11:30:00', 'Corte de pelo según raza', 'PENDIENTE', 5, 10, 3, 2),
+-- Mayo 2025
+('2025-05-05', '14:30:00', '15:30:00', 'Consulta geriátrica', 'CONFIRMADA', 1, 1, 1, 3),
+('2025-05-12', '09:00:00', '10:30:00', 'Extracción de cuerpo extraño', 'PENDIENTE', 2, 7, 2, 4),
+('2025-05-19', '16:00:00', '17:00:00', 'Vacunación polivalente', 'CONFIRMADA', 1, 4, 3, 5),
+-- Junio 2025
+('2025-06-07', '13:30:00', '15:00:00', 'Limpieza dental profesional', 'PENDIENTE', 2, 6, 2, 1),
+('2025-06-14', '10:00:00', '11:00:00', 'Control de peso', 'CONFIRMADA', 1, 1, 1, 2),
+('2025-06-21', '15:30:00', '16:30:00', 'Examen coprológico', 'PENDIENTE', 3, 9, 3, 3),
+-- Julio 2025
+('2025-07-03', '08:30:00', '10:00:00', 'Revisión post-trauma', 'CONFIRMADA', 1, 1, 2, 4),
+('2025-07-17', '11:30:00', '12:30:00', 'Test genético', 'PENDIENTE', 3, 8, 1, 5);
+
+INSERT INTO pets_heaven.vacunas (
+    nom_vac, efe_sec_vac, cat_vac, dos_rec_vac, lot_vac, fec_ven_vac, fre_vac, pro_vac
+) VALUES
+-- Vacunas básicas para perros
+('Vacuna Antirrábica', 'Letargo leve, dolor en el sitio de inyección', 'Rabia', '1 mL', 'LOT-RAB-2025', '2026-12-31', 'Anual', 
+    (SELECT id_pro FROM procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+('Vacuna Moquillo Canino', 'Fiebre leve, pérdida de apetito temporal', 'Moquillo', '1 mL', 'LOT-MOQ-2025', '2026-06-15', 'Cada 3 años', 
+    (SELECT id_pro FROM procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+('Vacuna Parvovirus', 'Hinchazón en el sitio de inyección', 'Parvovirosis', '1 mL', 'LOT-PAR-2025', '2026-08-20', 'Anual', 
+    (SELECT id_pro FROM procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+('Vacuna Leptospirosis', 'Dolor local, fiebre baja', 'Leptospirosis', '1 mL', 'LOT-LEP-2025', '2026-05-30', 'Anual', 
+    (SELECT id_pro FROM procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+-- Vacunas para gatos
+('Vacuna Triple Felina', 'Somnolencia leve', 'Panleucopenia/Calicivirus/Rinotraqueitis', '1 mL', 'LOT-TRF-2025', '2026-09-10', 'Anual', 
+    (SELECT id_pro FROM procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+('Vacuna Leucemia Felina', 'Malestar general', 'Leucemia Viral Felina', '1 mL', 'LOT-LEU-2025', '2026-11-25', 'Anual', 
+    (SELECT id_pro FROM procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+-- Vacunas especiales
+('Vacuna Bordetella', 'Estornudos leves', 'Tos de las perreras', '0.5 mL', 'LOT-BOR-2025', '2026-04-15', 'Anual', 
+    (SELECT id_pro FROM procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+('Vacuna Coronavirus Canino', 'Malestar gastrointestinal leve', 'Coronavirus', '1 mL', 'LOT-COR-2025', '2026-07-22', 'Anual', 
+    (SELECT id_pro FROM procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+('Vacuna Giardia', 'Diarrea leve', 'Giardiasis', '1 mL', 'LOT-GIA-2025', '2026-10-05', 'Cada 6 meses', 
+    (SELECT id_pro FROM procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+-- Vacunas combinadas
+('Vacuna Polivalente V8', 'Fiebre leve, dolor local', 'Combinada Canina', '1 mL', 'LOT-V8-2025', '2026-03-18', 'Anual', 
+    (SELECT id_pro FROM procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+('Vacuna Felina V4', 'Decaimiento temporal', 'Combinada Felina', '1 mL', 'LOT-V4-2025', '2026-02-28', 'Anual', 
+    (SELECT id_pro FROM procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+('Vacuna Influenza Canina', 'Tos leve', 'Influenza', '1 mL', 'LOT-INF-2025', '2026-01-15', 'Anual', 
+    (SELECT id_pro FROM procedimientos WHERE nom_pro LIKE 'Vacunación SC'));

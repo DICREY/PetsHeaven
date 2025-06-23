@@ -67,11 +67,11 @@ BEGIN
 
     START TRANSACTION;
 
-    IF (SELECT id_per FROM personas WHERE doc_per = p_persona;) IS NULL THEN 
+    IF (SELECT id_per FROM personas WHERE doc_per = p_persona) IS NULL THEN 
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta persona no esta registrada en el sistema';
     END IF;
 
-    IF (SELECT id_mas FROM mascotas WHERE nom_mas = p_nom_mas;) IS NULL THEN 
+    IF (SELECT id_mas FROM mascotas WHERE nom_mas = p_nom_mas) IS NULL THEN 
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta mascota no esta registrada en el sistema';
     END IF;
 
@@ -126,7 +126,7 @@ BEGIN
             FROM citas c
             WHERE
                 c.mas_cit = m.id_mas
-                AND c.estado = 'REALIZADO'
+                AND c.est_cit = 'REALIZADO'
         )
     FROM 
         mascotas m
@@ -171,7 +171,7 @@ BEGIN
             FROM citas c
             WHERE
                 c.mas_cit = m.id_mas
-                AND c.estado = 'REALIZADO'
+                AND c.est_cit = 'REALIZADO'
         )
     FROM 
         mascotas m
@@ -221,7 +221,7 @@ BEGIN
             FROM citas c
             WHERE
                 c.mas_cit = m.id_mas
-                AND c.estado = 'REALIZADO'
+                AND c.est_cit = 'REALIZADO'
         )
     FROM 
         mascotas m
@@ -257,11 +257,11 @@ BEGIN
 
     START TRANSACTION;
 
-    IF (SELECT id_per FROM personas WHERE doc_per = p_persona;) IS NULL THEN 
+    IF (SELECT id_per FROM personas WHERE doc_per = p_persona) IS NULL THEN 
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta persona no esta registrada en el sistema';
     END IF;
 
-    IF (SELECT id_mas FROM mascotas WHERE nom_mas = p_nom_mas;) IS NULL THEN 
+    IF (SELECT id_mas FROM mascotas WHERE nom_mas = p_nom_mas) IS NULL THEN 
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta mascota no esta registrada en el sistema';
     END IF;
 
@@ -318,37 +318,36 @@ BEGIN
                     s.nom_ser,
                     s.pre_ser,
                     s.des_ser,
-                    s.tec_des_ser,
-                    p.nom_per,
-                    p.ape_per,
+                    ts.nom_tip_ser,
+                    cs.nom_cat,
+                    cs.img_cat,
+                    p_vet.nom_per,
+                    p_vet.ape_per,
                     v.especialidad,
                     cv.nom_cat,
-                    cs.img_cat,
-                    v.fot_vet
+                    p_vet.fot_per
                 ) 
-                SEPARATOR '; '
+                SEPARATOR ';'
             ) 
             FROM 
                 citas ct
-            JOIN
-                servicios s ON s.id_ser = ct.ser_cit
-            JOIN
-                personas p ON p.id_per = ct.vet_cit
-            JOIN
-                veterinarios v ON v.id_vet = ct.vet_cit
-            JOIN
-                otorgar_categoria_vet otv ON otv.id_per = ct.vet_cit
-            JOIN
-                categorias_veterinario cv ON otv.id_cat = cv.id_cat
-            JOIN
-                categorias_ser cs ON s.cat_ser = cs.id_cat
+            JOIN servicios s ON s.id_ser = ct.ser_cit
+            JOIN tipos_servicios ts ON ts.id_tip_ser = s.tip_ser
+            JOIN categorias_servicios cs ON cs.id_cat = ts.cat_tip_ser
+            JOIN personas p_vet ON p_vet.id_per = ct.vet_cit
+            JOIN veterinarios v ON v.id_vet = ct.vet_cit
+            LEFT JOIN otorgar_categoria_vet otv ON otv.id_vet = ct.vet_cit
+            LEFT JOIN categorias_veterinario cv ON otv.id_cat = cv.id_cat
             WHERE 
-                ct.estado = "REALIZADO"
+                ct.mas_cit = m.id_mas
+                AND (
+                    ct.est_cit = 'COMPLETADA'
+                    OR ct.est_cit = 'CONFIRMADA'
+                )
         ) AS citas 
     FROM 
         mascotas m
-    JOIN
-        personas p 
+    JOIN personas p 
         ON p.id_per = m.id_pro_mas
         AND p.estado = 1
         AND (
@@ -363,4 +362,8 @@ BEGIN
 END //
 
 /* CALL pets_heaven.SearchHistoryBy('luna','87654321'); */
+/* DROP PROCEDURE pets_heaven.SearchHistoryBy; */
+/* DROP PROCEDURE pets_heaven.SearchPets; */
+/* DROP PROCEDURE pets_heaven.SearchPetsBy; */
+/* DROP PROCEDURE pets_heaven.SearchPetBy; */
 /* DROP PROCEDURE pets_heaven.SearchHistoryBy; */

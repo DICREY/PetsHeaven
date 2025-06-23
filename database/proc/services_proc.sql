@@ -1,147 +1,160 @@
 -- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
-CREATE PROCEDURE pets_heaven.SearchServices()
-BEGIN
-    SELECT
-        s.id_ser,
-        s.nom_ser,
-        s.pre_ser,
-        s.des_ser,
-        s.tec_des_ser,
-        s.sta_ser,
-        c.nom_cat,
-        c.img_cat,
-        (
-            SELECT 
-                GROUP_CONCAT(
-                    CONCAT_WS('---',
-                        ci.res_cir,
-                        ci.com_cir,
-                        ci.obv_cir
-                    ) 
-                    SEPARATOR '; '
-                )
-            FROM 
-                cirugias ci
-            WHERE
-                ci.ser_cir = s.id_ser
-        ) AS cirugias,
-        (
-            SELECT
-                GROUP_CONCAT(
-                    CONCAT_WS('---',
-                        v.nom_vac,
-                        v.efe_sec_vac,
-                        v.cat_vac,
-                        v.dos_rec_vac,
-                        /* v.des_vac, */
-                        v.des_tec_vac,
-                        v.lot_vac,
-                        v.fre_vac,
-                        v.fec_ven_vac,
-                        v.pre_vac
-                    ) 
-                    SEPARATOR '; '
-                )
-            FROM 
-                vacunas v
-            WHERE 
-                v.ser_vac = s.id_ser
-        ) AS vacunas
-    FROM 
-        servicios s
-    JOIN 
-        categorias_ser c ON c.id_cat = s.cat_ser 
-    WHERE
-        c.estado = 1
-    ORDER BY 
-        s.nom_ser
-    LIMIT 1000;
-END //
 CREATE PROCEDURE pets_heaven.SearchServicesCat()
 BEGIN
     SELECT
         cs.nom_cat,
-        cs.tec_des_cat,
+        cs.des_cat AS tec_des_cat,
         cs.img_cat
     FROM 
-        categorias_ser cs
+        categorias_servicios cs
     WHERE
-        cs.estado = 1
+        cs.sta_cat = 1
     ORDER BY 
         cs.nom_cat
     LIMIT 1000;
 END //
-CREATE PROCEDURE pets_heaven.SearchServicesBy(
-    IN p_cat_ser VARCHAR(100)
-)
+CREATE PROCEDURE pets_heaven.SearchServices()
 BEGIN
     SELECT
-        s.id_ser,
-        s.nom_ser,
-        s.pre_ser,
-        s.des_ser,
-        s.tec_des_ser,
-        s.sta_ser,
-        c.nom_cat,
-        c.img_cat,
-        (   
+        s.id_ser, -- ID del servicio
+        s.nom_ser, -- Nombre del servicio
+        s.pre_ser, -- Precio base del servicio
+        s.des_ser, -- Descripción del servicio
+        s.sta_ser, -- Estado del servicio
+        ts.nom_tip_ser, -- Nombre del tipo de servicio
+        cs.nom_cat, -- Nombre de la categoría
+        cs.img_cat, -- Imagen de la categoría
+        (
             SELECT 
                 GROUP_CONCAT(
                     CONCAT_WS('---',
-                        ci.id_cir,
-                        ci.des_cir,
-                        ci.res_cir,
-                        ci.com_cir,
-                        ci.obv_cir
+                        p.nom_pro, -- Nombre del procedimiento
+                        p.des_pro, -- Descripción del procedimiento
+                        p.cat_pro, -- Categoría del procedimiento
+                        p.niv_rie_pro, -- Nivel de riesgo
+                        p.dur_min_pro, -- Duración mínima
+                        p.pro_pro, -- Protocolo
+                        p.con_esp_pro -- Consideraciones especiales
                     ) 
                     SEPARATOR '; '
                 )
             FROM 
-                cirugias ci
-            WHERE 
-                ci.ser_cir = s.id_ser
-        ) AS cirugias,
-        (
-            SELECT
-                GROUP_CONCAT(
-                    CONCAT_WS('---',
-                        v.nom_vac,
-                        v.efe_sec_vac,
-                        v.cat_vac,
-                        v.dos_rec_vac,
-                        v.des_vac,
-                        v.des_tec_vac,
-                        v.lot_vac,
-                        v.fre_vac,
-                        v.fec_ven_vac,
-                        v.pre_vac
-                    ) 
-                    SEPARATOR '; '
-                )
-            FROM 
-                vacunas v
-            WHERE 
-                v.ser_vac = s.id_ser
-        ) AS vacunas
+                servicios_procedimientos sp
+            JOIN procedimientos p ON p.id_pro = sp.id_pro
+            WHERE
+                sp.id_ser = s.id_ser
+        ) AS procedimientos
     FROM 
         servicios s
-    JOIN 
-        categorias_ser c ON c.id_cat = s.cat_ser 
+    JOIN tipos_servicios ts ON ts.id_tip_ser = s.tip_ser
+    JOIN categorias_servicios cs ON cs.id_cat = ts.cat_tip_ser
     WHERE
-        /* c.estado = 1 */
-        c.nom_cat LIKE p_cat_ser
+        cs.sta_cat = 1
     ORDER BY 
         s.nom_ser
     LIMIT 1000;
 END //
-
+CREATE PROCEDURE pets_heaven.SearchServicesBy(
+    IN p_nom_cat VARCHAR(100)
+)
+BEGIN
+    SELECT
+        s.id_ser, -- ID del servicio
+        s.nom_ser, -- Nombre del servicio
+        s.pre_ser, -- Precio base del servicio
+        s.des_ser, -- Descripción del servicio
+        s.sta_ser, -- Estado del servicio
+        ts.nom_tip_ser, -- Nombre del tipo de servicio
+        ts.des_tip_ser, -- descripción del tipo de servicio
+        ts.dur_min_tip_ser, -- Duración minima del tipo de servicio
+        ts.req_equ_esp, -- Rquiere equipo el tipo de servicio? 1/0
+        cs.nom_cat, -- Nombre de la categoría
+        cs.img_cat, -- Imagen de la categoría
+        (
+            SELECT 
+                GROUP_CONCAT(
+                    CONCAT_WS('---',
+                        p.nom_pro, -- Nombre del procedimiento
+                        p.des_pro, -- Descripción del procedimiento
+                        p.cat_pro, -- Categoría del procedimiento
+                        p.niv_rie_pro, -- Nivel de riesgo
+                        p.dur_min_pro, -- Duración mínima
+                        p.pro_pro, -- Protocolo
+                        p.con_esp_pro -- Consideraciones especiales
+                    ) 
+                    SEPARATOR '; '
+                )
+            FROM 
+                servicios_procedimientos sp
+            JOIN procedimientos p ON p.id_pro = sp.id_pro
+            WHERE
+                sp.id_ser = s.id_ser
+        ) AS procedimientos
+    FROM 
+        servicios s
+    JOIN tipos_servicios ts ON ts.id_tip_ser = s.tip_ser
+    JOIN categorias_servicios cs ON cs.id_cat = ts.cat_tip_ser
+    WHERE
+        cs.nom_cat LIKE p_nom_cat
+    ORDER BY 
+        s.nom_ser
+    LIMIT 1000;
+END //
+CREATE PROCEDURE pets_heaven.SearchService(
+    IN p_id_ser INT
+)
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM servicios s
+        WHERE s.id_ser = p_id_ser
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se encontro el servicio';
+    ELSE
+        SELECT
+            s.id_ser,
+            s.nom_ser,
+            s.pre_ser,
+            s.des_ser,
+            s.sta_ser,
+            ts.nom_tip_ser,
+            cs.nom_cat,
+            cs.img_cat,
+            (
+                SELECT 
+                    GROUP_CONCAT(
+                        CONCAT_WS('---',
+                            p.nom_pro,
+                            p.des_pro,
+                            p.cat_pro,
+                            p.niv_rie_pro,
+                            p.dur_min_pro,
+                            p.pro_pro,
+                            p.con_esp_pro
+                        ) 
+                        SEPARATOR '; '
+                    )
+                FROM 
+                    servicios_procedimientos sp
+                JOIN procedimientos p ON p.id_pro = sp.id_pro
+                WHERE sp.id_ser = s.id_ser
+            ) AS procedimientos
+        FROM 
+            servicios s
+        JOIN tipos_servicios ts ON ts.id_tip_ser = s.tip_ser
+        JOIN categorias_servicios cs ON cs.id_cat = ts.cat_tip_ser
+        WHERE
+            s.id_ser = p_id_ser
+        LIMIT 1;
+    END IF;
+END //
 CREATE PROCEDURE pets_heaven.RegisterService(
-    IN p_cat_ser INT,
+    IN p_tip_ser INT, -- ID del tipo de servicio
     IN p_nom_ser VARCHAR(100),
     IN p_pre_ser DECIMAL(10,2),
     IN p_des_ser TEXT,
-    IN p_sta_ser ENUM("DISPONIBLE","NO-DISPONIBLE"),
-    IN p_tec_des_ser TEXT
+    IN p_sta_ser ENUM('DISPONIBLE','NO_DISPONIBLE','TEMPORAL'),
+    IN p_req TEXT,
+    IN p_cos_est_ser DECIMAL(10,2)
 )
 BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -155,34 +168,37 @@ BEGIN
     START TRANSACTION;
 
     INSERT INTO servicios (
-        cat_ser,
+        tip_ser,
         nom_ser,
-        pre_ser,
         des_ser,
+        pre_ser,
+        pre_act_ser,
+        cos_est_ser,
         sta_ser,
-        tec_des_ser
+        req
     ) VALUES (
-        p_cat_ser,
+        p_tip_ser,
         p_nom_ser,
-        p_pre_ser,
         p_des_ser,
+        p_pre_ser,
+        p_pre_ser,
+        p_cos_est_ser,
         p_sta_ser,
-        p_tec_des_ser
+        IFNULL(p_req, 'No registrado')
     );
 
     COMMIT;
 
     SET autocommit = 1;
 END //
-
-
 CREATE PROCEDURE pets_heaven.RegisterCirugia(
-    IN p_cat_ser INT,
+    IN p_tip_ser INT, -- ID del tipo de servicio (debe ser tipo "Cirugía")
     IN p_nom_ser VARCHAR(100),
     IN p_pre_ser DECIMAL(10,2),
     IN p_des_ser TEXT,
-    IN p_sta_ser ENUM("DISPONIBLE","NO-DISPONIBLE"),
-    IN p_tec_des_ser TEXT,
+    IN p_sta_ser ENUM('DISPONIBLE','NO_DISPONIBLE','TEMPORAL'),
+    IN p_req TEXT,
+    IN p_cos_est_ser DECIMAL(10,2),
     IN p_des_cir VARCHAR(100),
     IN p_res_cir VARCHAR(200),
     IN p_com_cir VARCHAR(200),
@@ -196,164 +212,65 @@ BEGIN
     END;
 
     SET autocommit = 0;
-
     START TRANSACTION;
 
     INSERT INTO servicios (
-        cat_ser,
+        tip_ser,
         nom_ser,
-        pre_ser,
         des_ser,
+        pre_ser,
+        pre_act_ser,
+        cos_est_ser,
         sta_ser,
-        tec_des_ser
+        req
     ) VALUES (
-        p_cat_ser,
+        p_tip_ser,
         p_nom_ser,
-        p_pre_ser,
         p_des_ser,
+        p_pre_ser,
+        p_pre_ser,
+        p_cos_est_ser,
         p_sta_ser,
-        p_tec_des_ser
+        IFNULL(p_req, 'No registrado')
     );
 
     SET @last_id_ser = LAST_INSERT_ID();
 
-    INSERT INTO cirugias (
-        des_cir,
-        res_cir,
-        com_cir,
-        obv_cir,
-        ser_cir
+    INSERT INTO procedimientos (
+        nom_pro,
+        des_pro,
+        cat_pro,
+        niv_rie_pro,
+        dur_min_pro,
+        pro_pro,
+        con_esp_pro
     ) VALUES (
-        p_des_cir,
-        p_res_cir,
-        p_com_cir,
-        p_obv_cir,
-        @last_id_ser
+        p_nom_ser, -- nombre del procedimiento igual al servicio
+        p_des_cir, -- descripción del procedimiento (puedes ajustar)
+        'CIRUGIA',
+        NULL,
+        NULL,
+        NULL,
+        NULL
+    );
+
+    SET @last_id_pro = LAST_INSERT_ID();
+
+    INSERT INTO servicios_procedimientos (
+        id_ser,
+        id_pro,
+        es_principal,
+        ord_eje
+    ) VALUES (
+        @last_id_ser,
+        @last_id_pro,
+        TRUE,
+        1
     );
 
     COMMIT;
-
     SET autocommit = 1;
 END //
-
-
-CREATE PROCEDURE pets_heaven.RegisterVacuna(
-    IN p_nom_vac VARCHAR(255),
-    IN p_des_gen TEXT,
-    IN p_des_tec TEXT,
-    IN p_pre_vac DECIMAL(10,2),
-    IN p_fre_vac VARCHAR(100),
-    IN p_cat_vac VARCHAR(100),
-    IN p_num_lot VARCHAR(255),
-    IN p_fec_vec DATE,
-    IN p_efe_sec VARCHAR(255),
-    IN p_dos_rec VARCHAR(100),
-    IN p_sta_ser ENUM('DISPONIBLE','NO-DISPONIBLE') 
-)
-BEGIN
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN
-        ROLLBACK;
-        RESIGNAL;
-    END;
-
-    SET autocommit = 0;
-
-    START TRANSACTION;
-
-    IF (SELECT id_vac FROM vacunas WHERE lot_vac LIKE p_num_lot)
-        THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este lote de vacuna ya existe';
-    END IF;
-
-    INSERT INTO servicios (
-        cat_ser,
-        nom_ser,
-        pre_ser,
-        des_ser,
-        sta_ser,
-        tec_des_ser
-    ) VALUES (
-        2, 
-        p_nom_vac,
-        p_pre_vac,
-        p_des_gen,
-        p_sta_ser,
-        p_des_tec
-    );
-
-    SET @last_id_ser = LAST_INSERT_ID();
-
-    INSERT INTO vacunas (
-        nom_vac,
-        efe_sec_vac,
-        cat_vac,
-        dos_rec_vac,
-        lot_vac,
-        fec_ven_vac,
-        fre_vac,
-        ser_vac
-    ) VALUES (
-        p_nom_vac,
-        p_efe_sec,
-        p_cat_vac, 
-        p_dos_rec,
-        p_num_lot, 
-        p_fec_vec, 
-        p_fre_vac,
-        @last_id_ser
-    );
-
-    COMMIT;
-
-    SET autocommit = 1;
-END //
-
-
-CREATE PROCEDURE pets_heaven.SearchVacunas()
-BEGIN
-    SELECT 
-        v.*,
-        s.id_ser,
-        s.cat_ser,
-        s.nom_ser,
-        s.pre_ser,
-        s.des_ser,
-        s.sta_ser,
-        s.tec_des_ser,
-        cs.nom_cat 
-    FROM 
-        vacunas v
-    JOIN 
-        servicios s ON v.ser_vac = s.id_ser
-    JOIN 
-        categorias_ser cs ON s.cat_ser = cs.id_cat
-    ORDER BY 
-        v.nom_vac ASC;
-END //
-
-
-CREATE PROCEDURE pets_heaven.SearchCirugias()
-BEGIN
-    SELECT 
-        ci.*,
-        s.id_ser,
-        s.cat_ser,  
-        s.nom_ser,  
-        s.pre_ser,  
-        s.des_ser,  
-        s.sta_ser,  
-        s.tec_des_ser,
-        cs.nom_cat 
-    FROM 
-        cirugias ci
-    JOIN 
-        servicios s ON ci.ser_CIR = s.id_ser
-    JOIN 
-        categorias_ser cs ON s.cat_ser = cs.id_cat
-    LIMIT 1000;
-END //
-
-
 CREATE PROCEDURE pets_heaven.AbleOrDesableService(
     IN p_id_ser INT,
     IN p_or BOOLEAN
@@ -369,79 +286,158 @@ BEGIN
 
     START TRANSACTION;
 
-    UPDATE 
-        pets_heaven.servicios
+    UPDATE pets_heaven.servicios
     SET sta_ser = CASE
-        WHEN p_or THEN 'NO-DISPONIBLE'
+        WHEN p_or THEN 'NO_DISPONIBLE'
         ELSE 'DISPONIBLE'
         END
-    WHERE 
-        id_ser = p_id_ser;
+    WHERE id_ser = p_id_ser;
 
     COMMIT;
-
     SET autocommit = 1;
 END //
-
-CREATE PROCEDURE pets_heaven.SearchService(
-    IN p_id_ser VARCHAR(100)
+CREATE PROCEDURE pets_heaven.RegisterVacuna(
+    IN p_tip_ser INT, -- ID del tipo de servicio (debe ser tipo "Vacuna")
+    IN p_nom_ser VARCHAR(100),
+    IN p_pre_ser DECIMAL(10,2),
+    IN p_des_ser TEXT,
+    IN p_sta_ser ENUM('DISPONIBLE','NO_DISPONIBLE','TEMPORAL'),
+    IN p_req TEXT,
+    IN p_cos_est_ser DECIMAL(10,2),
+    IN p_nom_pro VARCHAR(100),
+    IN p_des_pro TEXT,
+    IN p_cat_pro ENUM('VACUNA','CIRUGIA','DIAGNOSTICO','TERAPIA'),
+    IN p_dos_rec VARCHAR(100),
+    IN p_lot VARCHAR(255),
+    IN p_fec_ven DATE,
+    IN p_fre_vac VARCHAR(100),
+    IN p_efe_sec VARCHAR(255)
 )
 BEGIN
-    IF (
-        SELECT
-            s.id_ser,
-            s.nom_ser,
-            s.pre_ser,
-            s.des_ser,
-            s.tec_des_ser,
-            s.sta_ser,
-            c.nom_cat,
-            c.img_cat,
-            (
-                SELECT 
-                    GROUP_CONCAT(
-                        CONCAT_WS('---',
-                            ci.res_cir,
-                            ci.com_cir,
-                            ci.obv_cir
-                        ) 
-                        SEPARATOR '; '
-                    )
-                FROM 
-                    cirugias ci
-                WHERE 
-                    ci.ser_cir = s.id_ser
-            ) AS cirugias,
-            (
-                SELECT
-                    GROUP_CONCAT(
-                        CONCAT_WS('---',
-                            v.nom_vac,
-                            v.efe_sec_vac,
-                            v.cat_vac,
-                            v.dos_rec_vac,
-                            v.lot_vac,
-                            v.fre_vac,
-                            v.fec_ven_vac
-                        ) 
-                        SEPARATOR '; '
-                    )
-                FROM 
-                    vacunas v
-                WHERE 
-                    v.ser_vac = s.id_ser
-            ) AS vacunas
-        FROM 
-            servicios s
-        JOIN 
-            categorias_ser c ON c.id_cat = s.cat_ser 
-        WHERE
-            s.id_ser LIKE p_id_ser
-        ORDER BY 
-            s.nom_ser
-        LIMIT 1000
-    ) IS NULL THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se encontro el servicio';
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    SET autocommit = 0;
+    START TRANSACTION;
+
+    -- Validar lote único
+    IF (SELECT COUNT(*) FROM vacunas WHERE lot_vac = p_lot) > 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este lote de vacuna ya existe';
     END IF;
+
+    -- Registrar el servicio
+    INSERT INTO servicios (
+        tip_ser,
+        nom_ser,
+        des_ser,
+        pre_ser,
+        pre_act_ser,
+        cos_est_ser,
+        sta_ser,
+        req
+    ) VALUES (
+        p_tip_ser,
+        p_nom_ser,
+        p_des_ser,
+        p_pre_ser,
+        p_pre_ser,
+        p_cos_est_ser,
+        p_sta_ser,
+        IFNULL(p_req, 'No registrado')
+    );
+
+    SET @last_id_ser = LAST_INSERT_ID();
+
+    -- Registrar el procedimiento
+    INSERT INTO procedimientos (
+        nom_pro,
+        des_pro,
+        cat_pro,
+        niv_rie_pro,
+        dur_min_pro,
+        pro_pro,
+        con_esp_pro
+    ) VALUES (
+        p_nom_pro,
+        p_des_pro,
+        p_cat_pro,
+        NULL,
+        NULL,
+        NULL,
+        NULL
+    );
+
+    SET @last_id_pro = LAST_INSERT_ID();
+
+    -- Relacionar servicio y procedimiento
+    INSERT INTO servicios_procedimientos (
+        id_ser,
+        id_pro,
+        es_principal,
+        ord_eje
+    ) VALUES (
+        @last_id_ser,
+        @last_id_pro,
+        TRUE,
+        1
+    );
+
+    -- Registrar la vacuna en inventario
+    INSERT INTO vacunas (
+        nom_vac,
+        efe_sec_vac,
+        cat_vac,
+        dos_rec_vac,
+        lot_vac,
+        fec_ven_vac,
+        fre_vac,
+        pro_vac
+    ) VALUES (
+        p_nom_pro,
+        p_efe_sec,
+        p_cat_pro,
+        p_dos_rec,
+        p_lot,
+        p_fec_ven,
+        p_fre_vac,
+        @last_id_pro
+    );
+
+    COMMIT;
+    SET autocommit = 1;
+END //
+CREATE PROCEDURE pets_heaven.SearchVacunas()
+BEGIN
+    SELECT 
+        v.*,
+        p.id_pro,
+        p.nom_pro,
+        p.des_pro,
+        s.id_ser,
+        s.tip_ser,
+        s.nom_ser,
+        s.pre_ser,
+        s.des_ser,
+        s.sta_ser,
+        s.req,
+        ts.nom_tip_ser,
+        cs.nom_cat
+    FROM 
+        vacunas v
+    JOIN procedimientos p ON v.pro_vac = p.id_pro
+    JOIN servicios_procedimientos sp ON sp.id_pro = p.id_pro
+    JOIN servicios s ON sp.id_ser = s.id_ser
+    JOIN tipos_servicios ts ON s.tip_ser = ts.id_tip_ser
+    JOIN categorias_servicios cs ON ts.cat_tip_ser = cs.id_cat
+    ORDER BY v.id_vac ASC;
 END //
 
-DROP PROCEDURE `SearchService`;
+/* DROP PROCEDURE `SearchServices`; */
+/* DROP PROCEDURE pets_heaven.SearchServicesBy; */
+
+/* CALL `SearchServices`(); */
+/* CALL pets_heaven.SearchServicesBy('Cirugia'); */
+CALL pets_heaven.SearchVacunas();

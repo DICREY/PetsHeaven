@@ -8,6 +8,7 @@ import { SmallLoader } from '../Loaders/SmallLoader'
 
 // Import styles 
 import '../../styles/Global/notifys.css'
+import { CheckImage } from '../../Utils/Utils'
 
 // Component 
 export const Notification = ({
@@ -48,12 +49,12 @@ export const Notification = ({
                             </aside>
                         ) : (
                             <aside className='LoadingPawImg'>
-                                {checkImage(
-                                    img,
-                                    'ganzo antropomorfico con traje formal negro con una lupa antigua en la pata derecha y la cabeza inclinada 40grados a la izquierda',
-                                    imgDefault,
-                                    'LoadingImg'
-                                )}
+                                <CheckImage 
+                                    src={img}
+                                    alt='ganzo antropomorfico con traje formal negro con una lupa antigua en la pata derecha y la cabeza inclinada 40grados a la izquierda'
+                                    imgDefault={imgDefault}
+                                    className='LoadingImg'
+                                />
                             </aside>
                         )}
                         <aside className='LoadingText'>

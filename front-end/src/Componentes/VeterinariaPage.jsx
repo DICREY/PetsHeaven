@@ -1,18 +1,19 @@
-// Imports 
-import { NavBar } from './BarrasNavegacion/NavBar'
-import { GetDataGlobal, PostData } from './Varios/Requests'
-import { diapositivas, promociones, testimonios } from './Varios/varios'
-import { checkImage, errorStatusHandler } from './Varios/Util'
-import { Loader } from './Loaders/Loader'
-import Footer from './Varios/Footer2'
-import { CookieConsent } from './Global/Cookies'
-// import { AuthContext } from '../Contexts/Contexts'
-
 // Librarys 
 import React,{ useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MapPin, Star, Phone, Mail, Clock, ChevronUp, Instagram, Facebook } from 'lucide-react'
 import { motion } from 'framer-motion'
+
+// Imports 
+import { NavBar } from './BarrasNavegacion/NavBar'
+import { GetDataGlobal, PostData } from './Varios/Requests'
+import { diapositivas, promociones, testimonios } from './Varios/varios'
+import { errorStatusHandler } from './Varios/Util'
+import { Loader } from './Loaders/Loader'
+import Footer from './Varios/Footer2'
+import { CookieConsent } from './Global/Cookies'
+import { CheckImage } from '../Utils/Utils'
+// import { AuthContext } from '../Contexts/Contexts'
 
 // Import styles
 import '../../src/styles/VeterinariaPage.css'
@@ -186,12 +187,12 @@ export default function VeterinariaPage({ URL = '', setArriveTo }) {
           >
             {diapositivas?.map((dia, indice) => (
               <div key={indice + 988} className={`dia-carrusel ${indice === diaActual ? 'activo' : ''}`}>
-                {checkImage(
-                  dia.imagen,
-                  dia.alt || 'Imagen del carrusel de PetsHeaven',
-                  imgDefault,
-                  'imagen-carrusel'
-                )}
+                <CheckImage 
+                  src={dia.imagen}
+                  alt={dia.alt || 'Imagen del carrusel de PetsHeaven'}
+                  imgDefault={imgDefault}
+                  className='imagen-carrusel'
+                />
               </div> 
             ))}
             <div className='indicadores'>
@@ -217,12 +218,12 @@ export default function VeterinariaPage({ URL = '', setArriveTo }) {
           >
             <div className='contenedor'>
               <motion.div className='contenedor-nosotros'>
-                {checkImage(
-                  'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Fondos/NosotrosR.jpg',
-                  'cuatro veterinarios sonrientes posando con tres perros de tamaño medio en un fondo claro',
-                  imgDefault,
-                  'img-nosotros'
-                )}
+                <CheckImage 
+                  src='https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Fondos/NosotrosR.jpg'
+                  alt='cuatro veterinarios sonrientes posando con tres perros de tamaño medio en un fondo claro'
+                  imgDefault={imgDefault}
+                  className='img-nosotros'
+                />
                 <motion.div className='texto-nosotros' variants={itemVariants}>
                   <h2 className='titulo-seccion'>Quienes somos</h2>
                   <p className='texto-seccion mb-4'>
@@ -274,14 +275,17 @@ export default function VeterinariaPage({ URL = '', setArriveTo }) {
                     whileHover={{ scale: 1.03 }}
                   >
                     <div className='imagen-servicio'>
-                      {checkImage(i.img_cat,
-                        i.nom_cat === 'Consulta General' ? 'Veterinario revisando a un gato durante una consulta general' :
+                      <CheckImage 
+                        src={i.img_cat}
+                        alt={i.nom_cat === 'Consulta General' ? 'Veterinario revisando a un gato durante una consulta general' :
                         i.nom_cat === 'Vacunación' ? 'Veterinario aplicando vacuna a un cachorro' :
                         i.nom_cat === 'Cirugía' ? 'Veterinarios realizando una cirugía a una mascota en quirófano' :
                         i.nom_cat === 'Emergencias 24h' ? 'Atención veterinaria de emergencia a un perro por dos profesionales' :
                         i.nom_cat === 'Spa y Baño' ? 'Perro pequeño recibiendo baño con espuma en una clínica veterinaria' :
-                        `Imagen representativa del servicio ${i.nom_cat}`,
-                        imgDefault,'img-servicio')}
+                        `Imagen representativa del servicio ${i.nom_cat}`}
+                        imgDefault={imgDefault}
+                        className='img-servicio'
+                      />
                     </div>
                     <div className='contenido-servicio'>
                       <h3 className='titulo-servicio'>{i.nom_cat}</h3>

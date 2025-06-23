@@ -1,4 +1,4 @@
--- Active: 1750268475844@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.RegistStaff(
     IN p_nom_per VARCHAR(100),
     IN p_ape_per VARCHAR(100),
@@ -30,12 +30,12 @@ BEGIN
 
     START TRANSACTION;
 
-    IF (SELECT id_per FROM personas WHERE doc_per = p_doc_per;) THEN 
+    IF (SELECT id_per FROM personas WHERE doc_per = p_doc_per) THEN 
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este numero de documento ya esta registrado en el sistema';
     END IF;
 
     
-    IF (SELECT id_per FROM personas WHERE email_per = p_email_per;) THEN 
+    IF (SELECT id_per FROM personas WHERE email_per = p_email_per) THEN 
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este correo electrónico ya esta registrado en el sistema';
     END IF;
 
@@ -88,12 +88,12 @@ BEGIN
 
     START TRANSACTION;
 
-    IF (SELECT id_per FROM personas WHERE doc_per = p_doc_per;) THEN 
+    IF (SELECT id_per FROM personas WHERE doc_per = p_doc_per) THEN 
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este numero de documento ya esta registrado en el sistema';
     END IF;
 
     
-    IF (SELECT id_per FROM personas WHERE email_per = p_email_per;) THEN 
+    IF (SELECT id_per FROM personas WHERE email_per = p_email_per) THEN 
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este correo electrónico ya esta registrado en el sistema';
     END IF;
 

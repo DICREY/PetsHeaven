@@ -1,19 +1,22 @@
-// import { compressImageFromUrl } from './compressor'
+// Librarys 
+import React, { useState } from "react"
+
 // Imports 
 import { errorStatusHandler } from '../Componentes/Varios/Util'
+// import { compressImageFromUrl } from './compressor'
 
 // Verify if load img
-export const checkImage = (src = '', alt, imgDefault = '', className = '') => {
-    const img = new Image()
-    let srcMod = src? src: imgDefault
+export const CheckImage = ({ src = '', alt = '', imgDefault = '', className = '' }) => {
+  const [imgSrc, setImgSrc] = useState(src && src !== 'No-Registrado' ? src : imgDefault)
 
-    img.src = src
-    img.onerror = () => <p>No se pudo</p>
-    img.onload = () => <img
-        className={`${className}`}
-        src={srcMod}
-        alt={alt || "No Registrado"}
+  return (
+    <img
+      className={className}
+      src={imgSrc}
+      alt={alt || "No Registrado"}
+      onError={() => setImgSrc(imgDefault)}
     />
+  )
 }
 
 export const ReqFunction = async (

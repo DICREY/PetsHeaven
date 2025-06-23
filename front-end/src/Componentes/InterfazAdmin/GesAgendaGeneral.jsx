@@ -9,12 +9,10 @@ import esLocale from "@fullcalendar/core/locales/es"
 
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
-import { GetData, PostData, ModifyData } from '../Varios/Requests'
+import { GetData, ModifyData } from '../Varios/Requests'
 import { errorStatusHandler } from '../Varios/Util'
 import { Notification } from '../Global/Notifys'
-import { searchFilter } from '../Varios/Util'
 import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
-import { ReqFunction } from '../../Utils/Utils'
 import AppointmentForm from './FormulariosAdmin/AgendarCita'
 // import Footer from '../Varios/Footer2'
 

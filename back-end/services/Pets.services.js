@@ -207,7 +207,7 @@ class Pet {
             // Functions
             const format = (datas) => {
                 const results = datas.map(data => {
-                    const appoimentList = data.citas.split(";").filter(Boolean)
+                    const appoimentList = data?.citas?.split(";").filter(Boolean)
                     .map(item => {
                         const appoiment = item.split("---")
                         return {
@@ -218,13 +218,14 @@ class Pet {
                             nom_ser: appoiment[4],
                             pre_ser: appoiment[5],
                             des_ser: appoiment[6],
-                            tec_des_ser: appoiment[7],
-                            nom_per: appoiment[8],
-                            ape_per: appoiment[9],
-                            especialidad: appoiment[10],
-                            nom_cat: appoiment[11],
-                            img_ser: appoiment[12],
-                            fot_vet: appoiment[13]
+                            nom_tip_ser: appoiment[7],
+                            nom_cat: appoiment[8],
+                            img_cat: appoiment[9],
+                            nom_per: appoiment[10],
+                            ape_per: appoiment[11],
+                            especialidad: appoiment[12],
+                            nom_cat: appoiment[13],
+                            fot_per: appoiment[14],
                         }
                     })
                     return {

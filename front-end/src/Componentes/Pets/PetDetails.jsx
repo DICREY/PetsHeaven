@@ -9,11 +9,12 @@ import { HistoryTest } from './historyTest'
 import { Notification } from '../Global/Notifys'
 import { AuthContext } from '../../Contexts/Contexts'
 import { ModifyData, PostData } from '../Varios/Requests'
-import { checkImage, getAge, errorStatusHandler, divideList, uploadImg } from '../Varios/Util'
+import { getAge, errorStatusHandler, divideList, uploadImg } from '../Varios/Util'
 import { FormularioConsulta } from '../InterfazAdmin/FormulariosAdmin/Consulta'
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { HeaderUser } from '../BarrasNavegacion/HeaderUser'
 import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
+import { CheckImage } from '../../Utils/Utils'
 import Footer from '../Varios/Footer2'
 
 // Import styles 
@@ -311,12 +312,12 @@ export const PetDetails = ({ datas, imgPetDefault = '', URL = '', tab = 'Datos G
                                             {/* Header con foto y datos principales */}
                                             <header className='pet-header-pet-details'>
                                                 <aside className='pet-avatar-container-pet-details'>
-                                                    {checkImage(
-                                                        datas.fot_mas,
-                                                        `${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`,
-                                                        imgPetDefault,
-                                                        'pet-avatar-pet-details'
-                                                    )}
+                                                    <CheckImage
+                                                        src={datas.fot_mas}
+                                                        alt={`${datas.esp_mas} de raza ${datas.raz_mas} color ${datas.col_mas} con nombre ${datas.nom_mas}`}
+                                                        imgDefault={imgPetDefault}
+                                                        className='pet-avatar-pet-details'
+                                                    />
                                                 </aside>
 
                                                 <aside className='pet-main-info-pet-details'>
@@ -339,6 +340,7 @@ export const PetDetails = ({ datas, imgPetDefault = '', URL = '', tab = 'Datos G
                                                 />
                                             </div>
                                             <section className='pet-content-pet-details'>
+                                                {console.log(appointment)}
                                                 {appointment[page - 1]?.map((item, index) => (
                                                     <article
                                                         key={index}

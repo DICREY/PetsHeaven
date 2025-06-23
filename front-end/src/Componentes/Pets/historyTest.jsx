@@ -2,7 +2,8 @@
 import React from 'react'
 
 // Imports 
-import { checkImage, formatDate } from '../Varios/Util'
+import { formatDate } from '../Varios/Util'
+import { CheckImage } from '../../Utils/Utils'
 
 // Imports styles
 import './historyTest.css'
@@ -26,12 +27,12 @@ export const HistoryTest = ({ appointmentData, onClose, imgDefault }) => {
                 <article className='window-content'>
                     <div className='pet-info-section'>
                         <div className='pet-avatar-container'>
-                            {checkImage(
-                                appointmentData.fot_mas,
-                                `${appointmentData.nom_mas} - ${appointmentData.esp_mas}`,
-                                imgDefault,
-                                'pet-avatar'
-                            )}
+                            <CheckImage
+                                src={appointmentData.fot_mas}
+                                alt={`${appointmentData.nom_mas} - ${appointmentData.esp_mas}`}
+                                imgDefault={imgDefault}
+                                className='pet-avatar'
+                            />
                         </div>
                         <div className='pet-details'>
                             <h3>{appointmentData.nom_mas}</h3>

@@ -1,4 +1,62 @@
 -- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
+CREATE PROCEDURE pets_heaven.RegistAppointment(
+    IN p_fec_cit DATE,                -- Fecha de la cita
+    IN p_hor_ini_cit TIME,            -- Hora de inicio de la cita
+    IN p_hor_fin_cit TIME,            -- Hora de fin de la cita
+    IN p_con_cit VARCHAR(100),                 -- Consultorio
+    IN p_mot_cit TEXT,                -- Motivo de la consulta
+    IN p_ser INT,                 -- servicio
+    IN p_vet INT,                 -- veterinario
+    IN p_mas INT                  -- mascota
+)
+BEGIN
+    DECLARE p_id_con_cit INT;
+    DECLARE p_id_ser INT;
+    DECLARE p_id_vet INT;
+    DECLARE p_id_mas INT;
+    DECLARE v_conflicto INT DEFAULT 0;
+
+    SELECT id_con INTO p_id_con_cit FROM consultorios WHERE nom_con LIKE p_con_cit LIMIT 1;
+    IF p_id_con_cit IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Consultorio no encontrado';
+    END IF;
+
+    SELECT id_cat INTO p_id_ser FROM categorias_ser WHERE nom_cat LIKE CONCAT('%', p_ser, '%') LIMIT 1;
+    IF p_id_ser IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Servicio no encontrado';
+    END IF;
+
+    SELECT id_per INTO p_id_vet FROM personas WHERE doc_per = p_vet LIMIT 1;
+    IF p_id_vet IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Veterinario no encontrado';
+    END IF;
+
+    SELECT id_mas INTO p_id_mas FROM mascotas WHERE nom_mas LIKE CONCAT('%', p_mas, '%') LIMIT 1;
+    IF p_id_mas IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Mascota no encontrada';
+    END IF;
+
+    -- Verificar si ya existe una cita en ese consultorio y horario
+    SELECT COUNT(*) INTO v_conflicto
+    FROM citas
+    WHERE con_cit = p_con_cit
+      AND fec_cit = p_fec_cit
+      AND (
+            (hor_ini_cit < p_hor_fin_cit AND hor_fin_cit > p_hor_ini_cit)
+          );
+
+    IF v_conflicto > 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Ya existe una cita en ese consultorio y horario';
+    ELSE
+        INSERT INTO citas (
+            fec_cit, hor_ini_cit, hor_fin_cit, mot_cit, est_cit,
+            con_cit, ser_cit, vet_cit, mas_cit
+        ) VALUES (
+            p_fec_cit, p_hor_ini_cit, p_hor_fin_cit, IFNULL(p_mot_cit, 'No-registrado'), 'PENDIENTE',
+            p_con_cit, p_id_ser, p_id_vet, p_id_mas
+        );
+    END IF;
+END //
 CREATE PROCEDURE pets_heaven.SearchAllAppointments()
 BEGIN 
     SELECT 
@@ -8,7 +66,9 @@ BEGIN
         c.fec_cit,
         c.hor_ini_cit,
         c.hor_fin_cit,
-        c.lug_ate_cit,
+        c.con_cit, -- ID del consultorio
+        con.nom_con AS nom_con, -- Nombre del consultorio
+        ts.nom_tip_ser,
         cs.nom_cat,
         s.nom_ser,
         s.des_ser,
@@ -30,21 +90,18 @@ BEGIN
         p_prop.ape_per AS prop_ape_per,
         p_prop.cel_per AS prop_cel_per,
         p_prop.doc_per AS prop_doc_per,
-        c.estado
+        c.est_cit
     FROM 
         citas c
-    JOIN 
-        mascotas m ON m.id_mas = c.mas_cit
-    JOIN 
-        servicios s ON s.id_ser = c.ser_cit
-    JOIN 
-        categorias_ser cs ON cs.id_cat = s.cat_ser
-    JOIN 
-        personas p_vet ON p_vet.id_per = c.vet_cit
-    JOIN 
-        personas p_prop ON p_prop.id_per = m.id_pro_mas
+    JOIN mascotas m ON m.id_mas = c.mas_cit
+    JOIN servicios s ON s.id_ser = c.ser_cit
+    JOIN tipos_servicios ts ON ts.id_tip_ser = s.tip_ser
+    JOIN categorias_servicios cs ON cs.id_cat = ts.cat_tip_ser
+    JOIN consultorios con ON con.id_con = c.con_cit
+    JOIN personas p_vet ON p_vet.id_per = c.vet_cit
+    JOIN personas p_prop ON p_prop.id_per = m.id_pro_mas
     WHERE
-        c.estado != 'CANCELADO'
+        c.est_cit != 'CANCELADA'
     ORDER BY c.fec_reg_cit
     LIMIT 1000;
 END //
@@ -60,7 +117,9 @@ BEGIN
         c.fec_cit,
         c.hor_ini_cit,
         c.hor_fin_cit,
-        c.lug_ate_cit,
+        c.con_cit,
+        con.nom_con AS nom_con,
+        ts.nom_tip_ser,
         cs.nom_cat,
         s.nom_ser,
         s.des_ser,
@@ -81,94 +140,49 @@ BEGIN
         p_prop.ape_per AS prop_ape_per,
         p_prop.cel_per AS prop_cel_per,
         p_prop.doc_per AS prop_doc_per,
-        c.estado
+        c.est_cit
     FROM 
         citas c
-    JOIN 
-        mascotas m ON m.id_mas = c.mas_cit
-    JOIN 
-        servicios s ON s.id_ser = c.ser_cit
-    JOIN 
-        categorias_ser cs ON cs.id_cat = s.cat_ser
-    JOIN 
-        personas p_vet ON p_vet.id_per = c.vet_cit
-    JOIN 
-        personas p_prop ON p_prop.id_per = m.id_pro_mas
+    JOIN mascotas m ON m.id_mas = c.mas_cit
+    JOIN servicios s ON s.id_ser = c.ser_cit
+    JOIN tipos_servicios ts ON ts.id_tip_ser = s.tip_ser
+    JOIN categorias_servicios cs ON cs.id_cat = ts.cat_tip_ser
+    JOIN consultorios con ON con.id_con = c.con_cit
+    JOIN personas p_vet ON p_vet.id_per = c.vet_cit
+    JOIN personas p_prop ON p_prop.id_per = m.id_pro_mas
     WHERE
-        c.estado != 'CANCELADO'
+        c.est_cit != 'CANCELADA'
         AND (
             p_vet.doc_per = p_by
             OR p_vet.email_per = p_by
+            OR p_prop.doc_per = p_by
+            OR p_prop.email_per = p_by
         )
     ORDER BY c.fec_reg_cit
     LIMIT 1000;
 END //
 CREATE PROCEDURE pets_heaven.SearchConsultingRooms()
 BEGIN
-    IF (
+    IF NOT EXISTS (
+        SELECT 1 FROM consultorios
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Consultorios no encontrados';
+    ELSE
         SELECT
-            c.nom_esp,
-            c.esp_esp,
-            c.des_esp,
-            c.sta_esp
+            id_con,        -- ID único del consultorio
+            cod_con,       -- Código identificador del consultorio
+            nom_con,       -- Nombre del consultorio
+            des_con,       -- Descripción del consultorio
+            tip_con,       -- Tipo de consultorio
+            equ_con,       -- Equipamiento disponible
+            cap_con,       -- Capacidad máxima
+            est_con        -- Estado de actividad
         FROM
-            consultorios c
+            consultorios
         ORDER BY
-            c.id_esp
-        LIMIT 1000
-    ) IS NULL THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Consultorios no encontrados';
+            id_con
+        LIMIT 1000;
     END IF;
-END //
-CREATE PROCEDURE pets_heaven.RegistAppointment(
-    IN p_reg_date DATE,
-    IN p_date DATE,
-    IN p_hor_ini TIME,
-    IN p_hor_fin TIME,
-    IN p_lugar VARCHAR(100),
-    IN p_ser VARCHAR(100),
-    IN p_vet VARCHAR(100),
-    IN p_mas VARCHAR(100),
-    IN p_status VARCHAR(25)
-)
-BEGIN
-    DECLARE p_id_ser INT;
-    DECLARE p_id_vet INT;
-    DECLARE p_id_mas INT;
-
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN
-        ROLLBACK;
-        RESIGNAL;
-    END;
-
-    SET autocommit = 0;
-    START TRANSACTION;
-
-    -- Añadir LIMIT 1 a cada consulta
-    SELECT id_cat INTO p_id_ser FROM categorias_ser WHERE nom_cat LIKE CONCAT('%', p_ser, '%') LIMIT 1;
-    IF p_id_ser IS NULL THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Servicio no encontrado';
-    END IF;
-
-    -- Para documentos usar igualdad exacta (no LIKE)
-    SELECT id_per INTO p_id_vet FROM personas WHERE doc_per = p_vet LIMIT 1;
-    IF p_id_vet IS NULL THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Veterinario no encontrado';
-    END IF;
-
-    SELECT id_mas INTO p_id_mas FROM mascotas WHERE nom_mas LIKE CONCAT('%', p_mas, '%') LIMIT 1;
-    IF p_id_mas IS NULL THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Mascota no encontrada';
-    END IF;
-
-    INSERT INTO pets_heaven.citas (
-        fec_reg_cit, fec_cit, hor_ini_cit, hor_fin_cit, lug_ate_cit, ser_cit, vet_cit, mas_cit, estado
-    ) VALUES (
-        p_reg_date, p_date, p_hor_ini, p_hor_fin, p_lugar, p_id_ser, p_id_vet, p_id_mas, p_status
-    );
-
-    COMMIT;
-    SET autocommit = 1;
 END //
 
 CREATE PROCEDURE pets_heaven.CancelAppointment(
@@ -186,13 +200,14 @@ BEGIN
 
     START TRANSACTION;
 
-    UPDATE 
-        pets_heaven.citas
-    SET 
-        estado = 'CANCELADO'
-    WHERE 
-        id_cit = p_id_cit 
-        AND mas_cit = p_id_mas;
+    IF NOT EXISTS (SELECT 1 FROM citas WHERE id_cit = p_id_cit) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cita no encontrada en el sistema';
+    END IF;
+
+    UPDATE pets_heaven.citas
+    SET est_cit = 'CANCELADA'
+    WHERE id_cit = p_id_cit 
+      AND mas_cit = p_id_mas;
 
     COMMIT;
 
@@ -201,13 +216,16 @@ END //
 
 CREATE PROCEDURE pets_heaven.UpdateAppointmentDate(
     IN p_id_cit INT,
-    IN p_id_mas INT,
+    IN p_nom_mas VARCHAR(100),
+    IN p_pro_mas VARCHAR(20),
     IN p_new_date DATE,
     IN p_new_hor_ini TIME,
     IN p_new_hor_fin TIME,
-    IN p_new_lugar VARCHAR(100)
+    IN p_new_con INT
 )
 BEGIN
+    DECLARE p_id_mas INT;
+    DECLARE p_id_pro_mas INT;
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
@@ -215,23 +233,33 @@ BEGIN
     END;
 
     SET autocommit = 0;
-
     START TRANSACTION;
 
-    UPDATE pets_heaven.citas
+    SELECT id_per INTO p_id_pro_mas FROM personas WHERE doc_per = p_pro_mas;
+    IF p_id_pro_mas IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Propietario de mascota no encontrado en el sistema';
+    END IF;
 
+    SELECT id_mas INTO p_id_mas FROM mascotas WHERE nom_mas = p_nom_mas AND id_pro_mas = p_id_pro_mas;
+    IF p_id_mas IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Mascota no encontrada en el sistema';
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM citas WHERE id_cit = p_id_cit AND mas_cit = p_id_mas) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cita no encontrada en el sistema';
+    END IF;
+
+    UPDATE pets_heaven.citas
     SET
         fec_cit = p_new_date,
         hor_ini_cit = p_new_hor_ini,
         hor_fin_cit = p_new_hor_fin,
-        lug_ate_cit = p_new_lugar
-
+        con_cit = p_new_con
     WHERE
         id_cit = p_id_cit 
         AND mas_cit = p_id_mas;
 
     COMMIT;
-
     SET autocommit = 1;
 END //
 
@@ -239,3 +267,4 @@ END //
 /* DROP PROCEDURE RegistAppointment; */
 /* DROP PROCEDURE SearchConsultingRooms; */
 /* CALL `SearchAppointmentsByUser`('1298765432'); */
+CALL pets_heaven.SearchAllAppointments();

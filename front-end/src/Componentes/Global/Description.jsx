@@ -2,7 +2,8 @@
 import React from "react"
 
 // Imports 
-import { formatDate, checkImage, LegalAge } from '../Varios/Util'
+import { formatDate, LegalAge } from '../Varios/Util'
+import { CheckImage } from "../../Utils/Utils"
 
 // Component 
 export class Description extends React.Component {
@@ -74,14 +75,21 @@ export class Description extends React.Component {
                 <div className='perfil-regusuario'>
                   <div className='imagen-regusuario'>
                     {profileImage?
-                      checkImage(
-                        profileImage,
-                        'imagen del usuario para guardar en el sistema',
-                        imgDefault):
-                      checkImage(
-                        datas[headerImg],
-                        'imagen del usuario guardada en el sistema',
-                        imgDefault)
+                      (
+                        <CheckImage 
+                          src={profileImage}
+                          alt='imagen del usuario para guardar en el sistema'
+                          imgDefault={imgDefault}
+                          className='pets-card-img'
+                        />
+                      ):(
+                        <CheckImage 
+                          src={datas[headerImg]}
+                          alt='imagen del usuario guardada en el sistema'
+                          imgDefault={imgDefault}
+                          className='pets-card-img'
+                        />
+                      )
                     }
                   </div>
                   {/* <button 

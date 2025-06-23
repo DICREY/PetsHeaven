@@ -27,12 +27,12 @@ BEGIN
 
     START TRANSACTION;
 
-    IF (SELECT id_per FROM personas WHERE doc_per = p_doc_per;) THEN 
+    IF (SELECT id_per FROM personas WHERE doc_per = p_doc_per) THEN 
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este numero de documento ya esta registrado en el sistema';
     END IF;
 
     
-    IF (SELECT id_per FROM personas WHERE email_per = p_email_per;) THEN 
+    IF (SELECT id_per FROM personas WHERE email_per = p_email_per) THEN 
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este correo electrónico ya esta registrado en el sistema';
     END IF;
 
@@ -170,7 +170,7 @@ BEGIN
 
     START TRANSACTION;
 
-    IF (SELECT id_per FROM personas WHERE doc_per = p_doc_per;) IS NULL THEN 
+    IF (SELECT id_per FROM personas WHERE doc_per = p_doc_per) IS NULL THEN 
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta persona no esta registrada en el sistema';
     END IF;
 
@@ -286,7 +286,7 @@ BEGIN
 
     START TRANSACTION;
 
-    IF (SELECT id_per FROM personas WHERE doc_per = p_by;) IS NULL THEN 
+    IF (SELECT id_per FROM personas WHERE doc_per = p_by) IS NULL THEN 
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta persona no esta registrada en el sistema';
     END IF;
 

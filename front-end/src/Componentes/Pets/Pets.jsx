@@ -4,12 +4,13 @@ import { useNavigate } from 'react-router-dom'
 
 // Imports
 import { GetData } from '../Varios/Requests'
-import { errorStatusHandler, checkImage } from '../Varios/Util'
+import { errorStatusHandler } from '../Varios/Util'
 import { Notification } from '../Global/Notifys'
 import { Loader } from '../Loaders/Loader'
 import { NotFound } from '../Errores/NotFound'
 import { AuthContext } from '../../Contexts/Contexts'
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
+import { CheckImage } from '../../Utils/Utils'
 
 // Import Styles 
 import '../../../src/styles/Pets/pets.css'
@@ -96,12 +97,12 @@ export const Pets = ({ URL = '', imgPetDefault = '', setPetSelect }) => {
                                         {petsData.map((i, index) => (
                                             <aside key={index} className='pets-card'>
                                                 <div className='pets-img-container'>
-                                                    {checkImage(
-                                                        i.fot_mas,
-                                                        `${i.esp_mas} de raza ${i.raz_mas} color ${i.col_mas} con nombre ${i.nom_mas}`,
-                                                        imgDefault,
-                                                        'pets-card-img'
-                                                    )}
+                                                    <CheckImage 
+                                                        src={i.fot_mas}
+                                                        alt={`${i.esp_mas} de raza ${i.raz_mas} color ${i.col_mas} con nombre ${i.nom_mas}`}
+                                                        imgDefault={imgDefault}
+                                                        className='pets-card-img'
+                                                    />
                                                     <span className='pets-species-badge'>{i.esp_mas}</span>
                                                 </div>
 

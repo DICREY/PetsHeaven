@@ -7,7 +7,7 @@ import {
 } from 'lucide-react'
 
 // Imports
-import { checkImage } from '../Varios/Util'
+import { CheckImage } from '../../Utils/Utils'
 import { AuthContext } from '../../Contexts/Contexts'
 
 // Import styles
@@ -67,12 +67,12 @@ export const NavBarAdmin = () => {
       >
         <header className='perfilsuperiornavadmin'>
           <picture className='avatarnavadmin'>
-            {checkImage(
-              user.img,
-              `${user.names} ${user.lastNames}`,
-              imgDefault,
-              'inicialnavadmin'
-            )}
+            <CheckImage 
+                src={user.img}
+                alt={`${user.names} ${user.lastNames}`}
+                imgDefault={imgDefault}
+                className='inicialnavadmin'
+            />
           </picture>
           <div className='nombrenavadmin'>
             {user.names} {user.lastNames} 
@@ -131,7 +131,7 @@ export const NavBarAdmin = () => {
               <ul className={`submenunavadmin ${agendaAbierta ? 'abiertonavadmin' : 'cerradonavadmin'}`}>
                 {admin && (
                   <li>
-                  <NavLink to={'/calendario/general'} className='subenlacenavadmin'>
+                  <NavLink to={'/admin/calendario/general'} className='subenlacenavadmin'>
                     <CalendarRange className='iconosubnavadmin' />
                     <span>Agenda General</span>
                   </NavLink>

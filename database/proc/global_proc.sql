@@ -30,29 +30,22 @@ END //
 CREATE PROCEDURE pets_heaven.GetAdminStats()
 BEGIN
     SELECT 
-        COUNT(v.id_vet) AS doc,
-        ( SELECT COUNT(*) FROM mascotas m WHERE m.estado = 1) AS mas,
-        ( 
+        COUNT(v.id_vet) AS doc, -- Total de veterinarios
+        (SELECT COUNT(*) FROM mascotas m WHERE m.estado = 1) AS mas, -- Mascotas activas
+        (
             SELECT COUNT(*) 
-            FROM 
-                citas c 
-            WHERE 
-                c.fec_cit LIKE CURRENT_DATE()
-                AND c.estado != 'CANCELADO'
-        ) AS cit,
-        ( 
+            FROM citas c 
+            WHERE c.fec_cit = CURRENT_DATE() AND c.est_cit != 'CANCELADA'
+        ) AS cit, -- Citas de hoy no canceladas
+        (
             SELECT COUNT(*) 
-            FROM 
-                citas c 
-            JOIN 
-                servicios s ON s.id_ser = c.ser_cit
-            JOIN
-                categorias_ser cs ON cs.id_cat = s.cat_ser
-            WHERE 
-                cs.nom_cat LIKE "Emergencias 24h"
-        ) AS emg
-    FROM 
-        veterinarios v
+            FROM citas c
+            JOIN servicios s ON s.id_ser = c.ser_cit
+            JOIN tipos_servicios ts ON ts.id_tip_ser = s.tip_ser
+            JOIN categorias_servicios cs ON cs.id_cat = ts.cat_tip_ser
+            WHERE cs.nom_cat = "Emergencias 24h"
+        ) AS emg -- Citas de emergencias
+    FROM veterinarios v
     LIMIT 1000;
 END //
 
@@ -61,57 +54,42 @@ CREATE PROCEDURE pets_heaven.GetStaffStats(
 )
 BEGIN
     SELECT 
-        COUNT(v.id_vet) AS doc,
-        (   
-            SELECT 
-                COUNT(*) 
-            FROM 
-                citas cc
-            JOIN
-                servicios ccs ON cc.ser_cit = ccs.id_ser
-            JOIN
-                categorias_ser cs ON cs.id_cat = ccs.cat_ser
-            WHERE
-                cc.vet_cit = v.id_vet
-                AND cs.nom_cat LIKE CONCAT('%','Cirugía','%')
-        ) AS cir_pro,
-        ( 
-            SELECT 
-                COUNT(*) 
-            FROM 
-                citas cc
-            JOIN
-                servicios ccs ON cc.ser_cit = ccs.id_ser
-            JOIN
-                categorias_ser cs ON cs.id_cat = ccs.cat_ser
-            WHERE
-                cc.vet_cit = v.id_vet
-                AND cs.nom_cat LIKE CONCAT('%','Emergencias 24h','%')
-        ) AS emg_ate,
-        ( 
-            SELECT 
-                COUNT(*) 
-            FROM 
-                citas cc
-            JOIN
-                servicios ccs ON cc.ser_cit = ccs.id_ser
-            JOIN
-                categorias_ser cs ON cs.id_cat = ccs.cat_ser
-            WHERE
-                cc.vet_cit = v.id_vet
-                AND cs.nom_cat LIKE CONCAT('%','Consulta General','%')
-        ) AS con_com
-    FROM
-        veterinarios v
-    JOIN
-        personas p
-    WHERE
-        p.doc_per LIKE p_by
+        COUNT(v.id_vet) AS doc, -- Total de veterinarios encontrados
+        (
+            SELECT COUNT(*) 
+            FROM citas cc
+            JOIN servicios ccs ON cc.ser_cit = ccs.id_ser
+            JOIN tipos_servicios tcs ON tcs.id_tip_ser = ccs.tip_ser
+            JOIN categorias_servicios cs ON cs.id_cat = tcs.cat_tip_ser
+            WHERE cc.vet_cit = v.id_vet
+              AND cs.nom_cat LIKE '%Cirugía%'
+        ) AS cir_pro, -- Cirugías realizadas por el veterinario
+        (
+            SELECT COUNT(*) 
+            FROM citas cc
+            JOIN servicios ccs ON cc.ser_cit = ccs.id_ser
+            JOIN tipos_servicios tcs ON tcs.id_tip_ser = ccs.tip_ser
+            JOIN categorias_servicios cs ON cs.id_cat = tcs.cat_tip_ser
+            WHERE cc.vet_cit = v.id_vet
+              AND cs.nom_cat LIKE '%Emergencias 24h%'
+        ) AS emg_ate, -- Emergencias atendidas por el veterinario
+        (
+            SELECT COUNT(*) 
+            FROM citas cc
+            JOIN servicios ccs ON cc.ser_cit = ccs.id_ser
+            JOIN tipos_servicios tcs ON tcs.id_tip_ser = ccs.tip_ser
+            JOIN categorias_servicios cs ON cs.id_cat = tcs.cat_tip_ser
+            WHERE cc.vet_cit = v.id_vet
+              AND cs.nom_cat LIKE '%Consulta General%'
+        ) AS con_com -- Consultas generales realizadas por el veterinario
+    FROM veterinarios v
+    JOIN personas p ON v.id_vet = p.id_per
+    WHERE p.doc_per LIKE p_by
     LIMIT 1000;
 END //
 
-DROP PROCEDURE pets_heaven.`Login`;
-/* CALL `GetStatsAdmin`(); */
-/* CALL `GetStatsVet`('1298765432'); */
+/* DROP PROCEDURE pets_heaven.`Login`; */
+/* CALL `GetAdminStats`(); */
+/* CALL `GetStaffStats`('1298765432'); */
 /* DROP PROCEDURE `GetAdminStats`; */
 /* DROP PROCEDURE `GetStatsVet`; */

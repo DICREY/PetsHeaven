@@ -104,6 +104,7 @@ Route.post('/history', ValidatorRol("veterinario") ,async (req,res) => {
 
         return res.status(404).json({message: "Historial no encontrado"})
     } catch (err) {
+        console.log(err)
         if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
         if(err.status) return res.status(err.status).json(err.message)
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
