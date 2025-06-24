@@ -251,6 +251,8 @@ export const ExamenesLaboratorio = ({ URL= '' }) => {
             sta: 'disponible',
             pri: 'precio',
             cod: 'id',
+            time: 'tiempoResultados',
+            alert: 'indicaciones',
           }}
           SearchHeaders={['categoria']}
           OpenDetails={abrirModalDetalle}

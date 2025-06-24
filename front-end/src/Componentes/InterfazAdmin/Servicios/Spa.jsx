@@ -177,7 +177,7 @@ export const SpaMascotas = ({ URL = '' }) => {
   }
 
   return (
-    <main className="contenedor-spa">
+    <main className="contenedoradminhome">
       <NavBarAdmin/>
       <section className="tablero-admin">
         {admin? (<HeaderAdmin URL={URL} />):(<HeaderUser />)}
@@ -196,6 +196,8 @@ export const SpaMascotas = ({ URL = '' }) => {
             sta: 'disponible',
             pri: 'precio',
             cod: 'id',
+            time: 'duracion',
+            alert: 'frecuencia',
           }}
           SearchHeaders={['categoria']}
           OpenCreate={abrirModalAgregar}
@@ -212,7 +214,7 @@ export const SpaMascotas = ({ URL = '' }) => {
               <div className="modal-encabezado-spa">
                 <h3 className="titulo-modal-spa">{modoEdicion ? "Editar Servicio" : "Agregar Nuevo Servicio"}</h3>
                 <button onClick={() => setMostrarFormulario(false)} className="cerrar-modal-spa">
-                  <X size={20} />
+                  <X className="icon" />
                 </button>
               </div>
               <div className="formulario-spa">
@@ -385,13 +387,13 @@ export const SpaMascotas = ({ URL = '' }) => {
         {mostrarDetalle && servicioDetalle && (
           <aside className="modal-fondo-spa">
             <section className="modal-detalle-spa">
-              <div className="modal-encabezado-spa">
+              <header className="modal-encabezado-spa">
                 <h3 className="titulo-modal-spa">{servicioDetalle.nombre}</h3>
                 <button onClick={() => setMostrarDetalle(false)} className="cerrar-modal-spa">
-                  <X size={20} />
+                  <X className="icon" />
                 </button>
-              </div>
-              <div className="contenido-detalle-spa">
+              </header>
+              <section className="contenido-detalle-spa">
                 {/* Métricas principales */}
                 <div className="metricas-principales-spa">
                   <div className="metrica-spa">
@@ -422,7 +424,7 @@ export const SpaMascotas = ({ URL = '' }) => {
                 <div className="grid-detalle-spa">
                   <div className="seccion-detalle-spa">
                     <div className="encabezado-seccion-spa">
-                      <FileText size={20} className="icono-seccion-spa" />
+                      <FileText className="icono-seccion-spa icon" />
                       <h4 className="titulo-seccion-spa">Descripción</h4>
                     </div>
                     <p className="texto-seccion-spa">{servicioDetalle.descripcion}</p>
@@ -430,7 +432,7 @@ export const SpaMascotas = ({ URL = '' }) => {
 
                   <div className="seccion-detalle-spa">
                     <div className="encabezado-seccion-spa">
-                      <Heart size={20} className="icono-seccion-spa" />
+                      <Heart className="icono-seccion-spa icon" />
                       <h4 className="titulo-seccion-spa">Beneficios</h4>
                     </div>
                     <p className="texto-seccion-spa">{servicioDetalle.beneficios}</p>
@@ -438,7 +440,7 @@ export const SpaMascotas = ({ URL = '' }) => {
 
                   <div className="seccion-detalle-spa">
                     <div className="encabezado-seccion-spa">
-                      <Sparkles size={20} className="icono-seccion-spa" />
+                      <Sparkles className="icono-seccion-spa icon" />
                       <h4 className="titulo-seccion-spa">Productos</h4>
                     </div>
                     <p className="texto-seccion-spa">{servicioDetalle.productos}</p>
@@ -446,7 +448,7 @@ export const SpaMascotas = ({ URL = '' }) => {
 
                   <div className="seccion-detalle-spa">
                     <div className="encabezado-seccion-spa">
-                      <Target size={20} className="icono-seccion-spa" />
+                      <Target className="icono-seccion-spa icon" />
                       <h4 className="titulo-seccion-spa">Recomendaciones</h4>
                     </div>
                     <p className="texto-seccion-spa">{servicioDetalle.recomendaciones}</p>
@@ -473,7 +475,7 @@ export const SpaMascotas = ({ URL = '' }) => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </section>
             </section>
           </aside>
         )}

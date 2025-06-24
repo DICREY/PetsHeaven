@@ -339,6 +339,8 @@ export function VisualizadorVacunas({ URL = '' }) {
             sta: 'disponible',
             pri: 'precio',
             cod: 'id_ser',
+            time: 'fechaVencimiento',
+            alert: 'tipoAnimal',
           }}
           datas={vacunas}
           filters={categorias}
