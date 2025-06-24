@@ -63,7 +63,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
     try {
       const pets = await GetData(`${URL}/pet/all`)
       setNotify(null)
-      setPetsDataAlmc(pets)
+      if (pets[0]) setPetsDataAlmc(pets[0])
     } catch (err) {
       setNotify(null)
       const message = errorStatusHandler(err)
