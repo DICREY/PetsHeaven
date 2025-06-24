@@ -80,7 +80,9 @@ export async function ModifyData(URL = '', datas = {}) {
             },
             withCredentials: true } )
 
-        if (response.statusText !== 'OK') throw response
+        if(200 >= response.status <= 299) {
+            return response.data
+        } else throw response
 
         return response.data
 

@@ -137,7 +137,7 @@ export const ServicesContainer = ({
                                         </span>
                                         <button
                                             className={`estado-laboratorio ${formatState(dat[headers.sta])}-laboratorio`}
-                                            onClick={(e) => ChangeState(dat[headers.cod], dat[headers.sta])}
+                                            onClick={(e) => ChangeState(dat)}
                                             aria-label={`Cambiar estado del examen ${formatState(dat[headers.sta])}. Actualmente: ${formatState(dat[headers.sta])}`}
                                         >
                                             {formatState(dat[headers.sta])}

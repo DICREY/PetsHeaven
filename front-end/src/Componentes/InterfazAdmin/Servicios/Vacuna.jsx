@@ -1,5 +1,5 @@
 // Librarys 
-import { useContext, useState, useEffect, useCallback, useRef } from "react"
+import { useContext, useState, useEffect, useRef } from "react"
 import { Syringe, X, Clock, AlertTriangle, FileText, Target } from "lucide-react"
 
 // Imports 
@@ -66,7 +66,6 @@ export function VisualizadorVacunas({ URL = '' }) {
     try {
       const response = await GetData(`${vaccineUrl}/all`)
       setNotify(null)
-      console.log(response[0])
       if (response[0] && Array.isArray(response[0])) {
         // Mapeamos los datos del backend al formato que espera el frontend
         const vacunasMapeadas = response[0].map(vacuna => ({
@@ -92,19 +91,13 @@ export function VisualizadorVacunas({ URL = '' }) {
         }))
 
         setVacunas(vacunasMapeadas)
-      } else {
-        setNotify({
-          title: 'Error',
-          message: 'No se encontraron vacunas',
-          close: setNotify
-        })
       }
     } catch (err) {
       setNotify(null)
       const message = errorStatusHandler(err)
       setNotify({
         title: 'Error',
-        message: `${message}`,
+        message: message,
         close: setNotify
       })
     }
@@ -252,8 +245,8 @@ export function VisualizadorVacunas({ URL = '' }) {
         })
 
         const deleteVaccine = await ModifyData(`${vaccineUrl}/change-state`, data)
-        console.log(deleteVaccine)
-        if (deleteVaccine) {
+        if (deleteVaccine?.change) {
+          fetchVacunas()
           setNotify({
             title: 'Éxito',
             message: 'Vacuna eliminada correctamente',
@@ -261,7 +254,6 @@ export function VisualizadorVacunas({ URL = '' }) {
           })
         }
 
-        fetchVacunas()
       } catch (err) {
         setNotify(null)
         const message = errorStatusHandler(err)
@@ -280,17 +272,17 @@ export function VisualizadorVacunas({ URL = '' }) {
   }
 
 
-  const cambiarEstado = (cod,state) => {
+  const cambiarEstado = (vaccine) => {
     setNotify({
       title: 'Atencion',
-      message: `¿Seguro que deseas cambiar esta vacuna de ${state === "DISPONIBLE" ? "Disponible" : "No disponible"} a ${state === "DISPONIBLE" ? "No disponible" : "Disponible"}?`,
+      message: `¿Seguro que deseas cambiar esta vacuna de ${vaccine.disponible? "Disponible" : "No disponible"} a ${vaccine.disponible? "No disponible" : "Disponible"}?`,
       firstOption: () => {setNotify(null); return},
-      secondOption: () => {setNotify(null); change(cod,state)},
+      secondOption: () => {setNotify(null); change(vaccine)},
       firstOptionName: 'Cancelar',
       secondOptionName: 'Continuar',
     })
 
-    const change = async (id_ser, estadoActual) => {
+    const change = async (vacc) => {
       try {
         setNotify({
           title: 'Actualizando',
@@ -299,20 +291,20 @@ export function VisualizadorVacunas({ URL = '' }) {
         })
         // Enviamos los datos en el formato que espera el backend
         const data = {
-          data: {
-            id: id_ser,
-            nom_cat: 'Vacunacion',
-            or: estadoActual === "DISPONIBLE" 
-          }
+          id: vacc.id,
+          nom_vac: vacc.nombre,
+          nom_cat: 'Vacunacion',
+          nom_pro: vacc.nombreProcedimiento
         }
-        await ModifyData(`${mainUrl}/AblOrDis`, data)
-        fetchVacunas()
-        setNotify({
-          title: 'Éxito',
-          message: `Estado de la vacuna actualizado correctamente`,
-          close: setNotify
-        })
-        
+        const change = await ModifyData(`${vaccineUrl}/change-state`, data)
+        if (change?.change) {
+          fetchVacunas()
+          setNotify({
+            title: 'Éxito',
+            message: `Estado de la vacuna actualizado correctamente`,
+            close: setNotify
+          })
+        }
       } catch (err) {
         setNotify(null)
         const message = errorStatusHandler(err)
@@ -373,14 +365,14 @@ export function VisualizadorVacunas({ URL = '' }) {
             {modalAbierto && (
               <aside className="modal-fondo-vacunas">
                 <section className="modal-vacunas">
-                  <div className="modal-encabezado-vacunas">
+                  <header className="modal-encabezado-vacunas">
                     <h3 className="titulo-modal-vacunas">{modoEdicion ? "Editar Vacuna" : "Agregar Nueva Vacuna"}</h3>
                     <button onClick={() => setModalAbierto(false)} className="cerrar-modal-vacunas">
-                      <X size={20} />
+                      <X className="icon" />
                     </button>
-                  </div>
-                  <div className="formulario-vacunas">
-                    <div className="seccion-formulario-vacunas">
+                  </header>
+                  <section className="formulario-vacunas">
+                    <section className="seccion-formulario-vacunas">
                       <h4 className="titulo-seccion-formulario">Información General</h4>
                       <div className="campos-formulario-vacunas">
                         <div className="campo-vacunas">
@@ -417,7 +409,73 @@ export function VisualizadorVacunas({ URL = '' }) {
                           />
                         </div>
                       </div>
-                    </div>
+                    </section>
+
+                    <section className="seccion-formulario-vacunas">
+                      <h4 className="titulo-seccion-formulario">Procedimiento de aplicación</h4>
+                      <div className="campos-formulario-vacunas">
+                        <div className="campo-vacunas">
+                          <label className="etiqueta-campo-vacunas">Nombre del Procedimiento</label>
+                          <input
+                            value={nuevaVacuna.nomPro}
+                            onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, nomPro: e.target.value })}
+                            className="input-vacunas"
+                            rows={2}
+                            placeholder="Nombre del procedimiento"
+                            required
+                          />
+                        </div>
+                        <div className="campo-vacunas">
+                          <label className="etiqueta-campo-vacunas">Categoría del Procedimiento</label>
+                          <select
+                            value={nuevaVacuna.catPro}
+                            onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, catPro: e.target.value })}
+                            className="textarea-vacunas"
+                            rows={2}
+                            placeholder="Posibles efectos secundarios"
+                            required
+                          >
+                            <option value="">-- Select Categoria --</option>
+                          </select>
+                        </div>
+                        <div className="campo-vacunas">
+                          <label className="etiqueta-campo-vacunas">Descripción del Procedimiento</label>
+                          <textarea
+                            value={nuevaVacuna.desPro}
+                            onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, desPro: e.target.value })}
+                            className="textarea-vacunas"
+                            rows={2}
+                            placeholder="Posibles efectos secundarios"
+                            required
+                          />
+                        </div>
+                        <div className="campo-vacunas">
+                          <label className="etiqueta-campo-vacunas">Protocolo del Procedimiento</label>
+                          <textarea
+                            value={nuevaVacuna.protPro}
+                            onChange={(e) => setNuevaVacuna({ ...nuevaVacuna, protPro: e.target.value })}
+                            className="textarea-vacunas"
+                            rows={2}
+                            placeholder="Posibles efectos secundarios"
+                            required
+                          />
+                        </div>
+                        <div className="subseccion-formulario-vacunas">
+                          <h5 className="subtitulo-seccion-formulario">Dosis Recomendadas</h5>
+                          <div className="campo-vacunas">
+                            <label className="etiqueta-campo-vacunas">Senior</label>
+                            <input
+                              type="text"
+                              value={nuevaVacuna.dosis?.senior || ""}
+                              onChange={(e) => handleDosisChange("senior", e.target.value)}
+                              className="input-vacunas"
+                              placeholder="Ej: 1 ml subcutáneo anual, evaluación previa recomendada"
+                              required
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </section>
 
                     <div className="seccion-formulario-vacunas">
                       <h4 className="titulo-seccion-formulario">Detalles y Clasificación</h4>
@@ -501,7 +559,7 @@ export function VisualizadorVacunas({ URL = '' }) {
                       </div>
                     </div>
 
-                    <div className="seccion-formulario-vacunas">
+                    <section className="seccion-formulario-vacunas">
                       <h4 className="titulo-seccion-formulario">Información Médica</h4>
                       <div className="campos-formulario-vacunas">
                         <div className="campo-vacunas">
@@ -561,7 +619,7 @@ export function VisualizadorVacunas({ URL = '' }) {
                           <label className="etiqueta-checkbox-vacunas">Disponible</label>
                         </div>
                       </div>
-                    </div>
+                    </section>
 
                     <div className="botones-formulario-vacunas">
                       <button type="button" onClick={guardarVacuna} className="boton-guardar-vacunas">
@@ -571,7 +629,7 @@ export function VisualizadorVacunas({ URL = '' }) {
                         Cancelar
                       </button>
                     </div>
-                  </div>
+                  </section>
                 </section>
               </aside>
             )}

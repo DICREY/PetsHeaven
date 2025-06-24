@@ -214,12 +214,12 @@ export const ExamenesLaboratorio = ({ URL= '' }) => {
     }
   }
 
-  const eliminarExamen = (id) => {
+  const eliminarExamen = (data) => {
     setNotify({
       title: 'Atencion',
       message: '¿Estás seguro de que deseas eliminar esta vacuna?',
       firstOption: () => {setNotify(null); return},
-      secondOption: () => {setNotify(null); DeleteService(id)},
+      secondOption: () => {setNotify(null); DeleteService(data.id)},
       firstOptionName: 'Cancelar',
       secondOptionName: 'Continuar',
     })
@@ -228,9 +228,9 @@ export const ExamenesLaboratorio = ({ URL= '' }) => {
     }
   }
 
-  const cambiarEstado = (id, e) => {
+  const cambiarEstado = (data) => {
     e.stopPropagation()
-    setExamenes(examenes.map((examen) => (examen.id === id ? { ...examen, disponible: !examen.disponible } : examen)))
+    setExamenes(examenes.map((examen) => (examen.id === data.id ? { ...examen, disponible: !examen.disponible } : examen)))
   }
 
   return (

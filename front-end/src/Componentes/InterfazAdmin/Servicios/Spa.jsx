@@ -155,12 +155,12 @@ export const SpaMascotas = ({ URL = '' }) => {
     }
   }
 
-  const eliminarServicio = (id) => {
+  const eliminarServicio = (data) => {
     setNotify({
       title: 'Atencion',
       message: '¿Estás seguro de que deseas eliminar esta vacuna?',
       firstOption: () => {setNotify(null); return},
-      secondOption: () => {setNotify(null); DeleteService(id)},
+      secondOption: () => {setNotify(null); DeleteService(data.id)},
       firstOptionName: 'Cancelar',
       secondOptionName: 'Continuar',
     })
@@ -169,10 +169,10 @@ export const SpaMascotas = ({ URL = '' }) => {
     }
   }
 
-  const cambiarEstado = (id, e) => {
+  const cambiarEstado = (data = {}) => {
     e.stopPropagation()
     setServicios(
-      servicios.map((servicio) => (servicio.id === id ? { ...servicio, disponible: !servicio.disponible } : servicio)),
+      servicios.map((servicio) => (servicio.id === data.id ? { ...servicio, disponible: !servicio.disponible } : servicio)),
     )
   }
 
