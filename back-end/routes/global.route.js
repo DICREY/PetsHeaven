@@ -106,7 +106,6 @@ Route.post('/stats/staff', ValidatorRol('veterinario'), async (req,res) => {
 
         res.status(200).json(inf)
         } catch (err) {
-        console.log('here')
         console.log(err)
         if (err.status) return res.status(err.status).json({ message: err.message })
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })

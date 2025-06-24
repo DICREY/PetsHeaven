@@ -36,7 +36,7 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
     try {
       const data = await GetData(`${mainUrl}/general`)
       setNotify(null)
-      if (data) setAppoint(data)
+      if (data) setAppoint(data[0])
     } catch (err) {
       setNotify(null)
       const message = errorStatusHandler(err)
@@ -91,7 +91,6 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
         <HeaderAdmin />
 
         <main className="contenido-principal-admin">
-
           {/* Stats Grid */}
           <section className="estadisticas-grid-admin" aria-label="Estadísticas del día">
             {stats?.map((stat, index) => (

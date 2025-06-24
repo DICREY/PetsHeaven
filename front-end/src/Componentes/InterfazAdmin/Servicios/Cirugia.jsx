@@ -303,7 +303,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
   }, [mainUrl, cirugias, fetchCirugias])
 
   return (
-    <main className="contenedor-cirugia">
+    <main className="contenedoradminhome">
       <NavBarAdmin />
       <section className="tablero-admin">
         {/* Encabezado */}
@@ -321,6 +321,8 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
             sta: 'sta_ser',
             pri: 'pre_ser',
             cod: 'id_ser',
+            time: 'dur_min_tip_ser',
+            alert: 'des_tip_ser',
           }}
           SearchHeaders={['nom_cat']}
           datas={cirugias}

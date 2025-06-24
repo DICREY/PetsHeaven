@@ -33,6 +33,7 @@ export const ReqFunction = async (
             setNotify(null)
             if (req?.result) return set(req.result)
             if (req?.data) return set(req.data)
+            if (req?.result) return set(req.result)
             set(req)
         }
     } catch (err) {

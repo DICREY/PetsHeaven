@@ -1,9 +1,9 @@
 // Librarys 
 import { useEffect, useState } from "react"
-import { Plus, Trash2, Edit, ChevronRight, ChevronLeft } from "lucide-react"
+import { Plus, Trash2, Edit, ChevronRight, ChevronLeft, AlertTriangle, Clock } from "lucide-react"
 
 // Imports 
-import { DataFilter, divideList } from "../Varios/Util"
+import { DataFilter, divideList, formatDate } from "../Varios/Util"
 
 // Import styles
 import "../../styles/InterfazAdmin/Servicios/Laboratorio.css"
@@ -170,19 +170,28 @@ export const ServicesContainer = ({
 
                             <p className="descripcion-tarjeta-laboratorio">{dat[headers.des]}</p>
 
-                            {/* <dl className="detalles-rapidos-laboratorio">
+                            <dl className="detalles-rapidos-laboratorio">
+                                <div className="detalle-rapido-laboratorio">
+                                    <dt>
+                                        <Clock className="icono-detalle-laboratorio icon" aria-hidden="true" />
+                                        <span className="sr-only">Tiempo:</span>
+                                    </dt>
+                                    <dd className="texto-detalle-laboratorio">
+                                        {headers?.time?.includes('fec')? `${formatDate(dat[headers.time])}`:
+                                        headers?.time?.includes('dur')? `${dat[headers.time]} horas`:
+                                        dat[headers.time]}
+                                    </dd>
+                                </div>
                                 <div className="detalle-rapido-laboratorio">
                                     <dt>
                                         <AlertTriangle className="icono-detalle-laboratorio icon" aria-hidden="true" />
                                         <span className="sr-only">Preparación:</span>
                                     </dt>
                                     <dd className="texto-detalle-laboratorio">
-                                        {dat.preparacionRequerida.length > 30
-                                            ? `${dat.preparacionRequerida.substring(0, 30)}...`
-                                            : dat.preparacionRequerida}
+                                        {dat[headers.alert]}
                                     </dd>
                                 </div>
-                            </dl> */}
+                            </dl>
 
                             <footer className="footer-tarjeta-laboratorio">
                                 <span className="precio-laboratorio" aria-label={`Precio: ${formatearPrecio(dat[headers.pri])}`}>

@@ -90,7 +90,7 @@ class Global {
                 setTimeout(() => {
                     res({
                         message: "Found info",
-                        result: result['0']
+                        result: result['0'][0]
                     })
                 },200)
             })
