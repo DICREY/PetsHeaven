@@ -67,8 +67,8 @@ export const GesAgendaPersonal = ({ URL = '' }) => {
                 const data = await PostData(`${mainUrl}/by`, { by: user.doc })
                 setNotify(null)
 
-                if (data) {
-                    const mappedEvents = data.map(event => ({
+                if (data?.result) {
+                    const mappedEvents = data?.result?.map(event => ({
                         title: event.nom_ser,
                         start: joinDateTime(event.fec_cit, event.hor_ini_cit),
                         end: joinDateTime(event.fec_cit, event.hor_fin_cit),

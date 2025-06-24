@@ -40,7 +40,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
       const data = await GetData(`${mainUrl}/all`)
       setNotify(null)
 
-      if (data) formatDatas(data)
+      if (data[0]) formatDatas(data[0])
       setHeaders({
         'Nombres': 'nom_per',
         'Documento': 'doc_per',
