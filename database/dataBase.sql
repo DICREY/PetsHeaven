@@ -101,7 +101,7 @@ CREATE TABLE pets_heaven.servicios (
     pre_act_ser DECIMAL(10,2) NOT NULL,INDEX(pre_act_ser), -- Precio actual del servicio
     cos_est_ser DECIMAL(10,2), -- Costo estimado del servicio
     sta_ser ENUM('DISPONIBLE', 'NO_DISPONIBLE', 'TEMPORAL') DEFAULT 'DISPONIBLE', -- Estado del servicio
-    req TEXT DEFAULT 'No registrado', -- Requisitos previos para el servicio
+    req TEXT DEFAULT 'No-registrado', -- Requisitos previos para el servicio
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (tip_ser) REFERENCES tipos_servicios(id_tip_ser) ON UPDATE CASCADE ON DELETE CASCADE
@@ -111,11 +111,12 @@ CREATE TABLE pets_heaven.procedimientos (
     id_pro INT AUTO_INCREMENT PRIMARY KEY, -- ID del procedimiento
     nom_pro VARCHAR(100) NOT NULL,INDEX(nom_pro), -- Nombre del procedimiento
     des_pro TEXT NOT NULL, -- Descripción del procedimiento
-    cat_pro ENUM('CIRUGIA', 'VACUNA', 'DIAGNOSTICO', 'TERAPIA') NOT NULL,INDEX(cat_pro), -- Categoria del procedimiento
+    cat_pro INT NOT NULL,INDEX(cat_pro), -- Categoria del procedimiento
     niv_rie_pro ENUM('BAJO', 'MODERADO', 'ALTO', 'CRITICO'),INDEX(niv_rie_pro), -- Nivel de riesgo del procedimiento
     dur_min_pro INT, -- Duración minima del procedimiento
-    pro_pro TEXT DEFAULT 'No registrado', -- Protocolo / Pasos del procedimiento
-    con_esp_pro TEXT -- Consideraciones especiales
+    pro_pro TEXT DEFAULT 'No-registrado', -- Protocolo / Pasos del procedimiento
+    con_esp_pro TEXT DEFAULT 'No-registrado', -- Consideraciones especiales
+    FOREIGN KEY (cat_pro) REFERENCES categorias_servicios(id_cat) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE pets_heaven.servicios_procedimientos (
@@ -132,12 +133,12 @@ CREATE TABLE pets_heaven.tipos_pruebas (
     id_tip_pru INT AUTO_INCREMENT PRIMARY KEY, -- ID único del tipo de prueba
     cod_tip_pru VARCHAR(20) UNIQUE NOT NULL,INDEX(cod_tip_pru), -- Código identificador de la prueba
     nom_tip_pru VARCHAR(100) NOT NULL, -- Nombre del tipo de prueba
-    des_tip_pru TEXT DEFAULT 'No registrado', -- Descripción de la prueba
+    des_tip_pru TEXT DEFAULT 'No-registrado', -- Descripción de la prueba
     cat_tip_pru ENUM('HEMATOLOGIA', 'BIOQUIMICA', 'MICROBIOLOGIA', 'PATOLOGIA', 'GENETICA') NOT NULL,INDEX(cat_tip_pru), -- Categoría de la prueba
     met_est_tip_pru VARCHAR(100), -- Método estándar utilizado
     tie_est_hrs_tip_pru INT, -- Tiempo estimado en horas para el resultado
-    ins_pre_tip_pru TEXT DEFAULT 'No registrado', -- Instrucciones de preparación para la prueba
-    par_ref_tip_pru TEXT DEFAULT 'No registrado' -- Parámetros de referencia
+    ins_pre_tip_pru TEXT DEFAULT 'No-registrado', -- Instrucciones de preparación para la prueba
+    par_ref_tip_pru TEXT DEFAULT 'No-registrado' -- Parámetros de referencia
 );
 
 CREATE TABLE pets_heaven.pruebas_laboratorio (
@@ -199,5 +200,9 @@ CREATE TABLE pets_heaven.vacunas (
     lot_vac VARCHAR(255) NOT NULL,INDEX(lot_vac), -- Lote de la vacuna
     fec_ven_vac DATE NOT NULL, -- Fecha de vencimiento
     fre_vac VARCHAR(100) NOT NULL, -- Frecuencia de vacunación
-    pro_vac INT NOT NULL,INDEX(pro_vac), FOREIGN KEY(pro_vac) REFERENCES procedimientos(id_pro) ON DELETE CASCADE ON UPDATE CASCADE -- ID del procedimiento asociado
+    des_vac TEXT DEFAULT 'No-registrado', -- Descripción de la vacuna
+    sta_vac BOOLEAN DEFAULT 1 NOT NULL, -- Estado de vacuna (disponible / No disponible) (1/0)
+    pro_vac INT NOT NULL,INDEX(pro_vac), FOREIGN KEY(pro_vac) REFERENCES procedimientos(id_pro) ON DELETE CASCADE ON UPDATE CASCADE, -- ID del procedimiento asociado
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

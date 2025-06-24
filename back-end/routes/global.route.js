@@ -50,6 +50,7 @@ Route.get('/owners', async (req,res) => {
 
         res.status(200).json(search)
     } catch (err) {
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
         if(err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -70,6 +71,7 @@ Route.get('/services', async (req,res) => {
         res.status(200).json(services)
     } catch (err) {
         console.log(err)
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
         if (err.status) return res.status(err.status).json({ message: err.message })
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -86,6 +88,7 @@ Route.get('/info/general', ValidatorRol('administrador'), async (req,res) => {
 
         res.status(200).json(inf)
     } catch (err) {
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
         if (err.status) return res.status(err.status).json({ message: err.message })
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -107,6 +110,7 @@ Route.post('/stats/staff', ValidatorRol('veterinario'), async (req,res) => {
         res.status(200).json(inf)
         } catch (err) {
         console.log(err)
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
         if (err.status) return res.status(err.status).json({ message: err.message })
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -129,6 +133,7 @@ Route.post('/register', async (req,res) => {
         const create = await user.create({hash_pass: await hash(body.password,saltRounds), ...body})
         res.status(201).json(create)
     } catch(err) {
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
         if(err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -170,7 +175,7 @@ Route.post('/login', limiterLog, async (req,res) => {
 
         res.status(200).json({ __cred: cred })
     } catch (err) {
-        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
         if (err.status) return res.status(err.status).json({ message: err.message })
 
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })

@@ -148,7 +148,7 @@ export const ServicesContainer = ({
                                     <button
                                         onClick={(e) => {
                                             e.stopPropagation()
-                                            Delete(dat[headers.cod])
+                                            Delete(dat)
                                         }}
                                         className="boton-eliminar-laboratorio"
                                         aria-label={`Eliminar examen ${dat[headers.nom]}`}
