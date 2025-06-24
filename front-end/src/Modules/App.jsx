@@ -16,7 +16,7 @@ import { GesPersonal } from '../Componentes/InterfazAdmin/GesPersonal'
 import { GesAgendaGeneral } from '../Componentes/InterfazAdmin/GesAgendaGeneral'
 import { MainAdmin } from '../Componentes/InterfazAdmin/MainAdmin'
 import { Pets } from '../Componentes/Pets/Pets'
-import { PetDetails } from '../Componentes/Pets/PetDetails'
+import PetMedicalHistory from '../Componentes/InterfazAdmin/HistorialMedico/HistorialMedico'
 import { NotFound } from '../Componentes/Errores/NotFound'
 import { ErrorInternalServer } from '../Componentes/Errores/ErrorInternalServer'
 import { useInactivityDetector } from '../Componentes/Varios/InactiveDectetor'
@@ -121,7 +121,7 @@ export default function App () {
               />}/>}>
           </Route>
           <Route path='/pets/details' element={
-            <PrivateRoute children={<PetDetails
+            <PrivateRoute children={<PetMedicalHistory
               tab={petDetailTab}
               datas={petSelect}
               imgPetDefault={imgPetDefault}

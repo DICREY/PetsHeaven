@@ -1,0 +1,157 @@
+.contenedor-tarj {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.contenedor-tarj:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.contenido-tarj {
+  padding: 24px;
+}
+
+.cabecera-tarj {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.info-basica-tarj {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icono-tarj {
+  width: 40px;
+  height: 40px;
+  background: #dbeafe;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ico-archivo-tarj {
+  width: 20px;
+  height: 20px;
+  color: #3b82f6;
+}
+
+.datos-tarj {
+  flex: 1;
+}
+
+.titulo-tarj {
+  font-weight: 600;
+  font-size: 18px;
+  color: #1f2937;
+  margin: 0 0 4px 0;
+}
+
+.fecha-tarj {
+  font-size: 14px;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+}
+
+.ico-fecha-tarj {
+  width: 16px;
+  height: 16px;
+}
+
+.estado-tarj {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.completada-tarj {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.pendiente-tarj {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.cancelada-tarj {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.normal-tarj {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.detalles-tarj {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vet-tarj {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.ico-vet-tarj {
+  width: 16px;
+  height: 16px;
+}
+
+.nombre-vet-tarj {
+  font-weight: 500;
+}
+
+.seccion-tarj {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.etiqueta-tarj {
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+  font-size: 14px;
+}
+
+.valor-tarj {
+  color: #374151;
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.pie-tarj {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.enlace-tarj {
+  font-size: 14px;
+  color: #3b82f6;
+  font-weight: 500;
+  margin: 0;
+}
+
+.enlace-tarj:hover {
+  color: #1d4ed8;
+}
