@@ -3,6 +3,7 @@ const { Router } = require('express')
 
 // Imports
 const Services = require('../services/Services.services')
+const vaccineRoute = require('./vaccine.route')
 const { authenticateJWT, ValidatorRol, Fullinfo, authJWTGlobal } = require('../middleware/validator.handler')
 
 // vars
@@ -13,6 +14,9 @@ const Route = Router()
 Route.use(authenticateJWT)
 Route.use(authJWTGlobal)
 
+// Vaccine Routes 
+Route.use('/vaccine',vaccineRoute)
+
 // Routes 
 Route.get('/all', ValidatorRol("usuario"), async (req,res) => {
     try {
@@ -22,7 +26,7 @@ Route.get('/all', ValidatorRol("usuario"), async (req,res) => {
         res.status(200).json(serv)
     } catch (err) {
         console.log(err)
-        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
         if(err.status) return res.status(err.status).json(err.message)
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -38,24 +42,12 @@ Route.get('/all/:by', ValidatorRol("usuario"), async (req,res) => {
 
         res.status(200).json(serv)
     } catch (err) {
-        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
         if(err.status) return res.status(err.status).json(err.message)
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
-Route.get('/vacs', ValidatorRol("usuario"), async (req,res) => {
-    try {
-        const serv = await services.findAllVacunas()
-        if (!serv.result[0][0]) return res.status(404).json({ message: "Vacunas no encontradas" })
-        
-        res.status(200).json(serv)
-    } catch (err) {
-        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
-        if(err.status) return res.status(err.status).json(err.message)
-        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
-    }
-})
 
 Route.get('/cirs', ValidatorRol("usuario"), async (req,res) => {
     try {
@@ -65,7 +57,7 @@ Route.get('/cirs', ValidatorRol("usuario"), async (req,res) => {
         res.status(200).json(serv)
     } catch (err) {
         console.log(err)
-        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
         if(err.status) return res.status(err.status).json(err.message)
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -78,7 +70,7 @@ Route.put('/AblOrDis', ValidatorRol("veterinario"), async (req, res) => {
     // Vars 
     const { data } = req.body
     try {
-        const find = await services.findBy(data.id_ser)
+        const find = await services.findBy(data.id)
         if (!find.result[0][0]) return res.status(404).json({ message: "Servicio no encontrado" })
         
         const cancelled = await services.AbleOrDesableService(data)
@@ -87,7 +79,7 @@ Route.put('/AblOrDis', ValidatorRol("veterinario"), async (req, res) => {
         res.status(500).json({ message: "No se pudo deshabilitar la cirugia" })
     } catch (err) {
         console.log(err)
-        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
         if (err.status) return res.status(err.status).json({ message: err.message })
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
@@ -99,40 +91,9 @@ Route.post('/register/cir', ValidatorRol("administrador"), async (req, res) => {
         const result = await services.registerCirugia(data);
         res.status(201).json({ message: "Cirugía registrada correctamente", result });
     } catch (err) {
-        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
         if (err.status) return res.status(err.status).json({ message: err.message });
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
-    }
-})
-
-
-Route.post('/register/vac', ValidatorRol("administrador"), async (req, res) => {
-    // Vars 
-    const data = req.body
-    
-    try {   
-        const result = await services.registerVacuna(data);
-        res.status(201).json({ message: "Vacuna registrada correctamente", result });
-    } catch (err) {
-        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
-        if (err.status) return res.status(err.status).json({ message: err.message });
-        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
-        console.log(err.message)
-    }
-})
-
-Route.put('/delete/vac', ValidatorRol("administrador"), async (req, res) => {
-    // Vars 
-    const data = req.body
-
-    try {            
-        const result = await services.AbleOrDesableService(data.state);
-        res.status(201).json({ message: "Vacuna Desactivada correctamente", result });
-    } catch (err) {
-        if(err.sqlState === '45000') return res.status(500).json({ message: err.sqlMessage })
-        if (err.status) return res.status(err.status).json({ message: err.message });
-        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
-        console.log(err.message)
     }
 })
 

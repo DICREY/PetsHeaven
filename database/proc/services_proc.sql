@@ -323,7 +323,140 @@ BEGIN
     COMMIT;
     SET autocommit = 1;
 END //
+
 CREATE PROCEDURE pets_heaven.RegisterVacuna(
+    IN p_nom_vac VARCHAR(255),
+    IN p_efe_sec_vac VARCHAR(255),
+    IN p_cat_vac VARCHAR(100),
+    IN p_dos_rec_vac VARCHAR(100),
+    IN p_lot_vac VARCHAR(255),
+    IN p_fec_ven_vac DATE,
+    IN p_fre_vac VARCHAR(100),
+    IN p_nom_pro VARCHAR(100),
+    IN p_des_pro TEXT,
+    IN p_nom_cat VARCHAR(100)
+)
+BEGIN
+    DECLARE v_id_pro INT;
+    DECLARE p_cat_pro INT;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    SET autocommit = 0;
+    START TRANSACTION;
+
+    SELECT id_cat INTO p_cat_pro FROM categorias_servicios WHERE nom_cat LIKE p_nom_cat LIMIT 1;
+    IF p_cat_pro IS NULL 
+        THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Categoria del servicio no encontrada';
+    END IF;
+
+    -- Registrar el procedimiento si no existe
+    SELECT id_pro INTO v_id_pro
+    FROM procedimientos
+    WHERE nom_pro = p_nom_pro AND cat_pro = p_cat_pro
+    LIMIT 1;
+
+    IF v_id_pro IS NULL THEN
+        INSERT INTO procedimientos (
+            nom_pro, des_pro, cat_pro
+        ) VALUES (
+            p_nom_pro, p_des_pro, p_cat_pro
+        );
+        SET v_id_pro = LAST_INSERT_ID();
+    END IF;
+
+    -- Validar lote único
+    IF (SELECT COUNT(*) FROM vacunas WHERE lot_vac = p_lot_vac) > 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este lote de vacuna ya existe';
+    END IF;
+
+    -- Registrar la vacuna
+    INSERT INTO vacunas (
+        nom_vac,
+        efe_sec_vac,
+        cat_vac,
+        dos_rec_vac,
+        lot_vac,
+        fec_ven_vac,
+        fre_vac,
+        pro_vac
+    ) VALUES (
+        p_nom_vac,
+        p_efe_sec_vac,
+        p_cat_vac,
+        p_dos_rec_vac,
+        p_lot_vac,
+        p_fec_ven_vac,
+        p_fre_vac,
+        v_id_pro
+    );
+
+    COMMIT;
+    SET autocommit = 1;
+END //
+CREATE PROCEDURE pets_heaven.ChangeVaccineState(
+    IN p_id_vac INT,
+    IN p_nom_vac VARCHAR(255),
+    IN p_nom_cat VARCHAR(100),
+    IN p_nom_pro VARCHAR(100)
+)
+BEGIN    
+    DECLARE p_id_cat INT;
+    DECLARE p_id_pro INT;
+    DECLARE p_sta_vac INT;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    SET autocommit = 0;
+    START TRANSACTION;
+
+    SELECT id_cat INTO p_id_cat FROM categorias_servicios WHERE nom_cat LIKE p_nom_cat LIMIT 1;
+    IF p_id_cat IS NULL 
+        THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Categoria del servicio no encontrada';
+    END IF;
+
+    -- Registrar el procedimiento si no existe
+    SELECT id_pro INTO p_id_pro FROM procedimientos WHERE nom_pro = p_nom_pro AND cat_pro = p_id_cat;
+    IF p_id_pro IS NULL 
+        THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Procedimiento del servicio no encontrado';
+    END IF;
+
+    SELECT sta_vac INTO p_sta_vac
+    FROM vacunas
+    WHERE 
+        nom_vac LIKE p_nom_vac
+        AND id_vac = p_id_vac
+        AND pro_vac = p_id_pro;
+    IF p_sta_vac IS NULL 
+        THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Vacuna no encontrada en el sistema';
+    ELSEIF (p_sta_vac = 1) THEN
+        UPDATE vacunas v
+        SET v.sta_vac = 0
+        WHERE 
+            v.nom_vac LIKE p_nom_vac
+            AND pro_vac = p_id_pro
+            AND id_vac = p_id_vac;
+    ELSE
+        UPDATE vacunas v
+        SET v.sta_vac = 1
+        WHERE 
+            v.nom_vac LIKE p_nom_vac
+            AND id_vac = p_id_vac
+            AND pro_vac = p_id_pro;
+    END IF;
+
+    COMMIT;
+    SET autocommit = 1;
+END //
+/* CREATE PROCEDURE pets_heaven.RegisterVacuna(
     IN p_tip_ser INT, -- ID del tipo de servicio (debe ser tipo "Vacuna")
     IN p_nom_ser VARCHAR(100),
     IN p_pre_ser DECIMAL(10,2),
@@ -435,7 +568,7 @@ BEGIN
 
     COMMIT;
     SET autocommit = 1;
-END //
+END // */
 CREATE PROCEDURE pets_heaven.SearchVacunas()
 BEGIN
     SELECT 
@@ -466,8 +599,11 @@ END //
 /* DROP PROCEDURE pets_heaven.SearchServicesBy; */
 /* DROP PROCEDURE pets_heaven.AbleOrDesableService; */
 /* DROP PROCEDURE pets_heaven.SearchVacunas; */
+/* DROP PROCEDURE pets_heaven.RegisterVacuna; */
+/* DROP PROCEDURE pets_heaven.`ChangeVaccineState`; */
 
 /* CALL `SearchServices`(); */
 /* CALL pets_heaven.SearchServicesBy('Cirugia'); */
 /* CALL pets_heaven.AbleOrDesableService('6','Cirugia'); */
 /* CALL pets_heaven.SearchVacunas(); */
+/* CALL pets_heaven.RegisterVacuna(''); */

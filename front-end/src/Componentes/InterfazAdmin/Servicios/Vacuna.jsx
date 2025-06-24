@@ -38,6 +38,7 @@ export function VisualizadorVacunas({ URL = '' }) {
     efectosSecundarios: "",
     lote: "",
     fechaVencimiento: "",
+    nombreProcedimiento: "",
     dosis: {
       cachorro: "",
       adulto: "",
@@ -48,10 +49,11 @@ export function VisualizadorVacunas({ URL = '' }) {
   // Vars 
   const { admin } = useContext(AuthContext)
   const mainUrl = `${URL}/service`
+  const vaccineUrl = `${mainUrl}/vaccine`
   const categorias = ["Obligatoria", "Esencial", "Recomendada", "Opcional"]
 
   // Función para obtener las vacunas del backend
-  const fetchVacunas = useCallback(async () => {
+  const fetchVacunas = async () => {
     if (didFetch.current) return
     didFetch.current = true
 
@@ -62,9 +64,9 @@ export function VisualizadorVacunas({ URL = '' }) {
     })
 
     try {
-      const response = await GetData(`${mainUrl}/vacs`)
+      const response = await GetData(`${vaccineUrl}/all`)
       setNotify(null)
-
+      console.log(response[0])
       if (response[0] && Array.isArray(response[0])) {
         // Mapeamos los datos del backend al formato que espera el frontend
         const vacunasMapeadas = response[0].map(vacuna => ({
@@ -76,11 +78,12 @@ export function VisualizadorVacunas({ URL = '' }) {
           precio: vacuna.pre_ser,
           frecuencia: vacuna.fre_vac,
           tipoAnimal: vacuna.req,
-          disponible: vacuna.sta_ser,
+          disponible: vacuna.sta_vac,
           categoria: vacuna.cat_vac,
           efectosSecundarios: vacuna.efe_sec_vac,
           lote: vacuna.lot_vac,
           fechaVencimiento: vacuna.fec_ven_vac,
+          nombreProcedimiento: vacuna.nom_pro,
           dosis: {
             cachorro: vacuna.dos_rec_vac,
             adulto: vacuna.dos_rec_vac,
@@ -105,7 +108,7 @@ export function VisualizadorVacunas({ URL = '' }) {
         close: setNotify
       })
     }
-  }, [mainUrl])
+  }
 
   useEffect(() => {
     fetchVacunas()
@@ -134,6 +137,7 @@ export function VisualizadorVacunas({ URL = '' }) {
       efectosSecundarios: "",
       lote: "",
       fechaVencimiento: "",
+      nombreProcedimiento: "",
       dosis: {
         cachorro: "",
         adulto: "",
@@ -159,7 +163,9 @@ export function VisualizadorVacunas({ URL = '' }) {
           message: 'Guardando vacuna...',
           load: 1
         })
-
+                data.nom_pro,
+                data.des_pro,
+                data.cat_pro
         const vacunaData = {
           nom_vac: nuevaVacuna.nombre,
           des_gen: nuevaVacuna.descripcion || '', 
@@ -167,10 +173,11 @@ export function VisualizadorVacunas({ URL = '' }) {
           pre_vac: Number(nuevaVacuna.precio), 
           fre_vac: nuevaVacuna.frecuencia || '',
           cat_vac: nuevaVacuna.categoria || 'Esencial',
-          num_lot: nuevaVacuna.lote || '',
-          fec_ven: nuevaVacuna.fechaVencimiento || new Date().toISOString().split('T')[0],
-          efe_sec: nuevaVacuna.efectosSecundarios || '',
-          dos_rec: nuevaVacuna.dosis?.cachorro || '',
+          lot_vac: nuevaVacuna.lote || '',
+          fec_ven_vac: nuevaVacuna.fechaVencimiento || new Date().toISOString().split('T')[0],
+          efe_sec_vac: nuevaVacuna.efectosSecundarios || '',
+          dos_rec_vac: nuevaVacuna.dosis?.cachorro || '',
+          nom_pro: nuevaVacuna.nombreProcedimiento,
           sta_ser: nuevaVacuna.disponible ? "DISPONIBLE" : "NO-DISPONIBLE"
         }
 
@@ -180,12 +187,12 @@ export function VisualizadorVacunas({ URL = '' }) {
           if (!vacunaEditando) {
             throw new Error('ID de vacuna no especificado para edición')
           }
-          await ModifyData(`${mainUrl}/modifyVac`, {
+          await ModifyData(`${vaccineUrl}/modify`, {
             id_vac: vacunaEditando,
             ...vacunaData
           })
         } else {
-          await PostData(`${mainUrl}/register/vac`, vacunaData)
+          await PostData(`${vaccineUrl}/register`, vacunaData)
         }
 
         setNotify({
@@ -221,16 +228,22 @@ export function VisualizadorVacunas({ URL = '' }) {
     }
   }
 
-  const eliminarVacuna = (id) => {
+  const eliminarVacuna = (vaccine = {}) => {
     setNotify({
       title: 'Atencion',
       message: '¿Estás seguro de que deseas eliminar esta vacuna?',
       firstOption: () => {setNotify(null); return},
-      secondOption: () => {setNotify(null); deleteVac(id)},
+      secondOption: () => {setNotify(null); deleteVac(vaccine)},
       firstOptionName: 'Cancelar',
       secondOptionName: 'Continuar',
     })
-    const deleteVac = async (id) => {
+    const deleteVac = async (vacc = {}) => {
+      const data = {
+        id: vacc.id,
+        nom_vac: vacc.nombre,
+        nom_cat: 'Vacunacion',
+        nom_pro: vacc.nombreProcedimiento
+      }
       try {
         setNotify({
           title: 'Eliminando',
@@ -238,13 +251,15 @@ export function VisualizadorVacunas({ URL = '' }) {
           load: 1
         })
 
-        await ModifyData(`${mainUrl}/delete/vac`, { id_vac: id })
-
-        setNotify({
-          title: 'Éxito',
-          message: 'Vacuna eliminada correctamente',
-          close: setNotify
-        })
+        const deleteVaccine = await ModifyData(`${vaccineUrl}/change-state`, data)
+        console.log(deleteVaccine)
+        if (deleteVaccine) {
+          setNotify({
+            title: 'Éxito',
+            message: 'Vacuna eliminada correctamente',
+            close: setNotify
+          })
+        }
 
         fetchVacunas()
       } catch (err) {
@@ -285,7 +300,8 @@ export function VisualizadorVacunas({ URL = '' }) {
         // Enviamos los datos en el formato que espera el backend
         const data = {
           data: {
-            id_ser: id_ser,
+            id: id_ser,
+            nom_cat: 'Vacunacion',
             or: estadoActual === "DISPONIBLE" 
           }
         }
@@ -323,8 +339,9 @@ export function VisualizadorVacunas({ URL = '' }) {
   return (
     <main className="contenedor-vacunas">
       <NavBarAdmin />
-      
+
       <section className="tablero-admin">
+        {/* {console.log(vacunas)} */}
         {admin? (<HeaderAdmin URL={URL} />):(<HeaderUser />)}
         <ServicesContainer 
           Name="Vacuna"
