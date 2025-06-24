@@ -1,4 +1,4 @@
-.overlay-form-cons {
+.overlay-form-cita {
   position: fixed;
   inset: 0;
   z-index: 50;
@@ -7,36 +7,36 @@
   justify-content: center;
 }
 
-.fondo-form-cons {
+.fondo-form-cita {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
 }
 
-.contenedor-form-cons {
+.contenedor-form-cita {
   position: relative;
   background: white;
   border-radius: 12px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  max-width: 1200px;
+  max-width: 600px;
   max-height: 90vh;
   overflow-y: auto;
   width: 100%;
   margin: 0 16px;
 }
 
-.cabecera-form-cons {
+.cabecera-form-cita {
   padding: 24px;
   border-bottom: 1px solid #e5e7eb;
 }
 
-.info-form-cons {
+.info-form-cita {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
 }
 
-.titulo-form-cons {
+.titulo-form-cita {
   font-size: 24px;
   font-weight: 700;
   color: #1f2937;
@@ -46,18 +46,18 @@
   margin: 0 0 4px 0;
 }
 
-.ico-form-cons {
+.ico-form-cita {
   width: 24px;
   height: 24px;
   color: #3b82f6;
 }
 
-.desc-form-cons {
+.desc-form-cita {
   color: #6b7280;
   margin: 0;
 }
 
-.btn-cerrar-form-cons {
+.btn-cerrar-form-cita {
   color: #9ca3af;
   background: none;
   border: none;
@@ -68,36 +68,48 @@
   line-height: 1;
 }
 
-.btn-cerrar-form-cons:hover {
+.btn-cerrar-form-cita:hover {
   color: #6b7280;
 }
 
-.contenido-form-cons {
+.contenido-form-cita {
   padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
 }
 
-.seccion-basica-form-cons {
+.seccion-basica-form-cita {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 16px;
 }
 
-.campo-form-cons {
+.seccion-adicional-form-cita {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.campo-form-cita {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.etiqueta-form-cons {
+.campo-textarea-form-cita {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.etiqueta-form-cita {
   font-size: 14px;
   font-weight: 600;
   color: #374151;
 }
 
-.input-form-cons {
+.input-form-cita {
   width: 100%;
   padding: 8px 12px;
   border: 1px solid #d1d5db;
@@ -107,12 +119,12 @@
   transition: all 0.2s ease;
 }
 
-.input-form-cons:focus {
+.input-form-cita:focus {
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.select-form-cons {
+.select-form-cita {
   width: 100%;
   padding: 8px 12px;
   border: 1px solid #d1d5db;
@@ -123,24 +135,12 @@
   background: white;
 }
 
-.select-form-cons:focus {
+.select-form-cita:focus {
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.seccion-diag-form-cons {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.campo-textarea-form-cons {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.textarea-form-cons {
+.textarea-form-cita {
   width: 100%;
   padding: 8px 12px;
   border: 1px solid #d1d5db;
@@ -152,107 +152,30 @@
   font-family: inherit;
 }
 
-.textarea-form-cons:focus {
+.textarea-form-cita:focus {
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.seccion-sintomas-form-cons {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.cabecera-sintomas-form-cons {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.btn-agregar-form-cons {
+.campo-checkbox-form-cita {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 6px 12px;
-  font-size: 14px;
-  background: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  gap: 8px;
 }
 
-.btn-agregar-form-cons:hover {
-  background: #1d4ed8;
-}
-
-.ico-btn-form-cons {
+.checkbox-form-cita {
   width: 16px;
   height: 16px;
+  accent-color: #3b82f6;
 }
 
-.lista-sintomas-form-cons {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.item-sintoma-form-cons {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.input-sintoma-form-cons {
-  flex: 1;
-  padding: 8px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
+.etiqueta-checkbox-form-cita {
   font-size: 14px;
-  outline: none;
-  transition: all 0.2s ease;
-}
-
-.input-sintoma-form-cons:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.btn-eliminar-form-cons {
-  padding: 8px;
-  color: #dc2626;
-  background: none;
-  border: none;
-  border-radius: 6px;
+  color: #374151;
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.btn-eliminar-form-cons:hover {
-  background: #fef2f2;
-}
-
-.seccion-examen-form-cons {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.titulo-examen-form-cons {
-  font-size: 18px;
-  font-weight: 600;
-  color: #1f2937;
-  margin: 0;
-}
-
-.grilla-examen-form-cons {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-}
-
-.acciones-form-cons {
+.acciones-form-cita {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
@@ -260,7 +183,7 @@
   border-top: 1px solid #e5e7eb;
 }
 
-.btn-cancelar-form-cons {
+.btn-cancelar-form-cita {
   padding: 8px 16px;
   border: 1px solid #d1d5db;
   border-radius: 6px;
@@ -271,11 +194,11 @@
   transition: all 0.2s ease;
 }
 
-.btn-cancelar-form-cons:hover {
+.btn-cancelar-form-cita:hover {
   background: #f9fafb;
 }
 
-.btn-guardar-form-cons {
+.btn-guardar-form-cita {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -289,30 +212,32 @@
   color: white;
 }
 
-.btn-guardar-form-cons:hover:not(.deshabilitado-form-cons) {
+.btn-guardar-form-cita:hover:not(.deshabilitado-form-cita) {
   background: #1d4ed8;
 }
 
-.deshabilitado-form-cons {
+.ico-btn-form-cita {
+  width: 16px;
+  height: 16px;
+}
+
+.deshabilitado-form-cita {
   background: #d1d5db;
   color: #9ca3af;
   cursor: not-allowed;
 }
 
 @media (max-width: 768px) {
-  .contenedor-form-cons {
+  .contenedor-form-cita {
     margin: 0 8px;
   }
 
-  .seccion-basica-form-cons {
+  .seccion-basica-form-cita,
+  .seccion-adicional-form-cita {
     grid-template-columns: 1fr;
   }
 
-  .grilla-examen-form-cons {
-    grid-template-columns: 1fr;
-  }
-
-  .acciones-form-cons {
+  .acciones-form-cita {
     flex-direction: column;
   }
 }

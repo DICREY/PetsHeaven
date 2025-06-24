@@ -1,0 +1,519 @@
+.cont-hist {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #f8fafc;
+  min-height: 100vh;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.cabecera-hist {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.btn-atras-hist {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-atras-hist:hover {
+  background: #f9fafb;
+}
+
+.acciones-hist {
+  display: flex;
+  gap: 12px;
+}
+
+.ico-hist {
+  width: 16px;
+  height: 16px;
+}
+
+.btn-ppal-hist {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.btn-ppal-hist:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+}
+
+.btn-impr-hist {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-impr-hist:hover {
+  background: #f9fafb;
+}
+
+.seccion-masc-hist {
+  margin-bottom: 24px;
+}
+
+.main-container-hist {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.contenido-hist {
+  width: 100%;
+}
+
+.tabs-nav-hist {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: white;
+  border-radius: 12px;
+  padding: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  margin-bottom: 24px;
+}
+
+.tab-btn-hist {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  color: #6b7280;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.tab-btn-hist:hover {
+  color: #374151;
+  background: #f9fafb;
+}
+
+.tab-btn-hist.activo-hist {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+  font-weight: 600;
+}
+
+.resumen-hist {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.seccion-citas-hist {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.cabecera-sec-hist {
+  padding: 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.titulo-sec-hist {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titulo-hist {
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.ico-citas-hist {
+  width: 20px;
+  height: 20px;
+  color: #3b82f6;
+}
+
+.enlace-hist {
+  font-size: 14px;
+  color: #3b82f6;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.enlace-hist:hover {
+  color: #1d4ed8;
+}
+
+.contenido-sec-hist {
+  padding: 24px;
+}
+
+.lista-citas-hist {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tarjeta-cita-hist {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.tarjeta-cita-hist:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+}
+
+.info-cita-hist {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.datos-cita-hist {
+  flex: 1;
+}
+
+.tipo-cita-hist {
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 4px 0;
+}
+
+.vet-cita-hist {
+  color: #6b7280;
+  margin: 0;
+}
+
+.fecha-hora-hist {
+  text-align: right;
+}
+
+.fecha-cita-hist {
+  color: #1d4ed8;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+}
+
+.hora-cita-hist {
+  color: #6b7280;
+  margin: 0;
+}
+
+.historial-hist {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.vacunas-hist {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lista-vacunas-hist {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tarjeta-vac-hist {
+  background: white;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.tarjeta-vac-hist:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border-color: #3b82f6;
+}
+
+.contenido-vac-hist {
+  padding: 16px;
+}
+
+.info-vac-hist {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.datos-vac-hist {
+  flex: 1;
+}
+
+.cabecera-vac-hist {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.ico-vac-hist {
+  width: 20px;
+  height: 20px;
+  color: #10b981;
+}
+
+.nombre-vac-hist {
+  font-weight: 600;
+  font-size: 18px;
+  margin: 0;
+}
+
+.id-vac-hist {
+  font-size: 12px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  border: 1px solid #93c5fd;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.fecha-vac-hist {
+  color: #6b7280;
+  margin: 0 0 4px 0;
+}
+
+.proxima-vac-hist {
+  color: #6b7280;
+  margin: 0 0 8px 0;
+}
+
+.detalle-vac-hist {
+  font-size: 14px;
+  color: #3b82f6;
+  margin: 0;
+}
+
+.estado-vac-hist {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.aldia-vac-hist {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.proxima-vac-hist {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.vencida-vac-hist {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.medicamentos-hist {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lista-med-hist {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tarjeta-med-hist {
+  background: white;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
+
+.tarjeta-med-hist:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border-color: #8b5cf6;
+}
+
+.contenido-med-hist {
+  padding: 16px;
+}
+
+.info-med-hist {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cabecera-med-hist {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.nombre-med-hist {
+  font-weight: 600;
+  font-size: 18px;
+  margin: 0;
+}
+
+.estado-med-hist {
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.activo-med-hist {
+  background: #dcfce7;
+  color: #166534;
+  padding: 4px 8px;
+}
+
+.inactivo-med-hist {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 4px 8px;
+}
+
+.detalles-med-hist {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  font-size: 14px;
+}
+
+.dato-med-hist {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.etiqueta-med-hist {
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.valor-med-hist {
+  color: #1f2937;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .cont-hist {
+    padding: 16px;
+  }
+
+  .main-container-hist {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .tabs-nav-hist {
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+  }
+
+  .tab-btn-hist {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .cabecera-hist {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .acciones-hist {
+    justify-content: center;
+  }
+}
+
+@keyframes fadeInUp-hist {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tarjeta-vac-hist,
+.tarjeta-med-hist,
+.tarjeta-cita-hist {
+  animation: fadeInUp-hist 0.5s ease-out;
+}
+
+@media print {
+  .cont-hist {
+    background: white;
+    padding: 0;
+  }
+
+  .main-container-hist {
+    box-shadow: none;
+    border: none;
+  }
+
+  .tarjeta-cita-hist,
+  .tarjeta-vac-hist,
+  .tarjeta-med-hist {
+    background: white;
+    box-shadow: none;
+    border: 1px solid #e5e7eb;
+  }
+}
