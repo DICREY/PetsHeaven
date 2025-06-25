@@ -14,6 +14,9 @@ import ModalProximasCitas from "./ModalProximasCitas"
 import ModalDetalleCita from "./ModalDetalleCita"
 import FormularioNuevaCita from "./FormularioNuevaCita"
 
+import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
+import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
+
 export default function PetMedicalHistory() {
   const [selectedTab, setSelectedTab] = useState("overview")
   const [selectedConsultation, setSelectedConsultation] = useState(null)
@@ -513,261 +516,270 @@ export default function PetMedicalHistory() {
   }
 
   return (
-    <div className="cont-hist">
-      {/* Botones superiores */}
-      <div className="cabecera-hist">
-        <button className="btn-atras-hist">
-          <ArrowLeft className="ico-hist" />
-          Atrás
-        </button>
 
-        <div className="acciones-hist">
-          <button className="btn-ppal-hist" onClick={() => setIsNewConsultationOpen(true)}>
-            <Plus className="ico-hist" />
-            Nueva Consulta
-          </button>
-          <button className="btn-impr-hist" onClick={generatePDF}>
-            <Printer className="ico-hist" />
-            Imprimir Historial
-          </button>
-        </div>
-      </div>
+    <main className="contenedoradminhome">
+        <NavBarAdmin />
 
-      {/* Header con información básica de la mascota - Separado */}
-      <div className="seccion-masc-hist">
-        <ResumenMascota petData={petData} setPetData={setPetData} />
-      </div>
-
-      {/* Contenido principal - Separado del header */}
-      <div className="main-container-hist">
-        <div className="contenido-hist">
-          <div className="tabs-nav-hist">
-            <button
-              className={`tab-btn-hist ${selectedTab === "overview" ? "activo-hist" : ""}`}
-              onClick={() => setSelectedTab("overview")}
-            >
-              <Stethoscope className="ico-hist" />
-              Resumen
-            </button>
-            <button
-              className={`tab-btn-hist ${selectedTab === "history" ? "activo-hist" : ""}`}
-              onClick={() => setSelectedTab("history")}
-            >
-              <Calendar className="ico-hist" />
-              Historial
-            </button>
-            <button
-              className={`tab-btn-hist ${selectedTab === "vaccinations" ? "activo-hist" : ""}`}
-              onClick={() => setSelectedTab("vaccinations")}
-            >
-              <Heart className="ico-hist" />
-              Vacunas
-            </button>
-            <button
-              className={`tab-btn-hist ${selectedTab === "medications" ? "activo-hist" : ""}`}
-              onClick={() => setSelectedTab("medications")}
-            >
-              <Pill className="ico-hist" />
-              Medicamentos
-            </button>
-          </div>
-
-          {selectedTab === "overview" && (
-            <div className="resumen-hist">
-              {/* Solo Próximas citas */}
-              <div className="seccion-citas-hist">
-                <div className="cabecera-sec-hist">
-                  <div className="titulo-sec-hist">
-                    <h3 className="titulo-hist">
-                      <Clock className="ico-citas-hist" />
-                      Próximas Citas
-                    </h3>
-                    <button onClick={() => setIsAppointmentsModalOpen(true)} className="enlace-hist">
-                      Ver todas →
+        <section className="principaladminhome">
+        <HeaderAdmin URL={URL} />
+            <div className="cont-hist">
+            
+            {/* Botones superiores */}
+                <div className="cabecera-hist">
+                    <button className="btn-atras-hist">
+                    <ArrowLeft className="ico-hist" />
+                    Atrás
                     </button>
-                  </div>
+
+                    <div className="acciones-hist">
+                    <button className="btn-ppal-hist" onClick={() => setIsNewConsultationOpen(true)}>
+                        <Plus className="ico-hist" />
+                        Nueva Consulta
+                    </button>
+                    <button className="btn-impr-hist" onClick={generatePDF}>
+                        <Printer className="ico-hist" />
+                        Imprimir Historial
+                    </button>
+                    </div>
                 </div>
-                <div className="contenido-sec-hist">
-                  <div className="lista-citas-hist">
-                    {upcomingAppointments.map((appointment, index) => (
-                      <div
-                        key={index}
-                        className="tarjeta-cita-hist"
-                        onClick={() => handleAppointmentClick(appointment)}
-                      >
-                        <div className="info-cita-hist">
-                          <div className="datos-cita-hist">
-                            <p className="tipo-cita-hist">{appointment.type}</p>
-                            <p className="vet-cita-hist">{appointment.veterinarian}</p>
-                          </div>
-                          <div className="fecha-hora-hist">
-                            <p className="fecha-cita-hist">{appointment.date}</p>
-                            <p className="hora-cita-hist">{appointment.time}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+
+                {/* Header con información básica de la mascota - Separado */}
+                <div className="seccion-masc-hist">
+                    <ResumenMascota petData={petData} setPetData={setPetData} />
                 </div>
-              </div>
-            </div>
-          )}
 
-          {selectedTab === "history" && (
-            <div className="historial-hist">
-              {medicalHistory.map((record) => (
-                <TarjetaHistorial
-                  key={record.id}
-                  record={record}
-                  onClick={(record) => {
-                    setSelectedConsultation(record)
-                    setIsDialogOpen(true)
-                  }}
-                />
-              ))}
-
-              <ModalDetalleConsulta
-                isOpen={isDialogOpen}
-                onClose={() => setIsDialogOpen(false)}
-                consultation={selectedConsultation}
-              />
-            </div>
-          )}
-
-          {selectedTab === "vaccinations" && (
-            <div className="vacunas-hist">
-              <div className="lista-vacunas-hist">
-                {vaccinations.map((vaccine, index) => (
-                  <div key={index} className="tarjeta-vac-hist" onClick={() => handleVaccineClick(vaccine)}>
-                    <div className="contenido-vac-hist">
-                      <div className="info-vac-hist">
-                        <div className="datos-vac-hist">
-                          <div className="cabecera-vac-hist">
-                            <Heart className="ico-vac-hist" />
-                            <h3 className="nombre-vac-hist">{vaccine.name}</h3>
-                            <span className="id-vac-hist">{vaccine.id}</span>
-                          </div>
-                          <p className="fecha-vac-hist">Última aplicación: {vaccine.date}</p>
-                          <p className="proxima-vac-hist">Próxima dosis: {vaccine.nextDue}</p>
-                          <p className="detalle-vac-hist">Clic para ver detalles completos →</p>
-                        </div>
-                        <span
-                          className={`estado-vac-hist ${
-                            vaccine.status === "up-to-date"
-                              ? "aldia-vac-hist"
-                              : vaccine.status === "due-soon"
-                                ? "proxima-vac-hist"
-                                : "vencida-vac-hist"
-                          }`}
+                {/* Contenido principal - Separado del header */}
+                <div className="main-container-hist">
+                    <div className="contenido-hist">
+                    <div className="tabs-nav-hist">
+                        <button
+                        className={`tab-btn-hist ${selectedTab === "overview" ? "activo-hist" : ""}`}
+                        onClick={() => setSelectedTab("overview")}
                         >
-                          {vaccine.status === "up-to-date"
-                            ? "Al día"
-                            : vaccine.status === "due-soon"
-                              ? "Próxima"
-                              : "Vencida"}
-                        </span>
-                      </div>
+                        <Stethoscope className="ico-hist" />
+                        Resumen
+                        </button>
+                        <button
+                        className={`tab-btn-hist ${selectedTab === "history" ? "activo-hist" : ""}`}
+                        onClick={() => setSelectedTab("history")}
+                        >
+                        <Calendar className="ico-hist" />
+                        Historial
+                        </button>
+                        <button
+                        className={`tab-btn-hist ${selectedTab === "vaccinations" ? "activo-hist" : ""}`}
+                        onClick={() => setSelectedTab("vaccinations")}
+                        >
+                        <Heart className="ico-hist" />
+                        Vacunas
+                        </button>
+                        <button
+                        className={`tab-btn-hist ${selectedTab === "medications" ? "activo-hist" : ""}`}
+                        onClick={() => setSelectedTab("medications")}
+                        >
+                        <Pill className="ico-hist" />
+                        Medicamentos
+                        </button>
                     </div>
-                  </div>
-                ))}
-              </div>
-              <ModalDetalleVacuna
-                isOpen={isVaccineDialogOpen}
-                onClose={() => setIsVaccineDialogOpen(false)}
-                vaccine={selectedVaccine}
-              />
-            </div>
-          )}
 
-          {selectedTab === "medications" && (
-            <div className="medicamentos-hist">
-              <div className="lista-med-hist">
-                {medications.map((medication) => (
-                  <div key={medication.id} className="tarjeta-med-hist">
-                    <div className="contenido-med-hist">
-                      <div className="info-med-hist">
-                        <div className="cabecera-med-hist">
-                          <h3 className="nombre-med-hist">{medication.name}</h3>
-                          <button
-                            onClick={() => toggleMedicationStatus(medication.id)}
-                            className={`estado-med-hist ${
-                              medication.status === "activo" ? "activo-med-hist" : "inactivo-med-hist"
-                            }`}
-                          >
-                            {medication.status === "activo" ? "Activo" : "Inactivo"}
-                          </button>
+                    {selectedTab === "overview" && (
+                        <div className="resumen-hist">
+                        {/* Solo Próximas citas */}
+                        <div className="seccion-citas-hist">
+                            <div className="cabecera-sec-hist">
+                            <div className="titulo-sec-hist">
+                                <h3 className="titulo-hist">
+                                <Clock className="ico-citas-hist" />
+                                Próximas Citas
+                                </h3>
+                                <button onClick={() => setIsAppointmentsModalOpen(true)} className="enlace-hist">
+                                Ver todas →
+                                </button>
+                            </div>
+                            </div>
+                            <div className="contenido-sec-hist">
+                            <div className="lista-citas-hist">
+                                {upcomingAppointments.map((appointment, index) => (
+                                <div
+                                    key={index}
+                                    className="tarjeta-cita-hist"
+                                    onClick={() => handleAppointmentClick(appointment)}
+                                >
+                                    <div className="info-cita-hist">
+                                    <div className="datos-cita-hist">
+                                        <p className="tipo-cita-hist">{appointment.type}</p>
+                                        <p className="vet-cita-hist">{appointment.veterinarian}</p>
+                                    </div>
+                                    <div className="fecha-hora-hist">
+                                        <p className="fecha-cita-hist">{appointment.date}</p>
+                                        <p className="hora-cita-hist">{appointment.time}</p>
+                                    </div>
+                                    </div>
+                                </div>
+                                ))}
+                            </div>
+                            </div>
                         </div>
-                        <div className="detalles-med-hist">
-                          <div className="dato-med-hist">
-                            <span className="etiqueta-med-hist">Dosis:</span>
-                            <p className="valor-med-hist">{medication.dosage}</p>
-                          </div>
-                          <div className="dato-med-hist">
-                            <span className="etiqueta-med-hist">Frecuencia:</span>
-                            <p className="valor-med-hist">{medication.frequency}</p>
-                          </div>
-                          <div className="dato-med-hist">
-                            <span className="etiqueta-med-hist">Próxima dosis:</span>
-                            <p className="valor-med-hist">{medication.nextDue}</p>
-                          </div>
                         </div>
-                      </div>
+                    )}
+
+                    {selectedTab === "history" && (
+                        <div className="historial-hist">
+                        {medicalHistory.map((record) => (
+                            <TarjetaHistorial
+                            key={record.id}
+                            record={record}
+                            onClick={(record) => {
+                                setSelectedConsultation(record)
+                                setIsDialogOpen(true)
+                            }}
+                            />
+                        ))}
+
+                        <ModalDetalleConsulta
+                            isOpen={isDialogOpen}
+                            onClose={() => setIsDialogOpen(false)}
+                            consultation={selectedConsultation}
+                        />
+                        </div>
+                    )}
+
+                    {selectedTab === "vaccinations" && (
+                        <div className="vacunas-hist">
+                        <div className="lista-vacunas-hist">
+                            {vaccinations.map((vaccine, index) => (
+                            <div key={index} className="tarjeta-vac-hist" onClick={() => handleVaccineClick(vaccine)}>
+                                <div className="contenido-vac-hist">
+                                <div className="info-vac-hist">
+                                    <div className="datos-vac-hist">
+                                    <div className="cabecera-vac-hist">
+                                        <Heart className="ico-vac-hist" />
+                                        <h3 className="nombre-vac-hist">{vaccine.name}</h3>
+                                        <span className="id-vac-hist">{vaccine.id}</span>
+                                    </div>
+                                    <p className="fecha-vac-hist">Última aplicación: {vaccine.date}</p>
+                                    <p className="proxima-vac-hist">Próxima dosis: {vaccine.nextDue}</p>
+                                    <p className="detalle-vac-hist">Clic para ver detalles completos →</p>
+                                    </div>
+                                    <span
+                                    className={`estado-vac-hist ${
+                                        vaccine.status === "up-to-date"
+                                        ? "aldia-vac-hist"
+                                        : vaccine.status === "due-soon"
+                                            ? "proxima-vac-hist"
+                                            : "vencida-vac-hist"
+                                    }`}
+                                    >
+                                    {vaccine.status === "up-to-date"
+                                        ? "Al día"
+                                        : vaccine.status === "due-soon"
+                                        ? "Próxima"
+                                        : "Vencida"}
+                                    </span>
+                                </div>
+                                </div>
+                            </div>
+                            ))}
+                        </div>
+                        <ModalDetalleVacuna
+                            isOpen={isVaccineDialogOpen}
+                            onClose={() => setIsVaccineDialogOpen(false)}
+                            vaccine={selectedVaccine}
+                        />
+                        </div>
+                    )}
+
+                    {selectedTab === "medications" && (
+                        <div className="medicamentos-hist">
+                        <div className="lista-med-hist">
+                            {medications.map((medication) => (
+                            <div key={medication.id} className="tarjeta-med-hist">
+                                <div className="contenido-med-hist">
+                                <div className="info-med-hist">
+                                    <div className="cabecera-med-hist">
+                                    <h3 className="nombre-med-hist">{medication.name}</h3>
+                                    <button
+                                        onClick={() => toggleMedicationStatus(medication.id)}
+                                        className={`estado-med-hist ${
+                                        medication.status === "activo" ? "activo-med-hist" : "inactivo-med-hist"
+                                        }`}
+                                    >
+                                        {medication.status === "activo" ? "Activo" : "Inactivo"}
+                                    </button>
+                                    </div>
+                                    <div className="detalles-med-hist">
+                                    <div className="dato-med-hist">
+                                        <span className="etiqueta-med-hist">Dosis:</span>
+                                        <p className="valor-med-hist">{medication.dosage}</p>
+                                    </div>
+                                    <div className="dato-med-hist">
+                                        <span className="etiqueta-med-hist">Frecuencia:</span>
+                                        <p className="valor-med-hist">{medication.frequency}</p>
+                                    </div>
+                                    <div className="dato-med-hist">
+                                        <span className="etiqueta-med-hist">Próxima dosis:</span>
+                                        <p className="valor-med-hist">{medication.nextDue}</p>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            ))}
+                        </div>
+                        </div>
+                    )}
                     </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+                </div>
 
-      {/* Formulario para nueva consulta completa */}
-      <FormularioNuevaConsulta
-        isOpen={isNewConsultationOpen}
-        onClose={() => setIsNewConsultationOpen(false)}
-        petData={petData}
-        selectedDate={selectedDate}
-        setSelectedDate={setSelectedDate}
-        formData={formData}
-        onInputChange={handleInputChange}
-        onPhysicalExamChange={handlePhysicalExamChange}
-        onArrayChange={handleArrayChange}
-        onLabResultChange={handleLabResultChange}
-        onMedicationChange={handleMedicationChange}
-        onAddArrayItem={addArrayItem}
-        onRemoveArrayItem={removeArrayItem}
-        onAddLabResult={addLabResult}
-        onAddMedication={addMedication}
-        onSubmit={handleSubmitConsultation}
-        isFormValid={isFormValid}
-      />
+                {/* Formulario para nueva consulta completa */}
+                <FormularioNuevaConsulta
+                    isOpen={isNewConsultationOpen}
+                    onClose={() => setIsNewConsultationOpen(false)}
+                    petData={petData}
+                    selectedDate={selectedDate}
+                    setSelectedDate={setSelectedDate}
+                    formData={formData}
+                    onInputChange={handleInputChange}
+                    onPhysicalExamChange={handlePhysicalExamChange}
+                    onArrayChange={handleArrayChange}
+                    onLabResultChange={handleLabResultChange}
+                    onMedicationChange={handleMedicationChange}
+                    onAddArrayItem={addArrayItem}
+                    onRemoveArrayItem={removeArrayItem}
+                    onAddLabResult={addLabResult}
+                    onAddMedication={addMedication}
+                    onSubmit={handleSubmitConsultation}
+                    isFormValid={isFormValid}
+                />
 
-      <ModalProximasCitas
-        isOpen={isAppointmentsModalOpen}
-        onClose={() => setIsAppointmentsModalOpen(false)}
-        appointments={upcomingAppointments}
-        onAddAppointment={handleAddAppointment}
-        onEditAppointment={handleEditAppointment}
-        onDeleteAppointment={handleDeleteAppointment}
-        onAppointmentClick={handleAppointmentClick}
-      />
+                <ModalProximasCitas
+                    isOpen={isAppointmentsModalOpen}
+                    onClose={() => setIsAppointmentsModalOpen(false)}
+                    appointments={upcomingAppointments}
+                    onAddAppointment={handleAddAppointment}
+                    onEditAppointment={handleEditAppointment}
+                    onDeleteAppointment={handleDeleteAppointment}
+                    onAppointmentClick={handleAppointmentClick}
+                />
 
-      <ModalDetalleCita
-        isOpen={isAppointmentDetailOpen}
-        onClose={() => setIsAppointmentDetailOpen(false)}
-        appointment={selectedAppointment}
-      />
+                <ModalDetalleCita
+                    isOpen={isAppointmentDetailOpen}
+                    onClose={() => setIsAppointmentDetailOpen(false)}
+                    appointment={selectedAppointment}
+                />
 
-      {/* Agregar el componente FormularioNuevaCita antes del cierre del return */}
-      <FormularioNuevaCita
-        isOpen={isNewAppointmentOpen}
-        onClose={() => setIsNewAppointmentOpen(false)}
-        petData={petData}
-        formData={appointmentFormData}
-        onInputChange={handleAppointmentInputChange}
-        onSubmit={handleSubmitAppointment}
-        isFormValid={isAppointmentFormValid}
-      />
-    </div>
+                {/* Agregar el componente FormularioNuevaCita antes del cierre del return */}
+                <FormularioNuevaCita
+                    isOpen={isNewAppointmentOpen}
+                    onClose={() => setIsNewAppointmentOpen(false)}
+                    petData={petData}
+                    formData={appointmentFormData}
+                    onInputChange={handleAppointmentInputChange}
+                    onSubmit={handleSubmitAppointment}
+                    isFormValid={isAppointmentFormValid}
+                />
+                </div>
+        </section>
+    </main>
   )
 }

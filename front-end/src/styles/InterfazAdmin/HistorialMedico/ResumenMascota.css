@@ -7,7 +7,12 @@
 }
 
 .contenido-masc {
-  padding: 24px;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: var(--white);
+  transition: all 0.3s ease;
 }
 
 .titulo-sec-masc {
@@ -26,7 +31,7 @@
 .nombre-masc {
   font-size: 32px;
   font-weight: 700;
-  color: #1f2937;
+  color: #00BCD4;
   margin: 0;
 }
 
@@ -258,11 +263,11 @@
 }
 
 .seccion-prop-masc {
-  background: #f0f9ff;
+  background: #e7fbff;
   padding: 16px;
   border-radius: 12px;
   border: 1px solid #bae6fd;
-  border-left: 4px solid #3b82f6;
+  border-left: 4px solid #00BCD4;
 }
 
 .titulo-prop-masc {
