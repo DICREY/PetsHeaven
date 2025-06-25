@@ -1,4 +1,4 @@
--- Active: 1746043677643@@127.0.0.1@3306@pets_heaven
+-- Active: 1746046445434@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchServicesCat()
 BEGIN
     SELECT
@@ -569,6 +569,7 @@ BEGIN
     COMMIT;
     SET autocommit = 1;
 END // */
+
 CREATE PROCEDURE pets_heaven.SearchVacunas()
 BEGIN
     SELECT 
@@ -595,6 +596,23 @@ BEGIN
     ORDER BY v.id_vac ASC;
 END //
 
+
+CREATE PROCEDURE pets_heaven.SearchVacunas()
+BEGIN
+    SELECT 
+        v.*,
+        p.id_pro,
+        p.nom_pro,
+        p.des_pro,
+        GROUP_CONCAT(DISTINCT s.nom_ser SEPARATOR ', ') as servicios_asociados
+    FROM 
+        vacunas v
+    JOIN procedimientos p ON v.pro_vac = p.id_pro
+    LEFT JOIN servicios_procedimientos sp ON sp.id_pro = p.id_pro
+    LEFT JOIN servicios s ON sp.id_ser = s.id_ser
+    GROUP BY v.id_vac
+    ORDER BY v.id_vac ASC;
+END //
 /* DROP PROCEDURE `SearchServices`; */
 /* DROP PROCEDURE pets_heaven.SearchServicesBy; */
 /* DROP PROCEDURE pets_heaven.AbleOrDesableService; */
@@ -605,5 +623,9 @@ END //
 /* CALL `SearchServices`(); */
 /* CALL pets_heaven.SearchServicesBy('Cirugia'); */
 /* CALL pets_heaven.AbleOrDesableService('6','Cirugia'); */
-/* CALL pets_heaven.SearchVacunas(); */
+CALL pets_heaven.SearchVacunas();
+
+DROP PROCEDURE pets_heaven.SearchVacunas;
+
+
 /* CALL pets_heaven.RegisterVacuna(''); */

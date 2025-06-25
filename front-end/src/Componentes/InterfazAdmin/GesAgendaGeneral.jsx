@@ -136,7 +136,7 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
         // Verificar fecha
         const eventDate = new Date(selectedEvent.start)
         const today = new Date()
-        today.setHours(0, 0, 0, 0) // Eliminar la parte de la hora para comparar solo fechas
+        today.setHours(0, 0, 0, 0) 
 
         if (eventDate < today) {
             Alert.alert(

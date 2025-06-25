@@ -18,7 +18,6 @@ Route.get('/all', ValidatorRol("veterinario"), async (req,res) => {
     try {
         const pets = await pet.findAll()
         if (!pets.result[0][0]) return res.status(404).json({ message: "Mascotas no encontradas" })
-
         res.status(200).json(pets)
     } catch (err) {
         if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
