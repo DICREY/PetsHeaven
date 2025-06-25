@@ -15,7 +15,7 @@ import { HomeAdmin } from '../Componentes/InterfazAdmin/Consultorio'
 import { GesPersonal } from '../Componentes/InterfazAdmin/GesPersonal'
 import { GesAgendaGeneral } from '../Componentes/InterfazAdmin/GesAgendaGeneral'
 import { MainAdmin } from '../Componentes/InterfazAdmin/MainAdmin'
-import { Pets } from '../Componentes/Pets/Pets'
+import InicioPage from '../Componentes/InterfazCliente/HomeCliente'
 import PetMedicalHistory from '../Componentes/InterfazAdmin/HistorialMedico/HistorialMedico'
 import { NotFound } from '../Componentes/Errores/NotFound'
 import { ErrorInternalServer } from '../Componentes/Errores/ErrorInternalServer'
@@ -34,6 +34,8 @@ import { PanelVeterinario } from '../Componentes/InterfazVeterinario/HomeVeterin
 import {ExamenesLaboratorio} from '../Componentes/InterfazAdmin/Servicios/Laboratorio'
 // import { PetMedicalHistory } from '../Componentes/InterfazAdmin/HistorialMedico/HistorialMedico'
 // import { SiteTraffic } from '../Componentes/Global/Visits'
+import CitasPage from '../Componentes/InterfazCliente/CitasClientes'
+import MascotasPage from '../Componentes/InterfazCliente/MascotaCliente'
 
 // Import contexts
 import { AuthProvider } from '../Contexts/Auth.context'
@@ -113,7 +115,7 @@ export default function App () {
         <Routes>
           {/* Private routes */}
           <Route path='user/pets' element={
-            <PrivateRoute children={<Pets 
+            <PrivateRoute children={<InicioPage  
               setPetSelect={setPetSelect}
               URL={URL}
               imgPetDefault={imgPetDefault}
@@ -122,6 +124,22 @@ export default function App () {
           </Route>
           <Route path='/pets/details' element={
             <PrivateRoute children={<PetMedicalHistory
+              tab={petDetailTab}
+              datas={petSelect}
+              imgPetDefault={imgPetDefault}
+              URL={URL}
+            />}/>}>
+          </Route>
+          <Route path='/pets/citas' element={
+            <PrivateRoute children={<CitasPage
+              tab={petDetailTab}
+              datas={petSelect}
+              imgPetDefault={imgPetDefault}
+              URL={URL}
+            />}/>}>
+          </Route>
+          <Route path='/pets/consulta' element={
+            <PrivateRoute children={<MascotasPage
               tab={petDetailTab}
               datas={petSelect}
               imgPetDefault={imgPetDefault}

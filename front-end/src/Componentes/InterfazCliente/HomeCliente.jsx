@@ -15,7 +15,7 @@ export default function InicioPage({ onNavegar }) {
     <div className="inicio-contenedor">
       <section className="hero-inicio">
         <div className="hero-contenido">
-          <h1 className="hero-titulo">Bienvenido a VetCare</h1>
+          <h1 className="hero-titulo">Bienvenido a Pets Heaven</h1>
           <p className="hero-desc">
             El cuidado de tus mascotas es nuestra prioridad. Agenda citas, consulta el historial y mantente al día con
             la salud de tus compañeros.
