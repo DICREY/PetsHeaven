@@ -1,5 +1,6 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useState } from "react"
+import { useNavigate } from "react-router"
 import { Calendar, Heart, Pill, Stethoscope, Clock, ArrowLeft, Printer, Plus } from "lucide-react"
 import "../../../styles/InterfazAdmin/HistorialMedico/HistorialMedico.css"
 
@@ -13,11 +14,11 @@ import ModalDetalleVacuna from "./ModalDetalleVacuna"
 import ModalProximasCitas from "./ModalProximasCitas"
 import ModalDetalleCita from "./ModalDetalleCita"
 import FormularioNuevaCita from "./FormularioNuevaCita"
-
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
 import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
 
-export default function PetMedicalHistory() {
+// Component
+export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault = '', tab }) {
   const [selectedTab, setSelectedTab] = useState("overview")
   const [selectedConsultation, setSelectedConsultation] = useState(null)
   const [selectedVaccine, setSelectedVaccine] = useState(null)
@@ -92,6 +93,7 @@ export default function PetMedicalHistory() {
   })
 
   // Datos del historial médico
+  const navigate = useNavigate()
   const medicalHistory = [
     {
       id: 1,
@@ -515,6 +517,10 @@ export default function PetMedicalHistory() {
     alert("¡Cita programada exitosamente!")
   }
 
+  useEffect(() => {
+    if (!datas) navigate(-1)
+  },[])
+
   return (
 
     <main className="contenedoradminhome">
@@ -545,7 +551,7 @@ export default function PetMedicalHistory() {
 
                 {/* Header con información básica de la mascota - Separado */}
                 <div className="seccion-masc-hist">
-                    <ResumenMascota petData={petData} setPetData={setPetData} />
+                    <ResumenMascota petData={petData} setPetData={setPetData} imgDefault={imgPetDefault} />
                 </div>
 
                 {/* Contenido principal - Separado del header */}

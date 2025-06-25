@@ -2,8 +2,9 @@ import React from "react"
 import { useState } from "react"
 import { User, Phone, MapPin, Edit, Save, X } from "lucide-react"
 import "../../../styles/InterfazAdmin/HistorialMedico/ResumenMascota.css"
+import { CheckImage } from "../../../Utils/Utils"
 
-export default function ResumenMascota({ petData, setPetData }) {
+export default function ResumenMascota({ petData, setPetData, imgDefault = '' }) {
   const [isEditing, setIsEditing] = useState(false)
   const [editData, setEditData] = useState(petData)
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false)
@@ -51,8 +52,8 @@ export default function ResumenMascota({ petData, setPetData }) {
   }
 
   return (
-    <div className="cabecera-masc">
-      <div className="contenido-masc">
+    <aside className="cabecera-masc">
+      <section className="contenido-masc">
         <div className="titulo-sec-masc">
           <div className="nombre-sec-masc">
             <h1 className="nombre-masc">
@@ -92,7 +93,12 @@ export default function ResumenMascota({ petData, setPetData }) {
           <div className="foto-sec-masc">
             <div className="contenedor-foto-masc">
               {petData.photo ? (
-                <img src={petData.photo || "/placeholder.svg"} alt={petData.name} className="foto-masc" />
+                <CheckImage 
+                  src={petData.photo || "/placeholder.svg"} 
+                  alt={petData.name} 
+                  imgDefault={imgDefault}
+                  className="foto-masc" 
+                />
               ) : (
                 <span className="avatar-masc">{petData.name.charAt(0)}</span>
               )}
@@ -256,7 +262,7 @@ export default function ResumenMascota({ petData, setPetData }) {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </aside>
   )
 }
