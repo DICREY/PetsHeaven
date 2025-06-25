@@ -531,6 +531,7 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
             <div className="cont-hist">
             
             {/* Botones superiores */}
+            {console.log(datas)}
                 <div className="cabecera-hist">
                     <button className="btn-atras-hist">
                     <ArrowLeft className="ico-hist" />
@@ -551,7 +552,7 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
 
                 {/* Header con información básica de la mascota - Separado */}
                 <div className="seccion-masc-hist">
-                    <ResumenMascota petData={petData} setPetData={setPetData} imgDefault={imgPetDefault} />
+                    <ResumenMascota cota petData={datas} setPetData={setPetData} imgDefault={imgPetDefault} />
                 </div>
 
                 {/* Contenido principal - Separado del header */}
