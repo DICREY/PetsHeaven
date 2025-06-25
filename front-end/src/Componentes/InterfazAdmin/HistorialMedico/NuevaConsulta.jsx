@@ -213,7 +213,7 @@ export default function FormularioNuevaConsulta({ close }) {
                   <div className="cabecera-detalles-consulta">
                     <h3 className="titulo-detalles-consulta flex-center-consulta">
                       <FileText className="icono-sm-consulta icono-tipo-consulta" />
-                      Detalles de la Consulta
+                      Detalles de la Consulta 
                     </h3>
                   </div>
                   <div className="contenido-detalles-consulta space-y-consulta">
@@ -268,7 +268,9 @@ export default function FormularioNuevaConsulta({ close }) {
                 </div>
                 <div className="contenido-diag-consulta space-y-consulta">
                   <div>
-                    <label htmlFor="diagnosis" className="label-consulta">
+                    <label htmlFor="diagnosis" className="label-consulta"
+                      pattern="^[a-zA-Z\s]*$"
+                    >
                       Diagnóstico *
                     </label>
                     <textarea
