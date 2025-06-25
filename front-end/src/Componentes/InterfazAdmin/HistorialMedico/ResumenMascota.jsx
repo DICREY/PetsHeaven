@@ -93,7 +93,6 @@ export default function ResumenMascota({ petData, setPetData, imgDefault = '' })
         <div className="perfil-masc">
           <div className="foto-sec-masc">
             <div className="contenedor-foto-masc">
-              {console.log(petData)}
               {petData.fot_mas ? (
                 <CheckImage 
                   src={petData.fot_mas || "/placeholder.svg"} 

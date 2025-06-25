@@ -519,7 +519,7 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
   }
 
   useEffect(() => {
-    if (!datas) navigate(-1)
+    if (!datas?.nom_mas) navigate(-1)
   },[])
 
   return (
@@ -532,7 +532,6 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
             <div className="cont-hist">
             
             {/* Botones superiores */}
-            {console.log(datas)}
                 <div className="cabecera-hist">
                     <button className="BackBtn" onClick={() => navigate(-1)}>
                     <ArrowLeft className="ico-hist" />

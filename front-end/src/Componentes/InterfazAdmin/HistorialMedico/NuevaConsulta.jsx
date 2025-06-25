@@ -652,7 +652,7 @@ export default function FormularioNuevaConsulta({ close }) {
                       id="contactPhone"
                       type="tel"
                       className="input-consulta"
-                      value={formData.contactPhone}
+                      value={formData.cel_per}
                       onChange={(e) => onInputChange("contactPhone", e.target.value)}
                     />
                   </div>

@@ -60,7 +60,11 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
       gen_mas: data.gen_mas,
       est_rep_mas: data.est_rep_mas,
       fot_mas: data.fot_mas,
-      doc_per: data.prop_doc_per
+      doc_per: data.prop_doc_per,
+      nom_per: data.prop_nom_per,
+      ape_per: data.prop_ape_per,
+      email_per: data.prop_email_per,
+      cel_per: data.prop_cel_per
     }
     setPetSelect(pet)
     navigate('/pets/details')
