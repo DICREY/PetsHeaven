@@ -16,6 +16,7 @@ import ModalDetalleCita from "./ModalDetalleCita"
 import FormularioNuevaCita from "./FormularioNuevaCita"
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
 import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
+import AppointmentForm from "../FormulariosAdmin/AgendarCita"
 
 // Component
 export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault = '', tab }) {
@@ -531,18 +532,19 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
             <div className="cont-hist">
             
             {/* Botones superiores */}
+            {console.log(datas)}
                 <div className="cabecera-hist">
-                    <button className="btn-atras-hist">
+                    <button className="BackBtn" onClick={() => navigate(-1)}>
                     <ArrowLeft className="ico-hist" />
                     Atrás
                     </button>
 
                     <div className="acciones-hist">
-                    <button className="btn-ppal-hist" onClick={() => setIsNewConsultationOpen(true)}>
+                    <button className="EditBtn" onClick={() => setIsNewConsultationOpen(1)}>
                         <Plus className="ico-hist" />
                         Nueva Consulta
                     </button>
-                    <button className="btn-impr-hist" onClick={generatePDF}>
+                    <button className="BackBtn" onClick={generatePDF}>
                         <Printer className="ico-hist" />
                         Imprimir Historial
                     </button>
@@ -551,7 +553,7 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
 
                 {/* Header con información básica de la mascota - Separado */}
                 <div className="seccion-masc-hist">
-                    <ResumenMascota petData={petData} setPetData={setPetData} imgDefault={imgPetDefault} />
+                    <ResumenMascota cota petData={datas} setPetData={setPetData} imgDefault={imgPetDefault} />
                 </div>
 
                 {/* Contenido principal - Separado del header */}
@@ -738,25 +740,26 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
                 </div>
 
                 {/* Formulario para nueva consulta completa */}
-                <FormularioNuevaConsulta
-                    isOpen={isNewConsultationOpen}
-                    onClose={() => setIsNewConsultationOpen(false)}
-                    petData={petData}
-                    selectedDate={selectedDate}
-                    setSelectedDate={setSelectedDate}
-                    formData={formData}
-                    onInputChange={handleInputChange}
-                    onPhysicalExamChange={handlePhysicalExamChange}
-                    onArrayChange={handleArrayChange}
-                    onLabResultChange={handleLabResultChange}
-                    onMedicationChange={handleMedicationChange}
-                    onAddArrayItem={addArrayItem}
-                    onRemoveArrayItem={removeArrayItem}
-                    onAddLabResult={addLabResult}
-                    onAddMedication={addMedication}
-                    onSubmit={handleSubmitConsultation}
-                    isFormValid={isFormValid}
-                />
+                {isNewConsultationOpen && (
+                  <FormularioNuevaConsulta
+                      close={() => setIsNewConsultationOpen(false)}
+                      petData={petData}
+                      selectedDate={selectedDate}
+                      setSelectedDate={setSelectedDate}
+                      formData={formData}
+                      onInputChange={handleInputChange}
+                      onPhysicalExamChange={handlePhysicalExamChange}
+                      onArrayChange={handleArrayChange}
+                      onLabResultChange={handleLabResultChange}
+                      onMedicationChange={handleMedicationChange}
+                      onAddArrayItem={addArrayItem}
+                      onRemoveArrayItem={removeArrayItem}
+                      onAddLabResult={addLabResult}
+                      onAddMedication={addMedication}
+                      onSubmit={handleSubmitConsultation}
+                      isFormValid={isFormValid}
+                  />
+                )}
 
                 <ModalProximasCitas
                     isOpen={isAppointmentsModalOpen}

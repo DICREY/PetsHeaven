@@ -3,6 +3,7 @@ import { useState } from "react"
 import { User, Phone, MapPin, Edit, Save, X } from "lucide-react"
 import "../../../styles/InterfazAdmin/HistorialMedico/ResumenMascota.css"
 import { CheckImage } from "../../../Utils/Utils"
+import { formatDate } from "../../Varios/Util"
 
 export default function ResumenMascota({ petData, setPetData, imgDefault = '' }) {
   const [isEditing, setIsEditing] = useState(false)
@@ -59,29 +60,29 @@ export default function ResumenMascota({ petData, setPetData, imgDefault = '' })
             <h1 className="nombre-masc">
               {isEditing ? (
                 <input
-                  value={editData.name}
+                  value={editData.nom_mas}
                   onChange={(e) => handleChange("name", e.target.value)}
                   className="input-nombre-masc"
                 />
               ) : (
-                petData.name
+                petData.nom_mas
               )}
             </h1>
           </div>
           <div className="acciones-masc">
             {isEditing ? (
               <>
-                <button onClick={handleSave} className="btn-guardar-masc">
+                <button onClick={handleSave} className="EditBtn">
                   <Save className="ico-masc" />
                   Guardar
                 </button>
-                <button onClick={handleCancel} className="btn-cancelar-masc">
+                <button onClick={handleCancel} className="DeleteBtn">
                   <X className="ico-masc" />
                   Cancelar
                 </button>
               </>
             ) : (
-              <button onClick={() => setIsEditing(true)} className="btn-editar-masc">
+              <button onClick={() => setIsEditing(true)} className="EditBtn">
                 <Edit className="ico-masc" />
                 Editar
               </button>
@@ -92,15 +93,16 @@ export default function ResumenMascota({ petData, setPetData, imgDefault = '' })
         <div className="perfil-masc">
           <div className="foto-sec-masc">
             <div className="contenedor-foto-masc">
-              {petData.photo ? (
+              {console.log(petData)}
+              {petData.fot_mas ? (
                 <CheckImage 
-                  src={petData.photo || "/placeholder.svg"} 
-                  alt={petData.name} 
+                  src={petData.fot_mas || "/placeholder.svg"} 
+                  alt={petData.nom_mas} 
                   imgDefault={imgDefault}
                   className="foto-masc" 
                 />
               ) : (
-                <span className="avatar-masc">{petData.name.charAt(0)}</span>
+                <span className="avatar-masc">{petData.nom_mas?.charAt()}</span>
               )}
               {isEditing && (
                 <div className="overlay-foto-masc">
@@ -123,41 +125,41 @@ export default function ResumenMascota({ petData, setPetData, imgDefault = '' })
             <div className="datos-basicos-masc">
               <div className="item-dato-masc">
                 <span className="etiqueta-masc">Especie:</span>
-                <span className="valor-masc">{petData.species}</span>
+                <span className="valor-masc">{petData.esp_mas}</span>
               </div>
               <div className="item-dato-masc">
                 <span className="etiqueta-masc">Raza:</span>
-                <span className="valor-masc">{petData.breed}</span>
+                <span className="valor-masc">{petData.raz_mas}</span>
               </div>
               <div className="item-dato-masc">
                 <span className="etiqueta-masc">Color:</span>
                 {isEditing ? (
                   <input
-                    value={editData.color}
+                    value={editData.col_mas}
                     onChange={(e) => handleChange("color", e.target.value)}
                     className="input-masc"
                   />
                 ) : (
-                  <span className="valor-masc">{petData.color}</span>
+                  <span className="valor-masc">{petData.col_mas}</span>
                 )}
               </div>
               <div className="item-dato-masc">
                 <span className="etiqueta-masc">Peso:</span>
                 {isEditing ? (
                   <input
-                    value={editData.weight}
+                    value={editData.pes_mas}
                     onChange={(e) => handleChange("weight", e.target.value)}
                     className="input-masc"
                   />
                 ) : (
-                  <span className="valor-masc">{petData.weight}</span>
+                  <span className="valor-masc">{petData.pes_mas}</span>
                 )}
               </div>
               <div className="item-dato-masc">
                 <span className="etiqueta-masc">Género:</span>
                 {isEditing ? (
                   <select
-                    value={editData.gender}
+                    value={editData.gen_mas}
                     onChange={(e) => handleChange("gender", e.target.value)}
                     className="select-masc"
                   >
@@ -165,27 +167,27 @@ export default function ResumenMascota({ petData, setPetData, imgDefault = '' })
                     <option value="Hembra">Hembra</option>
                   </select>
                 ) : (
-                  <span className="valor-masc">{petData.gender}</span>
+                  <span className="valor-masc">{petData.gen_mas}</span>
                 )}
               </div>
               <div className="item-dato-masc">
                 <span className="etiqueta-masc">Nacimiento:</span>
-                <span className="valor-masc">{petData.birthDate}</span>
+                <span className="valor-masc">{formatDate(petData.fec_nac_mas)}</span>
               </div>
               <div className="item-dato-masc">
                 <span className="etiqueta-masc">Estado:</span>
-                <span className="valor-masc">{petData.reproductiveStatus}</span>
+                <span className="valor-masc">{petData.est_rep_mas}</span>
               </div>
               <div className="item-dato-masc">
                 <span className="etiqueta-masc">Alimento:</span>
                 {isEditing ? (
                   <input
-                    value={editData.food}
+                    value={editData.ali_mas}
                     onChange={(e) => handleChange("food", e.target.value)}
                     className="input-masc"
                   />
                 ) : (
-                  <span className="valor-masc">{petData.food}</span>
+                  <span className="valor-masc">{petData.ali_mas}</span>
                 )}
               </div>
             </div>
@@ -201,30 +203,27 @@ export default function ResumenMascota({ petData, setPetData, imgDefault = '' })
                     <span className="etiqueta-prop-masc">Nombre:</span>
                     {isEditing ? (
                       <input
-                        value={editData.owner.name}
+                        value={editData.nom_per}
                         onChange={(e) => handleChange("owner.name", e.target.value)}
                         className="input-prop-masc"
                       />
                     ) : (
-                      <p className="valor-prop-masc">{petData.owner.name}</p>
-                    )}
-                  </div>
-                  <div className="campo-prop-masc">
-                    <span className="etiqueta-prop-masc">Teléfono:</span>
-                    {isEditing ? (
-                      <input
-                        value={editData.owner.phone}
-                        onChange={(e) => handleChange("owner.phone", e.target.value)}
-                        className="input-prop-masc"
-                      />
-                    ) : (
-                      <p className="tel-prop-masc">
-                        <Phone className="ico-tel-masc" />
-                        {petData.owner.phone}
-                      </p>
+                      <p className="valor-prop-masc">{petData.nom_per} {petData.ape_per}</p>
                     )}
                   </div>
                 </div>
+                <div className="campo-prop-masc">
+                    <span className="etiqueta-prop-masc">Documento:</span>
+                    {isEditing ? (
+                      <input
+                        value={editData.doc_per}
+                        onChange={(e) => handleChange("owner.email", e.target.value)}
+                        className="input-prop-masc"
+                      />
+                    ) : (
+                      <p className="valor-prop-masc">{petData.doc_per}</p>
+                    )}
+                  </div>
               </div>
 
               <div className="seccion-prop-masc">
@@ -237,24 +236,27 @@ export default function ResumenMascota({ petData, setPetData, imgDefault = '' })
                     <span className="etiqueta-prop-masc">Email:</span>
                     {isEditing ? (
                       <input
-                        value={editData.owner.email}
+                        value={editData.email_per}
                         onChange={(e) => handleChange("owner.email", e.target.value)}
                         className="input-prop-masc"
                       />
                     ) : (
-                      <p className="valor-prop-masc">{petData.owner.email}</p>
+                      <p className="valor-prop-masc">{petData.email_per}</p>
                     )}
                   </div>
                   <div className="campo-prop-masc">
-                    <span className="etiqueta-prop-masc">Dirección:</span>
+                    <span className="etiqueta-prop-masc">Teléfono:</span>
                     {isEditing ? (
                       <input
-                        value={editData.owner.address}
-                        onChange={(e) => handleChange("owner.address", e.target.value)}
+                        value={editData.cel_per}
+                        onChange={(e) => handleChange("owner.phone", e.target.value)}
                         className="input-prop-masc"
                       />
                     ) : (
-                      <p className="valor-prop-masc">{petData.owner.address}</p>
+                      <p className="tel-prop-masc">
+                        <Phone className="ico-tel-masc" />
+                        {petData.cel_per}
+                      </p>
                     )}
                   </div>
                 </div>

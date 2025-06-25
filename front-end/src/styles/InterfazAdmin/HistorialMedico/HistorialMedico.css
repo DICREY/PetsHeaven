@@ -124,7 +124,7 @@
 }
 
 .tab-btn-hist.activo-hist {
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  background: #00BCD4; 
   color: white;
   box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
   font-weight: 600;

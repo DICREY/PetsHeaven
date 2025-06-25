@@ -3,9 +3,8 @@ import { CalendarDays, FileText, AlertCircle, Heart, CheckCircle, Pill, Phone, P
 import { useState } from "react"
 import "../../../styles/InterfazAdmin/HistorialMedico/NuevaConsulta.css"
 
-
-export default function FormularioNuevaConsulta() {
-  const [isOpen, setIsOpen] = useState(false)
+// Component 
+export default function FormularioNuevaConsulta({ close }) {
   const [selectedDate, setSelectedDate] = useState(null)
   const [formData, setFormData] = useState({
     time: "",
@@ -139,7 +138,7 @@ export default function FormularioNuevaConsulta() {
   const onSubmit = () => {
     if (isFormValid()) {
       console.log("Formulario enviado:", { ...formData, date: selectedDate })
-      setIsOpen(false)
+      close()
     }
   }
 
@@ -147,9 +146,8 @@ export default function FormularioNuevaConsulta() {
   return (
     <>
       {/* Modal del formulario */}
-      {isOpen && (
-        <div className="modal-overlay-consulta">
-          <div className="modal-backdrop-consulta" onClick={onClose}></div>
+        <aside className="modal-overlay-consulta">
+          <div className="modal-backdrop-consulta" onClick={close}></div>
           <div className="modal-container-consulta">
             <div className="modal-header-consulta">
               <div className="header-content-consulta">
@@ -160,7 +158,7 @@ export default function FormularioNuevaConsulta() {
                   </h2>
                   <p className="subtitulo-modal-consulta">Complete toda la información de la consulta médica</p>
                 </div>
-                <button onClick={onClose} className="btn-close-consulta">
+                <button onClick={close} className="btn-close-consulta">
                   ×
                 </button>
               </div>
@@ -215,7 +213,7 @@ export default function FormularioNuevaConsulta() {
                   <div className="cabecera-detalles-consulta">
                     <h3 className="titulo-detalles-consulta flex-center-consulta">
                       <FileText className="icono-sm-consulta icono-tipo-consulta" />
-                      Detalles de la Consulta
+                      Detalles de la Consulta 
                     </h3>
                   </div>
                   <div className="contenido-detalles-consulta space-y-consulta">
@@ -270,7 +268,9 @@ export default function FormularioNuevaConsulta() {
                 </div>
                 <div className="contenido-diag-consulta space-y-consulta">
                   <div>
-                    <label htmlFor="diagnosis" className="label-consulta">
+                    <label htmlFor="diagnosis" className="label-consulta"
+                      pattern="^[a-zA-Z\s]*$"
+                    >
                       Diagnóstico *
                     </label>
                     <textarea
@@ -663,7 +663,7 @@ export default function FormularioNuevaConsulta() {
 
               {/* Botones de acción */}
               <div className="footer-consulta">
-                <button onClick={onClose} className="btn-cancel-consulta">
+                <button onClick={close} className="btn-cancel-consulta">
                   Cancelar
                 </button>
                 <button onClick={onSubmit} disabled={!isFormValid()} className="btn-registrar-consulta">
@@ -672,8 +672,7 @@ export default function FormularioNuevaConsulta() {
               </div>
             </div>
           </div>
-        </div>
-      )}
+        </aside>
     </>
   )
 }
