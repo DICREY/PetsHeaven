@@ -57,6 +57,16 @@ export const divideList = (array = [], size = 5) => {
   return result
 }
 
+// State 
+export const formatState = (state) => {
+  const sta = state === 'DISPONIBLE' ? "Disponible": 
+  state === 1? "Disponible":
+  state === '1'? "Disponible":
+  state === true? "Disponible":
+  "No-disponible"
+  return sta
+}
+
 // Verify if load img
 export const checkImage = (src = '', alt, imgDefault = '', className = '') => {
   const img = new Image()

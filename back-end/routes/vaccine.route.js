@@ -49,7 +49,7 @@ Route.put('/change-state', ValidatorRol("administrador"), async (req, res) => {
 
     try {            
         const result = await services.ChangeVaccineState(data)
-        res.status(201).json({ message: "Vacuna Desactivada correctamente", result: result.result });
+        res.status(201).json(result);
     } catch (err) {
         console.log(err)
         if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })

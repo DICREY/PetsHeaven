@@ -305,7 +305,7 @@ class Services {
                 setTimeout(() => {
                     res({
                         message: "Servicio Deshabilitado",
-                        result: result
+                        change: 1
                     })
                 },1000)
             })

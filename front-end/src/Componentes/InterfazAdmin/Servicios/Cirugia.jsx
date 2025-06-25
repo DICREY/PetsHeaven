@@ -196,12 +196,12 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
   }, [])
 
   // Eliminar cirugía
-  const eliminarCirugia = (id_ser) => {
+  const eliminarCirugia = (data) => {
     setNotify({
       title: 'Atencion',
       message: '¿Estás seguro de que deseas eliminar esta vacuna?',
       firstOption: () => {setNotify(null); return},
-      secondOption: () => DeleteService(id_ser),
+      secondOption: () => DeleteService(data.id),
       firstOptionName: 'Cancelar',
       secondOptionName: 'Continuar',
     })
@@ -280,14 +280,14 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
   }, [])
 
   // Cambiar estado de disponibilidad
-  const cambiarEstado = useCallback(async (id, e) => {
+  const cambiarEstado = useCallback(async (data) => {
     e.stopPropagation()
     try {
-      const cirugia = cirugias.find(c => c.id_ser === id)
+      const cirugia = cirugias.find(c => c.id_ser === data.id)
       const nuevoEstado = cirugia.sta_ser === "DISPONIBLE" ? "NO DISPONIBLE" : "DISPONIBLE"
 
       await ModifyData(`${mainUrl}/modify`, {
-        id_ser: id,
+        id_ser: data.id,
         sta_ser: nuevoEstado
       })
 
@@ -296,7 +296,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
       const message = errorStatusHandler(err)
       setNotify({
         title: 'Error',
-        message: `${message}`,
+        message: message,
         close: setNotify
       })
     }
