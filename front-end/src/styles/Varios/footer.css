@@ -1,140 +1,263 @@
-/* Estilos generales del footer */
-.footer {
-  position: relative;
-  bottom: 0;
-  width: 100%;
-  border-top: 1px solid var(--gray-300);
-  background-color: var(--white);
+/* Colores principales */
+.fondo-blanco-footer-principal {
+  background-color: white;
+  border-top: 1px solid #e5e7eb;
 }
 
-.contenedor-footer {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
+.texto-gris-oscuro-footer-principal {
+  color: #374151;
 }
 
-/* Logo y derechos */
-.logo-derechos {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-}
-
-.logo-footer {
-  width: 7.5rem;
-  height: 5rem;
-  object-fit: cover;
-  object-position: center;
-}
-
-.texto-footer {
+.texto-gris-footer-principal {
   color: #6b7280;
-  font-size: 0.75rem;
 }
 
-/* Enlaces legales */
-.enlaces-legales {
+.texto-cyan-footer-principal {
+  color: #00bcd4;
+}
+
+.texto-rojo-footer-principal {
+  color: #ef4444;
+}
+
+.texto-rojo-oscuro-footer-principal {
+  color: #dc2626;
+}
+
+/* Layout */
+.contenedor-footer-principal {
+  max-width: 1200px;
+}
+
+.cuadricula-footer-principal {
+  display: grid;
+}
+
+.cuadricula-una-columna-footer-principal {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.espacio-entre-elementos-footer-principal {
+  gap: 2rem;
+}
+
+/* Secciones */
+.seccion-footer-principal {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
+}
+
+/* Tipografía */
+.titulo-principal-footer-principal {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.subtitulo-footer-principal {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.parrafo-footer-principal {
+  color: #6b7280;
+  font-size: 0.875rem;
+  line-height: 1.625;
+}
+
+.texto-pequeno-footer-principal {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+/* Iconos */
+.icono-footer-principal {
+  height: 1.25rem;
+  width: 1.25rem;
+}
+
+.icono-mediano-footer-principal {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.icono-pequeno-footer-principal {
+  height: 1rem;
+  width: 1rem;
+}
+
+/* Redes sociales */
+.redes-sociales-footer-principal {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.boton-red-social-footer-principal {
+  background: transparent;
+  border: 1px solid #d1d5db;
+  color: #6b7280;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.boton-red-social-footer-principal:hover {
+  color: #00bcd4;
+  border-color: #00bcd4;
+  background-color: #f0fdff;
+}
+
+/* Listas */
+.lista-servicios-footer-principal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.enlace-servicio-footer-principal {
+  color: #6b7280;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.enlace-servicio-footer-principal:hover {
+  color: #00bcd4;
+}
+
+/* Contactos */
+.informacion-contacto-footer-principal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.elemento-contacto-footer-principal {
+  display: flex;
   align-items: center;
   gap: 0.75rem;
 }
 
-.enlace-footer {
-  color: #4b5563;
-  text-decoration: none;
-  font-size: 0.875rem;
-  transition: color 0.2s;
+.texto-emergencia-footer-principal {
+  font-weight: 600;
 }
 
-.enlace-footer:hover {
+/* Horarios */
+.horarios-atencion-footer-principal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.horario-item-footer-principal {
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.emergencia-veinticuatro-footer-principal {
+  color: #dc2626;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+
+/* Separador */
+.separador-footer-principal {
+  margin: 2rem 0;
+  border: none;
+  height: 1px;
+  background-color: #e5e7eb;
+}
+
+/* Footer inferior */
+.pie-inferior-footer-principal {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.derechos-autor-footer-principal {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.enlaces-legales-footer-principal {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.enlace-legal-footer-principal {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.enlace-legal-footer-principal:hover {
   color: #00bcd4;
 }
 
-/* ===== RESPONSIVE: TABLET (768px - 1023px) ===== */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .contenedor-footer {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+/* Utilidades de Flexbox */
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.space-x-2 > * + * {
+  margin-left: 0.5rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .md\:cuadricula-dos-columnas-footer-principal {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .logo-derechos {
+  .pie-inferior-footer-principal {
     flex-direction: row;
-    text-align: left;
-    gap: 0.75rem;
-  }
-
-  .enlaces-legales {
-    flex-direction: row;
-    gap: 1.5rem;
+    gap: 0;
   }
 }
 
-/* ===== RESPONSIVE: IPAD PRO Y TABLETS GRANDES (1024px - 1199px) ===== */
-@media (min-width: 1024px) and (max-width: 1199px) {
-  .contenedor-footer {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .logo-derechos {
-    flex-direction: row;
-    text-align: left;
-    gap: 1rem;
-  }
-
-  .enlaces-legales {
-    flex-direction: row;
-    gap: 2rem;
-  }
-}
-
-/* ===== RESPONSIVE: ESCRITORIO Y SUPERIOR (>= 1200px) ===== */
-@media (min-width: 1200px) {
-  .contenedor-footer {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .logo-derechos {
-    flex-direction: row;
-    text-align: left;
-    gap: 1rem;
-  }
-
-  .enlaces-legales {
-    flex-direction: row;
-    gap: 2.5rem;
-  }
-}
-
-
-/* Estilos para impresión */
-@media print {
-  .footer {
-    border-top: 1px solid #ddd;
-    background: none;
-  }
-
-  .contenedor-footer {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .logo-derechos {
-    margin-bottom: 0.5rem;
-  }
-
-  .enlaces-legales {
-    display: none; /* Ocultar enlaces en impresión */
+@media (min-width: 1024px) {
+  .lg\:cuadricula-cuatro-columnas-footer-principal {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
