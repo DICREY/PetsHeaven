@@ -1,8 +1,4 @@
-<<<<<<< HEAD
--- Active: 1750268475844@@127.0.0.1@3306@pets_heaven
-=======
--- Active: 1746043677643@@127.0.0.1@3306@pets_heaven
->>>>>>> a001651c0d6958d0fd8405d1d3e8fee5067c2109
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.RegistAppointment(
     IN p_fec_cit DATE, -- Fecha de la cita
     IN p_hor_ini_cit TIME, -- Hora de inicio de la cita
@@ -94,6 +90,7 @@ BEGIN
         p_prop.ape_per AS prop_ape_per,
         p_prop.cel_per AS prop_cel_per,
         p_prop.doc_per AS prop_doc_per,
+        p_prop.email_per AS prop_email_per,
         c.est_cit
     FROM 
         citas c
@@ -156,6 +153,7 @@ BEGIN
             p_prop.ape_per AS prop_ape_per,
             p_prop.cel_per AS prop_cel_per,
             p_prop.doc_per AS prop_doc_per,
+            p_prop.email_per AS prop_email_per,
             c.est_cit
         FROM 
             citas c
@@ -179,6 +177,7 @@ BEGIN
         LIMIT 1000;
     END IF;
 END //
+
 CREATE PROCEDURE pets_heaven.SearchConsultingRooms()
 BEGIN
     IF NOT EXISTS (
@@ -285,5 +284,7 @@ END //
 /* DROP PROCEDURE RegistAppointment; */
 /* DROP PROCEDURE SearchConsultingRooms; */
 /* DROP PROCEDURE pets_heaven.`RegistAppointment`; */
+/* DROP PROCEDURE pets_heaven.`SearchAppointmentsByPet`; */
 /* CALL pets_heaven.SearchAppointmentsByUser('1298765432'); */
 /* CALL pets_heaven.SearchAllAppointments(); */
+/* CALL pets_heaven.SearchAppointmentsByPet('max','12345678'); */

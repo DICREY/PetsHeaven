@@ -1,5 +1,5 @@
 // Librarys 
-import React, { useState } from "react"
+import React, { useState } from 'react'
 
 // Imports 
 import { errorStatusHandler } from '../Componentes/Varios/Util'
@@ -13,7 +13,7 @@ export const CheckImage = ({ src = '', alt = '', imgDefault = '', className = ''
     <img
       className={className}
       src={imgSrc}
-      alt={alt || "No Registrado"}
+      alt={alt || 'No Registrado'}
       onError={() => setImgSrc(imgDefault)}
     />
   )
@@ -47,4 +47,10 @@ export const ReqFunction = async (
             })
         }
     }
+}
+
+// Convierte la primera letra en mayúscula y el resto en minúscula
+export const capitalize = (word = '') => {
+  if (!word) return '';
+  return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 }

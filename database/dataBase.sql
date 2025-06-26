@@ -1,4 +1,4 @@
--- Active: 1750268475844@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306
 DROP DATABASE IF EXISTS pets_heaven;
 CREATE DATABASE IF NOT EXISTS pets_heaven;
 CREATE TABLE pets_heaven.roles(
@@ -191,6 +191,7 @@ CREATE TABLE pets_heaven.citas(
     mas_cit INT NOT NULL,INDEX(mas_cit),FOREIGN KEY(mas_cit) REFERENCES mascotas(id_mas) ON DELETE CASCADE ON UPDATE CASCADE, -- ID de la mascota
     PRIMARY KEY (id_cit,mas_cit)
 );
+
 CREATE TABLE pets_heaven.vacunas (
     id_vac INT AUTO_INCREMENT PRIMARY KEY, -- ID de la vacuna
     nom_vac VARCHAR(255) NOT NULL,INDEX(nom_vac), -- Nombre de la vacuna
@@ -199,10 +200,17 @@ CREATE TABLE pets_heaven.vacunas (
     dos_rec_vac VARCHAR(100) NOT NULL, -- Dosis recomendada
     lot_vac VARCHAR(255) NOT NULL,INDEX(lot_vac), -- Lote de la vacuna
     fec_ven_vac DATE NOT NULL, -- Fecha de vencimiento
-    fre_vac VARCHAR(100) NOT NULL, -- Frecuencia de vacunación
+    fre_vac INT NOT NULL, -- Frecuencia de vacunación en dias
     des_vac TEXT DEFAULT 'No-registrado', -- Descripción de la vacuna
     sta_vac BOOLEAN DEFAULT 1 NOT NULL, -- Estado de vacuna (disponible / No disponible) (1/0)
     pro_vac INT NOT NULL,INDEX(pro_vac), FOREIGN KEY(pro_vac) REFERENCES procedimientos(id_pro) ON DELETE CASCADE ON UPDATE CASCADE, -- ID del procedimiento asociado
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE pets_heaven.vacunacion (
+    id_vacn INT,INDEX(id_vacn),FOREIGN KEY (id_vacn) REFERENCES vacunas(id_vac) ON UPDATE CASCADE ON DELETE CASCADE, -- ID de la vacuna
+    id_cit_vacn INT,INDEX(id_cit_vacn),FOREIGN KEY (id_cit_vacn) REFERENCES citas(id_cit) ON UPDATE CASCADE ON DELETE CASCADE, -- ID de la cita
+    fec_vacn TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(id_vacn,id_cit_vacn)
 );

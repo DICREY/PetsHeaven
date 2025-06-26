@@ -1,10 +1,10 @@
+// Librarys 
 import React, { useEffect } from "react"
 import { useState } from "react"
 import { useNavigate } from "react-router"
 import { Calendar, Heart, Pill, Stethoscope, Clock, ArrowLeft, Printer, Plus } from "lucide-react"
-import "../../../styles/InterfazAdmin/HistorialMedico/HistorialMedico.css"
 
-// Importar los componentes
+// Imports
 import ResumenMascota from "./ResumenMascota"
 import TarjetaHistorial from "./TarjetaHistorial"
 import ModalDetalleConsulta from "./ModalDetalleConsulta"
@@ -14,13 +14,20 @@ import ModalDetalleVacuna from "./ModalDetalleVacuna"
 import ModalProximasCitas from "./ModalProximasCitas"
 import ModalDetalleCita from "./ModalDetalleCita"
 import FormularioNuevaCita from "./FormularioNuevaCita"
+import AppointmentForm from "../FormulariosAdmin/AgendarCita"
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
 import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
-import AppointmentForm from "../FormulariosAdmin/AgendarCita"
+import { PostData } from "../../Varios/Requests"
+import { errorStatusHandler, formatDate, hourTraductor } from "../../Varios/Util"
+import { Notification } from "../../Global/Notifys"
+import { capitalize } from "../../../Utils/Utils"
+
+// Import styles 
+import "../../../styles/InterfazAdmin/HistorialMedico/HistorialMedico.css"
 
 // Component
-export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault = '', tab }) {
-  const [selectedTab, setSelectedTab] = useState("overview")
+export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault = '', tab = 'overview' }) {
+  const [selectedTab, setSelectedTab] = useState('overview')
   const [selectedConsultation, setSelectedConsultation] = useState(null)
   const [selectedVaccine, setSelectedVaccine] = useState(null)
   const [selectedAppointment, setSelectedAppointment] = useState(null)
@@ -30,6 +37,12 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
   const [isAppointmentsModalOpen, setIsAppointmentsModalOpen] = useState(false)
   const [isAppointmentDetailOpen, setIsAppointmentDetailOpen] = useState(false)
   const [selectedDate, setSelectedDate] = useState()
+  const [petData, setPetData] = useState({})
+  const [notify, setNotify] = useState(null)
+  const [appointments, setAppointments] = useState()
+  const [appointmentsCompleted, setAppointmentsCompleted] = useState()
+  const [ medicalHistory, setMedicalHistory ] = useState()
+  const [ vaccinations, setVaccinations ] = useState()
   const [medications, setMedications] = useState([
     {
       id: 1,
@@ -51,24 +64,6 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
     },
   ])
 
-  const [petData, setPetData] = useState({
-    name: "Luna",
-    species: "Perro",
-    breed: "Golden Retriever",
-    color: "Dorado",
-    food: "Royal Canin Adult",
-    weight: "28 kg",
-    reproductiveStatus: "Esterilizada",
-    gender: "Hembra",
-    birthDate: "2021-03-15",
-    owner: {
-      name: "María González",
-      phone: "+34 612 345 678",
-      email: "maria.gonzalez@email.com",
-      address: "Calle Mayor 123, Madrid",
-    },
-    photo: "/placeholder.svg?height=120&width=120",
-  })
 
   const [formData, setFormData] = useState({
     consultationType: "",
@@ -90,232 +85,11 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
     medications: [{ name: "", dosage: "", duration: "", instructions: "" }],
     recommendations: [""],
     urgency: "normal",
-    contactPhone: petData.owner.phone,
+    contactPhone: petData?.cel_per,
   })
 
   // Datos del historial médico
   const navigate = useNavigate()
-  const medicalHistory = [
-    {
-      id: 1,
-      date: "2024-01-15",
-      time: "10:30",
-      type: "Consulta General",
-      veterinarian: "Dr. Carlos Ruiz",
-      diagnosis: "Revisión rutinaria - Estado saludable",
-      treatment: "Ninguno requerido",
-      notes: "Mascota en excelente estado. Continuar con dieta actual.",
-      status: "completed",
-      symptoms: ["Ninguno reportado", "Comportamiento normal", "Apetito normal"],
-      physicalExam: {
-        temperature: "38.5°C",
-        weight: "28 kg",
-        heartRate: "90 bpm",
-        respiratoryRate: "25 rpm",
-        bloodPressure: "Normal",
-        bodyCondition: "Ideal (5/9)",
-      },
-      labResults: [
-        { test: "Hemograma completo", result: "Normal", reference: "Dentro de parámetros" },
-        { test: "Química sanguínea", result: "Normal", reference: "Todos los valores normales" },
-      ],
-      medications: [
-        {
-          name: "Antiparasitario interno",
-          dosage: "1 comprimido",
-          duration: "Dosis única",
-          instructions: "Administrar con comida",
-        },
-      ],
-      recommendations: [
-        "Continuar con dieta actual de alta calidad",
-        "Ejercicio diario moderado (30-45 minutos)",
-        "Próxima revisión en 6 meses",
-        "Mantener higiene dental regular",
-      ],
-      nextAppointment: "2024-07-15",
-      images: ["/placeholder.svg?height=200&width=300"],
-    },
-    {
-      id: 2,
-      date: "2023-12-10",
-      time: "14:15",
-      type: "Vacunación",
-      veterinarian: "Dra. Ana López",
-      diagnosis: "Vacunación anual",
-      treatment: "Vacuna polivalente + Antirrábica",
-      notes: "Próxima vacunación en diciembre 2024",
-      status: "completed",
-      symptoms: ["Ninguno", "Animal en buen estado general"],
-      physicalExam: {
-        temperature: "38.2°C",
-        weight: "27.5 kg",
-        heartRate: "85 bpm",
-        respiratoryRate: "22 rpm",
-        bloodPressure: "Normal",
-        bodyCondition: "Ideal (5/9)",
-      },
-      labResults: [],
-      medications: [
-        { name: "Vacuna Polivalente", dosage: "1 ml", duration: "Dosis única", instructions: "Vía subcutánea" },
-        { name: "Vacuna Antirrábica", dosage: "1 ml", duration: "Dosis única", instructions: "Vía subcutánea" },
-      ],
-      recommendations: [
-        "Observar por 24-48 horas post-vacunación",
-        "Evitar baños por 48 horas",
-        "Contactar si presenta reacciones adversas",
-        "Próxima vacunación en 12 meses",
-      ],
-      nextAppointment: "2024-12-10",
-      images: [],
-    },
-    {
-      id: 3,
-      date: "2023-11-22",
-      time: "16:45",
-      type: "Emergencia",
-      veterinarian: "Dr. Miguel Torres",
-      diagnosis: "Gastroenteritis leve",
-      treatment: "Dieta blanda + Probióticos",
-      notes: "Recuperación completa en 5 días",
-      status: "completed",
-      symptoms: ["Vómitos ocasionales", "Diarrea leve", "Pérdida de apetito", "Letargo"],
-      physicalExam: {
-        temperature: "39.1°C",
-        weight: "27 kg",
-        heartRate: "110 bpm",
-        respiratoryRate: "28 rpm",
-        bloodPressure: "Ligeramente elevada",
-        bodyCondition: "Buena (4/9)",
-      },
-      labResults: [
-        { test: "Análisis fecal", result: "Negativo para parásitos", reference: "Sin patógenos detectados" },
-        { test: "Hemograma", result: "Leve leucocitosis", reference: "Indicativo de inflamación leve" },
-      ],
-      medications: [
-        {
-          name: "Probióticos",
-          dosage: "1 sobre",
-          duration: "7 días",
-          instructions: "Mezclar con comida, 2 veces al día",
-        },
-        {
-          name: "Dieta blanda",
-          dosage: "Según necesidad",
-          duration: "3-5 días",
-          instructions: "Arroz hervido con pollo",
-        },
-      ],
-      recommendations: [
-        "Dieta blanda por 3-5 días",
-        "Agua fresca disponible siempre",
-        "Monitorear síntomas",
-        "Revisión en 5 días si no mejora",
-        "Evitar cambios bruscos en la dieta",
-      ],
-      nextAppointment: "2023-11-27",
-      images: ["/placeholder.svg?height=200&width=300"],
-    },
-  ]
-
-  const vaccinations = [
-    {
-      id: "VAC001",
-      name: "Polivalente",
-      date: "2023-12-10",
-      nextDue: "2024-12-10",
-      status: "up-to-date",
-      category: "Vacuna Core",
-      description:
-        "Vacuna polivalente que protege contra las principales enfermedades virales caninas incluyendo moquillo, hepatitis, parvovirus, parainfluenza y adenovirus.",
-      technicalDescription:
-        "Vacuna de virus vivos modificados y virus inactivados. Contiene antígenos purificados de Distemper, Hepatitis/Adenovirus tipo 2, Parvovirus, Parainfluenza. Formulación liofilizada con adyuvante de hidróxido de aluminio.",
-      batchNumber: "LOT2023-PV-4567",
-      manufacturingDate: "2023-08-15",
-      expirationDate: "2025-08-15",
-      laboratory: "Laboratorios Veterinarios S.A.",
-    },
-    {
-      id: "VAC002",
-      name: "Antirrábica",
-      date: "2023-12-10",
-      nextDue: "2024-12-10",
-      status: "up-to-date",
-      category: "Vacuna Obligatoria",
-      description:
-        "Vacuna antirrábica inactivada que proporciona protección contra el virus de la rabia. Obligatoria por ley en la mayoría de jurisdicciones.",
-      technicalDescription:
-        "Vacuna de virus inactivado cultivado en células Vero. Contiene virus de la rabia cepa Pasteur RIV con adyuvante de hidróxido de aluminio y tiomersal como conservante.",
-      batchNumber: "RAB2023-8901",
-      manufacturingDate: "2023-09-20",
-      expirationDate: "2026-09-20",
-      laboratory: "BioVet Internacional",
-    },
-    {
-      id: "VAC003",
-      name: "Leishmaniosis",
-      date: "2023-06-15",
-      nextDue: "2024-06-15",
-      status: "due-soon",
-      category: "Vacuna Específica",
-      description:
-        "Vacuna específica contra la leishmaniosis canina, enfermedad parasitaria transmitida por flebótomos. Especialmente importante en zonas endémicas.",
-      technicalDescription:
-        "Vacuna recombinante que contiene proteína LiESAp-MDP purificada de Leishmania infantum con adyuvante QA-21 saponina. Estimula respuesta inmune celular específica.",
-      batchNumber: "LEISH2023-3456",
-      manufacturingDate: "2023-04-10",
-      expirationDate: "2025-04-10",
-      laboratory: "Virbac España",
-    },
-    {
-      id: "VAC004",
-      name: "Tos de las perreras",
-      date: "2023-03-20",
-      nextDue: "2024-03-20",
-      status: "overdue",
-      category: "Vacuna Opcional",
-      description:
-        "Vacuna intranasal contra la traqueobronquitis infecciosa canina (tos de las perreras). Protege contra Bordetella bronchiseptica y Parainfluenza.",
-      technicalDescription:
-        "Vacuna de bacterias vivas atenuadas (Bordetella bronchiseptica) y virus vivos modificados (Parainfluenza). Administración intranasal para inmunidad local rápida.",
-      batchNumber: "KC2023-7890",
-      manufacturingDate: "2023-01-15",
-      expirationDate: "2025-01-15",
-      laboratory: "Zoetis España",
-    },
-  ]
-
-  const upcomingAppointments = [
-    {
-      id: 1,
-      date: "2024-02-15",
-      time: "10:30",
-      type: "Revisión dental",
-      veterinarian: "Dr. Carlos Ruiz",
-      specialty: "Odontología Veterinaria",
-      description: "Revisión dental completa y limpieza profesional",
-      notes: "Traer a Luna en ayunas desde la noche anterior",
-      preparation: "Ayuno de 12 horas antes de la cita",
-      status: "confirmed",
-      clinicPhone: "+34 912 345 678",
-      location: "Consulta 2 - Planta Baja",
-      confirmationRequired: true,
-    },
-    {
-      id: 2,
-      date: "2024-06-15",
-      time: "16:00",
-      type: "Vacunación Leishmaniosis",
-      veterinarian: "Dra. Ana López",
-      specialty: "Medicina Preventiva",
-      description: "Aplicación de vacuna anual contra leishmaniosis",
-      notes: "Recordar traer cartilla de vacunación",
-      status: "pending",
-      clinicPhone: "+34 912 345 678",
-      location: "Consulta 1 - Planta Baja",
-      confirmationRequired: false,
-    },
-  ]
 
   // Agregar estado para el formulario de nueva cita
   const [isNewAppointmentOpen, setIsNewAppointmentOpen] = useState(false)
@@ -327,7 +101,7 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
     description: "",
     notes: "",
     preparation: "",
-    contactPhone: petData.owner.phone,
+    contactPhone: petData?.cel_per,
     location: "",
     status: "programada",
     confirmationRequired: false,
@@ -448,7 +222,7 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
       medications: [{ name: "", dosage: "", duration: "", instructions: "" }],
       recommendations: [""],
       urgency: "normal",
-      contactPhone: petData.owner.phone,
+      contactPhone: petData?.cel_per,
     })
     setSelectedDate(undefined)
     setIsNewConsultationOpen(false)
@@ -508,7 +282,7 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
       description: "",
       notes: "",
       preparation: "",
-      contactPhone: petData.owner.phone,
+      contactPhone: petData?.cel_per,
       location: "",
       status: "programada",
       confirmationRequired: false,
@@ -518,8 +292,138 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
     alert("¡Cita programada exitosamente!")
   }
 
+  const GetAppointment = async (nom,doc) => {
+    try {
+      const data = await PostData(`${URL}/appointment/pet`, {
+        nom_mas: nom,
+        doc_per: doc
+      })
+      if (data?.result) {
+        const appMap = data?.result?.map((app) => ({
+          id: app.id_cit,
+          date: app.fec_cit? formatDate(app.fec_cit): '0000/00/00',
+          time: app.hor_ini_cit? hourTraductor(app.hor_ini_cit): '00:00',
+          type: app.nom_tip_ser,
+          veterinarian: `Dr. ${app.vet_nom_per} ${app.vet_ape_per}`,
+          specialty: app.vet_esp,
+          description: app.des_ser,
+          notes: "Traer a Luna en ayunas desde la noche anterior",
+          preparation: "Ayuno de 12 horas antes de la cita",
+          status: app.sta_mas,
+          clinicPhone: app.vet_cel_per,
+          location: app.nom_con,
+          confirmationRequired: app.est_cit === 'PENDIENTE'?1:0,
+        }))
+        setAppointments(appMap)
+      }
+    } catch (err) {
+        const message = errorStatusHandler(err)
+        setNotify({
+            title: 'Error',
+            message: `${message}`,
+            close: setNotify
+        })
+    }
+  }
+
+  const GetAppointmentCompleted = async (nom,doc) => {
+    try {
+      const data = await PostData(`${URL}/appointment/pet/completed`, {
+        nom_mas: nom,
+        doc_per: doc
+      })
+      if (data?.result) {
+        const appComMap = data?.result?.map((app, index) => ({
+          id: index,
+          date: app.fec_cit? formatDate(app.fec_cit):'0000/00/00',
+          time: app.hor_ini_cit? hourTraductor(app.hor_ini_cit): '00:00',
+          type: app.nom_cat,
+          veterinarian: `${app.vet_nom_per} ${app.vet_ape_per}`,
+          diagnosis: app.des_pro,
+          treatment: "Ninguno requerido",
+          notes: "Mascota en excelente estado. Continuar con dieta actual.",
+          status: app.est_cit? capitalize(app.est_cit): 'Completada',
+          symptoms: ["Ninguno reportado", "Comportamiento normal", "Apetito normal"],
+          physicalExam: {
+            temperature: "38.5°C",
+            weight: app.pes_mas,
+            heartRate: "90 bpm",
+            respiratoryRate: "25 rpm",
+            bloodPressure: "Normal",
+            bodyCondition: "Ideal (5/9)",
+          },
+          labResults: [
+            { test: "Hemograma completo", result: "Normal", reference: "Dentro de parámetros" },
+            { test: "Química sanguínea", result: "Normal", reference: "Todos los valores normales" },
+          ],
+          medications: [
+            {
+              name: "Antiparasitario interno",
+              dosage: "1 comprimido",
+              duration: "Dosis única",
+              instructions: "Administrar con comida",
+            },
+          ],
+          recommendations: [
+            "Continuar con dieta actual de alta calidad",
+            "Ejercicio diario moderado (30-45 minutos)",
+            "Próxima revisión en 6 meses",
+            "Mantener higiene dental regular",
+          ],
+          nextAppointment: "2024-07-15",
+          images: ["/placeholder.svg?height=200&width=300"],
+        }))
+        setMedicalHistory(appComMap)
+      }
+    } catch (err) {
+        const message = errorStatusHandler(err)
+        setNotify({
+            title: 'Error',
+            message: `${message}`,
+            close: setNotify
+        })
+    }
+  }
+  const GetAppointmentVaccines = async (nom,doc) => {
+    try {
+      const data = await PostData(`${URL}/appointment/pet/vaccine`, {
+        nom_mas: nom,
+        doc_per: doc
+      })
+      if (data?.result) {
+        const appVaccMap = data?.result?.map((vacc) => ({
+          id: vacc.id_cit,
+          name: vacc.nom_vac,
+          date: vacc.fec_cit? formatDate(vacc.fec_cit): '0000/00/00',
+          nextDue: vacc.fre_vac? formatDate(new Date().setDate(new Date().getDay() + Number(vacc.fre_vac))):'No ahí mas dosis por aplicar',
+          status: "up-to-date",
+          category: vacc.cat_vac,
+          description: vacc.des_vac,
+          technicalDescription: vacc.des_vac,
+          batchNumber: vacc.lot_vac,
+          manufacturingDate: vacc.fec_cre_vac? formatDate(vacc.fec_cre_vac): '0000/00/00',
+          expirationDate: vacc.fec_ven_vac? formatDate(vacc.fec_ven_vac): '0000/00/00',
+          laboratory: "Laboratorios Veterinarios S.A.",
+        }))
+        setVaccinations(appVaccMap)
+      }
+    } catch (err) {
+        const message = errorStatusHandler(err)
+        setNotify({
+            title: 'Error',
+            message: `${message}`,
+            close: setNotify
+        })
+    }
+  }
+
   useEffect(() => {
     if (!datas?.nom_mas) navigate(-1)
+    if (datas) {
+      GetAppointment(datas?.nom_mas, datas?.doc_per)
+      GetAppointmentCompleted(datas?.nom_mas, datas?.doc_per)
+      GetAppointmentVaccines(datas?.nom_mas, datas?.doc_per)
+    }
   },[])
 
   return (
@@ -529,90 +433,90 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
 
         <section className="principaladminhome">
         <HeaderAdmin URL={URL} />
-            <div className="cont-hist">
+            <section className="cont-hist">
             
             {/* Botones superiores */}
-                <div className="cabecera-hist">
-                    <button className="BackBtn" onClick={() => navigate(-1)}>
-                    <ArrowLeft className="ico-hist" />
-                    Atrás
-                    </button>
+              <nav className="cabecera-hist">
+                  <button className="BackBtn" onClick={() => navigate(-1)}>
+                  <ArrowLeft className="ico-hist" />
+                  Atrás
+                  </button>
 
-                    <div className="acciones-hist">
-                    <button className="EditBtn" onClick={() => setIsNewConsultationOpen(1)}>
-                        <Plus className="ico-hist" />
-                        Nueva Consulta
-                    </button>
-                    <button className="BackBtn" onClick={generatePDF}>
-                        <Printer className="ico-hist" />
-                        Imprimir Historial
-                    </button>
-                    </div>
-                </div>
+                  <div className="acciones-hist">
+                  <button className="EditBtn" onClick={() => setIsNewConsultationOpen(1)}>
+                      <Plus className="ico-hist" />
+                      Nueva Consulta
+                  </button>
+                  <button className="BackBtn" onClick={generatePDF}>
+                      <Printer className="ico-hist" />
+                      Imprimir Historial
+                  </button>
+                  </div>
+              </nav>
 
                 {/* Header con información básica de la mascota - Separado */}
-                <div className="seccion-masc-hist">
-                    <ResumenMascota cota petData={datas} setPetData={setPetData} imgDefault={imgPetDefault} />
-                </div>
+              <div className="seccion-masc-hist">
+                  <ResumenMascota cota petData={datas} setPetData={setPetData} imgDefault={imgPetDefault} />
+              </div>
 
                 {/* Contenido principal - Separado del header */}
-                <div className="main-container-hist">
-                    <div className="contenido-hist">
+                <section className="main-container-hist">
+                    <section className="contenido-hist">
                     <div className="tabs-nav-hist">
-                        <button
+                      <button
                         className={`tab-btn-hist ${selectedTab === "overview" ? "activo-hist" : ""}`}
                         onClick={() => setSelectedTab("overview")}
-                        >
+                      >
                         <Stethoscope className="ico-hist" />
                         Resumen
-                        </button>
-                        <button
+                      </button>
+                      <button
                         className={`tab-btn-hist ${selectedTab === "history" ? "activo-hist" : ""}`}
                         onClick={() => setSelectedTab("history")}
-                        >
+                      >
                         <Calendar className="ico-hist" />
                         Historial
-                        </button>
-                        <button
+                      </button>
+                      <button
                         className={`tab-btn-hist ${selectedTab === "vaccinations" ? "activo-hist" : ""}`}
                         onClick={() => setSelectedTab("vaccinations")}
-                        >
+                      >
                         <Heart className="ico-hist" />
                         Vacunas
-                        </button>
-                        <button
+                      </button>
+                      <button
                         className={`tab-btn-hist ${selectedTab === "medications" ? "activo-hist" : ""}`}
                         onClick={() => setSelectedTab("medications")}
-                        >
+                      >
                         <Pill className="ico-hist" />
                         Medicamentos
-                        </button>
+                      </button>
                     </div>
 
                     {selectedTab === "overview" && (
-                        <div className="resumen-hist">
+                      <section className="resumen-hist">
                         {/* Solo Próximas citas */}
-                        <div className="seccion-citas-hist">
-                            <div className="cabecera-sec-hist">
+                        <section className="seccion-citas-hist">
+                          <header className="cabecera-sec-hist">
                             <div className="titulo-sec-hist">
-                                <h3 className="titulo-hist">
+                              <h3 className="titulo-hist">
                                 <Clock className="ico-citas-hist" />
                                 Próximas Citas
-                                </h3>
-                                <button onClick={() => setIsAppointmentsModalOpen(true)} className="enlace-hist">
+                              </h3>
+                              <button onClick={() => setIsAppointmentsModalOpen(true)} className="enlace-hist">
                                 Ver todas →
-                                </button>
+                              </button>
                             </div>
-                            </div>
-                            <div className="contenido-sec-hist">
+                          </header>
+                          <section className="contenido-sec-hist">
                             <div className="lista-citas-hist">
-                                {upcomingAppointments.map((appointment, index) => (
+                              {appointments?.map((appointment, index) => (
                                 <div
                                     key={index}
                                     className="tarjeta-cita-hist"
                                     onClick={() => handleAppointmentClick(appointment)}
                                 >
-                                    <div className="info-cita-hist">
+                                  <div className="info-cita-hist">
                                     <div className="datos-cita-hist">
                                         <p className="tipo-cita-hist">{appointment.type}</p>
                                         <p className="vet-cita-hist">{appointment.veterinarian}</p>
@@ -621,25 +525,25 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
                                         <p className="fecha-cita-hist">{appointment.date}</p>
                                         <p className="hora-cita-hist">{appointment.time}</p>
                                     </div>
-                                    </div>
+                                  </div>
                                 </div>
-                                ))}
+                              ))}
                             </div>
-                            </div>
-                        </div>
-                        </div>
+                          </section>
+                        </section>
+                      </section>
                     )}
 
                     {selectedTab === "history" && (
                         <div className="historial-hist">
-                        {medicalHistory.map((record) => (
+                        {medicalHistory?.map((record) => (
                             <TarjetaHistorial
-                            key={record.id}
-                            record={record}
-                            onClick={(record) => {
-                                setSelectedConsultation(record)
-                                setIsDialogOpen(true)
-                            }}
+                              key={record.id}
+                              record={record}
+                              onClick={(record) => {
+                                  setSelectedConsultation(record)
+                                  setIsDialogOpen(true)
+                              }}
                             />
                         ))}
 
@@ -654,7 +558,7 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
                     {selectedTab === "vaccinations" && (
                         <div className="vacunas-hist">
                         <div className="lista-vacunas-hist">
-                            {vaccinations.map((vaccine, index) => (
+                            {vaccinations?.map((vaccine, index) => (
                             <div key={index} className="tarjeta-vac-hist" onClick={() => handleVaccineClick(vaccine)}>
                                 <div className="contenido-vac-hist">
                                 <div className="info-vac-hist">
@@ -735,8 +639,8 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
                         </div>
                         </div>
                     )}
-                    </div>
-                </div>
+                    </section>
+                </section>
 
                 {/* Formulario para nueva consulta completa */}
                 {isNewConsultationOpen && (
@@ -763,7 +667,7 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
                 <ModalProximasCitas
                     isOpen={isAppointmentsModalOpen}
                     onClose={() => setIsAppointmentsModalOpen(false)}
-                    appointments={upcomingAppointments}
+                    appointments={appointments}
                     onAddAppointment={handleAddAppointment}
                     onEditAppointment={handleEditAppointment}
                     onDeleteAppointment={handleDeleteAppointment}
@@ -786,8 +690,13 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
                     onSubmit={handleSubmitAppointment}
                     isFormValid={isAppointmentFormValid}
                 />
-                </div>
+                </section>
         </section>
+        {notify && (
+            <Notification
+                {...notify}
+            />
+        )}
     </main>
   )
 }

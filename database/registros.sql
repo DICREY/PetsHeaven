@@ -1,8 +1,4 @@
-<<<<<<< HEAD
--- Active: 1750268475844@@127.0.0.1@3306@pets_heaven
-=======
--- Active: 1746043677643@@127.0.0.1@3306@pets_heaven
->>>>>>> a001651c0d6958d0fd8405d1d3e8fee5067c2109
+-- Active: 1746130779175@@127.0.0.1@3306
 INSERT INTO pets_heaven.roles (nom_rol) VALUES
 ('Administrador'),
 ('Veterinario'),
@@ -214,33 +210,35 @@ INSERT INTO pets_heaven.citas (
     fec_cit, hor_ini_cit, hor_fin_cit, mot_cit, est_cit, 
     con_cit, ser_cit, vet_cit, mas_cit
 ) VALUES
--- Enero 2025
-('2025-01-10', '09:00:00', '10:00:00', 'Chequeo anual rutinario', 'PENDIENTE', 1, 1, 1, 1),
-('2025-01-10', '11:00:00', '12:30:00', 'Vacunación antirrábica', 'CONFIRMADA', 1, 5, 2, 2),
-('2025-01-15', '14:00:00', '15:00:00', 'Problemas dermatológicos', 'PENDIENTE', 1, 2, 6, 3),
--- Febrero 2025
-('2025-02-05', '10:30:00', '12:00:00', 'Castración canina', 'CONFIRMADA', 2, 6, 2, 4),
-('2025-02-12', '16:00:00', '17:00:00', 'Consulta cardiología', 'PENDIENTE', 1, 3, 1, 5),
-('2025-02-20', '09:30:00', '10:00:00', 'Refuerzo vacunal', 'CONFIRMADA', 1, 4, 6, 1),
--- Marzo 2025
-('2025-03-03', '13:00:00', '14:30:00', 'Cirugía de tumor mamario', 'CONFIRMADA', 2, 7, 7, 2),
-('2025-03-08', '15:00:00', '16:00:00', 'Baño medicado', 'PENDIENTE', 5, 9, 3, 3),
-('2025-03-18', '08:00:00', '09:00:00', 'Análisis de sangre completo', 'CONFIRMADA', 3, 8, 1, 4),
--- Abril 2025
-('2025-04-02', '11:00:00', '12:00:00', 'Control postoperatorio', 'PENDIENTE', 1, 1, 2, 5),
-('2025-04-15', '17:00:00', '18:00:00', 'Emergencia - Vómitos persistentes', 'CONFIRMADA', 4, 12, 1, 1),
-('2025-04-22', '10:00:00', '11:30:00', 'Corte de pelo según raza', 'PENDIENTE', 5, 10, 7, 2),
--- Mayo 2025
-('2025-05-05', '14:30:00', '15:30:00', 'Consulta geriátrica', 'CONFIRMADA', 1, 1, 7, 3),
-('2025-05-12', '09:00:00', '10:30:00', 'Extracción de cuerpo extraño', 'PENDIENTE', 2, 7, 2, 4),
-('2025-05-19', '16:00:00', '17:00:00', 'Vacunación polivalente', 'CONFIRMADA', 1, 4, 7, 5),
--- Junio 2025
-('2025-06-07', '13:30:00', '15:00:00', 'Limpieza dental profesional', 'PENDIENTE', 2, 6, 2, 1),
-('2025-06-14', '10:00:00', '11:00:00', 'Control de peso', 'CONFIRMADA', 1, 1, 1, 2),
-('2025-06-21', '15:30:00', '16:30:00', 'Examen coprológico', 'PENDIENTE', 3, 9, 3, 3),
--- Julio 2025
-('2025-07-03', '08:30:00', '10:00:00', 'Revisión post-trauma', 'CONFIRMADA', 1, 1, 2, 4),
-('2025-07-17', '11:30:00', '12:30:00', 'Test genético', 'PENDIENTE', 3, 8, 1, 5),
+('2025-07-10', '09:00:00', '10:00:00', 'Chequeo anual rutinario', 'COMPLETADA', 1, 1, 1, 1),
+('2025-07-13', '09:00:00', '10:00:00', 'Vacunación antirrábica', 'COMPLETADA', 1, 5, 2, 1),
+('2025-07-10', '11:00:00', '12:30:00', 'Vacunación antirrábica', 'COMPLETADA', 1, 5, 2, 2),
+('2025-07-15', '14:00:00', '15:00:00', 'Problemas dermatológicos', 'COMPLETADA', 1, 2, 6, 3),
+('2025-07-15', '14:00:00', '15:00:00', 'Consulta cardiología', 'COMPLETADA', 1, 2, 1, 4),
+('2025-07-15', '14:00:00', '15:00:00', 'Problemas dermatológicos', 'COMPLETADA', 1, 2, 6, 5),
+('2025-07-15', '14:00:00', '15:00:00', 'Refuerzo vacunal', 'COMPLETADA', 1, 2, 2, 6),
+('2025-07-15', '14:00:00', '15:00:00', 'Problemas dermatológicos', 'COMPLETADA', 1, 2, 6, 7),
+('2025-07-15', '14:00:00', '15:00:00', 'Refuerzo vacunal', 'COMPLETADA', 1, 2, 2, 8),
+('2025-07-15', '14:00:00', '15:00:00', 'Consulta cardiología', 'COMPLETADA', 1, 2, 1, 9),
+('2025-07-15', '14:00:00', '15:00:00', 'Problemas dermatológicos', 'COMPLETADA', 1, 2, 3, 10),
+('2025-07-15', '14:00:00', '15:00:00', 'Problemas dermatológicos', 'COMPLETADA', 1, 2, 3, 11),
+('2025-08-05', '10:30:00', '12:00:00', 'Castración canina', 'CONFIRMADA', 2, 6, 2, 4),
+('2025-08-12', '16:00:00', '17:00:00', 'Consulta cardiología', 'PENDIENTE', 1, 3, 1, 5),
+('2025-08-20', '09:30:00', '10:00:00', 'Refuerzo vacunal', 'CONFIRMADA', 1, 4, 6, 1),
+('2025-08-03', '13:00:00', '14:30:00', 'Cirugía de tumor mamario', 'CONFIRMADA', 2, 7, 7, 2),
+('2025-08-08', '15:00:00', '16:00:00', 'Baño medicado', 'PENDIENTE', 5, 9, 3, 3),
+('2025-08-18', '08:00:00', '09:00:00', 'Análisis de sangre completo', 'CONFIRMADA', 3, 8, 1, 4),
+('2025-08-02', '11:00:00', '12:00:00', 'Control postoperatorio', 'PENDIENTE', 1, 1, 2, 5),
+('2025-08-15', '17:00:00', '18:00:00', 'Emergencia - Vómitos persistentes', 'CONFIRMADA', 4, 12, 1, 1),
+('2025-08-22', '10:00:00', '11:30:00', 'Corte de pelo según raza', 'PENDIENTE', 5, 10, 7, 2),
+('2025-08-05', '14:30:00', '15:30:00', 'Consulta geriátrica', 'CONFIRMADA', 1, 1, 7, 3),
+('2025-08-12', '09:00:00', '10:30:00', 'Extracción de cuerpo extraño', 'PENDIENTE', 2, 7, 2, 4),
+('2025-08-19', '16:00:00', '17:00:00', 'Vacunación polivalente', 'CONFIRMADA', 1, 4, 7, 5),
+('2025-09-07', '13:30:00', '15:00:00', 'Limpieza dental profesional', 'PENDIENTE', 2, 6, 2, 1),
+('2025-09-14', '10:00:00', '11:00:00', 'Control de peso', 'CONFIRMADA', 1, 1, 1, 2),
+('2025-09-21', '15:30:00', '16:30:00', 'Examen coprológico', 'PENDIENTE', 3, 9, 3, 3),
+('2025-09-03', '08:30:00', '10:00:00', 'Revisión post-trauma', 'CONFIRMADA', 1, 1, 2, 4),
+('2025-09-17', '11:30:00', '12:30:00', 'Test genético', 'PENDIENTE', 3, 8, 1, 5),
 -- Now
 (CURRENT_DATE, '08:30:00', '10:00:00', 'Revisión post-trauma', 'CONFIRMADA', 1, 1, 6, 4),
 (CURRENT_DATE, '11:30:00', '12:30:00', 'Test genético', 'PENDIENTE', 3, 8, 6, 5),
@@ -251,30 +249,38 @@ INSERT INTO pets_heaven.vacunas (
     nom_vac, efe_sec_vac, cat_vac, dos_rec_vac, lot_vac, fec_ven_vac, fre_vac, pro_vac
 ) VALUES
 -- Vacunas básicas para perros
-('Vacuna Antirrábica', 'Letargo leve, dolor en el sitio de inyección', 'Rabia', '1 mL', 'LOT-RAB-2025', '2026-12-31', 'Anual', 
+('Vacuna Antirrábica', 'Letargo leve, dolor en el sitio de inyección', 'Rabia', '1 mL', 'LOT-RAB-2025', '2026-12-31', 365, 
     (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
-('Vacuna Moquillo Canino', 'Fiebre leve, pérdida de apetito temporal', 'Moquillo', '1 mL', 'LOT-MOQ-2025', '2026-06-15', 'Cada 3 años', 
+('Vacuna Moquillo Canino', 'Fiebre leve, pérdida de apetito temporal', 'Moquillo', '1 mL', 'LOT-MOQ-2025', '2026-06-15', 365 * 3, 
     (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
-('Vacuna Parvovirus', 'Hinchazón en el sitio de inyección', 'Parvovirosis', '1 mL', 'LOT-PAR-2025', '2026-08-20', 'Anual', 
+('Vacuna Parvovirus', 'Hinchazón en el sitio de inyección', 'Parvovirosis', '1 mL', 'LOT-PAR-2025', '2026-08-20', 365, 
     (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
-('Vacuna Leptospirosis', 'Dolor local, fiebre baja', 'Leptospirosis', '1 mL', 'LOT-LEP-2025', '2026-05-30', 'Anual', 
+('Vacuna Leptospirosis', 'Dolor local, fiebre baja', 'Leptospirosis', '1 mL', 'LOT-LEP-2025', '2026-05-30', 365, 
     (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
 -- Vacunas para gatos
-('Vacuna Triple Felina', 'Somnolencia leve', 'Panleucopenia/Calicivirus/Rinotraqueitis', '1 mL', 'LOT-TRF-2025', '2026-09-10', 'Anual', 
+('Vacuna Triple Felina', 'Somnolencia leve', 'Panleucopenia/Calicivirus/Rinotraqueitis', '1 mL', 'LOT-TRF-2025', '2026-09-10', 365, 
     (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
-('Vacuna Leucemia Felina', 'Malestar general', 'Leucemia Viral Felina', '1 mL', 'LOT-LEU-2025', '2026-11-25', 'Anual', 
+('Vacuna Leucemia Felina', 'Malestar general', 'Leucemia Viral Felina', '1 mL', 'LOT-LEU-2025', '2026-11-25', 365, 
     (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
 -- Vacunas especiales
-('Vacuna Bordetella', 'Estornudos leves', 'Tos de las perreras', '0.5 mL', 'LOT-BOR-2025', '2026-04-15', 'Anual', 
+('Vacuna Bordetella', 'Estornudos leves', 'Tos de las perreras', '0.5 mL', 'LOT-BOR-2025', '2026-04-15', 365, 
     (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
-('Vacuna Coronavirus Canino', 'Malestar gastrointestinal leve', 'Coronavirus', '1 mL', 'LOT-COR-2025', '2026-07-22', 'Anual', 
+('Vacuna Coronavirus Canino', 'Malestar gastrointestinal leve', 'Coronavirus', '1 mL', 'LOT-COR-2025', '2026-07-22', 365, 
     (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
-('Vacuna Giardia', 'Diarrea leve', 'Giardiasis', '1 mL', 'LOT-GIA-2025', '2026-10-05', 'Cada 6 meses', 
+('Vacuna Giardia', 'Diarrea leve', 'Giardiasis', '1 mL', 'LOT-GIA-2025', '2026-10-05', 180, 
     (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
 -- Vacunas combinadas
-('Vacuna Polivalente V8', 'Fiebre leve, dolor local', 'Combinada Canina', '1 mL', 'LOT-V8-2025', '2026-03-18', 'Anual', 
+('Vacuna Polivalente V8', 'Fiebre leve, dolor local', 'Combinada Canina', '1 mL', 'LOT-V8-2025', '2026-03-18', 365, 
     (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
-('Vacuna Felina V4', 'Decaimiento temporal', 'Combinada Felina', '1 mL', 'LOT-V4-2025', '2026-02-28', 'Anual', 
+('Vacuna Felina V4', 'Decaimiento temporal', 'Combinada Felina', '1 mL', 'LOT-V4-2025', '2026-02-28', 365, 
     (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
-('Vacuna Influenza Canina', 'Tos leve', 'Influenza', '1 mL', 'LOT-INF-2025', '2026-01-15', 'Anual', 
+('Vacuna Influenza Canina', 'Tos leve', 'Influenza', '1 mL', 'LOT-INF-2025', '2026-01-15', 365, 
     (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC'));
+
+INSERT INTO pets_heaven.vacunacion ( id_vacn, id_cit_vacn ) VALUES 
+(1,2),
+(1,3),
+(7,3),
+(7,9),
+(7,15),
+(10,24);

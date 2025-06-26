@@ -5,11 +5,11 @@ import "../../../styles/InterfazAdmin/HistorialMedico/TarjetaHistorial.css"
 export default function TarjetaHistorial({ record, onClick }) {
   const getStatusColor = (status) => {
     switch (status) {
-      case "completed":
+      case "Completada":
         return "completada-tarj"
-      case "pending":
+      case "Pendiente":
         return "pendiente-tarj"
-      case "cancelled":
+      case "Cancelada":
         return "cancelada-tarj"
       default:
         return "normal-tarj"
@@ -33,7 +33,7 @@ export default function TarjetaHistorial({ record, onClick }) {
             </div>
           </div>
           <span className={`estado-tarj ${getStatusColor(record.status)}`}>
-            {record.status === "completed" ? "Completada" : record.status === "pending" ? "Pendiente" : "Cancelada"}
+            {record?.status}
           </span>
         </div>
 
