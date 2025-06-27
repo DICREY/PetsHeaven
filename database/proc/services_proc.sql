@@ -1,4 +1,4 @@
--- Active: 1746130779175@@127.0.0.1@3306
+-- Active: 1746046445434@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.SearchServicesCat()
 BEGIN
     SELECT
@@ -596,7 +596,7 @@ BEGIN
     ORDER BY v.id_vac ASC;
 END //
 
-
+/* 
 CREATE PROCEDURE pets_heaven.SearchVacunas()
 BEGIN
     SELECT 
@@ -612,7 +612,7 @@ BEGIN
     LEFT JOIN servicios s ON sp.id_ser = s.id_ser
     GROUP BY v.id_vac
     ORDER BY v.id_vac ASC;
-END //
+END // */
 /* DROP PROCEDURE `SearchServices`; */
 /* DROP PROCEDURE pets_heaven.SearchServicesBy; */
 /* DROP PROCEDURE pets_heaven.AbleOrDesableService; */
