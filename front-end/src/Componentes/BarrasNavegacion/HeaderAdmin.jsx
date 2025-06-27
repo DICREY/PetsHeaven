@@ -96,10 +96,12 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
     <header className="cabecera-header">
       <div className="contenido-cabecera-header">
         <div className="izquierda-cabecera-header">
-          {mainRol === 'Administrador' ? (
+          {admin? (
             <h1>Panel de Administración</h1>
-          ) : (
+          ) : mainRol === 'Veterinario'? (
             <h1>Panel Médico</h1>
+          ) : (
+            <h1>Tú Panel</h1>
           )
           }
           <p>Bienvenid@ de vuelta, {user.names} {user.lastNames}</p>
