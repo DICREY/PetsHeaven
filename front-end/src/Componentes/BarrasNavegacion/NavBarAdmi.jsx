@@ -126,31 +126,39 @@ export const NavBarAdmin = () => {
                 </li>
             )}
 
-            <li className='itemnavadmin'>
-              <button className='botonnavadmin' onClick={toggleAgenda}>
-                <div className='contenidobotonnavadmin'>
-                  <Calendar className='icononavadmin' />
-                  <span>Agenda</span>
-                </div>
-                <ChevronDown className={`flechanavadmin ${agendaAbierta ? 'girarnavadmin' : ''}`} />
-              </button>
+            {admin?(
+              <li className='itemnavadmin'>
+                <button className='botonnavadmin' onClick={toggleAgenda}>
+                  <div className='contenidobotonnavadmin'>
+                    <Calendar className='icononavadmin' />
+                    <span>Agenda</span>
+                  </div>
+                  <ChevronDown className={`flechanavadmin ${agendaAbierta ? 'girarnavadmin' : ''}`} />
+                </button>
 
-              <ul className={`submenunavadmin ${agendaAbierta ? 'abiertonavadmin' : 'cerradonavadmin'}`}>
-                {admin && (
+                <ul className={`submenunavadmin ${agendaAbierta ? 'abiertonavadmin' : 'cerradonavadmin'}`}>
+                    <li>
+                    <NavLink to={'/admin/calendario/general'} className='subenlacenavadmin'>
+                      <CalendarRange className='iconosubnavadmin' />
+                      <span>Agenda General</span>
+                    </NavLink>
+                  </li>
                   <li>
-                  <NavLink to={'/admin/calendario/general'} className='subenlacenavadmin'>
-                    <CalendarRange className='iconosubnavadmin' />
-                    <span>Agenda General</span>
-                  </NavLink>
-                </li>)}
-                <li>
-                  <NavLink to={'/calendario/usuario'} className='subenlacenavadmin'>
-                    <CalendarClock className='iconosubnavadmin' />
-                    <span>Agenda Personal</span>
-                  </NavLink>
-                </li>
-              </ul>
-            </li>
+                    <NavLink to={'/calendario/usuario'} className='subenlacenavadmin'>
+                      <CalendarClock className='iconosubnavadmin' />
+                      <span>Agenda Personal</span>
+                    </NavLink>
+                  </li>
+                </ul>
+              </li>
+            ):(
+              <li>
+                <NavLink to={'/calendario/usuario'} className='subenlacenavadmin'>
+                  <CalendarClock className='iconosubnavadmin' />
+                  <span>Agenda Personal</span>
+                </NavLink>
+              </li>
+            )}
 
             {roles?.includes('Veterinario') &&
             (<li className='itemnavadmin'>
@@ -196,12 +204,6 @@ export const NavBarAdmin = () => {
                 <span>Mascotas</span>
               </NavLink>
             </li>
-            {mainRol === 'Usuario' && (<li>
-              <NavLink to={'/user/'} className='subenlacenavadmin'>
-                <CalendarClock className='iconosubnavadmin' />
-                <span>Agenda Personal</span>
-              </NavLink>
-            </li>)}
           </ul>
         </nav>
       </aside>
