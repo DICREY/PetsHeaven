@@ -86,16 +86,17 @@ export default function App () {
       const admin = roles.includes('Administrador')
       return admin? children :<Navigate to='/user/login' />
     }
-
+    
     return <Navigate to='/user/login' />
   }
-
+  
   const MainRoute = () => {
     window.location.replace('/main')
   }
-
+  
   useEffect(() => {
-    if (isInactive) {
+    const { user } = useContext(AuthContext)
+    if (user && isInactive) {
       setNotify({
         title: 'Sesión Inactiva',
         message: 'Tu sesión ha estado inactiva por un tiempo prolongado. ¿Deseas continuar?',
