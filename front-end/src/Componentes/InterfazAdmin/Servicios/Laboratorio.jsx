@@ -234,10 +234,10 @@ export const ExamenesLaboratorio = ({ URL= '' }) => {
   }
 
   return (
-    <main className="contenedor-laboratorio">
+    <main className="contenedoradminhome">
       <NavBarAdmin />
       <main className="tablero-admin">
-        {admin? (<HeaderAdmin URL={URL} />):(<HeaderUser />)}
+        <HeaderAdmin URL={URL} />
         <ServicesContainer 
           Name="Examén"
           TitleIcon={FlaskConical}

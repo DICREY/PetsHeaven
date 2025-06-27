@@ -1,7 +1,7 @@
 // Librarys 
 import React, { useEffect } from "react"
 import { useState } from "react"
-import { useNavigate } from "react-router"
+import { data, useNavigate } from "react-router"
 import { Calendar, Heart, Pill, Stethoscope, Clock, ArrowLeft, Printer, Plus } from "lucide-react"
 
 // Imports
@@ -27,23 +27,23 @@ import "../../../styles/InterfazAdmin/HistorialMedico/HistorialMedico.css"
 
 // Component
 export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault = '', tab = 'overview' }) {
-  const [selectedTab, setSelectedTab] = useState('overview')
-  const [selectedConsultation, setSelectedConsultation] = useState(null)
-  const [selectedVaccine, setSelectedVaccine] = useState(null)
-  const [selectedAppointment, setSelectedAppointment] = useState(null)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [isNewConsultationOpen, setIsNewConsultationOpen] = useState(false)
-  const [isVaccineDialogOpen, setIsVaccineDialogOpen] = useState(false)
-  const [isAppointmentsModalOpen, setIsAppointmentsModalOpen] = useState(false)
-  const [isAppointmentDetailOpen, setIsAppointmentDetailOpen] = useState(false)
-  const [selectedDate, setSelectedDate] = useState()
-  const [petData, setPetData] = useState({})
-  const [notify, setNotify] = useState(null)
-  const [appointments, setAppointments] = useState()
-  const [appointmentsCompleted, setAppointmentsCompleted] = useState()
+  const [ selectedTab, setSelectedTab ] = useState('overview')
+  const [ selectedConsultation, setSelectedConsultation ] = useState(null)
+  const [ selectedVaccine, setSelectedVaccine ] = useState(null)
+  const [ selectedAppointment, setSelectedAppointment ] = useState(null)
+  const [ isDialogOpen, setIsDialogOpen ] = useState(false)
+  const [ isNewConsultationOpen, setIsNewConsultationOpen ] = useState(false)
+  const [ isVaccineDialogOpen, setIsVaccineDialogOpen ] = useState(false)
+  const [ isAppointmentsModalOpen, setIsAppointmentsModalOpen ] = useState(false)
+  const [ isAppointmentDetailOpen, setIsAppointmentDetailOpen ] = useState(false)
+  const [ selectedDate, setSelectedDate ] = useState()
+  const [ petData, setPetData ] = useState()
+  const [ notify, setNotify ] = useState(null)
+  const [ appointments, setAppointments] = useState()
   const [ medicalHistory, setMedicalHistory ] = useState()
   const [ vaccinations, setVaccinations ] = useState()
-  const [medications, setMedications] = useState([
+  const [ isNewAppointmentOpen, setIsNewAppointmentOpen ] = useState(false)
+  const [ medications, setMedications ] = useState([
     {
       id: 1,
       name: "Antiparasitario interno",
@@ -52,16 +52,7 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
       lastGiven: "2024-01-15",
       nextDue: "2024-04-15",
       status: "activo",
-    },
-    {
-      id: 2,
-      name: "Antiparasitario externo",
-      dosage: "1 pipeta",
-      frequency: "Mensual",
-      lastGiven: "2024-01-01",
-      nextDue: "2024-02-01",
-      status: "activo",
-    },
+    }
   ])
 
 
@@ -88,11 +79,10 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
     contactPhone: petData?.cel_per,
   })
 
-  // Datos del historial médico
+  // Vars 
   const navigate = useNavigate()
 
   // Agregar estado para el formulario de nueva cita
-  const [isNewAppointmentOpen, setIsNewAppointmentOpen] = useState(false)
   const [appointmentFormData, setAppointmentFormData] = useState({
     date: "",
     time: "",
@@ -418,8 +408,10 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
   }
 
   useEffect(() => {
-    if (!datas?.nom_mas) navigate(-1)
-    if (datas) {
+    if (!datas?.nom_mas) {
+      navigate(-1)
+    } else {
+      setPetData(datas)
       GetAppointment(datas?.nom_mas, datas?.doc_per)
       GetAppointmentCompleted(datas?.nom_mas, datas?.doc_per)
       GetAppointmentVaccines(datas?.nom_mas, datas?.doc_per)
@@ -455,9 +447,14 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
               </nav>
 
                 {/* Header con información básica de la mascota - Separado */}
-              <div className="seccion-masc-hist">
-                  <ResumenMascota cota petData={datas} setPetData={setPetData} imgDefault={imgPetDefault} />
-              </div>
+              <section className="seccion-masc-hist">
+                { petData && (<ResumenMascota
+                    petData={datas}
+                    setPetData={setPetData}
+                    imgDefault={imgPetDefault} 
+                  />)
+                }
+              </section>
 
                 {/* Contenido principal - Separado del header */}
                 <section className="main-container-hist">

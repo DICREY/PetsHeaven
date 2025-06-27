@@ -212,7 +212,7 @@ export const GesAgendaPersonal = ({ URL = '' }) => {
         <main className="calendar-container">
             <NavBarAdmin />
             <main className='calendar-container' id='main-container-calendar'>
-                {admin ? (<HeaderAdmin URL={URL} />) : (<HeaderUser />)}
+                <HeaderAdmin URL={URL} />
                 <input
                     type="date"
                     ref={dateInputRef}

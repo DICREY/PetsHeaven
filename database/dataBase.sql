@@ -214,3 +214,25 @@ CREATE TABLE pets_heaven.vacunacion (
     fec_vacn TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(id_vacn,id_cit_vacn)
 );
+CREATE TABLE pets_heaven.motivos_consultas(
+    id_mot_con INT AUTO_INCREMENT PRIMARY KEY, -- ID del motivo de consulta
+    mot_con TEXT NOT NULL COMMENT 'Motivo de consulta' -- Motivo de consulta
+);
+
+CREATE TABLE pets_heaven.tratamientos_consultas(
+    id_tra_con INT AUTO_INCREMENT PRIMARY KEY, -- ID del tratamiento aplicado
+    nom_tra_con VARCHAR(100) NOT NULL COMMENT 'Tratamiento aplicado',INDEX(nom_tra_con), -- Nombre del tratamiento
+    des_tra_con TEXT NOT NULL -- Descripción del tratamiento
+);
+
+CREATE TABLE pets_heaven.consultas(
+    id_con INT AUTO_INCREMENT PRIMARY KEY, -- ID de la consulta
+    pes_mas_con DECIMAL(5,2) COMMENT 'Peso en kg', -- Peso de la mascota en la consulta
+    tem_mas_con SMALLINT COMMENT 'Temperatura en °C', -- Temperatura de la mascota en la consulta
+    dia_con TEXT COMMENT 'diagnostico', -- Diagnóstico de la consulta
+    med_con TEXT COMMENT 'Medicamentos', -- Medicamentos recetados
+    fec_con DATE DEFAULT(CURRENT_DATE()) NOT NULL,INDEX(fec_con), -- Fecha de la consulta
+    mot_con INT NOT NULL,INDEX(mot_con),FOREIGN KEY (mot_con) REFERENCES motivos_consultas(id_mot_con) ON DELETE RESTRICT ON UPDATE CASCADE, -- ID del motivo de consulta
+    tra_con INT NOT NULL,INDEX(tra_con),FOREIGN KEY (tra_con) REFERENCES tratamientos_consultas(id_tra_con) ON DELETE RESTRICT ON UPDATE CASCADE, -- ID del tratamiento aplicado
+    cit_con INT NOT NULL,INDEX (cit_con),FOREIGN KEY (cit_con) REFERENCES citas(id_cit) ON DELETE CASCADE ON UPDATE CASCADE -- ID de la cita asociada
+);

@@ -82,7 +82,7 @@ export const AuthProvider = ({ children }) => {
                     setUser(userData)
                     setRoles(userData.roles?.split(', ') || ['Usuario'])
                     setMainRol(userData.roles?.split(', ')[0] || ['Usuario'])
-                    setAdmin(userData.roles?.split(', ').includes('Veterinario'))
+                    setAdmin(userData.roles?.split(', ').includes('Administrador'))
                     setLog(true)
                     setNotify(null)
                 }

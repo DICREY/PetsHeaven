@@ -92,7 +92,7 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
       <NavBarAdmin />
       <main className="tablero-admin">
         {/* Header del dashboard */}
-        <HeaderAdmin />
+        <HeaderAdmin URL={URL} />
 
         <main className="contenido-principal-admin">
           {/* Stats Grid */}

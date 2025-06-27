@@ -180,7 +180,7 @@ export const SpaMascotas = ({ URL = '' }) => {
     <main className="contenedoradminhome">
       <NavBarAdmin/>
       <section className="tablero-admin">
-        {admin? (<HeaderAdmin URL={URL} />):(<HeaderUser />)}
+        <HeaderAdmin URL={URL} />
         <ServicesContainer 
           TitleIcon={Bath}
           title="Servicios de Spa y Cuidado"

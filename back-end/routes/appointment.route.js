@@ -128,6 +128,22 @@ Route.post('/pet/vaccine', ValidatorRol("usuario"), async (req,res) => {
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
+Route.post('/pet/consult', ValidatorRol("usuario"), async (req,res) => {
+    // Vars 
+    const data = req.body
+
+    try {
+        const search = await appoin.findAppointmentsByPetConsult(data)
+
+        if (!search.result) res.status(404).json({ message: "Citas no encontradas"})
+
+        res.status(200).json(search)
+    } catch (err) {
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
+        if (err.status) return res.status(err.status).json({message: err.message})
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
+    }
+})
 
 Route.post('/register', ValidatorRol("veterinario"), async (req, res) => {
     // Vars 

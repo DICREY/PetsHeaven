@@ -283,7 +283,7 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
         <main className="calendar-container">
             <NavBarAdmin />
             <main className='calendar-container' id='main-container-calendar'>
-                <HeaderAdmin openHelp={() => setTabHelp(true)} URL={URL} />
+                <HeaderAdmin URL={URL} />
 
                 <FullCalendar
                     // Refencia del calendario, permite acceder a la instancia del componente para manipularlo

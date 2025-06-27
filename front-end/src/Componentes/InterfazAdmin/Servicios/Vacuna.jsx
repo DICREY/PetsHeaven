@@ -334,7 +334,7 @@ export function VisualizadorVacunas({ URL = '' }) {
 
       <section className="tablero-admin">
         {/* {console.log(vacunas)} */}
-        {admin? (<HeaderAdmin URL={URL} />):(<HeaderUser />)}
+        <HeaderAdmin URL={URL} />
         <ServicesContainer 
           Name="Vacuna"
           TitleIcon={Syringe}

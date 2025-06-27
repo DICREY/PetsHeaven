@@ -307,7 +307,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
       <NavBarAdmin />
       <section className="tablero-admin">
         {/* Encabezado */}
-        {admin ?(<HeaderAdmin URL={URL} />):(<HeaderUser />)}
+        <HeaderAdmin URL={URL} />
         <ServicesContainer 
           Name={"Cirugias"}
           TitleIcon={Activity}

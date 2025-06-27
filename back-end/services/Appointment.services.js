@@ -95,37 +95,6 @@ class Appointment {
     }
 
     // Get all the appointments by Pet
-    async findAllAppointmentsByPet(data) {
-        return new Promise((res,rej)=> {
-            const procedure = "CALL SearchAllAppointmentsByPetCompleted(?,?);"
-            const info = [
-                data?.nom_mas?.trim(),
-                data?.doc_per?.trim()
-            ]
-
-            // conect to database
-            this.database = new DataBase()
-            this.database.conect()
-        
-            if (this.database) this.database.conection.query(procedure, info, (err,result) =>{
-                if(err) rej({ message: err})
-                // console.log(result['0'])
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() =>{
-                    res({
-                        message: "Appointments found",
-                        result: result[0]
-                    })
-                }, 1000)
-            })
-            this.database.conection.end()
-        }) 
-    }
-
-    // Get all the appointments by Pet
     async findAppointmentsByPetCompleted(data) {
         return new Promise((res,rej)=> {
             const procedure = "CALL SearchAllAppointmentsByPetCompleted(?,?);"
@@ -159,6 +128,36 @@ class Appointment {
     async findAppointmentsByPetVaccine(data) {
         return new Promise((res,rej)=> {
             const procedure = "CALL SearchAllAppointmentsByPetVacc(?,?);"
+            const info = [
+                data?.nom_mas?.trim(),
+                data?.doc_per?.trim()
+            ]
+
+            // conect to database
+            this.database = new DataBase()
+            this.database.conect()
+        
+            if (this.database) this.database.conection.query(procedure, info, (err,result) =>{
+                if(err) rej({ message: err})
+                // console.log(result['0'])
+                if(!result || !result[0][0]) rej({
+                    message: "Not found",
+                    status: 404
+                })
+                setTimeout(() =>{
+                    res({
+                        message: "Appointments found",
+                        result: result[0]
+                    })
+                }, 1000)
+            })
+            this.database.conection.end()
+        }) 
+    }
+    // Get all the appointments by Pet Consult
+    async findAppointmentsByPetConsult(data) {
+        return new Promise((res,rej)=> {
+            const procedure = "CALL SearchAllAppointmentsByPetConsult(?,?);"
             const info = [
                 data?.nom_mas?.trim(),
                 data?.doc_per?.trim()

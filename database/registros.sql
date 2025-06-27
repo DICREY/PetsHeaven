@@ -284,3 +284,53 @@ INSERT INTO pets_heaven.vacunacion ( id_vacn, id_cit_vacn ) VALUES
 (7,9),
 (7,15),
 (10,24);
+-- Motivos de consulta
+INSERT INTO pets_heaven.motivos_consultas (mot_con) VALUES
+('Chequeo anual rutinario'),
+('Vacunación antirrábica'),
+('Problemas dermatológicos'),
+('Consulta cardiología'),
+('Refuerzo vacunal'),
+('Castración canina'),
+('Cirugía de tumor mamario'),
+('Baño medicado'),
+('Análisis de sangre completo'),
+('Control postoperatorio'),
+('Emergencia - Vómitos persistentes'),
+('Corte de pelo según raza'),
+('Consulta geriátrica'),
+('Extracción de cuerpo extraño'),
+('Vacunación polivalente'),
+('Limpieza dental profesional'),
+('Control de peso'),
+('Examen coprológico'),
+('Revisión post-trauma'),
+('Test genético');
+
+-- Tratamientos aplicados
+INSERT INTO pets_heaven.tratamientos_consultas (nom_tra_con, des_tra_con) VALUES
+('Antibióticos', 'Administración de antibióticos de amplio espectro según peso y especie.'),
+('Antiinflamatorios', 'Tratamiento con antiinflamatorios no esteroideos para control del dolor.'),
+('Vacunación', 'Aplicación de vacuna correspondiente al protocolo.'),
+('Cirugía menor', 'Procedimiento quirúrgico menor bajo anestesia local.'),
+('Cirugía mayor', 'Procedimiento quirúrgico mayor bajo anestesia general.'),
+('Desparasitación', 'Administración de antiparasitarios orales.'),
+('Limpieza dental', 'Profilaxis dental completa con ultrasonido.'),
+('Control de peso', 'Plan nutricional y seguimiento de peso.'),
+('Terapia de fluidos', 'Administración intravenosa de líquidos.'),
+('Tratamiento dermatológico', 'Uso de shampoo medicado y pomadas tópicas.');
+
+-- Consultas (ejemplo con datos reales de tus citas y llaves foráneas)
+INSERT INTO pets_heaven.consultas (
+    pes_mas_con, tem_mas_con, dia_con, med_con, fec_con, mot_con, tra_con, cit_con
+) VALUES
+(28.5, 38, 'Chequeo general, sin hallazgos patológicos.', 'Complejo vitamínico', '2025-07-10', 1, 1, 1),
+(28.5, 38, 'Vacunación antirrábica aplicada. Sin reacciones adversas.', 'Vacuna Antirrábica', '2025-07-13', 2, 3, 2),
+(4.2, 39, 'Vacunación antirrábica aplicada. Sin reacciones adversas.', 'Vacuna Antirrábica', '2025-07-10', 2, 3, 3),
+(12.7, 38, 'Dermatitis alérgica tratada.', 'Antiinflamatorio tópico', '2025-07-15', 3, 10, 4),
+(5.1, 38, 'Soplo cardíaco grado II detectado.', 'Cardiotónico', '2025-07-15', 4, 2, 5),
+(32.0, 38, 'Refuerzo vacunal aplicado.', 'Vacuna Polivalente', '2025-07-15', 5, 3, 6),
+(3.8, 39, 'Chequeo general, sin hallazgos patológicos.', 'Complejo vitamínico', '2025-07-15', 1, 1, 7),
+(20.3, 38, 'Problemas dermatológicos tratados.', 'Tratamiento dermatológico', '2025-07-15', 3, 10, 8),
+(7.5, 39, 'Refuerzo vacunal aplicado.', 'Vacuna Polivalente', '2025-07-15', 5, 3, 9),
+(6.8, 38, 'Soplo cardíaco grado I detectado.', 'Cardiotónico', '2025-07-15', 4, 2, 10);
