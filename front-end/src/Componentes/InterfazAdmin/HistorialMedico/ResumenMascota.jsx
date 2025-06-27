@@ -1,10 +1,16 @@
+// Librarys 
 import React from "react"
 import { useState } from "react"
 import { User, Phone, MapPin, Edit, Save, X } from "lucide-react"
-import "../../../styles/InterfazAdmin/HistorialMedico/ResumenMascota.css"
+
+// Imports 
 import { CheckImage } from "../../../Utils/Utils"
 import { formatDate } from "../../Varios/Util"
 
+// Import styles 
+import "../../../styles/InterfazAdmin/HistorialMedico/ResumenMascota.css"
+
+// Component 
 export default function ResumenMascota({ petData, setPetData, imgDefault = '' }) {
   const [isEditing, setIsEditing] = useState(false)
   const [editData, setEditData] = useState(petData)
@@ -197,31 +203,35 @@ export default function ResumenMascota({ petData, setPetData, imgDefault = '' })
                   <User className="ico-masc" />
                   Propietario
                 </h3>
-                <div className="datos-prop-masc">
+                <div className="datos-prop-masc-line">
                   <div className="campo-prop-masc">
                     <span className="etiqueta-prop-masc">Nombre:</span>
                     {isEditing ? (
                       <input
                         value={editData.nom_per}
-                        onChange={(e) => handleChange("owner.name", e.target.value)}
+                        onChange={(e) => handleChange("nom_per", e.target.value)}
                         className="input-prop-masc"
                       />
                     ) : (
-                      <p className="valor-prop-masc">{petData.nom_per} {petData.ape_per}</p>
+                      <p className="valor-prop-masc">{petData.nom_per}</p>
+                    )}
+                  </div>
+                  <div className="campo-prop-masc">
+                    <span className="etiqueta-prop-masc">Apellido:</span>
+                    {isEditing ? (
+                      <input
+                        value={editData.ape_per}
+                        onChange={(e) => handleChange("ape_per", e.target.value)}
+                        className="input-prop-masc"
+                      />
+                    ) : (
+                      <p className="valor-prop-masc">{petData.ape_per}</p>
                     )}
                   </div>
                 </div>
                 <div className="campo-prop-masc">
                     <span className="etiqueta-prop-masc">Documento:</span>
-                    {isEditing ? (
-                      <input
-                        value={editData.doc_per}
-                        onChange={(e) => handleChange("owner.email", e.target.value)}
-                        className="input-prop-masc"
-                      />
-                    ) : (
-                      <p className="valor-prop-masc">{petData.doc_per}</p>
-                    )}
+                    <p className="valor-prop-masc">{petData.doc_per}</p>
                   </div>
               </div>
 
@@ -236,7 +246,7 @@ export default function ResumenMascota({ petData, setPetData, imgDefault = '' })
                     {isEditing ? (
                       <input
                         value={editData.email_per}
-                        onChange={(e) => handleChange("owner.email", e.target.value)}
+                        onChange={(e) => handleChange("email_per", e.target.value)}
                         className="input-prop-masc"
                       />
                     ) : (
@@ -244,11 +254,11 @@ export default function ResumenMascota({ petData, setPetData, imgDefault = '' })
                     )}
                   </div>
                   <div className="campo-prop-masc">
-                    <span className="etiqueta-prop-masc">Teléfono:</span>
+                    <span className="etiqueta-prop-masc">Celular:</span>
                     {isEditing ? (
                       <input
                         value={editData.cel_per}
-                        onChange={(e) => handleChange("owner.phone", e.target.value)}
+                        onChange={(e) => handleChange("cel_per", e.target.value)}
                         className="input-prop-masc"
                       />
                     ) : (
