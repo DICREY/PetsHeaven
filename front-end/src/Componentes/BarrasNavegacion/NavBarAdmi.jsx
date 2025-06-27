@@ -19,7 +19,7 @@ export const NavBarAdmin = () => {
   const [agendaAbierta, setAgendaAbierta] = useState(false)
   const [menuMovilAbierto, setMenuMovilAbierto] = useState(false)
   const [esMovil, setEsMovil] = useState(false)
-  const { user, admin } = useContext(AuthContext)
+  const { user, admin, roles } = useContext(AuthContext)
 
   // Vars 
   const imgDefault = 'https://imgs.search.brave.com/SWL4XM1cyqoTBFewaA4zN-ry5AIZhcu9EOWH2XbBYOM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9oaXBz/LmhlYXJzdGFwcHMu/Y29tL2htZy1wcm9k/L2ltYWdlcy9nZXR0/eWltYWdlcy0xNDMy/ODIyOTctbWFzdGVy/LTE1MjI0Mjk4OTYu/anBnP2Nyb3A9MXh3/OjAuOTkxNzk0ODcx/Nzk0ODcxN3hoO2Nl/bnRlcix0b3AmcmVz/aXplPTk4MDoq'
@@ -86,7 +86,7 @@ export const NavBarAdmin = () => {
             {
               admin && (
                 <li className='itemnavadmin'>
-                  <NavLink to={'/admin/administracion'} className='enlacenavadmin'>
+                  <NavLink to={'/admin/home'} className='enlacenavadmin'>
                     <Settings className='icononavadmin' />
                     <span>Administración</span>
                   </NavLink>
@@ -94,17 +94,27 @@ export const NavBarAdmin = () => {
               )
             }
               
-            <li className='itemnavadmin'>
-              <NavLink to={'/home/staff'} className='enlacenavadmin'>
-                <Settings className='icononavadmin' />
-                <span>Panel Médico</span>
-              </NavLink>
-            </li>
+            {roles?.includes('Veterinario') && (
+              <>
+                <li className='itemnavadmin'>
+                  <NavLink to={'/staff/home'} className='enlacenavadmin'>
+                    <Settings className='icononavadmin' />
+                    <span>Panel Médico</span>
+                  </NavLink>
+                </li>
 
+                <li className='itemnavadmin'>
+                  <NavLink to={'/consultorio'} className='enlacenavadmin'>
+                    <Stethoscope className='icononavadmin' />
+                    <span>Consultorio</span>
+                  </NavLink>
+                </li>
+              </>
+            )}
             <li className='itemnavadmin'>
-              <NavLink to={'/consultorio'} className='enlacenavadmin'>
-                <Stethoscope className='icononavadmin' />
-                <span>Consultorio</span>
+              <NavLink to={'/user/home'} className='enlacenavadmin'>
+                <Settings className='icononavadmin' />
+                <span>Tú Panel</span>
               </NavLink>
             </li>
 
@@ -145,7 +155,8 @@ export const NavBarAdmin = () => {
               </ul>
             </li>
 
-            <li className='itemnavadmin'>
+            {roles?.includes('Veterinario') &&
+            (<li className='itemnavadmin'>
               <button className='botonnavadmin' onClick={toggleServicios}>
                 <div className='contenidobotonnavadmin'>
                   <Headset className='icononavadmin' />
@@ -180,7 +191,7 @@ export const NavBarAdmin = () => {
                   </NavLink>
                 </li>
               </ul>
-            </li>
+            </li>)}
           </ul>
         </nav>
       </aside>

@@ -7,9 +7,9 @@ import { supabase } from '../../supabaseClient';
 // Utilidades
 export const useRoleRedirect = (roles = []) => {
   const roleRoutes = {
-    'Administrador': '/admin/administracion',
-    'Veterinario': '/consultorio',
-    'default': '/user/pets'
+    'Administrador': '/admin/home',
+    'Veterinario': '/staff/home',
+    'default': '/user/home'
   }
   
   // Determinar la ruta basada en jerarquía de roles
