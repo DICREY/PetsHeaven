@@ -23,7 +23,7 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
 
   // Vars 
   const navigate = useNavigate()
-  const { user, admin, mainRol, logout } = useContext(AuthContext)
+  const { user, admin, staff, mainRol, logout, roles } = useContext(AuthContext)
   const mainUrl = `${URL}/appointment/by`
 
   useEffect(() => {
@@ -98,7 +98,7 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
         <div className="izquierda-cabecera-header">
           {admin? (
             <h1>Panel de Administración</h1>
-          ) : mainRol === 'Veterinario'? (
+          ) : staff? (
             <h1>Panel Médico</h1>
           ) : (
             <h1>Tú Panel</h1>

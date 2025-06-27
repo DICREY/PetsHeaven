@@ -12,7 +12,6 @@ import { AuthContext } from '../../Contexts/Contexts'
 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
-import { HeaderUser } from '../BarrasNavegacion/HeaderUser'
 import Footer from '../Varios/Footer2'
 
 // Import styles 

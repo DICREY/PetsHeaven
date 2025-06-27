@@ -10,7 +10,6 @@ import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
 import { errorStatusHandler, LegalAge, uploadImg } from '../../Varios/Util'
 import { Notification } from '../../Global/Notifys'
 import { PostData } from '../../Varios/Requests'
-import { HeaderUser } from '../../BarrasNavegacion/HeaderUser'
 import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
 import Footer from '../../Varios/Footer2'
 import { AuthContext } from '../../../Contexts/Contexts'
@@ -129,7 +128,7 @@ export const RegistroPro = ({ URL = '' }) => {
     <main className='contenedorgesusuario'>
       <NavBarAdmin />
       <main className='principalgesusuario'>
-        {admin ? (<HeaderAdmin URL={URL} />) : (<HeaderUser />)}
+        <HeaderAdmin URL={URL} />
         <section className='main-contenedor-regusuario'>
           <section className='contenedor-regusuario'>
             <header className='cabecera-regusuario'>
