@@ -177,18 +177,8 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
       const data = await GetData(`${URL}/pet/all`)
       setNotify(null)
       if (data) {
-        // Mapea los datos para asegurar los nombres esperados
-        const pacientesMapeados = data[0].map(p => ({
-          nom_mas: p.nom_mas || "",
-          id_mas: p.id_mas || "",
-          nom_per: p.nom_per || "",
-          ape_per: p.ape_per || "",
-          cel_per: p.cel_per || "",
-          fot_mas: p.fot_mas || "",
-          // agrega aquí cualquier otro campo que uses en el formulario
-        }))
-        setPacientes(pacientesMapeados)
-        setAlmcPacientes(pacientesMapeados)
+        setPacientes(data[0])
+        setAlmcPacientes(data[0])
       }
     } catch (err) {
       setNotify(null)

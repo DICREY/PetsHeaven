@@ -31,8 +31,8 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Veterinario no encontrado';
     END IF;
 
-    SELECT id_mas INTO p_id_mas FROM mascotas WHERE nom_mas LIKE p_mas LIMIT 1;
-    IF p_id_mas IS NULL THEN
+    SET p_id_mas = p_mas;
+    IF NOT EXISTS (SELECT 1 FROM mascotas WHERE id_mas = p_id_mas) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Mascota no encontrada';
     END IF;
 
@@ -57,6 +57,8 @@ BEGIN
         );
     END IF;
 END //
+
+
 CREATE PROCEDURE pets_heaven.SearchAllAppointments()
 BEGIN 
     SELECT 
