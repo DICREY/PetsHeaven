@@ -154,7 +154,7 @@ Route.post('/login', limiterLog, async (req,res) => {
         // Verify
         const coincide = await compare(secondData, user.cont_per)
 
-        if (!coincide) return res.status(401).json({ message: 'Credenciales inválidas' })
+        if (!coincide) return res.status(401).json({ message: 'Contraseña incorrecta, intentelo nuevamente' })
         const cred = jwt.sign(
             {   
                 names: user.nom_per,
@@ -174,6 +174,51 @@ Route.post('/login', limiterLog, async (req,res) => {
         if (user.nom_per && user.ape_per) res.cookie('__userName', `${user.nom_per} ${user.ape_per}`, cookiesOptionsLog)
 
         res.status(200).json({ __cred: cred })
+    } catch (err) {
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
+        if (err.status) return res.status(err.status).json({ message: err.message })
+
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
+    }
+})
+
+Route.post('/verify-email', limiterLog, async (req,res) => {
+    // Vars
+    const { email } = req.body
+    const global = new Global(email)
+    
+    try {
+        // Search in database
+        let log = await global.login()
+        let user = await log.result[0][0]
+
+        // Verify
+        if(!user) return res.status(404).json({ message: 'Usuario no encontrado' })
+        
+        res.status(200).json({ data: { nombre: user.nom_per, apellido: user.ape_per }, success: 1 })
+    } catch (err) {
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
+        if (err.status) return res.status(err.status).json({ message: err.message })
+
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
+    }
+})
+
+Route.post('/change-password', limiterLog, async (req,res) => {
+    // Vars
+    const { email, password } = req.body
+    const saltRounds = 15
+    
+    try {
+        const hash_pass = await hash(password,saltRounds)
+        
+        const global = new Global(email,hash_pass)
+        
+        const change = await global.changePassword()
+
+        if (change?.success) return res.status(200).json({ success: 1 })
+
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde' })
     } catch (err) {
         if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
         if (err.status) return res.status(err.status).json({ message: err.message })

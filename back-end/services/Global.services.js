@@ -71,6 +71,34 @@ class Global {
         })
     }
 
+    // Change Password
+    async changePassword() {
+        return new Promise((res,rej) => {
+            // vars
+            const proc = "CALL ChangePassword(?,?);"
+            const email = this.args[0].trim()
+            const password = this.args[1].trim()
+            const args = [ email, password ]
+
+            // conect to database
+            this.database = new DataBase()
+            this.database.conect()
+
+            if (this.database) this.database.conection.query(proc,args,(err) => {
+                if(err) rej({ message: err }) 
+                setTimeout(() => {
+                    res({
+                        message: "Changed",
+                        success: 1
+                    })
+                },200)
+            })
+
+            // close conection 
+            this.database.conection.end()
+        })
+    }
+
     async GetAdminStats() {
         return new Promise((res,rej) => {
             // vars
