@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
     const [ mainRol, setMainRol ] = useState(null)
     const [ log, setLog ] = useState(null)
     const [ admin, setAdmin ] = useState(false)
+    const [ staff, setStaff ] = useState(false)
     const [ notify, setNotify ] = useState({
         title: 'Cargando...',
         message: 'Obteniendo datos',
@@ -32,6 +33,7 @@ export const AuthProvider = ({ children }) => {
                 setRoles(userData.roles?.split(', ') || ['Usuario'])
                 setMainRol(userData.roles?.split(', ')[0] || ['Usuario'])
                 setAdmin(userData.roles?.split(', ').includes('Administrador'))
+                setStaff(userData.roles?.split(', ').includes('Veterinario') && !userData.roles?.split(', ').includes('Administrador'))
 
                 setLog(true)
                 setNotify({
@@ -83,6 +85,7 @@ export const AuthProvider = ({ children }) => {
                     setRoles(userData.roles?.split(', ') || ['Usuario'])
                     setMainRol(userData.roles?.split(', ')[0] || ['Usuario'])
                     setAdmin(userData.roles?.split(', ').includes('Administrador'))
+                    setStaff(userData.roles?.split(', ').includes('Veterinario') && !userData.roles?.split(', ').includes('Administrador'))
                     setLog(true)
                     setNotify(null)
                 }
@@ -97,7 +100,7 @@ export const AuthProvider = ({ children }) => {
     }, [!log])
 
     return (
-        <AuthContext.Provider value={{ admin, mainRol, user, roles, log, login, logout }}>
+        <AuthContext.Provider value={{ admin, staff, mainRol, user, roles, log, login, logout }}>
             {notify ? <Notification
                 {...notify}
              /> : children}

@@ -1,9 +1,7 @@
 // Librarys 
-import React, { createContext, useContext, useEffect, useState } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useEffect, useState } from 'react'
 
 // Imports
-import { checkImage } from '../Varios/Util'
 import { SmallLoader } from '../Loaders/SmallLoader'
 
 // Import styles 
