@@ -10,7 +10,6 @@ import { formatDate, errorStatusHandler, checkImage, uploadImg, searchFilter } f
 import { Notification } from '../Global/Notifys'
 import { GetData, PostData } from '../Varios/Requests'
 import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
-import Footer from '../Varios/Footer2'
 import { AuthContext } from '../../Contexts/Contexts'
 import Footer from '../Varios/Footer2'
 
