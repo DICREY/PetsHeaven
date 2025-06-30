@@ -160,31 +160,31 @@
 }
 
 /* Categorías de eventos */
-.fc .fc-event.Medicina.Preventiva {
+.fc .fc-event.PENDIENTE {
   background-color: var(--azulclaro) !important;
   color: var(--verdeaguamarina) !important;
   border-left: 0.25rem solid var(--azulturquesa) !important;
 }
 
-.fc .fc-event.Emergencias {
+.fc .fc-event.CANCELADA {
   background-color: #fecaca !important;
   color: var(--red) !important;
   border-left: 0.25rem solid var(--red) !important;
 }
 
-.fc .fc-event.Consulta.Preventiva {
+.fc .fc-event.EN_PROGRESO {
   background-color: #eee895 !important;
   color: #7b6111 !important;
   border-left: 0.25rem solid #7b6111 !important;
 }
 
-.fc .fc-event.Cirugía {
+.fc .fc-event.CONFIRMADA {
   background-color: var(--purple-1) !important;
   color: var(--black) !important;
   border-left: 0.25rem solid var(--purple-2) !important;
 }
 
-.fc .fc-event.Estética {
+.fc .fc-event.COMPLETADA {
   background-color: var(--purple-1) !important;
   color: var(--black) !important;
   border-left: 0.25rem solid var(--purple-2) !important;
