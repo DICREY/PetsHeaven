@@ -1,4 +1,4 @@
--- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
+-- Active: 1751161037637@@127.0.0.1@3306@pets_heaven
 -- Crear procedimiento para buscar todas las categorías de servicios
 CREATE PROCEDURE pets_heaven.SearchServicesCat()
 BEGIN
@@ -628,7 +628,6 @@ END //
 /* CALL pets_heaven.SearchServicesBy('Cirugia'); */
 /* CALL pets_heaven.AbleOrDesableService('6','Cirugia'); */
 /* CALL pets_heaven.SearchVacunas(); */
-CALL `GetLaboratoryTests`();
 
 
 /* CALL pets_heaven.UpdateVaccineAndProcedure('1', 'Vacuna Actualizada', 'Efecto Secundario', 'Categoria', 'Dosis Recomendada', 'Lote', '2025-12-31', '2022-12-31', 30, 'Descripcion', 100.00, 'Procedimiento Actualizado', 'Descripcion del Procedimiento'); */

@@ -323,7 +323,7 @@ export const GesAgendaPersonal = ({ URL = '' }) => {
                     }}
 
                     events={events}
-                    eventClassNames={(event) => [event.event.extendedProps.category]}
+                    eventClassNames={(event) => [event.event.extendedProps.estado]}
 
                     // Permite la selección de fechas o rangos de fechas
                     selectable={true}
