@@ -1,17 +1,17 @@
 // Librarys
 import { useState, useRef, useEffect, useContext, useCallback } from "react"
-import { Activity, X, Clock, AlertTriangle, FileText, Target } from "lucide-react"
+import { Activity, X } from "lucide-react"
 
 // Imports
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
-import { HeaderUser } from '../../BarrasNavegacion/HeaderUser'
 import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
 import { errorStatusHandler } from '../../Varios/Util'
 import { Notification } from '../../Global/Notifys'
 import { GetData, PostData, ModifyData } from "../../Varios/Requests"
 import { AuthContext } from "../../../Contexts/Contexts"
 import { ServicesContainer } from '../../Global/Services'
-// import Footer from '../../Varios/Footer2'
+import { ServicesDetails } from "./Forms/Forms"
+import { formatPrice } from "../../../Utils/Utils"
 
 // Style
 import "../../../styles/InterfazAdmin/Servicios/Cirugia.css"
@@ -195,13 +195,13 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
     setMostrarFormulario(true)
   }, [])
 
-  // Eliminar cirugía
-  const eliminarCirugia = (data) => {
+  // Cambiar estado de disponibilidad
+  const DeactivateCir = (data) => {
     setNotify({
       title: 'Atencion',
-      message: '¿Estás seguro de que deseas eliminar esta vacuna?',
+      message: `¿Deseas ${data.sta_ser === "DISPONIBLE" ? "desactivar" : "activar"} esta cirugía?`,
       firstOption: () => {setNotify(null); return},
-      secondOption: () => DeleteService(data.id),
+      secondOption: () => DeleteService(data.id_ser),
       firstOptionName: 'Cancelar',
       secondOptionName: 'Continuar',
     })
@@ -211,17 +211,17 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
           title: 'Cargando...',
           message: 'Validando credenciales, por favor espere...',
           load: 1
-        })
-        const data = { data: { id_ser: id_ser, nom_cat: 'Cirugia' } }
-        const deleted = await ModifyData(`${mainUrl}/AblOrDis`, data)
+        }) 
+        const deleted = await ModifyData(`${mainUrl}/AblOrDis`, { id: id_ser, nom_cat: 'Cirugia' })
         setNotify(null)
-        if (deleted) {
+        if (deleted.success) {
+          didFetch.current = false // Reset fetch state to allow refetch
+          fetchCirugias()
           setNotify({
-              title: 'Desactivación exitosa',
-              message: 'La cirugia ha sido desactivada exitosamente',
+              title: `${data.sta_ser === "DISPONIBLE" ? 'Desactivación' : 'Activación'} exitosa`,
+              message: `La cirugía ha sido ${data.sta_ser === "DISPONIBLE" ? 'desactivada' : 'activada'} exitosamente`,
               close: setNotify
           })
-          fetchCirugias()
         }
       } catch (err) {
         const message = errorStatusHandler(err)
@@ -254,13 +254,17 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
       ...cirugia,
       nombre: cirugia.nom_ser,
       descripcion: cirugia.des_ser,
-      precio: cirugia.pre_ser,
+      descripcionPro: cirugia.des_pro_ser,
+      precio: cirugia.pre_act_ser,
       disponible: cirugia.sta_ser === "DISPONIBLE",
-      duracion: "45-60 minutos", // Valor de ejemplo
-      categoria: "General", // Valor de ejemplo
-      preparacion: "Ayuno de 12 horas antes del procedimiento", // Valor de ejemplo
+      duracion:  `${cirugia.dur_min_tip_ser || 0} horas`,
+      categoria: cirugia.nom_cat,
+      preparacion: cirugia.des_tip_ser,
       recomendaciones: cirugia.tec_des_ser,
-      complicaciones: cirugia.com_cir
+      complicaciones: cirugia.req,
+      equipo: cirugia.req_equ_esp?'Si aplica':'No aplica',
+      procedimientos: cirugia.proc_ser || [],
+      min: `${formatPrice(cirugia.pre_ser) || 0.0}`,
     })
     setMostrarDetalle(true)
   }, [])
@@ -269,38 +273,6 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
   const abrirModalEditar = useCallback((cirugia) => {
     editarCirugia(cirugia)
   }, [editarCirugia])
-
-  // Formatear precio
-  const formatearPrecio = useCallback((precio) => {
-    return new Intl.NumberFormat('es-CO', {
-      style: 'currency',
-      currency: 'COP',
-      minimumFractionDigits: 0
-    }).format(precio || 0)
-  }, [])
-
-  // Cambiar estado de disponibilidad
-  const cambiarEstado = useCallback(async (data) => {
-    e.stopPropagation()
-    try {
-      const cirugia = cirugias.find(c => c.id_ser === data.id)
-      const nuevoEstado = cirugia.sta_ser === "DISPONIBLE" ? "NO DISPONIBLE" : "DISPONIBLE"
-
-      await ModifyData(`${mainUrl}/modify`, {
-        id_ser: data.id,
-        sta_ser: nuevoEstado
-      })
-
-      fetchCirugias()
-    } catch (err) {
-      const message = errorStatusHandler(err)
-      setNotify({
-        title: 'Error',
-        message: message,
-        close: setNotify
-      })
-    }
-  }, [mainUrl, cirugias, fetchCirugias])
 
   return (
     <main className="contenedoradminhome">
@@ -329,8 +301,8 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
           OpenCreate={abrirModalAgregar}
           OpenDetails={abrirModalDetalle}
           OpenEdit={abrirModalEditar}
-          Delete={eliminarCirugia}
-          ChangeState={cambiarEstado}
+          Delete={DeactivateCir}
+          ChangeState={DeactivateCir}
         />
 
         {/* Modal Agregar/Editar */}
@@ -469,102 +441,23 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
 
         {/* Modal Detalle */}
         {mostrarDetalle && cirugiaDetalle && (
-          <aside className="modal-fondo-cirugia">
-            <aside className="modal-detalle-cirugia">
-              <div className="modal-encabezado-cirugia">
-                <h3 className="titulo-modal-cirugia">{cirugiaDetalle.nombre}</h3>
-                <button onClick={() => setMostrarDetalle(false)} className="cerrar-modal-cirugia">
-                  <X className="icon" />
-                </button>
-              </div>
-              <div className="contenido-detalle-cirugia">
-                {/* Métricas principales */}
-                <div className="metricas-principales-cirugia">
-                  <div className="metrica-cirugia">
-                    <div className="valor-metrica-cirugia">{formatearPrecio(cirugiaDetalle.precio)}</div>
-                    <div className="etiqueta-metrica-cirugia">Precio</div>
-                  </div>
-                  <div className="metrica-cirugia">
-                    <div className="valor-metrica-cirugia">{cirugiaDetalle.duracion}</div>
-                    <div className="etiqueta-metrica-cirugia">Duración</div>
-                  </div>
-                  <div className="metrica-cirugia">
-                    <div className="valor-metrica-cirugia">{cirugiaDetalle.categoria}</div>
-                    <div className="etiqueta-metrica-cirugia">Categoría</div>
-                  </div>
-                  <div className="metrica-cirugia">
-                    <div
-                      className={`valor-metrica-cirugia ${cirugiaDetalle.disponible ? "texto-verde-cirugia" : "texto-rojo-cirugia"
-                        }`}
-                    >
-                      {cirugiaDetalle.disponible ? "SÍ" : "NO"}
-                    </div>
-                    <div className="etiqueta-metrica-cirugia">Disponible</div>
-                  </div>
-                </div>
-
-                {/* Grid de información */}
-                <div className="grid-detalle-cirugia">
-                  <div className="seccion-detalle-cirugia">
-                    <div className="encabezado-seccion-cirugia">
-                      <FileText className="icono-seccion-cirugia icon" />
-                      <h4 className="titulo-seccion-cirugia">Descripción</h4>
-                    </div>
-                    <p className="texto-seccion-cirugia">{cirugiaDetalle.descripcion}</p>
-                  </div>
-
-                  <div className="seccion-detalle-cirugia">
-                    <div className="encabezado-seccion-cirugia">
-                      <Target className="icono-seccion-cirugia icon" />
-                      <h4 className="titulo-seccion-cirugia">Preparación</h4>
-                    </div>
-                    <p className="texto-seccion-cirugia">{cirugiaDetalle.preparacion}</p>
-                  </div>
-
-                  <div className="seccion-detalle-cirugia">
-                    <div className="encabezado-seccion-cirugia">
-                      <AlertTriangle className="icono-seccion-cirugia icon" />
-                      <h4 className="titulo-seccion-cirugia">Complicaciones</h4>
-                    </div>
-                    <p className="texto-seccion-cirugia">{cirugiaDetalle.complicaciones}</p>
-                  </div>
-
-                  <div className="seccion-detalle-cirugia">
-                    <div className="encabezado-seccion-cirugia">
-                      <Clock className="icono-seccion-cirugia icon" />
-                      <h4 className="titulo-seccion-cirugia">Recomendaciones</h4>
-                    </div>
-                    <p className="texto-seccion-cirugia">{cirugiaDetalle.recomendaciones}</p>
-                  </div>
-                </div>
-
-                {/* Información adicional */}
-                <div className="info-adicional-cirugia">
-                  <h4 className="titulo-info-adicional-cirugia">Información Adicional</h4>
-                  <div className="contenedor-info-adicional-cirugia">
-                    <div className="item-info-adicional-cirugia">
-                      <span className="etiqueta-info-adicional-cirugia">Recuperación:</span>
-                      <span className="valor-info-adicional-cirugia">{cirugiaDetalle.recuperacion}</span>
-                    </div>
-                    <div className="item-info-adicional-cirugia">
-                      <span className="etiqueta-info-adicional-cirugia">Anestesia:</span>
-                      <span className="valor-info-adicional-cirugia">{cirugiaDetalle.anestesia}</span>
-                    </div>
-                    <div className="item-info-adicional-cirugia">
-                      <span className="etiqueta-info-adicional-cirugia">Tipo de Animal:</span>
-                      <span className="valor-info-adicional-cirugia">
-                        {cirugiaDetalle.tipoAnimal === "perro"
-                          ? "Perros"
-                          : cirugiaDetalle.tipoAnimal === "gato"
-                            ? "Gatos"
-                            : "Perros y gatos"}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </aside>
-          </aside>
+          <ServicesDetails
+            mostrarDetalle={mostrarDetalle}
+            setMostrarDetalle={() => setMostrarDetalle(null)}
+            infoDetails={cirugiaDetalle}
+            labels={{
+              precio: "Precio Actual",
+              frecuencia: "Duración",
+              categoria: "Categoría",
+              disponible: "Disponible",
+              descripcion: "Descripción General",
+              descripcionPro: "Descripción Técnica",
+              efectosSecundarios: "Preparación",
+              infoAdicional: "Información Adicional",
+              lote: "Equipo requerido",
+              vencimiento: "Precio anterior",
+            }}
+          />
         )}
       </section>
       {notify && (

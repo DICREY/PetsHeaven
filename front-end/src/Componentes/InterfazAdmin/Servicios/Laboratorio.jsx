@@ -1,15 +1,15 @@
 // Librarys 
 import React, { useContext } from "react"
 import { useState } from "react"
-import { FlaskConical, X, AlertTriangle, FileText, Target } from "lucide-react"
+import { FlaskConical, X } from "lucide-react"
 
 // Imports
 import { ServicesContainer } from "../../Global/Services"
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
 import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
-import { HeaderUser } from "../../BarrasNavegacion/HeaderUser"
 import { AuthContext } from "../../../Contexts/Contexts"
 import { Notification } from "../../Global/Notifys"
+import { ServicesDetails } from "./Forms/Forms"
 
 // Import styles
 import "../../../styles/InterfazAdmin/Servicios/Laboratorio.css"
@@ -158,15 +158,6 @@ export const ExamenesLaboratorio = ({ URL= '' }) => {
   ]
 
   // Functions 
-  const formatearPrecio = (precio) => {
-    return new Intl.NumberFormat("es-CO", {
-      style: "currency",
-      currency: "COP",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(precio)
-  }
-
   const abrirModalAgregar = () => {
     setNuevoExamen({
       id: "",
@@ -524,116 +515,11 @@ export const ExamenesLaboratorio = ({ URL= '' }) => {
 
         {/* Modal Detalle */}
         {mostrarDetalle && examenDetalle && (
-          <div className="modal-fondo-laboratorio" role="dialog" aria-modal="true" aria-labelledby="titulo-detalle">
-            <div className="modal-detalle-laboratorio">
-              <header className="modal-encabezado-laboratorio">
-                <h2 id="titulo-detalle" className="titulo-modal-laboratorio">
-                  {examenDetalle.nombre}
-                </h2>
-                <button
-                  onClick={() => setMostrarDetalle(false)}
-                  className="cerrar-modal-laboratorio"
-                  aria-label="Cerrar modal de detalles"
-                >
-                  <X size={20} aria-hidden="true" />
-                </button>
-              </header>
-              <div className="contenido-detalle-laboratorio">
-                {/* Métricas principales */}
-                <section className="metricas-principales-laboratorio" aria-label="Métricas del examen">
-                  <div className="metrica-laboratorio">
-                    <div className="valor-metrica-laboratorio">{formatearPrecio(examenDetalle.precio)}</div>
-                    <div className="etiqueta-metrica-laboratorio">Precio</div>
-                  </div>
-                  <div className="metrica-laboratorio">
-                    <div className="valor-metrica-laboratorio">{examenDetalle.tiempoResultados}</div>
-                    <div className="etiqueta-metrica-laboratorio">Tiempo</div>
-                  </div>
-                  <div className="metrica-laboratorio">
-                    <div className="valor-metrica-laboratorio">{examenDetalle.categoria}</div>
-                    <div className="etiqueta-metrica-laboratorio">Especialidad</div>
-                  </div>
-                  <div className="metrica-laboratorio">
-                    <div
-                      className={`valor-metrica-laboratorio ${examenDetalle.disponible ? "texto-verde-laboratorio" : "texto-rojo-laboratorio"
-                        }`}
-                    >
-                      {examenDetalle.disponible ? "SÍ" : "NO"}
-                    </div>
-                    <div className="etiqueta-metrica-laboratorio">Disponible</div>
-                  </div>
-                </section>
-
-                {/* Grid de información */}
-                <section className="grid-detalle-laboratorio" aria-label="Información detallada del examen">
-                  <article className="seccion-detalle-laboratorio">
-                    <header className="encabezado-seccion-laboratorio">
-                      <FileText size={20} className="icono-seccion-laboratorio" aria-hidden="true" />
-                      <h3 className="titulo-seccion-laboratorio">Descripción</h3>
-                    </header>
-                    <p className="texto-seccion-laboratorio">{examenDetalle.descripcion}</p>
-                  </article>
-
-                  <article className="seccion-detalle-laboratorio">
-                    <header className="encabezado-seccion-laboratorio">
-                      <AlertTriangle size={20} className="icono-seccion-laboratorio" aria-hidden="true" />
-                      <h3 className="titulo-seccion-laboratorio">Preparación</h3>
-                    </header>
-                    <p className="texto-seccion-laboratorio">{examenDetalle.preparacionRequerida}</p>
-                  </article>
-
-                  <article className="seccion-detalle-laboratorio">
-                    <header className="encabezado-seccion-laboratorio">
-                      <FlaskConical size={20} className="icono-seccion-laboratorio" aria-hidden="true" />
-                      <h3 className="titulo-seccion-laboratorio">Metodología</h3>
-                    </header>
-                    <p className="texto-seccion-laboratorio">{examenDetalle.metodologia}</p>
-                  </article>
-
-                  <article className="seccion-detalle-laboratorio">
-                    <header className="encabezado-seccion-laboratorio">
-                      <Target size={20} className="icono-seccion-laboratorio" aria-hidden="true" />
-                      <h3 className="titulo-seccion-laboratorio">Indicaciones</h3>
-                    </header>
-                    <p className="texto-seccion-laboratorio">{examenDetalle.indicaciones}</p>
-                  </article>
-                </section>
-
-                {/* Valores de referencia */}
-                <section className="valores-referencia-laboratorio" aria-label="Valores de referencia">
-                  <h3 className="titulo-valores-laboratorio">Valores de Referencia</h3>
-                  <div className="contenido-valores-laboratorio">
-                    <p className="texto-valores-laboratorio">{examenDetalle.valoresReferencia}</p>
-                  </div>
-                </section>
-
-                {/* Información adicional */}
-                <section className="info-adicional-laboratorio" aria-label="Información adicional">
-                  <h3 className="titulo-info-adicional-laboratorio">Información Adicional</h3>
-                  <dl className="contenedor-info-adicional-laboratorio">
-                    <div className="item-info-adicional-laboratorio">
-                      <dt className="etiqueta-info-adicional-laboratorio">Muestra:</dt>
-                      <dd className="valor-info-adicional-laboratorio">{examenDetalle.muestra}</dd>
-                    </div>
-                    <div className="item-info-adicional-laboratorio">
-                      <dt className="etiqueta-info-adicional-laboratorio">Equipo:</dt>
-                      <dd className="valor-info-adicional-laboratorio">{examenDetalle.equipoRequerido}</dd>
-                    </div>
-                    <div className="item-info-adicional-laboratorio">
-                      <dt className="etiqueta-info-adicional-laboratorio">Tipo de Animal:</dt>
-                      <dd className="valor-info-adicional-laboratorio">
-                        {examenDetalle.tipoAnimal === "perro"
-                          ? "Perros"
-                          : examenDetalle.tipoAnimal === "gato"
-                            ? "Gatos"
-                            : "Perros y gatos"}
-                      </dd>
-                    </div>
-                  </dl>
-                </section>
-              </div>
-            </div>
-          </div>
+          <ServicesDetails
+            infoDetails={examenDetalle}
+            mostrarDetalle={mostrarDetalle}
+            setMostrarDetalle={() => setMostrarDetalle(null)}
+          />
         )}
       </main>
       {notify && <Notification {...notify} />}

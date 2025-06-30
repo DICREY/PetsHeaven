@@ -27,7 +27,7 @@ Route.get('/all', ValidatorRol("usuario"), async (req,res) => {
 })
 
 // Call Middleware for verify the request data
-Route.use(Fullinfo(['nom_pro','des_pro','cat_pro']))
+Route.use(Fullinfo(['des_pro','cat_pro']))
 
 Route.post('/register', ValidatorRol("veterinario"), async (req,res) => {
     // Vars 
@@ -37,8 +37,25 @@ Route.post('/register', ValidatorRol("veterinario"), async (req,res) => {
         const result = await services.registerVacuna(data);
         res.status(201).json({ message: "Vacuna registrada correctamente", result });
     } catch (err) {
+        console.log(err)
         if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
         if (err?.status) return res.status(err?.status).json({ message: err?.message });
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
+    }
+})
+
+Route.put('/modify', ValidatorRol("veterinario"), async (req, res) => {
+    // Vars 
+    const data = req.body
+
+    try {            
+        const result = await services.updateVaccineAndProcedure(data)
+        if (result?.success) return res.status(201).json({ message: "Vacuna actualizada correctamente" })
+        res.status(400).json({ message: "Error al actualizar la vacuna, por favor intente nuevamente" })
+    } catch (err) {
+        console.log(err)
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
+        if (err?.status) return res.status(err?.status).json({ message: err?.message })
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })

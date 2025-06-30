@@ -1,4 +1,4 @@
--- Active: 1747352860830@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 DROP DATABASE IF EXISTS pets_heaven;
 CREATE DATABASE IF NOT EXISTS pets_heaven;
 CREATE TABLE pets_heaven.roles(
@@ -113,7 +113,7 @@ CREATE TABLE pets_heaven.procedimientos (
     des_pro TEXT NOT NULL, -- Descripción del procedimiento
     cat_pro INT NOT NULL,INDEX(cat_pro), -- Categoria del procedimiento
     niv_rie_pro ENUM('BAJO', 'MODERADO', 'ALTO', 'CRITICO'),INDEX(niv_rie_pro), -- Nivel de riesgo del procedimiento
-    dur_min_pro INT, -- Duración minima del procedimiento
+    dur_min_pro INT, -- Duración minima del procedimiento en minutos
     pro_pro TEXT DEFAULT 'No-registrado', -- Protocolo / Pasos del procedimiento
     con_esp_pro TEXT DEFAULT 'No-registrado', -- Consideraciones especiales
     FOREIGN KEY (cat_pro) REFERENCES categorias_servicios(id_cat) ON UPDATE CASCADE ON DELETE CASCADE
@@ -198,10 +198,12 @@ CREATE TABLE pets_heaven.vacunas (
     efe_sec_vac VARCHAR(255) NOT NULL,  -- Efectos secundarios de la vacuna
     cat_vac VARCHAR(100) NOT NULL,INDEX(cat_vac), -- Categoría de la vacuna
     dos_rec_vac VARCHAR(100) NOT NULL, -- Dosis recomendada
-    lot_vac VARCHAR(255) NOT NULL,INDEX(lot_vac), -- Lote de la vacuna
+    lot_vac VARCHAR(255) UNIQUE NOT NULL,INDEX(lot_vac), -- Lote de la vacuna
     fec_ven_vac DATE NOT NULL, -- Fecha de vencimiento
+    fec_cre_vac DATE NOT NULL, -- Fecha de creación
     fre_vac INT NOT NULL, -- Frecuencia de vacunación en dias
     des_vac TEXT DEFAULT 'No-registrado', -- Descripción de la vacuna
+    pre_vac DECIMAL(10,2) NOT NULL, -- Precio de la vacuna
     sta_vac BOOLEAN DEFAULT 1 NOT NULL, -- Estado de vacuna (disponible / No disponible) (1/0)
     pro_vac INT NOT NULL,INDEX(pro_vac), FOREIGN KEY(pro_vac) REFERENCES procedimientos(id_pro) ON DELETE CASCADE ON UPDATE CASCADE, -- ID del procedimiento asociado
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
