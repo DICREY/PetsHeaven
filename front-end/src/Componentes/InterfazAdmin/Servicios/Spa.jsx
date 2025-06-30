@@ -10,7 +10,7 @@ import { ServicesContainer } from "../../Global/Services"
 import { Notification } from "../../Global/Notifys"
 import { ServicesDetails } from "./Forms/Forms"
 import { formatPrice } from "../../../Utils/Utils"
-import { GetData } from "../../Varios/Requests"
+import { GetData, ModifyData } from "../../Varios/Requests"
 import { errorStatusHandler } from "../../Varios/Util"
 
 // Import styles 
@@ -74,7 +74,22 @@ export const SpaMascotas = ({ URL = '' }) => {
   }
 
   const abrirModalDetalle = (servicio) => {
-    setServicioDetalle(servicio)
+    setServicioDetalle({
+      ...servicio,
+      nombre: servicio.nom_ser,
+      descripcion: servicio.des_ser,
+      descripcionPro: servicio.des_pro_ser,
+      precio: servicio.pre_act_ser,
+      disponible: servicio.sta_ser === "DISPONIBLE",
+      duracion:  `${servicio.dur_min_tip_ser || 0} horas`,
+      categoria: servicio.nom_cat,
+      preparacion: servicio.des_tip_ser,
+      recomendaciones: servicio.tec_des_ser,
+      complicaciones: servicio.req,
+      equipo: servicio.req_equ_esp?'Si aplica':'No aplica',
+      procedimientos: servicio.proc_ser,
+      min: `${formatPrice(servicio.pre_ser) || 0.0}`,
+    })
     setMostrarDetalle(true)
   }
 
@@ -96,14 +111,38 @@ export const SpaMascotas = ({ URL = '' }) => {
   const ChangeState = (data) => {
     setNotify({
       title: 'Atencion',
-      message: `¿Deseas ${data.disponible? "desactivar" : "activar"} este servicio?`,
+      message: `¿Deseas ${data.sta_ser? "desactivar" : "activar"} este servicio estetico?`,
       firstOption: () => {setNotify(null); return},
-      secondOption: () => {setNotify(null); DeleteService(data.id)},
+      secondOption: () => {setNotify(null); DeleteService(data.id_ser)},
       firstOptionName: 'Cancelar',
       secondOptionName: 'Continuar',
     })
-    const DeleteService = async (id) => {
-      setServices(services.filter((s) => s.id !== id))
+    const DeleteService = async (id_ser) => {
+      try {
+        setNotify({
+          title: 'Cargando...',
+          message: 'Validando credenciales, por favor espere...',
+          load: 1
+        }) 
+        const deleted = await ModifyData(`${mainUrl}/AblOrDis`, { id: id_ser, nom_cat: 'Estetica' })
+        setNotify(null)
+        if (deleted.success) {
+          didFetch.current = false // Reset fetch state to allow refetch
+          GetEsthetic() 
+          setNotify({
+              title: `${data.sta_ser === "DISPONIBLE" ? 'Desactivación' : 'Activación'} exitosa`,
+              message: `El servicio estetico ha sido ${data.sta_ser === "DISPONIBLE" ? 'desactivado' : 'activado'} exitosamente`,
+              close: setNotify
+          })
+        }
+      } catch (err) {
+        const message = errorStatusHandler(err)
+        setNotify({
+          title: 'Error',
+          message: `${message}`,
+          close: setNotify
+        })
+      }
     }
   }
 
@@ -113,12 +152,12 @@ export const SpaMascotas = ({ URL = '' }) => {
 
     setNotify({
       title: 'Cargando',
-      message: 'Cargando cirugias, por favor espere...',
+      message: 'Cargando servicios esteticos, por favor espere...',
       load: 1
     })
 
     try {
-      let data = await GetData(`${mainUrl}/sthetic`)
+      let data = await GetData(`${mainUrl}/esthetic`)
       setNotify(null)
       if (data) setServices(data)
     } catch (err) {
@@ -152,16 +191,16 @@ export const SpaMascotas = ({ URL = '' }) => {
           datas={services}
           filters={categorias}
           headers={{
-            nom: 'nombre',
-            des: 'descripcion',
-            cat: 'categoria',
-            sta: 'disponible',
-            pri: 'precio',
-            cod: 'id',
-            time: 'duracion',
-            alert: 'frecuencia',
+            nom: 'nom_ser',
+            des: 'des_ser',
+            cat: 'nom_cat',
+            sta: 'sta_ser',
+            pri: 'pre_ser',
+            cod: 'id_ser',
+            time: 'dur_min_tip_ser',
+            alert: 'des_tip_ser'
           }}
-          SearchHeaders={['categoria']}
+          SearchHeaders={['nom_cat']}
           OpenCreate={abrirModalAgregar}
           OpenDetails={abrirModalDetalle}
           OpenEdit={abrirModalEditar}
@@ -353,7 +392,7 @@ export const SpaMascotas = ({ URL = '' }) => {
             infoDetails={servicioDetalle}
           />
         )}
-        {mostrarDetalle && servicioDetalle && (
+        {/* {mostrarDetalle && servicioDetalle && (
           <aside className="modal-fondo-spa">
             <section className="modal-detalle-spa">
               <header className="modal-encabezado-spa">
@@ -363,7 +402,6 @@ export const SpaMascotas = ({ URL = '' }) => {
                 </button>
               </header>
               <section className="contenido-detalle-spa">
-                {/* Métricas principales */}
                 <div className="metricas-principales-spa">
                   <div className="metrica-spa">
                     <div className="valor-metrica-spa">{formatPrice(servicioDetalle.precio)}</div>
@@ -389,7 +427,6 @@ export const SpaMascotas = ({ URL = '' }) => {
                   </div>
                 </div>
 
-                {/* Grid de información */}
                 <div className="grid-detalle-spa">
                   <div className="seccion-detalle-spa">
                     <div className="encabezado-seccion-spa">
@@ -424,7 +461,6 @@ export const SpaMascotas = ({ URL = '' }) => {
                   </div>
                 </div>
 
-                {/* Información adicional */}
                 <div className="info-adicional-spa">
                   <h4 className="titulo-info-adicional-spa">Información Adicional</h4>
                   <div className="contenedor-info-adicional-spa">
@@ -447,7 +483,7 @@ export const SpaMascotas = ({ URL = '' }) => {
               </section>
             </section>
           </aside>
-        )}
+        )} */}
       </section>
       {notify && <Notification {...notify} />}
     </main>

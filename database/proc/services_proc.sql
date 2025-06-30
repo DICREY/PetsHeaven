@@ -554,6 +554,66 @@ BEGIN
     ORDER BY v.id_vac ASC;
 END //
 
+CREATE PROCEDURE pets_heaven.GetLaboratoryTests()
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pets_heaven.pruebas_laboratorio) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se encontraron pruebas de laboratorio registradas';
+    END IF;
+
+    SELECT
+        pl.id_pru_lab,
+        pl.cod_ord_pru_lab,
+        m.nom_mas AS nombre_mascota,
+        m.esp_mas AS especie_mascota,
+        m.raz_mas AS raza_mascota,
+        m.gen_mas AS genero_mascota,
+        m.fec_nac_mas AS nacimiento_mascota,
+        psol.nom_per AS nombre_veterinario_solicitante,
+        psol.ape_per AS apellido_veterinario_solicitante,
+        prev.nom_per AS nombre_veterinario_revisor,
+        prev.ape_per AS apellido_veterinario_revisor,
+        tp.nom_tip_pru,
+        tp.cat_tip_pru,
+        tp.des_tip_pru,
+        tp.met_est_tip_pru,
+        tp.tie_est_hrs_tip_pru,
+        tp.ins_pre_tip_pru,
+        tp.par_ref_tip_pru,
+        pl.fec_sol_pru_lab,
+        pl.fec_mue_pru_lab,
+        pl.fec_pro_pru_lab,
+        pl.fec_res_pru_lab,
+        pl.est_pru_lab,
+        pl.pri_pru_lab,
+        pl.obs_mue_pru_lab,
+        pl.res_pru_lab
+        /* s.cos_est_ser,
+        s.pre_act_ser,
+        s.pre_ser,
+        s.req,
+        s.nom_ser,
+        s.des_ser */
+    FROM 
+        pets_heaven.pruebas_laboratorio pl
+    INNER JOIN 
+        pets_heaven.tipos_pruebas tp ON pl.id_tip_pru_lab = tp.id_tip_pru
+    LEFT JOIN 
+        pets_heaven.mascotas m ON pl.id_mas_pru_lab = m.id_mas
+    LEFT JOIN 
+        pets_heaven.veterinarios vsol ON pl.id_vet_sol_pru_lab = vsol.id_vet
+    LEFT JOIN 
+        pets_heaven.personas psol ON vsol.id_vet = psol.id_per
+    LEFT JOIN 
+        pets_heaven.veterinarios vrev ON pl.id_vet_rev_pru_lab = vrev.id_vet
+    LEFT JOIN 
+        pets_heaven.personas prev ON vrev.id_vet = prev.id_per
+    WHERE 
+        pl.est_pru_lab != 'CANCELADA'
+    ORDER BY 
+        pl.fec_sol_pru_lab DESC
+    LIMIT 1000;
+END //
+
 /* DROP PROCEDURE `SearchServices`; */
 /* DROP PROCEDURE pets_heaven.SearchServicesBy; */
 /* DROP PROCEDURE pets_heaven.AbleOrDesableService; */
@@ -562,11 +622,13 @@ END //
 /* DROP PROCEDURE pets_heaven.`UpdateVaccineAndProcedure`; */
 /* DROP PROCEDURE pets_heaven.`ChangeVaccineState`; */
 /* DROP PROCEDURE pets_heaven.SearchVacunas; */
+/* DROP PROCEDURE pets_heaven.`GetLaboratoryTests`; */
 
 /* CALL `SearchServices`(); */
 /* CALL pets_heaven.SearchServicesBy('Cirugia'); */
 /* CALL pets_heaven.AbleOrDesableService('6','Cirugia'); */
 /* CALL pets_heaven.SearchVacunas(); */
+CALL `GetLaboratoryTests`();
 
 
 /* CALL pets_heaven.UpdateVaccineAndProcedure('1', 'Vacuna Actualizada', 'Efecto Secundario', 'Categoria', 'Dosis Recomendada', 'Lote', '2025-12-31', '2022-12-31', 30, 'Descripcion', 100.00, 'Procedimiento Actualizado', 'Descripcion del Procedimiento'); */

@@ -158,6 +158,68 @@ class Services {
         })
     }
 
+    async findEsthetic() {
+        return new Promise((res,rej) => {
+            // vars
+            const proc = "CALL SearchServicesBy('Estetica');"
+
+            // conect to database
+            this.database = new DataBase()
+            this.database.conect()
+            
+            if (this.database) this.database.conection.query(proc,(err,result) => {
+                if(err) rej({ message: err })
+                if(!result || !result[0][0]) rej({
+                    message: "Not found",
+                    status: 404
+                })
+                const resOne = this.global.format(
+                    result[0],
+                    'proc_ser',
+                    ['nom_pro','des_pro','cat_pro','niv_rie_pro','dur_min_pro','pro_pro','con_esp_pro']
+                )
+                setTimeout(() => {
+                    res({
+                        message: "Cirugies found",
+                        result: resOne
+                    })
+                },1000)
+            })
+
+            // close conection 
+            this.database.conection.end()
+        })
+    }
+
+    // function to find laboratory tests
+    async findLaboratoryTests() {
+        return new Promise((res,rej) => {
+            // vars
+            const proc = "CALL GetLaboratoryTests();"
+
+            // conect to database
+            this.database = new DataBase()
+            this.database.conect()
+            
+            if (this.database) this.database.conection.query(proc,(err,result) => {
+                if(err) rej({ message: err })
+                if(!result || !result[0][0]) rej({
+                    message: "Not found",
+                    status: 404
+                })
+                setTimeout(() => {
+                    res({
+                        message: "Laboratory tests found",
+                        result: result[0]
+                    })
+                },1000)
+            })
+
+            // close conection 
+            this.database.conection.end()
+        })
+    }
+
     async registerCirugia(data) {
         return new Promise((res, rej) => {
             const proc = "CALL RegisterCirugia(?,?,?,?,?,?,?,?,?,?)"
