@@ -302,7 +302,7 @@ export const GesAgendaPersonal = ({ URL = '' }) => {
 
                     // Configuración de la barra de herramientas del encabezado
                     headerToolbar={{
-                        start: "customPrev today customNext",
+                        start: "customPrev today customNext buscarPersona",
                         center: "title",
                         end: "dayGridMonth dayGridWeek dayGridDay listYear"
                     }}
@@ -315,6 +315,10 @@ export const GesAgendaPersonal = ({ URL = '' }) => {
                         customNext: {
                             text: '>',
                             click: () => calendarRef.current.getApi().next()
+                        },
+                        buscarPersona: {
+                            text : 'Buscar por Persona',
+                            click : () => null
                         }
                     }}
 
