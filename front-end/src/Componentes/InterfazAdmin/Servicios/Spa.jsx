@@ -1,15 +1,17 @@
 // Librarys 
-import { useContext, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { Bath, X, Heart, Sparkles, Target, FileText } from "lucide-react"
 
 // Imports 
-import { HeaderUser } from '../../BarrasNavegacion/HeaderUser'
 import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
 import { AuthContext } from "../../../Contexts/Contexts"
 import { ServicesContainer } from "../../Global/Services"
 import { Notification } from "../../Global/Notifys"
-// import Footer from '../../Varios/Footer2'
+import { ServicesDetails } from "./Forms/Forms"
+import { formatPrice } from "../../../Utils/Utils"
+import { GetData, ModifyData } from "../../Varios/Requests"
+import { errorStatusHandler } from "../../Varios/Util"
 
 // Import styles 
 import "../../../styles/InterfazAdmin/Servicios/Spa.css"
@@ -17,13 +19,14 @@ import "../../../styles/InterfazAdmin/Servicios/Spa.css"
 // Component
 export const SpaMascotas = ({ URL = '' }) => {
   // Dynamic vars 
-  const [mostrarFormulario, setMostrarFormulario] = useState(false)
-  const [mostrarDetalle, setMostrarDetalle] = useState(false)
+  const [ mostrarFormulario, setMostrarFormulario ] = useState(false)
+  const [ mostrarDetalle, setMostrarDetalle ] = useState(false)
   const [ notify, setNotify ] = useState()
-  const [servicioDetalle, setServicioDetalle] = useState(null)
-  const [servicioEditando, setServicioEditando] = useState(null)
-  const [modoEdicion, setModoEdicion] = useState(false)
-  const [nuevoServicio, setNuevoServicio] = useState({
+  const [ servicioDetalle, setServicioDetalle ] = useState(null)
+  const [ servicioEditando, setServicioEditando ] = useState(null)
+  const [ modoEdicion, setModoEdicion ] = useState(false)
+  const [ services, setServices ] = useState()
+  const [ nuevoServicio, setNuevoServicio ] = useState({
     id: "",
     nombre: "",
     descripcion: "",
@@ -37,77 +40,12 @@ export const SpaMascotas = ({ URL = '' }) => {
     productos: "",
     frecuencia: "",
   })
-  const [servicios, setServicios] = useState([
-    {
-      id: "SPA001",
-      nombre: "Baño Completo",
-      descripcion: "Baño con champú especial, secado y cepillado para dejar el pelaje brillante y suave.",
-      beneficios: "Elimina suciedad, parásitos externos y mal olor",
-      duracion: "45-60 minutos",
-      recomendaciones: "Recomendado cada 3-4 semanas dependiendo de la raza y actividad",
-      precio: 45000,
-      disponible: true,
-      categoria: "Higiene",
-      tipoAnimal: "ambos",
-      productos: "Champú hipoalergénico, acondicionador, desparasitante externo",
-      frecuencia: "Cada 3-4 semanas",
-    },
-    {
-      id: "SPA002",
-      nombre: "Corte de Pelo",
-      descripcion: "Corte profesional adaptado a la raza y preferencias del dueño.",
-      beneficios: "Mejora la apariencia, previene enredos y reduce la caída de pelo",
-      duracion: "60-90 minutos",
-      recomendaciones: "Varía según la raza, generalmente cada 6-8 semanas",
-      precio: 60000,
-      disponible: true,
-      categoria: "Estética",
-      tipoAnimal: "ambos",
-      productos: "Tijeras profesionales, máquina de corte, productos de acabado",
-      frecuencia: "Cada 6-8 semanas",
-    },
-    {
-      id: "SPA003",
-      nombre: "Limpieza Dental",
-      descripcion: "Limpieza profunda de dientes y encías sin anestesia para mascotas dóciles.",
-      beneficios: "Previene enfermedades dentales, mal aliento y acumulación de sarro",
-      duracion: "30 minutos",
-      recomendaciones: "Recomendado cada 3-4 meses para mantener buena salud bucal",
-      precio: 75000,
-      disponible: false,
-      categoria: "Salud",
-      tipoAnimal: "ambos",
-      productos: "Pasta dental enzimática, cepillos especializados, enjuague bucal",
-      frecuencia: "Cada 3-4 meses",
-    },
-    {
-      id: "SPA004",
-      nombre: "Masaje Terapéutico",
-      descripcion: "Sesión de masaje relajante que mejora la circulación y alivia tensiones musculares.",
-      beneficios: "Reduce estrés, mejora movilidad y fortalece vínculo con la mascota",
-      duracion: "30-45 minutos",
-      recomendaciones: "Ideal para mascotas mayores o con problemas articulares",
-      precio: 55000,
-      disponible: true,
-      categoria: "Terapéutico",
-      tipoAnimal: "ambos",
-      productos: "Aceites esenciales, cremas terapéuticas, técnicas de relajación",
-      frecuencia: "Semanal o según necesidad",
-    },
-  ])
 
   // Vars 
   const categorias = ["Higiene", "Estética", "Salud", "Terapéutico", "Relajación", "Especial"]
   const { admin } = useContext(AuthContext)
-
-  const formatearPrecio = (precio) => {
-    return new Intl.NumberFormat("es-CO", {
-      style: "currency",
-      currency: "COP",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(precio)
-  }
+  const didFetch = useRef(false)
+  const mainUrl = `${URL}/service`
 
   const abrirModalAgregar = () => {
     setNuevoServicio({
@@ -136,45 +74,108 @@ export const SpaMascotas = ({ URL = '' }) => {
   }
 
   const abrirModalDetalle = (servicio) => {
-    setServicioDetalle(servicio)
+    setServicioDetalle({
+      ...servicio,
+      nombre: servicio.nom_ser,
+      descripcion: servicio.des_ser,
+      descripcionPro: servicio.des_pro_ser,
+      precio: servicio.pre_act_ser,
+      disponible: servicio.sta_ser === "DISPONIBLE",
+      duracion:  `${servicio.dur_min_tip_ser || 0} horas`,
+      categoria: servicio.nom_cat,
+      preparacion: servicio.des_tip_ser,
+      recomendaciones: servicio.tec_des_ser,
+      complicaciones: servicio.req,
+      equipo: servicio.req_equ_esp?'Si aplica':'No aplica',
+      procedimientos: servicio.proc_ser,
+      min: `${formatPrice(servicio.pre_ser) || 0.0}`,
+    })
     setMostrarDetalle(true)
   }
 
   const guardarServicio = () => {
     if (nuevoServicio.nombre && nuevoServicio.precio > 0) {
       if (modoEdicion) {
-        setServicios(
-          servicios.map((s) =>
+        setServices(
+          services.map((s) =>
             s.id === servicioEditando ? { ...nuevoServicio, precio: Number(nuevoServicio.precio) } : s,
           ),
         )
       } else {
-        setServicios([...servicios, { ...nuevoServicio, precio: Number(nuevoServicio.precio) }])
+        setServices([...services, { ...nuevoServicio, precio: Number(nuevoServicio.precio) }])
       }
       setMostrarFormulario(false)
     }
   }
 
-  const eliminarServicio = (data) => {
+  const ChangeState = (data) => {
     setNotify({
       title: 'Atencion',
-      message: '¿Estás seguro de que deseas eliminar esta vacuna?',
+      message: `¿Deseas ${data.sta_ser? "desactivar" : "activar"} este servicio estetico?`,
       firstOption: () => {setNotify(null); return},
-      secondOption: () => {setNotify(null); DeleteService(data.id)},
+      secondOption: () => {setNotify(null); DeleteService(data.id_ser)},
       firstOptionName: 'Cancelar',
       secondOptionName: 'Continuar',
     })
-    const DeleteService = async (id) => {
-      setServicios(servicios.filter((s) => s.id !== id))
+    const DeleteService = async (id_ser) => {
+      try {
+        setNotify({
+          title: 'Cargando...',
+          message: 'Validando credenciales, por favor espere...',
+          load: 1
+        }) 
+        const deleted = await ModifyData(`${mainUrl}/AblOrDis`, { id: id_ser, nom_cat: 'Estetica' })
+        setNotify(null)
+        if (deleted.success) {
+          didFetch.current = false // Reset fetch state to allow refetch
+          GetEsthetic() 
+          setNotify({
+              title: `${data.sta_ser === "DISPONIBLE" ? 'Desactivación' : 'Activación'} exitosa`,
+              message: `El servicio estetico ha sido ${data.sta_ser === "DISPONIBLE" ? 'desactivado' : 'activado'} exitosamente`,
+              close: setNotify
+          })
+        }
+      } catch (err) {
+        const message = errorStatusHandler(err)
+        setNotify({
+          title: 'Error',
+          message: `${message}`,
+          close: setNotify
+        })
+      }
     }
   }
 
-  const cambiarEstado = (data = {}) => {
-    e.stopPropagation()
-    setServicios(
-      servicios.map((servicio) => (servicio.id === data.id ? { ...servicio, disponible: !servicio.disponible } : servicio)),
-    )
+  const GetEsthetic = async () => {
+    if (didFetch.current) return
+    didFetch.current = true
+
+    setNotify({
+      title: 'Cargando',
+      message: 'Cargando servicios esteticos, por favor espere...',
+      load: 1
+    })
+
+    try {
+      let data = await GetData(`${mainUrl}/esthetic`)
+      setNotify(null)
+      if (data) setServices(data)
+    } catch (err) {
+      setNotify(null)
+      if (err) {
+        const message = errorStatusHandler(err)
+        setNotify({
+          title: 'Error',
+          message: `${message}`,
+          close: setNotify
+        })
+      }
+    }
   }
+
+  useEffect(() => {
+    GetEsthetic()
+  }, [])
 
   return (
     <main className="contenedoradminhome">
@@ -187,24 +188,24 @@ export const SpaMascotas = ({ URL = '' }) => {
           titleDes='Tratamientos de belleza y bienestar para tu mascota'
           subTitle="Tratamientos Disponibles"
           Name="Tratamiento"
-          datas={servicios}
+          datas={services}
           filters={categorias}
           headers={{
-            nom: 'nombre',
-            des: 'descripcion',
-            cat: 'categoria',
-            sta: 'disponible',
-            pri: 'precio',
-            cod: 'id',
-            time: 'duracion',
-            alert: 'frecuencia',
+            nom: 'nom_ser',
+            des: 'des_ser',
+            cat: 'nom_cat',
+            sta: 'sta_ser',
+            pri: 'pre_ser',
+            cod: 'id_ser',
+            time: 'dur_min_tip_ser',
+            alert: 'des_tip_ser'
           }}
-          SearchHeaders={['categoria']}
+          SearchHeaders={['nom_cat']}
           OpenCreate={abrirModalAgregar}
           OpenDetails={abrirModalDetalle}
           OpenEdit={abrirModalEditar}
-          Delete={eliminarServicio}
-          ChangeState={cambiarEstado}
+          Delete={ChangeState}
+          ChangeState={ChangeState}
         />
 
         {/* Modal Agregar/Editar */}
@@ -385,6 +386,13 @@ export const SpaMascotas = ({ URL = '' }) => {
 
         {/* Modal Detalle */}
         {mostrarDetalle && servicioDetalle && (
+          <ServicesDetails
+            mostrarDetalle={mostrarDetalle}
+            setMostrarDetalle={() => setMostrarDetalle(null)}
+            infoDetails={servicioDetalle}
+          />
+        )}
+        {/* {mostrarDetalle && servicioDetalle && (
           <aside className="modal-fondo-spa">
             <section className="modal-detalle-spa">
               <header className="modal-encabezado-spa">
@@ -394,10 +402,9 @@ export const SpaMascotas = ({ URL = '' }) => {
                 </button>
               </header>
               <section className="contenido-detalle-spa">
-                {/* Métricas principales */}
                 <div className="metricas-principales-spa">
                   <div className="metrica-spa">
-                    <div className="valor-metrica-spa">{formatearPrecio(servicioDetalle.precio)}</div>
+                    <div className="valor-metrica-spa">{formatPrice(servicioDetalle.precio)}</div>
                     <div className="etiqueta-metrica-spa">Precio</div>
                   </div>
                   <div className="metrica-spa">
@@ -420,7 +427,6 @@ export const SpaMascotas = ({ URL = '' }) => {
                   </div>
                 </div>
 
-                {/* Grid de información */}
                 <div className="grid-detalle-spa">
                   <div className="seccion-detalle-spa">
                     <div className="encabezado-seccion-spa">
@@ -455,7 +461,6 @@ export const SpaMascotas = ({ URL = '' }) => {
                   </div>
                 </div>
 
-                {/* Información adicional */}
                 <div className="info-adicional-spa">
                   <h4 className="titulo-info-adicional-spa">Información Adicional</h4>
                   <div className="contenedor-info-adicional-spa">
@@ -478,7 +483,7 @@ export const SpaMascotas = ({ URL = '' }) => {
               </section>
             </section>
           </aside>
-        )}
+        )} */}
       </section>
       {notify && <Notification {...notify} />}
     </main>

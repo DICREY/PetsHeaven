@@ -180,10 +180,12 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   }
 
   useEffect(() => {
+    if (didFetch.current) return
+    didFetch.current = true
+    
     const REFRESH_INTERVAL = 2 * 60 * 1000 // 2 minutes
     let intervalId
 
-    didFetch ? didFetch : false
     GetDataOwners()
     getPets()
 

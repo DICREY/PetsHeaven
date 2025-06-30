@@ -19,6 +19,16 @@ export const CheckImage = ({ src = '', alt = '', imgDefault = '', className = ''
   )
 }
 
+// Format price to Colombian Pesos
+export const formatPrice = (precio) => {
+  return new Intl.NumberFormat("es-CO", {
+    style: "currency",
+    currency: "COP",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(precio)
+}
+
 export const ReqFunction = async (
     URL = '',
     ReqFunct = null,

@@ -63,20 +63,45 @@ Route.get('/cirs', ValidatorRol("usuario"), async (req,res) => {
     }
 })
 
+Route.get('/esthetic', ValidatorRol("usuario"), async (req,res) => {
+    try {
+        const serv = await services.findEsthetic()
+        if (!serv.result) return res.status(404).json({ message: "Estéticas no encontradas" })
+
+        res.status(200).json(serv)
+    } catch (err) {
+        console.log(err)
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
+        if(err.status) return res.status(err.status).json(err.message)
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
+    }
+})
+
+Route.get('/laboratory', ValidatorRol("usuario"), async (req,res) => {
+    try {
+        const serv = await services.findLaboratoryTests()
+        if (!serv.result) return res.status(404).json({ message: "Laboratory tests not found" })
+
+        res.status(200).json(serv)
+    } catch (err) {
+        console.log(err)
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
+        if(err.status) return res.status(err.status).json(err.message)
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
+    }
+})
+
 // Call Middleware for verify the request data
 Route.use(Fullinfo(['empty']))
 
 Route.put('/AblOrDis', ValidatorRol("veterinario"), async (req, res) => {
     // Vars 
-    const { data } = req.body
+    const data = req.body
     try {
-        const find = await services.findBy(data.id)
-        if (!find.result[0][0]) return res.status(404).json({ message: "Servicio no encontrado" })
-        
         const cancelled = await services.AbleOrDesableService(data)
-        if (cancelled.result) return res.status(200).json(cancelled)
-
-        res.status(500).json({ message: "No se pudo deshabilitar la cirugia" })
+        if (cancelled.success) return res.status(200).json(cancelled)
+        
+        res.status(500).json({ message: "No se pudo deshabilitar el servicio" })
     } catch (err) {
         console.log(err)
         if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })

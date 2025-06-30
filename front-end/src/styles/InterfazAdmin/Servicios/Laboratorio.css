@@ -11,12 +11,14 @@
 }
 
 .contenedor-principal-laboratorio {
-  border-radius: 0.5rem;
   padding: 1.5rem;
+  min-height: 80vh;
+  width: 100%;
   border-radius: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   background-color: var(--white);
   transition: all 0.3s ease;
+  overflow: auto;
 }
 
 .encabezado-laboratorio {
@@ -34,8 +36,8 @@
 
 .icono-titulo-laboratorio {
   color: var(--primary);
-  width: 24px;
-  height: 24px;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .titulo-laboratorio {

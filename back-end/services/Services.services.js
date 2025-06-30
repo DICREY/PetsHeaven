@@ -15,7 +15,7 @@ class Services {
     async findAll() {
         return new Promise((res,rej) => {
             // vars
-            const proc = "CALL SearchServices();"
+            const proc = "CALL SearchServices()"
 
             // conect to database
             this.database = new DataBase()
@@ -43,7 +43,7 @@ class Services {
     async findAllBy(data) {
         return new Promise((res,rej) => {
             // vars
-            const proc = "CALL SearchServicesBy(?);"
+            const proc = "CALL SearchServicesBy(?)"
 
             // conect to database
             this.database = new DataBase()
@@ -100,7 +100,7 @@ class Services {
     async FindCategories() {
         return new Promise((res,rej) => {
             // vars
-            const proc = "CALL SearchServicesCat();"
+            const proc = "CALL SearchServicesCat()"
 
             // conect to database
             this.database = new DataBase()
@@ -158,9 +158,71 @@ class Services {
         })
     }
 
+    async findEsthetic() {
+        return new Promise((res,rej) => {
+            // vars
+            const proc = "CALL SearchServicesBy('Estetica');"
+
+            // conect to database
+            this.database = new DataBase()
+            this.database.conect()
+            
+            if (this.database) this.database.conection.query(proc,(err,result) => {
+                if(err) rej({ message: err })
+                if(!result || !result[0][0]) rej({
+                    message: "Not found",
+                    status: 404
+                })
+                const resOne = this.global.format(
+                    result[0],
+                    'proc_ser',
+                    ['nom_pro','des_pro','cat_pro','niv_rie_pro','dur_min_pro','pro_pro','con_esp_pro']
+                )
+                setTimeout(() => {
+                    res({
+                        message: "Cirugies found",
+                        result: resOne
+                    })
+                },1000)
+            })
+
+            // close conection 
+            this.database.conection.end()
+        })
+    }
+
+    // function to find laboratory tests
+    async findLaboratoryTests() {
+        return new Promise((res,rej) => {
+            // vars
+            const proc = "CALL GetLaboratoryTests();"
+
+            // conect to database
+            this.database = new DataBase()
+            this.database.conect()
+            
+            if (this.database) this.database.conection.query(proc,(err,result) => {
+                if(err) rej({ message: err })
+                if(!result || !result[0][0]) rej({
+                    message: "Not found",
+                    status: 404
+                })
+                setTimeout(() => {
+                    res({
+                        message: "Laboratory tests found",
+                        result: result[0]
+                    })
+                },1000)
+            })
+
+            // close conection 
+            this.database.conection.end()
+        })
+    }
+
     async registerCirugia(data) {
         return new Promise((res, rej) => {
-            const proc = "CALL RegisterCirugia(?,?,?,?,?,?,?,?,?,?);";
+            const proc = "CALL RegisterCirugia(?,?,?,?,?,?,?,?,?,?)"
             const params = [
                 data.cat_ser,
                 data.nom_ser,
@@ -172,62 +234,29 @@ class Services {
                 data.res_cir,
                 data.com_cir,
                 data.obv_cir
-            ];
-
-            this.database = new DataBase();
-            this.database.conect();
-
-            if (this.database) this.database.conection.query(proc, params, (err, result) => {
-                if (err) return rej({ message: err });
-                setTimeout(() => {
-                    res({
-                        message: "Cirugía registrada correctamente",
-                        result: result
-                    });
-                }, 500);
-            });
-
-            this.database.conection.end();
-        });
-    }
-
-    async registerVacuna(data) {
-        return new Promise((res, rej) => {
-            const proc = "CALL RegisterVacuna(?,?,?,?,?,?,?,?,?,?);";
-            const params = [
-                data.nom_vac,
-                data.efe_sec_vac,
-                data.cat_vac,
-                data.dos_rec_vac,
-                data.lot_vac,
-                data.fec_ven_vac,
-                data.fre_vac,
-                data.nom_pro,
-                data.des_pro,
-                data.cat_pro
             ]
 
-            this.database = new DataBase();
-            this.database.conect();
+            this.database = new DataBase()
+            this.database.conect()
 
             if (this.database) this.database.conection.query(proc, params, (err, result) => {
-                if (err) return rej({ message: err });
+                if (err) return rej({ message: err })
                 setTimeout(() => {
                     res({
                         message: "Cirugía registrada correctamente",
                         result: result
-                    });
-                }, 500);
-            });
+                    })
+                }, 500)
+            })
 
-            this.database.conection.end();
-        });
+            this.database.conection.end()
+        })
     }
 
     async findAllVacunas() {
         return new Promise((res,rej) => {
             // vars
-            const proc = "CALL SearchVacunas();"
+            const proc = "CALL SearchVacunas()"
 
             // conect to database
             this.database = new DataBase()
@@ -260,25 +289,62 @@ class Services {
                 data.nom_cat
             ]
 
-            const proc = "CALL AbleOrDesableService(?,?);"
+            const proc = "CALL AbleOrDesableService(?,?)"
 
             // conect to database
             this.database = new DataBase()
             this.database.conect()
 
-            if (this.database) this.database.conection.query(proc,params,(err,result) => {
+            if (this.database) this.database.conection.query(proc,params,(err) => {
                 this.database.conection.end()
 
                 if(err) rej({ message: err })
                 setTimeout(() => {
                     res({
                         message: "Servicio Deshabilitado",
-                        result: result
+                        success: true
                     })
                 },1000)
             })
 
             // close conection 
+        })
+    }
+
+    async registerVacuna(data) {
+        return new Promise((res, rej) => {
+            const proc = "CALL RegisterVacuna(?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            const params = [
+                data.nom_vac,
+                data.efe_sec_vac,
+                data.cat_vac,
+                data.dos_rec_vac,
+                data.lot_vac,
+                data.fec_ven_vac,
+                data.fec_cre_vac,
+                data.fre_vac,
+                data.des_vac,
+                data.pre_vac,
+                data.nom_pro,
+                data.des_pro || '',
+                data.nom_cat || 'Vacunacion' // Default category if not provided
+            ]
+
+            this.database = new DataBase()
+            this.database.conect()
+
+            if (this.database) this.database.conection.query(proc, params, (err, result) => {
+                if (err) return rej({ message: err })
+                setTimeout(() => {
+                    res({
+                        message: "Cirugía registrada correctamente",
+                        result: result
+                    })
+                }, 500)
+            })
+
+            // close conection
+            this.database.conection.end()
         })
     }
 
@@ -292,14 +358,13 @@ class Services {
                 data.nom_pro
             ]
 
-            const proc = "CALL ChangeVaccineState(?,?,?,?);"
+            const proc = "CALL ChangeVaccineState(?,?,?,?)"
 
             // conect to database
             this.database = new DataBase()
             this.database.conect()
 
-            if (this.database) this.database.conection.query(proc,params,(err,result) => {
-                this.database.conection.end()
+            if (this.database) this.database.conection.query(proc,params,(err) => {
 
                 if(err) rej({ message: err })
                 setTimeout(() => {
@@ -311,6 +376,44 @@ class Services {
             })
 
             // close conection 
+            this.database.conection.end()
+        })
+    }
+
+    async updateVaccineAndProcedure(data) {
+        return new Promise((res, rej) => {
+            const proc = "CALL UpdateVaccineAndProcedure(?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            const params = [
+                data.id_vac,
+                data.nom_vac,
+                data.efe_sec_vac,
+                data.cat_vac,
+                data.dos_rec_vac,
+                data.lot_vac,
+                data.fec_ven_vac,
+                data.fec_cre_vac,
+                data.fre_vac,
+                data.des_vac,
+                data.pre_vac,
+                data.nom_pro,
+                data.des_pro || ''
+            ]
+
+            this.database = new DataBase()
+            this.database.conect()
+
+            if (this.database) this.database.conection.query(proc, params, (err) => {
+                if (err) return rej({ message: err })
+                setTimeout(() => {
+                    res({
+                        message: "Vacuna y procedimiento actualizados correctamente",
+                        success: true
+                    })
+                }, 500)
+            })
+
+            // close conection
+            this.database.conection.end()
         })
     }
 }
