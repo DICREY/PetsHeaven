@@ -12,7 +12,6 @@ import { AuthContext } from '../../Contexts/Contexts'
 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
-import Footer from '../Varios/Footer2'
 
 // Import styles 
 import '../../../src/styles/InterfazAdmin/Consultorio.css'
@@ -277,7 +276,6 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
             />
           </div>
         </article>
-        <Footer />
       </section>
 
       {notify && (
