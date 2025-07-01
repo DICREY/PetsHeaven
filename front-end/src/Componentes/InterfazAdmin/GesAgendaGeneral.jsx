@@ -237,8 +237,8 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
                     telefonoProp: event.prop_cel_per,
                     veterinario: `${event.vet_nom_per} ${event.vet_ape_per}`,
                     telefonoVet: event.vet_cel_per,
-                    lug_ate_cit: event.lug_ate_cit || 'Consultorio',
-                    estado: event.estado,
+                    lug_ate_cit: event.nom_con || 'Consultorio',
+                    estado: event.est_cit,
                     fotoMascota: event.fot_mas
                 }))
                 setEvents(mappedEvents)
@@ -316,7 +316,7 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
                     }}
 
                     events={events}
-                    eventClassNames={(event) => [event.event.extendedProps.category]}
+                    eventClassNames={(event) => [event.event.extendedProps.estado]}
 
                     // Permite la selección de fechas o rangos de fechas
                     selectable={true}
