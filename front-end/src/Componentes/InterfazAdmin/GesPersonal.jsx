@@ -11,7 +11,7 @@ import { GlobalTable } from '../Global/GlobalTable'
 import { Notification } from '../Global/Notifys'
 import { AuthContext } from '../../Contexts/Contexts'
 import { HeaderAdmin } from "../BarrasNavegacion/HeaderAdmin"
-import Footer from "../Varios/Footer2"
+import Footer from "../Varios/Footer2"  
 // import { Loader } from '../Errores/Loader'
 
 // Import styles 
