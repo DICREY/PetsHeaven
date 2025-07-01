@@ -1,4 +1,4 @@
--- Active: 1747352860830@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 -- Crear procedimiento para buscar todas las categorías de servicios
 CREATE PROCEDURE pets_heaven.SearchServicesCat()
 BEGIN
@@ -212,7 +212,6 @@ CREATE PROCEDURE pets_heaven.RegisterService(
     IN p_req TEXT,
     IN p_nom_pro VARCHAR(100),
     IN p_des_pro TEXT,
-    IN p_cat_pro INT,
     IN p_niv_rie_pro ENUM('BAJO', 'MODERADO', 'ALTO', 'CRITICO'),
     IN p_dur_min_pro INT,
     IN p_pro_pro TEXT,
@@ -261,26 +260,136 @@ BEGIN
     END IF;
 
     -- 3. verificar si el procedimiento ya existe
-    SELECT id_pro INTO v_id_pro FROM procedimientos WHERE nom_pro = p_nom_pro AND cat_pro = p_cat_pro LIMIT 1;
+    SELECT id_pro INTO v_id_pro FROM procedimientos WHERE nom_pro = p_nom_pro AND cat_pro = v_id_cat LIMIT 1;
     IF v_id_pro IS NULL THEN
         INSERT INTO procedimientos (
             nom_pro, des_pro, cat_pro, niv_rie_pro, dur_min_pro, pro_pro, con_esp_pro
         ) VALUES (
-            p_nom_pro, p_des_pro, p_cat_pro, p_niv_rie_pro, p_dur_min_pro, p_pro_pro, p_con_esp_pro
+            p_nom_pro, p_des_pro, v_id_cat, p_niv_rie_pro, p_dur_min_pro, p_pro_pro, p_con_esp_pro
         );
         SET v_id_pro = LAST_INSERT_ID();
     END IF;
 
     -- 5. Asociar el procedimiento al servicio
-    INSERT INTO servicios_procedimientos (
-        id_ser, id_pro, es_principal, ord_eje
-    ) VALUES (
-        v_id_ser, v_id_pro, TRUE, 1
-    );
+    IF NOT EXISTS (
+        SELECT 1 FROM servicios_procedimientos WHERE id_ser = v_id_ser AND id_pro = v_id_pro
+    ) THEN
+        INSERT INTO servicios_procedimientos (
+            id_ser, id_pro, es_principal, ord_eje
+        ) VALUES (
+            v_id_ser, v_id_pro, TRUE, 1
+        );
+    END IF;
 
     COMMIT;
     SET autocommit = 1;
 END //
+CREATE PROCEDURE pets_heaven.UpdateService(
+    IN p_nom_cat VARCHAR(100),
+    IN p_slug_cat VARCHAR(100),
+    IN p_img_cat TEXT,
+    IN p_des_cat TEXT,
+    IN p_col_hex VARCHAR(7),
+    IN p_nom_tip_ser VARCHAR(100),
+    IN p_des_tip_ser TEXT,
+    IN p_tec_des_cat TEXT,
+    IN p_dur_min_tip_ser INT,
+    IN p_req_equ_esp BOOLEAN,
+    IN p_nom_ser VARCHAR(100),
+    IN p_pre_ser DECIMAL(10,2),
+    IN p_des_ser TEXT,
+    IN p_pre_act_ser DECIMAL(10,2),
+    IN p_cos_est_ser DECIMAL(10,2),
+    IN p_sta_ser ENUM('DISPONIBLE','NO_DISPONIBLE','TEMPORAL'),
+    IN p_req TEXT,
+    IN p_nom_pro VARCHAR(100),
+    IN p_des_pro TEXT,
+    IN p_niv_rie_pro ENUM('BAJO', 'MODERADO', 'ALTO', 'CRITICO'),
+    IN p_dur_min_pro INT,
+    IN p_pro_pro TEXT,
+    IN p_con_esp_pro TEXT
+)
+BEGIN
+    DECLARE v_id_cat INT;
+    DECLARE v_id_tip_ser INT;
+    DECLARE v_id_ser INT;
+    DECLARE v_id_pro INT;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    SET autocommit = 0;
+    START TRANSACTION;
+
+    -- 1. Buscar la categoría
+    SELECT id_cat INTO v_id_cat FROM categorias_servicios WHERE nom_cat = p_nom_cat LIMIT 1;
+
+    -- 2. Buscar el tipo de servicio
+    SELECT id_tip_ser INTO v_id_tip_ser FROM tipos_servicios WHERE nom_tip_ser = p_nom_tip_ser AND cat_tip_ser = v_id_cat LIMIT 1;
+
+    -- 3. Buscar el servicio
+    SELECT id_ser INTO v_id_ser FROM servicios WHERE nom_ser = p_nom_ser AND tip_ser = v_id_tip_ser LIMIT 1;
+
+    -- 4. Buscar el procedimiento
+    SELECT id_pro INTO v_id_pro FROM procedimientos WHERE nom_pro = p_nom_pro AND cat_pro = v_id_cat LIMIT 1;
+
+    -- 1. Actualizar o insertar la categoría
+    IF v_id_cat IS NULL THEN
+        INSERT INTO categorias_servicios (nom_cat, slug, des_cat, col_hex, img_cat)
+        VALUES (p_nom_cat, p_slug_cat, p_des_cat, p_col_hex, p_img_cat);
+        SET v_id_cat = LAST_INSERT_ID();
+    ELSE
+        UPDATE categorias_servicios
+        SET slug = p_slug_cat, des_cat = p_des_cat, col_hex = p_col_hex, img_cat = p_img_cat
+        WHERE id_cat = v_id_cat;
+    END IF;
+
+    -- 2. Actualizar o insertar el tipo de servicio
+    IF v_id_tip_ser IS NULL THEN
+        INSERT INTO tipos_servicios (cat_tip_ser, nom_tip_ser, des_tip_ser, tec_des_cat, req_equ_esp, dur_min_tip_ser)
+        VALUES (v_id_cat, p_nom_tip_ser, p_des_tip_ser, p_tec_des_cat, p_req_equ_esp, p_dur_min_tip_ser);
+        SET v_id_tip_ser = LAST_INSERT_ID();
+    ELSE
+        UPDATE tipos_servicios
+        SET des_tip_ser = p_des_tip_ser, tec_des_cat = p_tec_des_cat, req_equ_esp = p_req_equ_esp, dur_min_tip_ser = p_dur_min_tip_ser
+        WHERE id_tip_ser = v_id_tip_ser;
+    END IF;
+
+    -- 3. Actualizar el servicio
+    IF v_id_ser IS NOT NULL THEN
+        UPDATE servicios
+        SET tip_ser = v_id_tip_ser,
+            nom_ser = p_nom_ser,
+            des_ser = p_des_ser,
+            pre_ser = p_pre_ser,
+            pre_act_ser = p_pre_act_ser,
+            cos_est_ser = p_cos_est_ser,
+            sta_ser = p_sta_ser,
+            req = p_req
+        WHERE id_ser = v_id_ser;
+    END IF;
+
+    -- 4. Actualizar el procedimiento principal
+    IF v_id_pro IS NOT NULL THEN
+        UPDATE procedimientos
+        SET nom_pro = p_nom_pro,
+            des_pro = p_des_pro,
+            cat_pro = v_id_cat,
+            niv_rie_pro = p_niv_rie_pro,
+            dur_min_pro = p_dur_min_pro,
+            pro_pro = p_pro_pro,
+            con_esp_pro = p_con_esp_pro
+        WHERE id_pro = v_id_pro;
+    END IF;
+
+    COMMIT;
+    SET autocommit = 1;
+END //
+
+DELIMITER ;
 -- Crear procedimiento para habilitar o deshabilitar un servicio
 CREATE PROCEDURE pets_heaven.AbleOrDesableService(
     IN p_id_ser INT,
@@ -338,7 +447,9 @@ CREATE PROCEDURE pets_heaven.RegisterVacuna(
     IN p_nom_vac VARCHAR(255),
     IN p_efe_sec_vac VARCHAR(255),
     IN p_cat_vac VARCHAR(100),
-    IN p_dos_rec_vac VARCHAR(100),
+    IN p_dos_rec_cac_vac VARCHAR(100),
+    IN p_dos_rec_adu_vac VARCHAR(100),
+    IN p_dos_rec_adu_jov_vac VARCHAR(100),
     IN p_lot_vac VARCHAR(255),
     IN p_fec_ven_vac DATE,
     IN p_fec_cre_vac DATE,
@@ -392,7 +503,9 @@ BEGIN
         nom_vac,
         efe_sec_vac,
         cat_vac,
-        dos_rec_vac,
+        dos_rec_cac_vac,
+        dos_rec_adu_vac,
+        dos_rec_adu_jov_vac,
         lot_vac,
         fec_ven_vac,
         fec_cre_vac,
@@ -404,7 +517,9 @@ BEGIN
         p_nom_vac,
         p_efe_sec_vac,
         p_cat_vac,
-        p_dos_rec_vac,
+        p_dos_rec_cac_vac,
+        p_dos_rec_adu_vac,
+        p_dos_rec_adu_jov_vac,
         p_lot_vac,
         p_fec_ven_vac,
         p_fec_cre_vac,
@@ -423,7 +538,9 @@ CREATE PROCEDURE pets_heaven.UpdateVaccineAndProcedure(
     IN p_nom_vac VARCHAR(255),
     IN p_efe_sec_vac VARCHAR(255),
     IN p_cat_vac VARCHAR(100),
-    IN p_dos_rec_vac VARCHAR(100),
+    IN p_dos_rec_cac_vac VARCHAR(100),
+    IN p_dos_rec_adu_vac VARCHAR(100),
+    IN p_dos_rec_adu_jov_vac VARCHAR(100),
     IN p_lot_vac VARCHAR(255),
     IN p_fec_ven_vac DATE,
     IN p_fec_cre_vac DATE,
@@ -458,7 +575,9 @@ BEGIN
         nom_vac = p_nom_vac,
         efe_sec_vac = p_efe_sec_vac,
         cat_vac = p_cat_vac,
-        dos_rec_vac = p_dos_rec_vac,
+        dos_rec_cac_vac = p_dos_rec_cac_vac,
+        dos_rec_adu_vac = p_dos_rec_adu_vac,
+        dos_rec_adu_jov_vac = p_dos_rec_adu_jov_vac,
         lot_vac = p_lot_vac,
         fec_ven_vac = p_fec_ven_vac,
         fec_cre_vac = p_fec_cre_vac,
@@ -642,8 +761,8 @@ END //
 /* DROP PROCEDURE pets_heaven.SearchServicesBy; */
 /* DROP PROCEDURE pets_heaven.AbleOrDesableService; */
 /* DROP PROCEDURE pets_heaven.SearchVacunas; */
-/* DROP PROCEDURE pets_heaven.RegisterVacuna; */
 /* DROP PROCEDURE pets_heaven.`RegisterService`; */
+/* DROP PROCEDURE pets_heaven.RegisterVacuna; */
 /* DROP PROCEDURE pets_heaven.`UpdateVaccineAndProcedure`; */
 /* DROP PROCEDURE pets_heaven.`ChangeVaccineState`; */
 /* DROP PROCEDURE pets_heaven.SearchVacunas; */

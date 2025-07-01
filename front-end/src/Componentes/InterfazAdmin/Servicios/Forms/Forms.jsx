@@ -1,9 +1,9 @@
 // Librarys 
 import React, { useEffect, useState } from "react"
-import { X, FileText, Target, AlertTriangle, Clock } from "lucide-react"
+import { X, FileText, Target, AlertTriangle, Clock, PlusCircle } from "lucide-react"
 
 // Imports 
-import { DataFilter, errorStatusHandler, formatDate } from "../../../Varios/Util"
+import { errorStatusHandler, formatDate } from "../../../Varios/Util"
 import { formatPrice } from "../../../../Utils/Utils"
 import { GetData } from "../../../Varios/Requests"
 
@@ -597,7 +597,7 @@ export const FormularioServicio = ({ onGuardar, onCancelar, initialData = {}, mo
                   <option value="nuevo">-- Nuevo tipo de servicio --</option>
                 </select>
               </div>
-              {(tipoSeleccionado === "nuevo") && (
+              {(tipoSeleccionado === "nuevo" || modoEdicion) && (
                 <>
                   <div className="campo-vacunas">
                     <label className="etiqueta-campo-vacunas">Nombre</label>
@@ -684,7 +684,7 @@ export const FormularioServicio = ({ onGuardar, onCancelar, initialData = {}, mo
                   <option value="nuevo">-- Nuevo procedimiento --</option>
                 </select>
               </div>
-              {(procedimientoSeleccionado === "nuevo") && (
+              {(procedimientoSeleccionado === "nuevo" || modoEdicion) && (
                 <>
                   <div className="campo-vacunas">
                     <label className="etiqueta-campo-vacunas">Nombre</label>
@@ -745,9 +745,21 @@ export const ServicesDetails = ({
     infoAdicional: "Información Adicional",
     lote: "Equipo requerido",
     vencimiento: "Precio anterior",
+    infoAdicionalPlus: null
   }
 }) => {
   if (!mostrarDetalle || !infoDetails) return null
+  const [ addPlusList, setAddPlusList ] = useState(null)
+  const [ addHeadersKeys, setAddHeadersKeys ] = useState(null)
+  const [ addHeadersValues, setAddHeadersValues ] = useState(null)
+
+  useEffect(() => {
+    if (labels.infoAdicionalPlus) {
+      setAddPlusList(infoDetails[labels.infoAdicionalPlus?.valueList])
+      setAddHeadersKeys(Object.keys(labels.infoAdicionalPlus.headers))
+      setAddHeadersValues(Object.values(labels.infoAdicionalPlus.headers))
+    }
+  },[labels?.infoAdicionalPlus])
 
   return (
     <section className="modal-fondo-laboratorio" role="dialog" aria-modal="true" aria-labelledby="titulo-detalle">
@@ -833,6 +845,22 @@ export const ServicesDetails = ({
                 </div>
               </dl>
             </article>
+            {addPlusList && (
+              <article className="seccion-detalle-laboratorio">
+                <header className="encabezado-seccion-laboratorio">
+                  <PlusCircle className="icono-seccion-laboratorio icon" aria-hidden="true" />
+                  <h3 className="titulo-seccion-laboratorio">{labels.infoAdicionalPlus.name}</h3>
+                </header>
+                <dl className="contenedor-info-adicional-laboratorio">
+                  {addHeadersKeys?.map((key, index) => (
+                    <div key={index} className="item-info-adicional-laboratorio">
+                      <dt className="etiqueta-info-adicional-laboratorio">{addHeadersValues[index]}:</dt>
+                      <dd className="valor-info-adicional-laboratorio">{addPlusList[key]}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </article>
+            )}
           </section>
 
           {/* Dosis recomendadas o valores de referencia */}

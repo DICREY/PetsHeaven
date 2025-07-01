@@ -21,11 +21,15 @@ export const SpaMascotas = ({ URL = '' }) => {
   // Dynamic vars 
   const [ mostrarFormulario, setMostrarFormulario ] = useState(false)
   const [ mostrarDetalle, setMostrarDetalle ] = useState(false)
-  const [ notify, setNotify ] = useState()
   const [ servicioDetalle, setServicioDetalle ] = useState(null)
   const [ servicioEditando, setServicioEditando ] = useState(null)
   const [ modoEdicion, setModoEdicion ] = useState(false)
   const [ services, setServices ] = useState()
+  const [ notify, setNotify ] = useState({
+    title: 'Cargando',
+    message: 'Cargando servicios esteticos, por favor espere...',
+    load: 1
+  })
   const [ nuevoServicio, setNuevoServicio ] = useState({
     id: "",
     nombre: "",
@@ -102,6 +106,7 @@ export const SpaMascotas = ({ URL = '' }) => {
       })
 
       if (modoEdicion) {
+        console.log(data)
         await ModifyData(`${mainUrl}/modify`, data)
       } else {
         await PostData(`${mainUrl}/register`, data)
@@ -115,7 +120,7 @@ export const SpaMascotas = ({ URL = '' }) => {
         close: setNotify
       })
 
-      setModalAbierto(false)
+      setMostrarFormulario(null)
 
     } catch (err) {
       setNotify(null)
@@ -169,12 +174,6 @@ export const SpaMascotas = ({ URL = '' }) => {
   const GetEsthetic = async () => {
     if (didFetch.current) return
     didFetch.current = true
-
-    setNotify({
-      title: 'Cargando',
-      message: 'Cargando servicios esteticos, por favor espere...',
-      load: 1
-    })
 
     try {
       let data = await GetData(`${mainUrl}/esthetic`)

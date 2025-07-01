@@ -1,4 +1,4 @@
--- Active: 1747352860830@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 DROP DATABASE IF EXISTS pets_heaven;
 CREATE DATABASE IF NOT EXISTS pets_heaven;
 CREATE TABLE pets_heaven.roles(
@@ -199,7 +199,9 @@ CREATE TABLE pets_heaven.vacunas (
     nom_vac VARCHAR(255) NOT NULL,INDEX(nom_vac), -- Nombre de la vacuna
     efe_sec_vac VARCHAR(255) NOT NULL,  -- Efectos secundarios de la vacuna
     cat_vac VARCHAR(100) NOT NULL,INDEX(cat_vac), -- Categoría de la vacuna
-    dos_rec_vac VARCHAR(100) NOT NULL, -- Dosis recomendada
+    dos_rec_cac_vac VARCHAR(100) NOT NULL, -- Dosis recomendada cachorro
+    dos_rec_adu_vac VARCHAR(100) NOT NULL, -- Dosis recomendada adulto
+    dos_rec_adu_jov_vac VARCHAR(100) NOT NULL, -- Dosis recomendada adulto joven
     lot_vac VARCHAR(255) UNIQUE NOT NULL,INDEX(lot_vac), -- Lote de la vacuna
     fec_ven_vac DATE NOT NULL, -- Fecha de vencimiento
     fec_cre_vac DATE NOT NULL, -- Fecha de creación

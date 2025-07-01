@@ -19,13 +19,17 @@ import "../../../styles/InterfazAdmin/Servicios/Cirugia.css"
 // Component 
 export const CirugiasVeterinaria = ({ URL = '' }) => {
   // Dynamic Vars 
-  const [notify, setNotify] = useState(null)
   const [cirugias, setCirugias] = useState([])
   const [mostrarFormulario, setMostrarFormulario] = useState(false)
   const [mostrarDetalle, setMostrarDetalle] = useState(false)
   const [cirugiaDetalle, setCirugiaDetalle] = useState(null)
   const [cirugiaEditando, setCirugiaEditando] = useState(null)
   const [modoEdicion, setModoEdicion] = useState(false)
+  const [notify, setNotify] = useState({
+    title: 'Cargando',
+    message: 'Cargando cirugias, por favor espere...',
+    load: 1
+  })
 
   // Vars 
   const didFetch = useRef(false)
@@ -61,12 +65,6 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
     if (didFetch.current) return
     didFetch.current = true
 
-    setNotify({
-      title: 'Cargando',
-      message: 'Cargando cirugias, por favor espere...',
-      load: 1
-    })
-
     try {
       let data = await GetData(`${mainUrl}/cirs`)
       setNotify(null)
@@ -99,7 +97,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
   }, [])
 
   const agregarCirugia = useCallback(async (data) => {
-    // e.preventDefault()
+    let Req = false
     try {
       setNotify({
         title: 'Guardando',
@@ -108,20 +106,23 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
       })
 
       if (modoEdicion) {
-        await ModifyData(`${mainUrl}/modify`, data)
+        const mod = await ModifyData(`${mainUrl}/modify`, data)
+        if (mod) Req = 1
       } else {
-        await PostData(`${mainUrl}/register`, data)
+        const create = await PostData(`${mainUrl}/register`, data)
+        if (create?.success) Req = 1
       }
       
-      didFetch.current = false // Reset fetch state to allow refetch
-      GetEsthetic()
-      setNotify({
-        title: 'Éxito',
-        message: `servicio ${modoEdicion ? 'actualizado' : 'agregado'} correctamente`,
-        close: setNotify
-      })
-
-      setModalAbierto(false)
+      if (Req) {
+        setNotify({
+          title: 'Éxito',
+          message: `servicio ${modoEdicion ? 'actualizado' : 'agregado'} correctamente`,
+          close: setNotify
+        })
+        didFetch.current = false // Reset fetch state to allow refetch
+        fetchCirugias()
+        setMostrarFormulario(null)
+      }
 
     } catch (err) {
       setNotify(null)
