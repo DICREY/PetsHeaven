@@ -41,7 +41,6 @@ BEGIN
         VALUES (NEW.id_per, 'estado', OLD.estado, NEW.estado, 'UPDATE');
     END IF;
     
-    -- Puedes agregar más campos según necesites
 END //
 
 DELIMITER ;
@@ -85,7 +84,6 @@ BEGIN
         VALUES (NEW.id_mas, 'estado', OLD.estado, NEW.estado, 'UPDATE');
     END IF;
     
-    -- Agregar más campos según necesidad
 END //
 
 DELIMITER ;
