@@ -1,8 +1,8 @@
 // Librarys 
-import React, { useEffect } from "react"
+import React, { useContext, useEffect } from "react"
 import { useState } from "react"
-import { data, useNavigate } from "react-router"
-import { Calendar, Heart, Pill, Stethoscope, Clock, ArrowLeft, Printer, Plus } from "lucide-react"
+import { useNavigate } from "react-router"
+import { Calendar, Heart, Pill, Stethoscope, Clock, ArrowLeft, Printer, Plus, Trash2 } from "lucide-react"
 
 // Imports
 import ResumenMascota from "./ResumenMascota"
@@ -17,10 +17,11 @@ import FormularioNuevaCita from "./FormularioNuevaCita"
 import AppointmentForm from "../FormulariosAdmin/AgendarCita"
 import { NavBarAdmin } from '../../BarrasNavegacion/NavBarAdmi'
 import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
-import { PostData } from "../../Varios/Requests"
+import { ModifyData, PostData } from "../../Varios/Requests"
 import { errorStatusHandler, formatDate, hourTraductor } from "../../Varios/Util"
 import { Notification } from "../../Global/Notifys"
 import { capitalize } from "../../../Utils/Utils"
+import { AuthContext } from "../../../Contexts/Contexts"
 
 // Import styles 
 import "../../../styles/InterfazAdmin/HistorialMedico/HistorialMedico.css"
@@ -81,6 +82,7 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
 
   // Vars 
   const navigate = useNavigate()
+  const { admin } = useContext(AuthContext)
 
   // Agregar estado para el formulario de nueva cita
   const [appointmentFormData, setAppointmentFormData] = useState({
@@ -407,6 +409,36 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
     }
   }
 
+  // Request for Modify Data
+  const modify = async () => {
+      setNotify({
+          title: 'Validando...',
+          message: 'Verificando datos proporcionados',
+          load: 1
+      })
+      try {
+          const imgUrl = await uploadImg(modPet.img,'mascotas')
+          const mod = await ModifyData(`${mainURL}/modify`, {...modPet, img_mas: imgUrl})
+          setNotify(null)
+          if (mod?.modify) {
+              setNotify({
+                  title: 'Modificación exitosa',
+                  message: 'Los datos de la mascota han sido modificados exitosamente',
+                  close: setNotify
+              })
+              setTimeout(() => navigate(-1),2000)
+          }
+      } catch (err) {
+          setNotify(null)
+          const message = errorStatusHandler(err)
+          setNotify({
+              title: 'Error',
+              message: `${message}`,
+              close: setNotify
+          })
+      }
+    }
+
   useEffect(() => {
     if (!datas?.nom_mas) {
       navigate(-1)
@@ -435,14 +467,14 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
                   </button>
 
                   <div className="acciones-hist">
-                  <button className="EditBtn" onClick={() => setIsNewConsultationOpen(1)}>
-                      <Plus className="ico-hist" />
-                      Nueva Consulta
-                  </button>
-                  <button className="BackBtn" onClick={generatePDF}>
-                      <Printer className="ico-hist" />
-                      Imprimir Historial
-                  </button>
+                    <button className="EditBtn" onClick={() => setIsNewConsultationOpen(1)}>
+                        <Plus className="ico-hist" />
+                        Nueva Consulta
+                    </button>
+                    <button className="BackBtn" onClick={generatePDF}>
+                        <Printer className="ico-hist" />
+                        Imprimir Historial
+                    </button>
                   </div>
               </nav>
 
@@ -451,7 +483,9 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
                 { petData && (<ResumenMascota
                     petData={datas}
                     setPetData={setPetData}
-                    imgDefault={imgPetDefault} 
+                    imgDefault={imgPetDefault}
+                    URL={URL}
+                    setNotify={setNotify}
                   />)
                 }
               </section>

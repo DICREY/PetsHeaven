@@ -148,7 +148,10 @@ export default function FormularioNuevaConsulta({ close }) {
       {/* Modal del formulario */}
         <aside className="modal-overlay-consulta">
           <div className="modal-backdrop-consulta" onClick={close}></div>
-          <div className="modal-container-consulta">
+          <div
+            className="modal-container-consulta"
+            onClick={e => e.stopPropagation()} // <-- Detiene la propagación
+          >
             <div className="modal-header-consulta">
               <div className="header-content-consulta">
                 <div>

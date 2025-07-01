@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
-import { Calendar, Users, Heart, Clock, ExternalLink, Plus } from "lucide-react"
+import { Calendar, Users, Heart, Clock, ExternalLink, Plus, User, Dog } from "lucide-react"
 import { useNavigate } from 'react-router-dom'
 
 // Imports
@@ -174,6 +174,16 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
                   Registrar Personal
                 </button>
 
+                <button type="button" className="EditBtn" onClick={() => navigate('/user/home')}>
+                  <User className="icon" aria-hidden="true" />
+                  Panel Usuario
+                </button>
+
+                <button type="button" className="EditBtn" onClick={() => navigate('/user/home')}>
+                  <Dog className="icon" aria-hidden="true" />
+                  Mascotas Usuario
+                </button>
+
                 <button
                   className="EditBtn"
                   onClick={() => navigate('/main')}
@@ -185,10 +195,10 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
               </nav>
 
               {/* Recent Activity */}
-              <section className="actividad-reciente-admin">
+              {/* <section className="actividad-reciente-admin">
                 <h3>Actividad Reciente</h3>
                 <ul className="lista-actividad-admin" role="list">
-                  {/* {appointCurrent?.map(app, index) => } */}
+                  {/* {appointCurrent?.map(app, index) =>  
                   <li className="item-actividad-admin">
                     <div className="punto-actividad-admin verde-admin" aria-hidden="true"></div>
                     <p>Nueva cita programada para Max</p>
@@ -205,7 +215,7 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
                     <time>Hace 2 horas</time>
                   </li>
                 </ul>
-              </section>
+              </section> */}
             </aside>
           </section>
         </main>

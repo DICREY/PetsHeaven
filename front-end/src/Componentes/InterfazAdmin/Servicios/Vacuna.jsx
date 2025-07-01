@@ -22,7 +22,11 @@ export function VisualizadorVacunas({ URL = '' }) {
   const [vacunaDetalle, setVacunaDetalle] = useState(null)
   const [modoEdicion, setModoEdicion] = useState(false)
   const [vacunaEditando, setVacunaEditando] = useState(null)
-  const [notify, setNotify] = useState(null)
+  const [notify, setNotify] = useState({
+    title: 'Cargando',
+    message: 'Cargando vacunas, por favor espere...',
+    load: 1
+  })
   const [nuevaVacuna, setNuevaVacuna] = useState({
     id: "",
     nombre: "",
@@ -55,12 +59,6 @@ export function VisualizadorVacunas({ URL = '' }) {
     if (didFetch.current) return
     didFetch.current = true
 
-    setNotify({
-      title: 'Cargando',
-      message: 'Cargando vacunas, por favor espere...',
-      load: 1
-    })
-
     try {
       const response = await GetData(`${vaccineUrl}/all`)
       setNotify(null)
@@ -90,6 +88,11 @@ export function VisualizadorVacunas({ URL = '' }) {
             con_esp_pro: vacuna.con_esp_pro,
             pro_pro: vacuna.pro_pro
           }],
+          dosis: {
+            cachorro: vacuna.dos_rec_cac_vac,
+            adulto :vacuna.dos_rec_adu_vac,
+            senior :vacuna.dos_rec_adu_jov_vac
+          }
         }))
 
         setVacunas(vacunasMapeadas)
@@ -149,7 +152,9 @@ export function VisualizadorVacunas({ URL = '' }) {
           nom_vac: data.nombre,
           efe_sec_vac: data.efectosSecundarios || '',
           cat_vac: data.categoria || 'Esencial',
-          dos_rec_vac: data.dosis?.cachorro || '',
+          dos_rec_cac_vac: data.dosis?.cachorro || '',
+          dos_rec_adu_vac: data.dosis?.senior || '',
+          dos_rec_adu_jov_vac: data.dosis?.adulto || '',
           lot_vac: data.lote || '',
           fec_ven_vac: data.fechaVencimiento || new Date().toISOString().split('T')[0],
           fec_cre_vac: data.fechaCreacion || new Date().toISOString().split('T')[0],
@@ -180,7 +185,7 @@ export function VisualizadorVacunas({ URL = '' }) {
           message: `Vacuna ${modoEdicion ? 'actualizada' : 'agregada'} correctamente`,
           close: setNotify
         })
-
+        
         setModalAbierto(false)
 
       } catch (err) {
@@ -312,7 +317,7 @@ export function VisualizadorVacunas({ URL = '' }) {
                     <button onClick={() => setModalAbierto(false)} className="cerrar-modal-vacunas">
                       <X className="icon" />
                     </button>
-                </header>
+                  </header>
                   <FormularioVacuna
                     onGuardar={guardarVacuna}
                     onCancelar={() => setModalAbierto(false)}
@@ -337,7 +342,16 @@ export function VisualizadorVacunas({ URL = '' }) {
                 efectosSecundarios: "Complicaciones",
                 infoAdicional: "Información Adicional",
                 lote: "Lote",
-                vencimiento: "Vencimiento"
+                vencimiento: "Vencimiento",
+                infoAdicionalPlus: {
+                  name: 'Dosis Recomendada',
+                  headers: {
+                    cachorro: 'Cachorro' ,
+                    adulto: 'Adulto' ,
+                    senior: 'Senior',
+                  },
+                  valueList: 'dosis'
+                },
               }}
             />
           </div>

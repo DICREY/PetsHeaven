@@ -9,7 +9,7 @@ import esLocale from "@fullcalendar/core/locales/es"
 
 // Imports 
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
-import { GetData, ModifyData, PostData} from '../Varios/Requests'
+import { GetData, ModifyData, PostData } from '../Varios/Requests'
 import { errorStatusHandler } from '../Varios/Util'
 import { Notification } from '../Global/Notifys'
 import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
@@ -18,7 +18,7 @@ import AppointmentForm from './FormulariosAdmin/AgendarCita'
 // import Footer from '../Varios/Footer2'
 
 // Import styles 
-import "../../styles/InterfazAdmin/GesAgendaGeneral.css"
+import "../../styles/InterfazAdmin/GesPersonal.css"
 
 // Función para unir fecha y hora en formato ISO
 function joinDateTime(date, time) {
@@ -55,34 +55,36 @@ export const GesAgendaPersonal = ({ URL = '' }) => {
     const eventModalRef = useRef(null)
     const [formErrors, setFormErrors] = useState({})
     const { user } = useContext(AuthContext)
+    const [searchDoc, setSearchDoc] = useState('');
+    const [showSearchInput, setShowSearchInput] = useState(false);
 
 
     // Cerrar modal al hacer clic fuera
     useEffect(() => {
-    const handleClickOutside = (event) => {
-        // Verificar si hay un modal activo
-        if (!activeModal) return;
-        
-        // Verificar clicks fuera del modal de creación
-        if (activeModal === 'create' && 
-            createModalRef.current && 
-            !createModalRef.current.contains(event.target)) {
-            closeModal();
-        }
-        
-        // Verificar clicks fuera del modal de evento
-        if (activeModal === 'event' && 
-            eventModalRef.current && 
-            !eventModalRef.current.contains(event.target)) {
-            closeModal();
-        }
-    };
+        const handleClickOutside = (event) => {
+            // Verificar si hay un modal activo
+            if (!activeModal) return;
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-    };
-}, [activeModal]); // Solo se vuelve a ejecutar cuando activeModal cambia
+            // Verificar clicks fuera del modal de creación
+            if (activeModal === 'create' &&
+                createModalRef.current &&
+                !createModalRef.current.contains(event.target)) {
+                closeModal();
+            }
+
+            // Verificar clicks fuera del modal de evento
+            if (activeModal === 'event' &&
+                eventModalRef.current &&
+                !eventModalRef.current.contains(event.target)) {
+                closeModal();
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [activeModal]); // Solo se vuelve a ejecutar cuando activeModal cambia
 
 
     // Vars 
@@ -139,7 +141,7 @@ export const GesAgendaPersonal = ({ URL = '' }) => {
         // Verificar fecha
         const eventDate = new Date(selectedEvent.start)
         const today = new Date()
-        today.setHours(0, 0, 0, 0) 
+        today.setHours(0, 0, 0, 0)
 
         if (eventDate < today) {
             Alert.alert(
@@ -206,11 +208,11 @@ export const GesAgendaPersonal = ({ URL = '' }) => {
 
     // Manejar cambios en los inputs
     const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewEvent(prev => ({
-        ...prev,
-        [name]: value
-    }));
+        const { name, value } = e.target;
+        setNewEvent(prev => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
     const fetchAppointments = async () => {
@@ -256,6 +258,59 @@ export const GesAgendaPersonal = ({ URL = '' }) => {
             })
         }
     }
+
+    const handleSearchByDoc = async () => {
+        if (!searchDoc.trim()) {
+            setNotify({
+                title: 'Error',
+                message: 'Debes ingresar un número de documento.',
+                close: setNotify
+            });
+            return;
+        }
+        setNotify({
+            title: 'Buscando',
+            message: 'Buscando citas, por favor espere...',
+            load: 1
+        });
+        try {
+            let data = await PostData(`${mainUrl}/by`, { by: searchDoc.trim() });
+            setNotify(null);
+            if (data && data.result) {
+                data = data.result;
+            }
+            if (data) {
+                const mappedEvents = data.map(event => ({
+                    id: event.id_cit,
+                    mas_cit: event.mas_cit,
+                    title: event.nom_ser,
+                    start: joinDateTime(event.fec_cit, event.hor_ini_cit),
+                    end: joinDateTime(event.fec_cit, event.hor_fin_cit),
+                    description: event.des_ser,
+                    category: event.nom_ser || 'vacuna',
+                    paciente: event.nom_mas,
+                    propietario: `${event.prop_nom_per} ${event.prop_ape_per}`,
+                    telefonoProp: event.prop_cel_per,
+                    veterinario: `${event.vet_nom_per} ${event.vet_ape_per}`,
+                    telefonoVet: event.vet_cel_per,
+                    lug_ate_cit: event.nom_con || 'Consultorio',
+                    estado: event.est_cit,
+                    fotoMascota: event.fot_mas
+                }));
+                setEvents(mappedEvents);
+            } else {
+                setEvents([]);
+            }
+        } catch (err) {
+            setNotify(null);
+            setEvents([]);
+            setNotify({
+                title: 'Error',
+                message: 'No se encontraron citas para ese documento.',
+                close: setNotify
+            });
+        }
+    };
 
     const validateEventFields = (event) => {
         const errors = {};
@@ -317,8 +372,8 @@ export const GesAgendaPersonal = ({ URL = '' }) => {
                             click: () => calendarRef.current.getApi().next()
                         },
                         buscarPersona: {
-                            text : 'Buscar por Persona',
-                            click : () => null
+                            text: showSearchInput ? '' : 'Buscar por Persona',
+                            click: () => setShowSearchInput(true)
                         }
                     }}
 
@@ -396,8 +451,8 @@ export const GesAgendaPersonal = ({ URL = '' }) => {
 
                 {/* Popup para crear nueva cita */}
                 {activeModal === 'create' && (
-                    <AppointmentForm 
-                        onClose={() => setActiveModal(null)} 
+                    <AppointmentForm
+                        onClose={() => setActiveModal(null)}
                         URL={URL}
                         date={selectedDate}
                         sended={fetchAppointments}
@@ -597,6 +652,48 @@ export const GesAgendaPersonal = ({ URL = '' }) => {
                         </aside>
                     </aside>
                 )}
+                {showSearchInput && (
+                    <div className="modal-overlay">
+                        <div className="modal-content search-modal">
+                            <header className="modal-header">
+                                <h3>Buscar por Documento</h3>
+                                <button className="modal-close-btn" onClick={() => {
+                                    setShowSearchInput(false);
+                                    setSearchDoc('');
+                                    fetchAppointments();
+                                }}>X</button>
+                            </header>
+                            <section className="modal-body">
+                                <input
+                                    type="text"
+                                    placeholder="Documento de persona"
+                                    value={searchDoc}
+                                    onChange={e => setSearchDoc(e.target.value)}
+                                    onKeyDown={async e => {
+                                        if (e.key === 'Enter') {
+                                            await handleSearchByDoc();
+                                            setShowSearchInput(false); // Cierra modal después de buscar
+                                        }
+                                    }}
+                                    autoFocus
+                                    className="search-input"
+                                />
+                            </section>
+                            <div className="modal-footer">
+                                <button onClick={async () => {
+                                    await handleSearchByDoc();
+                                    setShowSearchInput(false);
+                                }}>Buscar</button>
+                                <button onClick={() => {
+                                    setShowSearchInput(false);
+                                    setSearchDoc('');
+                                    fetchAppointments();
+                                }}>Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
             </main>
             {notify && (
                 <Notification

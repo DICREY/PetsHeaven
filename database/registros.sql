@@ -1,4 +1,4 @@
--- Active: 1751161037637@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 INSERT INTO pets_heaven.roles (nom_rol) VALUES
 ('Administrador'),
 ('Veterinario'),
@@ -150,16 +150,17 @@ VALUES
 (9, 'Baño Medicado', 'Baño con shampoo especial para condiciones dermatológicas', 45.00, 45.00, 20.00, 'No requisitos'),
 (10, 'Corte de Raza', 'Estilizado profesional según estándar de raza', 55.00, 55.00, 25.00, 'Cepillado previo'),
 (11, 'Atención de Urgencia', 'Evaluación y estabilización inicial', 90.00, 90.00, 45.00, 'Ninguno'),
-(12, 'Reanimación', 'Atención crítica para pacientes graves', 200.00, 200.00, 100.00, 'Ninguno');
+(12, 'Reanimación', 'Atención crítica para pacientes graves', 200.00, 200.00, 100.00, 'Ninguno'),
+(7, 'Perfil Bioquímico Completo', 'Análisis de 12 parámetros sanguíneos', 60.00, 60.00, 25.00, 'Ayuno de 8h');
 
 INSERT INTO pets_heaven.procedimientos 
 (nom_pro, des_pro, cat_pro, niv_rie_pro, dur_min_pro, pro_pro, con_esp_pro) 
 VALUES
-('Examen Físico', 'Evaluación general de salud', 1, 'BAJO', 30, '1. Inspección visual 2. Palpación 3. Auscultación', 'Mascota debe estar calmada'),
+('Examen Físico', 'Evaluación general de salud', 3, 'BAJO', 30, '1. Inspección visual 2. Palpación 3. Auscultación', 'Mascota debe estar calmada'),
 ('Vacunación SC', 'Administración subcutánea de vacuna', 2, 'BAJO', 15, '1. Preparar vacuna 2. Desinfectar zona 3. Inyectar', 'Observar reacciones alérgicas'),
-('Ovariohisterectomía', 'Esterilización de hembras', 3, 'MODERADO', 90, '1. Anestesia 2. Asepsia 3. Incisión 4. Ligadura', 'Manejo postquirúrgico del dolor'),
+('Ovariohisterectomía', 'Esterilización de hembras', 1, 'MODERADO', 90, '1. Anestesia 2. Asepsia 3. Incisión 4. Ligadura', 'Manejo postquirúrgico del dolor'),
 ('Intubación', 'Manejo de vía aérea', 1, 'ALTO', 10, '1. Preparar equipo 2. Posicionar 3. Visualizar cuerdas 4. Insertar tubo', 'Requiere monitorización constante'),
-('Toma de Muestra Sanguínea', 'Obtención de sangre para análisis', 4, 'BAJO', 10, '1. Localizar vena 2. Desinfectar 3. Extraer muestra 4. Presionar', 'Evitar hemólisis'),
+('Toma de Muestra Sanguínea', 'Obtención de sangre para análisis', 1, 'BAJO', 10, '1. Localizar vena 2. Desinfectar 3. Extraer muestra 4. Presionar', 'Evitar hemólisis'),
 ('Limpieza Dental', 'Profilaxis dental completa', 5, 'MODERADO', 60, '1. Anestesia 2. Remoción de sarro 3. Pulido 4. Fluoruro', 'Evaluar extracciones necesarias'),
 ('Radiografía', 'Imagen diagnóstica por rayos X', 1, 'BAJO', 30, '1. Posicionar 2. Proteger 3. Tomar imagen 4. Revelar', 'Minimizar exposición');
 
@@ -179,23 +180,23 @@ VALUES
 (12, 1, FALSE, 2);
 
 INSERT INTO pets_heaven.tipos_pruebas 
-(cod_tip_pru, nom_tip_pru, des_tip_pru, cat_tip_pru, met_est_tip_pru, tie_est_hrs_tip_pru, ins_pre_tip_pru, par_ref_tip_pru) 
+(cod_tip_pru, nom_tip_pru, des_tip_pru, cat_tip_pru, met_est_tip_pru, tie_est_hrs_tip_pru, cos_est_tip_pru, ins_pre_tip_pru, par_ref_tip_pru) 
 VALUES
-('HEM-001', 'Hemograma Completo', 'Evaluación de células sanguíneas', 'HEMATOLOGIA', 'Automated hematology analyzer', 2, 'Ayuno de 8 horas', 'WBC: 6-17 x10³/μL, RBC: 5.5-8.5 x10⁶/μL'),
-('BIO-002', 'Perfil Renal', 'Evaluación función renal', 'BIOQUIMICA', 'Espectrofotometría', 24, 'Ayuno de 12 horas', 'BUN: 10-30 mg/dL, Creat: 0.5-1.8 mg/dL'),
-('MIC-003', 'Cultivo Bacteriano', 'Identificación de bacterias', 'MICROBIOLOGIA', 'Medios de cultivo', 72, 'Muestra estéril', 'Reporte cualitativo'),
-('PAT-004', 'Citología', 'Evaluación celular', 'PATOLOGIA', 'Tinción Wright-Giemsa', 48, 'Muestra fresca', 'Interpretación patológica'),
-('GEN-005', 'Test de ADN', 'Pruebas genéticas', 'GENETICA', 'PCR en tiempo real', 168, 'Hisopado bucal', 'Resultado positivo/negativo'),
-('BIO-006', 'Perfil Hepático', 'Evaluación función hepática', 'BIOQUIMICA', 'Espectrofotometría', 24, 'Ayuno de 12 horas', 'ALT: 10-100 U/L, ALP: 20-150 U/L');
+('HEM-001', 'Hemograma Completo', 'Evaluación de células sanguíneas', 'HEMATOLOGIA', 'Automated hematology analyzer', 2, 60.00, 'Ayuno de 8 horas', 'WBC: 6-17 x10³/μL, RBC: 5.5-8.5 x10⁶/μL'),
+('BIO-002', 'Perfil Renal', 'Evaluación función renal', 'BIOQUIMICA', 'Espectrofotometría', 24, 80.00, 'Ayuno de 12 horas', 'BUN: 10-30 mg/dL, Creat: 0.5-1.8 mg/dL'),
+('MIC-003', 'Cultivo Bacteriano', 'Identificación de bacterias', 'MICROBIOLOGIA', 'Medios de cultivo', 72, 100.00, 'Muestra estéril', 'Reporte cualitativo'),
+('PAT-004', 'Citología', 'Evaluación celular', 'PATOLOGIA', 'Tinción Wright-Giemsa', 48, 120.00, 'Muestra fresca', 'Interpretación patológica'),
+('GEN-005', 'Test de ADN', 'Pruebas genéticas', 'GENETICA', 'PCR en tiempo real', 168, 150.00, 'Hisopado bucal', 'Resultado positivo/negativo'),
+('BIO-006', 'Perfil Hepático', 'Evaluación función hepática', 'BIOQUIMICA', 'Espectrofotometría', 24, 80.00, 'Ayuno de 12 horas', 'ALT: 10-100 U/L, ALP: 20-150 U/L');
 
 INSERT INTO pets_heaven.pruebas_laboratorio 
 (cod_ord_pru_lab, id_mas_pru_lab, id_vet_sol_pru_lab, id_tip_pru_lab, id_ser_pru_lab, fec_sol_pru_lab, fec_mue_pru_lab, est_pru_lab, pri_pru_lab, res_pru_lab) 
 VALUES
 ('LAB-2025-001', 1, 1, 1, 8, '2025-05-10 09:00:00', '2025-05-10 09:30:00', 'COMPLETADO', 'ROUTINA', 'WBC: 12.5 (H), RBC: 7.2, HCT: 45%'),
-('LAB-2025-002', 2, 2, 2, NULL, '2025-05-11 10:00:00', '2025-05-11 10:15:00', 'ENTREGADO', 'URGENTE', 'BUN: 28, Creat: 1.6 - Función renal normal'),
-('LAB-2025-003', 3, 1, 3, NULL, '2025-05-12 11:00:00', '2025-05-12 11:20:00', 'EN_PROCESO', 'ROUTINA', NULL),
-('LAB-2025-004', 4, 3, 4, NULL, '2025-05-13 14:00:00', '2025-05-13 14:30:00', 'MUESTRA_TOMADA', 'ROUTINA', NULL),
-('LAB-2025-005', 5, 2, 5, NULL, '2025-05-14 16:00:00', '2025-05-14 16:45:00', 'REGISTRADO', 'STAT', NULL);
+('LAB-2025-002', 2, 2, 2, 8, '2025-05-11 10:00:00', '2025-05-11 10:15:00', 'ENTREGADO', 'URGENTE', 'BUN: 28, Creat: 1.6 - Función renal normal'),
+('LAB-2025-003', 3, 1, 3, 8, '2025-05-12 11:00:00', '2025-05-12 11:20:00', 'EN_PROCESO', 'ROUTINA', NULL),
+('LAB-2025-004', 4, 3, 4, 7, '2025-05-13 14:00:00', '2025-05-13 14:30:00', 'MUESTRA_TOMADA', 'ROUTINA', NULL),
+('LAB-2025-005', 5, 2, 5, 8, '2025-05-14 16:00:00', '2025-05-14 16:45:00', 'REGISTRADO', 'STAT', NULL);
 
 INSERT INTO pets_heaven.consultorios 
 (cod_con, nom_con, des_con, tip_con, equ_con, cap_con) 
@@ -246,24 +247,24 @@ INSERT INTO pets_heaven.citas (
 (CURRENT_DATE, '11:30:00', '12:30:00', 'Test genético', 'PENDIENTE', 3, 8, 6, 5);
 
 INSERT INTO pets_heaven.vacunas (
-    nom_vac, efe_sec_vac, cat_vac, dos_rec_vac, lot_vac, fec_ven_vac, fec_cre_vac, fre_vac, des_vac, pre_vac, sta_vac, pro_vac
+    nom_vac, efe_sec_vac, cat_vac, dos_rec_cac_vac, dos_rec_adu_vac, dos_rec_adu_jov_vac, lot_vac, fec_ven_vac, fec_cre_vac, fre_vac, des_vac, pre_vac, sta_vac, pro_vac
 ) VALUES
 -- Vacunas básicas para perros
-('Vacuna Antirrábica', 'Letargo leve, dolor en el sitio de inyección', 'Rabia', '1 mL', 'LOT-RAB-2025', '2026-12-31', CURRENT_DATE, 365, DEFAULT, 40000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
-('Vacuna Moquillo Canino', 'Fiebre leve, pérdida de apetito temporal', 'Moquillo', '1 mL', 'LOT-MOQ-2025', '2026-06-15', CURRENT_DATE, 1095, DEFAULT, 35000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
-('Vacuna Parvovirus', 'Hinchazón en el sitio de inyección', 'Parvovirosis', '1 mL', 'LOT-PAR-2025', '2026-08-20', CURRENT_DATE, 365, DEFAULT, 35000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
-('Vacuna Leptospirosis', 'Dolor local, fiebre baja', 'Leptospirosis', '1 mL', 'LOT-LEP-2025', '2026-05-30', CURRENT_DATE, 365, DEFAULT, 35000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+('Vacuna Antirrábica', 'Letargo leve, dolor en el sitio de inyección', 'Rabia', '1 mL','2 mL','1.5 mL', 'LOT-RAB-2025', '2026-12-31', CURRENT_DATE, 365, DEFAULT, 40000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+('Vacuna Moquillo Canino', 'Fiebre leve, pérdida de apetito temporal', 'Moquillo', '1 mL','2 mL','1.5 mL', 'LOT-MOQ-2025', '2026-06-15', CURRENT_DATE, 1095, DEFAULT, 35000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+('Vacuna Parvovirus', 'Hinchazón en el sitio de inyección', 'Parvovirosis', '1 mL','2 mL','1.5 mL', 'LOT-PAR-2025', '2026-08-20', CURRENT_DATE, 365, DEFAULT, 35000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+('Vacuna Leptospirosis', 'Dolor local, fiebre baja', 'Leptospirosis', '1 mL','2 mL','1.5 mL', 'LOT-LEP-2025', '2026-05-30', CURRENT_DATE, 365, DEFAULT, 35000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
 -- Vacunas para gatos
-('Vacuna Triple Felina', 'Somnolencia leve', 'Panleucopenia/Calicivirus/Rinotraqueitis', '1 mL', 'LOT-TRF-2025', '2026-09-10', CURRENT_DATE, 365, DEFAULT, 38000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
-('Vacuna Leucemia Felina', 'Malestar general', 'Leucemia Viral Felina', '1 mL', 'LOT-LEU-2025', '2026-11-25', CURRENT_DATE, 365, DEFAULT, 38000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+('Vacuna Triple Felina', 'Somnolencia leve', 'Panleucopenia/Calicivirus/Rinotraqueitis', '1 mL','2 mL','1.5 mL', 'LOT-TRF-2025', '2026-09-10', CURRENT_DATE, 365, DEFAULT, 38000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+('Vacuna Leucemia Felina', 'Malestar general', 'Leucemia Viral Felina', '1 mL','2 mL','1.5 mL', 'LOT-LEU-2025', '2026-11-25', CURRENT_DATE, 365, DEFAULT, 38000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
 -- Vacunas especiales
-('Vacuna Bordetella', 'Estornudos leves', 'Tos de las perreras', '0.5 mL', 'LOT-BOR-2025', '2026-04-15', CURRENT_DATE, 365, DEFAULT, 32000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
-('Vacuna Coronavirus Canino', 'Malestar gastrointestinal leve', 'Coronavirus', '1 mL', 'LOT-COR-2025', '2026-07-22', CURRENT_DATE, 365, DEFAULT, 32000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
-('Vacuna Giardia', 'Diarrea leve', 'Giardiasis', '1 mL', 'LOT-GIA-2025', '2026-10-05', CURRENT_DATE, 180, DEFAULT, 32000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+('Vacuna Bordetella', 'Estornudos leves', 'Tos de las perreras', '0.5 mL','1 mL','0.7 mL', 'LOT-BOR-2025', '2026-04-15', CURRENT_DATE, 365, DEFAULT, 32000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+('Vacuna Coronavirus Canino', 'Malestar gastrointestinal leve', 'Coronavirus', '1 mL','2 mL','1.5 mL', 'LOT-COR-2025', '2026-07-22', CURRENT_DATE, 365, DEFAULT, 32000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+('Vacuna Giardia', 'Diarrea leve', 'Giardiasis', '1 mL','2 mL','1.5 mL', 'LOT-GIA-2025', '2026-10-05', CURRENT_DATE, 180, DEFAULT, 32000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
 -- Vacunas combinadas
-('Vacuna Polivalente V8', 'Fiebre leve, dolor local', 'Combinada Canina', '1 mL', 'LOT-V8-2025', '2026-03-18', CURRENT_DATE, 365, DEFAULT, 42000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
-('Vacuna Felina V4', 'Decaimiento temporal', 'Combinada Felina', '1 mL', 'LOT-V4-2025', '2026-02-28', CURRENT_DATE, 365, DEFAULT, 42000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
-('Vacuna Influenza Canina', 'Tos leve', 'Influenza', '1 mL', 'LOT-INF-2025', '2026-01-15', CURRENT_DATE, 365, DEFAULT, 32000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC'));
+('Vacuna Polivalente V8', 'Fiebre leve, dolor local', 'Combinada Canina', '1 mL','2 mL','1.5 mL', 'LOT-V8-2025', '2026-03-18', CURRENT_DATE, 365, DEFAULT, 42000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+('Vacuna Felina V4', 'Decaimiento temporal', 'Combinada Felina', '1 mL','2 mL','1.5 mL', 'LOT-V4-2025', '2026-02-28', CURRENT_DATE, 365, DEFAULT, 42000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC')),
+('Vacuna Influenza Canina', 'Tos leve', 'Influenza', '1 mL','2 mL','1.5 mL', 'LOT-INF-2025', '2026-01-15', CURRENT_DATE, 365, DEFAULT, 32000, 1, (SELECT id_pro FROM pets_heaven.procedimientos WHERE nom_pro LIKE 'Vacunación SC'));
 
 INSERT INTO pets_heaven.vacunacion ( id_vacn, id_cit_vacn ) VALUES 
 (1,2),

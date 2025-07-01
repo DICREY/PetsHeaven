@@ -80,7 +80,7 @@ class Appointment {
                 if(err) rej({ message: err})
                 // console.log(result['0'])
                 if(!result || !result[0][0]) rej({
-                    message: "Not found",
+                    message: "No se encontraron citas para la mascota",
                     status: 404
                 })
                 setTimeout(() =>{

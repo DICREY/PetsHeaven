@@ -117,14 +117,14 @@ Route.put('/delete', ValidatorRol("administrador") ,async (req,res) => {
     try {
         // Verify if exist
         const find = await pet.findAllBy(body.doc_per,body.nom_mas)
-        if (!find.result[0][0]) return res.status(404).json({message: "Mascota no encontrada"})
+        if (!find.result) return res.status(404).json({message: "Mascota no encontrada"})
 
         const petDeleted = await pet.deleteBy(body.doc_per,body.nom_mas)
         if (petDeleted.deleted) return res.status(200).json(petDeleted)
 
         res.status(500).json({message: 'Error del servidor por favor intentelo mas tarde'})
-        
     } catch (err) {
+        console.log(err)
         if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
         if(err.status) return res.status(err.status).json(err.message)
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })

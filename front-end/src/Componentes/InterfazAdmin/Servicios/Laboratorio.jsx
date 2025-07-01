@@ -109,12 +109,13 @@ export const ExamenesLaboratorio = ({ URL= '' }) => {
   }
 
   const abrirModalDetalle = (examen) => {
+    console.log(examen)
     setExamenDetalle({
       ...examen,
       nombre: examen.nom_tip_pru,
       descripcion: examen.des_tip_pru,
       descripcionPro: examen.des_pro_pru,
-      precio: examen.pre_act_pru,
+      precio: examen.pre_act_ser,
       disponible: examen.sta_pru_lab,
       duracion:  examen.time,
       categoria: examen.cat_tip_pru,
@@ -173,6 +174,7 @@ export const ExamenesLaboratorio = ({ URL= '' }) => {
           return {
             ...examen,
             time: `${examen.tie_est_hrs_tip_pru} horas`,
+            state: examen.est_tip_pru === 'CANCELADO'? 0 : 1,
           }
         })
         setExamenes(mapData)
@@ -209,8 +211,8 @@ export const ExamenesLaboratorio = ({ URL= '' }) => {
             nom: 'nom_tip_pru',
             des: 'des_tip_pru',
             cat: 'cat_tip_pru',
-            sta: 'est_pru_lab',
-            pri: 'pri_pru_lab',
+            sta: 'state',
+            pri: 'cos_est_tip_pru',
             cod: 'cod_ord_pru_lab',
             time: 'time',
             alert: 'met_est_tip_pru',
