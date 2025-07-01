@@ -1,21 +1,29 @@
 // Librarys 
-import React from "react"
-import { useState } from "react"
-import { User, Phone, MapPin, Edit, Save, X } from "lucide-react"
+import React, { useContext, useState } from "react"
+import { User, Phone, MapPin, Edit, Save, X, Trash2 } from "lucide-react"
+import { useNavigate } from "react-router"
 
 // Imports 
 import { CheckImage } from "../../../Utils/Utils"
-import { formatDate } from "../../Varios/Util"
+import { errorStatusHandler, formatDate } from "../../Varios/Util"
+import { AuthContext } from "../../../Contexts/Contexts"
+import { ModifyData } from "../../Varios/Requests"
 
 // Import styles 
 import "../../../styles/InterfazAdmin/HistorialMedico/ResumenMascota.css"
 
 // Component 
-export default function ResumenMascota({ petData, setPetData, imgDefault = '' }) {
+export default function ResumenMascota({ petData, setPetData, imgDefault = '', URL = '', setNotify }) {
+  // Dynamic vars 
   const [isEditing, setIsEditing] = useState(false)
   const [editData, setEditData] = useState(petData)
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false)
 
+  // Vars 
+  const { admin } = useContext(AuthContext)
+  const navigate = useNavigate()
+
+  // Functions 
   const handleSave = () => {
     setPetData(editData)
     setIsEditing(false)
@@ -58,6 +66,39 @@ export default function ResumenMascota({ petData, setPetData, imgDefault = '' })
     }
   }
 
+  const deletePet = async () => {
+    // Vars
+    const deleteURL = `${URL}/pet/delete`
+    setNotify({
+        title: 'Validando...',
+        message: 'Verificando datos proporcionados',
+        load: 1
+    })
+    try {
+        const deleted = await ModifyData(deleteURL, {
+            nom_mas: petData.nom_mas,
+            doc_per: petData.doc_per
+        })
+        setNotify(null)
+        if (deleted?.deleted) {
+            setNotify({
+                title: 'Mascota Desactivada',
+                message: 'La mascota ha sido desactivada correctamente.',
+                close: setNotify
+            })
+            setTimeout(() => navigate(-1),2000)
+        }
+    } catch (err) {
+        setNotify(null)
+        const message = errorStatusHandler(err)
+        setNotify({
+            title: 'Error',
+            message: message,
+            close: setNotify
+        })
+    }
+  }
+
   return (
     <aside className="cabecera-masc">
       <section className="contenido-masc">
@@ -88,10 +129,18 @@ export default function ResumenMascota({ petData, setPetData, imgDefault = '' })
                 </button>
               </>
             ) : (
-              <button onClick={() => setIsEditing(true)} className="EditBtn">
-                <Edit className="ico-masc" />
-                Editar
-              </button>
+              <>
+                { admin && (
+                  <button className='DeleteBtn' onClick={deletePet}>
+                    <Trash2 className='icon' />
+                    <span>Desactivar</span>
+                  </button>
+                )}
+                <button onClick={() => setIsEditing(true)} className="EditBtn">
+                  <Edit className="ico-masc" />
+                  Editar
+                </button>
+              </>
             )}
           </div>
         </div>

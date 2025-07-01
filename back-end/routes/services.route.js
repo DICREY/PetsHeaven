@@ -92,7 +92,7 @@ Route.get('/laboratory', ValidatorRol("usuario"), async (req,res) => {
 })
 
 // Call Middleware for verify the request data
-Route.use(Fullinfo(['empty']))
+Route.use(Fullinfo(['slug','tec_des_cat','req','req_equ_esp','proc_ser','pre_ser','img_cat','dur_min_tip_ser','des_tip_ser','des_pro_ser','pre_act_ser','des_cat','cos_est_ser']))
 
 Route.put('/AblOrDis', ValidatorRol("veterinario"), async (req, res) => {
     // Vars 
@@ -110,18 +110,33 @@ Route.put('/AblOrDis', ValidatorRol("veterinario"), async (req, res) => {
     }
 })
 
-Route.post('/register/cir', ValidatorRol("administrador"), async (req, res) => {
+Route.post('/register', ValidatorRol("veterinario"), async (req, res) => {
     const data = req.body
     try {
-        const result = await services.registerCirugia(data);
-        res.status(201).json({ message: "Cirugía registrada correctamente", result });
+        const result = await services.create(data);
+        if (!result.success) return res.status(400).json({ message: "No se pudo registrar el servicio" });
+        res.status(201).json({ message: "Servicio registrado correctamente" });
     } catch (err) {
+        console.log(err)
         if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
         if (err.status) return res.status(err.status).json({ message: err.message });
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
+Route.post('/modify', ValidatorRol("veterinario"), async (req, res) => {
+    const data = req.body
+    try {
+        const result = await services.modify(data);
+        if (!result.success) return res.status(400).json({ message: "No se pudo modificar el servicio" });
+        res.status(200).json({ message: "Servicio modificado correctamente" });
+    } catch (err) {
+        console.log(err)
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
+        if (err.status) return res.status(err.status).json({ message: err.message });
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
+    }
+})
 
 // Exports 
 module.exports = Route

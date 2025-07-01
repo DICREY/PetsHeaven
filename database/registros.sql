@@ -150,16 +150,17 @@ VALUES
 (9, 'Baño Medicado', 'Baño con shampoo especial para condiciones dermatológicas', 45.00, 45.00, 20.00, 'No requisitos'),
 (10, 'Corte de Raza', 'Estilizado profesional según estándar de raza', 55.00, 55.00, 25.00, 'Cepillado previo'),
 (11, 'Atención de Urgencia', 'Evaluación y estabilización inicial', 90.00, 90.00, 45.00, 'Ninguno'),
-(12, 'Reanimación', 'Atención crítica para pacientes graves', 200.00, 200.00, 100.00, 'Ninguno');
+(12, 'Reanimación', 'Atención crítica para pacientes graves', 200.00, 200.00, 100.00, 'Ninguno'),
+(7, 'Perfil Bioquímico Completo', 'Análisis de 12 parámetros sanguíneos', 60.00, 60.00, 25.00, 'Ayuno de 8h');
 
 INSERT INTO pets_heaven.procedimientos 
 (nom_pro, des_pro, cat_pro, niv_rie_pro, dur_min_pro, pro_pro, con_esp_pro) 
 VALUES
-('Examen Físico', 'Evaluación general de salud', 1, 'BAJO', 30, '1. Inspección visual 2. Palpación 3. Auscultación', 'Mascota debe estar calmada'),
+('Examen Físico', 'Evaluación general de salud', 3, 'BAJO', 30, '1. Inspección visual 2. Palpación 3. Auscultación', 'Mascota debe estar calmada'),
 ('Vacunación SC', 'Administración subcutánea de vacuna', 2, 'BAJO', 15, '1. Preparar vacuna 2. Desinfectar zona 3. Inyectar', 'Observar reacciones alérgicas'),
-('Ovariohisterectomía', 'Esterilización de hembras', 3, 'MODERADO', 90, '1. Anestesia 2. Asepsia 3. Incisión 4. Ligadura', 'Manejo postquirúrgico del dolor'),
+('Ovariohisterectomía', 'Esterilización de hembras', 1, 'MODERADO', 90, '1. Anestesia 2. Asepsia 3. Incisión 4. Ligadura', 'Manejo postquirúrgico del dolor'),
 ('Intubación', 'Manejo de vía aérea', 1, 'ALTO', 10, '1. Preparar equipo 2. Posicionar 3. Visualizar cuerdas 4. Insertar tubo', 'Requiere monitorización constante'),
-('Toma de Muestra Sanguínea', 'Obtención de sangre para análisis', 4, 'BAJO', 10, '1. Localizar vena 2. Desinfectar 3. Extraer muestra 4. Presionar', 'Evitar hemólisis'),
+('Toma de Muestra Sanguínea', 'Obtención de sangre para análisis', 1, 'BAJO', 10, '1. Localizar vena 2. Desinfectar 3. Extraer muestra 4. Presionar', 'Evitar hemólisis'),
 ('Limpieza Dental', 'Profilaxis dental completa', 5, 'MODERADO', 60, '1. Anestesia 2. Remoción de sarro 3. Pulido 4. Fluoruro', 'Evaluar extracciones necesarias'),
 ('Radiografía', 'Imagen diagnóstica por rayos X', 1, 'BAJO', 30, '1. Posicionar 2. Proteger 3. Tomar imagen 4. Revelar', 'Minimizar exposición');
 
@@ -179,23 +180,23 @@ VALUES
 (12, 1, FALSE, 2);
 
 INSERT INTO pets_heaven.tipos_pruebas 
-(cod_tip_pru, nom_tip_pru, des_tip_pru, cat_tip_pru, met_est_tip_pru, tie_est_hrs_tip_pru, ins_pre_tip_pru, par_ref_tip_pru) 
+(cod_tip_pru, nom_tip_pru, des_tip_pru, cat_tip_pru, met_est_tip_pru, tie_est_hrs_tip_pru, cos_est_tip_pru, ins_pre_tip_pru, par_ref_tip_pru) 
 VALUES
-('HEM-001', 'Hemograma Completo', 'Evaluación de células sanguíneas', 'HEMATOLOGIA', 'Automated hematology analyzer', 2, 'Ayuno de 8 horas', 'WBC: 6-17 x10³/μL, RBC: 5.5-8.5 x10⁶/μL'),
-('BIO-002', 'Perfil Renal', 'Evaluación función renal', 'BIOQUIMICA', 'Espectrofotometría', 24, 'Ayuno de 12 horas', 'BUN: 10-30 mg/dL, Creat: 0.5-1.8 mg/dL'),
-('MIC-003', 'Cultivo Bacteriano', 'Identificación de bacterias', 'MICROBIOLOGIA', 'Medios de cultivo', 72, 'Muestra estéril', 'Reporte cualitativo'),
-('PAT-004', 'Citología', 'Evaluación celular', 'PATOLOGIA', 'Tinción Wright-Giemsa', 48, 'Muestra fresca', 'Interpretación patológica'),
-('GEN-005', 'Test de ADN', 'Pruebas genéticas', 'GENETICA', 'PCR en tiempo real', 168, 'Hisopado bucal', 'Resultado positivo/negativo'),
-('BIO-006', 'Perfil Hepático', 'Evaluación función hepática', 'BIOQUIMICA', 'Espectrofotometría', 24, 'Ayuno de 12 horas', 'ALT: 10-100 U/L, ALP: 20-150 U/L');
+('HEM-001', 'Hemograma Completo', 'Evaluación de células sanguíneas', 'HEMATOLOGIA', 'Automated hematology analyzer', 2, 60.00, 'Ayuno de 8 horas', 'WBC: 6-17 x10³/μL, RBC: 5.5-8.5 x10⁶/μL'),
+('BIO-002', 'Perfil Renal', 'Evaluación función renal', 'BIOQUIMICA', 'Espectrofotometría', 24, 80.00, 'Ayuno de 12 horas', 'BUN: 10-30 mg/dL, Creat: 0.5-1.8 mg/dL'),
+('MIC-003', 'Cultivo Bacteriano', 'Identificación de bacterias', 'MICROBIOLOGIA', 'Medios de cultivo', 72, 100.00, 'Muestra estéril', 'Reporte cualitativo'),
+('PAT-004', 'Citología', 'Evaluación celular', 'PATOLOGIA', 'Tinción Wright-Giemsa', 48, 120.00, 'Muestra fresca', 'Interpretación patológica'),
+('GEN-005', 'Test de ADN', 'Pruebas genéticas', 'GENETICA', 'PCR en tiempo real', 168, 150.00, 'Hisopado bucal', 'Resultado positivo/negativo'),
+('BIO-006', 'Perfil Hepático', 'Evaluación función hepática', 'BIOQUIMICA', 'Espectrofotometría', 24, 80.00, 'Ayuno de 12 horas', 'ALT: 10-100 U/L, ALP: 20-150 U/L');
 
 INSERT INTO pets_heaven.pruebas_laboratorio 
 (cod_ord_pru_lab, id_mas_pru_lab, id_vet_sol_pru_lab, id_tip_pru_lab, id_ser_pru_lab, fec_sol_pru_lab, fec_mue_pru_lab, est_pru_lab, pri_pru_lab, res_pru_lab) 
 VALUES
 ('LAB-2025-001', 1, 1, 1, 8, '2025-05-10 09:00:00', '2025-05-10 09:30:00', 'COMPLETADO', 'ROUTINA', 'WBC: 12.5 (H), RBC: 7.2, HCT: 45%'),
-('LAB-2025-002', 2, 2, 2, NULL, '2025-05-11 10:00:00', '2025-05-11 10:15:00', 'ENTREGADO', 'URGENTE', 'BUN: 28, Creat: 1.6 - Función renal normal'),
-('LAB-2025-003', 3, 1, 3, NULL, '2025-05-12 11:00:00', '2025-05-12 11:20:00', 'EN_PROCESO', 'ROUTINA', NULL),
-('LAB-2025-004', 4, 3, 4, NULL, '2025-05-13 14:00:00', '2025-05-13 14:30:00', 'MUESTRA_TOMADA', 'ROUTINA', NULL),
-('LAB-2025-005', 5, 2, 5, NULL, '2025-05-14 16:00:00', '2025-05-14 16:45:00', 'REGISTRADO', 'STAT', NULL);
+('LAB-2025-002', 2, 2, 2, 8, '2025-05-11 10:00:00', '2025-05-11 10:15:00', 'ENTREGADO', 'URGENTE', 'BUN: 28, Creat: 1.6 - Función renal normal'),
+('LAB-2025-003', 3, 1, 3, 8, '2025-05-12 11:00:00', '2025-05-12 11:20:00', 'EN_PROCESO', 'ROUTINA', NULL),
+('LAB-2025-004', 4, 3, 4, 7, '2025-05-13 14:00:00', '2025-05-13 14:30:00', 'MUESTRA_TOMADA', 'ROUTINA', NULL),
+('LAB-2025-005', 5, 2, 5, 8, '2025-05-14 16:00:00', '2025-05-14 16:45:00', 'REGISTRADO', 'STAT', NULL);
 
 INSERT INTO pets_heaven.consultorios 
 (cod_con, nom_con, des_con, tip_con, equ_con, cap_con) 

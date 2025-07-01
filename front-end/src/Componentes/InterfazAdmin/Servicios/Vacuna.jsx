@@ -312,7 +312,7 @@ export function VisualizadorVacunas({ URL = '' }) {
                     <button onClick={() => setModalAbierto(false)} className="cerrar-modal-vacunas">
                       <X className="icon" />
                     </button>
-                </header>
+                  </header>
                   <FormularioVacuna
                     onGuardar={guardarVacuna}
                     onCancelar={() => setModalAbierto(false)}

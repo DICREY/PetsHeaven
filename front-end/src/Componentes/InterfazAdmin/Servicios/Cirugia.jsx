@@ -10,7 +10,7 @@ import { Notification } from '../../Global/Notifys'
 import { GetData, PostData, ModifyData } from "../../Varios/Requests"
 import { AuthContext } from "../../../Contexts/Contexts"
 import { ServicesContainer } from '../../Global/Services'
-import { ServicesDetails } from "./Forms/Forms"
+import { FormularioServicio, ServicesDetails } from "./Forms/Forms"
 import { formatPrice } from "../../../Utils/Utils"
 
 // Style
@@ -98,32 +98,37 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
     }
   }, [])
 
-  const agregarCirugia = useCallback(async (e) => {
-    e.preventDefault()
+  const agregarCirugia = useCallback(async (data) => {
+    // e.preventDefault()
     try {
-      const nueva = {
-        cat_ser: 3,
-        nom_ser: formRef.current.nombre,
-        pre_ser: Number(formRef.current.precio),
-        des_ser: formRef.current.descripcion,
-        sta_ser: formRef.current.disponible ? "DISPONIBLE" : "NO DISPONIBLE",
-        tec_des_ser: formRef.current.recomendaciones,
-        fec_cir: formRef.current.fechaCirugia,
-        des_cir: formRef.current.descripcionBreve,
-        res_cir: formRef.current.resultadoEsperado,
-        com_cir: formRef.current.complicaciones,
-        obv_cir: formRef.current.observaciones
-      }
+      setNotify({
+        title: 'Guardando',
+        message: 'Guardando cirugía...',
+        load: 1
+      })
 
-      await PostData(`${mainUrl}/register`, nueva)
-      setMostrarFormulario(false)
-      resetForm()
-      fetchCirugias()
+      if (modoEdicion) {
+        await ModifyData(`${mainUrl}/modify`, data)
+      } else {
+        await PostData(`${mainUrl}/register`, data)
+      }
+      
+      didFetch.current = false // Reset fetch state to allow refetch
+      GetEsthetic()
+      setNotify({
+        title: 'Éxito',
+        message: `servicio ${modoEdicion ? 'actualizado' : 'agregado'} correctamente`,
+        close: setNotify
+      })
+
+      setModalAbierto(false)
+
     } catch (err) {
+      setNotify(null)
       const message = errorStatusHandler(err)
       setNotify({
         title: 'Error',
-        message: `${message}`,
+        message: message,
         close: setNotify
       })
     }
@@ -307,6 +312,16 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
 
         {/* Modal Agregar/Editar */}
         {mostrarFormulario && (
+          <FormularioServicio
+            onGuardar={modoEdicion ? actualizarCirugia : agregarCirugia}
+            onCancelar={cancelarFormulario}
+            initialData={modoEdicion ? cirugiaEditando : {}}
+            modoEdicion={modoEdicion}
+            URL={URL}
+            mainName="cirugía"
+          />
+        )}
+        {/* {mostrarFormulario && (
           <aside className="overlay-cirugia">
             <aside className="formulario-cirugia">
               <div className="header-modal-cirugia">
@@ -437,7 +452,7 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
               </form>
             </aside>
           </aside>
-        )}
+        )} */}
 
         {/* Modal Detalle */}
         {mostrarDetalle && cirugiaDetalle && (

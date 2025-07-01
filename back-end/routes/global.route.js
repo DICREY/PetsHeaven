@@ -77,6 +77,42 @@ Route.get('/services', async (req,res) => {
     }
 })
 
+Route.get('/type/services', async (req,res) => {
+    // Vars
+    const service = new Services()
+    try {
+        const services = await service.FindTypeServices()
+
+        // Verify if exist 
+        if (!services.result) res.status(404).json({ message: "servicios no encontrados" })
+
+        res.status(200).json(services)
+    } catch (err) {
+        console.log(err)
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
+        if (err.status) return res.status(err.status).json({ message: err.message })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
+    }
+})
+
+Route.get('/procedures', async (req,res) => {
+    // Vars
+    const service = new Services()
+    try {
+        const services = await service.FindProcedures()
+
+        // Verify if exist 
+        if (!services.result) res.status(404).json({ message: "servicios no encontrados" })
+
+        res.status(200).json(services)
+    } catch (err) {
+        console.log(err)
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
+        if (err.status) return res.status(err.status).json({ message: err.message })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
+    }
+})
+
 Route.get('/info/general', ValidatorRol('administrador'), async (req,res) => {
     // Vars
     const info = new Global()

@@ -3,6 +3,7 @@
 CREATE PROCEDURE pets_heaven.SearchServicesCat()
 BEGIN
     SELECT
+        cs.id_cat,
         cs.nom_cat,
         cs.des_cat AS tec_des_cat,
         cs.img_cat
@@ -12,6 +13,43 @@ BEGIN
         cs.sta_cat = 1
     ORDER BY 
         cs.nom_cat
+    LIMIT 1000;
+END //
+CREATE PROCEDURE pets_heaven.SearchServicesType()
+BEGIN
+    SELECT
+        ts.id_tip_ser,
+        ts.nom_tip_ser,
+        ts.des_tip_ser,
+        ts.tec_des_cat,
+        ts.sta_tip_ser,
+        ts.req_equ_esp,
+        ts.dur_min_tip_ser,
+        ts.cat_tip_ser
+    FROM 
+        tipos_servicios ts
+    WHERE
+        ts.sta_tip_ser = 1
+    ORDER BY 
+        ts.nom_tip_ser
+    LIMIT 1000;
+END //
+
+CREATE PROCEDURE pets_heaven.SearchProcedures()
+BEGIN
+    SELECT
+        p.id_pro,
+        p.nom_pro,
+        p.des_pro,
+        p.cat_pro,
+        p.niv_rie_pro,
+        p.dur_min_pro,
+        p.pro_pro,
+        p.con_esp_pro
+    FROM
+        procedimientos p
+    ORDER BY
+        p.nom_pro
     LIMIT 1000;
 END //
 -- Crear procedimiento para buscar todos los servicios
@@ -155,64 +193,37 @@ BEGIN
 END //
 -- Crear procedimiento para registrar un servicio
 CREATE PROCEDURE pets_heaven.RegisterService(
-    IN p_tip_ser INT, -- ID del tipo de servicio
+    IN p_nom_cat VARCHAR(100),
+    IN p_slug_cat VARCHAR(100),
+    IN p_img_cat TEXT,
+    IN p_des_cat TEXT,
+    IN p_col_hex VARCHAR(7),
+    IN p_nom_tip_ser VARCHAR(100),
+    IN p_des_tip_ser TEXT,
+    IN p_tec_des_cat TEXT,
+    IN p_dur_min_tip_ser INT,
+    IN p_req_equ_esp BOOLEAN,
     IN p_nom_ser VARCHAR(100),
     IN p_pre_ser DECIMAL(10,2),
     IN p_des_ser TEXT,
-    IN p_sta_ser ENUM('DISPONIBLE','NO_DISPONIBLE','TEMPORAL'),
-    IN p_req TEXT,
-    IN p_cos_est_ser DECIMAL(10,2)
-)
-BEGIN
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN
-        ROLLBACK;
-        RESIGNAL;
-    END;
-
-    SET autocommit = 0;
-
-    START TRANSACTION;
-
-    INSERT INTO servicios (
-        tip_ser,
-        nom_ser,
-        des_ser,
-        pre_ser,
-        pre_act_ser,
-        cos_est_ser,
-        sta_ser,
-        req
-    ) VALUES (
-        p_tip_ser,
-        p_nom_ser,
-        p_des_ser,
-        p_pre_ser,
-        p_pre_ser,
-        p_cos_est_ser,
-        p_sta_ser,
-        IFNULL(p_req, 'No registrado')
-    );
-
-    COMMIT;
-
-    SET autocommit = 1;
-END //
--- Crear procedimiento para registrar una cirugía
-CREATE PROCEDURE pets_heaven.RegisterCirugia(
-    IN p_tip_ser INT, -- ID del tipo de servicio (debe ser tipo "Cirugía")
-    IN p_nom_ser VARCHAR(100),
-    IN p_pre_ser DECIMAL(10,2),
-    IN p_des_ser TEXT,
-    IN p_sta_ser ENUM('DISPONIBLE','NO_DISPONIBLE','TEMPORAL'),
-    IN p_req TEXT,
+    IN p_pre_act_ser DECIMAL(10,2),
     IN p_cos_est_ser DECIMAL(10,2),
-    IN p_des_cir VARCHAR(100),
-    IN p_res_cir VARCHAR(200),
-    IN p_com_cir VARCHAR(200),
-    IN p_obv_cir TEXT
+    IN p_sta_ser ENUM('DISPONIBLE','NO_DISPONIBLE','TEMPORAL'),
+    IN p_req TEXT,
+    IN p_nom_pro VARCHAR(100),
+    IN p_des_pro TEXT,
+    IN p_cat_pro INT,
+    IN p_niv_rie_pro ENUM('BAJO', 'MODERADO', 'ALTO', 'CRITICO'),
+    IN p_dur_min_pro INT,
+    IN p_pro_pro TEXT,
+    IN p_con_esp_pro TEXT
 )
 BEGIN
+    DECLARE v_id_cat INT;
+    DECLARE v_id_tip_ser INT;
+    DECLARE v_id_ser INT;
+    DECLARE v_id_pro INT;
+
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
@@ -222,58 +233,49 @@ BEGIN
     SET autocommit = 0;
     START TRANSACTION;
 
-    INSERT INTO servicios (
-        tip_ser,
-        nom_ser,
-        des_ser,
-        pre_ser,
-        pre_act_ser,
-        cos_est_ser,
-        sta_ser,
-        req
-    ) VALUES (
-        p_tip_ser,
-        p_nom_ser,
-        p_des_ser,
-        p_pre_ser,
-        p_pre_ser,
-        p_cos_est_ser,
-        p_sta_ser,
-        IFNULL(p_req, 'No registrado')
-    );
+    -- 1. Insertar o buscar la categoría
+    SELECT id_cat INTO v_id_cat FROM categorias_servicios WHERE nom_cat = p_nom_cat LIMIT 1;
+    IF v_id_cat IS NULL THEN
+        INSERT INTO categorias_servicios (nom_cat, slug, des_cat, col_hex, img_cat)
+        VALUES (p_nom_cat, p_slug_cat, p_des_cat, p_col_hex, p_img_cat);
+        SET v_id_cat = LAST_INSERT_ID();
+    END IF;
 
-    SET @last_id_ser = LAST_INSERT_ID();
+    -- 2. Insertar o buscar el tipo de servicio
+    SELECT id_tip_ser INTO v_id_tip_ser FROM tipos_servicios WHERE nom_tip_ser = p_nom_tip_ser AND cat_tip_ser = v_id_cat LIMIT 1;
+    IF v_id_tip_ser IS NULL THEN
+        INSERT INTO tipos_servicios (cat_tip_ser, nom_tip_ser, des_tip_ser, tec_des_cat, req_equ_esp, dur_min_tip_ser)
+        VALUES (v_id_cat, p_nom_tip_ser, p_des_tip_ser, p_tec_des_cat, p_req_equ_esp, p_dur_min_tip_ser);
+        SET v_id_tip_ser = LAST_INSERT_ID();
+    END IF;
 
-    INSERT INTO procedimientos (
-        nom_pro,
-        des_pro,
-        cat_pro,
-        niv_rie_pro,
-        dur_min_pro,
-        pro_pro,
-        con_esp_pro
-    ) VALUES (
-        p_nom_ser, -- nombre del procedimiento igual al servicio
-        p_des_cir, -- descripción del procedimiento (puedes ajustar)
-        'CIRUGIA',
-        NULL,
-        NULL,
-        NULL,
-        NULL
-    );
+    -- 3. verificar si el servicio ya existe
+    SELECT id_ser INTO v_id_ser FROM servicios WHERE nom_ser = p_nom_ser AND tip_ser = v_id_tip_ser LIMIT 1;
+    IF v_id_ser IS NULL THEN
+        INSERT INTO servicios (
+            tip_ser, nom_ser, des_ser, pre_ser, pre_act_ser, cos_est_ser, sta_ser, req
+        ) VALUES (
+            v_id_tip_ser, p_nom_ser, p_des_ser, p_pre_ser, p_pre_act_ser, p_cos_est_ser, p_sta_ser, p_req
+        );
+        SET v_id_ser = LAST_INSERT_ID();
+    END IF;
 
-    SET @last_id_pro = LAST_INSERT_ID();
+    -- 3. verificar si el procedimiento ya existe
+    SELECT id_pro INTO v_id_pro FROM procedimientos WHERE nom_pro = p_nom_pro AND cat_pro = p_cat_pro LIMIT 1;
+    IF v_id_pro IS NULL THEN
+        INSERT INTO procedimientos (
+            nom_pro, des_pro, cat_pro, niv_rie_pro, dur_min_pro, pro_pro, con_esp_pro
+        ) VALUES (
+            p_nom_pro, p_des_pro, p_cat_pro, p_niv_rie_pro, p_dur_min_pro, p_pro_pro, p_con_esp_pro
+        );
+        SET v_id_pro = LAST_INSERT_ID();
+    END IF;
 
+    -- 5. Asociar el procedimiento al servicio
     INSERT INTO servicios_procedimientos (
-        id_ser,
-        id_pro,
-        es_principal,
-        ord_eje
+        id_ser, id_pro, es_principal, ord_eje
     ) VALUES (
-        @last_id_ser,
-        @last_id_pro,
-        TRUE,
-        1
+        v_id_ser, v_id_pro, TRUE, 1
     );
 
     COMMIT;
@@ -577,6 +579,7 @@ BEGIN
         tp.des_tip_pru,
         tp.met_est_tip_pru,
         tp.tie_est_hrs_tip_pru,
+        tp.cos_est_tip_pru,
         tp.ins_pre_tip_pru,
         tp.par_ref_tip_pru,
         pl.fec_sol_pru_lab,
@@ -585,14 +588,35 @@ BEGIN
         pl.fec_res_pru_lab,
         pl.est_pru_lab,
         pl.pri_pru_lab,
+        pl.cos_fin_pru_lab,
         pl.obs_mue_pru_lab,
-        pl.res_pru_lab
-        /* s.cos_est_ser,
+        pl.res_pru_lab,
+        s.cos_est_ser,
         s.pre_act_ser,
         s.pre_ser,
         s.req,
         s.nom_ser,
-        s.des_ser */
+        s.des_ser,
+        (
+            SELECT 
+                GROUP_CONCAT(
+                    CONCAT_WS(';',
+                        p.nom_pro, -- Nombre del procedimiento
+                        p.des_pro, -- Descripción del procedimiento
+                        p.cat_pro, -- Categoría del procedimiento
+                        p.niv_rie_pro, -- Nivel de riesgo
+                        p.dur_min_pro, -- Duración mínima
+                        p.pro_pro, -- Protocolo
+                        p.con_esp_pro -- Consideraciones especiales
+                    ) 
+                    SEPARATOR '---'
+                )
+            FROM 
+                servicios_procedimientos sp
+            JOIN procedimientos p ON p.id_pro = sp.id_pro
+            WHERE
+                sp.id_ser = s.id_ser
+        ) AS proc_ser
     FROM 
         pets_heaven.pruebas_laboratorio pl
     INNER JOIN 
@@ -607,8 +631,8 @@ BEGIN
         pets_heaven.veterinarios vrev ON pl.id_vet_rev_pru_lab = vrev.id_vet
     LEFT JOIN 
         pets_heaven.personas prev ON vrev.id_vet = prev.id_per
-    WHERE 
-        pl.est_pru_lab != 'CANCELADA'
+    LEFT JOIN 
+        pets_heaven.servicios s ON pl.id_ser_pru_lab = s.id_ser
     ORDER BY 
         pl.fec_sol_pru_lab DESC
     LIMIT 1000;
@@ -619,17 +643,21 @@ END //
 /* DROP PROCEDURE pets_heaven.AbleOrDesableService; */
 /* DROP PROCEDURE pets_heaven.SearchVacunas; */
 /* DROP PROCEDURE pets_heaven.RegisterVacuna; */
+/* DROP PROCEDURE pets_heaven.`RegisterService`; */
 /* DROP PROCEDURE pets_heaven.`UpdateVaccineAndProcedure`; */
 /* DROP PROCEDURE pets_heaven.`ChangeVaccineState`; */
 /* DROP PROCEDURE pets_heaven.SearchVacunas; */
 /* DROP PROCEDURE pets_heaven.`GetLaboratoryTests`; */
+/* DROP PROCEDURE pets_heaven.`SearchProcedures`; */
+/* DROP PROCEDURE pets_heaven.`SearchServicesCat`; */
+/* DROP PROCEDURE pets_heaven.`SearchServicesType`; */
 
 /* CALL `SearchServices`(); */
 /* CALL pets_heaven.SearchServicesBy('Cirugia'); */
 /* CALL pets_heaven.AbleOrDesableService('6','Cirugia'); */
 /* CALL pets_heaven.SearchVacunas(); */
-CALL `GetLaboratoryTests`();
-
+/* CALL `GetLaboratoryTests`(); */
+/* CALL SearchServicesType(); */
 
 /* CALL pets_heaven.UpdateVaccineAndProcedure('1', 'Vacuna Actualizada', 'Efecto Secundario', 'Categoria', 'Dosis Recomendada', 'Lote', '2025-12-31', '2022-12-31', 30, 'Descripcion', 100.00, 'Procedimiento Actualizado', 'Descripcion del Procedimiento'); */
 /* CALL pets_heaven.RegisterVacuna(

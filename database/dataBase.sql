@@ -137,6 +137,7 @@ CREATE TABLE pets_heaven.tipos_pruebas (
     cat_tip_pru ENUM('HEMATOLOGIA', 'BIOQUIMICA', 'MICROBIOLOGIA', 'PATOLOGIA', 'GENETICA') NOT NULL,INDEX(cat_tip_pru), -- Categoría de la prueba
     met_est_tip_pru VARCHAR(100), -- Método estándar utilizado
     tie_est_hrs_tip_pru INT, -- Tiempo estimado en horas para el resultado
+    cos_est_tip_pru DECIMAL(10,2) NOT NULL, -- Costo estimado en el resultado
     ins_pre_tip_pru TEXT DEFAULT 'No-registrado', -- Instrucciones de preparación para la prueba
     par_ref_tip_pru TEXT DEFAULT 'No-registrado' -- Parámetros de referencia
 );
@@ -155,6 +156,7 @@ CREATE TABLE pets_heaven.pruebas_laboratorio (
     est_pru_lab ENUM('REGISTRADO', 'MUESTRA_TOMADA', 'EN_PROCESO', 'COMPLETADO', 'ENTREGADO', 'CANCELADO') DEFAULT 'REGISTRADO',INDEX(est_pru_lab), -- Estado de la prueba
     pri_pru_lab ENUM('ROUTINA', 'URGENTE', 'STAT') DEFAULT 'ROUTINA', -- Prioridad de la prueba
     obs_mue_pru_lab TEXT, -- Observaciones sobre la muestra
+    cos_fin_pru_lab DECIMAL(10,2) DEFAULT 0.00, -- Costo final de la prueba
     res_pru_lab TEXT DEFAULT 'No-registrado', -- Resultados de la prueba en formato
     id_vet_rev_pru_lab INT, -- ID del veterinario revisor
     FOREIGN KEY (id_mas_pru_lab) REFERENCES mascotas(id_mas) ON UPDATE CASCADE ON DELETE CASCADE,
