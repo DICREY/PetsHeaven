@@ -10,7 +10,6 @@ import { formatDate, getAge, errorStatusHandler, checkImage, uploadImg } from '.
 import { ModifyData, PostData } from '../Varios/Requests'
 import { Description } from '../Global/Description'
 import { Notification } from '../Global/Notifys'
-import { HeaderUser } from '../BarrasNavegacion/HeaderUser'
 import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
 import { AuthContext } from '../../Contexts/Contexts'
 import Footer from '../Varios/Footer2'
@@ -283,7 +282,7 @@ export const PerfilPropietario = ({
     <main className='contenedorpageProps'>
       <NavBarAdmin />
       <main className='principalpageProp'>
-        {admin ? (<HeaderAdmin URL={URL} />) : (<HeaderUser />)}
+        <HeaderAdmin URL={URL} />
 
         <section className='tarjetagesusuario'>
           <section className='contenedorProps'>

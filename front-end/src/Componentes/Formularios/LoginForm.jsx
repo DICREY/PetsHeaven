@@ -11,7 +11,7 @@ import { Notification } from '../Global/Notifys'
 // Import styles
 import '../../../src/styles/Formularios/login.css'
 
-// Main component 
+// Component
 export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = '' }) => {
   // Dynamic Vars 
   const [verPassword, setVerPassword] = useState(false)
@@ -34,6 +34,7 @@ export const LoginForm = ({ URL = "", arriveTo = '', imgDefault = '' }) => {
     mode: 'onChange',
   })
 
+  // Functions 
   // Manejador de envío del formulario
   const onSubmit = async (datas) => {
     // Vars

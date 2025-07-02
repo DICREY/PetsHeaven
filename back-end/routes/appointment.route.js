@@ -151,7 +151,7 @@ Route.post('/register', ValidatorRol("veterinario"), async (req, res) => {
     
     try {
         const created = await appoin.registAppointment(data)
-        if (created.result) return res.status(201).json(created)
+        if (created.success) return res.status(201).json(created)
 
         res.status(500).json({ message: "No se pudo registrar la cita" })
     } catch (err) {
@@ -168,7 +168,7 @@ Route.put('/modify', ValidatorRol("veterinario"), async (req, res) => {
 
     try {
         const updated = await appoin.modifyAppointment(data)
-        if (updated.result) return res.status(200).json(updated)
+        if (updated.success) return res.status(200).json(updated)
 
         res.status(500).json({ message: "No se pudo modificar la cita" })
     } catch (err) {
@@ -184,7 +184,7 @@ Route.put('/cancel', ValidatorRol("veterinario"), async (req, res) => {
 
     try {
         const cancelled = await appoin.disableAppointment(data)
-        if (cancelled.result) return res.status(200).json(cancelled)
+        if (cancelled.success) return res.status(200).json(cancelled)
 
         res.status(500).json({ message: "No se pudo cancelar la cita" })
     } catch (err) {

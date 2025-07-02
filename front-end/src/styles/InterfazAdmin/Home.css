@@ -1,14 +1,3 @@
-.contenedoradminhome {
-  height: 100vh;
-  width: 100vw;
-}
-.tablero-admin {
-  height: 100vh;
-  width: 100%;
-  background-color: var(--background);
-  overflow: auto;
-}
-
 .contenido-principal-admin {
   padding: 1.5rem;
   width: 100%;

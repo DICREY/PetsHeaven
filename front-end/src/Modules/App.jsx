@@ -114,7 +114,7 @@ export default function App () {
       <BrowserRouter>
         <Routes>
           {/* Private routes */}
-          <Route path='user/pets' element={
+          <Route path='/user/home' element={
             <PrivateRoute children={<InicioPage  
               setPetSelect={setPetSelect}
               URL={URL}
@@ -149,9 +149,6 @@ export default function App () {
           <Route path='notificaciones' element={
             <PrivateRoute children={<TodasLasNotificaciones URL={URL} />}/>}>
           </Route>
-          {/* <Route path='/pet/medical-history' element={
-            <PrivateRoute children={<PetMedicalHistory URL={URL} />}/>}>
-          </Route> */}
 
           {/* Admin routes  */}
           <Route path='/admin' element={<MainAdmin />} >
@@ -167,13 +164,13 @@ export default function App () {
             <Route path='actualizar/datos personal' element={
               <AdminRoute children={<ConfiguracionUsuarioCrud userSelect={userSelect} URL={URL} />} />} >
             </Route>
-            <Route path='administracion' element={
+            <Route path='home' element={
               <AdminRoute children={<VeterinaryDashboard URL={URL} setPetSelect={setPetSelect} />} />} >
             </Route>
           </Route>
           
           {/* Vet routes */}
-          <Route path='home/staff' element={
+          <Route path='staff/home' element={
             <VetRoute children={<PanelVeterinario URL={URL} imgDefault={imgUserDefault} setPetSelect={setPetSelect} />} />
           } />
           <Route path='mascota/registro' element={
@@ -228,7 +225,7 @@ export default function App () {
               arriveTo={arriveTo}
             /> } /> 
           <Route path='user/register' element={<Registro URL={URL} imgDefault={imgUserDefault} />} />
-          <Route path='user/recuperar' element={<ForgotPassword />} />
+          <Route path='user/recuperar' element={<ForgotPassword URL={URL} />} />
           <Route path='internal' element={<ErrorInternalServer />} />
           <Route path='/politica-cookies' element={<CookiePolicy />} />
           <Route path='*' element={<NotFound />} />

@@ -1,4 +1,4 @@
--- Active: 1746046445434@@127.0.0.1@3306@pets_heaven
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.RegistPets(
     IN p_nom_mas VARCHAR(100),
     IN p_esp_mas VARCHAR(100),
@@ -247,6 +247,8 @@ CREATE PROCEDURE pets_heaven.DeletePetBy(
     IN p_second_by VARCHAR(100)
 )
 BEGIN
+    DECLARE p_sta_mas INT;
+    DECLARE p_id_per INT;
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
@@ -257,26 +259,33 @@ BEGIN
 
     START TRANSACTION;
 
-    IF (SELECT id_per FROM personas WHERE doc_per = p_persona) IS NULL THEN 
+    SELECT id_per INTO p_id_per FROM personas WHERE doc_per = p_first_by;
+    IF p_id_per IS NULL THEN 
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta persona no esta registrada en el sistema';
     END IF;
 
-    IF (SELECT id_mas FROM mascotas WHERE nom_mas = p_nom_mas) IS NULL THEN 
+    SELECT estado INTO p_sta_mas FROM mascotas WHERE nom_mas = p_second_by AND id_mas = p_id_per;
+    IF p_sta_mas IS NULL THEN 
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta mascota no esta registrada en el sistema';
     END IF;
 
-    UPDATE 
-        mascotas m, personas p
-    SET 
-        m.estado = 0
-    WHERE 
-        m.estado = 1
-        AND p.estado = 1
-        AND m.nom_mas = p_second_by
-        AND ( 
-            p.email_per = p_first_by
-            OR p.doc_per = p_first_by
-        );
+    IF p_sta_mas = 0 THEN 
+        UPDATE 
+            mascotas m
+        SET 
+            m.estado = 1
+        WHERE 
+            m.nom_mas = p_second_by
+            AND m.id_pro_mas = p_id_per;
+    ELSEIF p_sta_mas = 1 THEN
+        UPDATE 
+            mascotas m
+        SET 
+            m.estado = 0
+        WHERE 
+            m.nom_mas = p_second_by
+            AND m.id_pro_mas = p_id_per;
+    END IF;
 
     COMMIT;
 
@@ -361,9 +370,11 @@ BEGIN
     LIMIT 1000;
 END //
 
-/* CALL pets_heaven.SearchHistoryBy('luna','87654321'); */
 /* DROP PROCEDURE pets_heaven.SearchHistoryBy; */
 /* DROP PROCEDURE pets_heaven.SearchPets; */
 /* DROP PROCEDURE pets_heaven.SearchPetsBy; */
 /* DROP PROCEDURE pets_heaven.SearchPetBy; */
 /* DROP PROCEDURE pets_heaven.SearchHistoryBy; */
+/* DROP PROCEDURE pets_heaven.`DeletePetBy`; */
+
+/* CALL pets_heaven.SearchHistoryBy('luna','87654321'); */

@@ -1,10 +1,4 @@
 /* Base Styles */
-.contenedoradminhome {
-  display: flex;
-  background-color: var(--background);
-  overflow: auto;
-}
-
 .principaladminhome {
   flex: 1;
   height: 100vh;

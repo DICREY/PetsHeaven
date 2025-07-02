@@ -45,13 +45,13 @@ export const NavBar = () => {
     if (log) {
       if (mainRol === 'Administrador') {
         setRedirectTo('Administración')
-        setUrl('/admin/administracion')
+        setUrl('/admin/home')
       } else if (mainRol === 'Veterinario') {
-        setRedirectTo('Consultorio')
-        setUrl('/consultorio')
+        setRedirectTo('Panel medico')
+        setUrl('/staff/home')
       } else {
-        setRedirectTo('Mascotas')
-        setUrl('/user/pets')
+        setRedirectTo('Tú Panel')
+        setUrl('/user/home')
       }
     }
   }, [])

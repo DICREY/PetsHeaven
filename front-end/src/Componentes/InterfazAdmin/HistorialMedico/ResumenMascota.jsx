@@ -1,15 +1,29 @@
-import React from "react"
-import { useState } from "react"
-import { User, Phone, MapPin, Edit, Save, X } from "lucide-react"
-import "../../../styles/InterfazAdmin/HistorialMedico/ResumenMascota.css"
-import { CheckImage } from "../../../Utils/Utils"
-import { formatDate } from "../../Varios/Util"
+// Librarys 
+import React, { useContext, useState } from "react"
+import { User, Phone, MapPin, Edit, Save, X, Trash2 } from "lucide-react"
+import { useNavigate } from "react-router"
 
-export default function ResumenMascota({ petData, setPetData, imgDefault = '' }) {
+// Imports 
+import { CheckImage } from "../../../Utils/Utils"
+import { errorStatusHandler, formatDate } from "../../Varios/Util"
+import { AuthContext } from "../../../Contexts/Contexts"
+import { ModifyData } from "../../Varios/Requests"
+
+// Import styles 
+import "../../../styles/InterfazAdmin/HistorialMedico/ResumenMascota.css"
+
+// Component 
+export default function ResumenMascota({ petData, setPetData, imgDefault = '', URL = '', setNotify }) {
+  // Dynamic vars 
   const [isEditing, setIsEditing] = useState(false)
   const [editData, setEditData] = useState(petData)
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false)
 
+  // Vars 
+  const { admin } = useContext(AuthContext)
+  const navigate = useNavigate()
+
+  // Functions 
   const handleSave = () => {
     setPetData(editData)
     setIsEditing(false)
@@ -52,6 +66,39 @@ export default function ResumenMascota({ petData, setPetData, imgDefault = '' })
     }
   }
 
+  const deletePet = async () => {
+    // Vars
+    const deleteURL = `${URL}/pet/delete`
+    setNotify({
+        title: 'Validando...',
+        message: 'Verificando datos proporcionados',
+        load: 1
+    })
+    try {
+        const deleted = await ModifyData(deleteURL, {
+            nom_mas: petData.nom_mas,
+            doc_per: petData.doc_per
+        })
+        setNotify(null)
+        if (deleted?.deleted) {
+            setNotify({
+                title: 'Mascota Desactivada',
+                message: 'La mascota ha sido desactivada correctamente.',
+                close: setNotify
+            })
+            setTimeout(() => navigate(-1),2000)
+        }
+    } catch (err) {
+        setNotify(null)
+        const message = errorStatusHandler(err)
+        setNotify({
+            title: 'Error',
+            message: message,
+            close: setNotify
+        })
+    }
+  }
+
   return (
     <aside className="cabecera-masc">
       <section className="contenido-masc">
@@ -82,10 +129,18 @@ export default function ResumenMascota({ petData, setPetData, imgDefault = '' })
                 </button>
               </>
             ) : (
-              <button onClick={() => setIsEditing(true)} className="EditBtn">
-                <Edit className="ico-masc" />
-                Editar
-              </button>
+              <>
+                { admin && (
+                  <button className='DeleteBtn' onClick={deletePet}>
+                    <Trash2 className='icon' />
+                    <span>Desactivar</span>
+                  </button>
+                )}
+                <button onClick={() => setIsEditing(true)} className="EditBtn">
+                  <Edit className="ico-masc" />
+                  Editar
+                </button>
+              </>
             )}
           </div>
         </div>
@@ -197,31 +252,35 @@ export default function ResumenMascota({ petData, setPetData, imgDefault = '' })
                   <User className="ico-masc" />
                   Propietario
                 </h3>
-                <div className="datos-prop-masc">
+                <div className="datos-prop-masc-line">
                   <div className="campo-prop-masc">
                     <span className="etiqueta-prop-masc">Nombre:</span>
                     {isEditing ? (
                       <input
                         value={editData.nom_per}
-                        onChange={(e) => handleChange("owner.name", e.target.value)}
+                        onChange={(e) => handleChange("nom_per", e.target.value)}
                         className="input-prop-masc"
                       />
                     ) : (
-                      <p className="valor-prop-masc">{petData.nom_per} {petData.ape_per}</p>
+                      <p className="valor-prop-masc">{petData.nom_per}</p>
+                    )}
+                  </div>
+                  <div className="campo-prop-masc">
+                    <span className="etiqueta-prop-masc">Apellido:</span>
+                    {isEditing ? (
+                      <input
+                        value={editData.ape_per}
+                        onChange={(e) => handleChange("ape_per", e.target.value)}
+                        className="input-prop-masc"
+                      />
+                    ) : (
+                      <p className="valor-prop-masc">{petData.ape_per}</p>
                     )}
                   </div>
                 </div>
                 <div className="campo-prop-masc">
                     <span className="etiqueta-prop-masc">Documento:</span>
-                    {isEditing ? (
-                      <input
-                        value={editData.doc_per}
-                        onChange={(e) => handleChange("owner.email", e.target.value)}
-                        className="input-prop-masc"
-                      />
-                    ) : (
-                      <p className="valor-prop-masc">{petData.doc_per}</p>
-                    )}
+                    <p className="valor-prop-masc">{petData.doc_per}</p>
                   </div>
               </div>
 
@@ -236,7 +295,7 @@ export default function ResumenMascota({ petData, setPetData, imgDefault = '' })
                     {isEditing ? (
                       <input
                         value={editData.email_per}
-                        onChange={(e) => handleChange("owner.email", e.target.value)}
+                        onChange={(e) => handleChange("email_per", e.target.value)}
                         className="input-prop-masc"
                       />
                     ) : (
@@ -244,11 +303,11 @@ export default function ResumenMascota({ petData, setPetData, imgDefault = '' })
                     )}
                   </div>
                   <div className="campo-prop-masc">
-                    <span className="etiqueta-prop-masc">Teléfono:</span>
+                    <span className="etiqueta-prop-masc">Celular:</span>
                     {isEditing ? (
                       <input
                         value={editData.cel_per}
-                        onChange={(e) => handleChange("owner.phone", e.target.value)}
+                        onChange={(e) => handleChange("cel_per", e.target.value)}
                         className="input-prop-masc"
                       />
                     ) : (

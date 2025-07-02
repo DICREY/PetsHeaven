@@ -9,11 +9,8 @@ import { Notification } from '../Global/Notifys'
 import { GetData } from '../Varios/Requests'
 import { errorStatusHandler, formatDate, searchFilter } from '../Varios/Util'
 import { AuthContext } from '../../Contexts/Contexts'
-
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
-import { HeaderUser } from '../BarrasNavegacion/HeaderUser'
-import Footer from '../Varios/Footer2'
 
 // Import styles 
 import '../../../src/styles/InterfazAdmin/Consultorio.css'
@@ -40,7 +37,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
       const data = await GetData(`${mainUrl}/all`)
       setNotify(null)
 
-      if (data[0]) formatDatas(data[0])
+      if (data) formatDatas(data)
       setHeaders({
         'Nombres': 'nom_per',
         'Documento': 'doc_per',
@@ -63,7 +60,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
     try {
       const pets = await GetData(`${URL}/pet/all`)
       setNotify(null)
-      if (pets[0]) setPetsDataAlmc(pets[0])
+      if (pets) setPetsDataAlmc(pets)
     } catch (err) {
       setNotify(null)
       const message = errorStatusHandler(err)
@@ -181,10 +178,12 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
   }
 
   useEffect(() => {
+    if (didFetch.current) return
+    didFetch.current = true
+    
     const REFRESH_INTERVAL = 2 * 60 * 1000 // 2 minutes
     let intervalId
 
-    didFetch ? didFetch : false
     GetDataOwners()
     getPets()
 
@@ -276,7 +275,6 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
             />
           </div>
         </article>
-        <Footer />
       </section>
 
       {notify && (

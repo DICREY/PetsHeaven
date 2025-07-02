@@ -10,10 +10,8 @@ import { formatDate, errorStatusHandler, checkImage, uploadImg, searchFilter } f
 import { Notification } from '../Global/Notifys'
 import { GetData, PostData } from '../Varios/Requests'
 import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
-import { HeaderUser } from '../BarrasNavegacion/HeaderUser'
-import Footer from '../Varios/Footer2'
 import { AuthContext } from '../../Contexts/Contexts'
-
+import Footer from '../Varios/Footer2'
 
 // Import styles
 import '../../../src/styles/Formularios/FormularioMascotas.css'
@@ -21,10 +19,10 @@ import '../../../src/styles/Formularios/FormularioMascotas.css'
 // Component 
 export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
   // Dynamic vars
-  const [activeTab, setActiveTab] = useState('personal')
-  const [profileImage, setProfileImage] = useState(null)
-  const [notify, setNotify] = useState(null)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [ activeTab, setActiveTab ] = useState('personal')
+  const [ profileImage, setProfileImage ] = useState(null)
+  const [ notify, setNotify ] = useState(null)
+  const [ isSubmitting, setIsSubmitting ] = useState(false)
   const [ owners, setOwners ] = useState([])
   const [ almcOwners, setAlmcOwners ] = useState([])
   const [ showDropDown, setShowDropDown ] = useState(null)
@@ -53,6 +51,7 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
     }
   })
 
+  // Functions 
   const validatePatientName = (value) => {
     return value.replace(/[0-9]/g, "")
   }
@@ -160,7 +159,7 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
     <main className='contenedorgesusuario'>
       <NavBarAdmin />
       <main className='principalgesusuario'>
-        {admin? (<HeaderAdmin URL={URL} />): (<HeaderUser />)}
+        <HeaderAdmin URL={URL} />
         <main className='main-contenedor-regusuario'>
           <main className='contenedor-regusuario'>
             <header className='cabecera-regusuario'>

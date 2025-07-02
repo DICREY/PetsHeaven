@@ -20,9 +20,9 @@ Route.get('/all', async (req,res) => {
     try {
         // Verifiy if exists
         const search = await staff.findAll()
-        if (!search.result[0][0]) res.status(404).json({ message: "Usuarios no encontrado"})
+        if (!search.result) res.status(404).json({ message: "Usuarios no encontrado"})
 
-        if (search.result[0][0]) return res.status(200).json(search)
+        if (search.result) return res.status(200).json(search)
 
         res.status(500).json({message: 'Error del servidor por favor intentelo mas tarde'})
     } catch (err) {
@@ -36,9 +36,9 @@ Route.get('/all/vet', async (req,res) => {
     try {
         // Verifiy if exists
         const search = await staff.findAllVet()
-        if (!search.result[0][0]) res.status(404).json({ message: "Usuarios no encontrado"})
+        if (!search.result) res.status(404).json({ message: "Usuarios no encontrado"})
 
-        if (search.result[0][0]) return res.status(200).json(search)
+        if (search.result) return res.status(200).json(search)
 
         res.status(500).json({message: 'Error del servidor por favor intentelo mas tarde'})
     } catch (err) {
@@ -59,7 +59,7 @@ Route.get('/all:by', async (req,res) => {
 
         // Verifiy if exists
         const search = await staff.findAllBy(by)
-        if (!search.result[0][0]) return res.status(404).json({ message: "Usuarios no encontrados"})
+        if (!search.result) return res.status(404).json({ message: "Usuarios no encontrados"})
 
         res.status(200).json(search)
     } catch (err) {
@@ -78,7 +78,7 @@ Route.get('/by:by', async (req,res) => {
 
         // Verifiy if exist
         const search = await staff.findBy(by)
-        if (!search.result[0][0]) return res.status(404).json({ message: "Usuario no encontrado" })
+        if (!search.result) return res.status(404).json({ message: "Usuario no encontrado" })
 
         res.status(200).json(search)
     } catch (err) {
@@ -100,7 +100,7 @@ Route.post('/register', async (req,res) => {
     try {
         // Verifiy if exist
         const find = await staff.findBy(toString(body.doc_per))
-        if (find.result[0][0].nom_per) return res.status(302).json({ message: "Persona ya registrada" })
+        if (find.result) return res.status(302).json({ message: "Persona ya registrada" })
 
         const create = await staff.createStaff({hash_pass: await hash(body.cont_per,saltRounds), ...body})
         if(create.created) return res.status(201).json(create)
@@ -121,7 +121,7 @@ Route.put('/modify', async (req,res) => {
     try {
         // Verifiy if exist
         const find = await staff.findBy(toString(body.numeroDocumento))
-        if (!find.result[0][0]) return res.status(404).json({ message: "Usuario no encontrado" })
+        if (!find.result) return res.status(404).json({ message: "Usuario no encontrado" })
 
         const modified = await staff.modify({hash_pass: await hash(body.password,saltRounds), ...body})
         if(modified.modified) return res.status(200).json(modified)
@@ -140,7 +140,7 @@ Route.put('/delete', ValidatorRol("administrador"), async (req,res) => {
     try {
         // Verifiy if exist
         const find = await staff.findBy(toString(body.doc))
-        if (!find.result[0][0]) return res.status(404).json({ message: "Usuario no encontrado" })
+        if (!find.result) return res.status(404).json({ message: "Usuario no encontrado" })
             
         const staffDeleted = await staff.delete(body.doc)
         if (staffDeleted.deleted) return res.status(200).json(staffDeleted)

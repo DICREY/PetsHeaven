@@ -2,7 +2,7 @@
   import React, { useState, useEffect, useRef } from 'react'
   import { useForm } from 'react-hook-form'
   import { Link, useNavigate } from 'react-router-dom'
-  // import emailjs from '@emailjs/browser'
+  import emailjs from '@emailjs/browser'
 
   // Imports 
   import { Register } from '../Varios/Requests'
@@ -129,21 +129,21 @@
       }
       console.log('Datos a enviar:', Params)
 
-      // emailjs.send(
-      //   'service_uxyihs4',
-      //   'template_qro23i8',
-      //   Params,
-      //   'c_HuA2dqs1UP1L1J0'
-      // ).then(
-      //   (result) => {
-      //     setStatus('Mensaje enviado con éxito!')
-      //     console.log('Email enviado correctamente')
-      //   },
-      //   (error) => {
-      //     setStatus('Hubo un error. Intenta de nuevo.')
-      //     console.error('Error al enviar email:', error)
-      //   }
-      // )
+      emailjs.send(
+        'service_uxyihs4',
+        'template_qro23i8',
+        Params,
+        'c_HuA2dqs1UP1L1J0'
+      ).then(
+        (result) => {
+          setStatus('Mensaje enviado con éxito!')
+          console.log('Email enviado correctamente')
+        },
+        (error) => {
+          setStatus('Hubo un error. Intenta de nuevo.')
+          console.error('Error al enviar email:', error)
+        }
+      )
     }
 
     // Funciones auxiliares

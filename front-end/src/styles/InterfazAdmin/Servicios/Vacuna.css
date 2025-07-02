@@ -21,35 +21,38 @@
 
 .modal-vacunas {
   background-color: white;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   width: 100%;
   max-width: 45rem;
   height: 90vh;
   overflow-y: auto;
-  border: 1px solid #e0f7fa;
-  box-shadow: 0 4px 20px rgba(0, 188, 212, 0.15);
+  border: 0.0625rem solid #e0f7fa;
+  box-shadow: 0 0.25rem 1.25rem rgba(0, 188, 212, 0.15);
 
 }
 
 .modal-detalle-vacunas {
   background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  border-radius: 1rem;
+  box-shadow: 0 1.25rem 1.5625rem -0.3125rem rgb(0 0 0 / 0.1), 0 0.5rem 0.625rem -0.375rem rgb(0 0 0 / 0.1);
   width: 100%;
-  max-width: 1000px;
+  max-width: 80vw;
   max-height: 90vh;
-  overflow: hidden;
+  border: 0.0625rem solid #f1f5f9;
+  overflow: auto;
   animation: deslizar 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  border: 1px solid #f1f5f9;
 }
 
 .modal-encabezado-vacunas {
+  position: sticky;
+  top: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem 2rem;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 0.0625rem solid #e2e8f0;
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow: var(--shadow-sm);
 }
 
 .titulo-modal-vacunas {
@@ -61,17 +64,17 @@
 
 .cerrar-modal-vacunas {
   background: #f8fdfe;
-  border: 1px solid #e0f7fa;
+  border: 0.0625rem solid #e0f7fa;
   cursor: pointer;
   color: #7f8c8d;
   transition: all 0.15s ease;
   padding: 0.375rem;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 1.75rem;
+  height: 1.75rem;
 }
 
 .cerrar-modal-vacunas:hover {
@@ -88,9 +91,9 @@
 
 .seccion-formulario-vacunas {
   background-color: #f8fdfe;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   padding: 1.25rem;
-  border: 1px solid #e0f7fa;
+  border: 0.0625rem solid #e0f7fa;
 }
 
 .titulo-seccion-formulario {
@@ -115,9 +118,9 @@
 
 .subseccion-formulario-vacunas {
   background-color: white;
-  border-radius: 6px;
+  border-radius: 0.375rem;
   padding: 1rem;
-  border: 1px solid #e0f7fa;
+  border: 0.0625rem solid #e0f7fa;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -139,8 +142,8 @@
 .textarea-vacunas,
 .select-vacunas {
   padding: 0.625rem;
-  border: 1px solid #e0f7fa;
-  border-radius: 8px;
+  border: 0.0625rem solid #e0f7fa;
+  border-radius: 0.5rem;
   font-family: inherit;
   font-size: 0.8125rem;
   transition: border-color 0.15s ease;
@@ -172,8 +175,8 @@
 }
 
 .checkbox-vacunas {
-  width: 14px;
-  height: 14px;
+  width: 0.875rem;
+  height: 0.875rem;
   accent-color: #00bcd4;
 }
 
@@ -193,7 +196,7 @@
   background-color: #00bcd4;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   padding: 0.75rem 1.5rem;
   font-weight: 500;
   font-size: 0.8125rem;
@@ -210,7 +213,7 @@
   background-color: #f5f5f5;
   color: #666;
   border: none;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   padding: 0.75rem 1.5rem;
   font-weight: 500;
   font-size: 0.8125rem;
@@ -235,9 +238,9 @@
 
 .metrica-vacunas {
   background: #f8fafc;
-  border-radius: 12px;
+  border-radius: 0.75rem;
   padding: 1.5rem;
-  border: 1px solid #f1f5f9;
+  border: 0.0625rem solid #f1f5f9;
   text-align: center;
 }
 
@@ -274,8 +277,8 @@
 .seccion-detalle-vacunas {
   background-color: white;
   padding: 1rem;
-  border-radius: 8px;
-  border: 1px solid #e0f7fa;
+  border-radius: 0.5rem;
+  border: 0.0625rem solid #e0f7fa;
 }
 
 .encabezado-seccion-vacunas {
@@ -319,7 +322,7 @@
 .etiqueta-info-adicional {
   font-weight: 500;
   color: #00BCD4;
-  min-width: 100px;
+  min-width: 6.25rem;
 }
 
 .valor-info-adicional {
@@ -328,9 +331,9 @@
 
 .dosis-recomendadas-vacunas {
   background: #f8fafc;
-  border-radius: 12px;
+  border-radius: 0.75rem;
   padding: 1.5rem;
-  border: 1px solid #f1f5f9;
+  border: 0.0625rem solid #f1f5f9;
 }
 
 .titulo-dosis-vacunas {
@@ -349,8 +352,8 @@
 .dosis-item-vacunas {
   background-color: white;
   padding: 1rem;
-  border-radius: 6px;
-  border-left: 3px solid #00bcd4;
+  border-radius: 0.375rem;
+  border-left: 0.1875rem solid #00bcd4;
 }
 
 .encabezado-dosis-vacunas {
