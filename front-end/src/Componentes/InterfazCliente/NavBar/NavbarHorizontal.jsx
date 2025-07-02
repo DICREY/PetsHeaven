@@ -1,11 +1,14 @@
-import React from "react"
+import React, { useContext } from "react"
 import "../../../styles/InterfazCliente/NavBar/NavbarHorizontal.css"
 import { useState } from "react"
 import { Bell,LogOut, User } from "lucide-react"
+import { AuthContext } from "../../../Contexts/Contexts"
+import { CheckImage } from "../../../Utils/Utils"
 
 const NavbarHorizontal = ({ usuario, onMostrarPerfil }) => {
   const [mostrarPerfil, setMostrarPerfil] = useState(false)
   const [mostrarNotificaciones, setMostrarNotificaciones] = useState(false)
+  const { logout, user } = useContext(AuthContext)
 
   const notificaciones = [
     {
@@ -37,8 +40,8 @@ const NavbarHorizontal = ({ usuario, onMostrarPerfil }) => {
     <header className="navbar-horizontal">
       <div className="contenedor-horizontal">
         <div className="saludo-horizontal">
-          <h1 className="titulo-horizontal">¡Hola, {usuario.nombre.split(" ")[0]}!</h1>
-          <p className="subtitulo-horizontal">Bienvenido de vuelta a tu portal veterinario</p>
+          <h1 className="titulo-horizontal">¡Hola, {user.names} {user.lastNames}!</h1>
+          <p className="subtitulo-horizontal">Bienvenido de vuelta a tú portal</p>
         </div>
 
         <div className="acciones-horizontal">
@@ -83,35 +86,40 @@ const NavbarHorizontal = ({ usuario, onMostrarPerfil }) => {
 
           <div className="dropdown-horizontal">
             <button className="boton-perfil-horizontal" onClick={() => setMostrarPerfil(!mostrarPerfil)}>
-              <img
-                src={usuario.avatar || "/placeholder.svg?height=40&width=40"}
-                alt={usuario.nombre}
+              <CheckImage 
+                src={user.img}
+                imgDefault={''}
                 className="avatar-horizontal"
+                alt=""
               />
-              <span className="nombre-perfil-horizontal">{usuario.nombre.split(" ")[0]}</span>
+              <span className="nombre-perfil-horizontal">{user.names}</span>
             </button>
 
             {mostrarPerfil && (
               <div className="menu-perfil-horizontal">
                 <div className="info-usuario-horizontal">
-                  <img
-                    src={usuario.avatar || "/placeholder.svg?height=50&width=50"}
-                    alt={usuario.nombre}
+                  <CheckImage 
+                    src={user.img}
+                    imgDefault={''}
                     className="avatar-grande-horizontal"
+                    alt={user.names}
                   />
                   <div className="datos-usuario-horizontal">
-                    <h4 className="nombre-usuario-horizontal">{usuario.nombre}</h4>
-                    <p className="email-usuario-horizontal">{usuario.email}</p>
+                    <h4 className="nombre-usuario-horizontal">{user.names}</h4>
+                    <p className="email-usuario-horizontal">{user.email}</p>
                   </div>
                 </div>
 
                 <div className="opciones-perfil-horizontal">
                   <button className="opcion-perfil-horizontal" onClick={onMostrarPerfil}>
-                    <User size={16} />
+                    <User className="icon" />
                     Mi Perfil
                   </button>
-                  <button className="opcion-perfil-horizontal salir-horizontal">
-                    <LogOut size={16} />
+                  <button 
+                    className="opcion-perfil-horizontal salir-horizontal"
+                    onClick={logout}
+                  >
+                    <LogOut className="icon" />
                     Cerrar Sesión
                   </button>
                 </div>
