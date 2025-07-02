@@ -61,7 +61,7 @@ class Global {
                 setTimeout(() => {
                     res({
                         message: "Authorized",
-                        result: result
+                        result: result[0]
                     })
                 },200)
             })

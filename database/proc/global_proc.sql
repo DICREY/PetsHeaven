@@ -27,7 +27,7 @@ BEGIN
             )
     ORDER BY 
         p.nom_per
-    LIMIT 1000;
+    LIMIT 1;
 END //
 CREATE PROCEDURE pets_heaven.ChangePassword(
     IN p_email VARCHAR(100),
