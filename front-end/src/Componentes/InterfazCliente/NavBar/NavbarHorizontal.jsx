@@ -1,7 +1,7 @@
 import React from "react"
 import "../../../styles/InterfazCliente/NavBar/NavbarHorizontal.css"
 import { useState } from "react"
-import { Bell, Settings, LogOut, User } from "lucide-react"
+import { Bell,LogOut, User } from "lucide-react"
 
 const NavbarHorizontal = ({ usuario, onMostrarPerfil }) => {
   const [mostrarPerfil, setMostrarPerfil] = useState(false)
@@ -109,10 +109,6 @@ const NavbarHorizontal = ({ usuario, onMostrarPerfil }) => {
                   <button className="opcion-perfil-horizontal" onClick={onMostrarPerfil}>
                     <User size={16} />
                     Mi Perfil
-                  </button>
-                  <button className="opcion-perfil-horizontal">
-                    <Settings size={16} />
-                    Configuración
                   </button>
                   <button className="opcion-perfil-horizontal salir-horizontal">
                     <LogOut size={16} />
