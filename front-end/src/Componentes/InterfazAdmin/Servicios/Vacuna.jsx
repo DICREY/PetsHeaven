@@ -62,9 +62,9 @@ export function VisualizadorVacunas({ URL = '' }) {
     try {
       const response = await GetData(`${vaccineUrl}/all`)
       setNotify(null)
-      if (response && Array.isArray(response)) {
+      if (response[0] && Array.isArray(response[0])) {
         // Mapeamos los datos del backend al formato que espera el frontend
-        const vacunasMapeadas = response?.map(vacuna => ({
+        const vacunasMapeadas = response[0]?.map(vacuna => ({
           id: vacuna.id_vac,
           nombre: vacuna.nom_vac,
           descripcion: vacuna.des_vac,
