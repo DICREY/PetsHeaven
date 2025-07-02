@@ -71,7 +71,15 @@ export const SpaMascotas = ({ URL = '' }) => {
   }
 
   const abrirModalEditar = (servicio) => {
-    setNuevoServicio(servicio)
+    setNuevoServicio({
+      ...servicio,
+      nom_pro: servicio.proc_ser[0]?.nom_pro,
+      con_esp_pro: servicio.proc_ser[0]?.con_esp_pro,
+      des_pro: servicio.proc_ser[0]?.des_pro,
+      dur_min_pro: servicio.proc_ser[0]?.dur_min_pro,
+      niv_rie_pro: servicio.proc_ser[0]?.niv_rie_pro,
+      pro_pro: servicio.proc_ser[0]?.pro_pro
+    })
     setServicioEditando(servicio.id)
     setModoEdicion(true)
     setMostrarFormulario(true)

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 // Imports
 import { NavBarAdmin } from '../BarrasNavegacion/NavBarAdmi'
 import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
-import { GetData } from "../Varios/Requests"
+import { GetData, PostData } from "../Varios/Requests"
 import { Notification } from "../Global/Notifys"
 import { errorStatusHandler, hourTraductor } from '../Varios/Util'
 import { AuthContext } from "../../Contexts/Contexts"
@@ -13,6 +13,7 @@ import { ReqFunction } from "../../Utils/Utils"
 import AppointmentForm from "../InterfazAdmin/FormulariosAdmin/AgendarCita"
 
 import "../../styles/InterfazAdmin/Home.css"
+import { FormularioServicio } from "./Servicios/Forms/Forms"
 
 // Component 
 export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
@@ -20,6 +21,7 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
   const [ appoint, setAppoint ] = useState()
   const [ infoGeneral, setInfoGeneral ] = useState()
   const [ notify, setNotify ] = useState()
+  const [ servicesForm, setServicesForm ] = useState()
 
   // Vars 
   const mainUrl = `${URL}/appointment`
@@ -32,11 +34,40 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
     { title: "Emergencias", value: infoGeneral?.emg || '0', icon: Clock, color: "rojo" },
   ]
 
+  const saveService = async (data) => {
+    try {
+      setNotify({
+        title: 'Guardando',
+        message: 'Guardando servicio...',
+        load: 1
+      })
+
+      const create = await PostData(`${URL}/service/register`, data)
+      if (create?.success) {
+        setNotify({
+          title: 'Éxito',
+          message: `servicio agregado correctamente`,
+          close: setNotify
+        })
+        setMostrarFormulario(null)
+      }
+
+    } catch (err) {
+      setNotify(null)
+      const message = errorStatusHandler(err)
+      setNotify({
+        title: 'Error',
+        message: message,
+        close: setNotify
+      })
+    }
+  }
+
   const getAppoint = async () => {
     try {
       const data = await GetData(`${mainUrl}/general`)
       setNotify(null)
-      if (data) setAppoint(data[0])
+      if (data) setAppoint(data)
     } catch (err) {
       setNotify(null)
       const message = errorStatusHandler(err)
@@ -159,6 +190,11 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
               <h2>Acciones Rápidas</h2>
 
               <nav className="acciones-rapidas-admin" aria-label="Acciones rápidas">
+                <button type="button" className="AddBtn" onClick={() => setServicesForm(1)}>
+                  <Plus className="icon" aria-hidden="true" />
+                  Nuevo Servicio
+                </button>
+
                 <button type="button" className="AddBtn" onClick={toggleFormulario}>
                   <Plus className="icon" aria-hidden="true" />
                   Nueva Cita
@@ -216,6 +252,14 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
                   </li>
                 </ul>
               </section> */}
+
+              {servicesForm && (
+                <FormularioServicio
+                  onGuardar={saveService}
+                  onCancelar={() => setServicesForm(null)}
+                  URL={URL}
+                />
+              )}
             </aside>
           </section>
         </main>

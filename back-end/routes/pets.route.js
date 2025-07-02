@@ -17,7 +17,7 @@ Route.use(authJWTGlobal)
 Route.get('/all', ValidatorRol("veterinario"), async (req,res) => {
     try {
         const pets = await pet.findAll()
-        if (!pets.result[0][0]) return res.status(404).json({ message: "Mascotas no encontradas" })
+        if (!pets.result) return res.status(404).json({ message: "Mascotas no encontradas" })
         res.status(200).json(pets)
     } catch (err) {
         if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
@@ -35,7 +35,7 @@ Route.get('/all:by',async (req,res) => {
         if (!by) return res.status(400).json({ message: "Petición invalida, faltan datos"})
 
         const pets = await pet.findBy(by)
-        if (!pets.result[0][0]) return res.status(404).json({message: "mascotas no encontradas"})
+        if (!pets.result) return res.status(404).json({message: "mascotas no encontradas"})
 
         res.status(200).json(pets)
     } catch (err) {
@@ -56,7 +56,7 @@ Route.post('/register', ValidatorRol("veterinario"), async (req,res) => {
     try{
         // Verify if exist
         const find = await pet.findAllBy(body.nom_mas,body.doc_per)
-        if (find.result[0][0]) return res.status(409).json({message: "La mascota ya existe"})
+        if (find.result) return res.status(409).json({message: "La mascota ya existe"})
 
         const created = await pet.create(body)
         if (created.created) return res.status(201).json(created)
@@ -76,7 +76,7 @@ Route.put('/modify', async (req,res) => {
     try {
         // Verify if exist
         const find = await pet.findAllBy(body.doc_per,body.nom_mas)
-        if (!find.result[0][0]) return res.status(404).json({message: "Mascota no encontrada"})
+        if (!find.result) return res.status(404).json({message: "Mascota no encontrada"})
 
         const petMod = await pet.modify(body)
         if(petMod.modify) return res.status(200).json(petMod)

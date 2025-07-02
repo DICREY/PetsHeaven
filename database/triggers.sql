@@ -1,3 +1,4 @@
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE TABLE pets_heaven.auditoria_usuarios (
     id_auditoria INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
@@ -9,9 +10,7 @@ CREATE TABLE pets_heaven.auditoria_usuarios (
     accion ENUM('INSERT', 'UPDATE', 'DELETE') NOT NULL
 );
 
-DELIMITER //
-
-CREATE TRIGGER tr_auditoria_usuarios
+CREATE TRIGGER pets_heaven.tr_auditoria_usuarios
 AFTER UPDATE ON pets_heaven.personas
 FOR EACH ROW
 BEGIN
@@ -42,9 +41,6 @@ BEGIN
     END IF;
     
 END //
-
-DELIMITER ;
-
 CREATE TABLE pets_heaven.historial_mascotas (
     id_historial INT AUTO_INCREMENT PRIMARY KEY,
     id_mascota INT NOT NULL,
@@ -57,9 +53,7 @@ CREATE TABLE pets_heaven.historial_mascotas (
     FOREIGN KEY (id_mascota) REFERENCES mascotas(id_mas)
 );
 
-DELIMITER //
-
-CREATE TRIGGER tr_historial_mascotas
+CREATE TRIGGER pets_heaven.tr_historial_mascotas
 AFTER UPDATE ON pets_heaven.mascotas
 FOR EACH ROW
 BEGIN
@@ -85,5 +79,3 @@ BEGIN
     END IF;
     
 END //
-
-DELIMITER ;

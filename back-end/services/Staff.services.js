@@ -74,7 +74,7 @@ class Staff extends People {
                 setTimeout(() => {
                     res({
                         message: "Users found",
-                        result: result
+                        result: result[0]
                     })
                 },1000)
             })

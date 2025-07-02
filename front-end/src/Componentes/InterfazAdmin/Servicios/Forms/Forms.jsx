@@ -1,10 +1,10 @@
 // Librarys 
 import React, { useEffect, useState } from "react"
-import { X, FileText, Target, AlertTriangle, Clock, PlusCircle } from "lucide-react"
+import { X, FileText, Target, AlertTriangle, Clock, PlusCircle, ChevronDown } from "lucide-react"
 
 // Imports 
-import { errorStatusHandler, formatDate } from "../../../Varios/Util"
-import { formatPrice } from "../../../../Utils/Utils"
+import { errorStatusHandler, formatDate, searchFilter } from "../../../Varios/Util"
+import { formatPrice, toDatetimeLocal } from "../../../../Utils/Utils"
 import { GetData } from "../../../Varios/Requests"
 
 // Component 
@@ -335,10 +335,10 @@ export const FormularioServicio = ({ onGuardar, onCancelar, initialData = {}, mo
   const [categoriasList, setCategoriasList] = useState([])
   const [tiposServiciosList, setTiposServiciosList] = useState([])
   const [proceduresList, setProceduresList] = useState([])
+  const [procedimientoSeleccionado, setProcedimientoSeleccionado] = useState('')
   const [errores, setErrores] = useState({})
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('')
   const [tipoSeleccionado, setTipoSeleccionado] = useState('')
-  const [procedimientoSeleccionado, setProcedimientoSeleccionado] = useState('')
   const [form, setForm] = useState({
     nom_cat: mainName ? mainName : initialData.nom_cat || "",
     slug: initialData.slug || "",
@@ -347,7 +347,7 @@ export const FormularioServicio = ({ onGuardar, onCancelar, initialData = {}, mo
     col_hex: initialData.col_hex || "#4b8ef5",
     nom_tip_ser: initialData.nom_tip_ser || "",
     des_tip_ser: initialData.des_tip_ser || "",
-    tec_des_cat: initialData.tec_des_cat || "",
+    tec_des_tip_ser: initialData.tec_des_tip_ser || "",
     dur_min_tip_ser: initialData.dur_min_tip_ser || "",
     req_equ_esp: initialData.req_equ_esp ?? false,
     nom_ser: initialData.nom_ser || "",
@@ -412,7 +412,7 @@ export const FormularioServicio = ({ onGuardar, onCancelar, initialData = {}, mo
         ...prev,
         nom_tip_ser: value,
         des_tip_ser: "",
-        tec_des_cat: "",
+        tec_des_tip_ser: "",
         dur_min_tip_ser: "",
         req_equ_esp: false
       }))
@@ -421,7 +421,7 @@ export const FormularioServicio = ({ onGuardar, onCancelar, initialData = {}, mo
         ...prev,
         nom_tip_ser: "",
         des_tip_ser: "",
-        tec_des_cat: "",
+        tec_des_tip_ser: "",
         dur_min_tip_ser: "",
         req_equ_esp: false
       }))
@@ -610,7 +610,7 @@ export const FormularioServicio = ({ onGuardar, onCancelar, initialData = {}, mo
                   </div>
                   <div className="campo-vacunas">
                     <label className="etiqueta-campo-vacunas">Descripción Técnica</label>
-                    <textarea name="tec_des_cat" value={form.tec_des_cat} onChange={handleChange} className="textarea-vacunas" />
+                    <textarea name="tec_des_tip_ser" value={form.tec_des_tip_ser} onChange={handleChange} className="textarea-vacunas" />
                   </div>
                   <div className="campo-vacunas">
                     <label className="etiqueta-campo-vacunas">Duración mínima (minutos)</label>
@@ -902,5 +902,672 @@ export const ServicesDetails = ({
         </div>
       </div>
     </section>
+  )
+}
+
+
+export const FormularioLabTest = ({
+  onGuardar,
+  onCancelar,
+  initialData = {},
+  modoEdicion = false,
+  URL = '',
+  mainName = ''
+}) => {
+  const [ proceduresList, setProceduresList ] = useState([])
+  const [ procedimientoSeleccionado, setProcedimientoSeleccionado ] = useState('')
+  const [ errores, setErrores ] = useState({})
+  const [ seletedCategory, setSeletedCategory ] = useState('')
+  const [ categoriesList, setCategoriesList ] = useState()
+  const [ testTypeList, setTestTypeList ] = useState()
+  const [ staff, setStaff ] = useState()
+  const [ pets, setPets ] = useState()
+  const [ almcPets, setAlmcPets ] = useState()
+  const [ showDropDown, setShowDropDown ] = useState(null)
+  const [ form, setForm ] = useState({
+    cod_ord_pru_lab: initialData.cod_ord_pru_lab || "",
+    nom_mas: initialData.nom_mas || "",
+    doc_vet_sol: initialData.doc_vet_sol || "",
+    nom_tip_pru: initialData.nom_tip_pru || "",
+    cod_tip_pru: initialData.cod_tip_pru || "",
+    cat_tip_pru: initialData.cat_tip_pru || "",
+    des_tip_pru: initialData.des_tip_pru || "",
+    met_est_tip_pru: initialData.met_est_tip_pru || "",
+    tie_est_hrs_tip_pru: initialData.tie_est_hrs_tip_pru || "",
+    cos_est_tip_pru: initialData.cos_est_tip_pru || "",
+    ins_pre_tip_pru: initialData.ins_pre_tip_pru || "",
+    par_ref_tip_pru: initialData.par_ref_tip_pru || "",
+    nom_pro: initialData.nom_pro || "",
+    des_pro: initialData.des_pro || "",
+    cat_pro: initialData.cat_pro || "",
+    niv_rie_pro: initialData.niv_rie_pro || "BAJO",
+    dur_min_pro: initialData.dur_min_pro || "",
+    pro_pro: initialData.pro_pro || "",
+    con_esp_pro: initialData.con_esp_pro || "",
+    nom_ser: initialData.nom_ser || "",
+    fec_sol_pru_lab: toDatetimeLocal(initialData.fec_sol_pru_lab) || "",
+    fec_mue_pru_lab: toDatetimeLocal(initialData.fec_mue_pru_lab) || "",
+    fec_pro_pru_lab: toDatetimeLocal(initialData.fec_pro_pru_lab) || "",
+    fec_res_pru_lab: toDatetimeLocal(initialData.fec_res_pru_lab) || "",
+    est_pru_lab: initialData.est_pru_lab || "REGISTRADO",
+    pri_pru_lab: initialData.pri_pru_lab || "ROUTINA",
+    obs_mue_pru_lab: initialData.obs_mue_pru_lab || "",
+    cos_fin_pru_lab: initialData.cos_fin_pru_lab || "",
+    res_pru_lab: initialData.res_pru_lab || "",
+    doc_vet_rev: initialData.doc_vet_rev || ""
+  })
+  
+  // Vars 
+  const categoriasTipoPrueba = ["HEMATOLOGIA", "BIOQUIMICA", "MICROBIOLOGIA", "PATOLOGIA", "GENETICA"]
+  const nivelesRiesgo = ["BAJO", "MODERADO", "ALTO", "CRITICO"]
+  const estadosPrueba = ["REGISTRADO", "MUESTRA_TOMADA", "EN_PROCESO", "COMPLETADO", "ENTREGADO", "CANCELADO"]
+  const prioridades = ["ROUTINA", "URGENTE", "STAT"]
+
+  // Functions 
+  const handleChange = (e) => {
+    const { name, value, type } = e.target
+    setForm((prev) => ({
+      ...prev,
+      [name]: type === "number" ? value.replace(/[^0-9.]/g, "") : value
+    }))
+  }
+
+  const handleProcedimientoChange = (e) => {
+    const value = e.target.value
+    setProcedimientoSeleccionado(value)
+    if (value !== "nuevo" && value !== "") {
+      const proc = proceduresList.find(p => p.nom_pro === value)
+      if (proc) {
+        setForm((prev) => ({
+          ...prev,
+          nom_pro: proc.nom_pro,
+          des_pro: proc.des_pro,
+          cat_pro: proc.cat_pro,
+          niv_rie_pro: proc.niv_rie_pro,
+          dur_min_pro: proc.dur_min_pro,
+          pro_pro: proc.pro_pro,
+          con_esp_pro: proc.con_esp_pro
+        }))
+      }
+    } else {
+      setForm((prev) => ({
+        ...prev,
+        nom_pro: "",
+        des_pro: "",
+        cat_pro: "",
+        niv_rie_pro: "BAJO",
+        dur_min_pro: "",
+        pro_pro: "",
+        con_esp_pro: ""
+      }))
+    }
+  }
+
+  const validar = () => {
+    const err = {}
+    if (!form.cod_ord_pru_lab || form.cod_ord_pru_lab.length > 20) err.cod_ord_pru_lab = "Código de orden requerido (máx 20)"
+    if (!form.nom_mas || form.nom_mas.length > 100) err.nom_mas = "Nombre mascota requerido (máx 100)"
+    if (!form.doc_vet_sol || form.doc_vet_sol.length > 100) err.doc_vet_sol = "Veterinario solicitante requerido (máx 100)"
+    if (!form.nom_tip_pru || form.nom_tip_pru.length > 100) err.nom_tip_pru = "Nombre tipo de prueba requerido (máx 100)"
+    if (form.nom_pro.length > 100) err.nom_pro = "Nombre procedimiento muy largo (máx 100)"
+    if (form.nom_ser.length > 100) err.nom_ser = "Nombre servicio muy largo (máx 100)"
+    if (!form.fec_sol_pru_lab) err.fec_sol_pru_lab = "Fecha solicitud requerida"
+    if (!estadosPrueba.includes(form.est_pru_lab)) err.est_pru_lab = "Estado inválido"
+    if (!prioridades.includes(form.pri_pru_lab)) err.pri_pru_lab = "Prioridad inválida"
+    if (form.doc_vet_rev.length > 100) err.doc_vet_rev = "Veterinario revisor muy largo (máx 100)"
+    return err
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const err = validar()
+    setErrores(err)
+    if (Object.keys(err).length === 0) {
+      onGuardar(form)
+    }
+  }
+
+  const filter = (term) => {
+    searchFilter(term,pets, ["nom_mas", "nom_per", "ape_per"],setAlmcPets)
+    if (almcPets) setShowDropDown(1)
+  }
+
+  useEffect(() =>{
+    const GetCategorias = async () => {
+      try {
+        const data = await GetData(`${URL}/global/services`)
+        const mapData = mainName? data?.filter(item => item.nom_cat?.trim()?.toLowerCase() === mainName?.toLowerCase()) : data
+        
+        mainName && setSeletedCategory(mapData[0]?.nom_cat)
+        setCategoriesList(mapData)
+        
+        GetProcedures(mainName?mapData[0]?.id_cat:null)
+      } catch (error) {
+        const message = errorStatusHandler(error)
+      }
+    }
+    
+    const GetTestType = async () => {
+      try {
+        const data = await GetData(`${URL}/global/test-type`)
+        setTestTypeList(data)
+      } catch (error) {
+        const message = errorStatusHandler(error)
+      }
+    }
+
+    const GetProcedures = async (id) => {
+      try {
+        const data = await GetData(`${URL}/global/procedures`)
+        const mapData = id ? data?.filter(item => item.cat_pro === id) : data
+        setProceduresList(mapData)
+      } catch (error) {
+        const message = errorStatusHandler(error)
+      }
+    }
+
+    const GetStaff = async () => {
+      try {
+        const data = await GetData(`${URL}/staff/all/vet`)
+        if (data) setStaff(data)
+      } catch (err) {
+        const message = errorStatusHandler(err)
+        if (err.status === 403) setTimeout(() => {
+            Logout()
+        }, 2000)
+      }
+    }
+
+    const GetPets = async () => {
+      try {
+        const data = await GetData(`${URL}/pet/all`)
+        if (data) {
+          setPets(data)
+          setAlmcPets(data)
+        }
+      } catch (err) {
+        const message = errorStatusHandler(err)
+        if (err.status === 403) setTimeout(() => {
+            Logout()
+        }, 2000)
+      }
+    }
+
+    GetCategorias()
+    GetTestType()
+    GetPets()
+    GetStaff()
+
+    if (initialData) {
+      setProcedimientoSeleccionado(initialData.nom_pro || "")
+    }
+  },[])
+
+  return (
+    <aside className="modal-fondo-laboratorio" role="dialog" aria-modal="true" aria-labelledby="titulo-modal">
+      <section className="modal-laboratorio">
+        <header className="modal-encabezado-laboratorio">
+          <h2 id="titulo-modal" className="titulo-modal-laboratorio">
+            {modoEdicion ? "Editar Examen" : "Agregar Nuevo Examen"}
+          </h2>
+          <button
+            onClick={onCancelar}
+            className="cerrar-modal-laboratorio"
+            aria-label="Cerrar modal"
+          >
+            <X className="icon" aria-hidden="true" />
+          </button>
+        </header>
+        <form className="formulario-vacunas" onSubmit={handleSubmit} autoComplete="off">
+          <section className="seccion-formulario-vacunas">
+            <h4 className="titulo-seccion-formulario">Datos Generales</h4>
+            <div className="campos-formulario-vacunas">
+              <div className="campo-vacunas">
+                <label className="etiqueta-campo-vacunas">Código Orden</label>
+                <input
+                  name="cod_ord_pru_lab"
+                  value={form.cod_ord_pru_lab}
+                  onChange={handleChange}
+                  className="input-vacunas"
+                  maxLength={20}
+                  required
+                />
+                {errores.cod_ord_pru_lab && <span className="mensaje-error">{errores.cod_ord_pru_lab}</span>}
+              </div>
+              <div className="campo-vacunas">
+                <label className="etiqueta-campo-vacunas">Mascota</label>
+                <div className="autocomplete">
+                  <input
+                    type="text"
+                    name="nom_mas"
+                    value={form.nom_mas}
+                    placeholder="Buscar mascota..."
+                    className="campo"
+                    onChange={(e) => {
+                      const value = e.target.value
+                      // const filteredValue = validatePatientName(value)
+                      if (value.length < initialData.nom_mas.length) {
+                        setForm({ ...form, nom_mas: value }) // Limpia el ID si el usuario escribe
+                        filter(value)
+                      }
+                    }}
+                    onFocus={() => setShowDropDown(1)}
+                    onKeyDown={(e) => {
+                      if (e.key >= "0" && e.key <= "9") {
+                        e.preventDefault()
+                      }
+                    }}
+                  />
+                  {showDropDown && (
+                    <div className="dropdown">
+                      {almcPets.map((nom_mas, index) => (
+                        <div
+                          key={index + 9082}
+                          className="dropdown-item"
+                          onClick={() => {
+                            setForm({
+                              ...form,
+                              nom_mas: nom_mas.nom_mas,
+                              id_pro_mas: nom_mas.id_pro_mas,
+                            })
+                            setShowDropDown(false)
+                          }}
+                        >
+                          <div className="dropdown-contenido">
+                            <div className="dropdown-nombre">{nom_mas.nom_mas}</div>
+                            <div className="dropdown-dueno">
+                              {nom_mas.nom_per} {nom_mas.ape_per}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                {errores.nom_mas && <div className="error">{errores.nom_mas}</div>}
+              </div>
+              <div className="campo-vacunas">
+                <label className="etiqueta-campo-vacunas">Veterinario Solicitante</label>
+                <div className="select-wrapper">
+                  <select
+                    name="doc_vet_sol"
+                    value={form.doc_vet_sol}
+                    onChange={handleChange}
+                    className="select"
+                    required
+                  >
+                    <option value="" disabled>
+                      Selecciona un veterinario
+                    </option>
+                    {staff?.map( vet => (
+                      <option key={vet.doc_per} value={vet.doc_per}>
+                        {vet.nom_per} {vet.ape_per} ({vet.esp_vet})
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="select-icono icon" />
+                </div>
+                {errores.doc_vet_sol && <div className="error">{errores.doc_vet_sol}</div>}
+              </div>
+            </div>
+          </section>
+          
+          <section className="seccion-formulario-vacunas">
+            <h4 className="titulo-seccion-formulario">Tipo de Prueba</h4>
+            <div className="campos-formulario-vacunas">
+              <div className="campo-vacunas">
+                <label className="etiqueta-campo-vacunas">Seleccionar Tipo de Prueba</label>
+                <select
+                  name="tipoPruebaSelect"
+                  value={form.nom_tip_pru}
+                  onChange={e => {
+                    const value = e.target.value
+                    setForm(prev => ({
+                      ...prev,
+                      nom_tip_pru: value,
+                      cod_tip_pru: "",
+                      cat_tip_pru: "",
+                      des_tip_pru: "",
+                      met_est_tip_pru: "",
+                      tie_est_hrs_tip_pru: "",
+                      cos_est_tip_pru: "",
+                      ins_pre_tip_pru: "",
+                      par_ref_tip_pru: ""
+                    }))
+                  }}
+                  className="select-vacunas"
+                >
+                  <option value="" disabled>-- Seleccione --</option>
+                  {testTypeList?.map((cat, idx) => (
+                    <option key={idx} value={cat.nom_tip_pru}>{cat.nom_tip_pru}</option>
+                  ))}
+                  <option value="nuevo">-- Nuevo tipo de prueba --</option>
+                </select>
+              </div>
+              {(form.nom_tip_pru === "nuevo" || modoEdicion) && (
+                <>
+                  <div className="campo-vacunas">
+                    <label className="etiqueta-campo-vacunas">Nombre</label>
+                    <input
+                      name="nom_tip_pru"
+                      value={form.nom_tip_pru === "nuevo" ? "" : form.nom_tip_pru}
+                      onChange={handleChange}
+                      className="input-vacunas"
+                      maxLength={100}
+                      required
+                    />
+                    {errores.nom_tip_pru && <span className="mensaje-error">{errores.nom_tip_pru}</span>}
+                  </div>
+                  <div className="campo-vacunas">
+                    <label className="etiqueta-campo-vacunas">Código</label>
+                    <input
+                      name="cod_tip_pru"
+                      value={form.cod_tip_pru}
+                      onChange={handleChange}
+                      className="input-vacunas"
+                      maxLength={20}
+                      required
+                    />
+                    {errores.cod_tip_pru && <span className="mensaje-error">{errores.cod_tip_pru}</span>}
+                  </div>
+                  <div className="campo-vacunas">
+                    <label className="etiqueta-campo-vacunas">Categoría</label>
+                    <select
+                      name="cat_tip_pru"
+                      value={form.cat_tip_pru}
+                      onChange={handleChange}
+                      className="select-vacunas"
+                      required
+                    >
+                      <option value="">Seleccione...</option>
+                      {categoriasTipoPrueba.map((cat) => (
+                        <option key={cat} value={cat}>{cat}</option>
+                      ))}
+                    </select>
+                    {errores.cat_tip_pru && <span className="mensaje-error">{errores.cat_tip_pru}</span>}
+                  </div>
+                  <div className="campo-vacunas">
+                    <label className="etiqueta-campo-vacunas">Descripción</label>
+                    <textarea
+                      name="des_tip_pru"
+                      value={form.des_tip_pru}
+                      onChange={handleChange}
+                      className="textarea-vacunas"
+                      maxLength={1000}
+                    />
+                    {errores.des_tip_pru && <span className="mensaje-error">{errores.des_tip_pru}</span>}
+                  </div>
+                  <div className="campo-vacunas">
+                    <label className="etiqueta-campo-vacunas">Método Estadístico</label>
+                    <input
+                      name="met_est_tip_pru"
+                      value={form.met_est_tip_pru}
+                      onChange={handleChange}
+                      className="input-vacunas"
+                      maxLength={100}
+                    />
+                    {errores.met_est_tip_pru && <span className="mensaje-error">{errores.met_est_tip_pru}</span>}
+                  </div>
+                  <div className="campo-vacunas">
+                    <label className="etiqueta-campo-vacunas">Tiempo Estimado (hrs)</label>
+                    <input
+                      type="number"
+                      name="tie_est_hrs_tip_pru"
+                      value={form.tie_est_hrs_tip_pru}
+                      onChange={handleChange}
+                      className="input-vacunas"
+                      min={0}
+                    />
+                    {errores.tie_est_hrs_tip_pru && <span className="mensaje-error">{errores.tie_est_hrs_tip_pru}</span>}
+                  </div>
+                  <div className="campo-vacunas">
+                    <label className="etiqueta-campo-vacunas">Costo Estimado</label>
+                    <input
+                      type="number"
+                      name="cos_est_tip_pru"
+                      value={form.cos_est_tip_pru}
+                      onChange={handleChange}
+                      className="input-vacunas"
+                      min={0}
+                    />
+                    {errores.cos_est_tip_pru && <span className="mensaje-error">{errores.cos_est_tip_pru}</span>}
+                  </div>
+                  <div className="campo-vacunas">
+                    <label className="etiqueta-campo-vacunas">Instrucciones Previa</label>
+                    <textarea
+                      name="ins_pre_tip_pru"
+                      value={form.ins_pre_tip_pru}
+                      onChange={handleChange}
+                      className="textarea-vacunas"
+                      maxLength={1000}
+                    />
+                    {errores.ins_pre_tip_pru && <span className="mensaje-error">{errores.ins_pre_tip_pru}</span>}
+                  </div>
+                  <div className="campo-vacunas">
+                    <label className="etiqueta-campo-vacunas">Parámetros de Referencia</label>
+                    <textarea
+                      name="par_ref_tip_pru"
+                      value={form.par_ref_tip_pru}
+                      onChange={handleChange}
+                      className="textarea-vacunas"
+                      maxLength={1000}
+                    />
+                    {errores.par_ref_tip_pru && <span className="mensaje-error">{errores.par_ref_tip_pru}</span>}
+                  </div>
+                </>
+              )}
+            </div>
+          </section>
+
+          <section className="seccion-formulario-vacunas">
+            <h4 className="titulo-seccion-formulario">Procedimiento Principal</h4>
+            <div className="campos-formulario-vacunas">
+              <div className="campo-vacunas">
+                <label className="etiqueta-campo-vacunas">Seleccionar Procedimiento</label>
+                <select
+                  name="procedimientoSelect"
+                  value={procedimientoSeleccionado}
+                  onChange={handleProcedimientoChange}
+                  className="select-vacunas"
+                >
+                  <option value="" disabled>-- Seleccione --</option>
+                  {proceduresList?.map((proc, index) => (
+                    <option key={index} value={proc.nom_pro}>{proc.nom_pro} ({seletedCategory})</option>
+                  ))}
+                  <option value="nuevo">-- Nuevo procedimiento --</option>
+                </select>
+              </div>
+              {(procedimientoSeleccionado === "nuevo" || modoEdicion) && (
+                <>
+                  <div className="campo-vacunas">
+                    <label className="etiqueta-campo-vacunas">Nombre</label>
+                    <input name="nom_pro" value={form.nom_pro} onChange={handleChange} className="input-vacunas" />
+                    {errores.nom_pro && <span className="mensaje-error">{errores.nom_pro}</span>}
+                  </div>
+                  <div className="campo-vacunas">
+                    <label className="etiqueta-campo-vacunas">Descripción</label>
+                    <textarea name="des_pro" value={form.des_pro} onChange={handleChange} className="textarea-vacunas" />
+                  </div>
+                  <div className="campo-vacunas">
+                    <label className="etiqueta-campo-vacunas">Nivel de riesgo</label>
+                    <select name="niv_rie_pro" value={form.niv_rie_pro} onChange={handleChange} className="select-vacunas">
+                      {nivelesRiesgo.map(n => <option key={n} value={n}>{n}</option>)}
+                    </select>
+                  </div>
+                  <div className="campo-vacunas">
+                    <label className="etiqueta-campo-vacunas">Duración mínima (minutos)</label>
+                    <input type="number" name="dur_min_pro" value={form.dur_min_pro} onChange={handleChange} className="input-vacunas" />
+                    {errores.dur_min_pro && <span className="mensaje-error">{errores.dur_min_pro}</span>}
+                  </div>
+                  <div className="campo-vacunas">
+                    <label className="etiqueta-campo-vacunas">Protocolo</label>
+                    <textarea name="pro_pro" value={form.pro_pro} onChange={handleChange} className="textarea-vacunas" />
+                  </div>
+                  <div className="campo-vacunas">
+                    <label className="etiqueta-campo-vacunas">Consideraciones especiales</label>
+                    <textarea name="con_esp_pro" value={form.con_esp_pro} onChange={handleChange} className="textarea-vacunas" />
+                  </div>
+                </>
+              )}
+            </div>
+          </section>
+
+          <section className="seccion-formulario-vacunas">
+            <h4 className="titulo-seccion-formulario">Datos de Laboratorio</h4>
+            <div className="campos-formulario-vacunas">
+              <div className="campo-vacunas">
+                <label className="etiqueta-campo-vacunas">Servicio</label>
+                <input
+                  name="nom_ser"
+                  value={form.nom_ser}
+                  onChange={handleChange}
+                  className="input-vacunas"
+                  maxLength={100}
+                />
+                {errores.nom_ser && <span className="mensaje-error">{errores.nom_ser}</span>}
+              </div>
+              <div className="campo-vacunas">
+                <label className="etiqueta-campo-vacunas">Fecha Solicitud</label>
+                <input
+                  type="datetime-local"
+                  name="fec_sol_pru_lab"
+                  value={form.fec_sol_pru_lab}
+                  onChange={handleChange}
+                  className="input-vacunas"
+                />
+                {errores.fec_sol_pru_lab && <span className="mensaje-error">{errores.fec_sol_pru_lab}</span>}
+              </div>
+              <div className="campo-vacunas">
+                <label className="etiqueta-campo-vacunas">Fecha Muestra</label>
+                <input
+                  type="datetime-local"
+                  name="fec_mue_pru_lab"
+                  value={form.fec_mue_pru_lab}
+                  onChange={handleChange}
+                  className="input-vacunas"
+                />
+                {errores.fec_mue_pru_lab && <span className="mensaje-error">{errores.fec_mue_pru_lab}</span>}
+              </div>
+              <div className="campo-vacunas">
+                <label className="etiqueta-campo-vacunas">Fecha Procesamiento</label>
+                <input
+                  type="datetime-local"
+                  name="fec_pro_pru_lab"
+                  value={form.fec_pro_pru_lab}
+                  onChange={handleChange}
+                  className="input-vacunas"
+                />
+                {errores.fec_pro_pru_lab && <span className="mensaje-error">{errores.fec_pro_pru_lab}</span>}
+              </div>
+              <div className="campo-vacunas">
+                <label className="etiqueta-campo-vacunas">Fecha Resultado</label>
+                <input
+                  type="datetime-local"
+                  name="fec_res_pru_lab"
+                  value={form.fec_res_pru_lab}
+                  onChange={handleChange}
+                  className="input-vacunas"
+                />
+                {errores.fec_res_pru_lab && <span className="mensaje-error">{errores.fec_res_pru_lab}</span>}
+              </div>
+              <div className="campo-vacunas">
+                <label className="etiqueta-campo-vacunas">Estado</label>
+                <select
+                  name="est_pru_lab"
+                  value={form.est_pru_lab}
+                  onChange={handleChange}
+                  className="select-vacunas"
+                  required
+                >
+                  {estadosPrueba.map((e) => (
+                    <option key={e} value={e}>{e}</option>
+                  ))}
+                </select>
+                {errores.est_pru_lab && <span className="mensaje-error">{errores.est_pru_lab}</span>}
+              </div>
+              <div className="campo-vacunas">
+                <label className="etiqueta-campo-vacunas">Prioridad</label>
+                <select
+                  name="pri_pru_lab"
+                  value={form.pri_pru_lab}
+                  onChange={handleChange}
+                  className="select-vacunas"
+                  required
+                >
+                  {prioridades.map((p) => (
+                    <option key={p} value={p}>{p}</option>
+                  ))}
+                </select>
+                {errores.pri_pru_lab && <span className="mensaje-error">{errores.pri_pru_lab}</span>}
+              </div>
+              <div className="campo-vacunas">
+                <label className="etiqueta-campo-vacunas">Observaciones</label>
+                <textarea
+                  name="obs_mue_pru_lab"
+                  value={form.obs_mue_pru_lab}
+                  onChange={handleChange}
+                  className="textarea-vacunas"
+                  maxLength={1000}
+                />
+                {errores.obs_mue_pru_lab && <span className="mensaje-error">{errores.obs_mue_pru_lab}</span>}
+              </div>
+              <div className="campo-vacunas">
+                <label className="etiqueta-campo-vacunas">Costo Final</label>
+                <input
+                  type="number"
+                  name="cos_fin_pru_lab"
+                  value={form.cos_fin_pru_lab}
+                  onChange={handleChange}
+                  className="input-vacunas"
+                />
+                {errores.cos_fin_pru_lab && <span className="mensaje-error">{errores.cos_fin_pru_lab}</span>}
+              </div>
+              <div className="campo-vacunas">
+                <label className="etiqueta-campo-vacunas">Resultados</label>
+                <textarea
+                  name="res_pru_lab"
+                  value={form.res_pru_lab}
+                  onChange={handleChange}
+                  className="textarea-vacunas"
+                  maxLength={1000}
+                />
+                {errores.res_pru_lab && <span className="mensaje-error">{errores.res_pru_lab}</span>}
+              </div>
+              <div className="campo-vacunas">
+                <label className="etiqueta-campo-vacunas">Veterinario Revisor</label>
+                <div className="select-wrapper">
+                  <select
+                    name="doc_vet_rev"
+                    value={form.doc_vet_rev}
+                    onChange={handleChange}
+                    className="select"
+                  >
+                    <option value="" disabled>
+                      Sin Revisar
+                    </option>
+                    {staff?.map( vet => (
+                      <option key={vet.doc_per} value={vet.doc_per}>
+                        {vet.nom_per} {vet.ape_per} ({vet.esp_vet})
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="select-icono icon" />
+                </div>
+                {errores.doc_vet_sol && <div className="error">{errores.doc_vet_sol}</div>}
+              </div>
+            </div>
+          </section>
+
+          <div className="botones-formulario-vacunas">
+            <button type="submit" className="boton-guardar-vacunas">
+              {modoEdicion ? "Actualizar" : "Guardar"}
+            </button>
+            <button type="button" onClick={onCancelar} className="boton-cancelar-vacunas">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </section>
+    </aside>
   )
 }

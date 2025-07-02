@@ -44,9 +44,9 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
         'Celular': 'cel_per',
         'Correo': 'email_per'
       })
-      if (data[0]) {
-        setUsersAlmac(data[0])
-        setUsers(divideList(data[0], 4))
+      if (data) {
+        setUsersAlmac(data)
+        setUsers(divideList(data, 4))
       }
     } catch (err) {
       setNotify(null)

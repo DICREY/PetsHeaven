@@ -120,7 +120,7 @@ VALUES
 ('Estética', 'estetica', 'Servicios de belleza y cuidado para mascotas', '#f39c12', 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Servicios/ba%C3%B1o.jpg'),
 ('Emergencias', 'emergencias', 'Atención médica urgente 24/7', '#e74c3c', 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Servicios/urgencias.jpg');
 INSERT INTO pets_heaven.tipos_servicios 
-(cat_tip_ser, nom_tip_ser, des_tip_ser, tec_des_cat, req_equ_esp, dur_min_tip_ser) 
+(cat_tip_ser, nom_tip_ser, des_tip_ser, tec_des_tip_ser, req_equ_esp, dur_min_tip_ser) 
 VALUES
 (1, 'Consulta Preventiva', 'Revisión general de salud', 'Examen físico completo, revisión de historial médico', FALSE, 1),
 (1, 'Consulta Especializada', 'Consulta con veterinario especialista', 'Evaluación detallada por especialidad', FALSE, 1),
@@ -160,7 +160,7 @@ VALUES
 ('Vacunación SC', 'Administración subcutánea de vacuna', 2, 'BAJO', 15, '1. Preparar vacuna 2. Desinfectar zona 3. Inyectar', 'Observar reacciones alérgicas'),
 ('Ovariohisterectomía', 'Esterilización de hembras', 1, 'MODERADO', 90, '1. Anestesia 2. Asepsia 3. Incisión 4. Ligadura', 'Manejo postquirúrgico del dolor'),
 ('Intubación', 'Manejo de vía aérea', 1, 'ALTO', 10, '1. Preparar equipo 2. Posicionar 3. Visualizar cuerdas 4. Insertar tubo', 'Requiere monitorización constante'),
-('Toma de Muestra Sanguínea', 'Obtención de sangre para análisis', 1, 'BAJO', 10, '1. Localizar vena 2. Desinfectar 3. Extraer muestra 4. Presionar', 'Evitar hemólisis'),
+('Toma de Muestra Sanguínea', 'Obtención de sangre para análisis', 4, 'BAJO', 10, '1. Localizar vena 2. Desinfectar 3. Extraer muestra 4. Presionar', 'Evitar hemólisis'),
 ('Limpieza Dental', 'Profilaxis dental completa', 5, 'MODERADO', 60, '1. Anestesia 2. Remoción de sarro 3. Pulido 4. Fluoruro', 'Evaluar extracciones necesarias'),
 ('Radiografía', 'Imagen diagnóstica por rayos X', 1, 'BAJO', 30, '1. Posicionar 2. Proteger 3. Tomar imagen 4. Revelar', 'Minimizar exposición');
 

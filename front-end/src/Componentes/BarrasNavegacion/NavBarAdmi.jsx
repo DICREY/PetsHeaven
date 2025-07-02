@@ -2,8 +2,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import React, { useState, useEffect, useContext } from 'react'
 import {
   Settings, Users, Headset, ChevronDown, Syringe, Bath, Scissors, Calendar, Menu, X,
-  Stethoscope, CalendarRange, CalendarClock, FlaskRoundIcon as Flask,
-  Home
+  Stethoscope, CalendarRange, CalendarClock, FlaskRoundIcon as Flask
 } from 'lucide-react'
 
 // Imports

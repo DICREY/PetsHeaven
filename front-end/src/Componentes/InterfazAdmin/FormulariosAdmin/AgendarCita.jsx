@@ -177,8 +177,9 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
       const data = await GetData(`${URL}/pet/all`)
       setNotify(null)
       if (data) {
-        setPacientes(data[0])
-        setAlmcPacientes(data[0])
+        console.log(data)
+        setPacientes(data)
+        setAlmcPacientes(data)
       }
     } catch (err) {
       setNotify(null)
@@ -199,7 +200,7 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
       const data = await GetData(`${URL}/staff/all/vet`)
       setNotify(null)
       if (data) {
-        setAlmcVet(data[0])
+        setAlmcVet(data)
       }
     } catch (err) {
       setNotify(null)
@@ -220,7 +221,7 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
       const data = await GetData(`${URL}/global/services`)
       setNotify(null)
       if (data) {
-        setAlmcAppoint(data[0])
+        setAlmcAppoint(data)
       }
     } catch (err) {
       setNotify(null)
@@ -241,7 +242,7 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
       const data = await GetData(`${mainUrl}/consulting-rooms`)
       setNotify(null)
       if (data) {
-        setAlmcConsultingRooms(data[0])
+        setAlmcConsultingRooms(data)
       }
     } catch (err) {
       setNotify(null)

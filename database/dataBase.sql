@@ -85,7 +85,7 @@ CREATE TABLE pets_heaven.tipos_servicios (
     cat_tip_ser INT NOT NULL,INDEX(cat_tip_ser), -- ID categoria del tipo de servicio
     nom_tip_ser VARCHAR(100) NOT NULL,INDEX(nom_tip_ser), -- Nombre del tipo de servicio
     des_tip_ser TEXT NOT NULL, -- Descripcion del tipo de servicio
-    tec_des_cat TEXT NOT NULL, -- Descripción técnica del tipo de servicio
+    tec_des_tip_ser TEXT NOT NULL, -- Descripción técnica del tipo de servicio
     sta_tip_ser BOOLEAN DEFAULT 1, -- Estado del tipo de servicio
     req_equ_esp BOOLEAN DEFAULT 0, -- Define si requiere equipo especial
     dur_min_tip_ser INT, -- Duracion minima del servicio en horas

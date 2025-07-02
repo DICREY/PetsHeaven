@@ -21,7 +21,7 @@ BEGIN
         ts.id_tip_ser,
         ts.nom_tip_ser,
         ts.des_tip_ser,
-        ts.tec_des_cat,
+        ts.tec_des_tip_ser,
         ts.sta_tip_ser,
         ts.req_equ_esp,
         ts.dur_min_tip_ser,
@@ -52,6 +52,16 @@ BEGIN
         p.nom_pro
     LIMIT 1000;
 END //
+CREATE PROCEDURE pets_heaven.GetTestTypes()
+BEGIN
+    SELECT
+        tp.*
+    FROM
+        tipos_pruebas tp
+    ORDER BY
+        tp.id_tip_pru DESC
+    LIMIT 1000;
+END //
 -- Crear procedimiento para buscar todos los servicios
 CREATE PROCEDURE pets_heaven.SearchServices()
 BEGIN
@@ -60,8 +70,15 @@ BEGIN
         s.nom_ser, -- Nombre del servicio
         s.pre_ser, -- Precio base del servicio
         s.des_ser, -- Descripción del servicio
+        s.pre_act_ser, -- Precio actual del servicio
+        s.cos_est_ser, -- Costo estimado del servicio
         s.sta_ser, -- Estado del servicio
+        s.req, -- Requerimientos del servicio
         ts.nom_tip_ser, -- Nombre del tipo de servicio
+        ts.des_tip_ser, -- descripción del tipo de servicio
+        ts.tec_des_tip_ser, -- descripción tecnica del tipo de servicio
+        ts.dur_min_tip_ser, -- Duración minima del tipo de servicio
+        ts.req_equ_esp, -- Rquiere equipo el tipo de servicio? 1/0
         cs.nom_cat, -- Nombre de la categoría
         cs.img_cat, -- Imagen de la categoría
         (
@@ -105,10 +122,12 @@ BEGIN
         s.pre_ser, -- Precio base del servicio
         s.des_ser, -- Descripción del servicio
         s.pre_act_ser, -- Precio actual del servicio
+        s.cos_est_ser, -- Costo estimado del servicio
         s.sta_ser, -- Estado del servicio
         s.req, -- Requerimientos del servicio
         ts.nom_tip_ser, -- Nombre del tipo de servicio
         ts.des_tip_ser, -- descripción del tipo de servicio
+        ts.tec_des_tip_ser, -- descripción tecnica del tipo de servicio
         ts.dur_min_tip_ser, -- Duración minima del tipo de servicio
         ts.req_equ_esp, -- Rquiere equipo el tipo de servicio? 1/0
         cs.nom_cat, -- Nombre de la categoría
@@ -155,12 +174,19 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se encontro el servicio';
     ELSE
         SELECT
-            s.id_ser,
-            s.nom_ser,
-            s.pre_ser,
-            s.des_ser,
-            s.sta_ser,
+            s.id_ser, -- ID del servicio
+            s.nom_ser, -- Nombre del servicio
+            s.pre_ser, -- Precio base del servicio
+            s.des_ser, -- Descripción del servicio
+            s.pre_act_ser, -- Precio actual del servicio
+            s.cos_est_ser, -- Costo estimado del servicio
+            s.sta_ser, -- Estado del servicio
+            s.req, -- Requerimientos del servicio
             ts.nom_tip_ser,
+            ts.des_tip_ser,
+            ts.tec_des_tip_ser,
+            ts.dur_min_tip_ser,
+            ts.req_equ_esp,
             cs.nom_cat,
             cs.img_cat,
             (
@@ -684,16 +710,17 @@ BEGIN
     SELECT
         pl.id_pru_lab,
         pl.cod_ord_pru_lab,
-        m.nom_mas AS nombre_mascota,
-        m.esp_mas AS especie_mascota,
-        m.raz_mas AS raza_mascota,
-        m.gen_mas AS genero_mascota,
-        m.fec_nac_mas AS nacimiento_mascota,
-        psol.nom_per AS nombre_veterinario_solicitante,
-        psol.ape_per AS apellido_veterinario_solicitante,
-        prev.nom_per AS nombre_veterinario_revisor,
-        prev.ape_per AS apellido_veterinario_revisor,
+        m.nom_mas,
+        m.esp_mas,
+        m.raz_mas,
+        m.gen_mas,
+        m.fec_nac_mas,
+        psol.nom_per AS nom_vet_sol,
+        psol.ape_per AS ape_vet_sol,
+        prev.nom_per AS nom_vet_rev,
+        prev.ape_per AS ape_vet_rev,
         tp.nom_tip_pru,
+        tp.cod_tip_pru,
         tp.cat_tip_pru,
         tp.des_tip_pru,
         tp.met_est_tip_pru,
@@ -757,26 +784,127 @@ BEGIN
     LIMIT 1000;
 END //
 
-/* DROP PROCEDURE `SearchServices`; */
+CREATE PROCEDURE pets_heaven.RegisterLabTest(
+    IN p_cod_ord_pru_lab VARCHAR(20),
+    IN p_nom_mas VARCHAR(100),
+    IN p_doc_vet_sol VARCHAR(100),
+    IN p_nom_tip_pru VARCHAR(100),
+    IN p_cod_tip_pru VARCHAR(20),
+    IN p_cat_tip_pru VARCHAR(100),
+    IN p_des_tip_pru TEXT,
+    IN p_met_est_tip_pru VARCHAR(100),
+    IN p_tie_est_hrs_tip_pru INT,
+    IN p_cos_est_tip_pru DECIMAL(10,2),
+    IN p_ins_pre_tip_pru TEXT,
+    IN p_par_ref_tip_pru TEXT,
+    IN p_nom_pro VARCHAR(100),
+    IN p_des_pro TEXT,
+    IN p_cat_pro VARCHAR(100),
+    IN p_niv_rie_pro ENUM('BAJO', 'MODERADO', 'ALTO', 'CRITICO'),
+    IN p_dur_min_pro INT,
+    IN p_pro_pro TEXT,
+    IN p_con_esp_pro TEXT,
+    IN p_nom_ser VARCHAR(100),
+    IN p_fec_sol_pru_lab DATETIME,
+    IN p_fec_mue_pru_lab DATETIME,
+    IN p_fec_pro_pru_lab DATETIME,
+    IN p_fec_res_pru_lab DATETIME,
+    IN p_est_pru_lab ENUM('REGISTRADO', 'MUESTRA_TOMADA', 'EN_PROCESO', 'COMPLETADO', 'ENTREGADO', 'CANCELADO'),
+    IN p_pri_pru_lab ENUM('ROUTINA', 'URGENTE', 'STAT'),
+    IN p_obs_mue_pru_lab TEXT,
+    IN p_cos_fin_pru_lab DECIMAL(10,2),
+    IN p_res_pru_lab TEXT,
+    IN p_doc_vet_rev VARCHAR(100)
+)
+BEGIN
+    DECLARE v_id_mas INT;
+    DECLARE v_id_vet_sol INT;
+    DECLARE v_id_tip_pru INT;
+    DECLARE v_id_ser INT;
+    DECLARE v_id_vet_rev INT;
+    DECLARE v_id_pro INT;
+    DECLARE v_id_cat_pro INT;
+    DECLARE v_exists INT DEFAULT 0;
+
+    -- Buscar o registrar el procedimiento si es necesario
+    IF p_nom_pro IS NOT NULL AND p_nom_pro <> '' THEN
+        -- Buscar la categoría del procedimiento
+        SELECT id_cat INTO v_id_cat_pro FROM categorias_servicios WHERE nom_cat = p_cat_pro LIMIT 1;
+        IF v_id_cat_pro IS NULL THEN
+            INSERT INTO categorias_servicios (nom_cat, slug) VALUES (p_cat_pro, LOWER(REPLACE(p_cat_pro, ' ', '-')));
+            SET v_id_cat_pro = LAST_INSERT_ID();
+        END IF;
+
+        -- Buscar o registrar el procedimiento
+        SELECT id_pro INTO v_id_pro FROM procedimientos WHERE nom_pro = p_nom_pro AND cat_pro = v_id_cat_pro LIMIT 1;
+        IF v_id_pro IS NULL THEN
+            INSERT INTO procedimientos (nom_pro, des_pro, cat_pro, niv_rie_pro, dur_min_pro, pro_pro, con_esp_pro)
+            VALUES (p_nom_pro, p_des_pro, v_id_cat_pro, p_niv_rie_pro, p_dur_min_pro, p_pro_pro, p_con_esp_pro);
+            SET v_id_pro = LAST_INSERT_ID();
+        END IF;
+    ELSE
+        SET v_id_pro = NULL;
+    END IF;
+
+    -- Buscar o registrar el tipo de prueba
+    SELECT id_tip_pru INTO v_id_tip_pru FROM tipos_pruebas WHERE nom_tip_pru = p_nom_tip_pru LIMIT 1;
+    IF v_id_tip_pru IS NULL THEN
+        INSERT INTO tipos_pruebas (
+            cod_tip_pru, nom_tip_pru, des_tip_pru, cat_tip_pru, met_est_tip_pru, tie_est_hrs_tip_pru, cos_est_tip_pru, ins_pre_tip_pru, par_ref_tip_pru
+        ) VALUES (
+            p_cod_tip_pru, p_nom_tip_pru, p_des_tip_pru, p_cat_tip_pru, p_met_est_tip_pru, p_tie_est_hrs_tip_pru, p_cos_est_tip_pru, p_ins_pre_tip_pru, p_par_ref_tip_pru
+        );
+        SET v_id_tip_pru = LAST_INSERT_ID();
+    END IF;
+
+    -- Buscar IDs por nombre
+    SELECT id_mas INTO v_id_mas FROM mascotas WHERE nom_mas = p_nom_mas LIMIT 1;
+    SELECT v.id_vet INTO v_id_vet_sol FROM veterinarios v JOIN personas p ON v.id_vet = p.id_per WHERE p.doc_per = p_doc_vet_sol LIMIT 1;
+    SELECT id_ser INTO v_id_ser FROM servicios WHERE nom_ser = p_nom_ser LIMIT 1;
+    SELECT v.id_vet INTO v_id_vet_rev FROM veterinarios v JOIN personas p ON v.id_vet = p.id_per WHERE p.doc_per = p_doc_vet_rev LIMIT 1;
+
+    -- Verificar si ya existe la prueba de laboratorio con el mismo código de orden
+    SELECT COUNT(*) INTO v_exists FROM pruebas_laboratorio WHERE cod_ord_pru_lab = p_cod_ord_pru_lab;
+    IF v_exists > 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Ya existe una prueba de laboratorio con ese código de orden';
+    END IF;
+
+    -- Insertar la prueba de laboratorio
+    INSERT INTO pruebas_laboratorio (
+        cod_ord_pru_lab, id_mas_pru_lab, id_vet_sol_pru_lab, id_tip_pru_lab, id_ser_pru_lab,
+        fec_sol_pru_lab, fec_mue_pru_lab, fec_pro_pru_lab, fec_res_pru_lab,
+        est_pru_lab, pri_pru_lab, obs_mue_pru_lab, cos_fin_pru_lab, res_pru_lab, id_vet_rev_pru_lab
+    ) VALUES (
+        p_cod_ord_pru_lab, v_id_mas, v_id_vet_sol, v_id_tip_pru, v_id_ser,
+        p_fec_sol_pru_lab, p_fec_mue_pru_lab, p_fec_pro_pru_lab, p_fec_res_pru_lab,
+        p_est_pru_lab, p_pri_pru_lab, p_obs_mue_pru_lab, p_cos_fin_pru_lab, p_res_pru_lab, v_id_vet_rev
+    );
+END //
+
+/* DROP PROCEDURE pets_heaven.`SearchService`; */
+/* DROP PROCEDURE pets_heaven.`SearchServices`; */
 /* DROP PROCEDURE pets_heaven.SearchServicesBy; */
-/* DROP PROCEDURE pets_heaven.AbleOrDesableService; */
 /* DROP PROCEDURE pets_heaven.SearchVacunas; */
-/* DROP PROCEDURE pets_heaven.`RegisterService`; */
-/* DROP PROCEDURE pets_heaven.RegisterVacuna; */
-/* DROP PROCEDURE pets_heaven.`UpdateVaccineAndProcedure`; */
-/* DROP PROCEDURE pets_heaven.`ChangeVaccineState`; */
 /* DROP PROCEDURE pets_heaven.SearchVacunas; */
-/* DROP PROCEDURE pets_heaven.`GetLaboratoryTests`; */
 /* DROP PROCEDURE pets_heaven.`SearchProcedures`; */
 /* DROP PROCEDURE pets_heaven.`SearchServicesCat`; */
 /* DROP PROCEDURE pets_heaven.`SearchServicesType`; */
+/* DROP PROCEDURE pets_heaven.`RegisterService`; */
+/* DROP PROCEDURE pets_heaven.RegisterVacuna; */
+/* DROP PROCEDURE pets_heaven.`RegisterLabTest`; */
+/* DROP PROCEDURE pets_heaven.`GetLaboratoryTests`; */
+/* DROP PROCEDURE pets_heaven.`GetTestTypes`; */
+/* DROP PROCEDURE pets_heaven.`UpdateVaccineAndProcedure`; */
+/* DROP PROCEDURE pets_heaven.`ChangeVaccineState`; */
+/* DROP PROCEDURE pets_heaven.AbleOrDesableService; */
 
-/* CALL `SearchServices`(); */
+/* CALL pets_heaven.`SearchServices`(); */
+/* CALL pets_heaven.SearchServicesType(); */
 /* CALL pets_heaven.SearchServicesBy('Cirugia'); */
-/* CALL pets_heaven.AbleOrDesableService('6','Cirugia'); */
 /* CALL pets_heaven.SearchVacunas(); */
-/* CALL `GetLaboratoryTests`(); */
-/* CALL SearchServicesType(); */
+/* CALL pets_heaven.`GetLaboratoryTests`(); */
+/* CALL pets_heaven.AbleOrDesableService('6','Cirugia'); */
+/* CALL pets_heaven.GetTestTypes(); */
 
 /* CALL pets_heaven.UpdateVaccineAndProcedure('1', 'Vacuna Actualizada', 'Efecto Secundario', 'Categoria', 'Dosis Recomendada', 'Lote', '2025-12-31', '2022-12-31', 30, 'Descripcion', 100.00, 'Procedimiento Actualizado', 'Descripcion del Procedimiento'); */
 /* CALL pets_heaven.RegisterVacuna(

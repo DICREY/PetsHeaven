@@ -105,6 +105,116 @@ class Services {
         })
     }
 
+    // function to create a new service
+    async createLabTest(data) {
+        return new Promise((res, rej) => {
+            const date = new Date()
+            const proc = "CALL RegisterLabTest(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            const params = [
+                data.cod_ord_pru_lab,
+                data.nom_mas,
+                data.doc_vet_sol,
+                data.nom_tip_pru,
+                data.cod_tip_pru,
+                data.cat_tip_pru,
+                data.des_tip_pru,
+                data.met_est_tip_pru,
+                Number(data.tie_est_hrs_tip_pru) || 0,
+                Number(data.cos_est_tip_pru) || 0,
+                data.ins_pre_tip_pru,
+                data.par_ref_tip_pru,
+                data.nom_pro,
+                data.des_pro,
+                data.cat_pro,
+                data.niv_rie_pro,
+                Number(data.dur_min_pro) || 0,
+                data.pro_pro,
+                data.con_esp_pro,
+                data.nom_ser,
+                data.fec_sol_pru_lab || date,
+                data.fec_mue_pru_lab || date,
+                data.fec_pro_pru_lab || date,
+                data.fec_res_pru_lab || date,
+                data.est_pru_lab,
+                data.pri_pru_lab,
+                data.obs_mue_pru_lab,
+                Number(data.cos_fin_pru_lab) || 0,
+                data.res_pru_lab,
+                data.doc_vet_rev,
+            ]
+
+            this.database = new DataBase()
+            this.database.conect()
+
+            if (this.database) this.database.conection.query(proc, params, (err) => {
+                if (err) return rej({ message: err })
+                setTimeout(() => {
+                    res({
+                        message: "Prueba de laboratorio registrada correctamente",
+                        success: 1
+                    })
+                }, 1000)
+            })
+
+            this.database.conection.end()
+        })
+    }
+
+    // function to update a lab test
+    async modifyLabTest(data) {
+        return new Promise((res, rej) => {
+            const date = new Date()
+            const proc = "CALL ModifyLabTest(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            const params = [
+                data.cod_ord_pru_lab,
+                data.nom_mas,
+                data.doc_vet_sol,
+                data.nom_tip_pru,
+                data.cod_tip_pru,
+                data.cat_tip_pru,
+                data.des_tip_pru,
+                data.met_est_tip_pru,
+                Number(data.tie_est_hrs_tip_pru) || 0,
+                Number(data.cos_est_tip_pru) || 0,
+                data.ins_pre_tip_pru,
+                data.par_ref_tip_pru,
+                data.nom_pro,
+                data.des_pro,
+                data.cat_pro,
+                data.niv_rie_pro,
+                Number(data.dur_min_pro) || 0,
+                data.pro_pro,
+                data.con_esp_pro,
+                data.nom_ser,
+                data.fec_sol_pru_lab || date,
+                data.fec_mue_pru_lab || date,
+                data.fec_pro_pru_lab || date,
+                data.fec_res_pru_lab || date,
+                data.est_pru_lab,
+                data.pri_pru_lab,
+                data.obs_mue_pru_lab,
+                Number(data.cos_fin_pru_lab) || 0,
+                data.res_pru_lab,
+                data.doc_vet_rev,
+            ]
+
+            this.database = new DataBase()
+            this.database.conect()
+
+            if (this.database) this.database.conection.query(proc, params, (err) => {
+                if (err) return rej({ message: err })
+                setTimeout(() => {
+                    res({
+                        message: "Prueba de laboratorio actualizada correctamente",
+                        success: 1
+                    })
+                }, 1000)
+            })
+
+            this.database.conection.end()
+        })
+    }
+
     // function to find all
     async findAll() {
         return new Promise((res,rej) => {
@@ -267,6 +377,35 @@ class Services {
                 setTimeout(() => {
                     res({
                         message: "Procedures found",
+                        result: result[0]
+                    })
+                },200)
+            })
+
+            // close conection 
+            this.database.conection.end()
+        })
+    }
+
+    // function to find all the tests types
+    async FindTestType() {
+        return new Promise((res,rej) => {
+            // vars
+            const proc = "CALL GetTestTypes()"
+
+            // conect to database
+            this.database = new DataBase()
+            this.database.conect()
+
+            if (this.database) this.database.conection.query(proc,(err,result) => {
+                if(err) rej({ message: err })
+                if(!result || !result[0][0]) rej({
+                    message: "Not found",
+                    status: 404
+                })
+                setTimeout(() => {
+                    res({
+                        message: "Tests types found",
                         result: result[0]
                     })
                 },200)

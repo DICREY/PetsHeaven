@@ -223,8 +223,8 @@ export const GesAgendaGeneral = ({ URL = '' }) => {
             if (data && !Array.isArray(data)) {
                 data = [data]
             }
-            if (data[0]) {
-                const mappedEvents = data[0].map(event => ({
+            if (data) {
+                const mappedEvents = data?.map(event => ({
                     id: event.id_cit,
                     mas_cit: event.mas_cit,
                     title: event.nom_ser,

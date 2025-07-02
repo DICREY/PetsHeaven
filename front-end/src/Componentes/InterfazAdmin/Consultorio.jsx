@@ -38,7 +38,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
       const data = await GetData(`${mainUrl}/all`)
       setNotify(null)
 
-      if (data[0]) formatDatas(data[0])
+      if (data) formatDatas(data)
       setHeaders({
         'Nombres': 'nom_per',
         'Documento': 'doc_per',
@@ -61,7 +61,7 @@ export function HomeAdmin({ URL = '', setUserSelect, setOwner, setPetSelect }) {
     try {
       const pets = await GetData(`${URL}/pet/all`)
       setNotify(null)
-      if (pets[0]) setPetsDataAlmc(pets[0])
+      if (pets) setPetsDataAlmc(pets)
     } catch (err) {
       setNotify(null)
       const message = errorStatusHandler(err)

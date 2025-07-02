@@ -113,6 +113,24 @@ Route.get('/procedures', async (req,res) => {
     }
 })
 
+Route.get('/test-type', async (req,res) => {
+    // Vars
+    const service = new Services()
+    try {
+        const services = await service.FindTestType()
+
+        // Verify if exist 
+        if (!services.result) res.status(404).json({ message: "servicios no encontrados" })
+
+        res.status(200).json(services)
+    } catch (err) {
+        console.log(err)
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
+        if (err.status) return res.status(err.status).json({ message: err.message })
+        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
+    }
+})
+
 Route.get('/info/general', ValidatorRol('administrador'), async (req,res) => {
     // Vars
     const info = new Global()
@@ -164,7 +182,7 @@ Route.post('/register', async (req,res) => {
     try {
         // Verifiy if exist
         const find = await user.findBy(toString(body.numeroDocumento))
-        if (find.result[0][0].nom_per) res.status(302).json({ message: "Usuario ya existe" })
+        if (find.result) res.status(302).json({ message: "Usuario ya existe" })
             
         const create = await user.create({hash_pass: await hash(body.password,saltRounds), ...body})
         res.status(201).json(create)
@@ -183,7 +201,7 @@ Route.post('/login', limiterLog, async (req,res) => {
     try {
         // Search in database
         let log = await global.login()
-        let user = await log.result[0][0]
+        let user = await log.result
         
 
         if(!user) return res.status(404).json({ message: 'Usuario no encontrado' })
@@ -226,7 +244,7 @@ Route.post('/verify-email', limiterLog, async (req,res) => {
     try {
         // Search in database
         let log = await global.login()
-        let user = await log.result[0][0]
+        let user = await log.result
 
         // Verify
         if(!user) return res.status(404).json({ message: 'Usuario no encontrado' })

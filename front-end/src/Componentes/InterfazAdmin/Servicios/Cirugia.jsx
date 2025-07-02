@@ -88,14 +88,6 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
     fetchCirugias()
   }, [fetchCirugias])
 
-  const manejarCambioFormulario = useCallback((e) => {
-    const { name, value, type, checked } = e.target
-    formRef.current = {
-      ...formRef.current,
-      [name]: type === "checkbox" ? checked : value,
-    }
-  }, [])
-
   const agregarCirugia = useCallback(async (data) => {
     let Req = false
     try {
@@ -196,7 +188,16 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
       resultadoEsperado: cirugia.res_cir || "",
       observaciones: cirugia.obv_cir || ""
     }
-    setCirugiaEditando(cirugia)
+    console.log(cirugia)
+    setCirugiaEditando({
+      ...cirugia,
+      nom_pro: cirugia.proc_ser[0]?.nom_pro,
+      con_esp_pro: cirugia.proc_ser[0]?.con_esp_pro,
+      des_pro: cirugia.proc_ser[0]?.des_pro,
+      dur_min_pro: cirugia.proc_ser[0]?.dur_min_pro,
+      niv_rie_pro: cirugia.proc_ser[0]?.niv_rie_pro,
+      pro_pro: cirugia.proc_ser[0]?.pro_pro
+    })
     setModoEdicion(true)
     setMostrarFormulario(true)
   }, [])
@@ -322,138 +323,6 @@ export const CirugiasVeterinaria = ({ URL = '' }) => {
             mainName="cirugía"
           />
         )}
-        {/* {mostrarFormulario && (
-          <aside className="overlay-cirugia">
-            <aside className="formulario-cirugia">
-              <div className="header-modal-cirugia">
-                <h3 className="titulo-formulario-cirugia">
-                  {modoEdicion ? "Editar Cirugía" : "Agregar Nueva Cirugía"}
-                </h3>
-                <button onClick={cancelarFormulario} className="boton-cerrar-cirugia">
-                  <X className="icon" />
-                </button>
-              </div>
-
-              <form onSubmit={modoEdicion ? actualizarCirugia : agregarCirugia}>
-                <div className="campo-cirugia">
-                  <label>Nombre de la Cirugía</label>
-                  <input
-                    type="text"
-                    name="nombre"
-                    value={formRef.current.nombre}
-                    onChange={manejarCambioFormulario}
-                    placeholder="Ej: Esterilización"
-                    required
-                  />
-                </div>
-
-                <div className="campo-cirugia">
-                  <label>Descripción</label>
-                  <textarea
-                    name="descripcion"
-                    value={formRef.current.descripcion}
-                    onChange={manejarCambioFormulario}
-                    placeholder="Descripción del procedimiento quirúrgico"
-                    required
-                  />
-                </div>
-
-                <div className="campo-cirugia">
-                  <label>Precio (COP)</label>
-                  <input
-                    type="number"
-                    name="precio"
-                    value={formRef.current.precio}
-                    onChange={manejarCambioFormulario}
-                    placeholder="Ej: 150000"
-                    required
-                  />
-                </div>
-
-                <div className="campo-cirugia">
-                  <label>Fecha de Cirugía</label>
-                  <input
-                    type="date"
-                    name="fechaCirugia"
-                    value={formRef.current.fechaCirugia}
-                    onChange={manejarCambioFormulario}
-                  />
-                </div>
-
-                <div className="campo-cirugia">
-                  <label>Descripción Breve</label>
-                  <textarea
-                    name="descripcionBreve"
-                    value={formRef.current.descripcionBreve}
-                    onChange={manejarCambioFormulario}
-                    placeholder="Descripción breve del procedimiento"
-                  />
-                </div>
-
-                <div className="campo-cirugia">
-                  <label>Resultado Esperado</label>
-                  <textarea
-                    name="resultadoEsperado"
-                    value={formRef.current.resultadoEsperado}
-                    onChange={manejarCambioFormulario}
-                    placeholder="Resultado esperado de la cirugía"
-                  />
-                </div>
-
-                <div className="campo-cirugia">
-                  <label>Complicaciones Posibles</label>
-                  <textarea
-                    name="complicaciones"
-                    value={formRef.current.complicaciones}
-                    onChange={manejarCambioFormulario}
-                    placeholder="Posibles complicaciones del procedimiento"
-                  />
-                </div>
-
-                <div className="campo-cirugia">
-                  <label>Recomendaciones Post-operatorias</label>
-                  <textarea
-                    name="recomendaciones"
-                    value={formRef.current.recomendaciones}
-                    onChange={manejarCambioFormulario}
-                    placeholder="Cuidados después de la cirugía"
-                  />
-                </div>
-
-                <div className="campo-cirugia">
-                  <label>Observaciones</label>
-                  <textarea
-                    name="observaciones"
-                    value={formRef.current.observaciones}
-                    onChange={manejarCambioFormulario}
-                    placeholder="Observaciones adicionales"
-                  />
-                </div>
-
-                <div className="campo-checkbox-cirugia">
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="disponible"
-                      checked={formRef.current.disponible}
-                      onChange={manejarCambioFormulario}
-                    />
-                    Disponible
-                  </label>
-                </div>
-
-                <div className="botones-formulario-cirugia">
-                  <button type="submit" className="boton-guardar-cirugia">
-                    {modoEdicion ? "Actualizar" : "Agregar"}
-                  </button>
-                  <button type="button" onClick={cancelarFormulario} className="boton-cancelar-cirugia">
-                    Cancelar
-                  </button>
-                </div>
-              </form>
-            </aside>
-          </aside>
-        )} */}
 
         {/* Modal Detalle */}
         {mostrarDetalle && cirugiaDetalle && (

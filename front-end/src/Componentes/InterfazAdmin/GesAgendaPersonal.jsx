@@ -33,7 +33,6 @@ export const GesAgendaPersonal = ({ URL = '' }) => {
     const [notify, setNotify] = useState(null)
     const [selectedEvent, setSelectedEvent] = useState(null)
     const [selectedDate, setSelectedDate] = useState('')
-    const [lugar, setLugar] = useState('Consultorio')
     const calendarRef = useRef(null)
     const [activeModal, setActiveModal] = useState(null); // null, 'event', o 'create'
     // const [ log, user, roles ] = useContext(AuthContext)

@@ -16,7 +16,7 @@ Route.use(authJWTGlobal)
 Route.get('/all', ValidatorRol("usuario"), async (req,res) => {
     try {
         const serv = await services.findAllVacunas()
-        if (!serv.result[0][0]) return res.status(404).json({ message: "Vacunas no encontradas" })
+        if (!serv.result) return res.status(404).json({ message: "Vacunas no encontradas" })
         
         res.status(200).json(serv)
     } catch (err) {

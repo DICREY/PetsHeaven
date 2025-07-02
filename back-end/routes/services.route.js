@@ -4,6 +4,7 @@ const { Router } = require('express')
 // Imports
 const Services = require('../services/Services.services')
 const vaccineRoute = require('./vaccine.route')
+const laboratoryRoute = require('./laboratory.route')
 const { authenticateJWT, ValidatorRol, Fullinfo, authJWTGlobal } = require('../middleware/validator.handler')
 
 // vars
@@ -16,12 +17,13 @@ Route.use(authJWTGlobal)
 
 // Vaccine Routes 
 Route.use('/vaccine',vaccineRoute)
+Route.use('/laboratory',laboratoryRoute)
 
 // Routes 
 Route.get('/all', ValidatorRol("usuario"), async (req,res) => {
     try {
         const serv = await services.findAll()
-        if (!serv.result[0][0]) return res.status(404).json({ message: "Servicios no encontrados" })
+        if (!serv.result) return res.status(404).json({ message: "Servicios no encontrados" })
 
         res.status(200).json(serv)
     } catch (err) {
@@ -38,7 +40,7 @@ Route.get('/all/:by', ValidatorRol("usuario"), async (req,res) => {
         if (!by) return res.status(400).json({ message: "Petición invalida, faltan datos" })
 
         const serv = await services.findAllBy(by)
-        if (!serv.result[0][0]) return res.status(404).json({ message: "Servicios no encontrados" })
+        if (!serv.result) return res.status(404).json({ message: "Servicios no encontrados" })
 
         res.status(200).json(serv)
     } catch (err) {
@@ -67,20 +69,6 @@ Route.get('/esthetic', ValidatorRol("usuario"), async (req,res) => {
     try {
         const serv = await services.findEsthetic()
         if (!serv.result) return res.status(404).json({ message: "Estéticas no encontradas" })
-
-        res.status(200).json(serv)
-    } catch (err) {
-        console.log(err)
-        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
-        if(err.status) return res.status(err.status).json(err.message)
-        res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
-    }
-})
-
-Route.get('/laboratory', ValidatorRol("usuario"), async (req,res) => {
-    try {
-        const serv = await services.findLaboratoryTests()
-        if (!serv.result) return res.status(404).json({ message: "Laboratory tests not found" })
 
         res.status(200).json(serv)
     } catch (err) {
