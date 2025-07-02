@@ -86,14 +86,14 @@ export default function App () {
       const admin = roles.includes('Administrador')
       return admin? children :<Navigate to='/user/login' />
     }
-
+    
     return <Navigate to='/user/login' />
   }
-
+  
   const MainRoute = () => {
     window.location.replace('/main')
   }
-
+  
   useEffect(() => {
     if (isInactive) {
       setNotify({

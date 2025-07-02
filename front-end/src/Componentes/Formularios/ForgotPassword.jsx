@@ -105,7 +105,7 @@ const ForgotPassword = ({ URL = ''}) => {
         }) // Generar código y "enviarlo"
         setNotify({
           title: 'Código enviado',
-          message: `Hemos enviado un código de verificación al correo ${datas.email})`,
+          message: `Hemos enviado un código de verificación al correo ${datas.email}`,
           close: setNotify
         })
       } else {

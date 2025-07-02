@@ -80,7 +80,7 @@ Route.get('/esthetic', ValidatorRol("usuario"), async (req,res) => {
 })
 
 // Call Middleware for verify the request data
-Route.use(Fullinfo(['slug','tec_des_cat','req','req_equ_esp','proc_ser','pre_ser','img_cat','dur_min_tip_ser','des_tip_ser','des_pro_ser','pre_act_ser','des_cat','cos_est_ser', 'cat_pro']))
+Route.use(Fullinfo(['slug','tec_des_tip_ser', 'des_cat','req','req_equ_esp','proc_ser','pre_ser','img_cat','dur_min_tip_ser','des_tip_ser','des_pro_ser','pre_act_ser','des_cat','cos_est_ser', 'cat_pro']))
 
 Route.put('/AblOrDis', ValidatorRol("veterinario"), async (req, res) => {
     // Vars 
@@ -117,7 +117,7 @@ Route.put('/modify', ValidatorRol("veterinario"), async (req, res) => {
     try {
         const result = await services.modify(data);
         if (!result.success) return res.status(400).json({ message: "No se pudo modificar el servicio" });
-        res.status(200).json({ message: "Servicio modificado correctamente" });
+        res.status(200).json(result);
     } catch (err) {
         console.log(err)
         if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })

@@ -1,4 +1,4 @@
--- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
+-- Active: 1750268475844@@127.0.0.1@3306@pets_heaven
 -- Crear procedimiento para buscar todas las categorías de servicios
 CREATE PROCEDURE pets_heaven.SearchServicesCat()
 BEGIN
@@ -358,7 +358,7 @@ BEGIN
 
     -- 3. Buscar el servicio
     SELECT id_ser INTO v_id_ser FROM servicios WHERE nom_ser = p_nom_ser AND tip_ser = v_id_tip_ser LIMIT 1;
-
+    
     -- 4. Buscar el procedimiento
     SELECT id_pro INTO v_id_pro FROM procedimientos WHERE nom_pro = p_nom_pro AND cat_pro = v_id_cat LIMIT 1;
 
@@ -375,12 +375,12 @@ BEGIN
 
     -- 2. Actualizar o insertar el tipo de servicio
     IF v_id_tip_ser IS NULL THEN
-        INSERT INTO tipos_servicios (cat_tip_ser, nom_tip_ser, des_tip_ser, tec_des_cat, req_equ_esp, dur_min_tip_ser)
+        INSERT INTO tipos_servicios (cat_tip_ser, nom_tip_ser, des_tip_ser, tec_des_tip_ser, req_equ_esp, dur_min_tip_ser)
         VALUES (v_id_cat, p_nom_tip_ser, p_des_tip_ser, p_tec_des_cat, p_req_equ_esp, p_dur_min_tip_ser);
         SET v_id_tip_ser = LAST_INSERT_ID();
     ELSE
         UPDATE tipos_servicios
-        SET des_tip_ser = p_des_tip_ser, tec_des_cat = p_tec_des_cat, req_equ_esp = p_req_equ_esp, dur_min_tip_ser = p_dur_min_tip_ser
+        SET des_tip_ser = p_des_tip_ser, tec_des_tip_ser = p_tec_des_cat, req_equ_esp = p_req_equ_esp, dur_min_tip_ser = p_dur_min_tip_ser
         WHERE id_tip_ser = v_id_tip_ser;
     END IF;
 
@@ -895,6 +895,7 @@ END //
 /* DROP PROCEDURE pets_heaven.`GetLaboratoryTests`; */
 /* DROP PROCEDURE pets_heaven.`GetTestTypes`; */
 /* DROP PROCEDURE pets_heaven.`UpdateVaccineAndProcedure`; */
+/* DROP PROCEDURE pets_heaven.`UpdateService`; */
 /* DROP PROCEDURE pets_heaven.`ChangeVaccineState`; */
 /* DROP PROCEDURE pets_heaven.AbleOrDesableService; */
 
