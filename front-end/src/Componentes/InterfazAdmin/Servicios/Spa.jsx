@@ -107,6 +107,7 @@ export const SpaMascotas = ({ URL = '' }) => {
 
   const guardarServicio = async (data) => {
     console.log(data)
+    let req = null
     try {
       setNotify({
         title: 'Guardando',
@@ -116,20 +117,23 @@ export const SpaMascotas = ({ URL = '' }) => {
 
       if (modoEdicion) {
         console.log(data)
-        await ModifyData(`${mainUrl}/modify`, data)
+        const mod = await ModifyData(`${mainUrl}/modify`, data)
+        if (mod?.success) req = 1
       } else {
-        await PostData(`${mainUrl}/register`, data)
+        const create = await PostData(`${mainUrl}/register`, data)
+        if (create?.success) req = 1
       }
       
-      didFetch.current = false // Reset fetch state to allow refetch
-      GetEsthetic()
-      setNotify({
-        title: 'Éxito',
-        message: `servicio ${modoEdicion ? 'actualizado' : 'agregado'} correctamente`,
-        close: setNotify
-      })
-
-      setMostrarFormulario(null)
+      if (req) {
+        didFetch.current = false // Reset fetch state to allow refetch
+        setMostrarFormulario(null)
+        setNotify({
+          title: 'Éxito',
+          message: `servicio ${modoEdicion ? 'actualizado' : 'agregado'} correctamente`,
+          close: setNotify
+        })
+        GetEsthetic()
+      }
 
     } catch (err) {
       setNotify(null)

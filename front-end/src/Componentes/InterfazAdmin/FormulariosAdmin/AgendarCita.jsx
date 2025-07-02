@@ -10,6 +10,7 @@ import { errorStatusHandler, formatDate, searchFilter } from "../../Varios/Util"
 
 // Import styles 
 import "../../../styles/InterfazAdmin/FormuariosAdmin/AgendarCita.css"
+import { toDatetimeLocal } from "../../../Utils/Utils"
 
 // Component 
 export default function AppointmentForm({ onClose, date, URL = '', sended}) {
@@ -138,8 +139,8 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
     const citaData = {
       fec_reg_cit: new Date().toISOString().split('T')[0],
       fec_cit: newEvent.fecCit,
-      hor_ini_cit: newEvent.start.split('T')[1],
-      hor_fin_cit: newEvent.end.split('T')[1],
+      hor_ini_cit: newEvent.start,
+      hor_fin_cit: newEvent.end,
       lug_ate_cit: lugar,
       mot_cit: newEvent.description,
       ser_cit: newEvent.category,
@@ -177,7 +178,6 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
       const data = await GetData(`${URL}/pet/all`)
       setNotify(null)
       if (data) {
-        console.log(data)
         setPacientes(data)
         setAlmcPacientes(data)
       }
@@ -462,7 +462,7 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
                       <input
                         type="time"
                         name="start"
-                        value={newEvent.start?.split("T")[1]?.substring(0, 5)}
+                        value={newEvent.start?.split("T")[1]}
                         onChange={handleInputChange}
                         className="hora-input"
                       />
@@ -479,7 +479,7 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
                       <input
                         type="time"
                         name="end"
-                        value={newEvent.end?.split("T")[1]?.substring(0, 5)}
+                        value={toDatetimeLocal(newEvent.end)?.split("T")[1]}
                         onChange={handleInputChange}
                         className="hora-input"
                       />

@@ -117,7 +117,7 @@ Route.put('/modify', ValidatorRol("veterinario"), async (req, res) => {
     try {
         const result = await services.modify(data);
         if (!result.success) return res.status(400).json({ message: "No se pudo modificar el servicio" });
-        res.status(200).json({ message: "Servicio modificado correctamente" });
+        res.status(200).json(result);
     } catch (err) {
         console.log(err)
         if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
