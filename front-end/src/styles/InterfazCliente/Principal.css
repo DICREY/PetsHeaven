@@ -1,0 +1,42 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #f8fafc;
+  color: #1e293b;
+  line-height: 1.6;
+}
+
+.app-veterinaria {
+  display: flex;
+  min-height: 100vh;
+}
+
+.contenido-principal {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: 280px;
+}
+
+.vista-principal {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+}
+
+@media (max-width: 1024px) {
+  .contenido-principal {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .vista-principal {
+    padding: 20px 15px;
+  }
+}

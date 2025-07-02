@@ -1,0 +1,310 @@
+.overlay-editar-mascota {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.modal-editar-mascota {
+  background: white;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 900px;
+  height: 85vh;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+.header-editar-mascota {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 30px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+  border-radius: 20px 20px 0 0;
+  flex-shrink: 0;
+}
+
+.titulo-header-mascota {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.titulo-editar-mascota {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.boton-cerrar-editar-mascota {
+  background: #f1f5f9;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #64748b;
+  transition: all 0.3s ease;
+}
+
+.boton-cerrar-editar-mascota:hover {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.formulario-editar-mascota {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.formulario-editar-mascota::-webkit-scrollbar {
+  display: none;
+}
+
+.seccion-foto-mascota {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.header-seccion-mascota {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.titulo-seccion-mascota {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.contenedor-foto-mascota {
+  display: flex;
+  justify-content: center;
+}
+
+.foto-actual-mascota {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.imagen-editar-mascota {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #00bcd4;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.boton-cambiar-foto {
+  background: #00bcd4;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.3s ease;
+}
+
+.boton-cambiar-foto:hover {
+  background: #00acc1;
+}
+
+.input-foto-oculto {
+  display: none;
+}
+
+.seccion-informacion-mascota {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.columna-izquierda-mascota,
+.columna-derecha-mascota {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.campo-mascota {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.campo-checkbox-mascota {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.label-mascota {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.input-mascota,
+.select-mascota {
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  background: white;
+  color: #1f2937;
+}
+
+.input-mascota:focus,
+.select-mascota:focus {
+  outline: none;
+  border-color: #00bcd4;
+  box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.1);
+}
+
+.input-mascota::placeholder {
+  color: #9ca3af;
+}
+
+.checkbox-editar-mascota {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.checkbox-editar-mascota input[type="checkbox"] {
+  display: none;
+}
+
+.checkmark-editar-mascota {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.checkbox-editar-mascota input[type="checkbox"]:checked + .checkmark-editar-mascota {
+  background: #00bcd4;
+  border-color: #00bcd4;
+}
+
+.checkbox-editar-mascota input[type="checkbox"]:checked + .checkmark-editar-mascota::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.botones-editar-mascota {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+.boton-cancelar-editar-mascota {
+  background: #f1f5f9;
+  color: #64748b;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.boton-cancelar-editar-mascota:hover {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.boton-guardar-editar-mascota {
+  background: #00bcd4;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.boton-guardar-editar-mascota:hover {
+  background: #00acc1;
+}
+
+@media (max-width: 768px) {
+  .modal-editar-mascota {
+    margin: 10px;
+    max-width: none;
+  }
+
+  .header-editar-mascota {
+    padding: 20px;
+  }
+
+  .formulario-editar-mascota {
+    padding: 20px;
+  }
+
+  .seccion-informacion-mascota {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .botones-editar-mascota {
+    flex-direction: column;
+  }
+}

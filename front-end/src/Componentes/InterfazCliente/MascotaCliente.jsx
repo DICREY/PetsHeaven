@@ -1,161 +1,172 @@
 import React from "react"
-import { useState } from "react"
-import "../../styles/InterfazCliente/MascotaCliente.css"
-import { FileText, Edit, Calendar, Plus } from "lucide-react"
+import { Search, Filter, Heart } from "lucide-react"
+import "../../styles/InterfazCliente/MascotasCliente.css"
 
-export default function MascotasPage() {
-  const [mostrarForm, setMostrarForm] = useState(false)
+const MascotasCliente = ({ mascotas, onNavegar }) => {
+  const verHistorial = (mascota) => {
+    onNavegar("historial", mascota)
+  }
 
-  const mascotas = [
-    {
-      id: 1,
-      nombre: "Max",
-      tipo: "Perro",
-      raza: "Golden Retriever",
-      edad: "3 años",
-      peso: "28 kg",
-      color: "Dorado",
-      ultimaVisita: "2024-01-10",
-      foto: "/placeholder.svg?height=200&width=200",
-    },
-    {
-      id: 2,
-      nombre: "Luna",
-      tipo: "Gato",
-      raza: "Siamés",
-      edad: "2 años",
-      peso: "4 kg",
-      color: "Blanco y negro",
-      ultimaVisita: "2024-01-05",
-      foto: "/placeholder.svg?height=200&width=200",
-    },
-    {
-      id: 3,
-      nombre: "Rocky",
-      tipo: "Perro",
-      raza: "Bulldog",
-      edad: "5 años",
-      peso: "22 kg",
-      color: "Marrón",
-      ultimaVisita: "2023-12-20",
-      foto: "/placeholder.svg?height=200&width=200",
-    },
-  ]
+  const calcularEdadTexto = (edad) => {
+    if (edad === 1) return "1 año"
+    return `${edad} años`
+  }
+
+  const obtenerIconoEspecie = (especie) => {
+    switch (especie.toLowerCase()) {
+      case "perro":
+        return "🐕"
+      case "gato":
+        return "🐱"
+      case "conejo":
+        return "🐰"
+      case "ave":
+        return "🐦"
+      default:
+        return "🐾"
+    }
+  }
 
   return (
-    <div className="mascotas-contenedor">
-      <div className="mascotas-header-principal">
-        <h1 className="mascotas-titulo-principal">Mis Mascotas</h1>
-      </div>
+    <main className="contenedor-mascotas-cliente">
+      <header className="header-mascotas-cliente">
+        <section className="titulo-seccion-mascotas-cliente">
+          <h1 className="titulo-mascotas-cliente">Mis Mascotas</h1>
+          <p className="subtitulo-mascotas-cliente">Gestiona la información de tus compañeros peludos</p>
+        </section>
+      </header>
 
-      <div className="mascotas-subheader">
-        <div className="header-info">
-          <p className="mascotas-subtitulo">Administra la información de tus compañeros</p>
-        </div>
-        <button className="btn-agregar-mascota" onClick={() => setMostrarForm(!mostrarForm)}>
-          <Plus size={18} />
-          Agregar Mascota
-        </button>
-      </div>
-
-      {mostrarForm && (
-        <div className="form-mascota-card">
-          <h3 className="form-mascota-titulo">Nueva Mascota</h3>
-          <form className="mascota-form">
-            <div className="form-row">
-              <div className="campo-mascota">
-                <label className="label-mascota">Nombre</label>
-                <input type="text" className="input-mascota" placeholder="Nombre de la mascota" />
-              </div>
-              <div className="campo-mascota">
-                <label className="label-mascota">Tipo</label>
-                <select className="input-mascota">
-                  <option>Seleccionar tipo</option>
-                  <option>Perro</option>
-                  <option>Gato</option>
-                  <option>Ave</option>
-                  <option>Otro</option>
-                </select>
-              </div>
-            </div>
-            <div className="form-row">
-              <div className="campo-mascota">
-                <label className="label-mascota">Raza</label>
-                <input type="text" className="input-mascota" placeholder="Raza" />
-              </div>
-              <div className="campo-mascota">
-                <label className="label-mascota">Edad</label>
-                <input type="text" className="input-mascota" placeholder="Ej: 2 años" />
-              </div>
-            </div>
-            <div className="form-botones">
-              <button type="button" className="btn-cancelar-form" onClick={() => setMostrarForm(false)}>
-                Cancelar
-              </button>
-              <button type="submit" className="btn-guardar-form">
-                Guardar
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-
-      <div className="mascotas-grid">
-        {mascotas.map((mascota) => (
-          <div key={mascota.id} className="mascota-card">
-            <div className="mascota-foto-contenedor">
-              <img
-                src={mascota.foto || "/placeholder.svg"}
-                alt={`Foto de ${mascota.nombre}`}
-                className="mascota-foto"
-              />
-            </div>
-
-            <div className="mascota-info-contenedor">
-              <div className="mascota-info-basica">
-                <h3 className="mascota-nombre">{mascota.nombre}</h3>
-                <p className="mascota-tipo-raza">
-                  {mascota.tipo} - {mascota.raza}
-                </p>
-              </div>
-
-              <div className="mascota-detalles">
-                <div className="detalle-item">
-                  <span className="detalle-label">Edad:</span>
-                  <span className="detalle-valor">{mascota.edad}</span>
-                </div>
-                <div className="detalle-item">
-                  <span className="detalle-label">Peso:</span>
-                  <span className="detalle-valor">{mascota.peso}</span>
-                </div>
-                <div className="detalle-item">
-                  <span className="detalle-label">Color:</span>
-                  <span className="detalle-valor">{mascota.color}</span>
-                </div>
-                <div className="detalle-item">
-                  <span className="detalle-label">Última visita:</span>
-                  <span className="detalle-valor">{mascota.ultimaVisita}</span>
-                </div>
-              </div>
-
-              <div className="mascota-acciones">
-                <button className="btn-historial">
-                  <FileText size={16} />
-                  Historial
-                </button>
-                <button className="btn-editar-mascota">
-                  <Edit size={16} />
-                  Editar
-                </button>
-                <button className="btn-cita-rapida">
-                  <Calendar size={16} />
-                  Cita
-                </button>
-              </div>
-            </div>
+      <section className="estadisticas-mascotas-cliente" aria-label="Estadísticas de mascotas">
+        <article className="stat-mascotas-cliente">
+          <div className="icono-stat-mascotas-cliente">
+            <Heart size={24} />
           </div>
+          <div className="contenido-stat-mascotas-cliente">
+            <span className="numero-stat-mascotas-cliente">{mascotas.length}</span>
+            <span className="label-stat-mascotas-cliente">Mascotas Registradas</span>
+          </div>
+        </article>
+
+        <article className="stat-mascotas-cliente">
+          <div className="icono-stat-mascotas-cliente">
+            <Search size={24} />
+          </div>
+          <div className="contenido-stat-mascotas-cliente">
+            <span className="numero-stat-mascotas-cliente">
+              {mascotas.reduce((total, mascota) => total + (mascota.historial?.length || 0), 0)}
+            </span>
+            <span className="label-stat-mascotas-cliente">Consultas Totales</span>
+          </div>
+        </article>
+
+        <article className="stat-mascotas-cliente">
+          <div className="icono-stat-mascotas-cliente">
+            <Filter size={24} />
+          </div>
+          <div className="contenido-stat-mascotas-cliente">
+            <span className="numero-stat-mascotas-cliente">2</span>
+            <span className="label-stat-mascotas-cliente">Citas Próximas</span>
+          </div>
+        </article>
+      </section>
+
+      <section className="herramientas-mascotas-cliente" aria-label="Herramientas de búsqueda">
+        <div className="buscador-mascotas-cliente">
+          <Search size={20} />
+          <input
+            type="text"
+            placeholder="Buscar mascota..."
+            className="input-buscar-mascotas-cliente"
+            aria-label="Buscar mascota por nombre"
+          />
+        </div>
+
+        <button className="boton-filtro-mascotas-cliente" aria-label="Abrir filtros">
+          <Filter size={18} />
+          Filtros
+        </button>
+      </section>
+
+      <section className="grid-mascotas-cliente" aria-label="Lista de mascotas">
+        {mascotas.map((mascota) => (
+          <article key={mascota.id} className="tarjeta-mascotas-cliente">
+            <header className="header-tarjeta-mascotas-cliente">
+              <figure className="foto-mascotas-cliente">
+                <img
+                  src={mascota.foto || "/placeholder.svg?height=80&width=80"}
+                  alt={`Foto de ${mascota.nombre}`}
+                  className="imagen-mascotas-cliente"
+                />
+                <div className="overlay-foto-mascotas-cliente" aria-hidden="true">
+                  <span className="icono-especie-mascotas-cliente">{obtenerIconoEspecie(mascota.especie)}</span>
+                </div>
+              </figure>
+
+              <div className="info-basica-mascotas-cliente">
+                <h3 className="nombre-mascotas-cliente">{mascota.nombre}</h3>
+                <p className="raza-mascotas-cliente">{mascota.raza}</p>
+                <span className="especie-mascotas-cliente">{mascota.especie}</span>
+              </div>
+            </header>
+
+            <section className="detalles-mascotas-cliente" aria-label={`Detalles de ${mascota.nombre}`}>
+              <dl className="lista-detalles-mascotas">
+                <div className="detalle-mascotas-cliente">
+                  <dt className="label-detalle-mascotas-cliente">Edad</dt>
+                  <dd className="valor-detalle-mascotas-cliente">{calcularEdadTexto(mascota.edad)}</dd>
+                </div>
+
+                <div className="detalle-mascotas-cliente">
+                  <dt className="label-detalle-mascotas-cliente">Peso</dt>
+                  <dd className="valor-detalle-mascotas-cliente">{mascota.peso} kg</dd>
+                </div>
+
+                <div className="detalle-mascotas-cliente">
+                  <dt className="label-detalle-mascotas-cliente">Color</dt>
+                  <dd className="valor-detalle-mascotas-cliente">{mascota.color}</dd>
+                </div>
+
+                <div className="detalle-mascotas-cliente">
+                  <dt className="label-detalle-mascotas-cliente">Género</dt>
+                  <dd className="valor-detalle-mascotas-cliente">{mascota.genero}</dd>
+                </div>
+
+                <div className="detalle-mascotas-cliente">
+                  <dt className="label-detalle-mascotas-cliente">Esterilizado</dt>
+                  <dd className="valor-detalle-mascotas-cliente">{mascota.esterilizado ? "Sí" : "No"}</dd>
+                </div>
+
+                <div className="detalle-mascotas-cliente">
+                  <dt className="label-detalle-mascotas-cliente">Consultas</dt>
+                  <dd className="valor-detalle-mascotas-cliente">{mascota.historial?.length || 0}</dd>
+                </div>
+              </dl>
+            </section>
+
+            <footer className="acciones-mascotas-cliente">
+              <button
+                className="boton-historial-mascotas-cliente"
+                onClick={() => verHistorial(mascota)}
+                aria-label={`Ver historial completo de ${mascota.nombre}`}
+              >
+                Ver Historial Completo
+              </button>
+            </footer>
+          </article>
         ))}
-      </div>
-    </div>
+      </section>
+
+      {mascotas.length === 0 && (
+        <section className="sin-mascotas-cliente" aria-label="Sin mascotas registradas">
+          <div className="icono-sin-mascotas-cliente">
+            <Heart size={64} />
+          </div>
+          <h3 className="titulo-sin-mascotas-cliente">No tienes mascotas registradas</h3>
+          <p className="texto-sin-mascotas-cliente">Contacta con la clínica para registrar tu primera mascota</p>
+        </section>
+      )}
+    </main>
   )
 }
+
+export default MascotasCliente

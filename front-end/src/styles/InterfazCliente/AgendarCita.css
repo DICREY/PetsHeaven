@@ -1,0 +1,766 @@
+.contenedor-agendar-cliente {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.header-agendar-cliente {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.titulo-agendar-cliente {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #00BCD4;
+  margin-bottom: 8px;
+}
+
+.subtitulo-agendar-cliente {
+  font-size: 1.1rem;
+  color: #64748b;
+  font-weight: 400;
+}
+
+.progreso-agendar-cliente {
+  margin-bottom: 40px;
+}
+
+.barra-progreso-agendar-cliente {
+  width: 100%;
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 2px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.progreso-completado-agendar-cliente {
+  height: 100%;
+  background: linear-gradient(90deg, #00bcd4, #00acc1);
+  transition: width 0.3s ease;
+}
+
+.pasos-agendar-cliente {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.paso-item-agendar-cliente {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.numero-paso-agendar-cliente {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.completado-agendar-cliente .numero-paso-agendar-cliente {
+  background: #00bcd4;
+  color: white;
+}
+
+.activo-agendar-cliente .numero-paso-agendar-cliente {
+  background: #00bcd4;
+  color: white;
+  box-shadow: 0 0 0 4px rgba(0, 188, 212, 0.2);
+}
+
+.nombre-paso-agendar-cliente {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
+  text-align: center;
+}
+
+.activo-agendar-cliente .nombre-paso-agendar-cliente {
+  color: #00bcd4;
+  font-weight: 600;
+}
+
+.contenido-agendar-cliente {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 30px;
+  border: 1px solid #f1f5f9;
+}
+
+.paso-agendar-cliente {
+  min-height: 400px;
+}
+
+.header-paso-agendar-cliente {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.titulo-paso-agendar-cliente {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #00BCD4;
+  margin: 15px 0 8px;
+}
+
+.descripcion-paso-agendar-cliente {
+  color: #64748b;
+  font-size: 1rem;
+}
+
+.opciones-mascota-agendar-cliente {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.opcion-mascota-agendar-cliente {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.opcion-mascota-agendar-cliente:hover {
+  border-color: #00bcd4;
+  background: rgba(0, 188, 212, 0.05);
+}
+
+.seleccionada-agendar-cliente {
+  border-color: #00bcd4;
+  background: rgba(0, 188, 212, 0.1);
+}
+
+.foto-mascota-agendar-cliente {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #00bcd4;
+}
+
+.info-mascota-agendar-cliente {
+  flex: 1;
+}
+
+.nombre-mascota-agendar-cliente {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.detalles-mascota-agendar-cliente {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-bottom: 2px;
+}
+
+.edad-mascota-agendar-cliente {
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+
+.seleccion-servicio-agendar-cliente {
+  margin-bottom: 30px;
+}
+
+.buscador-servicio-cliente {
+  display: flex;
+  align-items: center;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0 15px;
+  margin-bottom: 20px;
+  transition: border-color 0.3s ease;
+}
+
+.buscador-servicio-cliente:focus-within {
+  border-color: #00bcd4;
+}
+
+.buscador-servicio-cliente svg {
+  color: #94a3b8;
+  margin-right: 10px;
+}
+
+.input-buscar-servicio-cliente {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 12px 0;
+  font-size: 1rem;
+  background: transparent;
+  color: #1e293b;
+}
+
+.input-buscar-servicio-cliente::placeholder {
+  color: #94a3b8;
+}
+
+.lista-servicios-cliente {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.lista-servicios-compacta-cliente {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.opcion-servicio-compacta-cliente {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  font-weight: 500;
+  color: #1e293b;
+  font-size: 0.9rem;
+}
+
+.opcion-servicio-compacta-cliente:hover {
+  border-color: #00bcd4;
+  background: rgba(0, 188, 212, 0.05);
+}
+
+.opcion-servicio-compacta-cliente.seleccionada-agendar-cliente {
+  border-color: #00bcd4;
+  background: rgba(0, 188, 212, 0.1);
+}
+
+.opcion-servicio-agendar-cliente {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.opcion-servicio-agendar-cliente:hover {
+  border-color: #00bcd4;
+  background: rgba(0, 188, 212, 0.05);
+}
+
+.opcion-servicio-agendar-cliente.seleccionada-agendar-cliente {
+  border-color: #00bcd4;
+  background: rgba(0, 188, 212, 0.1);
+}
+
+.contenido-servicio-agendar-cliente {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nombre-servicio-agendar-cliente {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.detalles-servicio-agendar-cliente {
+  display: flex;
+  gap: 20px;
+}
+
+.duracion-servicio-agendar-cliente,
+.precio-servicio-agendar-cliente {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.seleccion-veterinario-cliente {
+  margin-bottom: 30px;
+}
+
+.titulo-veterinario-cliente {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 15px;
+}
+
+.opciones-veterinario-cliente {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.opcion-veterinario-cliente {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.opcion-veterinario-cliente:hover {
+  border-color: #00bcd4;
+  background: rgba(0, 188, 212, 0.05);
+}
+
+.opcion-veterinario-cliente.seleccionada-agendar-cliente {
+  border-color: #00bcd4;
+  background: rgba(0, 188, 212, 0.1);
+}
+
+.info-veterinario-cliente {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nombre-veterinario-cliente {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.especialidad-veterinario-cliente {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.campo-motivo-agendar-cliente {
+  margin-bottom: 20px;
+}
+
+.label-agendar-cliente {
+  display: block;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.textarea-agendar-cliente {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.3s ease;
+}
+
+.textarea-agendar-cliente:focus {
+  outline: none;
+  border-color: #00bcd4;
+}
+
+.campo-urgente-agendar-cliente {
+  margin-top: 20px;
+}
+
+.checkbox-agendar-cliente {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.checkbox-agendar-cliente input[type="checkbox"] {
+  display: none;
+}
+
+.checkmark-agendar-cliente {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.checkbox-agendar-cliente input[type="checkbox"]:checked + .checkmark-agendar-cliente {
+  background: #00bcd4;
+  border-color: #00bcd4;
+}
+
+.checkbox-agendar-cliente input[type="checkbox"]:checked + .checkmark-agendar-cliente::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.seleccion-fecha-hora-cliente {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.calendario-contenedor-cliente {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 20px;
+  border: 2px solid #e2e8f0;
+}
+
+.calendario-agendar-cliente {
+  width: 100%;
+}
+
+.header-calendario-cliente {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.titulo-calendario-cliente {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1e293b;
+  text-transform: capitalize;
+}
+
+.dias-semana-cliente {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.dia-semana-cliente {
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+  padding: 8px 4px;
+}
+
+.grid-calendario-cliente {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.dia-calendario-cliente {
+  aspect-ratio: 1;
+  border: none;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #1e293b;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dia-calendario-cliente:hover:not(:disabled) {
+  background: rgba(0, 188, 212, 0.1);
+  color: #00bcd4;
+}
+
+.dia-calendario-cliente.hoy-cliente {
+  background: #00bcd4;
+  color: white;
+}
+
+.dia-calendario-cliente.seleccionado-cliente {
+  background: #00bcd4;
+  color: white;
+  box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.3);
+}
+
+.dia-calendario-cliente.otro-mes-cliente {
+  color: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.dia-calendario-cliente.pasado-cliente {
+  color: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.dia-calendario-cliente:disabled {
+  cursor: not-allowed;
+}
+
+.seleccion-hora-cliente {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 20px;
+  border: 2px solid #e2e8f0;
+}
+
+.titulo-hora-cliente {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.opciones-hora-agendar-cliente {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 10px;
+}
+
+.opcion-hora-agendar-cliente {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.opcion-hora-agendar-cliente:hover {
+  border-color: #00bcd4;
+  background: rgba(0, 188, 212, 0.05);
+  color: #00bcd4;
+}
+
+.opcion-hora-agendar-cliente.seleccionada-agendar-cliente {
+  border-color: #00bcd4;
+  background: #00bcd4;
+  color: white;
+}
+
+.resumen-cita-agendar-cliente {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.seccion-resumen-agendar-cliente {
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border-left: 4px solid #00bcd4;
+}
+
+.titulo-resumen-agendar-cliente {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 12px;
+}
+
+.detalle-resumen-agendar-cliente {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.foto-resumen-agendar-cliente {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.nombre-resumen-agendar-cliente {
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 2px;
+}
+
+.info-resumen-agendar-cliente {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.motivo-resumen-agendar-cliente {
+  color: #64748b;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.alerta-urgente-agendar-cliente {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.exito-agendar-cliente {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.mensaje-exito-agendar-cliente {
+  margin-top: 30px;
+}
+
+.texto-exito-agendar-cliente {
+  color: #64748b;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.acciones-exito-agendar-cliente {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.boton-ver-citas-agendar-cliente,
+.boton-inicio-agendar-cliente {
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.boton-ver-citas-agendar-cliente {
+  background: #00bcd4;
+  color: white;
+}
+
+.boton-ver-citas-agendar-cliente:hover {
+  background: #00acc1;
+}
+
+.boton-inicio-agendar-cliente {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.boton-inicio-agendar-cliente:hover {
+  background: #e2e8f0;
+}
+
+.botones-agendar-cliente {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.boton-anterior-agendar-cliente,
+.boton-siguiente-agendar-cliente,
+.boton-confirmar-agendar-cliente {
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  font-size: 1rem;
+}
+
+.boton-anterior-agendar-cliente {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.boton-anterior-agendar-cliente:hover {
+  background: #e2e8f0;
+}
+
+.boton-siguiente-agendar-cliente,
+.boton-confirmar-agendar-cliente {
+  background: #00bcd4;
+  color: white;
+  margin-left: auto;
+}
+
+.boton-siguiente-agendar-cliente:hover,
+.boton-confirmar-agendar-cliente:hover {
+  background: #00acc1;
+}
+
+.boton-siguiente-agendar-cliente:disabled {
+  background: #e2e8f0;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .contenido-agendar-cliente {
+    padding: 30px 20px;
+  }
+
+  .opciones-mascota-agendar-cliente {
+    grid-template-columns: 1fr;
+  }
+
+  .lista-servicios-cliente {
+    grid-template-columns: 1fr;
+  }
+
+  .opciones-veterinario-cliente {
+    grid-template-columns: 1fr;
+  }
+
+  .seleccion-fecha-hora-cliente {
+    grid-template-columns: 1fr;
+  }
+
+  .opciones-hora-agendar-cliente {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  }
+
+  .botones-agendar-cliente {
+    flex-direction: column;
+  }
+
+  .boton-siguiente-agendar-cliente,
+  .boton-confirmar-agendar-cliente {
+    margin-left: 0;
+  }
+
+  .acciones-exito-agendar-cliente {
+    flex-direction: column;
+  }
+}

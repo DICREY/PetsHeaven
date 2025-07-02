@@ -87,6 +87,7 @@ class Services {
                 data.pro_pro,
                 data.con_esp_pro
             ]
+            console.log(params)
 
             this.database = new DataBase()
             this.database.conect()
