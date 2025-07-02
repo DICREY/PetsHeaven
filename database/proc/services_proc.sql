@@ -375,7 +375,7 @@ BEGIN
 
     -- 2. Actualizar o insertar el tipo de servicio
     IF v_id_tip_ser IS NULL THEN
-        INSERT INTO tipos_servicios (cat_tip_ser, nom_tip_ser, des_tip_ser, tec_des_cat, req_equ_esp, dur_min_tip_ser)
+        INSERT INTO tipos_servicios (cat_tip_ser, nom_tip_ser, des_tip_ser, tec_des_tip_ser, req_equ_esp, dur_min_tip_ser)
         VALUES (v_id_cat, p_nom_tip_ser, p_des_tip_ser, p_tec_des_cat, p_req_equ_esp, p_dur_min_tip_ser);
         SET v_id_tip_ser = LAST_INSERT_ID();
     ELSE

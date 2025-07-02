@@ -106,6 +106,7 @@ export const SpaMascotas = ({ URL = '' }) => {
   }
 
   const guardarServicio = async (data) => {
+    console.log(data)
     try {
       setNotify({
         title: 'Guardando',

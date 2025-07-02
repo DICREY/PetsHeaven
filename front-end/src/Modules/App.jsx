@@ -95,8 +95,7 @@ export default function App () {
   }
   
   useEffect(() => {
-    const { user } = useContext(AuthContext)
-    if (user && isInactive) {
+    if (isInactive) {
       setNotify({
         title: 'Sesión Inactiva',
         message: 'Tu sesión ha estado inactiva por un tiempo prolongado. ¿Deseas continuar?',

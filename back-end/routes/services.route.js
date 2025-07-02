@@ -80,7 +80,7 @@ Route.get('/esthetic', ValidatorRol("usuario"), async (req,res) => {
 })
 
 // Call Middleware for verify the request data
-Route.use(Fullinfo(['slug','tec_des_cat','req','req_equ_esp','proc_ser','pre_ser','img_cat','dur_min_tip_ser','des_tip_ser','des_pro_ser','pre_act_ser','des_cat','cos_est_ser', 'cat_pro']))
+Route.use(Fullinfo(['slug','tec_des_tip_ser', 'des_cat','req','req_equ_esp','proc_ser','pre_ser','img_cat','dur_min_tip_ser','des_tip_ser','des_pro_ser','pre_act_ser','des_cat','cos_est_ser', 'cat_pro']))
 
 Route.put('/AblOrDis', ValidatorRol("veterinario"), async (req, res) => {
     // Vars 
