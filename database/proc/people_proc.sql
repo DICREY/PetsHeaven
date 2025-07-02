@@ -16,6 +16,7 @@ CREATE PROCEDURE pets_heaven.RegistPeoples(
 BEGIN
     DECLARE p_id_persona INT;
     DECLARE p_id_rol INT;
+    DECLARE img_per VARCHAR(255);
 
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
      BEGIN
@@ -36,11 +37,17 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este correo electrónico ya esta registrado en el sistema';
     END IF;
 
+    IF p_img_per is NULL THEN
+        SET img_per = 'No-registrado';
+    ELSE
+        SET img_per = p_img_per;
+    END IF;
+
     INSERT INTO personas (
         nom_per,ape_per,fec_nac_per,tip_doc_per,doc_per,dir_per,cel_per,cel2_per,email_per,cont_per,gen_per,fot_per
     )
     VALUES (
-        p_nom_per,p_ape_per,p_fec_nac_per,p_tip_doc_per,p_doc_per,p_dir_per,p_cel_per,p_cel2_per,p_email_per,p_cont_per,p_gen_per,p_img_per
+        p_nom_per,p_ape_per,p_fec_nac_per,p_tip_doc_per,p_doc_per,p_dir_per,p_cel_per,p_cel2_per,p_email_per,p_cont_per,p_gen_per,img_per
     );
 
     SET p_id_persona = LAST_INSERT_ID();

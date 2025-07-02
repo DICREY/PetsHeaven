@@ -84,7 +84,7 @@ CREATE TABLE pets_heaven.mascotas(
     FOREIGN KEY(id_pro_mas) REFERENCES personas(id_per) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE pets_heaven.categorias_servicios (CREATE TABLE pets_heaven.categorias_servicios (
+CREATE TABLE pets_heaven.categorias_servicios (
     id_cat INT AUTO_INCREMENT PRIMARY KEY COMMENT 'ID de la categoría de servicio',
     nom_cat VARCHAR(100) NOT NULL COMMENT 'Nombre de la categoría',
     slug VARCHAR(100) UNIQUE NOT NULL COMMENT 'Versión normalizada y simplificada del nombre',

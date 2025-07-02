@@ -171,7 +171,7 @@ Route.post('/stats/staff', ValidatorRol('veterinario'), async (req,res) => {
 })
 
 // Call Middleware for verify the request data
-Route.use(Fullinfo(['cel2_per']))
+Route.use(Fullinfo(['cel2_per','celular2']))
 
 Route.post('/register', async (req,res) => {
     // Vars 
@@ -179,14 +179,11 @@ Route.post('/register', async (req,res) => {
     const saltRounds = 15
     const body = req.body
     
-    try {
-        // Verifiy if exist
-        const find = await user.findBy(toString(body.numeroDocumento))
-        if (find.result) res.status(302).json({ message: "Usuario ya existe" })
-            
+    try {            
         const create = await user.create({hash_pass: await hash(body.password,saltRounds), ...body})
         res.status(201).json(create)
     } catch(err) {
+        console.log(err)
         if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
         if(err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })

@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
-// import emailjs from '@emailjs/browser'
+import emailjs from '@emailjs/browser'
 
 // Imports 
 import { PostData } from '../Varios/Requests'

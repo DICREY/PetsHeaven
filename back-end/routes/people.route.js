@@ -69,7 +69,7 @@ Route.get('/by:by', async (req,res) => {
 
 // Call Middleware for verify the request data
 Route.use(ValidatorRol("administrador"))
-Route.use(Fullinfo(['cel2_per','esp_vet','hor_vet','num_tar_vet','fot_tar_vet']))
+Route.use(Fullinfo(['cel2_per','esp_vet','hor_vet','num_tar_vet','fot_tar_vet','celular2']))
 
 Route.post('/assign-rol', async (req,res) => {
     // Vars 
