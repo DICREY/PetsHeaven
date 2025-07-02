@@ -1,0 +1,288 @@
+.contenedor-inicio-cliente {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero-inicio-cliente {
+  margin-bottom: 40px;
+}
+
+.saludo-inicio-cliente {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.titulo-saludo-inicio-cliente {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #00bcd4, #00acc1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitulo-saludo-inicio-cliente {
+  font-size: 1.1rem;
+  color: #64748b;
+  font-weight: 400;
+}
+
+.estadisticas-inicio-cliente {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.tarjeta-estadistica-inicio-cliente {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: all 0.3s ease;
+  border: 1px solid #f1f5f9;
+  position: relative;
+  overflow: hidden;
+}
+
+.tarjeta-estadistica-inicio-cliente::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--color-stat);
+}
+
+.tarjeta-estadistica-inicio-cliente:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.icono-estadistica-inicio-cliente {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: rgba(0, 188, 212, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.contenido-estadistica-inicio-cliente {
+  flex: 1;
+}
+
+.valor-estadistica-inicio-cliente {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.titulo-estadistica-inicio-cliente {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.descripcion-estadistica-inicio-cliente {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.resumen-inicio-cliente {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+}
+
+.proximas-citas-inicio-cliente,
+.consejos-inicio-cliente {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f1f5f9;
+}
+
+.titulo-resumen-inicio-cliente {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 20px;
+}
+
+.lista-citas-inicio-cliente {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.item-cita-inicio-cliente {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: #f8fafc;
+  border-radius: 12px;
+  transition: background 0.2s ease;
+}
+
+.item-cita-inicio-cliente:hover {
+  background: #f1f5f9;
+}
+
+.fecha-cita-inicio-cliente {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #00bcd4;
+  color: white;
+  padding: 8px;
+  border-radius: 10px;
+  min-width: 50px;
+}
+
+.dia-cita-inicio-cliente {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.mes-cita-inicio-cliente {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
+
+.info-cita-inicio-cliente {
+  flex: 1;
+}
+
+.servicio-cita-inicio-cliente {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 2px;
+}
+
+.mascota-cita-inicio-cliente {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-bottom: 2px;
+}
+
+.hora-cita-inicio-cliente {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.estado-cita-inicio-cliente {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.estado-cita-inicio-cliente.confirmada {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+}
+
+.estado-cita-inicio-cliente.pendiente {
+  background: rgba(251, 191, 36, 0.1);
+  color: #fbbf24;
+}
+
+.sin-citas-inicio-cliente {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.texto-sin-citas-inicio-cliente {
+  color: #64748b;
+  margin: 15px 0 20px;
+}
+
+.boton-agendar-inicio-cliente {
+  background: #00bcd4;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.boton-agendar-inicio-cliente:hover {
+  background: #00acc1;
+}
+
+.lista-consejos-inicio-cliente {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.consejo-inicio-cliente {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 15px;
+  background: #f8fafc;
+  border-radius: 12px;
+}
+
+.icono-consejo-inicio-cliente {
+  font-size: 1.5rem;
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 188, 212, 0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.texto-consejo-inicio-cliente {
+  flex: 1;
+}
+
+.titulo-consejo-inicio-cliente {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.descripcion-consejo-inicio-cliente {
+  font-size: 0.8rem;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+@media (max-width: 1024px) {
+  .resumen-inicio-cliente {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .titulo-saludo-inicio-cliente {
+    font-size: 2rem;
+  }
+
+  .estadisticas-inicio-cliente {
+    grid-template-columns: 1fr;
+  }
+}

@@ -26,8 +26,8 @@ const ForgotPassword = ({ URL = ''}) => {
 
   // Vars
   const imagenFondo = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Fondos/fondo.png' 
-  const logoUrl = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/1.png' 
-  const navigate = useNavigate()
+  const logoUrl = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/5.png' 
+  const navigate = useNavigate() 
 
   const {
     register,
@@ -181,9 +181,10 @@ const ForgotPassword = ({ URL = ''}) => {
   }
 
   return (
-    <main className='forgot-container'>
+    <main className='login-container'>
       <section className='forgot-formulario-container'>
-        <div className='contenedor-logo-externo'>
+        <div className='contenedor-logo-externo'
+        onClick={() => navigate('/main')}>
           <img src={logoUrl || '/placeholder.svg'} alt='Logo de Pets Heaven, clínica veterinaria.' className='logo-veterinaria' />
         </div>
 

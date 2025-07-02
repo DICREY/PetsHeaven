@@ -1,0 +1,397 @@
+.contenedor-citas-cliente {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.contenedor-header-citas {
+  background: white;
+  border-radius: 20px;
+  padding: 35px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f1f5f9;
+}
+
+.header-citas-cliente {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.titulo-seccion-citas-cliente {
+  flex: 1;
+}
+
+.titulo-citas-cliente {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.subtitulo-citas-cliente {
+  font-size: 1.1rem;
+  color: #64748b;
+  font-weight: 400;
+}
+
+.estadisticas-citas-cliente {
+  display: flex;
+  gap: 20px;
+}
+
+.stat-citas-cliente {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.numero-stat-citas-cliente {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #00bcd4;
+}
+
+.label-stat-citas-cliente {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.contenedor-filtros-citas {
+  background: white;
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f1f5f9;
+}
+
+.filtros-citas-cliente {
+  margin: 0;
+}
+
+.botones-filtro-citas-cliente {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.boton-filtro-citas-cliente {
+  background: white;
+  border: 2px solid #e2e8f0;
+  color: #64748b;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.boton-filtro-citas-cliente:hover {
+  border-color: #00bcd4;
+  color: #00bcd4;
+}
+
+.activo-filtro-citas-cliente {
+  background: #00bcd4;
+  border-color: #00bcd4;
+  color: white;
+}
+
+.contenedor-lista-citas {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f1f5f9;
+}
+
+.lista-citas-cliente {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.lista-citas-cliente::-webkit-scrollbar {
+  width: 4px;
+}
+
+.lista-citas-cliente::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 2px;
+}
+
+.lista-citas-cliente::-webkit-scrollbar-thumb {
+  background: #00bcd4;
+  border-radius: 2px;
+}
+
+.tarjeta-cita-cliente {
+  background: #f8fafc;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  display: flex;
+  transition: all 0.3s ease;
+  height: 180px;
+  cursor: pointer;
+}
+
+.tarjeta-cita-cliente:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  background: white;
+}
+
+.fecha-lateral-cita-cliente {
+  background: linear-gradient(135deg, #00bcd4, #00acc1);
+  color: white;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.dia-lateral-cita-cliente {
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.mes-lateral-cita-cliente {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  margin: 2px 0;
+  opacity: 0.9;
+}
+
+.año-lateral-cita-cliente {
+  font-size: 0.7rem;
+  opacity: 0.8;
+}
+
+.contenido-cita-cliente {
+  flex: 1;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.header-tarjeta-cita-cliente {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.info-principal-cita-cliente {
+  flex: 1;
+  min-width: 0;
+}
+
+.servicio-cita-cliente {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mascota-cita-cliente {
+  color: #64748b;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.veterinario-cita-cliente {
+  color: #00bcd4;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.estado-y-acciones-cita-cliente {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.badge-estado-cita-cliente {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.acciones-cita-cliente {
+  display: flex;
+  gap: 6px;
+}
+
+.boton-accion-cita-cliente {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.editar-cita-cliente {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.editar-cita-cliente:hover {
+  background: #3b82f6;
+  color: white;
+}
+
+.detalles-cita-cliente {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.detalle-item-cita-cliente {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.texto-detalle-cita-cliente {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.alerta-proxima-cita-cliente {
+  background: rgba(251, 191, 36, 0.1);
+  color: #f59e0b;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-align: center;
+  border-left: 4px solid #f59e0b;
+  margin-top: 10px;
+}
+
+.sin-citas-cliente {
+  text-align: center;
+  padding: 60px 20px;
+  background: #f8fafc;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+}
+
+.titulo-sin-citas-cliente {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 20px 0 8px;
+}
+
+.texto-sin-citas-cliente {
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .header-citas-cliente {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .estadisticas-citas-cliente {
+    justify-content: space-around;
+  }
+
+  .stat-citas-cliente {
+    padding: 12px 15px;
+  }
+
+  .tarjeta-cita-cliente {
+    flex-direction: column;
+    height: auto;
+    min-height: 200px;
+  }
+
+  .fecha-lateral-cita-cliente {
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    width: auto;
+    padding: 15px;
+  }
+
+  .dia-lateral-cita-cliente {
+    font-size: 1.5rem;
+  }
+
+  .header-tarjeta-cita-cliente {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .estado-y-acciones-cita-cliente {
+    justify-content: space-between;
+  }
+
+  .detalles-cita-cliente {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}

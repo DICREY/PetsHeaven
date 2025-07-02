@@ -1,0 +1,336 @@
+.contenedor-mascotas-cliente {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-mascotas-cliente {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.titulo-seccion-mascotas-cliente {
+  flex: 1;
+}
+
+.titulo-mascotas-cliente {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.subtitulo-mascotas-cliente {
+  font-size: 1.1rem;
+  color: #64748b;
+  font-weight: 400;
+}
+
+.estadisticas-mascotas-cliente {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-mascotas-cliente {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: transform 0.3s ease;
+}
+
+.stat-mascotas-cliente:hover {
+  transform: translateY(-2px);
+}
+
+.icono-stat-mascotas-cliente {
+  width: 50px;
+  height: 50px;
+  background: rgba(0, 188, 212, 0.1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #00bcd4;
+}
+
+.contenido-stat-mascotas-cliente {
+  display: flex;
+  flex-direction: column;
+}
+
+.numero-stat-mascotas-cliente {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.label-stat-mascotas-cliente {
+  font-size: 0.9rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.herramientas-mascotas-cliente {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.buscador-mascotas-cliente {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0 15px;
+  transition: border-color 0.3s ease;
+}
+
+.buscador-mascotas-cliente:focus-within {
+  border-color: #00bcd4;
+}
+
+.buscador-mascotas-cliente svg {
+  color: #94a3b8;
+  margin-right: 10px;
+}
+
+.input-buscar-mascotas-cliente {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 12px 0;
+  font-size: 1rem;
+  color: #1e293b;
+}
+
+.input-buscar-mascotas-cliente::placeholder {
+  color: #94a3b8;
+}
+
+.boton-filtro-mascotas-cliente {
+  background: white;
+  border: 2px solid #e2e8f0;
+  color: #64748b;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.boton-filtro-mascotas-cliente:hover {
+  border-color: #00bcd4;
+  color: #00bcd4;
+}
+
+.grid-mascotas-cliente {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.tarjeta-mascotas-cliente {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f5f9;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+  width: 100%;
+}
+
+.header-tarjeta-mascotas-cliente {
+  padding: 20px 20px 15px;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(0, 188, 212, 0.03), rgba(0, 172, 193, 0.03));
+}
+
+.foto-mascotas-cliente {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 15px;
+}
+
+.imagen-mascotas-cliente {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.overlay-foto-mascotas-cliente {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  width: 30px;
+  height: 30px;
+  background: #00bcd4;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+}
+
+.icono-especie-mascotas-cliente {
+  font-size: 1rem;
+}
+
+.info-basica-mascotas-cliente {
+  text-align: center;
+}
+
+.nombre-mascotas-cliente {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.raza-mascotas-cliente {
+  font-size: 1rem;
+  color: #64748b;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.especie-mascotas-cliente {
+  font-size: 0.85rem;
+  color: #00bcd4;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.lista-detalles-mascotas {
+  display: contents;
+}
+
+.detalles-mascotas-cliente {
+  padding: 15px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.detalle-mascotas-cliente {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detalle-mascotas-cliente dt {
+  font-size: 0.9rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.detalle-mascotas-cliente dd {
+  font-size: 0.9rem;
+  color: #1e293b;
+  font-weight: 600;
+  margin: 0;
+}
+
+.label-detalle-mascotas-cliente {
+  font-size: 0.9rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.valor-detalle-mascotas-cliente {
+  font-size: 0.9rem;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.acciones-mascotas-cliente {
+  padding: 15px 20px;
+}
+
+.boton-historial-mascotas-cliente {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #00bcd4;
+  color: white;
+  border: none;
+}
+
+.boton-historial-mascotas-cliente:hover {
+  background: #00acc1;
+}
+
+.sin-mascotas-cliente {
+  text-align: center;
+  padding: 80px 20px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.icono-sin-mascotas-cliente {
+  margin-bottom: 25px;
+  opacity: 0.5;
+  color: #94a3b8;
+}
+
+.titulo-sin-mascotas-cliente {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 12px;
+}
+
+.texto-sin-mascotas-cliente {
+  color: #64748b;
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .header-mascotas-cliente {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .estadisticas-mascotas-cliente {
+    grid-template-columns: 1fr;
+  }
+
+  .herramientas-mascotas-cliente {
+    flex-direction: column;
+  }
+
+  .grid-mascotas-cliente {
+    grid-template-columns: 1fr;
+  }
+}
