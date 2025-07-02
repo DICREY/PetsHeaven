@@ -14,7 +14,7 @@ BEGIN
             AND m.nom_mas LIKE p_nom_mas
         LIMIT 1
     ) THEN 
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se se encontraron citas para esta mascota';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se encontraron citas para esta mascota';
     ELSE
         SELECT 
             c.id_cit,
@@ -91,7 +91,7 @@ BEGIN
             AND m.nom_mas LIKE p_nom_mas
         LIMIT 1
     ) THEN 
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se se encontraron citas para esta mascota';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se encontraron citas para esta mascota';
     ELSE
         SELECT 
             c.id_cit,
@@ -162,7 +162,7 @@ BEGIN
             AND m.nom_mas LIKE p_nom_mas
         LIMIT 1
     ) THEN 
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se se encontraron citas para esta mascota';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se encontraron citas para esta mascota';
     ELSE
         SELECT 
             c.id_cit,
@@ -243,7 +243,7 @@ BEGIN
             AND m.nom_mas LIKE p_nom_mas
         LIMIT 1
     ) THEN 
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se se encontraron citas para esta mascota';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se encontraron vacunas para esta mascota';
     ELSE
         SELECT 
             c.id_cit,
@@ -329,7 +329,7 @@ BEGIN
             AND m.nom_mas LIKE p_nom_mas
         LIMIT 1
     ) THEN 
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se se encontraron citas para esta mascota';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se encontraron consultas para esta mascota';
     ELSE
         SELECT 
             c.id_cit,

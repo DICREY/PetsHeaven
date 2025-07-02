@@ -28,7 +28,7 @@ class People {
                 setTimeout(() => {
                     res({
                         message: "Users found",
-                        result: result
+                        result: result[0]
                     })
                 },1000)
             })
@@ -56,7 +56,7 @@ class People {
                 setTimeout(() => {
                     res({
                         message: "Users found",
-                        result: result
+                        result: result[0]
                     })
                 },1000)
             })
@@ -86,7 +86,7 @@ class People {
                 setTimeout(() => {
                     res({
                         message: "Users found",
-                        result: result
+                        result: result[0]
                     })
                 },1000)
             })
@@ -116,7 +116,7 @@ class People {
                 setTimeout(() => {
                     res({
                         message: "User found",
-                        result: result
+                        result: result[0]
                     })
                 },1000)
             })
@@ -255,37 +255,7 @@ class People {
             // close conection 
             conection.end()
         })
-    }    
-
-
-    // async findAllTimeBy(data) {
-    //     return new Promise((res,rej) => {
-    //         // vars
-    //         const by = data.replace(":","").replace(" ","")
-    //         const proc = "CALL SearchPeoplesBy(?);"
-
-    //         // conect to database
-            // this.database = new DataBase()
-    //         this.database.conect()
-
-    //         if (this.database) this.database.conection.query(proc,by,(err,result) => {
-            //    rej({ message: err })
-        //     if(!result || !result[0][0]) rej({
-        //             message: "Not found",
-        //             status: 404
-        //         })
-                // setTimeout(() => {
-    //                 res({
-    //                     message: "Users found",
-    //                     result: result
-    //                 })
-    //             },1000)
-    //         })
-
-    //         // close conection 
-    //         this.database.conection.end()
-    //     })
-    // }
+    }
 }
 
 // Export

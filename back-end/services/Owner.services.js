@@ -30,7 +30,7 @@ class Owner extends People{
                 setTimeout(() => {
                     res({
                         message: "Owners found",
-                        result: result
+                        result: result[0]
                     })
                 },1000)
             })
@@ -60,7 +60,7 @@ class Owner extends People{
                 setTimeout(() => {
                     res({
                         message: "Owners found",
-                        result: result
+                        result: result[0]
                     })
                 },1000)
             })
@@ -90,7 +90,7 @@ class Owner extends People{
                 setTimeout(() => {
                     res({
                         message: "Owners found",
-                        result: result
+                        result: result[0]
                     })
                 },1000)
             })
@@ -120,7 +120,7 @@ class Owner extends People{
                 setTimeout(() => {
                     res({
                         message: "Owner found",
-                        result: result
+                        result: result[0]
                     })
                 },1000)
             })

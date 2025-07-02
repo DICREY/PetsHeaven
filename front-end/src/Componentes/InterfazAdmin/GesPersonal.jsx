@@ -11,7 +11,6 @@ import { GlobalTable } from '../Global/GlobalTable'
 import { Notification } from '../Global/Notifys'
 import { AuthContext } from '../../Contexts/Contexts'
 import { HeaderAdmin } from "../BarrasNavegacion/HeaderAdmin"
-import Footer from "../Varios/Footer2"
 // import { Loader } from '../Errores/Loader'
 
 // Import styles 
@@ -44,9 +43,9 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
         'Celular': 'cel_per',
         'Correo': 'email_per'
       })
-      if (data[0]) {
-        setUsersAlmac(data[0])
-        setUsers(divideList(data[0], 4))
+      if (data) {
+        setUsersAlmac(data)
+        setUsers(divideList(data, 4))
       }
     } catch (err) {
       setNotify(null)
@@ -116,7 +115,6 @@ export function GesPersonal({ setUserSelect, URL = "" }) {
 
           </div>
         </section>
-        <Footer />
       </section>
 
       {notify && (

@@ -1,8 +1,11 @@
--- Active: 1746130779175@@127.0.0.1@3306
+-- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.Login(
     IN p_firstData VARCHAR(100)
 )
 BEGIN
+    IF NOT EXISTS (SELECT 1 FROM personas WHERE email_per = p_firstData) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Email ingresado no existe en el sistema';
+    END IF;
     SELECT
         p.nom_per,
         p.ape_per,
@@ -24,7 +27,22 @@ BEGIN
             )
     ORDER BY 
         p.nom_per
-    LIMIT 1000;
+    LIMIT 1;
+END //
+CREATE PROCEDURE pets_heaven.ChangePassword(
+    IN p_email VARCHAR(100),
+    IN p_passwd TEXT
+)
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM personas WHERE email_per = p_email) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Email ingresado no existe en el sistema';
+    END IF;
+    UPDATE
+        personas p
+    SET
+        p.cont_per = p_passwd
+    WHERE
+        p.email_per = p_email;
 END //
 
 CREATE PROCEDURE pets_heaven.GetAdminStats()
@@ -89,7 +107,7 @@ BEGIN
 END //
 
 /* DROP PROCEDURE pets_heaven.`Login`; */
-/* CALL `GetAdminStats`(); */
-/* CALL `GetStaffStats`('1298765432'); */
 /* DROP PROCEDURE `GetAdminStats`; */
 /* DROP PROCEDURE `GetStatsVet`; */
+/* CALL `GetAdminStats`(); */
+/* CALL `GetStaffStats`('1298765432'); */

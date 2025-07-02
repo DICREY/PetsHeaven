@@ -2,8 +2,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import React, { useState, useEffect, useContext } from 'react'
 import {
   Settings, Users, Headset, ChevronDown, Syringe, Bath, Scissors, Calendar, Menu, X,
-  Stethoscope, CalendarRange, CalendarClock, FlaskRoundIcon as Flask,
-  Home
+  Stethoscope, CalendarRange, CalendarClock, FlaskRoundIcon as Flask
 } from 'lucide-react'
 
 // Imports
@@ -102,19 +101,28 @@ export const NavBarAdmin = () => {
                 </NavLink>
               </li>
             )}
-            <li className='itemnavadmin'>
-              <NavLink to={'/user/home'} className='enlacenavadmin'>
-                <Settings className='icononavadmin' />
-                <span>Tú Panel</span>
-              </NavLink>
-            </li>
-            {roles?.includes('Veterinario') && (
+            {roles?.includes('Veterinario')? (
               <li className='itemnavadmin'>
                 <NavLink to={'/consultorio'} className='enlacenavadmin'>
                   <Stethoscope className='icononavadmin' />
                   <span>Consultorio</span>
                 </NavLink>
               </li>
+            ):(
+              <>
+                <li className='itemnavadmin'>
+                  <NavLink to={'/user/home'} className='enlacenavadmin'>
+                    <Settings className='icononavadmin' />
+                    <span>Tú Panel</span>
+                  </NavLink>
+                </li>
+                <li className='itemnavadmin'>
+                  <NavLink to={'/user/pets'} className='enlacenavadmin'>
+                    <Settings className='icononavadmin' />
+                    <span>Mascotas</span>
+                  </NavLink>
+                </li>
+              </>
             )}
 
             { admin && (
@@ -197,13 +205,6 @@ export const NavBarAdmin = () => {
                 </li>
               </ul>
             </li>)}
-
-            <li className='itemnavadmin'>
-              <NavLink to={'/user/pets'} className='enlacenavadmin'>
-                <Settings className='icononavadmin' />
-                <span>Mascotas</span>
-              </NavLink>
-            </li>
           </ul>
         </nav>
       </aside>

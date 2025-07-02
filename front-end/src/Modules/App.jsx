@@ -150,9 +150,6 @@ export default function App () {
           <Route path='notificaciones' element={
             <PrivateRoute children={<TodasLasNotificaciones URL={URL} />}/>}>
           </Route>
-          {/* <Route path='/pet/medical-history' element={
-            <PrivateRoute children={<PetMedicalHistory URL={URL} />}/>}>
-          </Route> */}
 
           {/* Admin routes  */}
           <Route path='/admin' element={<MainAdmin />} >
@@ -229,7 +226,7 @@ export default function App () {
               arriveTo={arriveTo}
             /> } /> 
           <Route path='user/register' element={<Registro URL={URL} imgDefault={imgUserDefault} />} />
-          <Route path='user/recuperar' element={<ForgotPassword />} />
+          <Route path='user/recuperar' element={<ForgotPassword URL={URL} />} />
           <Route path='internal' element={<ErrorInternalServer />} />
           <Route path='/politica-cookies' element={<CookiePolicy />} />
           <Route path='*' element={<NotFound />} />

@@ -99,7 +99,7 @@ Route.post('/register', async (req,res) => {
     try {
         // Verifiy if exist
         const find = await people.findBy(toString(body.doc_per))
-        if (find.result[0][0].nom_per) res.status(302).json({ message: "Usuario ya existe" })
+        if (find.result) res.status(302).json({ message: "Usuario ya existe" })
 
         const create = await people.create({ hash_pass: await hash(body.pas_per,saltRounds), ...body })
         res.status(201).json(create)

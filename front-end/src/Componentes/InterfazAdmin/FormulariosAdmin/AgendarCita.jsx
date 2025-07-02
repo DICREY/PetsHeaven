@@ -144,7 +144,7 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
       mot_cit: newEvent.description,
       ser_cit: newEvent.category,
       vet_cit: newEvent.veterinario,
-      mas_cit: newEvent.nom_mas
+      mas_cit: newEvent.mas_cit
     }
     try {
         const data = await PostData(`${mainUrl}/register`, citaData)
@@ -177,6 +177,7 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
       const data = await GetData(`${URL}/pet/all`)
       setNotify(null)
       if (data) {
+        console.log(data)
         setPacientes(data)
         setAlmcPacientes(data)
       }
@@ -295,13 +296,12 @@ export default function AppointmentForm({ onClose, date, URL = '', sended}) {
                       name="nom_mas"
                       placeholder="Buscar mascota..."
                       value={newEvent.nom_mas || ''}
-                      // defaultValue={newEvent.nom_mas}
                       className="campo"
                       onChange={(e) => {
                         const value = e.target.value
                         const filteredValue = validatePatientName(value)
                         if (filteredValue === value || value.length < newEvent.nom_mas.length) {
-                          setNewEvent({ ...newEvent, nom_mas: value })
+                          setNewEvent({ ...newEvent, nom_mas: value, mas_cit: null }) // Limpia el ID si el usuario escribe
                           filter(value)
                         }
                       }}

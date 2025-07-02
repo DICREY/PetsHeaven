@@ -64,7 +64,7 @@ class Pet {
                 setTimeout(() => {
                     res({
                         message: "Pets found",
-                        result: result
+                        result: result[0]
                     })
                 },1000)
             })
@@ -95,7 +95,7 @@ class Pet {
                 setTimeout(() => {
                     res({
                         message: "Pets found",
-                        result: result
+                        result: result[0]
                     })
                 },1000)
             })
@@ -124,7 +124,7 @@ class Pet {
                 setTimeout(() => {
                     res({
                         message: "Pets found",
-                        result: result
+                        result: result[0]
                     })
                 },1000)
             })

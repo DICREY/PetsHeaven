@@ -98,7 +98,7 @@ Route.put('/delete', ValidatorRol("administrador"), async (req,res) => {
         // Verifiy if exist
         const search = await owner.findByOwner(by.doc)
 
-        if (!search.result[0][0]) return res.status(404).json({ message: "Usuario no encontrado" })    
+        if (!search.result) return res.status(404).json({ message: "Usuario no encontrado" })    
 
         const deleted = await owner.deleteOwnerOwner(by.doc)
         
