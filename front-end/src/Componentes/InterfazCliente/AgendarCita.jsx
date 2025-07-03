@@ -1,12 +1,15 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useState } from "react"
 import { Calendar, Clock, User, FileText, CheckCircle, Search } from "lucide-react"
 import "../../styles/InterfazCliente/AgendarCita.css"
 import { CheckImage } from "../../Utils/Utils"
-import { getAge } from "../Varios/Util"
+import { errorStatusHandler, getAge } from "../Varios/Util"
+import { GetData } from "../Varios/Requests"
 
-const AgendarCita = ({ mascotas, onAgregarCita, onNavegar, imgDefault = '', URL = '' }) => {
-  const [paso, setPaso] = useState(1)
+const AgendarCita = ({ mascotas, onAgregarCita, onNavegar, imgDefault = '', URL = '',setNotify }) => {
+  const [ paso, setPaso ] = useState(1)
+  const [ vet, setVet ] = useState()
+  const [ appoint, setAppoint ] = useState()
   const [formData, setFormData] = useState({
     mascota: "",
     servicio: "",
@@ -19,27 +22,6 @@ const AgendarCita = ({ mascotas, onAgregarCita, onNavegar, imgDefault = '', URL 
 
   const [busquedaServicio, setBusquedaServicio] = useState("")
   const [fechaSeleccionada, setFechaSeleccionada] = useState("")
-
-  const servicios = [
-    { id: "consulta", nombre: "Consulta General" },
-    { id: "vacunacion", nombre: "Vacunación" },
-    { id: "desparasitacion", nombre: "Desparasitación" },
-    { id: "cirugia", nombre: "Cirugía" },
-    { id: "revision", nombre: "Revisión Anual" },
-    { id: "emergencia", nombre: "Emergencia" },
-    { id: "limpieza", nombre: "Limpieza Dental" },
-    { id: "radiografia", nombre: "Radiografía" },
-    { id: "analitica", nombre: "Analítica Sanguínea" },
-    { id: "ecografia", nombre: "Ecografía" },
-  ]
-
-  const veterinarios = [
-    { id: "perez", nombre: "Dr. Pérez", especialidad: "Medicina General" },
-    { id: "lopez", nombre: "Dra. López", especialidad: "Cirugía" },
-    { id: "martin", nombre: "Dr. Martín", especialidad: "Dermatología" },
-    { id: "garcia", nombre: "Dra. García", especialidad: "Cardiología" },
-    { id: "rodriguez", nombre: "Dr. Rodríguez", especialidad: "Oftalmología" },
-  ]
 
   const horasDisponibles = [
     "09:00",
@@ -60,10 +42,6 @@ const AgendarCita = ({ mascotas, onAgregarCita, onNavegar, imgDefault = '', URL 
     "18:30",
   ]
 
-  const serviciosFiltrados = servicios
-    .filter((servicio) => servicio.nombre.toLowerCase().includes(busquedaServicio.toLowerCase()))
-    .slice(0, 4)
-
   const manejarCambio = (campo, valor) => {
     setFormData((prev) => ({ ...prev, [campo]: valor }))
   }
@@ -82,21 +60,21 @@ const AgendarCita = ({ mascotas, onAgregarCita, onNavegar, imgDefault = '', URL 
   }
 
   const confirmarCita = () => {
-    const servicioSeleccionado = servicios.find((s) => s.id === formData.servicio)
-    const veterinarioSeleccionado = veterinarios.find((v) => v.id === formData.veterinario)
+    const servicioSeleccionado = appoint?.find((s) => s.nom_cat === formData.servicio)
+    const veterinarioSeleccionado = vet?.find((v) => v.doc_per === formData.veterinario)
     const nuevaCita = {
       id: Date.now(),
       fecha: formData.fecha,
       hora: formData.hora,
-      servicio: servicioSeleccionado.nombre,
+      servicio: servicioSeleccionado.nom_cat,
       mascota: formData.mascota,
       estado: formData.urgente ? "urgente" : "pendiente",
-      veterinario: veterinarioSeleccionado.nombre,
+      veterinario: veterinarioSeleccionado.doc_per,
       motivo: formData.motivo,
       propietario: "María González",
       telefono: "+34 612 345 678",
       consultorio: "Consultorio 1",
-      tipo: servicioSeleccionado.nombre,
+      tipo: servicioSeleccionado.nom_cat,
       descripcion: formData.motivo,
       horaFin: "",
     }
@@ -108,6 +86,53 @@ const AgendarCita = ({ mascotas, onAgregarCita, onNavegar, imgDefault = '', URL 
     const hoy = new Date()
     return hoy.toISOString().split("T")[0]
   }
+
+  const GetVet = async () => {
+    try {
+      const data = await GetData(`${URL}/staff/all/vet`)
+      setNotify(null)
+      if (data) {
+        setVet(data)
+      }
+    } catch (err) {
+      setNotify(null)
+      const message = errorStatusHandler(err)
+      setNotify({
+          title: 'Error',
+          message: message,
+          close: setNotify
+      })
+      if (err.status === 403) setTimeout(() => {
+          logout()
+      }, 2000)
+    }
+  }
+
+  const GetAppointmentCat = async () => {
+    try {
+      const data = await GetData(`${URL}/global/services`)
+      setNotify(null)
+      if (data) {
+        setAppoint(data)
+      }
+    } catch (err) {
+      setNotify(null)
+      const message = errorStatusHandler(err)
+      setNotify({
+          title: 'Error',
+          message: message,
+          close: setNotify
+      })
+      if (err.status === 403) setTimeout(() => {
+          logout()
+      }, 2000)
+    }
+  }
+
+  useEffect(() => {
+    GetAppointmentCat()
+    GetVet()
+  },[])
 
   const renderizarCalendario = () => {
     const hoy = new Date()
@@ -191,7 +216,7 @@ const AgendarCita = ({ mascotas, onAgregarCita, onNavegar, imgDefault = '', URL 
             </div>
 
             <div className="opciones-mascota-agendar-cliente">
-              {mascotas.map((mascota, index) => (
+              {mascotas?.map((mascota, index) => (
                 <button
                   key={index}
                   type="button"
@@ -239,14 +264,14 @@ const AgendarCita = ({ mascotas, onAgregarCita, onNavegar, imgDefault = '', URL 
               </div>
 
               <div className="lista-servicios-compacta-cliente">
-                {serviciosFiltrados.map((servicio) => (
+                {appoint?.map((servicio) => (
                   <button
                     key={servicio.id}
                     type="button"
-                    className={`opcion-servicio-compacta-cliente ${formData.servicio === servicio.id ? "seleccionada-agendar-cliente" : ""}`}
-                    onClick={() => manejarCambio("servicio", servicio.id)}
+                    className={`opcion-servicio-compacta-cliente ${formData.servicio === servicio.nom_cat ? "seleccionada-agendar-cliente" : ""}`}
+                    onClick={() => manejarCambio("servicio", servicio.nom_cat)}
                   >
-                    {servicio.nombre}
+                    {servicio.nom_cat}
                   </button>
                 ))}
               </div>
@@ -255,16 +280,16 @@ const AgendarCita = ({ mascotas, onAgregarCita, onNavegar, imgDefault = '', URL 
             <div className="seleccion-veterinario-cliente">
               <h4 className="titulo-veterinario-cliente">Seleccionar Veterinario</h4>
               <div className="opciones-veterinario-cliente">
-                {veterinarios.map((veterinario) => (
+                {vet?.map((veterinario, idx) => (
                   <button
-                    key={veterinario.id}
+                    key={idx}
                     type="button"
-                    className={`opcion-veterinario-cliente ${formData.veterinario === veterinario.id ? "seleccionada-agendar-cliente" : ""}`}
-                    onClick={() => manejarCambio("veterinario", veterinario.id)}
+                    className={`opcion-veterinario-cliente ${formData.veterinario === veterinario.doc_per ? "seleccionada-agendar-cliente" : ""}`}
+                    onClick={() => manejarCambio("veterinario", veterinario.doc_per)}
                   >
                     <div className="info-veterinario-cliente">
-                      <h5 className="nombre-veterinario-cliente">{veterinario.nombre}</h5>
-                      <p className="especialidad-veterinario-cliente">{veterinario.especialidad}</p>
+                      <h5 className="nombre-veterinario-cliente">{veterinario.nom_per} {veterinario.ape_per}</h5>
+                      <p className="especialidad-veterinario-cliente">{veterinario.esp_vet}</p>
                     </div>
                   </button>
                 ))}
@@ -331,9 +356,9 @@ const AgendarCita = ({ mascotas, onAgregarCita, onNavegar, imgDefault = '', URL 
         )
 
       case 4:
-        const servicioSeleccionado = servicios.find((s) => s.id === formData.servicio)
-        const veterinarioSeleccionado = veterinarios.find((v) => v.id === formData.veterinario)
-        const mascotaSeleccionada = mascotas.find((m) => m.nombre === formData.mascota)
+        const servicioSeleccionado = appoint?.find((s) => s.nom_cat === formData.servicio)
+        const veterinarioSeleccionado = vet?.find((v) => v.doc_per === formData.veterinario)
+        const mascotaSeleccionada = mascotas?.find((m) => m.nom_mas === formData.mascota)
 
         return (
           <div className="paso-agendar-cliente">
@@ -347,15 +372,16 @@ const AgendarCita = ({ mascotas, onAgregarCita, onNavegar, imgDefault = '', URL 
               <div className="seccion-resumen-agendar-cliente">
                 <h4 className="titulo-resumen-agendar-cliente">Mascota</h4>
                 <div className="detalle-resumen-agendar-cliente">
-                  <img
-                    src={mascotaSeleccionada?.foto || "/placeholder.svg?height=50&width=50"}
+                  <CheckImage
+                    src={mascotaSeleccionada?.fot_mas}
                     alt={formData.mascota}
                     className="foto-resumen-agendar-cliente"
+                    imgDefault={imgDefault}
                   />
                   <div>
                     <p className="nombre-resumen-agendar-cliente">{formData.mascota}</p>
                     <p className="info-resumen-agendar-cliente">
-                      {mascotaSeleccionada?.especie} • {mascotaSeleccionada?.raza}
+                      {mascotaSeleccionada?.esp_mas} • {mascotaSeleccionada?.raz_mas}
                     </p>
                   </div>
                 </div>
@@ -364,15 +390,15 @@ const AgendarCita = ({ mascotas, onAgregarCita, onNavegar, imgDefault = '', URL 
               <div className="seccion-resumen-agendar-cliente">
                 <h4 className="titulo-resumen-agendar-cliente">Servicio</h4>
                 <div className="detalle-resumen-agendar-cliente">
-                  <p className="nombre-resumen-agendar-cliente">{servicioSeleccionado?.nombre}</p>
+                  <p className="nombre-resumen-agendar-cliente">{servicioSeleccionado?.nom_cat}</p>
                 </div>
               </div>
 
               <div className="seccion-resumen-agendar-cliente">
                 <h4 className="titulo-resumen-agendar-cliente">Veterinario</h4>
                 <div className="detalle-resumen-agendar-cliente">
-                  <p className="nombre-resumen-agendar-cliente">{veterinarioSeleccionado?.nombre}</p>
-                  <p className="info-resumen-agendar-cliente">{veterinarioSeleccionado?.especialidad}</p>
+                  <p className="nombre-resumen-agendar-cliente">{veterinarioSeleccionado?.nom_per}</p>
+                  <p className="info-resumen-agendar-cliente">{veterinarioSeleccionado?.esp_vet}</p>
                 </div>
               </div>
 

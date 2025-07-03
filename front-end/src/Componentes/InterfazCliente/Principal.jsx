@@ -102,7 +102,7 @@ function Principal({ URL = '', imgPetDefault = '' }) {
       case "mascotas":
         return <MascotasCliente pets={pets} imgDefault={imgPetDefault} onNavegar={navegarA} />
       case "agendar":
-        return <AgendarCita mascotas={pets} URL={URL} imgDefault={imgPetDefault} onAgregarCita={agregarCita} onNavegar={navegarA} />
+        return <AgendarCita mascotas={pets} setNotify={setNotify} URL={URL} imgDefault={imgPetDefault} onAgregarCita={agregarCita} onNavegar={navegarA} />
       case "citas":
         return <ProximasCitas citas={appointment} setCitas={setAppointment} onActualizarCita={actualizarCita} />
       case "historial":
