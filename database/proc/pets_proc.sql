@@ -320,33 +320,45 @@ BEGIN
         (
             SELECT GROUP_CONCAT(
                 CONCAT_WS('---',
+                    ct.id_cit,
                     ct.fec_reg_cit,
                     ct.fec_cit,
                     ct.hor_ini_cit,
                     ct.hor_fin_cit,
+                    ct.mot_cit,
+                    ct.est_cit,
+                    ct.fec_cre_cit,
+                    ct.fec_act_cit,
                     s.nom_ser,
                     s.pre_ser,
                     s.des_ser,
                     ts.nom_tip_ser,
                     cs.nom_cat,
                     cs.img_cat,
-                    p_vet.nom_per,
-                    p_vet.ape_per,
+                    p_vet.nom_per AS nom_per_vet,
+                    p_vet.ape_per AS ape_per_vet,
                     v.especialidad,
                     cv.nom_cat,
-                    p_vet.fot_per
+                    p_vet.fot_per AS fot_per_vet
                 ) 
                 SEPARATOR ';'
             ) 
             FROM 
                 citas ct
-            JOIN servicios s ON s.id_ser = ct.ser_cit
-            JOIN tipos_servicios ts ON ts.id_tip_ser = s.tip_ser
-            JOIN categorias_servicios cs ON cs.id_cat = ts.cat_tip_ser
-            JOIN personas p_vet ON p_vet.id_per = ct.vet_cit
-            JOIN veterinarios v ON v.id_vet = ct.vet_cit
-            LEFT JOIN otorgar_categoria_vet otv ON otv.id_vet = ct.vet_cit
-            LEFT JOIN categorias_veterinario cv ON otv.id_cat = cv.id_cat
+            JOIN 
+                servicios s ON s.id_ser = ct.ser_cit
+            JOIN
+                tipos_servicios ts ON ts.id_tip_ser = s.tip_ser
+            JOIN
+                categorias_servicios cs ON cs.id_cat = ts.cat_tip_ser
+            JOIN
+                personas p_vet ON p_vet.id_per = ct.vet_cit
+            JOIN
+                veterinarios v ON v.id_vet = ct.vet_cit
+            LEFT JOIN
+                otorgar_categoria_vet otv ON otv.id_vet = ct.vet_cit
+            LEFT JOIN
+                categorias_veterinario cv ON otv.id_cat = cv.id_cat
             WHERE 
                 ct.mas_cit = m.id_mas
                 AND (
@@ -370,7 +382,6 @@ BEGIN
     LIMIT 1000;
 END //
 
-/* DROP PROCEDURE pets_heaven.SearchHistoryBy; */
 /* DROP PROCEDURE pets_heaven.SearchPets; */
 /* DROP PROCEDURE pets_heaven.SearchPetsBy; */
 /* DROP PROCEDURE pets_heaven.SearchPetBy; */

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext, useEffect, useState } from "react"
 import {
   ArrowLeft,
   Download,
@@ -12,30 +12,35 @@ import {
   Pill,
   Heart,
 } from "lucide-react"
-import { useState } from "react"
-import EditarMascota from "./EditarMascota"
-import "../../styles/InterfazCliente/HistorialMascota.css"
 
-const HistorialMascota = ({ mascota, onNavegar }) => {
-  const [mostrarEdicion, setMostrarEdicion] = useState(false)
+// Imports 
+import EditarMascota from "./EditarMascota"
+import { PostData } from "../Varios/Requests"
+import { errorStatusHandler, formatDate, getAge } from "../Varios/Util"
+import { AuthContext } from "../../Contexts/Contexts"
+
+// Import styles
+import "../../styles/InterfazCliente/HistorialMascota.css"
+import { CheckImage } from "../../Utils/Utils"
+
+// Component 
+const HistorialMascota = ({ mascota, onNavegar, URL = '', imgDefault = '', setNotify }) => {
+  // Dynamic vars 
+  const [ mostrarEdicion, setMostrarEdicion ] = useState(false)
+  const [ history, setHistory ] = useState(null)
+
+  // Vars 
+  const { user } = useContext(AuthContext)
 
   const descargarPDF = () => {
     // Simular descarga de PDF
     const link = document.createElement("a")
     link.href = "#"
-    link.download = `historial-${mascota.nombre}.pdf`
+    link.download = `historial-${mascota.nom_mas}.pdf`
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
-    alert(`Descargando historial médico de ${mascota.nombre} en PDF...`)
-  }
-
-  const formatearFecha = (fecha) => {
-    return new Date(fecha).toLocaleDateString("es-ES", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    })
+    alert(`Descargando historial médico de ${mascota.nom_mas} en PDF...`)
   }
 
   const obtenerIconoTipo = (tipo) => {
@@ -83,6 +88,30 @@ const HistorialMascota = ({ mascota, onNavegar }) => {
     alert("Datos de la mascota actualizados correctamente")
   }
 
+  useEffect(() => {
+    const getHistory = async () => {
+      try {
+        const data = await PostData(`${URL}/pet/history`,{ firstData: mascota.nom_mas, secondData: user.doc})
+        console.log(data.result)
+        console.log(data.result?.citas)
+        setNotify(null)
+        if (data?.result) setHistory(data.result)
+      } catch (err) {
+        setNotify(null)
+        const message = errorStatusHandler(err)
+        setNotify({
+          title: 'Error',
+          message: `${message}`,
+          close: setNotify
+        })
+      }
+    }
+
+    if (mascota?.nom_mas) {
+      getHistory()
+    }
+  },[mascota])
+
   if (!mascota) {
     return (
       <div className="contenedor-historial">
@@ -108,7 +137,7 @@ const HistorialMascota = ({ mascota, onNavegar }) => {
 
         <div className="titulo-seccion-historial">
           <h1 className="titulo-historial">Historial Médico</h1>
-          <p className="subtitulo-historial">Registro completo de {mascota.nombre}</p>
+          <p className="subtitulo-historial">Registro completo de {mascota.nom_mas}</p>
         </div>
 
         <div className="acciones-header-historial">
@@ -125,10 +154,11 @@ const HistorialMascota = ({ mascota, onNavegar }) => {
 
       <div className="perfil-mascota-historial">
         <div className="foto-perfil-historial">
-          <img
-            src={mascota.foto || "/placeholder.svg?height=120&width=120"}
-            alt={mascota.nombre}
+          <CheckImage
+            src={mascota.fot_mas}
+            alt={mascota.nom_mas}
             className="imagen-perfil-historial"
+            imgDefault={imgDefault}
           />
           <div className="estado-perfil-historial">
             <Activity size={16} />
@@ -137,53 +167,53 @@ const HistorialMascota = ({ mascota, onNavegar }) => {
         </div>
 
         <div className="info-perfil-historial">
-          <h2 className="nombre-perfil-historial">{mascota.nombre}</h2>
+          <h2 className="nombre-perfil-historial">{mascota.nom_mas}</h2>
           <p className="raza-perfil-historial">
-            {mascota.especie} • {mascota.raza}
+            {mascota.esp_mas} • {mascota.raz_mas}
           </p>
 
           <div className="detalles-perfil-historial">
             <div className="detalle-perfil-historial">
               <span className="label-perfil-historial">Edad</span>
-              <span className="valor-perfil-historial">{mascota.edad} años</span>
+              <span className="valor-perfil-historial">{getAge(mascota.fec_nac_mas)} años</span>
             </div>
             <div className="detalle-perfil-historial">
               <span className="label-perfil-historial">Peso</span>
-              <span className="valor-perfil-historial">{mascota.peso} kg</span>
+              <span className="valor-perfil-historial">{mascota.pes_mas} kg</span>
             </div>
             <div className="detalle-perfil-historial">
               <span className="label-perfil-historial">Color</span>
-              <span className="valor-perfil-historial">{mascota.color}</span>
+              <span className="valor-perfil-historial">{mascota.col_mas}</span>
             </div>
             <div className="detalle-perfil-historial">
               <span className="label-perfil-historial">Género</span>
-              <span className="valor-perfil-historial">{mascota.genero}</span>
+              <span className="valor-perfil-historial">{mascota.gen_mas}</span>
             </div>
             <div className="detalle-perfil-historial">
               <span className="label-perfil-historial">Esterilizado</span>
-              <span className="valor-perfil-historial">{mascota.esterilizado ? "Sí" : "No"}</span>
+              <span className="valor-perfil-historial">{mascota.est_rep_mas ? "Sí" : "No"}</span>
             </div>
             <div className="detalle-perfil-historial">
               <span className="label-perfil-historial">Consultas</span>
-              <span className="valor-perfil-historial">{mascota.historial?.length || 0}</span>
+              <span className="valor-perfil-historial">{history?.citas?.length || 0}</span>
             </div>
           </div>
         </div>
 
         <div className="estadisticas-perfil-historial">
           <div className="stat-perfil-historial">
-            <div className="numero-stat-perfil-historial">{mascota.historial?.length || 0}</div>
+            <div className="numero-stat-perfil-historial">{history?.citas?.length || 0}</div>
             <div className="label-stat-perfil-historial">Consultas Totales</div>
           </div>
           <div className="stat-perfil-historial">
             <div className="numero-stat-perfil-historial">
-              {mascota.historial?.filter((h) => h.tipo === "Vacunación").length || 0}
+              {history?.citas?.filter((h) => h.tipo === "Vacunación").length || 0}
             </div>
             <div className="label-stat-perfil-historial">Vacunas</div>
           </div>
           <div className="stat-perfil-historial">
             <div className="numero-stat-perfil-historial">
-              {mascota.historial?.filter((h) => h.tipo === "Cirugía").length || 0}
+              {history?.citas?.filter((h) => h.tipo === "Cirugía").length || 0}
             </div>
             <div className="label-stat-perfil-historial">Cirugías</div>
           </div>
@@ -194,38 +224,26 @@ const HistorialMascota = ({ mascota, onNavegar }) => {
         <div className="timeline-historial">
           <h3 className="titulo-timeline-historial">Historial Médico</h3>
 
-          {mascota.historial && mascota.historial.length > 0 ? (
+          {history?.citas?.length > 0 ? (
             <div className="lista-timeline-historial">
-              {mascota.historial
-                .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
-                .map((registro, index) => (
+              {history.citas?.map((registro, index) => (
                   <article key={index} className="tarjeta-historial-detallada">
                     <header className="header-historial-detallada">
                       <div className="info-principal-historial">
-                        <div className="icono-tipo-detallada" style={{ color: obtenerColorTipo(registro.tipo) }}>
-                          {obtenerIconoTipo(registro.tipo)}
+                        <div className="icono-tipo-detallada" style={{ color: obtenerColorTipo(registro.nom_cat) }}>
+                          {obtenerIconoTipo(registro.nom_cat)}
                         </div>
                         <div className="titulo-fecha-historial">
-                          <h3 className="tipo-historial-detallada">{registro.tipo}</h3>
+                          <h3 className="tipo-historial-detallada">{registro.nom_cat}</h3>
                           <time className="fecha-historial-detallada" dateTime={registro.fecha}>
                             <Calendar size={12} />
-                            {new Date(registro.fecha).toLocaleDateString("es-ES", {
-                              year: "numeric",
-                              month: "2-digit",
-                              day: "2-digit",
-                            })}{" "}
-                            -{" "}
-                            {new Date(registro.fecha).toLocaleTimeString("es-ES", {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                              hour12: true,
-                            })}
+                            {formatDate(registro.fec_cit)}
                           </time>
                         </div>
                       </div>
                       <span
                         className="estado-historial-detallada"
-                        style={{ backgroundColor: obtenerColorTipo(registro.tipo) }}
+                        style={{ backgroundColor: obtenerColorTipo(registro.nom_cat) }}
                       >
                         Completada
                       </span>
@@ -233,23 +251,23 @@ const HistorialMascota = ({ mascota, onNavegar }) => {
 
                     <div className="veterinario-historial-detallada">
                       <User size={16} />
-                      <span>{registro.veterinario}</span>
+                      <span>{registro.nom_per_vet} {registro.ape_per_vet}</span>
                     </div>
 
                     <section className="contenido-historial-detallada">
                       <div className="campo-historial">
                         <h4 className="label-campo-historial">Diagnóstico:</h4>
-                        <p className="valor-campo-historial">{registro.descripcion}</p>
+                        <p className="valor-campo-historial">{registro.des_ser}</p>
                       </div>
 
                       <div className="campo-historial">
                         <h4 className="label-campo-historial">Tratamiento:</h4>
                         <p className="valor-campo-historial">
-                          {registro.tipo === "Vacunación"
+                          {registro.nom_cat === "Vacunación"
                             ? "Vacuna aplicada correctamente"
-                            : registro.tipo === "Cirugía"
+                            : registro.nom_cat === "Cirugía"
                               ? "Procedimiento quirúrgico exitoso"
-                              : registro.tipo === "Tratamiento"
+                              : registro.nom_cat === "Tratamiento"
                                 ? "Medicación prescrita"
                                 : "Ninguno requerido"}
                         </p>
@@ -258,11 +276,11 @@ const HistorialMascota = ({ mascota, onNavegar }) => {
                       <div className="campo-historial">
                         <h4 className="label-campo-historial">Notas:</h4>
                         <p className="valor-campo-historial">
-                          {registro.tipo === "Consulta"
+                          {registro.nom_cat === "Consulta"
                             ? "Mascota en excelente estado. Continuar con cuidados actuales."
-                            : registro.tipo === "Vacunación"
+                            : registro.nom_cat === "Vacunación"
                               ? "Próxima vacuna programada según calendario."
-                              : registro.tipo === "Cirugía"
+                              : registro.nom_cat === "Cirugía"
                                 ? "Recuperación satisfactoria. Seguir indicaciones post-operatorias."
                                 : "Evolución favorable. Continuar con el tratamiento indicado."}
                         </p>
@@ -279,7 +297,7 @@ const HistorialMascota = ({ mascota, onNavegar }) => {
             <div className="sin-historial">
               <FileText size={48} color="#94a3b8" />
               <h4 className="titulo-sin-historial">Sin registros médicos</h4>
-              <p className="texto-sin-historial">{mascota.nombre} aún no tiene registros en su historial médico.</p>
+              <p className="texto-sin-historial">{mascota.nom_mas} aún no tiene registros en su historial médico.</p>
             </div>
           )}
         </div>

@@ -211,21 +211,26 @@ class Pet {
                     .map(item => {
                         const appoiment = item.split("---")
                         return {
-                            fec_reg_cit: appoiment[0],
-                            fec_cit: appoiment[1],
-                            hor_ini_cit: appoiment[2],
-                            hor_fin_cit: appoiment[3],    
-                            nom_ser: appoiment[4],
-                            pre_ser: appoiment[5],
-                            des_ser: appoiment[6],
-                            nom_tip_ser: appoiment[7],
-                            nom_cat: appoiment[8],
-                            img_cat: appoiment[9],
-                            nom_per: appoiment[10],
-                            ape_per: appoiment[11],
-                            especialidad: appoiment[12],
+                            id_cit: appoiment[0],
+                            fec_reg_cit: appoiment[1],
+                            fec_cit: appoiment[2],
+                            hor_ini_cit: appoiment[3],
+                            hor_fin_cit: appoiment[4],
+                            mot_cit: appoiment[5],
+                            est_cit: appoiment[6],
+                            fec_cre_cit: appoiment[7],
+                            fec_act_cit: appoiment[8],
+                            nom_ser: appoiment[9],
+                            pre_ser: appoiment[10],
+                            des_ser: appoiment[11],
+                            nom_tip_ser: appoiment[12],
                             nom_cat: appoiment[13],
-                            fot_per: appoiment[14],
+                            img_cat: appoiment[14],
+                            nom_per_vet: appoiment[15],
+                            ape_per_vet: appoiment[16],
+                            especialidad: appoiment[17],
+                            nom_cat: appoiment[18],
+                            fot_per_vet: appoiment[19]
                         }
                     })
                     return {

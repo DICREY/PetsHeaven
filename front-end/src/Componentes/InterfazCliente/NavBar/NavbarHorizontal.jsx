@@ -1,12 +1,13 @@
 import React, { useContext } from "react"
-import "../../../styles/InterfazCliente/NavBar/NavbarHorizontal.css"
 import { useState } from "react"
 import { Bell,LogOut, User, HelpCircle } from "lucide-react"
 import { AuthContext } from "../../../Contexts/Contexts"
 import { CheckImage } from "../../../Utils/Utils"
 import { errorStatusHandler } from "../../Varios/Util"
 import { PostData } from "../../Varios/Requests"
-import { TabHelp } from '../../Global/TabHelp'
+
+// Import styles
+import "../../../styles/InterfazCliente/NavBar/NavbarHorizontal.css"
 
 const NavbarHorizontal = ({ usuario, onMostrarPerfil, imgDefault }) => {
   const [mostrarPerfil, setMostrarPerfil] = useState(false)

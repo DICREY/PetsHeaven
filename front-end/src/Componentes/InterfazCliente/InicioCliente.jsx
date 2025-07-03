@@ -12,11 +12,8 @@ import { PostData } from "../Varios/Requests"
 import { errorStatusHandler } from "../Varios/Util"
 
 // Component 
-const InicioCliente = ({ mascotas, onNavegar, URL = '' }) => {
-  const [ appointment, setAppointment ] = useState()
+const InicioCliente = ({ onNavegar, appointments, pets, URL = '' }) => {
   const [ notify, setNotify ] = useState(null)
-
-  const mainUrl = `${URL}/appointment/by`
   const { user } = useContext(AuthContext)
 
   const obtenerSaludo = () => {
@@ -26,19 +23,19 @@ const InicioCliente = ({ mascotas, onNavegar, URL = '' }) => {
     return "Buenas noches"
   }
 
-  const citasProximas = appointment?.filter((cita) => new Date(cita.fec_cit) >= new Date()).slice(0, 3)
+  const citasProximas = appointments?.filter((cita) => new Date(cita.fec_cit) >= new Date()).slice(0, 3)
 
   const estadisticas = [
     {
       titulo: "Mascotas Registradas",
-      valor: mascotas.length,
+      valor: pets?.length,
       icono: <PawPrint className="icon" />,
       color: "#00BCD4",
       descripcion: "Mascotas en tu cuenta",
     },
     {
       titulo: "Próximas Citas",
-      valor: appointment?.length,
+      valor: appointments?.length,
       icono: <Calendar className="icon" />,
       color: "#4CAF50",
       descripcion: "Citas programadas",
@@ -51,27 +48,6 @@ const InicioCliente = ({ mascotas, onNavegar, URL = '' }) => {
       descripcion: "Visitas realizadas",
     },
   ]
-
-  const getAppoint = async () => {
-    try {
-      const data = await PostData(mainUrl,{ by: user.doc })
-      console.log(data)
-      setNotify(null)
-      if (data?.result) setAppointment(data.result)
-    } catch (err) {
-      setNotify(null)
-      const message = errorStatusHandler(err)
-      setNotify({
-        title: 'Error',
-        message: `${message}`,
-        close: setNotify
-      })
-    }
-  }
-
-  useEffect(() => {
-    getAppoint()
-  },[])
 
   return (
     <div className="contenedor-inicio-cliente">
@@ -102,9 +78,9 @@ const InicioCliente = ({ mascotas, onNavegar, URL = '' }) => {
       <section className="resumen-inicio-cliente">
         <div className="proximas-citas-inicio-cliente">
           <h3 className="titulo-resumen-inicio-cliente">Próximas Citas</h3>
-          {appointment?.length > 0 ? (
+          {appointments?.length > 0 ? (
             <div className="lista-citas-inicio-cliente">
-              {appointment?.map((cita, idx) => (
+              {appointments?.map((cita, idx) => (
                 <div key={idx} className="item-cita-inicio-cliente">
                   <div className="fecha-cita-inicio-cliente">
                     <span className="dia-cita-inicio-cliente">{new Date(cita.fec_cit).getDate()}</span>
