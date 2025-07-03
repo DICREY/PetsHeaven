@@ -4,13 +4,14 @@ import "../../styles/InterfazCliente/InicioCliente.css"
 import { Calendar, PawPrint, TrendingUp } from "lucide-react"
 
 
-const InicioCliente = ({ usuario, mascotas, citas, onNavegar }) => {
+const InicioCliente = ({ usuario, mascotas, citas, onNavegar, URL = '' }) => {
   const obtenerSaludo = () => {
     const hora = new Date().getHours()
     if (hora < 12) return "Buenos días"
     if (hora < 18) return "Buenas tardes"
     return "Buenas noches"
   }
+
 
   const citasProximas = citas.filter((cita) => new Date(cita.fecha) >= new Date()).slice(0, 3)
 

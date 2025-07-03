@@ -1,31 +1,33 @@
 import React from "react"
 import { Home, PawPrint, Calendar, Clock, Stethoscope } from "lucide-react"
 import "../../../styles/InterfazCliente/NavBar/NavbarVertical.css"
+import { useNavigate } from "react-router"
 
 export const NavbarVertical = ({ vistaActual, onNavegar }) => {
+  const navigate = useNavigate()
   const menuItems = [
     {
       id: "inicio",
       titulo: "Inicio",
-      icono: <Home size={24} />,
+      icono: <Home className="icon" />,
       descripcion: "Panel principal",
     },
     {
       id: "mascotas",
       titulo: "Mascotas",
-      icono: <PawPrint size={24} />,
+      icono: <PawPrint className="icon" />,
       descripcion: "Gestionar mascotas",
     },
     {
       id: "agendar",
       titulo: "Agendar Cita",
-      icono: <Calendar size={24} />,
+      icono: <Calendar className="icon" />,
       descripcion: "Nueva cita",
     },
     {
       id: "citas",
       titulo: "Próximas Citas",
-      icono: <Clock size={24} />,
+      icono: <Clock className="icon" />,
       descripcion: "Ver citas programadas",
     },
   ]
@@ -34,7 +36,7 @@ export const NavbarVertical = ({ vistaActual, onNavegar }) => {
     <nav className="navbar-vertical">
       <div className="logo-vertical">
         <div className="icono-logo-vertical">
-          <Stethoscope size={32} color="#00BCD4" />
+          <Stethoscope className="icon" color="#00BCD4" />
         </div>
         <div className="texto-logo-vertical">
           <h2 className="nombre-logo-vertical">Pets Heaven</h2>
@@ -56,6 +58,16 @@ export const NavbarVertical = ({ vistaActual, onNavegar }) => {
             </div>
           </button>
         ))}
+        <button
+          className={'item-menu-vertical'}
+          onClick={() => navigate(-1)}
+        >
+          <div className="icono-menu-vertical"><Home className="icon" /></div>
+          <div className="texto-menu-vertical">
+            <span className="titulo-menu-vertical">Volver</span>
+            <span className="descripcion-menu-vertical">Regresar al panel anterior</span>
+          </div>
+        </button>
       </div>
 
       <div className="footer-vertical">

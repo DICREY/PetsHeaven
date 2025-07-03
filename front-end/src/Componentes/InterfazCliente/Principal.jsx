@@ -1,6 +1,8 @@
-import React from "react"
+// Librarys 
+import React, { useContext, useEffect } from "react"
 import { useState } from "react"
-import { NavbarVertical } from "./NavBar/NavbarVertical"
+
+// Imports 
 import NavbarHorizontal from "./NavBar/NavbarHorizontal"
 import InicioCliente from "./InicioCliente"
 import MascotasCliente from "./MascotaCliente"
@@ -8,12 +10,21 @@ import PerfilCliente from "./PerfilCliente"
 import AgendarCita from "./AgendarCita"
 import ProximasCitas from "./ProximasCitas"
 import HistorialMascota from "./HistorialMascota"
-import "../../styles/InterfazCliente/Principal.css"
+import { NavbarVertical } from "./NavBar/NavbarVertical"
+import { AuthContext } from "../../Contexts/Contexts"
 
-function Principal() {
-  const [vistaActual, setVistaActual] = useState("inicio")
-  const [mascotaSeleccionada, setMascotaSeleccionada] = useState(null)
-  const [mostrarPerfil, setMostrarPerfil] = useState(false)
+// Import styles 
+import "../../styles/InterfazCliente/Principal.css"
+import { PostData } from "../Varios/Requests"
+import { errorStatusHandler } from "../Varios/Util"
+
+// Component 
+function Principal({ URL = '' }) {
+  const [ vistaActual, setVistaActual ] = useState("inicio")
+  const [ mascotaSeleccionada, setMascotaSeleccionada ] = useState(null)
+  const [ mostrarPerfil, setMostrarPerfil ] = useState(false)
+  const [ appointment, setAppointment ] = useState(false)
+  const { logout, user } = useContext(AuthContext)
 
   const [usuario, setUsuario] = useState({
     id: 1,
@@ -64,35 +75,21 @@ function Principal() {
     },
   ])
 
-  const [citas, setCitas] = useState([
-    {
-      id: 1,
-      fecha: "2024-01-15",
-      hora: "10:00",
-      servicio: "Consulta General",
-      mascota: "Max",
-      estado: "confirmada",
-      veterinario: "Dr. Pérez",
-    },
-    {
-      id: 2,
-      fecha: "2024-01-20",
-      hora: "15:30",
-      servicio: "Vacunación",
-      mascota: "Luna",
-      estado: "pendiente",
-      veterinario: "Dra. López",
-    },
-    {
-      id: 3,
-      fecha: "2024-01-25",
-      hora: "09:00",
-      servicio: "Revisión",
-      mascota: "Max",
-      estado: "confirmada",
-      veterinario: "Dr. Martín",
-    },
-  ])
+  const getAppoint = async () => {
+    try {
+      const data = await PostData(mainUrl,{ by: user.doc })
+      setNotify(null)
+      if (data?.result) setAppointment(data.result)
+    } catch (err) {
+      setNotify(null)
+      const message = errorStatusHandler(err)
+      setNotify({
+        title: 'Error',
+        message: `${message}`,
+        close: setNotify
+      })
+    }
+  }
 
   const navegarA = (vista, mascota = null) => {
     setVistaActual(vista)
@@ -109,15 +106,15 @@ function Principal() {
 
   const agregarCita = (nuevaCita) => {
     const cita = {
-      id: citas.length + 1,
+      id: appointment.length + 1,
       ...nuevaCita,
       estado: "pendiente",
     }
-    setCitas([...citas, cita])
+    setAppointment([...appointment, cita])
   }
 
   const actualizarCita = (citaActualizada) => {
-    setCitas(citas.map((cita) => (cita.id === citaActualizada.id ? citaActualizada : cita)))
+    setAppointment(appointment.map((cita) => (cita.id === citaActualizada.id ? citaActualizada : cita)))
   }
 
   const renderizarVista = () => {
@@ -127,19 +124,23 @@ function Principal() {
 
     switch (vistaActual) {
       case "inicio":
-        return <InicioCliente usuario={usuario} mascotas={mascotas} citas={citas} onNavegar={navegarA} />
+        return <InicioCliente usuario={usuario} mascotas={mascotas} citas={appointment} onNavegar={navegarA} />
       case "mascotas":
         return <MascotasCliente mascotas={mascotas} onNavegar={navegarA} />
       case "agendar":
         return <AgendarCita mascotas={mascotas} onAgregarCita={agregarCita} onNavegar={navegarA} />
       case "citas":
-        return <ProximasCitas citas={citas} setCitas={setCitas} onActualizarCita={actualizarCita} />
+        return <ProximasCitas citas={appointment} setAppointment={setAppointment} onActualizarCita={actualizarCita} />
       case "historial":
         return <HistorialMascota mascota={mascotaSeleccionada} onNavegar={navegarA} />
       default:
-        return <InicioCliente usuario={usuario} mascotas={mascotas} citas={citas} onNavegar={navegarA} />
+        return <InicioCliente usuario={usuario} mascotas={mascotas} citas={appointment} onNavegar={navegarA} />
     }
   }
+
+  useEffect(() => {
+    getAppoint()
+  },[])
 
   return (
     <div className="app-veterinaria">
