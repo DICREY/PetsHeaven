@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import "../../../styles/InterfazCliente/Navbar/NavbarHorizontal.css"
+import "../../../styles/InterfazCliente/NavBar/NavbarHorizontal.css"
 import { useState } from "react"
 import { Bell,LogOut, User } from "lucide-react"
 import { AuthContext } from "../../../Contexts/Contexts"
