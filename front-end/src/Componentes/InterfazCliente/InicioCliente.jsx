@@ -12,7 +12,7 @@ import { PostData } from "../Varios/Requests"
 import { errorStatusHandler } from "../Varios/Util"
 
 // Component 
-const InicioCliente = ({ mascotas, onNavegar, URL = '' }) => {
+const InicioCliente = ({ onNavegar, pets, URL = '' }) => {
   const [ appointment, setAppointment ] = useState()
   const [ notify, setNotify ] = useState(null)
 
@@ -31,7 +31,7 @@ const InicioCliente = ({ mascotas, onNavegar, URL = '' }) => {
   const estadisticas = [
     {
       titulo: "Mascotas Registradas",
-      valor: mascotas.length,
+      valor: pets?.length,
       icono: <PawPrint className="icon" />,
       color: "#00BCD4",
       descripcion: "Mascotas en tu cuenta",
@@ -54,7 +54,7 @@ const InicioCliente = ({ mascotas, onNavegar, URL = '' }) => {
 
   const getAppoint = async () => {
     try {
-      const data = await PostData(mainUrl,{ by: user.doc })
+      const data = await PostData(`${mainUrl}`,{ by: user.doc })
       console.log(data)
       setNotify(null)
       if (data?.result) setAppointment(data.result)

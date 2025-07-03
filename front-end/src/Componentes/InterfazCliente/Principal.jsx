@@ -15,6 +15,8 @@ import { AuthContext } from "../../Contexts/Contexts"
 
 // Import styles 
 import "../../styles/InterfazCliente/Principal.css"
+import { errorStatusHandler } from "../Varios/Util"
+import { PostData } from "../Varios/Requests"
 
 // Component 
 function Principal({ URL = '' }) {
@@ -22,6 +24,7 @@ function Principal({ URL = '' }) {
   const [ mascotaSeleccionada, setMascotaSeleccionada ] = useState(null)
   const [ mostrarPerfil, setMostrarPerfil ] = useState(false)
   const [ notify, setNotify ] = useState(null)
+  const [ pets, setPets ] = useState()
   const [ appointment, setAppointment ] = useState()
   const { logout, user } = useContext(AuthContext)
 
@@ -54,24 +57,7 @@ function Principal({ URL = '' }) {
         { fecha: "2024-04-05", tipo: "Consulta", descripcion: "Control de peso", veterinario: "Dr. Martín" },
         { fecha: "2024-05-12", tipo: "Vacunación", descripcion: "Refuerzo anual", veterinario: "Dra. López" },
       ],
-    },
-    {
-      id: 2,
-      nombre: "Luna",
-      especie: "Gato",
-      raza: "Siamés",
-      edad: 2,
-      peso: 4.2,
-      color: "Blanco y Negro",
-      genero: "Hembra",
-      esterilizado: true,
-      foto: "/placeholder.svg?height=200&width=200",
-      historial: [
-        { fecha: "2024-01-20", tipo: "Consulta", descripcion: "Chequeo rutinario", veterinario: "Dra. López" },
-        { fecha: "2024-02-25", tipo: "Cirugía", descripcion: "Esterilización", veterinario: "Dr. Martín" },
-        { fecha: "2024-03-15", tipo: "Consulta", descripcion: "Post-operatorio", veterinario: "Dr. Martín" },
-      ],
-    },
+    }
   ])
 
   const navegarA = (vista, mascota = null) => {
@@ -120,6 +106,27 @@ function Principal({ URL = '' }) {
         return <InicioCliente usuario={user} mascotas={mascotas} URL={URL} onNavegar={navegarA} />
     }
   }
+
+  const getPets = async () => {
+    try {
+      const data = await PostData(`${URL}/pet/all/by`,{ by: user.doc })
+      console.log(data)
+      setNotify(null)
+      if (data?.result) setPets(data.result)
+    } catch (err) {
+      setNotify(null)
+      const message = errorStatusHandler(err)
+      setNotify({
+        title: 'Error',
+        message: `${message}`,
+        close: setNotify
+      })
+    }
+  }
+
+  useEffect(() => {
+    getPets
+  },[])
 
   return (
     <div className="app-veterinaria">

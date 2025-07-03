@@ -122,6 +122,14 @@ export default function App () {
               imgUserDefault={imgUserDefault} 
               />}/>}>
           </Route>
+          <Route path='/pets/details' element={
+            <PrivateRoute children={<PetMedicalHistory
+              tab={petDetailTab}
+              datas={petSelect}
+              imgPetDefault={imgPetDefault}
+              URL={URL}
+            />}/>}>
+          </Route>
           
           <Route path='notificaciones' element={
             <PrivateRoute children={<TodasLasNotificaciones URL={URL} />}/>}>

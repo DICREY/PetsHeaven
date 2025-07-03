@@ -27,9 +27,12 @@ Route.get('/all', ValidatorRol("veterinario"), async (req,res) => {
 
 })
 
-Route.get('/all:by',async (req,res) => {
+// Call Middleware for verify the request data
+Route.use(Fullinfo(['empty']))
+
+Route.post('/all/by',async (req,res) => {
     // Vars
-    const by = req.params.by
+    const by = req.body.by
     
     try {
         if (!by) return res.status(400).json({ message: "Petición invalida, faltan datos"})
@@ -45,9 +48,6 @@ Route.get('/all:by',async (req,res) => {
     }
 
 })
-
-// Call Middleware for verify the request data
-Route.use(Fullinfo(['empty']))
 
 Route.post('/register', ValidatorRol("veterinario"), async (req,res) => {
     // Vars
