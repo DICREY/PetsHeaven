@@ -17,15 +17,20 @@ import { AuthContext } from "../../Contexts/Contexts"
 import "../../styles/InterfazCliente/Principal.css"
 import { errorStatusHandler } from "../Varios/Util"
 import { PostData } from "../Varios/Requests"
+import { Notification } from "../Global/Notifys"
 
 // Component 
-function Principal({ URL = '' }) {
+function Principal({ URL = '', imgPetDefault = '' }) {
+  // Dynamic vars 
   const [ vistaActual, setVistaActual ] = useState("inicio")
   const [ mascotaSeleccionada, setMascotaSeleccionada ] = useState(null)
   const [ mostrarPerfil, setMostrarPerfil ] = useState(false)
   const [ notify, setNotify ] = useState(null)
   const [ pets, setPets ] = useState()
   const [ appointment, setAppointment ] = useState()
+
+  // Vars 
+  const mainUrl = `${URL}/appointment/by`
   const { logout, user } = useContext(AuthContext)
 
   const [usuario, setUsuario] = useState({
@@ -93,24 +98,39 @@ function Principal({ URL = '' }) {
 
     switch (vistaActual) {
       case "inicio":
-        return <InicioCliente usuario={user} mascotas={mascotas} onNavegar={navegarA} URL={URL} />
+        return <InicioCliente usuario={user} pets={pets} appointments={appointment} onNavegar={navegarA} URL={URL} />
       case "mascotas":
-        return <MascotasCliente mascotas={mascotas} onNavegar={navegarA} />
+        return <MascotasCliente pets={pets} imgDefault={imgPetDefault} onNavegar={navegarA} />
       case "agendar":
-        return <AgendarCita mascotas={mascotas} onAgregarCita={agregarCita} onNavegar={navegarA} />
+        return <AgendarCita mascotas={pets} URL={URL} imgDefault={imgPetDefault} onAgregarCita={agregarCita} onNavegar={navegarA} />
       case "citas":
         return <ProximasCitas citas={appointment} setCitas={setAppointment} onActualizarCita={actualizarCita} />
       case "historial":
-        return <HistorialMascota mascota={mascotaSeleccionada} onNavegar={navegarA} />
+        return <HistorialMascota setNotify={setNotify} URL={URL} imgDefault={imgPetDefault} mascota={mascotaSeleccionada} onNavegar={navegarA} />
       default:
-        return <InicioCliente usuario={user} mascotas={mascotas} URL={URL} onNavegar={navegarA} />
+        return <InicioCliente usuario={user} pets={pets} appointments={appointment} URL={URL} onNavegar={navegarA} />
+    }
+  }
+
+  const getAppoint = async () => {
+    try {
+      const data = await PostData(`${mainUrl}`,{ by: user.doc })
+      setNotify(null)
+      if (data?.result) setAppointment(data.result)
+    } catch (err) {
+      setNotify(null)
+      const message = errorStatusHandler(err)
+      setNotify({
+        title: 'Error',
+        message: `${message}`,
+        close: setNotify
+      })
     }
   }
 
   const getPets = async () => {
     try {
       const data = await PostData(`${URL}/pet/all/by`,{ by: user.doc })
-      console.log(data)
       setNotify(null)
       if (data?.result) setPets(data.result)
     } catch (err) {
@@ -125,7 +145,8 @@ function Principal({ URL = '' }) {
   }
 
   useEffect(() => {
-    getPets
+    getAppoint()
+    getPets()
   },[])
 
   return (
@@ -135,6 +156,11 @@ function Principal({ URL = '' }) {
         <NavbarHorizontal usuario={user} onMostrarPerfil={mostrarPerfilUsuario} />
         <main className="vista-principal">{renderizarVista()}</main>
       </div>
+      {notify && (
+        <Notification
+            {...notify}
+        />
+      )}
     </div>
   )
 }

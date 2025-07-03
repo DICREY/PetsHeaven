@@ -2,8 +2,10 @@ import React from "react"
 import { useState } from "react"
 import { Calendar, Clock, User, FileText, CheckCircle, Search } from "lucide-react"
 import "../../styles/InterfazCliente/AgendarCita.css"
+import { CheckImage } from "../../Utils/Utils"
+import { getAge } from "../Varios/Util"
 
-const AgendarCita = ({ mascotas, onAgregarCita, onNavegar }) => {
+const AgendarCita = ({ mascotas, onAgregarCita, onNavegar, imgDefault = '', URL = '' }) => {
   const [paso, setPaso] = useState(1)
   const [formData, setFormData] = useState({
     mascota: "",
@@ -189,24 +191,25 @@ const AgendarCita = ({ mascotas, onAgregarCita, onNavegar }) => {
             </div>
 
             <div className="opciones-mascota-agendar-cliente">
-              {mascotas.map((mascota) => (
+              {mascotas.map((mascota, index) => (
                 <button
-                  key={mascota.id}
+                  key={index}
                   type="button"
-                  className={`opcion-mascota-agendar-cliente ${formData.mascota === mascota.nombre ? "seleccionada-agendar-cliente" : ""}`}
-                  onClick={() => manejarCambio("mascota", mascota.nombre)}
+                  className={`opcion-mascota-agendar-cliente ${formData.mascota === mascota.nom_mas ? "seleccionada-agendar-cliente" : ""}`}
+                  onClick={() => manejarCambio("mascota", mascota.nom_mas)}
                 >
-                  <img
-                    src={mascota.foto || "/placeholder.svg?height=80&width=80"}
-                    alt={mascota.nombre}
+                  <CheckImage
+                    src={mascota.fot_mas}
+                    alt={mascota.nom_mas}
                     className="foto-mascota-agendar-cliente"
+                    imgDefault={imgDefault}
                   />
                   <div className="info-mascota-agendar-cliente">
-                    <h4 className="nombre-mascota-agendar-cliente">{mascota.nombre}</h4>
+                    <h4 className="nombre-mascota-agendar-cliente">{mascota.nom_mas}</h4>
                     <p className="detalles-mascota-agendar-cliente">
-                      {mascota.especie} • {mascota.raza}
+                      {mascota.esp_mas} • {mascota.raz_mas}
                     </p>
-                    <span className="edad-mascota-agendar-cliente">{mascota.edad} años</span>
+                    <span className="edad-mascota-agendar-cliente">{getAge(mascota.fec_nac_mas)} años</span>
                   </div>
                 </button>
               ))}

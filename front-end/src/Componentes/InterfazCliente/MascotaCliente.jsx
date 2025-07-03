@@ -1,15 +1,18 @@
+// Librarys
 import React from "react"
 import { Search, Filter, Heart } from "lucide-react"
+
+// Imports 
+import { CheckImage } from "../../Utils/Utils"
+import { getAge } from "../Varios/Util"
+
+// Import styles
 import "../../styles/InterfazCliente/MascotasCliente.css"
 
-const MascotasCliente = ({ mascotas, onNavegar }) => {
+// Component
+const MascotasCliente = ({ pets = [], imgDefault = '', onNavegar }) => {
   const verHistorial = (mascota) => {
     onNavegar("historial", mascota)
-  }
-
-  const calcularEdadTexto = (edad) => {
-    if (edad === 1) return "1 año"
-    return `${edad} años`
   }
 
   const obtenerIconoEspecie = (especie) => {
@@ -39,21 +42,21 @@ const MascotasCliente = ({ mascotas, onNavegar }) => {
       <section className="estadisticas-mascotas-cliente" aria-label="Estadísticas de mascotas">
         <article className="stat-mascotas-cliente">
           <div className="icono-stat-mascotas-cliente">
-            <Heart size={24} />
+            <Heart className="icon" />
           </div>
           <div className="contenido-stat-mascotas-cliente">
-            <span className="numero-stat-mascotas-cliente">{mascotas.length}</span>
+            <span className="numero-stat-mascotas-cliente">{pets?.length}</span>
             <span className="label-stat-mascotas-cliente">Mascotas Registradas</span>
           </div>
         </article>
 
         <article className="stat-mascotas-cliente">
           <div className="icono-stat-mascotas-cliente">
-            <Search size={24} />
+            <Search className="icon" />
           </div>
           <div className="contenido-stat-mascotas-cliente">
             <span className="numero-stat-mascotas-cliente">
-              {mascotas.reduce((total, mascota) => total + (mascota.historial?.length || 0), 0)}
+              {pets?.reduce((total, mascota) => total + (mascota.historial?.length || 0), 0)}
             </span>
             <span className="label-stat-mascotas-cliente">Consultas Totales</span>
           </div>
@@ -61,7 +64,7 @@ const MascotasCliente = ({ mascotas, onNavegar }) => {
 
         <article className="stat-mascotas-cliente">
           <div className="icono-stat-mascotas-cliente">
-            <Filter size={24} />
+            <Filter className="icon" />
           </div>
           <div className="contenido-stat-mascotas-cliente">
             <span className="numero-stat-mascotas-cliente">2</span>
@@ -72,7 +75,7 @@ const MascotasCliente = ({ mascotas, onNavegar }) => {
 
       <section className="herramientas-mascotas-cliente" aria-label="Herramientas de búsqueda">
         <div className="buscador-mascotas-cliente">
-          <Search size={20} />
+          <Search className="icon" />
           <input
             type="text"
             placeholder="Buscar mascota..."
@@ -82,58 +85,59 @@ const MascotasCliente = ({ mascotas, onNavegar }) => {
         </div>
 
         <button className="boton-filtro-mascotas-cliente" aria-label="Abrir filtros">
-          <Filter size={18} />
+          <Filter className='icon' />
           Filtros
         </button>
       </section>
 
       <section className="grid-mascotas-cliente" aria-label="Lista de mascotas">
-        {mascotas.map((mascota) => (
-          <article key={mascota.id} className="tarjeta-mascotas-cliente">
+        {pets?.map((mascota) => (
+          <article key={mascota.id_mas} className="tarjeta-mascotas-cliente">
             <header className="header-tarjeta-mascotas-cliente">
               <figure className="foto-mascotas-cliente">
-                <img
-                  src={mascota.foto || "/placeholder.svg?height=80&width=80"}
-                  alt={`Foto de ${mascota.nombre}`}
+                <CheckImage
+                  src={mascota.fot_mas}
+                  alt={`Foto de ${mascota.nom_mas}`}
                   className="imagen-mascotas-cliente"
+                  imgDefault={imgDefault}
                 />
                 <div className="overlay-foto-mascotas-cliente" aria-hidden="true">
-                  <span className="icono-especie-mascotas-cliente">{obtenerIconoEspecie(mascota.especie)}</span>
+                  <span className="icono-especie-mascotas-cliente">{obtenerIconoEspecie(mascota.esp_mas)}</span>
                 </div>
               </figure>
 
               <div className="info-basica-mascotas-cliente">
-                <h3 className="nombre-mascotas-cliente">{mascota.nombre}</h3>
-                <p className="raza-mascotas-cliente">{mascota.raza}</p>
-                <span className="especie-mascotas-cliente">{mascota.especie}</span>
+                <h3 className="nombre-mascotas-cliente">{mascota.nom_mas}</h3>
+                <p className="raza-mascotas-cliente">{mascota.raz_mas}</p>
+                <span className="especie-mascotas-cliente">{mascota.esp_mas}</span>
               </div>
             </header>
 
-            <section className="detalles-mascotas-cliente" aria-label={`Detalles de ${mascota.nombre}`}>
+            <section className="detalles-mascotas-cliente" aria-label={`Detalles de ${mascota.nom_mas}`}>
               <dl className="lista-detalles-mascotas">
                 <div className="detalle-mascotas-cliente">
                   <dt className="label-detalle-mascotas-cliente">Edad</dt>
-                  <dd className="valor-detalle-mascotas-cliente">{calcularEdadTexto(mascota.edad)}</dd>
+                  <dd className="valor-detalle-mascotas-cliente">{getAge(mascota.fec_nac_mas)} Años</dd>
                 </div>
 
                 <div className="detalle-mascotas-cliente">
                   <dt className="label-detalle-mascotas-cliente">Peso</dt>
-                  <dd className="valor-detalle-mascotas-cliente">{mascota.peso} kg</dd>
+                  <dd className="valor-detalle-mascotas-cliente">{mascota.pes_mas} kg</dd>
                 </div>
 
                 <div className="detalle-mascotas-cliente">
                   <dt className="label-detalle-mascotas-cliente">Color</dt>
-                  <dd className="valor-detalle-mascotas-cliente">{mascota.color}</dd>
+                  <dd className="valor-detalle-mascotas-cliente">{mascota.col_mas}</dd>
                 </div>
 
                 <div className="detalle-mascotas-cliente">
                   <dt className="label-detalle-mascotas-cliente">Género</dt>
-                  <dd className="valor-detalle-mascotas-cliente">{mascota.genero}</dd>
+                  <dd className="valor-detalle-mascotas-cliente">{mascota.gen_mas}</dd>
                 </div>
 
                 <div className="detalle-mascotas-cliente">
                   <dt className="label-detalle-mascotas-cliente">Esterilizado</dt>
-                  <dd className="valor-detalle-mascotas-cliente">{mascota.esterilizado ? "Sí" : "No"}</dd>
+                  <dd className="valor-detalle-mascotas-cliente">{mascota.est_rep_mas ? "Sí" : "No"}</dd>
                 </div>
 
                 <div className="detalle-mascotas-cliente">
@@ -147,7 +151,7 @@ const MascotasCliente = ({ mascotas, onNavegar }) => {
               <button
                 className="boton-historial-mascotas-cliente"
                 onClick={() => verHistorial(mascota)}
-                aria-label={`Ver historial completo de ${mascota.nombre}`}
+                aria-label={`Ver historial completo de ${mascota.nom_mas}`}
               >
                 Ver Historial Completo
               </button>
@@ -156,7 +160,7 @@ const MascotasCliente = ({ mascotas, onNavegar }) => {
         ))}
       </section>
 
-      {mascotas.length === 0 && (
+      {pets?.length === 0 && (
         <section className="sin-mascotas-cliente" aria-label="Sin mascotas registradas">
           <div className="icono-sin-mascotas-cliente">
             <Heart size={64} />
