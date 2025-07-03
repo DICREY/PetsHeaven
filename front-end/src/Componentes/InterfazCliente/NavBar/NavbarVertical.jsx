@@ -1,6 +1,6 @@
 import React from "react"
 import { Home, PawPrint, Calendar, Clock, Stethoscope } from "lucide-react"
-import "../../../styles/InterfazCliente/NavBar/NavbarVertical.css"
+import "../../../styles/InterfazCliente/Navbar/NavbarVertical.css"
 
 export const NavbarVertical = ({ vistaActual, onNavegar }) => {
   const menuItems = [

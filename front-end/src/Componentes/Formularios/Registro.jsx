@@ -871,7 +871,7 @@ const Registro = ({ URL = '', imgDefault = '' }) => {
                   <input
                     type='checkbox'
                     id='terminos'
-                    className={errors.terminos ? 'campo-error input' : 'input'}
+                    className={errors.terminos ? 'input' : 'input'}
                     {...register('terminos', {
                       required: true,
                     })}
@@ -886,7 +886,7 @@ const Registro = ({ URL = '', imgDefault = '' }) => {
                   <button type='button' className='boton-anterior' onClick={retrocederPaso}>
                     Anterior
                   </button>
-                  <button type='submit' className='boton-enviar'>
+                  <button type='submit' className='boton-enviar'> 
                     Registrarse
                   </button>
                 </div>
