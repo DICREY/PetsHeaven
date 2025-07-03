@@ -1,10 +1,16 @@
-import React from "react"
+// Librarys 
+import React, { useContext } from "react"
 import { useState } from "react"
-import "../../styles/InterfazCliente/InicioCliente.css"
 import { Calendar, PawPrint, TrendingUp } from "lucide-react"
 
+// Imports 
+import { AuthContext } from "../../Contexts/Contexts"
 
-const InicioCliente = ({ usuario, mascotas, citas, onNavegar, URL = '' }) => {
+// Import styles
+import "../../styles/InterfazCliente/InicioCliente.css"
+
+// Component 
+const InicioCliente = ({ mascotas, citas = [], onNavegar, URL = '' }) => {
   const obtenerSaludo = () => {
     const hora = new Date().getHours()
     if (hora < 12) return "Buenos días"
@@ -12,8 +18,8 @@ const InicioCliente = ({ usuario, mascotas, citas, onNavegar, URL = '' }) => {
     return "Buenas noches"
   }
 
-
-  const citasProximas = citas.filter((cita) => new Date(cita.fecha) >= new Date()).slice(0, 3)
+  const { user } = useContext(AuthContext)
+  const citasProximas = citas?.filter((cita) => new Date(cita.fec_cit) >= new Date()).slice(0, 3)
 
   const estadisticas = [
     {
@@ -44,7 +50,7 @@ const InicioCliente = ({ usuario, mascotas, citas, onNavegar, URL = '' }) => {
       <section className="hero-inicio-cliente">
         <div className="saludo-inicio-cliente">
           <h1 className="titulo-saludo-inicio-cliente">
-            {obtenerSaludo()}, {usuario.nombre.split(" ")[0]} 🌟
+            {obtenerSaludo()}, {user.names} {user.lastNames} 🌟
           </h1>
           <p className="subtitulo-saludo-inicio-cliente">Bienvenido a Pets Heaven, tu portal de cuidado veterinario</p>
         </div>

@@ -23,7 +23,8 @@ function Principal({ URL = '' }) {
   const [ vistaActual, setVistaActual ] = useState("inicio")
   const [ mascotaSeleccionada, setMascotaSeleccionada ] = useState(null)
   const [ mostrarPerfil, setMostrarPerfil ] = useState(false)
-  const [ appointment, setAppointment ] = useState(false)
+  const [ notify, setNotify ] = useState(null)
+  const [ appointment, setAppointment ] = useState()
   const { logout, user } = useContext(AuthContext)
 
   const [usuario, setUsuario] = useState({
@@ -78,6 +79,7 @@ function Principal({ URL = '' }) {
   const getAppoint = async () => {
     try {
       const data = await PostData(mainUrl,{ by: user.doc })
+      console.log(data)
       setNotify(null)
       if (data?.result) setAppointment(data.result)
     } catch (err) {
@@ -119,22 +121,22 @@ function Principal({ URL = '' }) {
 
   const renderizarVista = () => {
     if (mostrarPerfil) {
-      return <PerfilCliente usuario={usuario} setUsuario={setUsuario} />
+      return <PerfilCliente usuario={user} setUsuario={setUsuario} />
     }
 
     switch (vistaActual) {
       case "inicio":
-        return <InicioCliente usuario={usuario} mascotas={mascotas} citas={appointment} onNavegar={navegarA} />
+        return <InicioCliente usuario={user} mascotas={mascotas} citas={appointment} onNavegar={navegarA} />
       case "mascotas":
         return <MascotasCliente mascotas={mascotas} onNavegar={navegarA} />
       case "agendar":
         return <AgendarCita mascotas={mascotas} onAgregarCita={agregarCita} onNavegar={navegarA} />
       case "citas":
-        return <ProximasCitas citas={appointment} setAppointment={setAppointment} onActualizarCita={actualizarCita} />
+        return <ProximasCitas citas={appointment} setCitas={setAppointment} onActualizarCita={actualizarCita} />
       case "historial":
         return <HistorialMascota mascota={mascotaSeleccionada} onNavegar={navegarA} />
       default:
-        return <InicioCliente usuario={usuario} mascotas={mascotas} citas={appointment} onNavegar={navegarA} />
+        return <InicioCliente usuario={user} mascotas={mascotas} citas={appointment} onNavegar={navegarA} />
     }
   }
 
@@ -146,7 +148,7 @@ function Principal({ URL = '' }) {
     <div className="app-veterinaria">
       <NavbarVertical vistaActual={vistaActual} onNavegar={navegarA} />
       <div className="contenido-principal">
-        <NavbarHorizontal usuario={usuario} onMostrarPerfil={mostrarPerfilUsuario} />
+        <NavbarHorizontal usuario={user} onMostrarPerfil={mostrarPerfilUsuario} />
         <main className="vista-principal">{renderizarVista()}</main>
       </div>
     </div>

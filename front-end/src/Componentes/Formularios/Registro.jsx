@@ -867,16 +867,16 @@ const Registro = ({ URL = '', imgDefault = '' }) => {
                   </div>
                 </div>
 
-                <div className='campo-ancho-completo'>
+                <div className="grupo-campo checkbox campo-ancho-completo">
                   <input
                     type='checkbox'
                     id='terminos'
-                    className={errors.terminos ? 'campo-error input' : 'input'}
+                    className={errors.terminos ? 'campo-error' : ''}
                     {...register('terminos', {
                       required: true,
                     })}
                   />
-                  <label className='label' htmlFor='terminos'>
+                  <label htmlFor='terminos'>
                     Acepto los términos y condiciones <span className='obligatorio'>*</span>
                     {errors.terminos && <p className='mensaje-error'>Debes aceptar los términos y condiciones</p>}
                   </label>
