@@ -36,22 +36,6 @@ const NavbarHorizontal = ({ usuario, onMostrarPerfil, imgDefault }) => {
     },
   ]
 
-  const getAppoint = async () => {
-    try {
-      const data = await PostData(mainUrl,{ by: user.doc })
-      setNotify(null)
-      if (data?.result) setAppointment(data.result)
-    } catch (err) {
-      setNotify(null)
-      const message = errorStatusHandler(err)
-      setNotify({
-        title: 'Error',
-        message: `${message}`,
-        close: setNotify
-      })
-    }
-  }
-
   const notificacionesNoLeidas = notificaciones.filter((n) => !n.leida).length
 
   return (

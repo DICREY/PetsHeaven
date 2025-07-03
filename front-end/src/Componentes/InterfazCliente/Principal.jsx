@@ -1,19 +1,29 @@
-import React from "react"
+// Librarys 
+import React, { useContext, useEffect } from "react"
 import { useState } from "react"
-import { NavbarVertical } from "./Navbar/NavbarVertical"
-import NavbarHorizontal from "./Navbar/NavbarHorizontal"
+
+// Imports 
+import NavbarHorizontal from "./NavBar/NavbarHorizontal"
 import InicioCliente from "./InicioCliente"
 import MascotasCliente from "./MascotaCliente"
 import PerfilCliente from "./PerfilCliente"
 import AgendarCita from "./AgendarCita"
 import ProximasCitas from "./ProximasCitas"
 import HistorialMascota from "./HistorialMascota"
+import { NavbarVertical } from "./NavBar/NavbarVertical"
+import { AuthContext } from "../../Contexts/Contexts"
+
+// Import styles 
 import "../../styles/InterfazCliente/Principal.css"
 
-function Principal() {
-  const [vistaActual, setVistaActual] = useState("inicio")
-  const [mascotaSeleccionada, setMascotaSeleccionada] = useState(null)
-  const [mostrarPerfil, setMostrarPerfil] = useState(false)
+// Component 
+function Principal({ URL = '' }) {
+  const [ vistaActual, setVistaActual ] = useState("inicio")
+  const [ mascotaSeleccionada, setMascotaSeleccionada ] = useState(null)
+  const [ mostrarPerfil, setMostrarPerfil ] = useState(false)
+  const [ notify, setNotify ] = useState(null)
+  const [ appointment, setAppointment ] = useState()
+  const { logout, user } = useContext(AuthContext)
 
   const [usuario, setUsuario] = useState({
     id: 1,
@@ -64,36 +74,6 @@ function Principal() {
     },
   ])
 
-  const [citas, setCitas] = useState([
-    {
-      id: 1,
-      fecha: "2024-01-15",
-      hora: "10:00",
-      servicio: "Consulta General",
-      mascota: "Max",
-      estado: "confirmada",
-      veterinario: "Dr. Pérez",
-    },
-    {
-      id: 2,
-      fecha: "2024-01-20",
-      hora: "15:30",
-      servicio: "Vacunación",
-      mascota: "Luna",
-      estado: "pendiente",
-      veterinario: "Dra. López",
-    },
-    {
-      id: 3,
-      fecha: "2024-01-25",
-      hora: "09:00",
-      servicio: "Revisión",
-      mascota: "Max",
-      estado: "confirmada",
-      veterinario: "Dr. Martín",
-    },
-  ])
-
   const navegarA = (vista, mascota = null) => {
     setVistaActual(vista)
     setMostrarPerfil(false)
@@ -109,35 +89,35 @@ function Principal() {
 
   const agregarCita = (nuevaCita) => {
     const cita = {
-      id: citas.length + 1,
+      id: appointment.length + 1,
       ...nuevaCita,
       estado: "pendiente",
     }
-    setCitas([...citas, cita])
+    setAppointment([...appointment, cita])
   }
 
   const actualizarCita = (citaActualizada) => {
-    setCitas(citas.map((cita) => (cita.id === citaActualizada.id ? citaActualizada : cita)))
+    setAppointment(appointment.map((cita) => (cita.id === citaActualizada.id ? citaActualizada : cita)))
   }
 
   const renderizarVista = () => {
     if (mostrarPerfil) {
-      return <PerfilCliente usuario={usuario} setUsuario={setUsuario} />
+      return <PerfilCliente usuario={user} setUsuario={setUsuario} />
     }
 
     switch (vistaActual) {
       case "inicio":
-        return <InicioCliente usuario={usuario} mascotas={mascotas} citas={citas} onNavegar={navegarA} />
+        return <InicioCliente usuario={user} mascotas={mascotas} onNavegar={navegarA} URL={URL} />
       case "mascotas":
         return <MascotasCliente mascotas={mascotas} onNavegar={navegarA} />
       case "agendar":
         return <AgendarCita mascotas={mascotas} onAgregarCita={agregarCita} onNavegar={navegarA} />
       case "citas":
-        return <ProximasCitas citas={citas} setCitas={setCitas} onActualizarCita={actualizarCita} />
+        return <ProximasCitas citas={appointment} setCitas={setAppointment} onActualizarCita={actualizarCita} />
       case "historial":
         return <HistorialMascota mascota={mascotaSeleccionada} onNavegar={navegarA} />
       default:
-        return <InicioCliente usuario={usuario} mascotas={mascotas} citas={citas} onNavegar={navegarA} />
+        return <InicioCliente usuario={user} mascotas={mascotas} URL={URL} onNavegar={navegarA} />
     }
   }
 
@@ -145,7 +125,7 @@ function Principal() {
     <div className="app-veterinaria">
       <NavbarVertical vistaActual={vistaActual} onNavegar={navegarA} />
       <div className="contenido-principal">
-        <NavbarHorizontal usuario={usuario} onMostrarPerfil={mostrarPerfilUsuario} />
+        <NavbarHorizontal usuario={user} onMostrarPerfil={mostrarPerfilUsuario} />
         <main className="vista-principal">{renderizarVista()}</main>
       </div>
     </div>
