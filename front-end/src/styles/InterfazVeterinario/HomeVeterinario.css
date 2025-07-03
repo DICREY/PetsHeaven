@@ -9,7 +9,10 @@
 /* Contenido principal */
 .contenido-principal-vet {
   padding: 1.5rem;
-  width: 100%;
+  width: 90%;
+  margin-top: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Grid de Contenido */

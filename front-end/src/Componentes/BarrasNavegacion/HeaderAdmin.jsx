@@ -110,7 +110,7 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
         <nav className="derecha-cabecera-header" aria-label="Navegación principal">
           <button
             type="button"
-            className="BackBtn expandBtn"
+            className="BackBtn expandBtn" 
             aria-label="Obtener ayuda"
             onClick={handleHelp}
           >

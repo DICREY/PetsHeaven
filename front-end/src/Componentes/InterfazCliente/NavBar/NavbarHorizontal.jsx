@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { useState } from "react"
-import { Bell,LogOut, User } from "lucide-react"
+import { Bell,LogOut, User, HelpCircle } from "lucide-react"
 import { AuthContext } from "../../../Contexts/Contexts"
 import { CheckImage } from "../../../Utils/Utils"
 import { errorStatusHandler } from "../../Varios/Util"
@@ -13,6 +13,7 @@ const NavbarHorizontal = ({ usuario, onMostrarPerfil, imgDefault }) => {
   const [mostrarPerfil, setMostrarPerfil] = useState(false)
   const [mostrarNotificaciones, setMostrarNotificaciones] = useState(false)
   const { logout, user } = useContext(AuthContext)
+  const [tabHelp, setTabHelp] = useState()
 
   const notificaciones = [
     {
@@ -38,6 +39,10 @@ const NavbarHorizontal = ({ usuario, onMostrarPerfil, imgDefault }) => {
     },
   ]
 
+  // Show TabHelp
+  const handleHelp = () => {
+    tabHelp ? setTabHelp(false) : setTabHelp(true)
+  }
   const notificacionesNoLeidas = notificaciones.filter((n) => !n.leida).length
 
   return (
@@ -47,10 +52,20 @@ const NavbarHorizontal = ({ usuario, onMostrarPerfil, imgDefault }) => {
           <h1 className="titulo-horizontal">¡Hola, {user.names} {user.lastNames}!</h1>
           <p className="subtitulo-horizontal">Bienvenido de vuelta a tú portal</p>
         </div>
-
         <div className="acciones-horizontal">
+          <button
+            type="button"
+            className="BackBtn" 
+            aria-label="Obtener ayuda"
+            onClick={handleHelp}
+          >
+            <HelpCircle className="icon" aria-hidden="true" />
+            <span>Ayuda</span>
+          </button>
           <div className="dropdown-horizontal">
+            
             <button
+              
               className="boton-notificaciones-horizontal"
               onClick={() => setMostrarNotificaciones(!mostrarNotificaciones)}
             >
@@ -132,6 +147,9 @@ const NavbarHorizontal = ({ usuario, onMostrarPerfil, imgDefault }) => {
           </div>
         </div>
       </div>
+      {tabHelp && (
+              <TabHelp onClose={handleHelp} />
+      )}
     </header>
   )
 }
