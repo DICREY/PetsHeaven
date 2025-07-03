@@ -126,5 +126,8 @@ Route.put('/modify', ValidatorRol("veterinario"), async (req, res) => {
     }
 })
 
+const consultRoute = require('./consult.route')
+Route.use('/api/consult', consultRoute)
+
 // Exports 
 module.exports = Route
