@@ -15,8 +15,6 @@ import { AuthContext } from "../../Contexts/Contexts"
 
 // Import styles 
 import "../../styles/InterfazCliente/Principal.css"
-import { PostData } from "../Varios/Requests"
-import { errorStatusHandler } from "../Varios/Util"
 
 // Component 
 function Principal({ URL = '' }) {
@@ -76,23 +74,6 @@ function Principal({ URL = '' }) {
     },
   ])
 
-  const getAppoint = async () => {
-    try {
-      const data = await PostData(mainUrl,{ by: user.doc })
-      console.log(data)
-      setNotify(null)
-      if (data?.result) setAppointment(data.result)
-    } catch (err) {
-      setNotify(null)
-      const message = errorStatusHandler(err)
-      setNotify({
-        title: 'Error',
-        message: `${message}`,
-        close: setNotify
-      })
-    }
-  }
-
   const navegarA = (vista, mascota = null) => {
     setVistaActual(vista)
     setMostrarPerfil(false)
@@ -126,7 +107,7 @@ function Principal({ URL = '' }) {
 
     switch (vistaActual) {
       case "inicio":
-        return <InicioCliente usuario={user} mascotas={mascotas} citas={appointment} onNavegar={navegarA} />
+        return <InicioCliente usuario={user} mascotas={mascotas} onNavegar={navegarA} URL={URL} />
       case "mascotas":
         return <MascotasCliente mascotas={mascotas} onNavegar={navegarA} />
       case "agendar":
@@ -136,13 +117,9 @@ function Principal({ URL = '' }) {
       case "historial":
         return <HistorialMascota mascota={mascotaSeleccionada} onNavegar={navegarA} />
       default:
-        return <InicioCliente usuario={user} mascotas={mascotas} citas={appointment} onNavegar={navegarA} />
+        return <InicioCliente usuario={user} mascotas={mascotas} URL={URL} onNavegar={navegarA} />
     }
   }
-
-  useEffect(() => {
-    getAppoint()
-  },[])
 
   return (
     <div className="app-veterinaria">

@@ -1,5 +1,5 @@
 // Librarys 
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import { useState } from "react"
 import { Calendar, PawPrint, TrendingUp } from "lucide-react"
 
@@ -8,9 +8,17 @@ import { AuthContext } from "../../Contexts/Contexts"
 
 // Import styles
 import "../../styles/InterfazCliente/InicioCliente.css"
+import { PostData } from "../Varios/Requests"
+import { errorStatusHandler } from "../Varios/Util"
 
 // Component 
-const InicioCliente = ({ mascotas, citas = [], onNavegar, URL = '' }) => {
+const InicioCliente = ({ mascotas, onNavegar, URL = '' }) => {
+  const [ appointment, setAppointment ] = useState()
+  const [ notify, setNotify ] = useState(null)
+
+  const mainUrl = `${URL}/appointment/by`
+  const { user } = useContext(AuthContext)
+
   const obtenerSaludo = () => {
     const hora = new Date().getHours()
     if (hora < 12) return "Buenos días"
@@ -18,32 +26,52 @@ const InicioCliente = ({ mascotas, citas = [], onNavegar, URL = '' }) => {
     return "Buenas noches"
   }
 
-  const { user } = useContext(AuthContext)
-  const citasProximas = citas?.filter((cita) => new Date(cita.fec_cit) >= new Date()).slice(0, 3)
+  const citasProximas = appointment?.filter((cita) => new Date(cita.fec_cit) >= new Date()).slice(0, 3)
 
   const estadisticas = [
     {
       titulo: "Mascotas Registradas",
       valor: mascotas.length,
-      icono: <PawPrint size={24} />,
+      icono: <PawPrint className="icon" />,
       color: "#00BCD4",
       descripcion: "Mascotas en tu cuenta",
     },
     {
       titulo: "Próximas Citas",
-      valor: citasProximas.length,
-      icono: <Calendar size={24} />,
+      valor: appointment?.length,
+      icono: <Calendar className="icon" />,
       color: "#4CAF50",
       descripcion: "Citas programadas",
     },
     {
       titulo: "Consultas Este Mes",
       valor: 3,
-      icono: <TrendingUp size={24} />,
+      icono: <TrendingUp className="icon" />,
       color: "#FF9800",
       descripcion: "Visitas realizadas",
     },
   ]
+
+  const getAppoint = async () => {
+    try {
+      const data = await PostData(mainUrl,{ by: user.doc })
+      console.log(data)
+      setNotify(null)
+      if (data?.result) setAppointment(data.result)
+    } catch (err) {
+      setNotify(null)
+      const message = errorStatusHandler(err)
+      setNotify({
+        title: 'Error',
+        message: `${message}`,
+        close: setNotify
+      })
+    }
+  }
+
+  useEffect(() => {
+    getAppoint()
+  },[])
 
   return (
     <div className="contenedor-inicio-cliente">
@@ -74,22 +102,22 @@ const InicioCliente = ({ mascotas, citas = [], onNavegar, URL = '' }) => {
       <section className="resumen-inicio-cliente">
         <div className="proximas-citas-inicio-cliente">
           <h3 className="titulo-resumen-inicio-cliente">Próximas Citas</h3>
-          {citasProximas.length > 0 ? (
+          {appointment?.length > 0 ? (
             <div className="lista-citas-inicio-cliente">
-              {citasProximas.map((cita) => (
-                <div key={cita.id} className="item-cita-inicio-cliente">
+              {appointment?.map((cita, idx) => (
+                <div key={idx} className="item-cita-inicio-cliente">
                   <div className="fecha-cita-inicio-cliente">
-                    <span className="dia-cita-inicio-cliente">{new Date(cita.fecha).getDate()}</span>
+                    <span className="dia-cita-inicio-cliente">{new Date(cita.fec_cit).getDate()}</span>
                     <span className="mes-cita-inicio-cliente">
-                      {new Date(cita.fecha).toLocaleDateString("es-ES", { month: "short" })}
+                      {new Date(cita.fec_cit).toLocaleDateString("es-ES", { month: "short" })}
                     </span>
                   </div>
                   <div className="info-cita-inicio-cliente">
-                    <h4 className="servicio-cita-inicio-cliente">{cita.servicio}</h4>
-                    <p className="mascota-cita-inicio-cliente">{cita.mascota}</p>
-                    <span className="hora-cita-inicio-cliente">{cita.hora}</span>
+                    <h4 className="servicio-cita-inicio-cliente">{cita.nom_ser}</h4>
+                    <p className="mascota-cita-inicio-cliente">{cita.nom_mas}</p>
+                    <span className="hora-cita-inicio-cliente">{cita.hor_ini_cit}</span>
                   </div>
-                  <div className={`estado-cita-inicio-cliente ${cita.estado}`}>{cita.estado}</div>
+                  <div className={`estado-cita-inicio-cliente ${cita.est_cit}`}>{cita.est_cit}</div>
                 </div>
               ))}
             </div>
