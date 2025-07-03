@@ -1,6 +1,6 @@
 import React from "react"
 import { useState } from "react"
-import NavbarVertical from "./NavBar/NavbarVertical"
+import { NavbarVertical } from "./NavBar/NavbarVertical"
 import NavbarHorizontal from "./NavBar/NavbarHorizontal"
 import InicioCliente from "./InicioCliente"
 import MascotasCliente from "./MascotaCliente"

@@ -2,7 +2,7 @@ import React from "react"
 import { Home, PawPrint, Calendar, Clock, Stethoscope } from "lucide-react"
 import "../../../styles/InterfazCliente/NavBar/NavbarVertical.css"
 
-const NavbarVertical = ({ vistaActual, onNavegar }) => {
+export const NavbarVertical = ({ vistaActual, onNavegar }) => {
   const menuItems = [
     {
       id: "inicio",
@@ -69,5 +69,4 @@ const NavbarVertical = ({ vistaActual, onNavegar }) => {
   )
 }
 
-export default NavbarVertical
 

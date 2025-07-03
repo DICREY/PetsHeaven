@@ -4,8 +4,10 @@ import { useState } from "react"
 import { Bell,LogOut, User } from "lucide-react"
 import { AuthContext } from "../../../Contexts/Contexts"
 import { CheckImage } from "../../../Utils/Utils"
+import { errorStatusHandler } from "../../Varios/Util"
+import { PostData } from "../../Varios/Requests"
 
-const NavbarHorizontal = ({ usuario, onMostrarPerfil }) => {
+const NavbarHorizontal = ({ usuario, onMostrarPerfil, imgDefault }) => {
   const [mostrarPerfil, setMostrarPerfil] = useState(false)
   const [mostrarNotificaciones, setMostrarNotificaciones] = useState(false)
   const { logout, user } = useContext(AuthContext)
@@ -34,6 +36,22 @@ const NavbarHorizontal = ({ usuario, onMostrarPerfil }) => {
     },
   ]
 
+  const getAppoint = async () => {
+    try {
+      const data = await PostData(mainUrl,{ by: user.doc })
+      setNotify(null)
+      if (data?.result) setAppointment(data.result)
+    } catch (err) {
+      setNotify(null)
+      const message = errorStatusHandler(err)
+      setNotify({
+        title: 'Error',
+        message: `${message}`,
+        close: setNotify
+      })
+    }
+  }
+
   const notificacionesNoLeidas = notificaciones.filter((n) => !n.leida).length
 
   return (
@@ -50,7 +68,7 @@ const NavbarHorizontal = ({ usuario, onMostrarPerfil }) => {
               className="boton-notificaciones-horizontal"
               onClick={() => setMostrarNotificaciones(!mostrarNotificaciones)}
             >
-              <Bell size={20} />
+              <Bell className="icon" />
               {notificacionesNoLeidas > 0 && <span className="badge-horizontal">{notificacionesNoLeidas}</span>}
             </button>
 
