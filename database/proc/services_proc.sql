@@ -1,4 +1,4 @@
--- Active: 1750268475844@@127.0.0.1@3306@pets_heaven
+-- Active: 1751051171820@@127.0.0.1@3306@pets_heaven
 -- Crear procedimiento para buscar todas las categorías de servicios
 CREATE PROCEDURE pets_heaven.SearchServicesCat()
 BEGIN

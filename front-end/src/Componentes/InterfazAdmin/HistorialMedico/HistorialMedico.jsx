@@ -400,12 +400,12 @@ export default function PetMedicalHistory({ datas = {}, URL = '', imgPetDefault 
         setVaccinations(appVaccMap)
       }
     } catch (err) {
-        const message = errorStatusHandler(err)
-        setNotify({
-            title: 'Error',
-            message: `${message}`,
-            close: setNotify
-        })
+        // const message = errorStatusHandler(err)
+        // setNotify({
+        //     title: 'Error',
+        //     message: `${message}`,
+        //     close: setNotify
+        // })
     }
   }
 
