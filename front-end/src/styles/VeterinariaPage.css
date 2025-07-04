@@ -2,11 +2,13 @@
 .pagina {
   height: 100vh;
   width: 100%;
-  overflow-x: hidden;
+  background: var(--white);
 }
 
 .contenedor {
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 0 1rem;
 }
 
@@ -19,7 +21,6 @@
 .mb-4 {
   margin-bottom: 1rem;
 }
-
 
 /* ========== CAROUSEL SECTION ========== */
 .carrusel {
@@ -46,7 +47,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  will-change: transform;
 }
 
 .indicadores {
@@ -65,19 +65,19 @@
   height: 0.75rem;
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.5);
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s;
   border: none;
   cursor: pointer;
 }
 
 .indicador.activo {
-  background-color: var(--white);
+  background-color: var(--verde-aguamarina);
 }
 
 /* ========== ABOUT US SECTION ========== */
 .seccion-nosotros {
-  padding: 2rem 0;
   background-color: var(--white);
+  padding: 2rem 0;
 }
 
 .contenedor-nosotros {
@@ -89,14 +89,14 @@
 
 .img-nosotros {
   width: 100%;
-  height: auto;
-  object-fit: cover;
+  max-width: 400px;
   border-radius: 0.7rem;
   box-shadow: var(--shadow-sm);
 }
 
 .texto-nosotros {
   width: 100%;
+  max-width: 600px;
 }
 
 .titulo-seccion {
@@ -108,12 +108,11 @@
 
 .texto-seccion {
   color: var(--gray-800);
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 /* ========== SERVICES SECTION ========== */
-
 .seccion-servicios {
   padding: 2rem 0;
   background-color: var(--azul-claro);
@@ -121,29 +120,29 @@
 
 .grid-servicios {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
 }
 
 .tarjeta-servicio {
   display: flex;
   flex-direction: column;
-  height: 100%;
   border-radius: 0.5rem;
   background-color: var(--white);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .tarjeta-servicio:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
 }
 
 .imagen-servicio {
-  position: relative;
   min-height: 10rem;
+  max-height: 180px;
+  overflow: hidden;
 }
 
 .img-servicio {
@@ -160,7 +159,7 @@
 }
 
 .titulo-servicio {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
   color: var(--verde-aguamarina);
@@ -168,7 +167,7 @@
 
 .descripcion-servicio {
   color: var(--gray-800);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   line-height: 1.5;
 }
 
@@ -609,18 +608,38 @@
 
   .contenedor-nosotros {
     flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 3rem;
   }
-
   .img-nosotros,
   .texto-nosotros {
     width: 50%;
+    max-width: none;
   }
-
   .grid-contacto {
     grid-template-columns: repeat(2, 1fr);
   }
+}
 
-  .fila-formulario {
-    flex-direction: row;
+@media (min-width: 992px) {
+  .carrusel {
+    height: 70vh;
+    max-height: 600px;
+  }
+}
+
+@media (max-width: 600px) {
+  .carrusel {
+    height: 35vh;
+    min-height: 180px;
+  }
+  .img-nosotros {
+    max-width: 100%;
+  }
+  .grid-servicios,
+  .grid-promociones,
+  .grid-test {
+    grid-template-columns: 1fr;
   }
 }
