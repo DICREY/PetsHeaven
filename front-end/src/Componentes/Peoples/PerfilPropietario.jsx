@@ -79,9 +79,11 @@ export const PerfilPropietario = ({
           message: 'Verificando datos proporcionados',
           load: 1
         })
-        const logg = await PostData(`${URL}/global/login`, {firstData: user.doc, secondData: value})
+        const logg = await PostData(`${URL}/global/login`, { firstData: user.doc, secondData: value })
+        console.log(logg)
         if (logg) AssigRol(datas)
       } catch (err) {
+        console.log(err)
         setNotify(null)
         const message = errorStatusHandler(err)
         setNotify({

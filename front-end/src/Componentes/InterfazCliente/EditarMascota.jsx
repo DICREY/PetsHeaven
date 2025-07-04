@@ -18,7 +18,7 @@ const EditarMascota = ({ mascota, onGuardar, onCerrar, imgDefault = '' }) => {
     fot_mas: mascota.fot_mas,
   })
 
-  const [fotoPreview, setFotoPreview] = useState(mascota.foto)
+  const [fotoPreview, setFotoPreview] = useState(mascota.fot_mas)
 
   const especies = ["Perro", "Gato", "Conejo", "Ave", "Reptil", "Pez", "Roedor"]
   const generos = ["Macho", "Hembra"]
@@ -34,7 +34,7 @@ const EditarMascota = ({ mascota, onGuardar, onCerrar, imgDefault = '' }) => {
       reader.onload = (e) => {
         const nuevaFoto = e.target.result
         setFotoPreview(nuevaFoto)
-        manejarCambio("foto", nuevaFoto)
+        manejarCambio("img_mas", nuevaFoto)
       }
       reader.readAsDataURL(file)
     }

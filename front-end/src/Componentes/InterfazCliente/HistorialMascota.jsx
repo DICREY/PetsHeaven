@@ -85,7 +85,7 @@ const HistorialMascota = ({ mascota, onNavegar, URL = '', imgDefault = '', setNo
       load: 1
     })
     try {
-      const imgUrl = pet.fot_mas? pet.fot_mas === 'No-registrado'? null: await uploadImg(pet.fot_mas,'mascotas'): null
+      const imgUrl = pet.img_mas? pet.img_mas === 'No-registrado'? null: await uploadImg(pet.img_mas,'mascotas'): null
       const modPet = {
         nom_mas: pet.nom_mas,
         esp_mas: pet.esp_mas,

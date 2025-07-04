@@ -54,10 +54,6 @@ Route.post('/register', ValidatorRol("veterinario"), async (req,res) => {
     const { body } = req
     
     try{
-        // Verify if exist
-        const find = await pet.findAllBy(body.nom_mas,body.doc_per)
-        if (find.result) return res.status(409).json({message: "La mascota ya existe"})
-
         const created = await pet.create(body)
         if (created.created) return res.status(201).json(created)
 
