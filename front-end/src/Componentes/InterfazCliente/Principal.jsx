@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from "react"
 import { useState } from "react"
 
 // Imports 
+import { NavbarVertical } from "./NavBar/NavbarVertical" 
 import NavbarHorizontal from "./NavBar/NavbarHorizontal"
 import InicioCliente from "./InicioCliente"
 import MascotasCliente from "./MascotaCliente"
@@ -10,7 +11,6 @@ import PerfilCliente from "./PerfilCliente"
 import AgendarCita from "./AgendarCita"
 import ProximasCitas from "./ProximasCitas"
 import HistorialMascota from "./HistorialMascota"
-import { NavbarVertical } from "./NavBar/NavbarVertical"
 import { AuthContext } from "../../Contexts/Contexts"
 
 // Import styles 

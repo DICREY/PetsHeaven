@@ -12,7 +12,6 @@ import { Description } from '../Global/Description'
 import { Notification } from '../Global/Notifys'
 import { HeaderAdmin } from '../BarrasNavegacion/HeaderAdmin'
 import { AuthContext } from '../../Contexts/Contexts'
-import Footer from '../Varios/Footer2'
 import RolPrivilegios from '../InterfazAdmin/FormulariosAdmin/RolPrivilegios'
 import InformacionProfesional from '../InterfazAdmin/FormulariosAdmin/InformacionProfesional'
 
@@ -436,7 +435,6 @@ export const PerfilPropietario = ({
             </section>
           </section>
         </section>
-        <Footer />
       </main>
       {notify && (
         <Notification
