@@ -122,7 +122,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  max-height: 600px;
+  max-height: 100wv;
   overflow-y: auto;
   padding-right: 8px;
 }
