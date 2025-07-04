@@ -46,13 +46,33 @@ function Principal({ URL = '', imgPetDefault = '', imgUserDefault }) {
     setVistaActual("")
   }
 
-  const agregarCita = (nuevaCita) => {
-    const cita = {
-      id: appointment.length + 1,
-      ...nuevaCita,
-      estado: "pendiente",
+  const agregarCita = async (nuevaCita) => {
+    const appoint = {
+      fec_cit: nuevaCita.fecha,
+      hor_ini_cit: nuevaCita.hora,
+      hor_fin_cit: nuevaCita.horaFin,
+      lug_ate_cit: nuevaCita.consultorio,
+      mot_cit: nuevaCita.motivo,
+      ser_cit: nuevaCita.servicio,
+      vet_cit: nuevaCita.veterinario,
+      mas_cit: nuevaCita.mascota,
     }
-    setAppointment([...appointment, cita])
+    console.log(appoint)
+    try {
+      const data = await PostData(`${URL}/appointment/register`, appoint)
+      setNotify(null)
+      if (data) {
+        return 1
+      }
+    } catch (err) {
+      setNotify(null)
+      const message = errorStatusHandler(err)
+      setNotify({
+        title: 'Error',
+        message: message,
+        close: setNotify
+      })
+    }
   }
 
   const actualizarCita = (citaActualizada) => {

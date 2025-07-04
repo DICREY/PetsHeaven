@@ -10,6 +10,7 @@ import { GetData } from "../Varios/Requests"
 
 // Import styles 
 import "../../styles/InterfazCliente/AgendarCita.css"
+import { number } from "framer-motion"
 
 // Component 
 const AgendarCita = ({ mascotas, onAgregarCita, onNavegar, imgDefault = '', URL = '',setNotify }) => {
@@ -67,7 +68,7 @@ const AgendarCita = ({ mascotas, onAgregarCita, onNavegar, imgDefault = '', URL 
     if (paso > 1) setPaso(paso - 1)
   }
 
-  const confirmarCita = () => {
+  const confirmarCita = async () => {
     const servicioSeleccionado = appoint?.find((s) => s.nom_cat === formData.servicio)
     const veterinarioSeleccionado = vet?.find((v) => v.doc_per === formData.veterinario)
     const nuevaCita = {
@@ -75,19 +76,19 @@ const AgendarCita = ({ mascotas, onAgregarCita, onNavegar, imgDefault = '', URL 
       fecha: formData.fecha,
       hora: formData.hora,
       servicio: servicioSeleccionado.nom_cat,
-      mascota: formData.mascota,
+      mascota: formData.id_mas,
       estado: formData.urgente ? "urgente" : "pendiente",
       veterinario: veterinarioSeleccionado.doc_per,
       motivo: formData.motivo,
-      propietario: "María González",
+      propietario: formData.prop,
       telefono: "+34 612 345 678",
-      consultorio: "Consultorio 1",
+      consultorio: "CON-101",
       tipo: servicioSeleccionado.nom_cat,
       descripcion: formData.motivo,
-      horaFin: "",
+      horaFin: `${Number(formData.hora.split(':')[0]) + 1}:${formData.hora.split(':')[1]}`,
     }
-    onAgregarCita(nuevaCita)
-    setPaso(5)
+    const add = await onAgregarCita(nuevaCita)
+    if (add) setPaso(5)
   }
 
   const obtenerFechaMinima = () => {
@@ -229,7 +230,11 @@ const AgendarCita = ({ mascotas, onAgregarCita, onNavegar, imgDefault = '', URL 
                   key={index}
                   type="button"
                   className={`opcion-mascota-agendar-cliente ${formData.mascota === mascota.nom_mas ? "seleccionada-agendar-cliente" : ""}`}
-                  onClick={() => manejarCambio("mascota", mascota.nom_mas)}
+                  onClick={() => {
+                    manejarCambio("mascota", mascota.nom_mas)
+                    manejarCambio("id_mas", mascota.id_mas)
+                    manejarCambio("prop", mascota.doc_per)
+                  }}
                 >
                   <CheckImage
                     src={mascota.fot_mas}

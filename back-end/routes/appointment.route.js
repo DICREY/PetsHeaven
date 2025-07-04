@@ -146,7 +146,7 @@ Route.post('/pet/consult', ValidatorRol("usuario"), async (req,res) => {
     }
 })
 
-Route.post('/register', ValidatorRol("veterinario"), async (req, res) => {
+Route.post('/register', ValidatorRol("usuario"), async (req, res) => {
     // Vars 
     const data = req.body
     
