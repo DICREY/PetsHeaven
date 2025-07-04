@@ -11,7 +11,6 @@ import { errorStatusHandler, LegalAge, uploadImg } from '../../Varios/Util'
 import { Notification } from '../../Global/Notifys'
 import { PostData } from '../../Varios/Requests'
 import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
-import Footer from '../../Varios/Footer2'
 import { AuthContext } from '../../../Contexts/Contexts'
 
 // Import styles
@@ -540,7 +539,6 @@ export const RegistroPro = ({ URL = '' }) => {
             </section>
           </section>
         </section>
-        <Footer />
       </main>
       {notify && (
         <Notification

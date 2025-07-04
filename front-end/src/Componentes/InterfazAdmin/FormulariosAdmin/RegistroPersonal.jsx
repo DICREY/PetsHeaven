@@ -14,7 +14,6 @@ import { PostData } from '../../Varios/Requests'
 import { Notification } from '../../Global/Notifys'
 import { HeaderAdmin } from '../../BarrasNavegacion/HeaderAdmin'
 import { AuthContext } from '../../../Contexts/Contexts'
-import Footer from '../../Varios/Footer2'
 
 // Import styles
 import '../../../../src/styles/InterfazAdmin/FormuariosAdmin/RegistroPersonal.css'
@@ -379,7 +378,6 @@ export const ConfiguracionUsuario = ({ URL = '' }) => {
             </section>
           </main>
         </main>
-        <Footer />
       </main>
       {notify && (
         <Notification

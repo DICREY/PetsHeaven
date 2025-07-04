@@ -530,7 +530,6 @@ export const FormularioRegMascotas = ({ URL = '', imgDefault = ''}) => {
             </section>
           </main>
         </main>
-        <Footer/>
       </main>
       {notify && (
         <Notification 
