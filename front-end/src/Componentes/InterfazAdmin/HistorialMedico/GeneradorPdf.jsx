@@ -1,21 +1,22 @@
 import React from "react";
+import { formatDate } from "../../Varios/Util";
 
 export default function GeneradorPDF({ petData = {}, medicalHistory = [] }) {
   // Datos por defecto
   const defaultPetData = {
-    name: "Nombre no especificado",
-    species: "Especie no especificada",
-    breed: "Raza no especificada",
-    color: "Color no especificado",
-    weight: "Peso no especificado",
-    gender: "Género no especificado",
-    birthDate: "Fecha no especificada",
-    reproductiveStatus: "Estado no especificado",
+    name: petData?.nom_per,
+    species: petData?.esp_mas,
+    breed: petData?.raz_mas,
+    color: petData?.col_mas,
+    weight: petData?.pes_mas,
+    gender: petData?.gen_mas,
+    birthDate: formatDate(petData?.fec_nac_mas),
+    reproductiveStatus: petData?.est_rep_mas,
     owner: {
-      name: "Dueño no especificado",
-      phone: "Teléfono no especificado",
-      email: "Email no especificado",
-      address: "Dirección no especificada"
+      name: `${petData?.nom_per} ${petData?.ape_per}`,
+      phone: petData?.cel_per,
+      email: petData?.email_per,
+      address: petData?.dir_per
     }
   };
 

@@ -3,7 +3,7 @@ CREATE PROCEDURE pets_heaven.Login(
     IN p_firstData VARCHAR(100)
 )
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM personas WHERE email_per = p_firstData) THEN
+    IF NOT EXISTS (SELECT 1 FROM personas WHERE email_per = p_firstData OR doc_per = p_firstData) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Email ingresado no existe en el sistema';
     END IF;
     SELECT
@@ -138,7 +138,9 @@ END //
 /* DROP PROCEDURE `GetAdminStats`; */
 /* DROP PROCEDURE `GetStatsVet`; */
 /* DROP PROCEDURE `GetOwnStats`; */
+/* DROP PROCEDURE `Login`; */
 
 /* CALL `GetAdminStats`(); */
 /* CALL `GetStaffStats`('1298765432'); */
 /* CALL `GetOwnStats`('1298765432'); */
+/* CALL Login('1298765432'); */
