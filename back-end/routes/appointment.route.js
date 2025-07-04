@@ -44,7 +44,7 @@ Route.get('/consulting-rooms', ValidatorRol("veterinario"), async (req,res) => {
 // Call Middleware for verify the request data
 Route.use(Fullinfo(['cel2_per']))
 
-Route.post('/by', ValidatorRol("veterinario"), async (req,res) => {
+Route.post('/by', ValidatorRol("usuario"), async (req,res) => {
     // Vars 
     const { by } = req.body
 
@@ -106,6 +106,7 @@ Route.post('/pet/completed', ValidatorRol("veterinario"), async (req,res) => {
 
         res.status(200).json(search)
     } catch (err) {
+        console.log(err)
         if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
         if (err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })

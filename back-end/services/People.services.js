@@ -20,17 +20,19 @@ class People {
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) rej({ message: err })
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() => {
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
-                        message: "Users found",
+                        message: "Peoples founds",
                         result: result[0]
                     })
-                },1000)
+                }, 500)
             })
 
             // close conection 
@@ -48,17 +50,19 @@ class People {
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) rej({ message: err })
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() => {
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
-                        message: "Users found",
+                        message: "Peoples founds",
                         result: result[0]
                     })
-                },1000)
+                }, 500)
             })
 
             // close conection 
@@ -78,17 +82,19 @@ class People {
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,by,(err,result) => {
-                if(err) rej({ message: err })
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() => {
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
-                        message: "Users found",
+                        message: "Peoples founds",
                         result: result[0]
                     })
-                },1000)
+                }, 500)
             })
 
             // close conection 
@@ -108,17 +114,19 @@ class People {
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,by,(err,result) => {
-                if(err) rej({ message: err })
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() => {
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
-                        message: "User found",
+                        message: "People found",
                         result: result[0]
                     })
-                },1000)
+                }, 500)
             })
 
             // close conection 
@@ -210,11 +218,10 @@ class People {
                 data.cel_per,
                 data.cel2_per,
                 data.email_per,
-                data.hash_pass,
                 data.gen_per,
                 data.img_per
             ]
-            const procedure = "CALL ModifyPeople(?,?,?,?,?,?,?,?,?,?,?);"
+            const procedure = "CALL ModifyPeople(?,?,?,?,?,?,?,?,?,?);"
 
             // conect to database
             this.database = new DataBase()

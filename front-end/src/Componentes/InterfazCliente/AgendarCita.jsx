@@ -1,15 +1,24 @@
+// Librarys 
 import React, { useEffect } from "react"
 import { useState } from "react"
 import { Calendar, Clock, User, FileText, CheckCircle, Search } from "lucide-react"
-import "../../styles/InterfazCliente/AgendarCita.css"
+
+// Imports 
 import { CheckImage } from "../../Utils/Utils"
 import { errorStatusHandler, getAge } from "../Varios/Util"
 import { GetData } from "../Varios/Requests"
 
+// Import styles 
+import "../../styles/InterfazCliente/AgendarCita.css"
+
+// Component 
 const AgendarCita = ({ mascotas, onAgregarCita, onNavegar, imgDefault = '', URL = '',setNotify }) => {
+  // Dynamic vars 
   const [ paso, setPaso ] = useState(1)
   const [ vet, setVet ] = useState()
   const [ appoint, setAppoint ] = useState()
+  const [busquedaServicio, setBusquedaServicio] = useState("")
+  const [fechaSeleccionada, setFechaSeleccionada] = useState("")
   const [formData, setFormData] = useState({
     mascota: "",
     servicio: "",
@@ -20,9 +29,8 @@ const AgendarCita = ({ mascotas, onAgregarCita, onNavegar, imgDefault = '', URL 
     urgente: false,
   })
 
-  const [busquedaServicio, setBusquedaServicio] = useState("")
-  const [fechaSeleccionada, setFechaSeleccionada] = useState("")
-
+  // Vars 
+  const mainUrl = `${URL}/appointment`
   const horasDisponibles = [
     "09:00",
     "09:30",

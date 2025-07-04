@@ -13,10 +13,9 @@ const Route = Router()
 // Middleware 
 Route.use(authenticateJWT)
 Route.use(authJWTGlobal)
-Route.use(ValidatorRol("veterinario"))
 
 // Routes
-Route.get('/all', async (req,res) => {
+Route.get('/all', ValidatorRol("veterinario"), async (req,res) => {
     try {
         const search = await people.findAll()
         if (!search.result) return res.status(404).json({ message: "Usuarios no encontrado"})
@@ -29,7 +28,7 @@ Route.get('/all', async (req,res) => {
     }
 })
 
-Route.get('/all:by', async (req,res) => {
+Route.get('/all:by', ValidatorRol("veterinario"),async (req,res) => {
     // Vars 
     const by = req.params.by
     
@@ -48,30 +47,28 @@ Route.get('/all:by', async (req,res) => {
     }
 })
 
-Route.get('/by:by', async (req,res) => {
+// Call Middleware for verify the request data
+Route.use(Fullinfo(['cel2_per','esp_vet','hor_vet','num_tar_vet','fot_tar_vet','celular2']))
+
+Route.post('/by', ValidatorRol("usuario"),async (req,res) => {
     // Vars 
-    const by = req.params.by
+    const by = req.body.by
     
     try {
-        if (!by) return res.status(400).json({ message: "Petición invalida, faltan datos"})
-
         // Verifiy if exist
         const search = await people.findBy(by)
         if (!search.result) res.status(404).json({ message: "Usuario no encontrado" })
 
         res.status(200).json(search)
     } catch (err) {
+        console.log(err)
         if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
         if(err.status) return res.status(err.status).json({message: err.message})
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
 
-// Call Middleware for verify the request data
-Route.use(ValidatorRol("administrador"))
-Route.use(Fullinfo(['cel2_per','esp_vet','hor_vet','num_tar_vet','fot_tar_vet','celular2']))
-
-Route.post('/assign-rol', async (req,res) => {
+Route.post('/assign-rol', ValidatorRol("administrador"),async (req,res) => {
     // Vars 
     const body = req.body
     
@@ -91,7 +88,7 @@ Route.post('/assign-rol', async (req,res) => {
     }
 })
 
-Route.post('/register', async (req,res) => {
+Route.post('/register', ValidatorRol("administrador"),async (req,res) => {
     // Vars 
     const saltRounds = 15
     const body = req.body
@@ -111,7 +108,7 @@ Route.post('/register', async (req,res) => {
     }
 })
 
-Route.put('/modify', async (req,res) => {
+Route.put('/modify', ValidatorRol("usuario"), async (req,res) => {
     // Vars 
     const { body } = req
     const saltRounds = 15
@@ -121,11 +118,7 @@ Route.put('/modify', async (req,res) => {
         const find = await people.findBy(body.doc_per)
         if (!find.result) res.status(404).json({ message: "Usuario no encontrado" })
 
-        const passwd = body.cont_per.length < 50? await hash(body.cont_per,saltRounds): String(body.cont_per)
-
-        const modified = await passwd?
-            await people.modify({ hash_pass: passwd,...body })
-            :res.status(400).json({ message: "Petición no valida"})
+        const modified = await people.modify(body)
 
         if (modified.modified) return res.status(200).json(modified)
     } catch (err) {
@@ -135,7 +128,7 @@ Route.put('/modify', async (req,res) => {
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
-Route.put('/delete', async (req,res) => {
+Route.put('/delete', ValidatorRol("administrador"),async (req,res) => {
     // Vars 
     const { body } = req
         

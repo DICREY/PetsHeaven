@@ -190,7 +190,11 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
 
             {isProfileOpen && (
               <div className="dropdown-perfil-header" role="menu" aria-label="Opciones de perfil">
-                <button type="button" className="item-dropdown-header" role="menuitem">
+                <button 
+                  type="button" 
+                  onClick={() => navigate('/perfil')}
+                  className="item-dropdown-header" role="menuitem"
+                >
                   <Settings className="icon" aria-hidden="true" />
                   <span>Configuración</span>
                 </button>

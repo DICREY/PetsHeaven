@@ -105,9 +105,40 @@ BEGIN
     WHERE p.doc_per LIKE p_by
     LIMIT 1000;
 END //
+CREATE PROCEDURE pets_heaven.GetOwnStats(
+    IN p_by VARCHAR(100)
+)
+BEGIN
+    DECLARE v_id_per INT;
+
+    -- Busca el id de la persona por el documento
+    SELECT id_per INTO v_id_per FROM personas WHERE doc_per = p_by LIMIT 1;
+
+    -- Si no existe la persona, lanza error
+    IF v_id_per IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No existe persona con ese documento';
+    END IF;
+
+    -- Estadísticas generales del dueño
+    SELECT 
+        (SELECT COUNT(*) FROM mascotas WHERE id_pro_mas = v_id_per) AS mas, -- Total de mascotas
+        (SELECT COUNT(*) FROM citas WHERE mas_cit IN (SELECT id_mas FROM mascotas WHERE id_pro_mas = v_id_per)) AS citas, -- Total de citas de todas sus mascotas
+        (SELECT COUNT(*) 
+            FROM citas cc
+            JOIN servicios ccs ON cc.ser_cit = ccs.id_ser
+            JOIN tipos_servicios tcs ON tcs.id_tip_ser = ccs.tip_ser
+            JOIN categorias_servicios cs ON cs.id_cat = tcs.cat_tip_ser
+            WHERE cc.mas_cit IN (SELECT id_mas FROM mascotas WHERE id_pro_mas = v_id_per)
+              AND cs.nom_cat LIKE '%Consulta General%'
+        ) AS consultas -- Total de consultas generales
+    ;
+END //
 
 /* DROP PROCEDURE pets_heaven.`Login`; */
 /* DROP PROCEDURE `GetAdminStats`; */
 /* DROP PROCEDURE `GetStatsVet`; */
+/* DROP PROCEDURE `GetOwnStats`; */
+
 /* CALL `GetAdminStats`(); */
 /* CALL `GetStaffStats`('1298765432'); */
+/* CALL `GetOwnStats`('1298765432'); */

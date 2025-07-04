@@ -1,4 +1,97 @@
 -- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
+CREATE PROCEDURE pets_heaven.SearchHistoryBy(
+    IN p_by VARCHAR(100),
+    IN p_by_two VARCHAR(100)
+)
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM personas WHERE doc_per = p_by_two) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta persona no existe en el sistema';
+    END IF;
+
+    IF NOT EXISTS(SELECT 1 FROM mascotas WHERE nom_mas LIKE p_by) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta mascota no existe en el sistema';
+    END IF;
+
+    SELECT
+        m.nom_mas,
+        m.esp_mas,
+        m.col_mas,
+        m.raz_mas,
+        m.ali_mas,
+        m.fec_nac_mas,
+        m.pes_mas,
+        m.gen_mas,
+        m.est_rep_mas,
+        m.fot_mas,
+        m.fec_cre_mas,
+        p.nom_per,
+        p.ape_per,
+        p.doc_per,
+        p.cel_per,
+        p.email_per,
+        p.gen_per,
+        p.estado,
+        (
+            SELECT GROUP_CONCAT(
+                CONCAT_WS('---',
+                    ct.id_cit,
+                    ct.fec_reg_cit,
+                    ct.fec_cit,
+                    ct.hor_ini_cit,
+                    ct.hor_fin_cit,
+                    ct.mot_cit,
+                    ct.est_cit,
+                    ct.fec_cre_cit,
+                    ct.fec_act_cit,
+                    s.nom_ser,
+                    s.pre_ser,
+                    s.des_ser,
+                    ts.nom_tip_ser,
+                    cs.nom_cat,
+                    cs.img_cat,
+                    p_vet.nom_per,
+                    p_vet.ape_per,
+                    v.especialidad,
+                    cv.nom_cat,
+                    p_vet.fot_per
+                ) 
+                SEPARATOR ';'
+            ) 
+            FROM 
+                citas ct
+            JOIN 
+                servicios s ON s.id_ser = ct.ser_cit
+            JOIN
+                tipos_servicios ts ON ts.id_tip_ser = s.tip_ser
+            JOIN
+                categorias_servicios cs ON cs.id_cat = ts.cat_tip_ser
+            JOIN
+                personas p_vet ON p_vet.id_per = ct.vet_cit
+            JOIN
+                veterinarios v ON v.id_vet = ct.vet_cit
+            LEFT JOIN
+                otorgar_categoria_vet otv ON otv.id_vet = ct.vet_cit
+            LEFT JOIN
+                categorias_veterinario cv ON otv.id_cat = cv.id_cat
+            WHERE 
+                ct.mas_cit = m.id_mas
+                AND ct.est_cit = 'COMPLETADA'
+        ) AS citas 
+    FROM 
+        mascotas m
+    JOIN
+        personas p ON p.id_per = m.id_pro_mas
+        AND p.estado = 1
+        AND (
+            p.email_per = p_by_two
+            OR p.doc_per = p_by_two
+        )
+    WHERE 
+        m.estado = 1
+        AND m.nom_mas LIKE p_by
+    ORDER BY m.nom_mas
+    LIMIT 1000;
+END //
 CREATE PROCEDURE pets_heaven.SearchAppointmentsByPet(
     IN p_nom_mas VARCHAR(100),
     IN p_doc_per VARCHAR(100)
@@ -411,6 +504,8 @@ END //
 /* DROP PROCEDURE pets_heaven.SearchAllAppointmentsByPetVacc; */
 /* DROP PROCEDURE pets_heaven.SearchAppointmentsByPet; */
 /* DROP PROCEDURE pets_heaven.SearchAllAppointmentsByPet; */
+/* DROP PROCEDURE pets_heaven.SearchHistoryBy; */
+
 /* CALL pets_heaven.SearchAllAppointmentsByPetCompleted('max','12345678'); */
 /* CALL pets_heaven.SearchAllAppointmentsByPetVacc('max','12345678'); */
 /* CALL pets_heaven.SearchAllAppointmentsByPetConsult('max','12345678'); */

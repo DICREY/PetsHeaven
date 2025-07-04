@@ -4,6 +4,7 @@ import { Calendar, Clock, MapPin, Phone, Edit, User, Stethoscope } from "lucide-
 import FormularioEditarCitaDetallado from "./FormularioEditarCita"
 import DetallesCita from "./DetalleCita"
 import "../../styles/InterfazCliente/ProximasCitas.css"
+import { formatDate } from "../Varios/Util"
 
 const ProximasCitas = ({ citas, setCitas, onActualizarCita }) => {
   const [filtro, setFiltro] = useState("todas")
@@ -14,19 +15,19 @@ const ProximasCitas = ({ citas, setCitas, onActualizarCita }) => {
     const ahora = new Date()
     switch (filtro) {
       case "proximas":
-        return citas.filter((cita) => new Date(cita.fecha) >= ahora)
+        return citas?.filter((cita) => new Date(cita.fec_cit) >= ahora)
       case "pasadas":
-        return citas.filter((cita) => new Date(cita.fecha) < ahora)
+        return citas?.filter((cita) => new Date(cita.fec_cit) < ahora)
       case "confirmadas":
-        return citas.filter((cita) => cita.estado === "confirmada")
+        return citas?.filter((cita) => cita.est_cit === "confirmada")
       case "pendientes":
-        return citas.filter((cita) => cita.estado === "pendiente")
+        return citas?.filter((cita) => cita.est_cit === "pendiente")
       default:
         return citas
     }
   }
 
-  const citasFiltradas = filtrarCitas().sort((a, b) => new Date(a.fecha) - new Date(b.fecha))
+  const citasFiltradas = filtrarCitas()?.sort((a, b) => new Date(a.fec_cit) - new Date(b.fec_cit))
 
   const obtenerColorEstado = (estado) => {
     switch (estado) {
@@ -39,15 +40,6 @@ const ProximasCitas = ({ citas, setCitas, onActualizarCita }) => {
       default:
         return "#64748b"
     }
-  }
-
-  const formatearFecha = (fecha) => {
-    return new Date(fecha).toLocaleDateString("es-ES", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    })
   }
 
   const esHoy = (fecha) => {
@@ -104,15 +96,15 @@ const ProximasCitas = ({ citas, setCitas, onActualizarCita }) => {
 
           <section className="estadisticas-citas-cliente" aria-label="Estadísticas de citas">
             <article className="stat-citas-cliente">
-              <span className="numero-stat-citas-cliente">{citas.length}</span>
+              <span className="numero-stat-citas-cliente">{citas?.length || 0}</span>
               <span className="label-stat-citas-cliente">Total</span>
             </article>
             <article className="stat-citas-cliente">
-              <span className="numero-stat-citas-cliente">{citas.filter((c) => c.estado === "confirmada").length}</span>
+              <span className="numero-stat-citas-cliente">{citas?.filter((c) => c.est_cit?.toLowerCase() === "confirmada").length || 0}</span>
               <span className="label-stat-citas-cliente">Confirmadas</span>
             </article>
             <article className="stat-citas-cliente">
-              <span className="numero-stat-citas-cliente">{citas.filter((c) => c.estado === "pendiente").length}</span>
+              <span className="numero-stat-citas-cliente">{citas?.filter((c) => c.est_cit?.toLowerCase() === "pendiente").length || 0}</span>
               <span className="label-stat-citas-cliente">Pendientes</span>
             </article>
           </section>
@@ -145,26 +137,26 @@ const ProximasCitas = ({ citas, setCitas, onActualizarCita }) => {
 
       <div className="contenedor-lista-citas">
         <section className="lista-citas-cliente" aria-label="Lista de citas">
-          {citasFiltradas.length > 0 ? (
-            citasFiltradas.map((cita) => (
+          {citasFiltradas?.length > 0 ? (
+            citasFiltradas?.map((cita) => (
               <article key={cita.id} className="tarjeta-cita-cliente" onClick={() => abrirDetalles(cita)}>
                 <aside className="fecha-lateral-cita-cliente">
-                  <time dateTime={cita.fecha}>
-                    <span className="dia-lateral-cita-cliente">{new Date(cita.fecha).getDate()}</span>
+                  <time dateTime={cita.fec_cit}>
+                    <span className="dia-lateral-cita-cliente">{new Date(cita.fec_cit).getDate()}</span>
                     <span className="mes-lateral-cita-cliente">
-                      {new Date(cita.fecha).toLocaleDateString("es-ES", { month: "short" })}
+                      {new Date(cita.fec_cit).toLocaleDateString("es-ES", { month: "short" })}
                     </span>
-                    <span className="año-lateral-cita-cliente">{new Date(cita.fecha).getFullYear()}</span>
+                    <span className="año-lateral-cita-cliente">{new Date(cita.fec_cit).getFullYear()}</span>
                   </time>
                 </aside>
 
                 <div className="contenido-cita-cliente">
                   <header className="header-tarjeta-cita-cliente">
                     <div className="info-principal-cita-cliente">
-                      <h3 className="servicio-cita-cliente">{cita.servicio}</h3>
+                      <h3 className="servicio-cita-cliente">{cita.nom_ser}</h3>
                       <p className="mascota-cita-cliente">
                         <User size={16} />
-                        {cita.mascota}
+                        {cita.nom_mas}
                       </p>
                       <p className="veterinario-cita-cliente">
                         <Stethoscope size={16} />
@@ -175,16 +167,16 @@ const ProximasCitas = ({ citas, setCitas, onActualizarCita }) => {
                     <div className="estado-y-acciones-cita-cliente">
                       <span
                         className="badge-estado-cita-cliente"
-                        style={{ backgroundColor: obtenerColorEstado(cita.estado) }}
+                        style={{ backgroundColor: obtenerColorEstado(cita.est_cit) }}
                       >
-                        {cita.estado}
+                        {cita.est_cit}
                       </span>
                       <div className="acciones-cita-cliente">
                         <button
                           className="boton-accion-cita-cliente editar-cita-cliente"
                           onClick={(e) => abrirEdicion(e, cita)}
                           title="Editar cita"
-                          aria-label={`Editar cita de ${cita.servicio}`}
+                          aria-label={`Editar cita de ${cita.nom_ser}`}
                         >
                           <Edit size={16} />
                         </button>
@@ -196,13 +188,13 @@ const ProximasCitas = ({ citas, setCitas, onActualizarCita }) => {
                     <div className="detalle-item-cita-cliente">
                       <Calendar size={16} />
                       <span className="texto-detalle-cita-cliente">
-                        {esHoy(cita.fecha) ? "Hoy" : esMañana(cita.fecha) ? "Mañana" : formatearFecha(cita.fecha)}
+                        {esHoy(cita.fec_cit) ? "Hoy" : esMañana(cita.fec_cit) ? "Mañana" : formatDate(cita.fec_cit)}
                       </span>
                     </div>
 
                     <div className="detalle-item-cita-cliente">
                       <Clock size={16} />
-                      <span className="texto-detalle-cita-cliente">{cita.hora}</span>
+                      <span className="texto-detalle-cita-cliente">{cita.hor_ini_cit}</span>
                     </div>
 
                     <div className="detalle-item-cita-cliente">
@@ -216,9 +208,9 @@ const ProximasCitas = ({ citas, setCitas, onActualizarCita }) => {
                     </div>
                   </section>
 
-                  {(esHoy(cita.fecha) || esMañana(cita.fecha)) && (
+                  {(esHoy(cita.fec_cit) || esMañana(cita.fec_cit)) && (
                     <aside className="alerta-proxima-cita-cliente" role="alert">
-                      {esHoy(cita.fecha) ? "Cita hoy" : "Cita mañana"} - No olvides llegar 15 minutos antes
+                      {esHoy(cita.fec_cit) ? "Cita hoy" : "Cita mañana"} - No olvides llegar 15 minutos antes
                     </aside>
                   )}
                 </div>

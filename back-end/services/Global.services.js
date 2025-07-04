@@ -53,17 +53,19 @@ class Global {
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,by,(err,result) => {
-                if(err) rej({ message: err }) 
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() => {
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
                         message: "Authorized",
                         result: result[0]
                     })
-                },200)
+                },500)
             })
 
             // close conection 
@@ -91,7 +93,7 @@ class Global {
                         message: "Changed",
                         success: 1
                     })
-                },200)
+                },500)
             })
 
             // close conection 
@@ -110,17 +112,19 @@ class Global {
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) rej({ message: err }) 
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() => {
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
                         message: "Found info",
                         result: result['0'][0]
                     })
-                },200)
+                },500)
             })
 
             // close conection 
@@ -139,17 +143,50 @@ class Global {
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,by,(err,result) => {
-                if(err) rej({ message: err }) 
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() => {
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
                         message: "Found info",
                         result: result[0][0]
                     })
-                },200)
+                },500)
+            })
+
+            // close conection 
+            this.database.conection.end()
+        })
+    }
+
+    async GetOwnStats() {
+        return new Promise((res,rej) => {
+            // vars
+            const proc = "CALL GetOwnStats(?);"
+            const by = this.args[0].replace(" ","")
+
+            // conect to database
+            this.database = new DataBase()
+            this.database.conect()
+
+            if (this.database) this.database.conection.query(proc,by,(err,result) => {
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
+                    res({
+                        message: "Found info",
+                        result: result[0][0]
+                    })
+                },500)
             })
 
             // close conection 

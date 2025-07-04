@@ -15,8 +15,8 @@ import {
 
 // Imports 
 import EditarMascota from "./EditarMascota"
-import { PostData } from "../Varios/Requests"
-import { errorStatusHandler, formatDate, getAge } from "../Varios/Util"
+import { ModifyData, PostData } from "../Varios/Requests"
+import { errorStatusHandler, formatDate, getAge, uploadImg } from "../Varios/Util"
 import { AuthContext } from "../../Contexts/Contexts"
 
 // Import styles
@@ -28,10 +28,13 @@ const HistorialMascota = ({ mascota, onNavegar, URL = '', imgDefault = '', setNo
   // Dynamic vars 
   const [ mostrarEdicion, setMostrarEdicion ] = useState(false)
   const [ history, setHistory ] = useState(null)
+  const [ vaccines, setVaccines ] = useState(null)
 
   // Vars 
   const { user } = useContext(AuthContext)
+  const mainURL = `${URL}/pet`
 
+  // Functions 
   const descargarPDF = () => {
     // Simular descarga de PDF
     const link = document.createElement("a")
@@ -46,15 +49,15 @@ const HistorialMascota = ({ mascota, onNavegar, URL = '', imgDefault = '', setNo
   const obtenerIconoTipo = (tipo) => {
     switch (tipo.toLowerCase()) {
       case "consulta":
-        return <Stethoscope size={16} />
+        return <Stethoscope className="icon" />
       case "vacunación":
-        return <Syringe size={16} />
+        return <Syringe className="icon" />
       case "tratamiento":
-        return <Pill size={16} />
+        return <Pill className="icon" />
       case "cirugía":
-        return <Heart size={16} />
+        return <Heart className="icon" />
       default:
-        return <FileText size={16} />
+        return <FileText className="icon" />
     }
   }
 
@@ -73,42 +76,80 @@ const HistorialMascota = ({ mascota, onNavegar, URL = '', imgDefault = '', setNo
     }
   }
 
-  const abrirEdicion = () => {
-    setMostrarEdicion(true)
-  }
-
-  const cerrarEdicion = () => {
-    setMostrarEdicion(false)
-  }
-
-  const guardarCambios = (mascotaActualizada) => {
-    // Aquí se actualizaría la mascota en el estado global
-    console.log("Mascota actualizada:", mascotaActualizada)
-    setMostrarEdicion(false)
-    alert("Datos de la mascota actualizados correctamente")
+  // Request for Modify Data
+  const guardarCambios = async (pet = {}) => {
+    console.log("Mascota actualizada:", pet)
+    setNotify({
+      title: 'Validando...',
+      message: 'Verificando datos proporcionados',
+      load: 1
+    })
+    try {
+      const imgUrl = pet.fot_mas? pet.fot_mas === 'No-registrado'? null: await uploadImg(pet.fot_mas,'mascotas'): null
+      const modPet = {
+        nom_mas: pet.nom_mas,
+        esp_mas: pet.esp_mas,
+        col_mas: pet.col_mas,
+        raz_mas: pet.raz_mas,
+        ali_mas: pet.ali_mas,
+        fec_nac_mas: pet.fec_nac_mas,
+        pes_mas: pet.pes_mas,
+        doc_per: pet.doc_per,
+        gen_mas: pet.gen_mas,
+        est_rep_mas: pet.est_rep_mas,
+        img_mas: imgUrl
+      }
+      const mod = await ModifyData(`${mainURL}/modify`, modPet)
+      setNotify(null)
+      if (mod?.modify) {
+        setNotify({
+          title: 'Modificación exitosa',
+          message: 'Los datos de la mascota han sido modificados exitosamente',
+          close: setNotify
+        })
+        setMostrarEdicion(false)
+        setTimeout(() => window.location.reload(),2000)
+      }
+    } catch (err) {
+      setNotify(null)
+      const message = errorStatusHandler(err)
+      setNotify({
+        title: 'Error',
+        message: `${message}`,
+        close: setNotify
+      })
+    }
   }
 
   useEffect(() => {
+    const GetVaccines = async () => {
+      try {
+        const data = await PostData(`${URL}/appointment/pet/vaccine`, {
+          nom_mas: mascota.nom_mas,
+          doc_per: user.doc
+        })
+        if (data?.result) {
+          setVaccines(data.result)
+        }
+      } catch (err) {
+        const message = errorStatusHandler(err)
+      }
+    }
+
     const getHistory = async () => {
       try {
         const data = await PostData(`${URL}/pet/history`,{ firstData: mascota.nom_mas, secondData: user.doc})
-        console.log(data.result)
-        console.log(data.result?.citas)
         setNotify(null)
         if (data?.result) setHistory(data.result)
       } catch (err) {
         setNotify(null)
         const message = errorStatusHandler(err)
-        setNotify({
-          title: 'Error',
-          message: `${message}`,
-          close: setNotify
-        })
       }
     }
 
     if (mascota?.nom_mas) {
       getHistory()
+      GetVaccines()
     }
   },[mascota])
 
@@ -141,12 +182,12 @@ const HistorialMascota = ({ mascota, onNavegar, URL = '', imgDefault = '', setNo
         </div>
 
         <div className="acciones-header-historial">
-          <button className="boton-editar-mascota-historial" onClick={abrirEdicion}>
-            <Edit size={18} />
+          <button className="boton-editar-mascota-historial" onClick={() => setMostrarEdicion(true)}>
+            <Edit className="icon" />
             Editar Mascota
           </button>
           <button className="boton-descargar-historial" onClick={descargarPDF}>
-            <Download size={18} />
+            <Download className="icon" />
             Descargar PDF
           </button>
         </div>
@@ -161,8 +202,8 @@ const HistorialMascota = ({ mascota, onNavegar, URL = '', imgDefault = '', setNo
             imgDefault={imgDefault}
           />
           <div className="estado-perfil-historial">
-            <Activity size={16} />
-            <span>Activo</span>
+            <Activity className="icon" />
+            <span>{mascota.estado?'Activo':'Inactivo'}</span>
           </div>
         </div>
 
@@ -191,7 +232,7 @@ const HistorialMascota = ({ mascota, onNavegar, URL = '', imgDefault = '', setNo
             </div>
             <div className="detalle-perfil-historial">
               <span className="label-perfil-historial">Esterilizado</span>
-              <span className="valor-perfil-historial">{mascota.est_rep_mas ? "Sí" : "No"}</span>
+              <span className="valor-perfil-historial">{mascota.est_rep_mas?.toLowerCase() === 'estirilizado' ? "Sí" : "No"}</span>
             </div>
             <div className="detalle-perfil-historial">
               <span className="label-perfil-historial">Consultas</span>
@@ -207,7 +248,7 @@ const HistorialMascota = ({ mascota, onNavegar, URL = '', imgDefault = '', setNo
           </div>
           <div className="stat-perfil-historial">
             <div className="numero-stat-perfil-historial">
-              {history?.citas?.filter((h) => h.tipo === "Vacunación").length || 0}
+              {vaccines?.length || 0}
             </div>
             <div className="label-stat-perfil-historial">Vacunas</div>
           </div>
@@ -250,8 +291,8 @@ const HistorialMascota = ({ mascota, onNavegar, URL = '', imgDefault = '', setNo
                     </header>
 
                     <div className="veterinario-historial-detallada">
-                      <User size={16} />
-                      <span>{registro.nom_per_vet} {registro.ape_per_vet}</span>
+                      <User className="icon" />
+                      <span>{registro.nom_per} {registro.ape_per}</span>
                     </div>
 
                     <section className="contenido-historial-detallada">
@@ -308,7 +349,7 @@ const HistorialMascota = ({ mascota, onNavegar, URL = '', imgDefault = '', setNo
             <div className="lista-proximas-historial">
               <div className="item-proxima-historial">
                 <div className="fecha-proxima-historial">
-                  <Calendar size={16} />
+                  <Calendar className="icon" />
                   <div className="info-fecha-proxima">
                     <span className="dia-proxima-historial">15</span>
                     <span className="mes-proxima-historial">Ene</span>
@@ -327,7 +368,7 @@ const HistorialMascota = ({ mascota, onNavegar, URL = '', imgDefault = '', setNo
             <div className="lista-recordatorios-historial">
               <div className="item-recordatorio-historial">
                 <div className="icono-recordatorio-historial">
-                  <Syringe size={16} />
+                  <Syringe className="icon" />
                 </div>
                 <div className="contenido-recordatorio-historial">
                   <p className="titulo-recordatorio-historial">Vacuna Anual</p>
@@ -336,7 +377,7 @@ const HistorialMascota = ({ mascota, onNavegar, URL = '', imgDefault = '', setNo
               </div>
               <div className="item-recordatorio-historial">
                 <div className="icono-recordatorio-historial">
-                  <Pill size={16} />
+                  <Pill className="icon" />
                 </div>
                 <div className="contenido-recordatorio-historial">
                   <p className="titulo-recordatorio-historial">Desparasitación</p>
@@ -350,11 +391,11 @@ const HistorialMascota = ({ mascota, onNavegar, URL = '', imgDefault = '', setNo
             <h4 className="titulo-sidebar-historial">Acciones Rápidas</h4>
             <div className="botones-rapidos-historial">
               <button className="boton-rapido-historial" onClick={() => onNavegar("agendar")}>
-                <Calendar size={16} />
+                <Calendar className="icon" />
                 Agendar Cita
               </button>
               <button className="boton-rapido-historial" onClick={descargarPDF}>
-                <Download size={16} />
+                <Download className="icon" />
                 Descargar PDF
               </button>
             </div>
@@ -362,7 +403,7 @@ const HistorialMascota = ({ mascota, onNavegar, URL = '', imgDefault = '', setNo
         </div>
       </div>
 
-      {mostrarEdicion && <EditarMascota mascota={mascota} onGuardar={guardarCambios} onCerrar={cerrarEdicion} />}
+      {mostrarEdicion && <EditarMascota mascota={mascota} imgDefault={imgDefault} onGuardar={guardarCambios} onCerrar={() => setMostrarEdicion(null)} />}
     </div>
   )
 }

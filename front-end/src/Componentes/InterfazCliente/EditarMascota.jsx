@@ -2,18 +2,20 @@ import React from "react"
 import { useState } from "react"
 import { X, Save, Upload, User, Calendar, Heart } from "lucide-react"
 import "../../styles/InterfazCliente/EditarMascota.css"
+import { CheckImage } from "../../Utils/Utils"
+import { formatDate } from "../Varios/Util"
 
-const EditarMascota = ({ mascota, onGuardar, onCerrar }) => {
+const EditarMascota = ({ mascota, onGuardar, onCerrar, imgDefault = '' }) => {
   const [formData, setFormData] = useState({
-    nombre: mascota.nombre,
-    especie: mascota.especie,
-    raza: mascota.raza,
-    edad: mascota.edad,
-    peso: mascota.peso,
-    color: mascota.color,
-    genero: mascota.genero,
-    esterilizado: mascota.esterilizado,
-    foto: mascota.foto,
+    nom_mas: mascota.nom_mas,
+    esp_mas: mascota.esp_mas,
+    raz_mas: mascota.raz_mas,
+    fec_nac_mas: formatDate(mascota.fec_nac_mas) || '0000-00-00',
+    pes_mas: mascota.pes_mas,
+    col_mas: mascota.col_mas,
+    gen_mas: mascota.gen_mas,
+    est_rep_mas: mascota.est_rep_mas,
+    fot_mas: mascota.fot_mas,
   })
 
   const [fotoPreview, setFotoPreview] = useState(mascota.foto)
@@ -52,26 +54,27 @@ const EditarMascota = ({ mascota, onGuardar, onCerrar }) => {
             <h3 className="titulo-editar-mascota">Editar Mascota</h3>
           </div>
           <button className="boton-cerrar-editar-mascota" onClick={onCerrar}>
-            <X size={20} />
+            <X className="icon" />
           </button>
         </div>
 
         <form className="formulario-editar-mascota" onSubmit={manejarGuardar}>
           <div className="seccion-foto-mascota">
             <div className="header-seccion-mascota">
-              <Upload size={20} color="#00BCD4" />
+              <Upload className="icon" color="#00BCD4" />
               <h4 className="titulo-seccion-mascota">Foto de la Mascota</h4>
             </div>
 
             <div className="contenedor-foto-mascota">
               <div className="foto-actual-mascota">
-                <img
-                  src={fotoPreview || "/placeholder.svg?height=120&width=120"}
-                  alt={formData.nombre}
+                <CheckImage
+                  src={fotoPreview}
+                  alt={formData.nom_mas}
                   className="imagen-editar-mascota"
+                  imgDefault={imgDefault}
                 />
                 <label className="boton-cambiar-foto" htmlFor="foto-input">
-                  <Upload size={16} />
+                  <Upload className="icon" />
                   Cambiar Foto
                 </label>
                 <input
@@ -88,7 +91,7 @@ const EditarMascota = ({ mascota, onGuardar, onCerrar }) => {
           <div className="seccion-informacion-mascota">
             <div className="columna-izquierda-mascota">
               <div className="header-seccion-mascota">
-                <User size={20} color="#00BCD4" />
+                <User className="icon" color="#00BCD4" />
                 <h4 className="titulo-seccion-mascota">Información Básica</h4>
               </div>
 
@@ -97,8 +100,8 @@ const EditarMascota = ({ mascota, onGuardar, onCerrar }) => {
                 <input
                   type="text"
                   className="input-mascota"
-                  value={formData.nombre}
-                  onChange={(e) => manejarCambio("nombre", e.target.value)}
+                  value={formData.nom_mas}
+                  onChange={(e) => manejarCambio("nom_mas", e.target.value)}
                   placeholder="Nombre de la mascota"
                   required
                 />
@@ -108,8 +111,8 @@ const EditarMascota = ({ mascota, onGuardar, onCerrar }) => {
                 <label className="label-mascota">Especie:</label>
                 <select
                   className="select-mascota"
-                  value={formData.especie}
-                  onChange={(e) => manejarCambio("especie", e.target.value)}
+                  value={formData.esp_mas}
+                  onChange={(e) => manejarCambio("esp_mas", e.target.value)}
                   required
                 >
                   <option value="">Seleccionar especie</option>
@@ -126,8 +129,8 @@ const EditarMascota = ({ mascota, onGuardar, onCerrar }) => {
                 <input
                   type="text"
                   className="input-mascota"
-                  value={formData.raza}
-                  onChange={(e) => manejarCambio("raza", e.target.value)}
+                  value={formData.raz_mas}
+                  onChange={(e) => manejarCambio("raz_mas", e.target.value)}
                   placeholder="Raza de la mascota"
                   required
                 />
@@ -137,8 +140,8 @@ const EditarMascota = ({ mascota, onGuardar, onCerrar }) => {
                 <label className="label-mascota">Género:</label>
                 <select
                   className="select-mascota"
-                  value={formData.genero}
-                  onChange={(e) => manejarCambio("genero", e.target.value)}
+                  value={formData.gen_mas}
+                  onChange={(e) => manejarCambio("gen_mas", e.target.value)}
                   required
                 >
                   <option value="">Seleccionar género</option>
@@ -153,20 +156,19 @@ const EditarMascota = ({ mascota, onGuardar, onCerrar }) => {
 
             <div className="columna-derecha-mascota">
               <div className="header-seccion-mascota">
-                <Calendar size={20} color="#00BCD4" />
+                <Calendar className="icon" color="#00BCD4" />
                 <h4 className="titulo-seccion-mascota">Características Físicas</h4>
               </div>
 
               <div className="campo-mascota">
-                <label className="label-mascota">Edad (años):</label>
+                <label className="label-mascota">Fecha de Nacimiento:</label>
                 <input
-                  type="number"
+                  type="date"
                   className="input-mascota"
-                  value={formData.edad}
-                  onChange={(e) => manejarCambio("edad", Number.parseInt(e.target.value))}
-                  min="0"
-                  max="30"
-                  placeholder="Edad en años"
+                  value={formData.fec_nac_mas}
+                  onChange={(e) => manejarCambio("fec_nac_mas", Number.parseInt(e.target.value))}
+                  max={formatDate(new Date())}
+                  placeholder="Fecha de nacimiento"
                   required
                 />
               </div>
@@ -177,8 +179,8 @@ const EditarMascota = ({ mascota, onGuardar, onCerrar }) => {
                   type="number"
                   step="0.1"
                   className="input-mascota"
-                  value={formData.peso}
-                  onChange={(e) => manejarCambio("peso", Number.parseFloat(e.target.value))}
+                  value={formData.pes_mas}
+                  onChange={(e) => manejarCambio("pes_mas", Number.parseFloat(e.target.value))}
                   min="0"
                   placeholder="Peso en kilogramos"
                   required
@@ -190,34 +192,36 @@ const EditarMascota = ({ mascota, onGuardar, onCerrar }) => {
                 <input
                   type="text"
                   className="input-mascota"
-                  value={formData.color}
-                  onChange={(e) => manejarCambio("color", e.target.value)}
+                  value={formData.col_mas}
+                  onChange={(e) => manejarCambio("col_mas", e.target.value)}
                   placeholder="Color de la mascota"
                   required
-                />
+                  />
               </div>
 
-              <div className="campo-checkbox-mascota">
-                <label className="checkbox-editar-mascota">
-                  <input
-                    type="checkbox"
-                    checked={formData.esterilizado}
-                    onChange={(e) => manejarCambio("esterilizado", e.target.checked)}
-                  />
-                  <span className="checkmark-editar-mascota"></span>
-                  Esterilizado/a
-                </label>
+              <div className="campo-mascota">
+                <label className="label-mascota">Esterilizado/a:</label>
+                <select
+                  className="select-mascota"
+                  value={formData.est_rep_mas}
+                  onChange={(e) => manejarCambio("est_rep_mas", e.target.value)}
+                  required
+                >
+                  <option value="">Seleccionar estado reproductivo</option>
+                  <option value="No esterilizado">No esterilizado/a</option>
+                  <option value="Esterilizado">Esterilizado/a</option>
+                </select>
               </div>
             </div>
           </div>
 
           <div className="botones-editar-mascota">
             <button type="button" className="boton-cancelar-editar-mascota" onClick={onCerrar}>
-              <X size={16} />
+              <X className="icon" />
               Cancelar
             </button>
             <button type="submit" className="boton-guardar-editar-mascota">
-              <Save size={16} />
+              <Save className="icon" />
               Guardar Cambios
             </button>
           </div>

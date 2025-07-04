@@ -57,6 +57,8 @@ CREATE PROCEDURE pets_heaven.ModifyPets(
     IN p_fot_mas TEXT
 )
 BEGIN
+    DECLARE p_id_pro_mas INT;
+    DECLARE p_img_mas TEXT;
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
@@ -67,16 +69,24 @@ BEGIN
 
     START TRANSACTION;
 
-    IF (SELECT id_per FROM personas WHERE doc_per = p_persona) IS NULL THEN 
+    SET p_img_mas = p_fot_mas;
+
+    SELECT id_per INTO p_id_pro_mas FROM personas WHERE doc_per = p_persona;
+
+    IF (p_id_pro_mas) IS NULL THEN 
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta persona no esta registrada en el sistema';
     END IF;
 
-    IF (SELECT id_mas FROM mascotas WHERE nom_mas = p_nom_mas) IS NULL THEN 
+    IF NOT EXISTS (SELECT id_mas FROM mascotas WHERE nom_mas = p_nom_mas) THEN 
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta mascota no esta registrada en el sistema';
     END IF;
 
+    IF (p_img_mas) IS NULL THEN 
+        SET p_img_mas = 'No-registrado';
+    END IF;
+
     UPDATE
-        mascotas m, personas p
+        mascotas m
     SET 
         m.esp_mas = p_esp_mas,
         m.col_mas = p_col_mas,
@@ -86,14 +96,11 @@ BEGIN
         m.pes_mas = p_pes_mas,
         m.gen_mas = p_gen_mas,
         m.est_rep_mas = p_est_rep_mas,
-        m.fot_mas = p_fot_mas
+        m.fot_mas = p_img_mas
     WHERE
         m.estado = 1
-        AND (
-            p.doc_per = p_persona 
-            OR p.email_per = p_persona
-        ) AND m.nom_mas = p_nom_mas
-        AND m.id_pro_mas = p.id_per;
+        AND m.nom_mas = p_nom_mas
+        AND m.id_pro_mas = p_id_pro_mas;
 
     COMMIT;
     SET autocommit = 1;
@@ -292,100 +299,11 @@ BEGIN
     SET autocommit = 1;
 END //
 
-/* Historys */
-CREATE PROCEDURE pets_heaven.SearchHistoryBy(
-    IN p_by VARCHAR(100),
-    IN p_by_two VARCHAR(100)
-)
-BEGIN
-    SELECT
-        m.nom_mas,
-        m.esp_mas,
-        m.col_mas,
-        m.raz_mas,
-        m.ali_mas,
-        m.fec_nac_mas,
-        m.pes_mas,
-        m.gen_mas,
-        m.est_rep_mas,
-        m.fot_mas,
-        m.fec_cre_mas,
-        p.nom_per,
-        p.ape_per,
-        p.doc_per,
-        p.cel_per,
-        p.email_per,
-        p.gen_per,
-        p.estado,
-        (
-            SELECT GROUP_CONCAT(
-                CONCAT_WS('---',
-                    ct.id_cit,
-                    ct.fec_reg_cit,
-                    ct.fec_cit,
-                    ct.hor_ini_cit,
-                    ct.hor_fin_cit,
-                    ct.mot_cit,
-                    ct.est_cit,
-                    ct.fec_cre_cit,
-                    ct.fec_act_cit,
-                    s.nom_ser,
-                    s.pre_ser,
-                    s.des_ser,
-                    ts.nom_tip_ser,
-                    cs.nom_cat,
-                    cs.img_cat,
-                    p_vet.nom_per AS nom_per_vet,
-                    p_vet.ape_per AS ape_per_vet,
-                    v.especialidad,
-                    cv.nom_cat,
-                    p_vet.fot_per AS fot_per_vet
-                ) 
-                SEPARATOR ';'
-            ) 
-            FROM 
-                citas ct
-            JOIN 
-                servicios s ON s.id_ser = ct.ser_cit
-            JOIN
-                tipos_servicios ts ON ts.id_tip_ser = s.tip_ser
-            JOIN
-                categorias_servicios cs ON cs.id_cat = ts.cat_tip_ser
-            JOIN
-                personas p_vet ON p_vet.id_per = ct.vet_cit
-            JOIN
-                veterinarios v ON v.id_vet = ct.vet_cit
-            LEFT JOIN
-                otorgar_categoria_vet otv ON otv.id_vet = ct.vet_cit
-            LEFT JOIN
-                categorias_veterinario cv ON otv.id_cat = cv.id_cat
-            WHERE 
-                ct.mas_cit = m.id_mas
-                AND (
-                    ct.est_cit = 'COMPLETADA'
-                    OR ct.est_cit = 'CONFIRMADA'
-                )
-        ) AS citas 
-    FROM 
-        mascotas m
-    JOIN personas p 
-        ON p.id_per = m.id_pro_mas
-        AND p.estado = 1
-        AND (
-            p.email_per LIKE p_by_two
-            OR p.doc_per LIKE p_by_two
-        )
-    WHERE 
-        m.estado = 1
-        AND m.nom_mas LIKE p_by
-    ORDER BY m.nom_mas
-    LIMIT 1000;
-END //
-
 /* DROP PROCEDURE pets_heaven.SearchPets; */
 /* DROP PROCEDURE pets_heaven.SearchPetsBy; */
 /* DROP PROCEDURE pets_heaven.SearchPetBy; */
 /* DROP PROCEDURE pets_heaven.SearchHistoryBy; */
 /* DROP PROCEDURE pets_heaven.`DeletePetBy`; */
+/* DROP PROCEDURE pets_heaven.`ModifyPets`; */
 
 /* CALL pets_heaven.SearchHistoryBy('luna','87654321'); */

@@ -1,9 +1,18 @@
-import React from "react"
+// Librarys 
+import React, { useContext } from "react"
 import { Home, PawPrint, Calendar, Clock, Stethoscope } from "lucide-react"
-import "../../../styles/InterfazCliente/NavBar/NavbarVertical.css"
 import { useNavigate } from "react-router"
 
+// Imports 
+import { AuthContext } from "../../../Contexts/Contexts"
+
+// Import styles
+import "../../../styles/InterfazCliente/NavBar/NavbarVertical.css"
+
+// Component 
 export const NavbarVertical = ({ vistaActual, onNavegar }) => {
+  // Vars 
+  const { admin } = useContext(AuthContext)
   const navigate = useNavigate()
   const menuItems = [
     {
@@ -45,7 +54,7 @@ export const NavbarVertical = ({ vistaActual, onNavegar }) => {
       </div>
 
       <div className="menu-vertical">
-        {menuItems.map((item) => (
+        {menuItems?.map((item) => (
           <button
             key={item.id}
             className={`item-menu-vertical ${vistaActual === item.id ? "activo-vertical" : ""}`}
@@ -58,16 +67,18 @@ export const NavbarVertical = ({ vistaActual, onNavegar }) => {
             </div>
           </button>
         ))}
-        <button
-          className={'item-menu-vertical'}
-          onClick={() => navigate(-1)}
-        >
-          <div className="icono-menu-vertical"><Home className="icon" /></div>
-          <div className="texto-menu-vertical">
-            <span className="titulo-menu-vertical">Volver</span>
-            <span className="descripcion-menu-vertical">Regresar al panel anterior</span>
-          </div>
-        </button>
+        {admin && (
+          <button
+            className={'item-menu-vertical'}
+            onClick={() => navigate(-1)}
+          >
+            <div className="icono-menu-vertical"><Home className="icon" /></div>
+            <div className="texto-menu-vertical">
+              <span className="titulo-menu-vertical">Volver</span>
+              <span className="descripcion-menu-vertical">Regresar al panel anterior</span>
+            </div>
+          </button>
+        )}
       </div>
 
       <div className="footer-vertical">
@@ -80,5 +91,3 @@ export const NavbarVertical = ({ vistaActual, onNavegar }) => {
     </nav>
   )
 }
-
-

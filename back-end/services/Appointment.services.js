@@ -19,17 +19,19 @@ class Appointment {
             this.database.conect()
         
             if (this.database) this.database.conection.query(procedure, (err,result) =>{
-                if(err) rej({ message: err})
-                if(!result || !result[0][0]) rej({    
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() =>{
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
                         message: "Appointments found",
                         result: result[0]
                     })
-                }, 1000)
+                }, 500)
             })
             this.database.conection.end()
         }) 
@@ -46,18 +48,19 @@ class Appointment {
             this.database.conect()
         
             if (this.database) this.database.conection.query(procedure, by, (err,result) =>{
-                if(err) rej({ message: err})
-                // console.log(result['0'])
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() =>{
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
                         message: "Appointments found",
                         result: result[0]
                     })
-                }, 1000)
+                }, 500)
             })
             this.database.conection.end()
         }) 
@@ -77,18 +80,19 @@ class Appointment {
             this.database.conect()
         
             if (this.database) this.database.conection.query(procedure, info, (err,result) =>{
-                if(err) rej({ message: err})
-                // console.log(result['0'])
-                if(!result || !result[0][0]) rej({
-                    message: "No se encontraron citas para la mascota",
-                    status: 404
-                })
-                setTimeout(() =>{
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
                         message: "Appointments found",
                         result: result[0]
                     })
-                }, 1000)
+                }, 500)
             })
             this.database.conection.end()
         }) 
@@ -108,18 +112,19 @@ class Appointment {
             this.database.conect()
         
             if (this.database) this.database.conection.query(procedure, info, (err,result) =>{
-                if(err) rej({ message: err})
-                // console.log(result['0'])
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() =>{
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
                         message: "Appointments found",
                         result: result[0]
                     })
-                }, 1000)
+                }, 500)
             })
             this.database.conection.end()
         }) 
@@ -138,18 +143,19 @@ class Appointment {
             this.database.conect()
         
             if (this.database) this.database.conection.query(procedure, info, (err,result) =>{
-                if(err) rej({ message: err})
-                // console.log(result['0'])
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() =>{
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
                         message: "Appointments found",
                         result: result[0]
                     })
-                }, 1000)
+                }, 500)
             })
             this.database.conection.end()
         }) 
@@ -168,18 +174,19 @@ class Appointment {
             this.database.conect()
         
             if (this.database) this.database.conection.query(procedure, info, (err,result) =>{
-                if(err) rej({ message: err})
-                // console.log(result['0'])
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() =>{
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
                         message: "Appointments found",
                         result: result[0]
                     })
-                }, 1000)
+                }, 500)
             })
             this.database.conection.end()
         }) 
@@ -195,17 +202,19 @@ class Appointment {
             this.database.conect()
         
             if (this.database) this.database.conection.query(procedure, (err,result) =>{
-                if(err) rej({ message: err})
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() =>{
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
-                        message: "Consulting rooms founds",
+                        message: "Appointments found",
                         result: result[0]
                     })
-                }, 1000)
+                }, 500)
             })
             this.database.conection.end()
         }) 

@@ -3,15 +3,13 @@ import { useState } from "react"
 import { Bell,LogOut, User } from "lucide-react"
 import { AuthContext } from "../../../Contexts/Contexts"
 import { CheckImage } from "../../../Utils/Utils"
-import { errorStatusHandler } from "../../Varios/Util"
-import { PostData } from "../../Varios/Requests"
 
 // Import styles
 import "../../../styles/InterfazCliente/NavBar/NavbarHorizontal.css"
 
-const NavbarHorizontal = ({ usuario, onMostrarPerfil, imgDefault }) => {
-  const [mostrarPerfil, setMostrarPerfil] = useState(false)
-  const [mostrarNotificaciones, setMostrarNotificaciones] = useState(false)
+const NavbarHorizontal = ({ onMostrarPerfil, imgDefault = '' }) => {
+  const [ mostrarPerfil, setMostrarPerfil ] = useState(false)
+  const [ mostrarNotificaciones, setMostrarNotificaciones ] = useState(false)
   const { logout, user } = useContext(AuthContext)
 
   const notificaciones = [
@@ -92,7 +90,7 @@ const NavbarHorizontal = ({ usuario, onMostrarPerfil, imgDefault }) => {
             <button className="boton-perfil-horizontal" onClick={() => setMostrarPerfil(!mostrarPerfil)}>
               <CheckImage 
                 src={user.img}
-                imgDefault={''}
+                imgDefault={imgDefault}
                 className="avatar-horizontal"
                 alt=""
               />
@@ -104,7 +102,7 @@ const NavbarHorizontal = ({ usuario, onMostrarPerfil, imgDefault }) => {
                 <div className="info-usuario-horizontal">
                   <CheckImage 
                     src={user.img}
-                    imgDefault={''}
+                    imgDefault={imgDefault}
                     className="avatar-grande-horizontal"
                     alt={user.names}
                   />

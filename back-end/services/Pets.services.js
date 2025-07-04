@@ -56,17 +56,19 @@ class Pet {
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) rej({ message: err })
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() => {
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
                         message: "Pets found",
                         result: result[0]
                     })
-                },1000)
+                }, 500)
             })
 
             // close conection 
@@ -87,17 +89,19 @@ class Pet {
             this.database.conect()
             
             if (this.database) this.database.conection.query(proc,[by,secondBy],(err,result) => {
-                if(err) rej({ message: err })
-                // if(!result || !result[0][0]) rej({
-                //     message: "Not found",
-                //     status: 404
-                // })
-                setTimeout(() => {
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
                         message: "Pets found",
                         result: result[0]
                     })
-                },1000)
+                }, 500)
             })
 
             // close conection 
@@ -116,17 +120,19 @@ class Pet {
             this.database.conect()
             
             if (this.database) this.database.conection.query(proc,by,(err,result) => {
-                if(err) rej({ message: err })
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() => {
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
                         message: "Pets found",
                         result: result[0]
                     })
-                },1000)
+                }, 500)
             })
 
             // close conection 
@@ -150,7 +156,7 @@ class Pet {
                 data.doc_per,
                 data.gen_mas,
                 data.est_rep_mas,
-                data.img_mas
+                data.img_mas || 'No-registrado'
             ]
 
             // conect to database
@@ -246,12 +252,14 @@ class Pet {
             this.database.conect()
             
             if (this.database) this.database.conection.query(proc,[by,byTwo],(err,result) => {
-                if(err) rej({ message: err })
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                if(result) setTimeout(() => {
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
                         message: "History found",
                         result: format(result[0])[0],

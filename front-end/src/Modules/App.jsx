@@ -31,11 +31,12 @@ import { CookiePolicy } from '../Componentes/Global/CookiesPolicy'
 import { Notification } from '../Componentes/Global/Notifys'
 import { PanelVeterinario } from '../Componentes/InterfazVeterinario/HomeVeterinario'
 import {ExamenesLaboratorio} from '../Componentes/InterfazAdmin/Servicios/Laboratorio'
+import PerfilCliente from '../Componentes/InterfazCliente/PerfilCliente'
+import Principal from '../Componentes/InterfazCliente/Principal'
+import { HeaderAdmin } from '../Componentes/BarrasNavegacion/HeaderAdmin'
+import { NavBarAdmin } from '../Componentes/BarrasNavegacion/NavBarAdmi'
 // import { PetMedicalHistory } from '../Componentes/InterfazAdmin/HistorialMedico/HistorialMedico'
 // import { SiteTraffic } from '../Componentes/Global/Visits'
-
-import Principal from '../Componentes/InterfazCliente/Principal'
-
 
 // Import contexts
 import { AuthProvider } from '../Contexts/Auth.context'
@@ -130,6 +131,22 @@ export default function App () {
               URL={URL}
             />}/>}>
           </Route>
+          <Route path='/perfil' element={
+            <PrivateRoute children={
+              <main className='contenedoradminhome'>
+                <NavBarAdmin />
+                <section className='principaladminhome'>
+                  <HeaderAdmin URL={URL} />
+                  <section className="vista-principal">
+                    <PerfilCliente
+                      imgPetDefault={imgUserDefault}
+                      URL={URL}
+                    />
+                  </section>
+                </section>
+              </main>
+            }/>
+          }/>
           
           <Route path='notificaciones' element={
             <PrivateRoute children={<TodasLasNotificaciones URL={URL} />}/>}>

@@ -20,7 +20,7 @@ import { PostData } from "../Varios/Requests"
 import { Notification } from "../Global/Notifys"
 
 // Component 
-function Principal({ URL = '', imgPetDefault = '' }) {
+function Principal({ URL = '', imgPetDefault = '', imgUserDefault }) {
   // Dynamic vars 
   const [ vistaActual, setVistaActual ] = useState("inicio")
   const [ mascotaSeleccionada, setMascotaSeleccionada ] = useState(null)
@@ -32,38 +32,6 @@ function Principal({ URL = '', imgPetDefault = '' }) {
   // Vars 
   const mainUrl = `${URL}/appointment/by`
   const { logout, user } = useContext(AuthContext)
-
-  const [usuario, setUsuario] = useState({
-    id: 1,
-    nombre: "María González",
-    email: "maria.gonzalez@email.com",
-    telefono: "+34 612 345 678",
-    direccion: "Calle Principal 123, Madrid",
-    fechaRegistro: "2023-01-15",
-    avatar: "/placeholder.svg?height=100&width=100",
-  })
-
-  const [mascotas] = useState([
-    {
-      id: 1,
-      nombre: "Max",
-      especie: "Perro",
-      raza: "Golden Retriever",
-      edad: 3,
-      peso: 28.5,
-      color: "Dorado",
-      genero: "Macho",
-      esterilizado: true,
-      foto: "/placeholder.svg?height=200&width=200",
-      historial: [
-        { fecha: "2024-01-15", tipo: "Consulta", descripcion: "Revisión general", veterinario: "Dr. Pérez" },
-        { fecha: "2024-02-20", tipo: "Vacunación", descripcion: "Vacuna antirrábica", veterinario: "Dra. López" },
-        { fecha: "2024-03-10", tipo: "Tratamiento", descripcion: "Desparasitación", veterinario: "Dr. Pérez" },
-        { fecha: "2024-04-05", tipo: "Consulta", descripcion: "Control de peso", veterinario: "Dr. Martín" },
-        { fecha: "2024-05-12", tipo: "Vacunación", descripcion: "Refuerzo anual", veterinario: "Dra. López" },
-      ],
-    }
-  ])
 
   const navegarA = (vista, mascota = null) => {
     setVistaActual(vista)
@@ -93,7 +61,7 @@ function Principal({ URL = '', imgPetDefault = '' }) {
 
   const renderizarVista = () => {
     if (mostrarPerfil) {
-      return <PerfilCliente usuario={user} setUsuario={setUsuario} />
+      return <PerfilCliente URL={URL} imgDefault={imgUserDefault} />
     }
 
     switch (vistaActual) {
@@ -120,11 +88,6 @@ function Principal({ URL = '', imgPetDefault = '' }) {
     } catch (err) {
       setNotify(null)
       const message = errorStatusHandler(err)
-      setNotify({
-        title: 'Error',
-        message: `${message}`,
-        close: setNotify
-      })
     }
   }
 
@@ -136,11 +99,6 @@ function Principal({ URL = '', imgPetDefault = '' }) {
     } catch (err) {
       setNotify(null)
       const message = errorStatusHandler(err)
-      setNotify({
-        title: 'Error',
-        message: `${message}`,
-        close: setNotify
-      })
     }
   }
 

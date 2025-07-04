@@ -1,6 +1,5 @@
 // Librarys 
-import React, { useContext, useEffect } from "react"
-import { useState } from "react"
+import React, { useContext, useState } from "react"
 import { Calendar, PawPrint, TrendingUp } from "lucide-react"
 
 // Imports 
@@ -8,8 +7,6 @@ import { AuthContext } from "../../Contexts/Contexts"
 
 // Import styles
 import "../../styles/InterfazCliente/InicioCliente.css"
-import { PostData } from "../Varios/Requests"
-import { errorStatusHandler } from "../Varios/Util"
 
 // Component 
 const InicioCliente = ({ onNavegar, appointments, pets, URL = '' }) => {

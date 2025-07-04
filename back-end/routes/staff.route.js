@@ -13,10 +13,9 @@ const Route = Router()
 // Middlewares
 Route.use(authenticateJWT)
 Route.use(authJWTGlobal)
-Route.use(ValidatorRol("veterinario"))
 
 // Routes
-Route.get('/all', async (req,res) => {
+Route.get('/all', ValidatorRol("veterinario"), async (req,res) => {
     try {
         // Verifiy if exists
         const search = await staff.findAll()
@@ -32,7 +31,7 @@ Route.get('/all', async (req,res) => {
     }
 })
 
-Route.get('/all/vet', async (req,res) => {
+Route.get('/all/vet', ValidatorRol("usuario"), async (req,res) => {
     try {
         // Verifiy if exists
         const search = await staff.findAllVet()
@@ -50,7 +49,7 @@ Route.get('/all/vet', async (req,res) => {
 })
 
 
-Route.get('/all:by', async (req,res) => {
+Route.get('/all:by', ValidatorRol("veterinario"), async (req,res) => {
     // Vars 
     const by = req.params.by
     
@@ -69,7 +68,7 @@ Route.get('/all:by', async (req,res) => {
     }
 })
 
-Route.get('/by:by', async (req,res) => {
+Route.get('/by:by', ValidatorRol("veterinario"), async (req,res) => {
     // Vars 
     const by = req.params.by
     

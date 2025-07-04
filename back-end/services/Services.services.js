@@ -227,17 +227,19 @@ class Services {
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) rej({ message: err })
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() => {
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
                         message: "Services found",
                         result: result
                     })
-                },200)
+                }, 500)
             })
 
             // close conection 
@@ -255,17 +257,19 @@ class Services {
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,[data],(err,result) => {
-                if(err) rej({ message: err })
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() => {
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
                         message: "Services found",
                         result: result
                     })
-                },200)
+                }, 500)
             })
 
             // close conection 
@@ -283,17 +287,19 @@ class Services {
             this.database.conect()
             
             if (this.database) this.database.conection.query(proc,[data],(err,result) => {
-                if(err) rej({ message: err })
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() => {
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
-                        message: "Pets found",
+                        message: "Services found",
                         result: result
                     })
-                },200)
+                }, 500)
             })
 
             // close conection 
@@ -312,17 +318,19 @@ class Services {
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) rej({ message: err })
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() => {
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
                         message: "Services found",
                         result: result[0]
                     })
-                },200)
+                }, 500)
             })
 
             // close conection 
@@ -341,17 +349,19 @@ class Services {
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) rej({ message: err })
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() => {
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
                         message: "Services found",
                         result: result[0]
                     })
-                },200)
+                }, 500)
             })
 
             // close conection 
@@ -370,17 +380,19 @@ class Services {
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) rej({ message: err })
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() => {
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
-                        message: "Procedures found",
+                        message: "Services found",
                         result: result[0]
                     })
-                },200)
+                }, 500)
             })
 
             // close conection 
@@ -399,17 +411,19 @@ class Services {
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) rej({ message: err })
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() => {
-                    res({
-                        message: "Tests types found",
-                        result: result[0]
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
                     })
-                },200)
+                } else setTimeout(() => {
+                    res({
+                        message: "Services found",
+                        result: result
+                    })
+                }, 500)
             })
 
             // close conection 
@@ -427,22 +441,26 @@ class Services {
             this.database.conect()
             
             if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) rej({ message: err })
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                const resOne = this.global.format(
-                    result[0],
-                    'proc_ser',
-                    ['nom_pro','des_pro','cat_pro','niv_rie_pro','dur_min_pro','pro_pro','con_esp_pro']
-                )
-                setTimeout(() => {
-                    res({
-                        message: "Cirugies found",
-                        result: resOne
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
                     })
-                },200)
+                } else {
+                    const resOne = this.global.format(
+                        result[0],
+                        'proc_ser',
+                        ['nom_pro','des_pro','cat_pro','niv_rie_pro','dur_min_pro','pro_pro','con_esp_pro']
+                    )
+                    setTimeout(() => {
+                        res({
+                            message: "Cirugies found",
+                            result: resOne
+                        })
+                    },500)
+                }
             })
 
             // close conection 
@@ -460,22 +478,26 @@ class Services {
             this.database.conect()
             
             if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) rej({ message: err })
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                const resOne = this.global.format(
-                    result[0],
-                    'proc_ser',
-                    ['nom_pro','des_pro','cat_pro','niv_rie_pro','dur_min_pro','pro_pro','con_esp_pro']
-                )
-                setTimeout(() => {
-                    res({
-                        message: "Cirugies found",
-                        result: resOne
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
                     })
-                },200)
+                } else {
+                    const resOne = this.global.format(
+                        result[0],
+                        'proc_ser',
+                        ['nom_pro','des_pro','cat_pro','niv_rie_pro','dur_min_pro','pro_pro','con_esp_pro']
+                    )
+                    setTimeout(() => {
+                        res({
+                            message: "Cirugies found",
+                            result: resOne
+                        })
+                    },500)
+                }
             })
 
             // close conection 
@@ -494,22 +516,26 @@ class Services {
             this.database.conect()
             
             if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) rej({ message: err })
-                if(!result || !result[0][0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                const resOne = this.global.format(
-                    result[0],
-                    'proc_ser',
-                    ['nom_pro','des_pro','cat_pro','niv_rie_pro','dur_min_pro','pro_pro','con_esp_pro']
-                )
-                setTimeout(() => {
-                    res({
-                        message: "Cirugies found",
-                        result: resOne
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
                     })
-                },200)
+                } else {
+                    const resOne = this.global.format(
+                        result[0],
+                        'proc_ser',
+                        ['nom_pro','des_pro','cat_pro','niv_rie_pro','dur_min_pro','pro_pro','con_esp_pro']
+                    )
+                    setTimeout(() => {
+                        res({
+                            message: "Cirugies found",
+                            result: resOne
+                        })
+                    },500)
+                }
             })
 
             // close conection 
@@ -527,17 +553,19 @@ class Services {
             this.database.conect()
 
             if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) rej({ message: err })
-                if(!result || !result[0]) rej({
-                    message: "Not found",
-                    status: 404
-                })
-                setTimeout(() => {
+                if(err) {
+                    rej({ message: err})
+                } else if(!result || !result[0][0]) {
+                    rej({
+                        message: "Not found",
+                        status: 404
+                    })
+                } else setTimeout(() => {
                     res({
                         message: "Vacunas found",
                         result: result
                     })
-                },200)
+                },500)
             })
 
             // close conection 

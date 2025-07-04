@@ -162,11 +162,11 @@ CREATE PROCEDURE pets_heaven.ModifyPeople(
     IN p_cel_per VARCHAR(20),
     IN p_cel2_per VARCHAR(20),
     IN p_email_per VARCHAR(100),
-    IN p_cont_per VARCHAR(255),
     IN p_gen_per VARCHAR(20),
-    IN p_img_per VARCHAR(255)
+    IN p_img_per TEXT
 )
 BEGIN
+    DECLARE img_per TEXT;
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
@@ -176,6 +176,12 @@ BEGIN
     SET autocommit = 0;
 
     START TRANSACTION;
+
+    IF p_img_per is NULL THEN
+        SET img_per = 'No-registrado';
+    ELSE
+        SET img_per = p_img_per;
+    END IF;
 
     IF (SELECT id_per FROM personas WHERE doc_per = p_doc_per) IS NULL THEN 
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta persona no esta registrada en el sistema';
@@ -191,9 +197,8 @@ BEGIN
         p.cel_per = p_cel_per,
         p.cel2_per = p_cel2_per,
         p.email_per = p_email_per,
-        p.cont_per = p_cont_per,
         p.gen_per = p_gen_per,
-        p.fot_per = p_img_per
+        p.fot_per = img_per
     WHERE
         p.doc_per = p_doc_per;
 
