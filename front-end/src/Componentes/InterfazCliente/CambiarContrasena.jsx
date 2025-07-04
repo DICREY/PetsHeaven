@@ -3,7 +3,7 @@ import { useState } from "react"
 import { X, Save, Lock, Eye, EyeOff } from "lucide-react"
 import "../../styles/InterfazCliente/CambiarContrasena.css"
 
-const CambiarContrasena = ({ onGuardar, onCerrar }) => {
+const CambiarContrasena = ({ onGuardar, onCerrar, URL = '' }) => {
   const [formData, setFormData] = useState({
     contrasenaActual: "",
     nuevaContrasena: "",

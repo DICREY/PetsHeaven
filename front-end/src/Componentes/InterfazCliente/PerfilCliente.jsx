@@ -113,6 +113,40 @@ const PerfilCliente = ({ URL = '', imgDefault = '' }) => {
     return `${dias} día${dias !== 1 ? "s" : ""}`
   }
 
+  const onChangePassword = async (data) => {
+    setNotify({
+      title: 'Actualizando...',
+      message: 'Actualizando contraseña',
+      load: 1
+    })
+    try {
+      const changePass = await PostData(`${URL}/global/change-password`, { email: emailEnviado, password: data.password })
+      setNotify(null)
+      if (changePass?.success) {
+        setUserData(null)
+        reset()
+        setStep(1)
+        setCodigoGenerado('')
+        setCodigoIngresado('')
+        setNotify({
+          title: 'Éxito',
+          message: 'Contraseña actualizada correctamente',
+          close: setNotify
+        })
+        setTimeout(() => navigate(-1),3000)
+      }
+    } catch (err) {
+      setNotify(null)
+      const message = errorStatusHandler(err)
+      setNotify({
+        title: 'Error',
+        message: `${message}`,
+        close: setNotify
+      })
+    }
+  }
+
+  // Effects 
   useEffect(() => {
     const GetInfo = async () => {
       try {
