@@ -1,4 +1,4 @@
--- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
+-- Active: 1751051171820@@127.0.0.1@3306@pets_heaven
 CREATE TABLE pets_heaven.auditoria_usuarios (
     id_auditoria INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
