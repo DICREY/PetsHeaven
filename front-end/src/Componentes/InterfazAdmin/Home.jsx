@@ -230,7 +230,7 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
 
               {/* Recent Activity */}
               <section className="actividad-reciente-admin">
-                <h3>Actividad</h3>
+                <h3>Mascotas frecuentes</h3>
                 <RazasFrecuentesChart URL={URL} />
               </section>
 
