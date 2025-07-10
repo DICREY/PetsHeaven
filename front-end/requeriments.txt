@@ -26,5 +26,5 @@ npm i @fullcalendar/core @fullcalendar/react @fullcalendar/daygrid @fullcalendar
 npm i -D sass-embedded react-scripts 
 
 yarn add react react-dom react-hook-form boxicons react-router react-router-dom lucide-react @supabase/supabase-js @emailjs/browser sweetalert sweetalert2 framer-motion
-yarn add @fullcalendar/core @fullcalendar/react @fullcalendar/daygrid @fullcalendar/interaction @fullcalendar/timegrid @fullcalendar/list axios compresorjs
+yarn add @fullcalendar/core @fullcalendar/react @fullcalendar/daygrid @fullcalendar/interaction @fullcalendar/timegrid @fullcalendar/list axios compresorjs chart
 yarn add -D sass-embedded react-scripts

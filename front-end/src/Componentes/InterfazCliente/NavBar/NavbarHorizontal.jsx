@@ -1,18 +1,24 @@
 import React, { useContext } from "react"
 import { useState } from "react"
 import { Bell,LogOut, User, HelpCircle } from "lucide-react"
+
+// Imports 
 import { AuthContext } from "../../../Contexts/Contexts"
 import { CheckImage } from "../../../Utils/Utils"
+import { TabHelp } from "../../Global/TabHelp"  
 
 // Import styles
 import "../../../styles/InterfazCliente/NavBar/NavbarHorizontal.css"
 
+// Component 
 const NavbarHorizontal = ({ onMostrarPerfil, imgDefault = '' }) => {
+  // Dynamic vars 
   const [ mostrarPerfil, setMostrarPerfil ] = useState(false)
   const [ mostrarNotificaciones, setMostrarNotificaciones ] = useState(false)
-  const { logout, user } = useContext(AuthContext)
   const [tabHelp, setTabHelp] = useState()
-
+  
+  // Vars 
+  const { logout, user } = useContext(AuthContext)
   const notificaciones = [
     {
       id: 1,
@@ -37,10 +43,12 @@ const NavbarHorizontal = ({ onMostrarPerfil, imgDefault = '' }) => {
     },
   ]
 
+  // Functions 
   // Show TabHelp
   const handleHelp = () => {
     tabHelp ? setTabHelp(false) : setTabHelp(true)
   }
+
   const notificacionesNoLeidas = notificaciones.filter((n) => !n.leida).length
 
   return (
@@ -146,7 +154,7 @@ const NavbarHorizontal = ({ onMostrarPerfil, imgDefault = '' }) => {
         </div>
       </div>
       {tabHelp && (
-              <TabHelp onClose={handleHelp} />
+        <TabHelp onClose={handleHelp} />
       )}
     </header>
   )

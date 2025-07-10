@@ -10,10 +10,11 @@ import { Notification } from "../Global/Notifys"
 import { errorStatusHandler, hourTraductor } from '../Varios/Util'
 import { AuthContext } from "../../Contexts/Contexts"
 import { ReqFunction } from "../../Utils/Utils"
+import { FormularioServicio } from "./Servicios/Forms/Forms"
+import RazasPorAnioChart from "../Global/graff"
 import AppointmentForm from "../InterfazAdmin/FormulariosAdmin/AgendarCita"
 
 import "../../styles/InterfazAdmin/Home.css"
-import { FormularioServicio } from "./Servicios/Forms/Forms"
 
 // Component 
 export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
@@ -22,6 +23,7 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
   const [ infoGeneral, setInfoGeneral ] = useState()
   const [ notify, setNotify ] = useState()
   const [ servicesForm, setServicesForm ] = useState()
+  const [ petStats, setPetStats ] = useState()
 
   // Vars 
   const mainUrl = `${URL}/appointment`
@@ -79,6 +81,22 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
     }
   }
 
+  const getPetStats = async () => {
+    try {
+      const data = await GetData(`${URL}/global/stats/frecuens-pets`)
+      setNotify(null)
+      if (data) setPetStats(data)
+    } catch (err) {
+      setNotify(null)
+      const message = errorStatusHandler(err)
+      setNotify({
+        title: 'Error',
+        message: `${message}`,
+        close: setNotify
+      })
+    }
+  }
+
   const handlePetSelect = (data = {}) => {
     const pet = {
       nom_mas: data.nom_mas,
@@ -109,6 +127,7 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
       setInfoGeneral
     )
     getAppoint()
+    getPetStats()
   }, [])
 
   // Form flotante agendar cita 
@@ -215,11 +234,6 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
                   Panel Usuario
                 </button>
 
-                <button type="button" className="EditBtn" onClick={() => navigate('/user/home')}>
-                  <Dog className="icon" aria-hidden="true" />
-                  Mascotas Usuario
-                </button>
-
                 <button
                   className="EditBtn"
                   onClick={() => navigate('/main')}
@@ -231,27 +245,10 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
               </nav>
 
               {/* Recent Activity */}
-              {/* <section className="actividad-reciente-admin">
-                <h3>Actividad Reciente</h3>
-                <ul className="lista-actividad-admin" role="list">
-                  {/* {appointCurrent?.map(app, index) =>  
-                  <li className="item-actividad-admin">
-                    <div className="punto-actividad-admin verde-admin" aria-hidden="true"></div>
-                    <p>Nueva cita programada para Max</p>
-                    <time>Hace 5 min</time>
-                  </li>
-                  <li className="item-actividad-admin">
-                    <div className="punto-actividad-admin azul-admin" aria-hidden="true"></div>
-                    <p>Cirugía completada exitosamente</p>
-                    <time>Hace 1 hora</time>
-                  </li>
-                  <li className="item-actividad-admin">
-                    <div className="punto-actividad-admin naranja-admin" aria-hidden="true"></div>
-                    <p>Recordatorio de vacuna enviado</p>
-                    <time>Hace 2 horas</time>
-                  </li>
-                </ul>
-              </section> */}
+              <section className="actividad-reciente-admin">
+                <h3>Actividad</h3>
+                <RazasPorAnioChart datosMascotas={petStats} />
+              </section>
 
               {servicesForm && (
                 <FormularioServicio
