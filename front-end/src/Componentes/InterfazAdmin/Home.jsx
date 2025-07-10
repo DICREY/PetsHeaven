@@ -11,10 +11,10 @@ import { errorStatusHandler, hourTraductor } from '../Varios/Util'
 import { AuthContext } from "../../Contexts/Contexts"
 import { ReqFunction } from "../../Utils/Utils"
 import { FormularioServicio } from "./Servicios/Forms/Forms"
-import RazasPorAnioChart from "../Global/graff"
 import AppointmentForm from "../InterfazAdmin/FormulariosAdmin/AgendarCita"
 
 import "../../styles/InterfazAdmin/Home.css"
+import RazasFrecuentesChart from "../Global/graff"
 
 // Component 
 export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
@@ -80,22 +80,7 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
       })
     }
   }
-
-  const getPetStats = async () => {
-    try {
-      const data = await GetData(`${URL}/global/stats/frecuens-pets`)
-      setNotify(null)
-      if (data) setPetStats(data)
-    } catch (err) {
-      setNotify(null)
-      const message = errorStatusHandler(err)
-      setNotify({
-        title: 'Error',
-        message: `${message}`,
-        close: setNotify
-      })
-    }
-  }
+  
 
   const handlePetSelect = (data = {}) => {
     const pet = {
@@ -127,7 +112,6 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
       setInfoGeneral
     )
     getAppoint()
-    getPetStats()
   }, [])
 
   // Form flotante agendar cita 
@@ -247,7 +231,7 @@ export default function VeterinaryDashboard({ URL = '', setPetSelect }) {
               {/* Recent Activity */}
               <section className="actividad-reciente-admin">
                 <h3>Actividad</h3>
-                <RazasPorAnioChart datosMascotas={petStats} />
+                <RazasFrecuentesChart URL={URL} />
               </section>
 
               {servicesForm && (

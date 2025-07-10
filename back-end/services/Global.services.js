@@ -202,7 +202,10 @@ class Global {
                 db.conection.end()
                 if (err) return reject(err)
                 // El resultado de un CALL es un array de arrays, el primero es el result set
-                resolve(results[0])
+                resolve({
+                    message: "Found info",
+                    result: results[0]
+                })
             })
         })
     }

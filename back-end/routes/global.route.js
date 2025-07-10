@@ -148,6 +148,20 @@ Route.get('/info/general', ValidatorRol('administrador'), async (req,res) => {
     }
 })
 
+Route.get('/frequent-pets', async (req, res) => {
+    try {
+        const info = new Global()
+        const data = await info.GetFrequentPets()
+        console.log(data)
+        res.json(data)
+    } catch (err) {
+        console.log(err)
+        if(err?.message?.sqlState === '45000') return res.status(500).json({ message: err?.message?.sqlMessage })
+        res.status(500).json({ message: 'Error al obtener estadísticas', error: err.message })
+    }
+})
+
+
 Route.post('/stats/staff', ValidatorRol('veterinario'), async (req,res) => {
     // Vars
     const { by } = req.body
@@ -300,16 +314,6 @@ Route.post('/change-password', limiterLog, async (req,res) => {
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })
     }
 })
-
-Route.get('/frequent-pets', async (req, res) => {
-    try {
-        const data = await global.GetFrequentPets()
-        res.json(data)
-    } catch (err) {
-        res.status(500).json({ message: 'Error al obtener estadísticas', error: err.message })
-    }
-})
-
 
 // Export 
 module.exports = Route
