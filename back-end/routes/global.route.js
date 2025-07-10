@@ -301,5 +301,15 @@ Route.post('/change-password', limiterLog, async (req,res) => {
     }
 })
 
+Route.get('/frequent-pets', async (req, res) => {
+    try {
+        const data = await global.GetFrequentPets()
+        res.json(data)
+    } catch (err) {
+        res.status(500).json({ message: 'Error al obtener estadísticas', error: err.message })
+    }
+})
+
+
 // Export 
 module.exports = Route
