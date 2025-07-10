@@ -1,4 +1,4 @@
--- Active: 1746130779175@@127.0.0.1@3306@pets_heaven
+-- Active: 1747352860830@@127.0.0.1@3306@pets_heaven
 CREATE PROCEDURE pets_heaven.RegistAppointment(
     IN p_fec_cit DATE, -- Fecha de la cita
     IN p_hor_ini_cit TIME, -- Hora de inicio de la cita
