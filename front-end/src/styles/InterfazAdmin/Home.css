@@ -114,7 +114,6 @@
 }
 
 .lista-citas-admin {
-  border: 2px solid red;
   overflow-y: auto;
   list-style: none;
   margin: 0;
