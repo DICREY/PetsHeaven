@@ -12,9 +12,9 @@ import { AuthContext } from "../../Contexts/Contexts"
 import { ReqFunction } from "../../Utils/Utils"
 import { FormularioServicio } from "./Servicios/Forms/Forms"
 import AppointmentForm from "../InterfazAdmin/FormulariosAdmin/AgendarCita"
+import RazasFrecuentesChart from "../Global/graff"
 
 import "../../styles/InterfazAdmin/Home.css"
-import RazasFrecuentesChart from "../Global/graff"
 
 // Component 
 export default function VeterinaryDashboard({ URL = '', setPetSelect }) {

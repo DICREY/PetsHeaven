@@ -83,6 +83,7 @@
 
 /* Appointments Card */
 .tarjeta-citas-admin {
+  max-height: 120vh;
   background: var(--white);
   border-radius: 1rem;
   box-shadow: var(--shadow-sm);
@@ -113,7 +114,7 @@
 }
 
 .lista-citas-admin {
-  max-height: 500px;
+  border: 2px solid red;
   overflow-y: auto;
   list-style: none;
   margin: 0;
