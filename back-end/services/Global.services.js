@@ -194,6 +194,19 @@ class Global {
         })
     }
 
+    async GetFrequentPets() {
+        return new Promise((resolve, reject) => {
+            const db = new DataBase()
+            db.conect()
+            db.conection.query('CALL pets_heaven.frequentPets()', (err, results) => {
+                db.conection.end()
+                if (err) return reject(err)
+                // El resultado de un CALL es un array de arrays, el primero es el result set
+                resolve(results[0])
+            })
+        })
+    }
+
 }
 
 // Export
