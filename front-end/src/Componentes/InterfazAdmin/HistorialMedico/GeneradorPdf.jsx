@@ -60,18 +60,6 @@ export default function GeneradorPDF({ petData = {}, medicalHistory = [] }) {
 
       // CSS embebido como string
       const cssStyles = `
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-        body {
-          font-family: "Times New Roman", serif;
-          line-height: 1.4;
-          color: #2c3e50;
-          background: #fff;
-          font-size: 12px;
-        }
         .contenedor-pdf {
           max-width: 210mm;
           margin: 0 auto;
@@ -332,9 +320,6 @@ export default function GeneradorPDF({ petData = {}, medicalHistory = [] }) {
           margin-bottom: 10px;
         }
         @media print {
-          body {
-            margin: 0;
-          }
           .contenedor-pdf {
             padding: 15mm;
           }
