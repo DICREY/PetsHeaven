@@ -3,9 +3,11 @@ const jwt = require('jsonwebtoken')
 
 // Env vars
 const secret = process.env.JWT_SECRET
+const origin = process.env.ORIGIN
 
 // Handle Validations middlewares
 function validatorHeaders(req, res, next) {
+    console.log(origin)
     // Headers
     const apiKey = req.signedCookies ? req.signedCookies.__nit : req.headers['x-api-key']
     const contentType = req.headers['accept']

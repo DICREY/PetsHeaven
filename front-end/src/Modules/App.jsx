@@ -59,7 +59,7 @@ export default function App () {
   const imgPetDefault = 'https://github.com/Mogom/Imagenes_PetsHeaven/blob/main/Defaults/petImg.default.jpg?raw=true'
   const imgUserDefault = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/default_veterinario.png'
   const imgServiceDefault = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/default_veterinario.png'
-  const URL = 'http://localhost:3000'
+  const URL = process.env.REACT_APP_URL
   const isInactive = useInactivityDetector(10 * 60 * 1000)
   
   // Route types
