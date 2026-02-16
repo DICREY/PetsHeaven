@@ -72,6 +72,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo }) {
 
   // Vars
   const navigate = useNavigate()
+  const secret = process.env.REACT_APP_SECRET
   const imgDefault = 'https://media.githubusercontent.com/media/Mogom/Imagenes_PetsHeaven/main/Logos/default_veterinario.png'
 
   // Función para agrupar testimonios en diapositivas
@@ -103,7 +104,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo }) {
 
   const CheckApi = async () => {
     try {
-      const check = await PostData(`${mainUrl}/check`,{ key: 'pets_heaven_vite' })
+      const check = await PostData(`${mainUrl}/check`,{ key: secret })
       if (check?.checked) await getServices()
     } catch (err) {
       if (err) {

@@ -1,4 +1,4 @@
--- Active: 1768620430430@@127.0.0.1@3306
+-- Active: 1770454793864@@aws-1-us-east-2.pooler.supabase.com@5432@postgres@public
 DROP DATABASE IF EXISTS pets_heaven;
 CREATE DATABASE IF NOT EXISTS pets_heaven;
 CREATE TABLE pets_heaven.roles(

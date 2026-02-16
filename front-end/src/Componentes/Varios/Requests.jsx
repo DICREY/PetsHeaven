@@ -1,5 +1,6 @@
 // Librarys 
 import axios from 'axios'
+const secret = process.env.REACT_APP_SECRET
 
 // Functions 
 // Traer datos
@@ -7,7 +8,7 @@ export async function GetDataGlobal(URL = '') {
     try {
         const response = await axios.get( URL, {
             headers: {
-                'x-api-key': 'pets_heaven_vite',
+                'x-api-key': secret,
                 'Content-Type': 'application/json',
             },
              withCredentials: true } )
@@ -23,7 +24,7 @@ export async function GetData(URL = '') {
     try {
         const response = await axios.get(URL,{ 
             headers: {
-                    'x-api-key': 'pets_heaven_vite'
+                    'x-api-key': secret
             },
             withCredentials: true })
 
@@ -39,7 +40,7 @@ export async function PostData(URL = '', datas = {}) {
     try {
         const response = await axios.post( URL, {...datas}, { 
             headers: {
-                'x-api-key': 'pets_heaven_vite'
+                'x-api-key': secret
             },
             withCredentials: true} )
   
@@ -57,7 +58,7 @@ export async function Register(URL = '', datas = {}) {
     try {
         const response = await axios.post( URL,{...datas},{ 
             headers: {
-                    'x-api-key': 'pets_heaven_vite'
+                    'x-api-key': secret
                 },
             withCredentials: true } )
   
@@ -76,7 +77,7 @@ export async function ModifyData(URL = '', datas = {}) {
     try {
         const response = await axios.put( URL, {...datas}, { 
             headers: {
-                'x-api-key': 'pets_heaven_vite'
+                'x-api-key': secret
             },
             withCredentials: true } )
 
@@ -95,7 +96,7 @@ export async function DeleteData(URL = '', datas = {}) {
     try {
         const response = await axios.delete( URL, {...datas}, { 
             headers: {
-                'x-api-key': 'pets_heaven_vite'
+                'x-api-key': secret
             },
             withCredentials: true } )
 
@@ -120,7 +121,7 @@ export async function Login(url = '', first = '', second = '') {
             }, 
             { 
                 headers: {
-                    'x-api-key': 'pets_heaven_vite'
+                    'x-api-key': secret
                 },
                 withCredentials: true }
         )
