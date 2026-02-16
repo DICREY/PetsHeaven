@@ -3,47 +3,47 @@ import React, { useState, useEffect, useContext } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, HashRouter } from 'react-router-dom'
 
 // Imports Forms
-import { LoginForm } from '../Componentes/Formularios/LoginForm'
-import Registro from '../Componentes/Formularios/Registro'
-import ForgotPassword from '../Componentes/Formularios/ForgotPassword'
-import { ConfiguracionUsuario } from '../Componentes/InterfazAdmin/FormulariosAdmin/RegistroPersonal'
-import { FormularioRegMascotas } from '../Componentes/Formularios/FormularioMascotas'
-import { RegistroPro } from '../Componentes/InterfazAdmin/FormulariosAdmin/RegistroPersona'
+import { LoginForm } from './Componentes/Formularios/LoginForm'
+import Registro from './Componentes/Formularios/Registro'
+import ForgotPassword from './Componentes/Formularios/ForgotPassword'
+import { ConfiguracionUsuario } from './Componentes/InterfazAdmin/FormulariosAdmin/RegistroPersonal'
+import { FormularioRegMascotas } from './Componentes/Formularios/FormularioMascotas'
+import { RegistroPro } from './Componentes/InterfazAdmin/FormulariosAdmin/RegistroPersona'
 
 // Imports
-import { HomeAdmin } from '../Componentes/InterfazAdmin/Consultorio'
-import { GesPersonal } from '../Componentes/InterfazAdmin/GesPersonal'
-import { GesAgendaGeneral } from '../Componentes/InterfazAdmin/GesAgendaGeneral'
-import { MainAdmin } from '../Componentes/InterfazAdmin/MainAdmin'
-import PetMedicalHistory from '../Componentes/InterfazAdmin/HistorialMedico/HistorialMedico'
-import { NotFound } from '../Componentes/Errores/NotFound'
-import { ErrorInternalServer } from '../Componentes/Errores/ErrorInternalServer'
-import { useInactivityDetector } from '../Componentes/Varios/InactiveDectetor'
-import VeterinariaPage from '../Componentes/VeterinariaPage'
-import { PerfilPropietario } from '../Componentes/Peoples/PerfilPropietario'
-import { GesAgendaPersonal } from '../Componentes/InterfazAdmin/GesAgendaPersonal'
-import { CirugiasVeterinaria } from "../Componentes/InterfazAdmin/Servicios/Cirugia"
-import { SpaMascotas } from "../Componentes/InterfazAdmin/Servicios/Spa"
-import { VisualizadorVacunas } from "../Componentes/InterfazAdmin/Servicios/Vacuna"
-import VeterinaryDashboard from '../Componentes/InterfazAdmin/Home'
-import TodasLasNotificaciones from '../Componentes/BarrasNavegacion/Notificaciones'
-import { CookiePolicy } from '../Componentes/Global/CookiesPolicy'
-import { Notification } from '../Componentes/Global/Notifys'
-import { PanelVeterinario } from '../Componentes/InterfazVeterinario/HomeVeterinario'
-import { ExamenesLaboratorio } from '../Componentes/InterfazAdmin/Servicios/Laboratorio'
-import PerfilCliente from '../Componentes/InterfazCliente/PerfilCliente'
-import Principal from '../Componentes/InterfazCliente/Principal'
-import { HeaderAdmin } from '../Componentes/BarrasNavegacion/HeaderAdmin'
-import { NavBarAdmin } from '../Componentes/BarrasNavegacion/NavBarAdmi'
+import { HomeAdmin } from './Componentes/InterfazAdmin/Consultorio'
+import { GesPersonal } from './Componentes/InterfazAdmin/GesPersonal'
+import { GesAgendaGeneral } from './Componentes/InterfazAdmin/GesAgendaGeneral'
+import { MainAdmin } from './Componentes/InterfazAdmin/MainAdmin'
+import PetMedicalHistory from './Componentes/InterfazAdmin/HistorialMedico/HistorialMedico'
+import { NotFound } from './Componentes/Errores/NotFound'
+import { ErrorInternalServer } from './Componentes/Errores/ErrorInternalServer'
+import { useInactivityDetector } from './Componentes/Varios/InactiveDectetor'
+import VeterinariaPage from './Componentes/VeterinariaPage'
+import { PerfilPropietario } from './Componentes/Peoples/PerfilPropietario'
+import { GesAgendaPersonal } from './Componentes/InterfazAdmin/GesAgendaPersonal'
+import { CirugiasVeterinaria } from "./Componentes/InterfazAdmin/Servicios/Cirugia"
+import { SpaMascotas } from "./Componentes/InterfazAdmin/Servicios/Spa"
+import { VisualizadorVacunas } from "./Componentes/InterfazAdmin/Servicios/Vacuna"
+import VeterinaryDashboard from './Componentes/InterfazAdmin/Home'
+import TodasLasNotificaciones from './Componentes/BarrasNavegacion/Notificaciones'
+import { CookiePolicy } from './Componentes/Global/CookiesPolicy'
+import { Notification } from './Componentes/Global/Notifys'
+import { PanelVeterinario } from './Componentes/InterfazVeterinario/HomeVeterinario'
+import { ExamenesLaboratorio } from './Componentes/InterfazAdmin/Servicios/Laboratorio'
+import PerfilCliente from './Componentes/InterfazCliente/PerfilCliente'
+import Principal from './Componentes/InterfazCliente/Principal'
+import { HeaderAdmin } from './Componentes/BarrasNavegacion/HeaderAdmin'
+import { NavBarAdmin } from './Componentes/BarrasNavegacion/NavBarAdmi'
 // import { PetMedicalHistory } from '../Componentes/InterfazAdmin/HistorialMedico/HistorialMedico'
 // import { SiteTraffic } from '../Componentes/Global/Visits'
 
 // Import contexts
-import { AuthProvider } from '../Contexts/Auth.context'
-import { AuthContext } from '../Contexts/Contexts'
+import { AuthProvider } from './Contexts/Auth.context'
+import { AuthContext } from './Contexts/Contexts'
 
 //import Crud personal
-import { ConfiguracionUsuarioCrud } from '../Componentes/InterfazAdmin/CrudPersonal/ConfiguracionUsuarioCrud'
+import { ConfiguracionUsuarioCrud } from './Componentes/InterfazAdmin/CrudPersonal/ConfiguracionUsuarioCrud'
 
 // Main Component
 export default function App() {
