@@ -112,7 +112,7 @@ export default function App() {
     // Define Routes
     <React.StrictMode>
       <AuthProvider>
-        {/* <BrowserRouter> */}
+        <BrowserRouter>
           <Routes>
             {/* Private routes */}
             <Route path='/user/home' element={
@@ -232,7 +232,7 @@ export default function App() {
             <Route path='/politica-cookies' element={<CookiePolicy />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
-        {/* </BrowserRouter> */}
+        </BrowserRouter>
         {notify && (
           <Notification
             {...notify}
