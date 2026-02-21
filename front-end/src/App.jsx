@@ -1,6 +1,6 @@
 // Librarys
 import React, { useState, useEffect, useContext } from 'react'
-import { BrowserRouter, Routes, Route, Navigate, HashRouter, Router } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, HashRouter } from 'react-router-dom'
 
 // Imports Forms
 import { LoginForm } from './Componentes/Formularios/LoginForm'
@@ -110,10 +110,8 @@ export default function App() {
 
   return (
     // Define Routes
-    // <React.StrictMode>
       <AuthProvider>
         <BrowserRouter>
-        {/* <Router basename='/PetsHeaven'> */}
           <Routes>
             {/* Private routes */}
             <Route path='/user/home' element={
@@ -233,7 +231,6 @@ export default function App() {
             <Route path='/politica-cookies' element={<CookiePolicy />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
-          {/* </Router> */}
         </BrowserRouter>
         {notify && (
           <Notification
@@ -241,6 +238,5 @@ export default function App() {
           />
         )}
       </AuthProvider>
-  // </React.StrictMode> 
   )
 }
