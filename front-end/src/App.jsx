@@ -239,6 +239,6 @@ export default function App() {
           />
         )}
       </AuthProvider>
-    {/* </React.StrictMode> */}
+    // {/* </React.StrictMode> */}
   )
 }
