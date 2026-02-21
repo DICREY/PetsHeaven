@@ -1,0 +1,15 @@
+# render.yaml
+services:
+  - type: web
+    name: PetsHeaven
+    # env: static
+    # envVars:
+    #   - static
+    buildCommand: "npm run build"
+    staticPublishPath: "./build"
+    # publishPath: "./build"  # o "./build" según tu configuración
+    routes:
+      - type: redirect
+        source: "/*"
+        destination: "/index.html"
+        status: 200
