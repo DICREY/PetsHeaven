@@ -3,7 +3,7 @@ const rateLimit = require('express-rate-limit')
 const origin = process.env.ORIGIN
 
 const corsOptions = {
-    origin: ["http://localhost:5174" , origin],
+    origin: ["http://localhost:5174" , "https://petsheavenfront.onrender.com/" , origin],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'x-api-key', 'User'],
     credentials: true
