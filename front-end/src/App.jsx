@@ -91,10 +91,6 @@ export default function App() {
     return <Navigate to='/user/login' />
   }
 
-  const MainRoute = () => {
-    window.location.replace('/main')
-  }
-
   useEffect(() => {
     if (isInactive) {
       setNotify({
@@ -111,7 +107,7 @@ export default function App() {
   return (
     // Define Routes
       <AuthProvider>
-        <BrowserRouter>
+        <HashRouter>
           <Routes>
             {/* Private routes */}
             <Route path='/user/home' element={
@@ -217,9 +213,8 @@ export default function App() {
             } />
 
             {/* Public Routes */}
-            <Route path='/' element={<MainRoute />} />
             {/* <Route path='/traffic' element={<SiteTraffic />} /> */}
-            <Route path='main' element={<VeterinariaPage URL={URL} setArriveTo={setArriveTo} />} />
+            <Route path='/' element={<VeterinariaPage URL={URL} setArriveTo={setArriveTo} />} />
             <Route path='user/login' element={
               <LoginForm
                 URL={URL} imgDefault={imgUserDefault}
@@ -231,7 +226,7 @@ export default function App() {
             <Route path='/politica-cookies' element={<CookiePolicy />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
-        </BrowserRouter>
+        </HashRouter>
         {notify && (
           <Notification
             {...notify}
