@@ -1,5 +1,6 @@
 // Librarys 
 const mysql = require('mysql')
+// const postgres = require('postgress')
 require('dotenv').config()
 
 class DataBase {
@@ -10,11 +11,11 @@ class DataBase {
     // Create conection function
     createConnection() {
         return mysql.createConnection({
-            host: process.env.HOST_DB,
-            database: process.env.NAME_DB,
-            user: process.env.USER_DB,
-            password:process.env.PASSWORD_DB,
-            port: process.env.PORT_DB
+            host: process.env.HOST_DB || "aws-1-us-east-2.pooler.supabase.com", 
+            database: process.env.NAME_DB || "postgres",
+            user: process.env.USER_DB || "postgres.lwpajidigrwrthvfsrhd",
+            password:process.env.PASSWORD_DB || "PetsHeaven2025#",
+            port: process.env.PORT_DB || 5432
         })
     }
 
@@ -30,7 +31,6 @@ class DataBase {
         })
     }
 }
-
 
 // Exports 
 module.exports = DataBase

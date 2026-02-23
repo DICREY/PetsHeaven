@@ -1,5 +1,5 @@
 // Imports
-const DataBase = require('./DataBase')
+const DataBase = require('./DataBasePostgres')
 
 // Main class 
 class Global {
@@ -17,13 +17,13 @@ class Global {
         return result
     }
 
-    format = (datas = [], subKey = '', headers = []) => {
+    format = (datas = [], subKey = '', headers = [],keylist = "---", keySublist = ";") => {
         const results = datas.map(data => {
-            const list = data[subKey]?.split("---")
-            .map(item => {
-                const subList = item.split(";")
-                return this.headerI(headers,subList)
-            })
+            const list = data[subKey]?.split(keylist)
+                .map(item => {
+                    const subList = item.split(keySublist)
+                    return this.headerI(headers, subList)
+                })
             return {
                 ...data,
                 [subKey]: list
@@ -43,78 +43,86 @@ class Global {
     }
 
     async login() {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             // vars
-            const proc = "CALL Login(?);"
-            const by = this.args[0].replace(" ","")
+            const proc = "SELECT Login(?);"
+            const by = this.args[0].replace(" ", "")
 
             // conect to database
             this.database = new DataBase()
-            this.database.conect()
+            this.database.connect()
 
-            if (this.database) this.database.conection.query(proc,by,(err,result) => {
-                if(err) {
-                    rej({ message: err})
-                } else if(!result || !result[0][0]) {
-                    rej({
-                        message: "Not found",
-                        status: 404
-                    })
-                } else setTimeout(() => {
-                    res({
-                        message: "Authorized",
-                        result: result[0]
-                    })
-                },500)
-            })
+            if (this.database) {
+                try {
+                    let result = this.database.query(proc, by)
+                    if (!result || !result[0][0]) {
+                        rej({
+                            message: "Not found",
+                            status: 404
+                        })
+                    } else setTimeout(() => {
+                        res({
+                            message: "Authorized",
+                            result: result
+                        })
+                    }, 500)
+                } catch (err) {
+                    rej({ message: err })
+                }
+            }
 
             // close conection 
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 
     // Change Password
     async changePassword() {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             // vars
-            const proc = "CALL ChangePassword(?,?);"
+            const proc = "SELECT ChangePassword(?,?);"
             const email = this.args[0].trim()
             const password = this.args[1].trim()
-            const args = [ email, password ]
+            const args = [email, password]
 
             // conect to database
             this.database = new DataBase()
-            this.database.conect()
+            this.database.connect()
 
-            if (this.database) this.database.conection.query(proc,args,(err) => {
-                if(err) rej({ message: err }) 
-                setTimeout(() => {
-                    res({
-                        message: "Changed",
-                        success: 1
-                    })
-                },500)
-            })
+
+            if (this.database) {
+                try {
+                    let result = this.database.query(proc, args)
+                    setTimeout(() => {
+                        res({
+                            message: "Changed",
+                            success: 1
+                        })
+                    }, 500)
+                } catch (err) {
+                    rej({ message: err })
+                }
+            }
 
             // close conection 
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 
     async GetAdminStats() {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             // vars
-            const proc = "CALL GetAdminStats();"
+            const proc = "SELECT GetAdminStats();"
             // const by = this.args[0].replace(" ","")
 
             // conect to database
             this.database = new DataBase()
-            this.database.conect()
+            this.database.connect()
 
-            if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) {
-                    rej({ message: err})
-                } else if(!result || !result[0][0]) {
+            if (this.database) this.database.query(proc, (err, result) => {
+                if (err) {
+                    rej({ message: err })
+                } else if (!result || !result[0][0]) {
                     rej({
                         message: "Not found",
                         status: 404
@@ -124,59 +132,62 @@ class Global {
                         message: "Found info",
                         result: result['0'][0]
                     })
-                },500)
+                }, 500)
             })
 
             // close conection 
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 
     async GetStaffStats() {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             // vars
-            const proc = "CALL GetStaffStats(?);"
-            const by = this.args[0].replace(" ","")
+            const proc = "SELECT GetStaffStats(?);"
+            const by = this.args[0].replace(" ", "")
 
             // conect to database
             this.database = new DataBase()
-            this.database.conect()
+            this.database.connect()
 
-            if (this.database) this.database.conection.query(proc,by,(err,result) => {
-                if(err) {
-                    rej({ message: err})
-                } else if(!result || !result[0][0]) {
-                    rej({
-                        message: "Not found",
-                        status: 404
-                    })
-                } else setTimeout(() => {
-                    res({
-                        message: "Found info",
-                        result: result[0][0]
-                    })
-                },500)
-            })
+            if (this.database) {
+                try {
+                    let result = this.database.query(proc, by)
+                    if (!result || !result[0][0]) {
+                        rej({
+                            message: "Not found",
+                            status: 404
+                        })
+                    } else setTimeout(() => {
+                        res({
+                            message: "Found info",
+                            result: result[0][0]
+                        })
+                    }, 500)
+                } catch (err) {
+                    rej({ message: err })
+                }
+            }
 
             // close conection 
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 
     async GetOwnStats() {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             // vars
-            const proc = "CALL GetOwnStats(?);"
-            const by = this.args[0].replace(" ","")
+            const proc = "SELECT GetOwnStats(?);"
+            const by = this.args[0].replace(" ", "")
 
             // conect to database
             this.database = new DataBase()
-            this.database.conect()
+            this.database.connect()
 
-            if (this.database) this.database.conection.query(proc,by,(err,result) => {
-                if(err) {
-                    rej({ message: err})
-                } else if(!result || !result[0][0]) {
+            if (this.database) this.database.query(proc, by, (err, result) => {
+                if (err) {
+                    rej({ message: err })
+                } else if (!result || !result[0][0]) {
                     rej({
                         message: "Not found",
                         status: 404
@@ -186,18 +197,18 @@ class Global {
                         message: "Found info",
                         result: result[0][0]
                     })
-                },500)
+                }, 500)
             })
 
             // close conection 
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 
     async GetFrequentPets() {
         return new Promise((resolve, reject) => {
             const db = new DataBase()
-            db.conect()
+            db.connect()
             db.conection.query('CALL pets_heaven.frequentPets()', (err, results) => {
                 db.conection.end()
                 if (err) return reject(err)

@@ -6,8 +6,9 @@ jsonwebtoken == 9.0.2
 bcrypt == 5.1.1
 dotenv == 16.0.3
 cookie-parser == 1.4.6
+pg == 8.18.0
 
 
-npm i cors express mysql express-rate-limit jsonwebtoken bcrypt dotenv cookie-parser
+npm i cors express mysql express-rate-limit jsonwebtoken bcrypt dotenv cookie-parser pg
 
-yarn add cors express mysql express-rate-limit jsonwebtoken bcrypt dotenv cookie-parser
+yarn add cors express mysql express-rate-limit jsonwebtoken bcrypt dotenv cookie-parser pg

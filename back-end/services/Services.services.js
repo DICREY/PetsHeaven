@@ -1,5 +1,5 @@
 // Imports
-const DataBase = require('./DataBase')
+const DataBase = require('./DataBasePostgres')
 const Global = require('./Global.services')
 
 // Main class 
@@ -14,7 +14,7 @@ class Services {
     // function to create a new service
     async create(data) {
         return new Promise((res, rej) => {
-            const proc = "CALL RegisterService(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            const proc = "SELECT RegisterService(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
             const params = [
                 data.nom_cat,
                 data.slug,
@@ -42,9 +42,9 @@ class Services {
             ]
 
             this.database = new DataBase()
-            this.database.conect()
+            this.database.connect()
 
-            if (this.database) this.database.conection.query(proc, params, (err) => {
+            if (this.database) this.database.query(proc, params, (err) => {
                 if (err) return rej({ message: err })
                 setTimeout(() => {
                     res({
@@ -54,14 +54,14 @@ class Services {
                 }, 1000)
             })
 
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 
     // function to update a service
     async modify(data) {
         return new Promise((res, rej) => {
-            const proc = "CALL UpdateService(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            const proc = "SELECT UpdateService(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
             const params = [
                 data.nom_cat,
                 data.slug,
@@ -90,9 +90,9 @@ class Services {
             console.log(params)
 
             this.database = new DataBase()
-            this.database.conect()
+            this.database.connect()
 
-            if (this.database) this.database.conection.query(proc, params, (err) => {
+            if (this.database) this.database.query(proc, params, (err) => {
                 if (err) return rej({ message: err })
                 setTimeout(() => {
                     res({
@@ -102,7 +102,7 @@ class Services {
                 }, 1000)
             })
 
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 
@@ -110,7 +110,7 @@ class Services {
     async createLabTest(data) {
         return new Promise((res, rej) => {
             const date = new Date()
-            const proc = "CALL RegisterLabTest(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            const proc = "SELECT RegisterLabTest(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
             const params = [
                 data.cod_ord_pru_lab,
                 data.nom_mas,
@@ -145,9 +145,9 @@ class Services {
             ]
 
             this.database = new DataBase()
-            this.database.conect()
+            this.database.connect()
 
-            if (this.database) this.database.conection.query(proc, params, (err) => {
+            if (this.database) this.database.query(proc, params, (err) => {
                 if (err) return rej({ message: err })
                 setTimeout(() => {
                     res({
@@ -157,7 +157,7 @@ class Services {
                 }, 1000)
             })
 
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 
@@ -165,7 +165,7 @@ class Services {
     async modifyLabTest(data) {
         return new Promise((res, rej) => {
             const date = new Date()
-            const proc = "CALL ModifyLabTest(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            const proc = "SELECT ModifyLabTest(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
             const params = [
                 data.cod_ord_pru_lab,
                 data.nom_mas,
@@ -200,9 +200,9 @@ class Services {
             ]
 
             this.database = new DataBase()
-            this.database.conect()
+            this.database.connect()
 
-            if (this.database) this.database.conection.query(proc, params, (err) => {
+            if (this.database) this.database.query(proc, params, (err) => {
                 if (err) return rej({ message: err })
                 setTimeout(() => {
                     res({
@@ -212,24 +212,24 @@ class Services {
                 }, 1000)
             })
 
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 
     // function to find all
     async findAll() {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             // vars
-            const proc = "CALL SearchServices()"
+            const proc = "SELECT SearchServices()"
 
             // conect to database
             this.database = new DataBase()
-            this.database.conect()
+            this.database.connect()
 
-            if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) {
-                    rej({ message: err})
-                } else if(!result || !result[0][0]) {
+            if (this.database) this.database.query(proc, (err, result) => {
+                if (err) {
+                    rej({ message: err })
+                } else if (!result || !result[0][0]) {
                     rej({
                         message: "Not found",
                         status: 404
@@ -243,23 +243,23 @@ class Services {
             })
 
             // close conection 
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
     // function to find all
     async findAllBy(data) {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             // vars
-            const proc = "CALL SearchServicesBy(?)"
+            const proc = "SELECT SearchServicesBy(?)"
 
             // conect to database
             this.database = new DataBase()
-            this.database.conect()
+            this.database.connect()
 
-            if (this.database) this.database.conection.query(proc,[data],(err,result) => {
-                if(err) {
-                    rej({ message: err})
-                } else if(!result || !result[0][0]) {
+            if (this.database) this.database.query(proc, [data], (err, result) => {
+                if (err) {
+                    rej({ message: err })
+                } else if (!result || !result[0][0]) {
                     rej({
                         message: "Not found",
                         status: 404
@@ -273,23 +273,23 @@ class Services {
             })
 
             // close conection 
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 
     async findBy(data) {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             // vars
-            const proc = "CALL SearchService(?)"
+            const proc = "SELECT SearchService(?)"
 
             // conect to database
             this.database = new DataBase()
-            this.database.conect()
-            
-            if (this.database) this.database.conection.query(proc,[data],(err,result) => {
-                if(err) {
-                    rej({ message: err})
-                } else if(!result || !result[0][0]) {
+            this.database.connect()
+
+            if (this.database) this.database.query(proc, [data], (err, result) => {
+                if (err) {
+                    rej({ message: err })
+                } else if (!result || !result[0][0]) {
                     rej({
                         message: "Not found",
                         status: 404
@@ -303,55 +303,66 @@ class Services {
             })
 
             // close conection 
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 
     // function to find all the services
     async FindCategories() {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             // vars
-            const proc = "CALL SearchServicesCat()"
+            const proc = "SELECT search_services_cat()"
 
             // conect to database
             this.database = new DataBase()
-            this.database.conect()
+            this.database.connect()
 
-            if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) {
-                    rej({ message: err})
-                } else if(!result || !result[0][0]) {
-                    rej({
-                        message: "Not found",
-                        status: 404
-                    })
-                } else setTimeout(() => {
-                    res({
-                        message: "Services found",
-                        result: result[0]
-                    })
-                }, 500)
-            })
+            let customQuery = async () => {
+                try {
+                    let result = await this.database.query(proc)
+                    console.log(result)
+                    if (!result || !result?.[0]) {
+                        rej({
+                            message: "Not found",
+                            status: 404
+                        })
+                    } else setTimeout(() => {
+                        // 4,Laboratorio,"Pruebas diagnósticas y análisis clínicos",https://example.com/img/laboratorio.jpg)'
+                        const mapResult = this.global.format(result,'search_services_cat',[
+                            'id_cat','nom_cat','tec_des_cat','img_cat'
+                        ],',')
+                        console.log(mapResult)
+                        console.log(result)
+                        res({
+                            message: "Services found",
+                            result: mapResult
+                        })
+                    }, 500)
+                } catch (err) {
+                    rej({ message: err })
+                }
+            }
+            customQuery()
 
             // close conection 
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 
     // function to find all the services
     async FindTypeServices() {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             // vars
-            const proc = "CALL SearchServicesType()"
+            const proc = "SELECT SearchServicesType()"
 
             // conect to database
             this.database = new DataBase()
-            this.database.conect()
+            this.database.connect()
 
-            if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) {
-                    rej({ message: err})
-                } else if(!result || !result[0][0]) {
+            if (this.database) this.database.query(proc, (err, result) => {
+                if (err) {
+                    rej({ message: err })
+                } else if (!result || !result[0][0]) {
                     rej({
                         message: "Not found",
                         status: 404
@@ -365,24 +376,24 @@ class Services {
             })
 
             // close conection 
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 
     // function to find all the procedimientos
     async FindProcedures() {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             // vars
-            const proc = "CALL SearchProcedures()"
+            const proc = "SELECT SearchProcedures()"
 
             // conect to database
             this.database = new DataBase()
-            this.database.conect()
+            this.database.connect()
 
-            if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) {
-                    rej({ message: err})
-                } else if(!result || !result[0][0]) {
+            if (this.database) this.database.query(proc, (err, result) => {
+                if (err) {
+                    rej({ message: err })
+                } else if (!result || !result[0][0]) {
                     rej({
                         message: "Not found",
                         status: 404
@@ -396,24 +407,24 @@ class Services {
             })
 
             // close conection 
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 
     // function to find all the tests types
     async FindTestType() {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             // vars
-            const proc = "CALL GetTestTypes()"
+            const proc = "SELECT GetTestTypes()"
 
             // conect to database
             this.database = new DataBase()
-            this.database.conect()
+            this.database.connect()
 
-            if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) {
-                    rej({ message: err})
-                } else if(!result || !result[0][0]) {
+            if (this.database) this.database.query(proc, (err, result) => {
+                if (err) {
+                    rej({ message: err })
+                } else if (!result || !result[0][0]) {
                     rej({
                         message: "Not found",
                         status: 404
@@ -427,23 +438,23 @@ class Services {
             })
 
             // close conection 
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 
     async findCirugies() {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             // vars
-            const proc = "CALL SearchServicesBy('Cirugia')"
+            const proc = "SELECT SearchServicesBy('Cirugia')"
 
             // conect to database
             this.database = new DataBase()
-            this.database.conect()
-            
-            if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) {
-                    rej({ message: err})
-                } else if(!result || !result[0][0]) {
+            this.database.connect()
+
+            if (this.database) this.database.query(proc, (err, result) => {
+                if (err) {
+                    rej({ message: err })
+                } else if (!result || !result[0][0]) {
                     rej({
                         message: "Not found",
                         status: 404
@@ -452,35 +463,35 @@ class Services {
                     const resOne = this.global.format(
                         result[0],
                         'proc_ser',
-                        ['nom_pro','des_pro','cat_pro','niv_rie_pro','dur_min_pro','pro_pro','con_esp_pro']
+                        ['nom_pro', 'des_pro', 'cat_pro', 'niv_rie_pro', 'dur_min_pro', 'pro_pro', 'con_esp_pro']
                     )
                     setTimeout(() => {
                         res({
                             message: "Cirugies found",
                             result: resOne
                         })
-                    },500)
+                    }, 500)
                 }
             })
 
             // close conection 
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 
     async findEsthetic() {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             // vars
-            const proc = "CALL SearchServicesBy('Estetica');"
+            const proc = "SELECT SearchServicesBy('Estetica');"
 
             // conect to database
             this.database = new DataBase()
-            this.database.conect()
-            
-            if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) {
-                    rej({ message: err})
-                } else if(!result || !result[0][0]) {
+            this.database.connect()
+
+            if (this.database) this.database.query(proc, (err, result) => {
+                if (err) {
+                    rej({ message: err })
+                } else if (!result || !result[0][0]) {
                     rej({
                         message: "Not found",
                         status: 404
@@ -489,36 +500,36 @@ class Services {
                     const resOne = this.global.format(
                         result[0],
                         'proc_ser',
-                        ['nom_pro','des_pro','cat_pro','niv_rie_pro','dur_min_pro','pro_pro','con_esp_pro']
+                        ['nom_pro', 'des_pro', 'cat_pro', 'niv_rie_pro', 'dur_min_pro', 'pro_pro', 'con_esp_pro']
                     )
                     setTimeout(() => {
                         res({
                             message: "Cirugies found",
                             result: resOne
                         })
-                    },500)
+                    }, 500)
                 }
             })
 
             // close conection 
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 
     // function to find laboratory tests
     async findLaboratoryTests() {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             // vars
-            const proc = "CALL GetLaboratoryTests();"
+            const proc = "SELECT GetLaboratoryTests();"
 
             // conect to database
             this.database = new DataBase()
-            this.database.conect()
-            
-            if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) {
-                    rej({ message: err})
-                } else if(!result || !result[0][0]) {
+            this.database.connect()
+
+            if (this.database) this.database.query(proc, (err, result) => {
+                if (err) {
+                    rej({ message: err })
+                } else if (!result || !result[0][0]) {
                     rej({
                         message: "Not found",
                         status: 404
@@ -527,35 +538,35 @@ class Services {
                     const resOne = this.global.format(
                         result[0],
                         'proc_ser',
-                        ['nom_pro','des_pro','cat_pro','niv_rie_pro','dur_min_pro','pro_pro','con_esp_pro']
+                        ['nom_pro', 'des_pro', 'cat_pro', 'niv_rie_pro', 'dur_min_pro', 'pro_pro', 'con_esp_pro']
                     )
                     setTimeout(() => {
                         res({
                             message: "Cirugies found",
                             result: resOne
                         })
-                    },500)
+                    }, 500)
                 }
             })
 
             // close conection 
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 
     async findAllVacunas() {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             // vars
-            const proc = "CALL SearchVacunas()"
+            const proc = "SELECT SearchVacunas()"
 
             // conect to database
             this.database = new DataBase()
-            this.database.conect()
+            this.database.connect()
 
-            if (this.database) this.database.conection.query(proc,(err,result) => {
-                if(err) {
-                    rej({ message: err})
-                } else if(!result || !result[0][0]) {
+            if (this.database) this.database.query(proc, (err, result) => {
+                if (err) {
+                    rej({ message: err })
+                } else if (!result || !result[0][0]) {
                     rej({
                         message: "Not found",
                         status: 404
@@ -565,38 +576,38 @@ class Services {
                         message: "Vacunas found",
                         result: result
                     })
-                },500)
+                }, 500)
             })
 
             // close conection 
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 
     async AbleOrDesableService(data) {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             // vars
             const params = [
                 data.id,
                 data.nom_cat
             ]
 
-            const proc = "CALL AbleOrDesableService(?,?)"
+            const proc = "SELECT AbleOrDesableService(?,?)"
 
             // conect to database
             this.database = new DataBase()
-            this.database.conect()
+            this.database.connect()
 
-            if (this.database) this.database.conection.query(proc,params,(err) => {
-                this.database.conection.end()
+            if (this.database) this.database.query(proc, params, (err) => {
+                this.database.disconnect()
 
-                if(err) rej({ message: err })
+                if (err) rej({ message: err })
                 setTimeout(() => {
                     res({
                         message: "Servicio Deshabilitado",
                         success: true
                     })
-                },1000)
+                }, 1000)
             })
 
             // close conection 
@@ -605,7 +616,7 @@ class Services {
 
     async registerVacuna(data) {
         return new Promise((res, rej) => {
-            const proc = "CALL RegisterVacuna(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            const proc = "SELECT RegisterVacuna(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
             const params = [
                 data.nom_vac,
                 data.efe_sec_vac,
@@ -625,9 +636,9 @@ class Services {
             ]
 
             this.database = new DataBase()
-            this.database.conect()
+            this.database.connect()
 
-            if (this.database) this.database.conection.query(proc, params, (err, result) => {
+            if (this.database) this.database.query(proc, params, (err, result) => {
                 if (err) return rej({ message: err })
                 setTimeout(() => {
                     res({
@@ -638,12 +649,12 @@ class Services {
             })
 
             // close conection
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 
     async ChangeVaccineState(data) {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             // vars
             const params = [
                 data.id,
@@ -652,31 +663,31 @@ class Services {
                 data.nom_pro
             ]
 
-            const proc = "CALL ChangeVaccineState(?,?,?,?)"
+            const proc = "SELECT ChangeVaccineState(?,?,?,?)"
 
             // conect to database
             this.database = new DataBase()
-            this.database.conect()
+            this.database.connect()
 
-            if (this.database) this.database.conection.query(proc,params,(err) => {
+            if (this.database) this.database.query(proc, params, (err) => {
 
-                if(err) rej({ message: err })
+                if (err) rej({ message: err })
                 setTimeout(() => {
                     res({
                         message: "Servicio Deshabilitado",
                         change: 1
                     })
-                },1000)
+                }, 1000)
             })
 
             // close conection 
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 
     async updateVaccineAndProcedure(data) {
         return new Promise((res, rej) => {
-            const proc = "CALL UpdateVaccineAndProcedure(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            const proc = "SELECT UpdateVaccineAndProcedure(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
             const params = [
                 data.id_vac,
                 data.nom_vac,
@@ -696,9 +707,9 @@ class Services {
             ]
 
             this.database = new DataBase()
-            this.database.conect()
+            this.database.connect()
 
-            if (this.database) this.database.conection.query(proc, params, (err) => {
+            if (this.database) this.database.query(proc, params, (err) => {
                 if (err) return rej({ message: err })
                 setTimeout(() => {
                     res({
@@ -709,7 +720,7 @@ class Services {
             })
 
             // close conection
-            this.database.conection.end()
+            this.database.disconnect()
         })
     }
 }

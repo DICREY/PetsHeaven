@@ -22,6 +22,9 @@ export const AuthProvider = ({ children }) => {
         load: 1
     })
 
+    // Vars 
+    const URL = process.env.REACT_APP_URL
+
     // Functions
     // Iniciar sesion 
     const login = async (url = '', firstData, secondData) => {
@@ -60,7 +63,7 @@ export const AuthProvider = ({ children }) => {
     // Cerrar sesion 
     const logout = async () => {
         try {
-            const check = await PostData('http://localhost:3000/cookie/clear-cookies', {})
+            const check = await PostData(`${URL}/cookie/clear-cookies`, {})
             if (check) {
                 setUser(null)
                 setRoles(null)
@@ -78,7 +81,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const check = await PostData('http://localhost:3000/cookie/check-cookie', { name: '__cred' })
+                const check = await PostData(`${URL}/cookie/check-cookie`, { name: '__cred' })
                 if (check) {
                     const userData = decodeJWT(check.data)
                     setUser(userData)
