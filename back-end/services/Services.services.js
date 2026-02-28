@@ -326,8 +326,7 @@ class Services {
                             status: 404
                         })
                     } else setTimeout(() => {
-                        // 4,Laboratorio,"Pruebas diagnósticas y análisis clínicos",https://example.com/img/laboratorio.jpg)'
-                        const formatResult = this.global.mapPostgressResult(
+                        const reFormatResult = this.global.mapPostgressResult(
                             result,
                             [
                                 'id_cat','nom_cat','tec_des_cat','img_cat'
@@ -335,9 +334,10 @@ class Services {
                             'search_services_cat',
                             ','
                         )
+
                         res({
                             message: "Services found",
-                            result: formatResult
+                            result: reFormatResult
                         })
                     }, 500)
                 } catch (err) {

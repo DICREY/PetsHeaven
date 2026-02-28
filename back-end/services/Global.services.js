@@ -43,17 +43,9 @@ class Global {
     }
 
     // sacar el objeto del oobjeto padre y convertirlo en el nuevo objeto padre y darle headers a cada elemento
-    mapPostgressResult ( datas = [], headers = [], key = '', keySplit = '' ) {
-        const mapData =  datas.map(data => {
-            const format = data[key].replace('(','').replace(')','')
-            return format
-        })
-        
-        this.FirstFormat(mapData, headers, keySplit)
-    }
-
-    FirstFormat = ( datas = [], headers = [], keysplit = "---" ) => {
-        const results = datas.map(data => {
+    mapPostgressResult = ( datas = [], headers = [], key = '', keysplit = "---" ) => {
+        const mapData = datas.map(data => data[key].replace('(','').replace(')',''))
+        const results = mapData.map(data => {
             const list = data?.split(keysplit)
             const formatList = this.headerI(headers, list)
             return {
