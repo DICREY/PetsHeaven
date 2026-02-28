@@ -320,7 +320,6 @@ class Services {
             let customQuery = async () => {
                 try {
                     let result = await this.database.query(proc)
-                    console.log(result)
                     if (!result || !result?.[0]) {
                         rej({
                             message: "Not found",
@@ -328,14 +327,17 @@ class Services {
                         })
                     } else setTimeout(() => {
                         // 4,Laboratorio,"Pruebas diagnósticas y análisis clínicos",https://example.com/img/laboratorio.jpg)'
-                        const mapResult = this.global.format(result,'search_services_cat',[
-                            'id_cat','nom_cat','tec_des_cat','img_cat'
-                        ],',')
-                        console.log(mapResult)
-                        console.log(result)
+                        const formatResult = this.global.mapPostgressResult(
+                            result,
+                            [
+                                'id_cat','nom_cat','tec_des_cat','img_cat'
+                            ],
+                            'search_services_cat',
+                            ','
+                        )
                         res({
                             message: "Services found",
-                            result: mapResult
+                            result: formatResult
                         })
                     }, 500)
                 } catch (err) {

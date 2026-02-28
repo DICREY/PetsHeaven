@@ -32,14 +32,35 @@ class Global {
         return results
     }
 
-    iterar = (datas = [], key = '') => {
+    iterar = (datas = [], key = '',splitKey = '---') => {
         return datas.map(data => {
             const value = data[key];
             const arr = typeof value === 'string'
-                ? value.split('---').map(item => item.trim()).filter(item => item.length > 0)
+                ? value.split(splitKey).map(item => item.trim()).filter(item => item.length > 0)
                 : [];
             return { ...data, [key]: arr };
         });
+    }
+
+    // sacar el objeto del oobjeto padre y convertirlo en el nuevo objeto padre y darle headers a cada elemento
+    mapPostgressResult ( datas = [], headers = [], key = '', keySplit = '' ) {
+        const mapData =  datas.map(data => {
+            const format = data[key].replace('(','').replace(')','')
+            return format
+        })
+        
+        this.FirstFormat(mapData, headers, keySplit)
+    }
+
+    FirstFormat = ( datas = [], headers = [], keysplit = "---" ) => {
+        const results = datas.map(data => {
+            const list = data?.split(keysplit)
+            const formatList = this.headerI(headers, list)
+            return {
+                ...formatList
+            }
+        })
+        return results
     }
 
     async login() {

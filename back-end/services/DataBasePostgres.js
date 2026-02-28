@@ -17,10 +17,10 @@ class DataBasePostgres {
     async connect() {
         try {
             await this.pool.connect();
-            console.log('PostgreSQL Connect');
+            // console.log('PostgreSQL Connect');
         } catch (err) {
             console.error(err)
-            console.error('Error de conexión', err.stack);
+            // console.error('Error de conexión', err.stack);
         }
     }
 
@@ -37,9 +37,9 @@ class DataBasePostgres {
     async disconnect() {
         try {
             await this.pool.end();
-            console.log('PostgreSQL Disconnect');
+            // console.log('PostgreSQL Disconnect');
         } catch (err) {
-            console.error('Error al desconectar', err.stack);
+            // console.error('Error al desconectar', err.stack);
         }
     }
 
