@@ -268,8 +268,8 @@ export default function VeterinariaPage({ URL = '', setArriveTo }) {
                   <motion.div 
                     key={i.img_cat} 
                     onClick={() => {
-                      setArriveTo('/calendario/general')
-                      navigate('/user/login')
+                      setArriveTo('/#/calendario/general')
+                      navigate('/#/user/login')
                     }}
                     className='tarjeta-servicio'
                     variants={itemVariants}
@@ -331,7 +331,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo }) {
                       <h3 className='titulo-promocion'>{promocion.titulo}</h3>
                       <p className='descripcion-promocion'>{promocion.descripcion}</p>
                       <motion.button 
-                        onClick={() => setArriveTo('/calendario/general')}
+                        onClick={() => setArriveTo('/#/calendario/general')}
                         className='boton-promocion'
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}

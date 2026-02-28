@@ -1,10 +1,10 @@
 // Librarys 
 const rateLimit = require('express-rate-limit')
 const origin = process.env.ORIGIN
-const isProduction = process.env.NOVE_ENV === 'production'
+const isProduction = process.env.NODE_ENV === 'production'
 
 const corsOptions = {
-    origin: [ , "https://petsheavenfront.onrender.com" , "http://localhost:5174", origin],
+    origin: ["https://petsheavenfront.onrender.com", "http://localhost:5174", origin].filter(Boolean),
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'x-api-key', 'User'],
     credentials: true

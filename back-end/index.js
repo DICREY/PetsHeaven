@@ -2,7 +2,6 @@
 const express = require('express')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
-const bodyParser = require('body-parser')
 require('dotenv').config()
 
 // Imports 
@@ -13,6 +12,7 @@ const { routerApi } = require('./server/router')
 
 // vars
 const app = express()
+app.set('trust proxy', 1)
 const port = process.env.PORT
 const secret = process.env.JWT_SECRET
 
@@ -20,15 +20,15 @@ const secret = process.env.JWT_SECRET
 app.disable('x-powered-by')
 
 // middlewares
-app.use(bodyParser.json({ limit: '1mb' }));
-app.use(express.json())
+app.use(express.json({ limit: '1mb' }))
 app.use(cors(corsOptions))
-app.use(errorHandler)
+app.use(cookieParser(secret))
 app.use(validatorHeaders)
 app.use(limiter)
-app.use(cookieParser(secret))
 
 // Routes
 routerApi(app)
+
+app.use(errorHandler)
 
 app.listen(port,'0.0.0.0',() => console.log('Host is: http://localhost:' + port))
