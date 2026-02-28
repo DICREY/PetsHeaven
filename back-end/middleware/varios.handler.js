@@ -27,7 +27,7 @@ const cookiesOptionsLog = {
     httpOnly: true, // Seguridad: solo accesible por HTTP
     secure: true, // HTTPS en producción
     sameSite: 'strict', // Política de same-site
-    domain: 'localhost', // Dominio donde es válida
+    domain: 'https://petsheaven-id95.onrender.com', // Dominio donde es válida
     signed: true,
     // path: '/' // Ruta donde es válida
 }
