@@ -34,12 +34,11 @@ const cookiesOptionsLog = {
 }
 
 const cookiesOptions = {
-    maxAge: 60 * 24 * 60 * 60 * 1000, // (60 días)
-    httpOnly: true,
-    secure: true,
-    sameSite: 'none',
-    // domain: 'localhost',
+    maxAge: 30 * 24 * 60 * 60 * 1000, // Alternativa en milisegundos (30 días)
+    httpOnly: true, // Seguridad: solo accesible por HTTP
+    secure: true, // HTTPS en producción
+    sameSite: 'none', // Política de same-site
     // signed: false,
-}
- 
+    // path: '/' // Ruta donde es válida (opcional)
+} 
 module.exports = { corsOptions, limiter, limiterLog, cookiesOptions, cookiesOptionsLog }

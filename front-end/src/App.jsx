@@ -107,7 +107,7 @@ export default function App() {
   return (
     // Define Routes
       <AuthProvider>
-        <HashRouter>
+        <BrowserRouter>
           <Routes>
             {/* Private routes */}
             <Route path='/user/home' element={
@@ -226,7 +226,7 @@ export default function App() {
             <Route path='/politica-cookies' element={<CookiePolicy />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
-        </HashRouter>
+        </BrowserRouter>
         {notify && (
           <Notification
             {...notify}

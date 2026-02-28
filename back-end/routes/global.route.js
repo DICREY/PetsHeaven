@@ -8,7 +8,7 @@ const { hash } = require('bcrypt')
 const Global = require('../services/Global.services')
 const Services = require('../services/Services.services')
 const People = require('../services/People.services')
-const { limiterLog, cookiesOptionsLog } = require('../middleware/varios.handler')
+const { limiterLog, cookiesOptions } = require('../middleware/varios.handler')
 const { Fullinfo, ValidatorRol, authJWTGlobal } = require('../middleware/validator.handler')
 
 // Env vars
@@ -31,7 +31,7 @@ Route.post('/check', async (req,res) => {
             { expiresIn: '24h' }
         )
 
-        res.cookie('__token', token, cookiesOptionsLog)
+        res.cookie('__token', token, cookiesOptions)
         res.status(200).json({ checked: 1 })
     } catch (err) {
         if (err.status) return res.status(err.status).json({ message: err.message })
@@ -255,11 +255,11 @@ Route.post('/login', limiterLog, async (req,res) => {
             { expiresIn: '8h' }
         )
 
-        res.cookie('__cred', cred, cookiesOptionsLog)
-        res.cookie('__nit', secret, cookiesOptionsLog)
+        res.cookie('__cred', cred, cookiesOptions)
+        res.cookie('__nit', secret, cookiesOptions)
 
-        if (user.roles) res.cookie('__user', user.roles, cookiesOptionsLog)
-        if (user.nom_per && user.ape_per) res.cookie('__userName', `${user.nom_per} ${user.ape_per}`, cookiesOptionsLog)
+        if (user.roles) res.cookie('__user', user.roles, cookiesOptions)
+        if (user.nom_per && user.ape_per) res.cookie('__userName', `${user.nom_per} ${user.ape_per}`, cookiesOptions)
 
         res.status(200).json({ __cred: cred })
     } catch (err) {
