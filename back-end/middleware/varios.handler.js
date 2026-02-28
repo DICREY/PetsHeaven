@@ -24,10 +24,10 @@ const limiterLog = rateLimit({
 
 const cookiesOptionsLog = {
     maxAge: 30 * 24 * 60 * 60 * 1000, // (30 días)
-    httpOnly: true, // Seguridad: solo accesible por HTTP
+    httpOnly: false, // Seguridad: solo accesible por HTTP
     secure: true, // HTTPS en producción
     sameSite: 'strict', // Política de same-site
-    domain: 'https://petsheaven-id95.onrender.com', // Dominio donde es válida
+    domain: 'petsheaven-id95.onrender.com', // Dominio donde es válida
     signed: true,
     // path: '/' // Ruta donde es válida
 }
