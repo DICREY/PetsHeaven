@@ -23,27 +23,15 @@ const limiterLog = rateLimit({
     message: 'Demasiadas intentos fallidos, por favor intenta de nuevo más tarde'
 })
 
-const cookiesOptionsLog = {
-    maxAge: 30 * 24 * 60 * 60 * 1000, // (30 días)
-    httpOnly: true, // Seguridad: solo accesible por HTTP
-    secure: true, // HTTPS en producción
-    sameSite: 'none', // Política de same-site
-    // signed: true,
-    // domain: 'localhost', // Dominio donde es válida
-    // path: '/', // Ruta donde es válida
-    // priority: medium'',
-    // encode:
-}
-
 const cookiesOptions = {
     maxAge: 30 * 24 * 60 * 60 * 1000, // Alternativa en milisegundos (30 días)
     httpOnly: true, // Seguridad: solo accesible por HTTP
     secure: true, // HTTPS en producción
     sameSite: 'none', // Política de same-site
     // signed: true,
-    domain: 'petsheavenfront.onrender.com',
+    // domain: 'https://petsheaven-id95.onrender.com',
     // path: '/', // Ruta donde es válida (opcional)
     // priority: medium'',
     // encode:
 } 
-module.exports = { corsOptions, limiter, limiterLog, cookiesOptions, cookiesOptionsLog }
+module.exports = { corsOptions, limiter, limiterLog, cookiesOptions }
