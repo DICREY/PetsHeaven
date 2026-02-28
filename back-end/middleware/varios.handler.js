@@ -1,6 +1,7 @@
 // Librarys 
 const rateLimit = require('express-rate-limit')
 const origin = process.env.ORIGIN
+const isProduction = process.env.NOVE_ENV === 'production'
 
 const corsOptions = {
     origin: [ , "https://petsheavenfront.onrender.com" , "http://localhost:5174", origin],
@@ -24,7 +25,7 @@ const limiterLog = rateLimit({
 
 const cookiesOptionsLog = {
     maxAge: 30 * 24 * 60 * 60 * 1000, // (30 días)
-    httpOnly: false, // Seguridad: solo accesible por HTTP
+    httpOnly: true, // Seguridad: solo accesible por HTTP
     secure: true, // HTTPS en producción
     sameSite: 'none', // Política de same-site
     // domain: 'petsheaven-id95.onrender.com', // Dominio donde es válida
@@ -36,9 +37,9 @@ const cookiesOptions = {
     maxAge: 60 * 24 * 60 * 60 * 1000, // (60 días)
     httpOnly: true,
     secure: true,
-    sameSite: 'strict',
-    domain: 'localhost',
-    signed: false,
+    sameSite: 'none',
+    // domain: 'localhost',
+    // signed: false,
 }
  
 module.exports = { corsOptions, limiter, limiterLog, cookiesOptions, cookiesOptionsLog }
