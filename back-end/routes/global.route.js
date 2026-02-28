@@ -57,7 +57,7 @@ Route.get('/owners', async (req,res) => {
 })
 
 // Call Middleware for verify the token
-Route.use(authJWTGlobal)
+// Route.use(authJWTGlobal)
 
 Route.get('/services', async (req,res) => {
     // Vars
