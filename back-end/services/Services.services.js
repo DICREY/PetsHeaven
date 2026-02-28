@@ -61,7 +61,7 @@ class Services {
     // function to update a service
     async modify(data) {
         return new Promise((res, rej) => {
-            const proc = "SELECT UpdateService(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            const proc = "SELECT UpdateService($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23)"
             const params = [
                 data.nom_cat,
                 data.slug,
@@ -320,7 +320,7 @@ class Services {
             let customQuery = async () => {
                 try {
                     let result = await this.database.query(proc)
-                    if (!result || !result?.search_services_cat) {
+                    if (!result || !result?.[0]) {
                         rej({
                             message: "Not found",
                             status: 404
