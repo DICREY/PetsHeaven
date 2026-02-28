@@ -105,7 +105,6 @@ export default function VeterinariaPage({ URL = '', setArriveTo }) {
   const CheckApi = async () => {
     try {
       const check = await PostData(`${mainUrl}/check`,{ key: secret })
-      console.log(check)
       if (check?.checked) await getServices()
     } catch (err) {
       if (err) {

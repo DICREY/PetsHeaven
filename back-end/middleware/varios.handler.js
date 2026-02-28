@@ -39,7 +39,7 @@ const cookiesOptions = {
     secure: true,
     sameSite: 'none',
     // domain: 'localhost',
-    signed: true,
+    // signed: false,
 }
  
 module.exports = { corsOptions, limiter, limiterLog, cookiesOptions, cookiesOptionsLog }
