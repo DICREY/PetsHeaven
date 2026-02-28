@@ -26,7 +26,7 @@ app.use(cors(corsOptions))
 app.use(errorHandler)
 app.use(validatorHeaders)
 app.use(limiter)
-app.use(cookieParser(secret))
+// app.use(cookieParser(secret))
 
 // Routes
 routerApi(app)

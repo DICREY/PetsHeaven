@@ -28,9 +28,11 @@ const cookiesOptionsLog = {
     httpOnly: true, // Seguridad: solo accesible por HTTP
     secure: true, // HTTPS en producción
     sameSite: 'none', // Política de same-site
-    // domain: 'petsheaven-id95.onrender.com', // Dominio donde es válida
-    signed: true,
-    // path: '/' // Ruta donde es válida
+    // signed: true,
+    // domain: 'localhost', // Dominio donde es válida
+    // path: '/', // Ruta donde es válida
+    // priority: medium'',
+    // encode:
 }
 
 const cookiesOptions = {
@@ -38,7 +40,10 @@ const cookiesOptions = {
     httpOnly: true, // Seguridad: solo accesible por HTTP
     secure: true, // HTTPS en producción
     sameSite: 'none', // Política de same-site
-    signed: true,
-    // path: '/' // Ruta donde es válida (opcional)
+    // signed: true,
+    domain: 'petsheavenfront.onrender.com',
+    // path: '/', // Ruta donde es válida (opcional)
+    // priority: medium'',
+    // encode:
 } 
 module.exports = { corsOptions, limiter, limiterLog, cookiesOptions, cookiesOptionsLog }
