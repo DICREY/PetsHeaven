@@ -17,7 +17,7 @@ class Global {
         return result
     }
 
-    format = (datas = [], subKey = '', headers = [],keylist = "---", keySublist = ";") => {
+    format = (datas = [], subKey = '', headers = [], keylist = "---", keySublist = ";") => {
         const results = datas.map(data => {
             const list = data[subKey]?.split(keylist)
                 .map(item => {
@@ -32,7 +32,7 @@ class Global {
         return results
     }
 
-    iterar = (datas = [], key = '',splitKey = '---') => {
+    iterar = (datas = [], key = '', splitKey = '---') => {
         return datas.map(data => {
             const value = data[key];
             const arr = typeof value === 'string'
@@ -43,9 +43,9 @@ class Global {
     }
 
     // sacar el objeto del oobjeto padre y convertirlo en el nuevo objeto padre y darle headers a cada elemento
-    mapPostgressResult = ( datas = [], headers = [], key = '', keysplit = "---" ) => {
-        const mapData = datas.map(data => data[key].replace('(','').replace(')',''))
-        const results = mapData.map(data => {
+    mapPostgressResult = (datas = [], headers = [], key = '', keysplit = "---") => {
+        const mapData = datas?.map(data => data[key].replace('(', '').replace(')', ''))
+        const results = mapData?.map(data => {
             const list = data?.split(keysplit)
             const formatList = this.headerI(headers, list)
             return {
@@ -55,34 +55,54 @@ class Global {
         return results
     }
 
+    mapPostgressResultOne = (datas = [], headers = [], key = '', keysplit = "---") => {
+        const list = datas[key]?.split(keysplit)
+        const formatList = this.headerI(headers, list)
+        return formatList
+    }
+
     async login() {
         return new Promise((res, rej) => {
             // vars
-            const proc = "SELECT Login(?);"
+            const proc = "SELECT login($1);"
             const by = this.args[0].replace(" ", "")
 
             // conect to database
             this.database = new DataBase()
             this.database.connect()
 
-            if (this.database) {
+            let customQuery = async () => {
                 try {
-                    let result = this.database.query(proc, by)
-                    if (!result || !result[0][0]) {
+                    let result = await this.database.query(proc,[by])
+                    if (!result || !result?.[0]) {
                         rej({
                             message: "Not found",
                             status: 404
                         })
                     } else setTimeout(() => {
+                        const mapData = this.mapPostgressResultOne(
+                            result?.[0],
+                            [
+                                'nom_per',
+                                'ape_per',
+                                'doc_per',
+                                'cont_per',
+                                'fot_per',
+                                'roles'
+                            ],
+                            'login',
+                            ','
+                        )
                         res({
                             message: "Authorized",
-                            result: result
+                            result: mapData
                         })
                     }, 500)
                 } catch (err) {
                     rej({ message: err })
                 }
             }
+            customQuery()
 
             // close conection 
             this.database.disconnect()
@@ -93,7 +113,7 @@ class Global {
     async changePassword() {
         return new Promise((res, rej) => {
             // vars
-            const proc = "SELECT ChangePassword(?,?);"
+            const proc = "SELECT changepassword($1,$2);"
             const email = this.args[0].trim()
             const password = this.args[1].trim()
             const args = [email, password]
@@ -125,7 +145,7 @@ class Global {
     async GetAdminStats() {
         return new Promise((res, rej) => {
             // vars
-            const proc = "SELECT GetAdminStats();"
+            const proc = "SELECT getadminstats();"
             // const by = this.args[0].replace(" ","")
 
             // conect to database
@@ -135,15 +155,26 @@ class Global {
             if (this.database) this.database.query(proc, (err, result) => {
                 if (err) {
                     rej({ message: err })
-                } else if (!result || !result[0][0]) {
+                } else if (!result) {
                     rej({
                         message: "Not found",
                         status: 404
                     })
                 } else setTimeout(() => {
+                    const mapData = this.mapPostgressResultOne(
+                        result?.[0],
+                        [
+                            'vet',
+                            'pets',
+                            'appoint',
+                            'emergency'
+                        ],
+                        'getadminstats',
+                        ','
+                    )
                     res({
                         message: "Found info",
-                        result: result['0'][0]
+                        result: mapData
                     })
                 }, 500)
             })
@@ -156,7 +187,7 @@ class Global {
     async GetStaffStats() {
         return new Promise((res, rej) => {
             // vars
-            const proc = "SELECT GetStaffStats(?);"
+            const proc = "SELECT getstaffstats($1);"
             const by = this.args[0].replace(" ", "")
 
             // conect to database
@@ -166,15 +197,26 @@ class Global {
             if (this.database) {
                 try {
                     let result = this.database.query(proc, by)
-                    if (!result || !result[0][0]) {
+                    if (!result) {
                         rej({
                             message: "Not found",
                             status: 404
                         })
                     } else setTimeout(() => {
+                        const mapData = this.mapPostgressResultOne(
+                            result?.[0],
+                            [
+                                'vets',
+                                'cirugy',
+                                'emergency',
+                                'consulta'
+                            ],
+                            'getstaffstats',
+                            ','
+                        )
                         res({
                             message: "Found info",
-                            result: result[0][0]
+                            result: mapData
                         })
                     }, 500)
                 } catch (err) {
@@ -190,7 +232,7 @@ class Global {
     async GetOwnStats() {
         return new Promise((res, rej) => {
             // vars
-            const proc = "SELECT GetOwnStats(?);"
+            const proc = "SELECT getownstats($1);"
             const by = this.args[0].replace(" ", "")
 
             // conect to database
@@ -200,15 +242,25 @@ class Global {
             if (this.database) this.database.query(proc, by, (err, result) => {
                 if (err) {
                     rej({ message: err })
-                } else if (!result || !result[0][0]) {
+                } else if (!result) {
                     rej({
                         message: "Not found",
                         status: 404
                     })
                 } else setTimeout(() => {
+                    const mapData = this.mapPostgressResultOne(
+                        result?.[0],
+                        [
+                            'pets',
+                            'appoint',
+                            'consultas'
+                        ],
+                        'getownstats',
+                        ','
+                    )
                     res({
                         message: "Found info",
-                        result: result[0][0]
+                        result: mapData
                     })
                 }, 500)
             })
@@ -222,7 +274,7 @@ class Global {
         return new Promise((resolve, reject) => {
             const db = new DataBase()
             db.connect()
-            db.conection.query('CALL pets_heaven.frequentPets()', (err, results) => {
+            db.conection.query('SELECT frequentpets()', (err, results) => {
                 db.conection.end()
                 if (err) return reject(err)
                 // El resultado de un CALL es un array de arrays, el primero es el result set

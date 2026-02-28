@@ -235,8 +235,8 @@ Route.post('/login', limiterLog, async (req,res) => {
     try {
         // Search in database
         let log = await global.login()
-        let user = await log.result[0]
-        
+        let user = await log?.result
+        // console.log(user)
 
         if(!user) return res.status(404).json({ message: 'Usuario no encontrado' })
         // Verify

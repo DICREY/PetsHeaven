@@ -311,7 +311,7 @@ class Services {
     async FindCategories() {
         return new Promise((res, rej) => {
             // vars
-            const proc = "SELECT search_services_cat()"
+            const proc = "SELECT search_services_cat();"
 
             // conect to database
             this.database = new DataBase()
@@ -320,7 +320,7 @@ class Services {
             let customQuery = async () => {
                 try {
                     let result = await this.database.query(proc)
-                    if (!result || !result?.[0]) {
+                    if (!result || !result?.search_services_cat) {
                         rej({
                             message: "Not found",
                             status: 404

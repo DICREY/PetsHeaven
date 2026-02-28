@@ -20,7 +20,7 @@ class DataBasePostgres {
             // console.log('PostgreSQL Connect');
         } catch (err) {
             console.error(err)
-            // console.error('Error de conexión', err.stack);
+            console.error(err.stack);
         }
     }
 
