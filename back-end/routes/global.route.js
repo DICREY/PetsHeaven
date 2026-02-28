@@ -34,6 +34,7 @@ Route.post('/check', async (req,res) => {
         res.cookie('__token', token, cookiesOptions)
         res.status(200).json({ checked: 1 })
     } catch (err) {
+        console.log(err)
         if (err.status) return res.status(err.status).json({ message: err.message })
 
         res.status(500).json({ message: 'Error del servidor por favor intentelo mas tarde', error: err })

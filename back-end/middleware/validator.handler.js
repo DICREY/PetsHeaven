@@ -6,7 +6,7 @@ const secret = process.env.JWT_SECRET
 
 // Handle Validations middlewares
 function validatorHeaders(req, res, next) {
-    console.log(req.cookie)
+    // console.log(req.cookie)
     // Headers
     const apiKey = req.signedCookies ? req.signedCookies.__nit : req.headers['x-api-key']
     const contentType = req.headers['accept']
