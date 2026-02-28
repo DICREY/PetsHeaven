@@ -1,6 +1,6 @@
 // Librarys
 import React, { useState, useEffect, useContext } from 'react'
-import { BrowserRouter, Routes, Route, Navigate, HashRouter } from 'react-router-dom'
+import { Routes, Route, Navigate, HashRouter } from 'react-router-dom'
 
 // Imports Forms
 import { LoginForm } from './Componentes/Formularios/LoginForm'
@@ -66,7 +66,7 @@ export default function App() {
   const PrivateRoute = ({ children }) => {
     const { user } = useContext(AuthContext)
 
-    return user ? children : <Navigate to='/user/login' />
+    return user ? children : <Navigate to='/#/user/login' />
   }
 
   const VetRoute = ({ children }) => {
@@ -75,7 +75,7 @@ export default function App() {
 
     if (roles) {
       const vet = roles.includes('Veterinario')
-      return vet ? children : <Navigate to='/user/login' />
+      return vet ? children : <Navigate to='/#/user/login' />
     }
 
     return <Navigate to='/user/login' />
@@ -85,7 +85,7 @@ export default function App() {
     const { roles } = useContext(AuthContext)
     if (roles) {
       const admin = roles.includes('Administrador')
-      return admin ? children : <Navigate to='/user/login' />
+      return admin ? children : <Navigate to='/#/user/login' />
     }
 
     return <Navigate to='/user/login' />
@@ -107,7 +107,7 @@ export default function App() {
   return (
     // Define Routes
       <AuthProvider>
-        <BrowserRouter>
+        <HashRouter>
           <Routes>
             {/* Private routes */}
             <Route path='/user/home' element={
@@ -226,7 +226,7 @@ export default function App() {
             <Route path='/politica-cookies' element={<CookiePolicy />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
-        </BrowserRouter>
+        </HashRouter>
         {notify && (
           <Notification
             {...notify}

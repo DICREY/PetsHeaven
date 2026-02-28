@@ -13,7 +13,7 @@ import { errorStatusHandler, hourTraductor } from "../Varios/Util"
 import "../../styles/BarrasNavegacion/Header.css"
 
 // Component
-export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:3000' }) => {
+export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = '' }) => {
   // Dynamic Vars 
   const [isProfileOpen, setIsProfileOpen] = useState(false)
   const [tabHelp, setTabHelp] = useState()
@@ -158,7 +158,7 @@ export const HeaderAdmin = ({ onVerTodasNotificaciones, URL = 'http://localhost:
                 </ul>
 
                 <footer className="pie-notificaciones-header">
-                  <button type="button" className="boton-ver-todas-header" onClick={() => navigate('/notificaciones')}>
+                  <button type="button" className="boton-ver-todas-header" onClick={() => navigate('/#/notificaciones')}>
                     Ver todas las notificaciones
                   </button>
                 </footer>
