@@ -65,7 +65,6 @@ Route.get('/services', async (req,res) => {
     const service = new Services()
     try {
         const services = await service.FindCategories()
-        console.log('here')
 
         // Verify if exist 
         if (!services.result) res.status(404).json({ message: "servicios no encontrados" })

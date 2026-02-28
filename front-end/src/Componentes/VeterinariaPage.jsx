@@ -98,7 +98,7 @@ export default function VeterinariaPage({ URL = '', setArriveTo }) {
     } catch (err) {
       setSerData(null)
       const message = errorStatusHandler(err)
-      console.log(message)
+      // console.log(message)
     }
   }
 
