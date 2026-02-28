@@ -26,8 +26,8 @@ const cookiesOptionsLog = {
     maxAge: 30 * 24 * 60 * 60 * 1000, // (30 días)
     httpOnly: false, // Seguridad: solo accesible por HTTP
     secure: true, // HTTPS en producción
-    sameSite: 'strict', // Política de same-site
-    domain: 'petsheaven-id95.onrender.com', // Dominio donde es válida
+    sameSite: 'none', // Política de same-site
+    // domain: 'petsheaven-id95.onrender.com', // Dominio donde es válida
     signed: true,
     // path: '/' // Ruta donde es válida
 }
