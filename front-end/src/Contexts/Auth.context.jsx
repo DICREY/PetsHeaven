@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }) => {
                 setRoles(null)
                 setLog(false)
                 setNotify(null)
-                window.location.href = '/user/login'
+                window.location.href = '/#/user/login'
             }
         } catch (err) {
             setUser(null)

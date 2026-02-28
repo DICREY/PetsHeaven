@@ -12,6 +12,7 @@ import { AuthContext } from '../../Contexts/Contexts'
 // Import styles
 import '../../../src/styles/BarrasNavegacion/NavBarAdmin.css'
 
+// Main Component 
 export const NavBarAdmin = () => {
   // Dynamic vars 
   const [serviciosAbierto, setServiciosAbierto] = useState(false)
@@ -85,7 +86,7 @@ export const NavBarAdmin = () => {
             {
               admin && (
                 <li className='itemnavadmin'>
-                  <NavLink to={'/admin/home'} className='enlacenavadmin'>
+                  <NavLink to={'/#/admin/home'} className='enlacenavadmin'>
                     <Settings className='icononavadmin' />
                     <span>Administración</span>
                   </NavLink>
@@ -95,7 +96,7 @@ export const NavBarAdmin = () => {
               
             {roles?.includes('Veterinario') && (
               <li className='itemnavadmin'>
-                <NavLink to={'/staff/home'} className='enlacenavadmin'>
+                <NavLink to={'/#/staff/home'} className='enlacenavadmin'>
                   <Settings className='icononavadmin' />
                   <span>Panel Médico</span>
                 </NavLink>
@@ -103,7 +104,7 @@ export const NavBarAdmin = () => {
             )}
             {roles?.includes('Veterinario')? (
               <li className='itemnavadmin'>
-                <NavLink to={'/consultorio'} className='enlacenavadmin'>
+                <NavLink to={'/#/consultorio'} className='enlacenavadmin'>
                   <Stethoscope className='icononavadmin' />
                   <span>Consultorio</span>
                 </NavLink>
@@ -111,13 +112,13 @@ export const NavBarAdmin = () => {
             ):(
               <>
                 <li className='itemnavadmin'>
-                  <NavLink to={'/user/home'} className='enlacenavadmin'>
+                  <NavLink to={'/#/user/home'} className='enlacenavadmin'>
                     <Settings className='icononavadmin' />
                     <span>Tú Panel</span>
                   </NavLink>
                 </li>
                 <li className='itemnavadmin'>
-                  <NavLink to={'/user/pets'} className='enlacenavadmin'>
+                  <NavLink to={'/#/user/pets'} className='enlacenavadmin'>
                     <Settings className='icononavadmin' />
                     <span>Mascotas</span>
                   </NavLink>
@@ -127,7 +128,7 @@ export const NavBarAdmin = () => {
 
             { admin && (
                 <li className='itemnavadmin'>
-                  <NavLink to={'/admin/gestion/usuarios'} className='enlacenavadmin'>
+                  <NavLink to={'/#/admin/gestion/usuarios'} className='enlacenavadmin'>
                     <Users className='icononavadmin' />
                     <span>Personal</span>
                   </NavLink>
@@ -146,13 +147,13 @@ export const NavBarAdmin = () => {
 
                 <ul className={`submenunavadmin ${agendaAbierta ? 'abiertonavadmin' : 'cerradonavadmin'}`}>
                     <li>
-                    <NavLink to={'/admin/calendario/general'} className='subenlacenavadmin'>
+                    <NavLink to={'/#/admin/calendario/general'} className='subenlacenavadmin'>
                       <CalendarRange className='iconosubnavadmin' />
                       <span>Agenda General</span>
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to={'/calendario/usuario'} className='subenlacenavadmin'>
+                    <NavLink to={'/#/calendario/usuario'} className='subenlacenavadmin'>
                       <CalendarClock className='iconosubnavadmin' />
                       <span>Agenda Personal</span>
                     </NavLink>
@@ -161,7 +162,7 @@ export const NavBarAdmin = () => {
               </li>
             ):(
               <li>
-                <NavLink to={'/calendario/usuario'} className='subenlacenavadmin'>
+                <NavLink to={'/#/calendario/usuario'} className='subenlacenavadmin'>
                   <CalendarClock className='iconosubnavadmin' />
                   <span>Agenda Personal</span>
                 </NavLink>
@@ -180,25 +181,25 @@ export const NavBarAdmin = () => {
 
               <ul className={`submenunavadmin ${serviciosAbierto ? 'abiertonavadmin' : 'cerradonavadmin'}`}>
                 <li onClick={toggleServicios}>
-                  <NavLink to={'/services/vacunas'} className='subenlacenavadmin'>
+                  <NavLink to={'/#/services/vacunas'} className='subenlacenavadmin'>
                     <Syringe className='iconosubnavadmin' />
                     <span>Vacunas</span>
                   </NavLink>
                 </li>
                 <li onClick={toggleServicios}>
-                  <NavLink to={'/services/cirugia'} className='subenlacenavadmin'>
+                  <NavLink to={'/#/services/cirugia'} className='subenlacenavadmin'>
                     <Scissors className='iconosubnavadmin' />
                     <span>Cirugía</span>
                   </NavLink>
                 </li>
                 <li onClick={toggleServicios}>
-                  <NavLink to={'/services/laboratorio'} className='subenlacenavadmin'>
+                  <NavLink to={'/#/services/laboratorio'} className='subenlacenavadmin'>
                     <Flask className='iconosubnavadmin' />
                     <span>Pruebas Laboratorio</span>
                   </NavLink>
                 </li>
                 <li onClick={toggleServicios}>
-                  <NavLink to={'/services/spa'} className='subenlacenavadmin'>
+                  <NavLink to={'/#/services/spa'} className='subenlacenavadmin'>
                     <Bath className='iconosubnavadmin' />
                     <span>Spa</span>
                   </NavLink>

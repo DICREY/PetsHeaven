@@ -12,7 +12,7 @@ import '../../../src/styles/BarrasNavegacion/NavBar.css'
 export const NavBar = () => {
   // Vars 
   const [menuAbierto, setMenuAbierto] = useState(false)
-  const [url, setUrl] = useState('/user/pets')
+  const [url, setUrl] = useState('/#/user/pets')
   const [redirectTo, setRedirectTo] = useState('Mascotas')
   const refNav = useRef(null)
   const { mainRol, logout, log } = useContext(AuthContext)
@@ -45,13 +45,13 @@ export const NavBar = () => {
     if (log) {
       if (mainRol === 'Administrador') {
         setRedirectTo('Administración')
-        setUrl('/admin/home')
+        setUrl('/#/admin/home')
       } else if (mainRol === 'Veterinario') {
         setRedirectTo('Panel medico')
-        setUrl('/staff/home')
+        setUrl('/#/staff/home')
       } else {
         setRedirectTo('Tú Panel')
-        setUrl('/user/home')
+        setUrl('/#/user/home')
       }
     }
   }, [])
@@ -91,12 +91,12 @@ export const NavBar = () => {
           {
             log ? (
               <div className='botones-escritorio'>
-                <a href='/main' className='boton-login-nav' onClick={logout}>Cerrar Sesión</a>
+                <a href='/' className='boton-login-nav' onClick={logout}>Cerrar Sesión</a>
               </div>
             ) : (
               <div className='botones-escritorio'>
-                <a href='/user/register' className='boton-registro-nav'>Registrarse</a>
-                <a href='/user/login' className='boton-login-nav'>Iniciar Sesión</a>
+                <a href='/#/user/register' className='boton-registro-nav'>Registrarse</a>
+                <a href='/#/user/login' className='boton-login-nav'>Iniciar Sesión</a>
               </div>
             )
           }
@@ -139,14 +139,14 @@ export const NavBar = () => {
           {
             log ? (
               <div className='botones-movil'>
-                <a href='/main' className='boton-login-movil-nav' onClick={logout}>Cerrar Sesión</a>
+                <a href='/' className='boton-login-movil-nav' onClick={logout}>Cerrar Sesión</a>
               </div>
             ) : (
               <div className='botones-movil'>
-                <a href='/user/register' className='boton-registro-movil-nav'>
+                <a href='/#/user/register' className='boton-registro-movil-nav'>
                   Registrarse
                 </a>
-                <a href='/user/login' className='boton-login-movil-nav'>Iniciar Sesión</a>
+                <a href='/#/user/login' className='boton-login-movil-nav'>Iniciar Sesión</a>
               </div>
             )
           }
