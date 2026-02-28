@@ -38,7 +38,7 @@ const cookiesOptions = {
     httpOnly: true, // Seguridad: solo accesible por HTTP
     secure: true, // HTTPS en producción
     sameSite: 'none', // Política de same-site
-    // signed: false,
+    signed: true,
     // path: '/' // Ruta donde es válida (opcional)
 } 
 module.exports = { corsOptions, limiter, limiterLog, cookiesOptions, cookiesOptionsLog }
