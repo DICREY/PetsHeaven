@@ -1,5 +1,5 @@
 // Imports
-const DataBase = require('./DataBase')
+const DataBase = require('./DataBasePostgres')
 const People = require('./People.services')
 
 // Main class

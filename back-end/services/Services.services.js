@@ -14,7 +14,7 @@ class Services {
     // function to create a new service
     async create(data) {
         return new Promise((res, rej) => {
-            const proc = "SELECT RegisterService(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            const proc = "SELECT register_service($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23)"
             const params = [
                 data.nom_cat,
                 data.slug,
@@ -44,7 +44,8 @@ class Services {
             this.database = new DataBase()
             this.database.connect()
 
-            if (this.database) this.database.query(proc, params, (err) => {
+            let custom = async () => {
+                await this.database.query(proc, params)
                 if (err) return rej({ message: err })
                 setTimeout(() => {
                     res({
@@ -52,7 +53,8 @@ class Services {
                         success: 1
                     })
                 }, 1000)
-            })
+            }
+            custom()
 
             this.database.disconnect()
         })
@@ -61,7 +63,7 @@ class Services {
     // function to update a service
     async modify(data) {
         return new Promise((res, rej) => {
-            const proc = "SELECT UpdateService($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23)"
+            const proc = "SELECT update_service($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23)"
             const params = [
                 data.nom_cat,
                 data.slug,
@@ -92,7 +94,8 @@ class Services {
             this.database = new DataBase()
             this.database.connect()
 
-            if (this.database) this.database.query(proc, params, (err) => {
+            let custom = async () => {
+                const result = this.database.query(proc, params)
                 if (err) return rej({ message: err })
                 setTimeout(() => {
                     res({
@@ -100,7 +103,8 @@ class Services {
                         success: 1
                     })
                 }, 1000)
-            })
+            }
+            custom()
 
             this.database.disconnect()
         })
@@ -110,7 +114,7 @@ class Services {
     async createLabTest(data) {
         return new Promise((res, rej) => {
             const date = new Date()
-            const proc = "SELECT RegisterLabTest(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            const proc = "SELECT register_lab_test($,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$)"
             const params = [
                 data.cod_ord_pru_lab,
                 data.nom_mas,
@@ -147,7 +151,8 @@ class Services {
             this.database = new DataBase()
             this.database.connect()
 
-            if (this.database) this.database.query(proc, params, (err) => {
+            let custom = async () => {
+                const result = this.database.query(proc, params)
                 if (err) return rej({ message: err })
                 setTimeout(() => {
                     res({
@@ -155,7 +160,8 @@ class Services {
                         success: 1
                     })
                 }, 1000)
-            })
+            }
+            custom()
 
             this.database.disconnect()
         })
@@ -165,7 +171,7 @@ class Services {
     async modifyLabTest(data) {
         return new Promise((res, rej) => {
             const date = new Date()
-            const proc = "SELECT ModifyLabTest(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            const proc = "SELECT ModifyLabTest($,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,$,?)"
             const params = [
                 data.cod_ord_pru_lab,
                 data.nom_mas,
@@ -202,7 +208,8 @@ class Services {
             this.database = new DataBase()
             this.database.connect()
 
-            if (this.database) this.database.query(proc, params, (err) => {
+            let custom = async () => {
+                const result = this.database.query(proc, params)
                 if (err) return rej({ message: err })
                 setTimeout(() => {
                     res({
@@ -210,7 +217,8 @@ class Services {
                         success: 1
                     })
                 }, 1000)
-            })
+            }
+            custom()
 
             this.database.disconnect()
         })
@@ -220,27 +228,48 @@ class Services {
     async findAll() {
         return new Promise((res, rej) => {
             // vars
-            const proc = "SELECT SearchServices()"
+            const proc = "SELECT search_services()"
 
             // conect to database
             this.database = new DataBase()
             this.database.connect()
 
-            if (this.database) this.database.query(proc, (err, result) => {
+            let custom = async () => {
+                let result = await this.database.query(proc)
                 if (err) {
                     rej({ message: err })
-                } else if (!result || !result[0][0]) {
+                } else if (!result || !result?.[0]) {
                     rej({
                         message: "Not found",
                         status: 404
                     })
                 } else setTimeout(() => {
+                    const mapData = this.global.mapPostgressResult(
+                        result,
+                        [
+                            'id_ser',
+                            'nom_ser',
+                            'pre_ser',
+                            'des_ser',
+                            'pre_act_ser',
+                            'cos_est_ser',
+                            'sta_ser',
+                            'req',
+                            'nom_tip_ser',
+                            'des_tip_ser',
+                            'tec_des_tip_ser',
+                            'dur_min_tip_ser',
+                        ],
+                        'search_services',
+                        ','
+                    )
                     res({
                         message: "Services found",
-                        result: result
+                        result: mapData
                     })
                 }, 500)
-            })
+            }
+            custom()
 
             // close conection 
             this.database.disconnect()
@@ -250,27 +279,51 @@ class Services {
     async findAllBy(data) {
         return new Promise((res, rej) => {
             // vars
-            const proc = "SELECT SearchServicesBy(?)"
+            const proc = "SELECT search_services_by($1)"
 
             // conect to database
             this.database = new DataBase()
             this.database.connect()
 
-            if (this.database) this.database.query(proc, [data], (err, result) => {
+            let custom = async () => {
+                let result = await this.database.query(proc, [data])
                 if (err) {
                     rej({ message: err })
-                } else if (!result || !result[0][0]) {
+                } else if (!result || !result?.[0]) {
                     rej({
                         message: "Not found",
                         status: 404
                     })
                 } else setTimeout(() => {
+                    const mapData = this.global.mapPostgressResult(
+                        result,
+                        [
+                            'id_ser',
+                            'nom_ser',
+                            'pre_ser',
+                            'des_ser',
+                            'pre_act_ser',
+                            'cos_est_ser',
+                            'sta_ser',
+                            'req',
+                            'nom_tip_ser',
+                            'des_tip_ser',
+                            'tec_des_tip_ser',
+                            'dur_min_tip_ser',
+                            'req_equ_esp',
+                            'nom_cat',
+                            'img_cat'
+                        ],
+                        'search_services_by',
+                        ','
+                    )
                     res({
                         message: "Services found",
-                        result: result
+                        result: mapData
                     })
                 }, 500)
-            })
+            }
+            custom()
 
             // close conection 
             this.database.disconnect()
@@ -280,27 +333,51 @@ class Services {
     async findBy(data) {
         return new Promise((res, rej) => {
             // vars
-            const proc = "SELECT SearchService(?)"
+            const proc = "SELECT search_service($1)"
 
             // conect to database
             this.database = new DataBase()
             this.database.connect()
 
-            if (this.database) this.database.query(proc, [data], (err, result) => {
+            let custom = async () => {
+                let result = await this.database.query(proc, [data])
                 if (err) {
                     rej({ message: err })
-                } else if (!result || !result[0][0]) {
+                } else if (!result || !result?.[0]) {
                     rej({
                         message: "Not found",
                         status: 404
                     })
                 } else setTimeout(() => {
+                    const mapData = this.global.mapPostgressResult(
+                        result,
+                        [
+                            'id_ser',
+                            'nom_ser',
+                            'pre_ser',
+                            'des_ser',
+                            'pre_act_ser',
+                            'cos_est_ser',
+                            'sta_ser',
+                            'req',
+                            'nom_tip_ser',
+                            'des_tip_ser',
+                            'tec_des_tip_ser',
+                            'dur_min_tip_ser',
+                            'req_equ_esp',
+                            'nom_cat',
+                            'img_cat'
+                        ],
+                        'search_service',
+                        ','
+                    )
                     res({
                         message: "Services found",
-                        result: result
+                        result: mapData
                     })
                 }, 500)
-            })
+            }
+            custom()
 
             // close conection 
             this.database.disconnect()
@@ -329,7 +406,7 @@ class Services {
                         const reFormatResult = this.global.mapPostgressResult(
                             result,
                             [
-                                'id_cat','nom_cat','tec_des_cat','img_cat'
+                                'id_cat', 'nom_cat', 'tec_des_cat', 'img_cat'
                             ],
                             'search_services_cat',
                             ','
@@ -355,27 +432,44 @@ class Services {
     async FindTypeServices() {
         return new Promise((res, rej) => {
             // vars
-            const proc = "SELECT SearchServicesType()"
+            const proc = "SELECT search_services_type()"
 
             // conect to database
             this.database = new DataBase()
             this.database.connect()
 
-            if (this.database) this.database.query(proc, (err, result) => {
+            let custom = async () => {
+                let result = await this.database.query(proc)
                 if (err) {
                     rej({ message: err })
-                } else if (!result || !result[0][0]) {
+                } else if (!result || !result?.[0]) {
                     rej({
                         message: "Not found",
                         status: 404
                     })
                 } else setTimeout(() => {
+                    const mapData = this.global.mapPostgressResult(
+                        result,
+                        [
+                            'id_tip_ser',
+                            'nom_tip_ser',
+                            'des_tip_ser',
+                            'tec_des_tip_ser',
+                            'sta_tip_ser',
+                            'req_equ_esp',
+                            'dur_min_tip_ser',
+                            'cat_tip_ser'
+                        ],
+                        'search_services_type',
+                        ','
+                    )
                     res({
                         message: "Services found",
-                        result: result[0]
+                        result: mapData
                     })
                 }, 500)
-            })
+            }
+            custom()
 
             // close conection 
             this.database.disconnect()
@@ -386,27 +480,44 @@ class Services {
     async FindProcedures() {
         return new Promise((res, rej) => {
             // vars
-            const proc = "SELECT SearchProcedures()"
+            const proc = "SELECT search_procedures()"
 
             // conect to database
             this.database = new DataBase()
             this.database.connect()
 
-            if (this.database) this.database.query(proc, (err, result) => {
+            let custom = async () => {
+                let result = await this.database.query(proc)
                 if (err) {
                     rej({ message: err })
-                } else if (!result || !result[0][0]) {
+                } else if (!result || !result?.[0]) {
                     rej({
                         message: "Not found",
                         status: 404
                     })
                 } else setTimeout(() => {
+                    const mapData = this.global.mapPostgressResult(
+                        result,
+                        [
+                            'id_pro',
+                            'nom_pro',
+                            'des_pro',
+                            'cat_pro',
+                            'niv_rie_pro',
+                            'dur_min_pro',
+                            'pro_pro',
+                            'con_esp_pro'
+                        ],
+                        'search_procedures',
+                        ','
+                    )
                     res({
                         message: "Services found",
-                        result: result[0]
+                        result: mapData
                     })
                 }, 500)
-            })
+            }
+            custom()
 
             // close conection 
             this.database.disconnect()
@@ -417,27 +528,46 @@ class Services {
     async FindTestType() {
         return new Promise((res, rej) => {
             // vars
-            const proc = "SELECT GetTestTypes()"
+            const proc = "SELECT get_test_types()"
 
             // conect to database
             this.database = new DataBase()
             this.database.connect()
 
-            if (this.database) this.database.query(proc, (err, result) => {
+            let custom = async () => {
+                let result = await this.database.query(proc)
                 if (err) {
                     rej({ message: err })
-                } else if (!result || !result[0][0]) {
+                } else if (!result || !result?.[0]) {
                     rej({
                         message: "Not found",
                         status: 404
                     })
                 } else setTimeout(() => {
+                    const mapData = this.global.mapPostgressResult(
+                        result,
+                        [
+                            'id_tip_pru',
+                            'cod_tip_pru',
+                            'nom_tip_pru',
+                            'des_tip_pru',
+                            'cat_tip_pru',
+                            'met_est_tip_pru',
+                            'tie_est_hrs_tip_pru',
+                            'cos_est_tip_pru',
+                            'ins_pre_tip_pru',
+                            'par_ref_tip_pru'
+                        ],
+                        'get_test_types',
+                        ','
+                    )
                     res({
                         message: "Services found",
-                        result: result
+                        result: mapData
                     })
                 }, 500)
-            })
+            }
+            custom()
 
             // close conection 
             this.database.disconnect()
@@ -453,7 +583,8 @@ class Services {
             this.database = new DataBase()
             this.database.connect()
 
-            if (this.database) this.database.query(proc, (err, result) => {
+            let custom = async () => {
+                let result = await this.database.query(proc)
                 if (err) {
                     rej({ message: err })
                 } else if (!result || !result[0][0]) {
@@ -474,7 +605,8 @@ class Services {
                         })
                     }, 500)
                 }
-            })
+            }
+            custom()
 
             // close conection 
             this.database.disconnect()
@@ -490,7 +622,8 @@ class Services {
             this.database = new DataBase()
             this.database.connect()
 
-            if (this.database) this.database.query(proc, (err, result) => {
+            let custom = async () => {
+                let result = await this.database.query(proc)
                 if (err) {
                     rej({ message: err })
                 } else if (!result || !result[0][0]) {
@@ -511,7 +644,8 @@ class Services {
                         })
                     }, 500)
                 }
-            })
+            }
+            custom()
 
             // close conection 
             this.database.disconnect()
@@ -528,7 +662,8 @@ class Services {
             this.database = new DataBase()
             this.database.connect()
 
-            if (this.database) this.database.query(proc, (err, result) => {
+            let custom = async () => {
+                let result = await this.database.query(proc)
                 if (err) {
                     rej({ message: err })
                 } else if (!result || !result[0][0]) {
@@ -549,7 +684,8 @@ class Services {
                         })
                     }, 500)
                 }
-            })
+            }
+            custom()
 
             // close conection 
             this.database.disconnect()
@@ -559,27 +695,58 @@ class Services {
     async findAllVacunas() {
         return new Promise((res, rej) => {
             // vars
-            const proc = "SELECT SearchVacunas()"
+            const proc = "SELECT search_vacunas()"
 
             // conect to database
             this.database = new DataBase()
             this.database.connect()
 
-            if (this.database) this.database.query(proc, (err, result) => {
+            let custom = async () => {
+                let result = await this.database.query(proc)
                 if (err) {
                     rej({ message: err })
-                } else if (!result || !result[0][0]) {
+                } else if (!result || !result?.[0]) {
                     rej({
                         message: "Not found",
                         status: 404
                     })
                 } else setTimeout(() => {
+                    const mapData = this.global.mapPostgressResult(
+                        result,
+                        [
+                            'id_vac',
+                            'nom_vac',
+                            'efe_sec_vac',
+                            'cat_vac',
+                            'dos_rec_cac_vac',
+                            'dos_rec_adu_vac',
+                            'dos_rec_adu_jov_vac',
+                            'lot_vac',
+                            'fec_ven_vac',
+                            'fec_cre_vac',
+                            'fre_vac',
+                            'des_vac',
+                            'pre_vac',
+                            'pro_vac',
+                            'sta_vac',
+                            'id_pro',
+                            'nom_pro',
+                            'des_pro',
+                            'dur_min_pro',
+                            'niv_rie_pro',
+                            'pro_pro',
+                            'con_esp_pro'
+                        ],
+                        'search_vacunas',
+                        ','
+                    )
                     res({
                         message: "Vacunas found",
-                        result: result
+                        result: mapData
                     })
                 }, 500)
-            })
+            }
+            custom()
 
             // close conection 
             this.database.disconnect()
@@ -594,13 +761,14 @@ class Services {
                 data.nom_cat
             ]
 
-            const proc = "SELECT AbleOrDesableService(?,?)"
+            const proc = "SELECT able_or_disable_service($1,$2)"
 
             // conect to database
             this.database = new DataBase()
             this.database.connect()
 
-            if (this.database) this.database.query(proc, params, (err) => {
+            let custom = async () => {
+                const result = this.database.query(proc, params)
                 this.database.disconnect()
 
                 if (err) rej({ message: err })
@@ -610,7 +778,8 @@ class Services {
                         success: true
                     })
                 }, 1000)
-            })
+            }
+            custom()
 
             // close conection 
         })
@@ -618,7 +787,7 @@ class Services {
 
     async registerVacuna(data) {
         return new Promise((res, rej) => {
-            const proc = "SELECT RegisterVacuna(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            const proc = "SELECT register_vacuna($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)"
             const params = [
                 data.nom_vac,
                 data.efe_sec_vac,
@@ -640,90 +809,104 @@ class Services {
             this.database = new DataBase()
             this.database.connect()
 
-            if (this.database) this.database.query(proc, params, (err, result) => {
+            let custom = async () => {
+                let result = await this.database.query(proc, params)
                 if (err) return rej({ message: err })
                 setTimeout(() => {
+                    const mapData = this.global.mapPostgressResultOne(
+                        result,
+                        [
+                            'v_id_pro'
+                        ],
+                        'register_vacuna',
+                        ','
+                    )
                     res({
                         message: "Cirugía registrada correctamente",
-                        result: result
+                        result: mapData
                     })
                 }, 1000)
-            })
+            }
+            custom()
 
-            // close conection
-            this.database.disconnect()
-        })
-    }
+        // close conection
+        this.database.disconnect()
+    })
+}
 
     async ChangeVaccineState(data) {
-        return new Promise((res, rej) => {
-            // vars
-            const params = [
-                data.id,
-                data.nom_vac,
-                data.nom_cat,
-                data.nom_pro
-            ]
+    return new Promise((res, rej) => {
+        // vars
+        const params = [
+            data.id,
+            data.nom_vac,
+            data.nom_cat,
+            data.nom_pro
+        ]
 
-            const proc = "SELECT ChangeVaccineState(?,?,?,?)"
+        const proc = "SELECT change_vaccine_state($1,$2,$3,$4)"
 
-            // conect to database
-            this.database = new DataBase()
-            this.database.connect()
+        // conect to database
+        this.database = new DataBase()
+        this.database.connect()
 
-            if (this.database) this.database.query(proc, params, (err) => {
+        let custom = async () => {
+            const result = this.database.query(proc, params)
 
-                if (err) rej({ message: err })
-                setTimeout(() => {
-                    res({
-                        message: "Servicio Deshabilitado",
-                        change: 1
-                    })
-                }, 1000)
-            })
+            if (err) rej({ message: err })
+            setTimeout(() => {
+                res({
+                    message: "Servicio Deshabilitado",
+                    change: 1
+                })
+            }, 1000)
+        }
+        custom()
 
-            // close conection 
-            this.database.disconnect()
-        })
+    // close conection 
+    this.database.disconnect()
+})
     }
 
     async updateVaccineAndProcedure(data) {
-        return new Promise((res, rej) => {
-            const proc = "SELECT UpdateVaccineAndProcedure(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
-            const params = [
-                data.id_vac,
-                data.nom_vac,
-                data.efe_sec_vac,
-                data.cat_vac,
-                data.dos_rec_cac_vac,
-                data.dos_rec_adu_vac,
-                data.dos_rec_adu_jov_vac,
-                data.lot_vac,
-                data.fec_ven_vac,
-                data.fec_cre_vac,
-                data.fre_vac,
-                data.des_vac,
-                data.pre_vac,
-                data.nom_pro,
-                data.des_pro || ''
-            ]
+    return new Promise((res, rej) => {
+        const proc = "SELECT update_vaccine_and_procedure($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)"
+        const params = [
+            data.id_vac,
+            data.nom_vac,
+            data.efe_sec_vac,
+            data.cat_vac,
+            data.dos_rec_cac_vac,
+            data.dos_rec_adu_vac,
+            data.dos_rec_adu_jov_vac,
+            data.lot_vac,
+            data.fec_ven_vac,
+            data.fec_cre_vac,
+            data.fre_vac,
+            data.des_vac,
+            data.pre_vac,
+            data.nom_pro,
+            data.des_pro || ''
+        ]
 
-            this.database = new DataBase()
-            this.database.connect()
+        this.database = new DataBase()
+        this.database.connect()
 
-            if (this.database) this.database.query(proc, params, (err) => {
-                if (err) return rej({ message: err })
-                setTimeout(() => {
-                    res({
-                        message: "Vacuna y procedimiento actualizados correctamente",
-                        success: true
-                    })
-                }, 1000)
-            })
+        let custom = async () => {
+            const result = this.database.query(proc, params)
+            if (err) return rej({ message: err })
+            setTimeout(() => {
+                res({
+                    message: "Vacuna y procedimiento actualizados correctamente",
+                    success: true
+                })
+            }, 1000)
+        }
+        custom()
 
-            // close conection
-            this.database.disconnect()
-        })
+    // close conection
+    this.database.disconnect()
+})
     }
 }
 
